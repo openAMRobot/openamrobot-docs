@@ -1,0 +1,8 @@
+site_name: OpenAMRobot Documentation
+site_description: Central documentation portal for the OpenAMRobot ecosystem
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
