@@ -4,7 +4,9 @@ Central documentation, architecture, safety, compatibility, and onboarding repos
 
 ## Purpose
 
-This repository acts as the single source of truth for:
+This repository is the canonical documentation hub for durable, cross-project guidance. Implementation-sensitive commands, interfaces, configuration, and safety requirements remain versioned in their owning repositories. See the [Documentation Standard](docs/DOCUMENTATION_STANDARD.md).
+
+The hub covers:
 
 - system architecture
 - onboarding
@@ -119,14 +121,9 @@ Planned future additions:
 - API references
 - educational materials
 
-## License
+## Licence
 
-Documentation license to be finalized.
-
-Expected future direction:
-
-- documentation: CC-BY-4.0
-- technical assets: MIT where applicable
+Original documentation, diagrams, tutorials, and media in this repository are licensed under CC BY 4.0. Software examples and scripts are MIT; hardware source is CERN-OHL-P-2.0. See [LICENSING.md](LICENSING.md) for the controlling asset map and third-party exclusions.
 
 ## Ownership, licensing, and contributions
 
