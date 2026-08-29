@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://docs.openamrobot.ai/</loc>
+         <lastmod>2026-08-29</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.openamrobot.ai/01-audit-findings/</loc>
+         <lastmod>2026-08-29</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.openamrobot.ai/02-docs-standard/</loc>
+         <lastmod>2026-08-29</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.openamrobot.ai/DOCUMENTATION_STANDARD/</loc>
+         <lastmod>2026-08-29</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.openamrobot.ai/architecture/</loc>
+         <lastmod>2026-08-29</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.openamrobot.ai/getting_started/</loc>
+         <lastmod>2026-08-29</lastmod>
+    </url>
+</urlset>
