@@ -3,9 +3,9 @@ site_description: "Documentation for the OpenAMRobot open-source robotics ecosys
 site_url: "https://docs.openamrobot.ai/"
 site_author: "Botshare LTD"
 
-repo_name: "openAMRobot/openamrobot-docs"
-repo_url: "https://github.com/openAMRobot/openamrobot-docs"
-edit_uri: "edit/main/docs/"
+repo_name: "openAMRobot"
+repo_url: "https://github.com/openAMRobot"
+edit_uri: "https://github.com/openAMRobot/openamrobot-docs/edit/main/docs/"
 
 docs_dir: docs
 copyright: "Copyright © 2021-2026 OpenAMRobot (Botshare LTD) · CC BY 4.0"
@@ -56,8 +56,8 @@ nav:
       - Safety: safety/index.md
       - Tutorials: tutorials/index.md
       - Troubleshooting: troubleshooting/index.md
-  - Academy:
-      - Certified Training Partner Program: academy/partner-program.md
+  - Academy: academy/partner-program.md
+  - Community: community/index.md
   - About:
       - Legal & Contact: about/index.md
       - Visual Identity: about/visual-identity.md
