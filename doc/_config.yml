@@ -1,1 +1,39 @@
+title: OpenAMRobot Documentation
+description: Central documentation portal for the OpenAMRobot ecosystem
 
+url: "https://docs.openamrobot.ai"
+baseurl: ""
+
+repository: openAMRobot/openamrobot-docs
+
+# MaterialDocs Jekyll theme
+remote_theme: chromatical/jekyll-materialdocs
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-relative-links
+
+# MaterialDocs settings
+mdl_colors: blue-grey
+copyright: OpenAMRobot
+search: true
+menu_style: dropdown
+
+# Markdown
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Clean URLs
+permalink: pretty
+
+# Allow relative Markdown links
+relative_links:
+  enabled: true
+  collections: true
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
