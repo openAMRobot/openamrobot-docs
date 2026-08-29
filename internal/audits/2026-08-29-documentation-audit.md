@@ -1,3 +1,5 @@
+> **Internal historical audit:** This file is retained outside the published MkDocs tree. Findings may have been resolved after 29 August 2026.
+
 # OpenAMRobot documentation audit
 
 Based on the README of every repository in the organization, read 2026-08-29.

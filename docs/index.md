@@ -1,49 +1,26 @@
 # OpenAMRobot
 
-Welcome to the official documentation for the OpenAMRobot ecosystem.
+OpenAMRobot is an open-source robotics ecosystem operated by **Botshare LTD**, combining a ROS 2 mobile base, embedded firmware, open hardware, shared interfaces, an operator UI, and planned upper-body manipulation components.
 
-OpenAMRobot provides open-source robotics platforms, software, firmware, hardware, interfaces, and documentation for developing autonomous mobile robots and humanoid robotic systems.
+## Start here
 
-## Documentation
+- [Understand the architecture](architecture/)
+- [Explore the mobile base](mobile_base/)
+- [Find the owning repository](repositories/)
 
-### Getting Started
+## Current scope
 
-New to OpenAMRobot?
+| Area | Maturity | Documentation |
+|---|---|---|
+| Mobile base | Active development; v0.0.1 release available | [Overview](mobile_base/) |
+| Operator interface | Active development | [Overview](ui/) |
+| Shared interfaces and communication | Active repositories | [Interfaces](interfaces/) · [Communication](communication/) |
+| Upper body and manipulation | Planned and under development | [Overview](upper_body/) |
 
-[Get started with OpenAMRobot](getting_started/)
+For a reproducible snapshot, use [openamrobot-release](https://github.com/openAMRobot/openamrobot-release). For build commands, versions, configuration and implementation-sensitive specifications, use the owning repository.
 
-### OpenAMR Platform
+## Governance and contribution
 
-Documentation for the OpenAMR autonomous mobile robot platform.
+OpenAMRobot contributions require both DCO sign-off and an applicable Contributor Agreement. Review the [Contribution Guide](https://github.com/openAMRobot/.github/blob/main/CONTRIBUTING.md), [IP Policy](https://github.com/openAMRobot/.github/blob/main/IP_POLICY.md), and [Security Policy](https://github.com/openAMRobot/.github/blob/main/SECURITY.md).
 
-[Explore OpenAMR](openamr_platform/)
-
-### OpenAMH Humanoid
-
-Hardware, software, and firmware documentation for the OpenAMH humanoid platform.
-
-[Explore OpenAMH](openamh_humanoid/)
-
-### Architecture
-
-Learn how the OpenAMRobot ecosystem is structured.
-
-[View System Architecture](architecture/)
-
-## Core Documentation
-
-- [Getting Started](getting_started/)
-- [Architecture](architecture/)
-- [Safety](safety/)
-- [Communication](communication/)
-- [Interfaces](interfaces/)
-- [User Interface](ui/)
-- [Tutorials](tutorials/)
-- [Troubleshooting](troubleshooting/)
-- [Contributing](contributing/)
-
-## Open Source
-
-OpenAMRobot is developed openly on GitHub.
-
-[View OpenAMRobot on GitHub](https://github.com/openAMRobot)
+OpenAMRobot is experimental. Review [Safety](safety/) before operating hardware.

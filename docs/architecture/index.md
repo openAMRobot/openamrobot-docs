@@ -1,63 +1,28 @@
 # Architecture
 
-This section describes the architecture of the OpenAMRobot ecosystem and how the different hardware, software, firmware, communication, and interface components work together.
+OpenAMRobot separates implementation, contracts, releases, durable documentation and governance so each concern has one owner.
 
-## System Overview
+## Layers
 
-OpenAMRobot is designed as a modular robotics ecosystem. Individual components can be developed and maintained independently while communicating through defined interfaces.
+| Layer | Owner |
+|---|---|
+| Mobile-base ROS 2 software | [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) |
+| Mobile-base firmware | [openamr-platform-fw](https://github.com/openAMRobot/openamr-platform-fw) |
+| Mobile-base hardware | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) |
+| Operator interface | [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) |
+| Shared ROS 2 contracts | [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces) |
+| Communication boundary | [openamrobot-comm](https://github.com/openAMRobot/openamrobot-comm) |
+| Upper-body components | [Upper-body overview](../upper_body/) |
+| Release coordination | [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) and [openamrobot-manifest](https://github.com/openAMRobot/openamrobot-manifest) |
+| Governance and contribution | [openAMRobot/.github](https://github.com/openAMRobot/.github) |
+| Durable conceptual documentation | [openamrobot-docs](https://github.com/openAMRobot/openamrobot-docs) |
 
-The architecture is organized around the following areas:
+## Ownership rule
 
-- Robot platforms
-- Hardware
-- Firmware
-- Software
-- Communication
-- Interfaces
-- Navigation and perception
-- User interfaces
-- Safety systems
+Implementation-sensitive details stay with the component that owns them. Shared contracts stay in interface or communication repositories. Cross-repository compatibility is captured by the manifest and release repository. This site explains the relationships without duplicating commands or parameters.
 
-## Robot Platforms
+See the [Documentation Standard](../DOCUMENTATION_STANDARD.md) and complete [repository index](../repositories/).
 
-### OpenAMR
+## Safety boundary
 
-OpenAMR is the autonomous mobile robot platform.
-
-It provides the foundation for mobile robotics applications including navigation, sensing, control, communication, and autonomous operation.
-
-[Explore the OpenAMR Platform](../openamr_platform/)
-
-### OpenAMH
-
-OpenAMH is the humanoid robotics platform within the OpenAMRobot ecosystem.
-
-It combines humanoid hardware, embedded firmware, software, communication interfaces, and higher-level robot control.
-
-[Explore OpenAMH Humanoid](../openamh_humanoid/)
-
-## Communication
-
-OpenAMRobot components communicate through defined protocols and interfaces so that software, firmware, and hardware modules can interact reliably.
-
-[View Communication Documentation](../communication/)
-
-## Interfaces
-
-Interfaces define how OpenAMRobot components exchange commands, telemetry, sensor information, and system state.
-
-[View Interfaces](../interfaces/)
-
-## Safety
-
-Safety considerations are part of the platform architecture and should be considered when designing, integrating, and operating OpenAMRobot systems.
-
-[View Safety Documentation](../safety/)
-
-## Next Steps
-
-- [Getting Started](../getting_started/)
-- [OpenAMR Platform](../openamr_platform/)
-- [OpenAMH Humanoid](../openamh_humanoid/)
-- [Communication](../communication/)
-- [Interfaces](../interfaces/)
+No single repository proves that an assembled robot is safe. Integrators must validate the complete configured system, including mechanical, electrical, firmware, software, communication and operator-control behavior. See [Safety](../safety/).

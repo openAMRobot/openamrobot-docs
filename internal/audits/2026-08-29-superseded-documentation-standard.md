@@ -1,3 +1,5 @@
+> **Superseded:** Retained as historical audit evidence. The canonical standard is `docs/DOCUMENTATION_STANDARD.md`.
+
 # OpenAMRobot documentation standard
 
 Every rule here exists because of a specific problem found in the audit. If a rule cannot be traced to a finding, it is not in this document.
