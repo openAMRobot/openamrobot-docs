@@ -56,6 +56,8 @@ nav:
       - Safety: safety/index.md
       - Tutorials: tutorials/index.md
       - Troubleshooting: troubleshooting/index.md
+  - Academy:
+      - Certified Training Partner Program: academy/partner-program.md
   - About:
       - Legal & Contact: about/index.md
       - Visual Identity: about/visual-identity.md
