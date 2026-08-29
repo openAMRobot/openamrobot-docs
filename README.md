@@ -125,7 +125,7 @@ Documentation license to be finalized.
 
 Expected future direction:
 
-- documentation: CC-BY-SA-4.0
+- documentation: CC-BY-4.0
 - technical assets: MIT where applicable
 
 ## Ownership, licensing, and contributions
