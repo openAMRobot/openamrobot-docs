@@ -74,6 +74,7 @@ nav:
 
   - Contributing:
       - Overview: contributing/index.md
+      - Documentation Standard: DOCUMENTATION_STANDARD.md
 
 markdown_extensions:
   - admonition
