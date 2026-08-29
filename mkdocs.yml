@@ -42,38 +42,20 @@ theme:
 nav:
   - Home: index.md
 
-  - Getting Started:
-      - Overview: getting_started/index.md
+  - Documentation:
+      - Getting Started: getting_started/index.md
+      - Architecture: architecture/index.md
+      - Communication: communication/index.md
+      - Interfaces: interfaces/index.md
+      - Safety: safety/index.md
+      - User Interface: ui/index.md
+      - Tutorials: tutorials/index.md
+      - Troubleshooting: troubleshooting/index.md
+      - Contributing: contributing/index.md
 
-  - Architecture:
-      - Overview: architecture/index.md
-
-  - OpenAMR Platform:
-      - Overview: openamr_platform/index.md
-
-  - OpenAMH Humanoid:
-      - Overview: openamh_humanoid/index.md
-
-  - Communication:
-      - Overview: communication/index.md
-
-  - Interfaces:
-      - Overview: interfaces/index.md
-
-  - Safety:
-      - Overview: safety/index.md
-
-  - User Interface:
-      - Overview: ui/index.md
-
-  - Tutorials:
-      - Overview: tutorials/index.md
-
-  - Troubleshooting:
-      - Overview: troubleshooting/index.md
-
-  - Contributing:
-      - Overview: contributing/index.md
+  - Platforms:
+      - OpenAMR Platform: openamr_platform/index.md
+      - OpenAMH Humanoid: openamh_humanoid/index.md
 
 markdown_extensions:
   - admonition
