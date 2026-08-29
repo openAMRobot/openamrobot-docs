@@ -56,9 +56,15 @@ nav:
       - Safety: safety/index.md
       - Tutorials: tutorials/index.md
       - Troubleshooting: troubleshooting/index.md
+  - About:
+      - Legal & Contact: about/index.md
+      - Visual Identity: about/visual-identity.md
   - Contributing:
       - Overview: contributing/index.md
       - Documentation Standard: DOCUMENTATION_STANDARD.md
+
+extra_css:
+  - stylesheets/brand.css
 
 markdown_extensions:
   - admonition
@@ -87,6 +93,9 @@ extra:
     - icon: fontawesome/solid/globe
       link: https://botshare.ai
       name: Botshare LTD
+    - icon: fontawesome/solid/envelope
+      link: mailto:info@botshare.ai
+      name: Contact OpenAMRobot
   generator: false
 
 use_directory_urls: true
