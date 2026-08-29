@@ -3,8 +3,10 @@ site_description: "Documentation for the OpenAMRobot open-source robotics ecosys
 site_url: "https://docs.openamrobot.ai/"
 site_author: "Botshare LTD"
 
-repo_name: "openAMRobot"
-repo_url: "https://github.com/openAMRobot"
+# MkDocs Material reads stars and forks from this representative active repository.
+# Client-side code redirects the visible source link to the organization homepage.
+repo_name: "OpenAMRobot"
+repo_url: "https://github.com/openAMRobot/openamr-platform-sw"
 edit_uri: "https://github.com/openAMRobot/openamrobot-docs/edit/main/docs/"
 
 docs_dir: docs
@@ -67,6 +69,9 @@ nav:
 
 extra_css:
   - stylesheets/brand.css
+
+extra_javascript:
+  - javascripts/github-organization-link.js
 
 markdown_extensions:
   - admonition
