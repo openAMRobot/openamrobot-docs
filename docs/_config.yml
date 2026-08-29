@@ -6,7 +6,7 @@ baseurl: ""
 
 repository: openAMRobot/openamrobot-docs
 
-remote_theme: chromatical/jekyll-materialdocs
+remote_theme: a modern jekyll documentation theme
 
 plugins:
   - jekyll-remote-theme
