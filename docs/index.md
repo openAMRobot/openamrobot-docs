@@ -1,12 +1,4 @@
----
-layout: default
-title: OpenAMRobot Documentation
-menu: Home
-weight: 1
-permalink: /
----
-
-# OpenAMRobot Documentation
+# OpenAMRobot
 
 Welcome to the official documentation for the OpenAMRobot ecosystem.
 
