@@ -1,8 +1,92 @@
-site_name: OpenAMRobot Documentation
-site_description: Central documentation portal for the OpenAMRobot ecosystem
+site_name: "OpenAMRobot Documentation"
+site_description: "Central documentation portal for the OpenAMRobot ecosystem"
+site_url: "https://docs.openamrobot.ai/"
+
+repo_name: "openAMRobot/openamrobot-docs"
+repo_url: "https://github.com/openAMRobot/openamrobot-docs"
+
+docs_dir: docs
 
 theme:
   name: material
 
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  icon:
+    repo: fontawesome/brands/github
+
 nav:
   - Home: index.md
+
+  - Getting Started:
+      - Overview: getting_started/index.md
+
+  - Architecture:
+      - Overview: architecture/index.md
+
+  - OpenAMR Platform:
+      - Overview: openamr_platform/index.md
+
+  - OpenAMH Humanoid:
+      - Overview: openamh_humanoid/index.md
+
+  - Communication:
+      - Overview: communication/index.md
+
+  - Interfaces:
+      - Overview: interfaces/index.md
+
+  - Safety:
+      - Overview: safety/index.md
+
+  - User Interface:
+      - Overview: ui/index.md
+
+  - Tutorials:
+      - Overview: tutorials/index.md
+
+  - Troubleshooting:
+      - Overview: troubleshooting/index.md
+
+  - Contributing:
+      - Overview: contributing/index.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+
+plugins:
+  - search
+
+use_directory_urls: true
