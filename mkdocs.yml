@@ -1,26 +1,29 @@
 site_name: "OpenAMRobot Documentation"
-site_description: "Central documentation portal for the OpenAMRobot ecosystem"
+site_description: "Documentation for the OpenAMRobot open-source robotics ecosystem: ROS 2 mobile base, firmware, hardware, interfaces, and operator UI"
 site_url: "https://docs.openamrobot.ai/"
+site_author: "Botshare LTD"
 
 repo_name: "openAMRobot/openamrobot-docs"
 repo_url: "https://github.com/openAMRobot/openamrobot-docs"
+edit_uri: "edit/main/docs/"
 
 docs_dir: docs
+copyright: "Copyright © 2021-2026 OpenAMRobot (Botshare LTD) · CC BY 4.0"
 
 theme:
   name: material
-
   features:
     - navigation.tabs
     - navigation.sections
-    - navigation.expand
     - navigation.top
     - navigation.indexes
+    - navigation.footer
     - toc.integrate
     - search.suggest
     - search.highlight
+    - search.share
     - content.code.copy
-
+    - content.action.edit
   palette:
     - scheme: default
       primary: blue
@@ -28,50 +31,31 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-
     - scheme: slate
       primary: blue
       accent: blue
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-
   icon:
     repo: fontawesome/brands/github
 
 nav:
   - Home: index.md
-
-  - Getting Started:
-      - Overview: getting_started/index.md
-
-  - Architecture:
-      - Overview: architecture/index.md
-
-  - OpenAMR Platform:
-      - Overview: openamr_platform/index.md
-
-  - OpenAMH Humanoid:
-      - Overview: openamh_humanoid/index.md
-
-  - Communication:
-      - Overview: communication/index.md
-
-  - Interfaces:
-      - Overview: interfaces/index.md
-
-  - Safety:
-      - Overview: safety/index.md
-
-  - User Interface:
-      - Overview: ui/index.md
-
-  - Tutorials:
-      - Overview: tutorials/index.md
-
-  - Troubleshooting:
-      - Overview: troubleshooting/index.md
-
+  - Getting Started: getting_started/index.md
+  - Architecture: architecture/index.md
+  - Repositories: repositories/index.md
+  - Components:
+      - Mobile Base: mobile_base/index.md
+      - Operator Interface: ui/index.md
+      - Upper Body: upper_body/index.md
+  - Contracts:
+      - Interfaces: interfaces/index.md
+      - Communication: communication/index.md
+  - Guidance:
+      - Safety: safety/index.md
+      - Tutorials: tutorials/index.md
+      - Troubleshooting: troubleshooting/index.md
   - Contributing:
       - Overview: contributing/index.md
       - Documentation Standard: DOCUMENTATION_STANDARD.md
@@ -88,6 +72,21 @@ markdown_extensions:
       anchor_linenums: true
 
 plugins:
-  - search
+  - search:
+      separator: '[\\s\\-_]+'
+  - social
+  - exclude:
+      glob:
+        - "templates/*"
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/openAMRobot
+      name: OpenAMRobot on GitHub
+    - icon: fontawesome/solid/globe
+      link: https://botshare.ai
+      name: Botshare LTD
+  generator: false
 
 use_directory_urls: true
