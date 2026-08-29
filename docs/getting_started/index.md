@@ -1,37 +1,21 @@
-# Getting Started
+# Getting started
 
-Welcome to OpenAMRobot.
+Choose the route that matches your goal.
 
-This section provides the information needed to understand the OpenAMRobot ecosystem and begin working with the platform.
+## Reproduce a coordinated release
 
-## Start here
+Start with [openamrobot-release](https://github.com/openAMRobot/openamrobot-release). Its manifest and release notes identify compatible component versions and licences.
 
-1. Understand the OpenAMRobot ecosystem.
-2. Choose the robotics platform you want to work with.
-3. Set up the required development tools.
-4. Install the software and firmware.
-5. Connect the required hardware.
-6. Follow the first tutorials.
+## Develop one component
 
-## Explore the documentation
+Use the [repository index](../repositories/) to find the owner of the software, firmware, hardware, interface or UI change. Follow that repository’s README for current commands and dependencies.
 
-- [Architecture](../architecture/)
-- [OpenAMR Platform](../openamr_platform/)
-- [OpenAMH Humanoid](../openamh_humanoid/)
-- [Interfaces](../interfaces/)
-- [Tutorials](../tutorials/)
-- [Troubleshooting](../troubleshooting/)
+## Understand the ecosystem
 
-## OpenAMRobot Platforms
+1. Read the [architecture overview](../architecture/).
+2. Review the [mobile-base component map](../mobile_base/).
+3. Read [Safety](../safety/) before powering or moving hardware.
+4. Use [Interfaces](../interfaces/) and [Communication](../communication/) for cross-component boundaries.
+5. Use [Contributing](../contributing/) before opening a pull request.
 
-### OpenAMR
-
-OpenAMR is the autonomous mobile robotics platform in the OpenAMRobot ecosystem.
-
-[Explore OpenAMR](../openamr_platform/)
-
-### OpenAMH
-
-OpenAMH contains the humanoid robotics hardware, software, and firmware documentation.
-
-[Explore OpenAMH](../openamh_humanoid/)
+The upper-body repositories represent [planned and developing components](../upper_body/), not a separately released humanoid product.
