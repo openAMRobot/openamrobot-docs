@@ -1,11 +1,3 @@
----
-layout: default
-title: Getting Started
-menu: Getting Started
-weight: 2
-permalink: /getting_started/
----
-
 # Getting Started
 
 Welcome to OpenAMRobot.
