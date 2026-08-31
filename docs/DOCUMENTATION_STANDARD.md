@@ -10,8 +10,8 @@ Ask:
 
 > Does this content have to change when the code, hardware design, interface, or configuration changes?
 
-- **Yes — repository.** Version it with the implementation so it cannot drift.
-- **No — documentation site.** Use it to teach, motivate, compare, or provide durable background.
+- **Yes – repository.** Version it with the implementation so it cannot drift.
+- **No – documentation site.** Use it to teach, motivate, compare, or provide durable background.
 
 | Repository | Documentation site |
 |---|---|
@@ -42,7 +42,7 @@ Two hard constraints:
 
 ## Minimum files
 
-R means required, I inherited from the organization .github repository, O optional, and — not normally applicable.
+R means required, I inherited from the organization .github repository, O optional, and – not normally applicable.
 
 | File or control | Component | Contract | Hub | Legacy |
 |---|---:|---:|---:|---:|
@@ -54,11 +54,11 @@ R means required, I inherited from the organization .github repository, O option
 | .editorconfig | R | R | R | O |
 | CHANGELOG.md | R | R | O | O |
 | AUTHORS.md | R | R | O | O |
-| docs/ | R | O | R | — |
-| CI workflow | R if buildable | R if validated | O | — |
-| Docker or devcontainer | R for software | O | — | — |
-| scripts/check_env.sh | R for software | O | — | — |
-| ROADMAP.md | O | O | R | — |
+| docs/ | R | O | R | – |
+| CI workflow | R if buildable | R if validated | O | – |
+| Docker or devcontainer | R for software | O | – | – |
+| scripts/check_env.sh | R for software | O | – | – |
+| ROADMAP.md | O | O | R | – |
 | CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, CLA, DCO, IP policy, trademark policy, governance, issue and PR templates | I | I | I | I |
 
 Do not add repository-local copies of inherited community-health files unless a repository needs stricter or materially different rules.

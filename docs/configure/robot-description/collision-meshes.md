@@ -42,7 +42,7 @@ Document symptoms separately from causes. Include diagnostic evidence and a safe
 
 ## Owning OpenAMRobot source
 
-- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) — canonical source, versions, implementation and issue history.
+- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) – canonical source, versions, implementation and issue history.
 
 ## Authoritative external references
 

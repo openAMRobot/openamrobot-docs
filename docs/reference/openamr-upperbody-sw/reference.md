@@ -42,7 +42,7 @@ Document symptoms separately from causes. Include diagnostic evidence and a safe
 
 ## Owning OpenAMRobot source
 
-- [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw) — canonical source, versions, implementation and issue history.
+- [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw) – canonical source, versions, implementation and issue history.
 
 ## Contribution note
 

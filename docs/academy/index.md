@@ -1,6 +1,6 @@
-<section class="oamr-hero"><div><span class="oamr-status">Botshare Academy</span><h1>Train the people who own the task</h1><p>Practical Embodied AI education for operators, builders, integrators and domain experts—built on the real OpenAMRobot platform.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="programs/">Explore programs</a><a class="oamr-button" href="partner-program/">Become a training partner</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero"><div><span class="oamr-status">Botshare Academy</span><h1>Train the people who own the task</h1><p>Practical Embodied AI education for operators, builders, integrators and domain experts – built on the real OpenAMRobot platform.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="programs/">Explore programs</a><a class="oamr-button" href="partner-program/">Become a training partner</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-> **Domain expertise—not coding—becomes the programming interface.**
+> **Domain expertise – not coding – becomes the programming interface.**
 
 ## Three-program pathway
 

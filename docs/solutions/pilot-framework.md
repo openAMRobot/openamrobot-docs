@@ -9,7 +9,7 @@
 | Design | Workflow, configuration, safety and acceptance metric |
 | Build | Reproducible pilot configuration and operator procedure |
 | Test | Results, failures, interventions and evidence |
-| Decide | Deploy, iterate, stop or expand—with commercial next step |
+| Decide | Deploy, iterate, stop or expand – with commercial next step |
 
 !!! warning "A demo is not a pilot"
     A demo proves that something can move. A pilot tests whether a defined workflow creates acceptable value under real constraints.
