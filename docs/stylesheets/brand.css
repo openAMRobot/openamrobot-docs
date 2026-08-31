@@ -8,10 +8,64 @@
   --oamr-ink: #0b2740;
   --oamr-surface: #f5f9fc;
   --oamr-border: #d6e2eb;
+  --oamr-muted: #526879;
+  --oamr-success: #16845b;
+  --oamr-warning: #a45b00;
 }
 
 body {
   font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.md-content__inner {
+  max-width: 64rem;
+}
+
+.md-typeset h2 {
+  margin-top: 2.4em;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid var(--oamr-border);
+}
+
+.md-typeset h2::before {
+  display: inline-block;
+  width: .28rem;
+  height: 1em;
+  margin-right: .55rem;
+  border-radius: 999px;
+  background: var(--botshare-orange);
+  content: "";
+  vertical-align: -.08em;
+}
+
+.md-typeset blockquote {
+  margin: 1.4rem 0;
+  padding: 1rem 1.2rem;
+  border-left: .25rem solid var(--botshare-orange);
+  border-radius: 0 .6rem .6rem 0;
+  background: rgba(255, 149, 0, .08);
+  color: inherit;
+}
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--oamr-border);
+  border-radius: .65rem;
+  box-shadow: 0 .35rem 1rem rgba(11, 39, 64, .06);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--oamr-ink);
+  color: var(--botshare-white);
+}
+
+.md-typeset table:not([class]) tr:nth-child(even) td {
+  background: rgba(0, 114, 198, .035);
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: .65rem;
+  box-shadow: 0 .35rem 1rem rgba(11, 39, 64, .06);
 }
 
 h1,
@@ -51,6 +105,15 @@ h6,
     linear-gradient(135deg, var(--oamr-ink), var(--botshare-blue-dark) 60%, var(--botshare-blue));
   border-radius: 1rem;
   box-shadow: 0 1rem 2.5rem rgba(11, 39, 64, .2);
+}
+
+.oamr-hero--compact {
+  grid-template-columns: minmax(0, 1fr) 120px;
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.oamr-hero--compact img {
+  max-width: 120px;
 }
 
 .oamr-hero h1 {
@@ -123,6 +186,26 @@ h6,
   border-top: .22rem solid var(--botshare-blue);
   border-radius: .75rem;
   background: var(--oamr-surface);
+  box-shadow: 0 .35rem 1rem rgba(11, 39, 64, .055);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+.oamr-card:hover {
+  transform: translateY(-2px);
+  border-color: #9dc9e7;
+  box-shadow: 0 .7rem 1.4rem rgba(11, 39, 64, .1);
+}
+
+.oamr-card p:last-child {
+  margin-bottom: 0;
+}
+
+.oamr-card--accent {
+  border-top-color: var(--botshare-orange);
+}
+
+.oamr-card--success {
+  border-top-color: var(--oamr-success);
 }
 
 [data-md-color-scheme="slate"] .oamr-card {
@@ -153,6 +236,84 @@ h6,
   color: #704100;
 }
 
+.oamr-status--stable {
+  background: #dcf5ea;
+  color: #075f40;
+}
+
+.oamr-status--beta {
+  background: #e8e0ff;
+  color: #4b2a89;
+}
+
+.oamr-status--experimental {
+  background: #fff0d9;
+  color: #704100;
+}
+
+.oamr-path {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  margin: 1.2rem 0 2rem;
+  padding: 1rem;
+  border: 1px solid var(--oamr-border);
+  border-radius: .75rem;
+  background: var(--oamr-surface);
+}
+
+.oamr-path span {
+  padding: .35rem .65rem;
+  border-radius: 999px;
+  background: var(--botshare-white);
+  color: var(--oamr-ink);
+  font-weight: 700;
+  box-shadow: 0 .15rem .45rem rgba(11, 39, 64, .08);
+}
+
+.oamr-path b {
+  color: var(--botshare-orange);
+}
+
+.oamr-kicker {
+  margin: 0 0 .4rem;
+  color: var(--botshare-orange);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.oamr-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 2rem;
+}
+
+.oamr-panel {
+  padding: 1.2rem;
+  border: 1px solid var(--oamr-border);
+  border-radius: .75rem;
+  background: var(--oamr-surface);
+}
+
+.oamr-panel h3 {
+  margin-top: 0;
+}
+
+[data-md-color-scheme="slate"] .oamr-path,
+[data-md-color-scheme="slate"] .oamr-panel {
+  border-color: rgba(255, 255, 255, .13);
+  background: rgba(255, 255, 255, .04);
+}
+
+[data-md-color-scheme="slate"] .oamr-path span {
+  background: rgba(255, 255, 255, .08);
+  color: inherit;
+}
+
 .oamr-legal {
   padding: 1rem 1.2rem;
   border-left: .25rem solid var(--botshare-orange);
@@ -175,6 +336,10 @@ h6,
   }
 
   .oamr-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .oamr-split {
     grid-template-columns: 1fr;
   }
 }

@@ -1,5 +1,5 @@
 site_name: "OpenAMRobot Documentation"
-site_description: "Documentation for the OpenAMRobot open-source robotics ecosystem: ROS 2 mobile base, firmware, hardware, interfaces, and operator UI"
+site_description: "The OpenAMRobot knowledge hub: learn, build, operate, customize, and create a business around an open-source Embodied AI platform"
 site_url: "https://docs.openamrobot.ai/"
 site_author: "Botshare LTD"
 
@@ -44,21 +44,49 @@ theme:
 
 nav:
   - Home: index.md
-  - Getting Started: getting_started/index.md
-  - Architecture: architecture/index.md
-  - Repositories: repositories/index.md
-  - Components:
-      - Mobile Base: mobile_base/index.md
-      - Operator Interface: ui/index.md
-      - Upper Body: upper_body/index.md
-  - Contracts:
-      - Interfaces: interfaces/index.md
-      - Communication: communication/index.md
-  - Guidance:
+  - Start Here: start-here/index.md
+  - Learn the Platform:
+      - Learning Path: learn/index.md
+      - Foundations: learn/foundations.md
+      - Build: learn/build.md
+      - Bring Up: learn/bring-up.md
+      - Configure: learn/configure.md
+      - Train: learn/train.md
+      - Use: learn/use.md
+      - Maintain: learn/maintain.md
+      - Customize: learn/customize.md
       - Safety: safety/index.md
       - Tutorials: tutorials/index.md
       - Troubleshooting: troubleshooting/index.md
-  - Academy: academy/partner-program.md
+  - Technical Reference:
+      - Overview: reference/index.md
+      - Architecture: architecture/index.md
+      - Repository Map: repositories/index.md
+      - Mobile Platform: mobile_base/index.md
+      - Operator Interface: ui/index.md
+      - Upper Body & Manipulation: upper_body/index.md
+      - Interfaces: interfaces/index.md
+      - Communication: communication/index.md
+  - Solutions:
+      - Overview: solutions/index.md
+      - Intralogistics: solutions/intralogistics.md
+      - Retail & Replenishment: solutions/retail.md
+      - Manufacturing: solutions/manufacturing.md
+      - Facility & Service Operations: solutions/facility-services.md
+      - Education & Research: solutions/education-research.md
+      - Pilot Framework: solutions/pilot-framework.md
+  - Build a Business:
+      - Opportunity: business/index.md
+      - Business Models: business/business-models.md
+      - Validate Demand: business/validate.md
+      - Launch & Deliver: business/launch-deliver.md
+      - Partner Program: business/partner-program.md
+      - Partner Portal: business/partner-portal.md
+  - Academy:
+      - Overview: academy/index.md
+      - Programs: academy/programs.md
+      - Certifications: academy/certifications.md
+      - Training Partner Program: academy/partner-program.md
   - Community: community/index.md
   - About:
       - Legal & Contact: about/index.md

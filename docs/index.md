@@ -1,52 +1,44 @@
-<section class="oamr-hero">
-  <div>
-    <span class="oamr-status">Open robotics ecosystem</span>
-    <h1>OpenAMRobot</h1>
-    <p>Build, study and extend a modular ROS 2 mobile robot with open software, firmware, hardware and operator tools.</p>
-    <div class="oamr-actions">
-      <a class="oamr-button oamr-button--primary" href="getting_started/">Get started</a>
-      <a class="oamr-button" href="https://github.com/openAMRobot/openamrobot-release/releases/latest">Download release</a>
-      <a class="oamr-button" href="https://github.com/openAMRobot">View GitHub</a>
-    </div>
-  </div>
-  <img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot project logo">
-</section>
+<section class="oamr-hero"><div><span class="oamr-status">Open-source Embodied AI ecosystem</span><h1>Build robots. Train them for real work.</h1><p>Learn, build, operate and commercialize a modular ROS 2 platform designed to make robotics useful to domain experts—not only robotics specialists.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="start-here/">Choose your path</a><a class="oamr-button" href="learn/">Learn the platform</a><a class="oamr-button" href="business/">Build a business</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot project logo"></section>
 
-OpenAMRobot is an open-source robotics ecosystem operated by **Botshare LTD**, combining a ROS 2 mobile base, embedded firmware, open hardware, shared interfaces, an operator UI, and planned upper-body manipulation components.
+> **One promise, three doors.** Make Embodied AI unprecedentedly simple for domain experts—from reading and assembly to configuration, training, operation and maintenance.
+
+## One platform, three doors
 
 <div class="oamr-grid">
-  <article class="oamr-card">
-    <span class="oamr-status">Active</span>
-    <h3><a href="mobile_base/">Mobile base</a></h3>
-    <p>ROS 2 Jazzy software, embedded firmware, CAD and electrical source for the autonomous mobile base.</p>
-  </article>
-  <article class="oamr-card">
-    <span class="oamr-status">Active</span>
-    <h3><a href="ui/">Operator interface</a></h3>
-    <p>Browser-based tools for robot operation, visualization and monitoring.</p>
-  </article>
-  <article class="oamr-card">
-    <span class="oamr-status">Contracts</span>
-    <h3><a href="interfaces/">Interfaces and communication</a></h3>
-    <p>Shared ROS 2 contracts and cross-component communication boundaries.</p>
-  </article>
-  <article class="oamr-card">
-    <span class="oamr-status oamr-status--planned">Planned</span>
-    <h3><a href="upper_body/">Upper body and manipulation</a></h3>
-    <p>Developing hardware, firmware, software and integration boundaries for manipulation.</p>
-  </article>
+<article class="oamr-card"><span class="oamr-status">The truth</span><h3>GitHub repositories</h3><p>Canonical code, CAD, firmware, interfaces, releases and exact technical reference.</p><p><a href="https://github.com/openAMRobot">Explore GitHub →</a></p></article>
+<article class="oamr-card"><span class="oamr-status">The learning path</span><h3>This knowledge hub</h3><p>Illustrated concepts and guided paths to build, configure, train, use and maintain the platform.</p><p><a href="learn/">Start learning →</a></p></article>
+<article class="oamr-card oamr-card--accent"><span class="oamr-status oamr-status--experimental">The product</span><h3>The App</h3><p>Guided, semi-automated workflows that hide robotics complexity from domain experts.</p><p><a href="about/">Understand the direction →</a></p></article>
+<article class="oamr-card oamr-card--success"><span class="oamr-status oamr-status--stable">The ecosystem</span><h3>Businesses built around it</h3><p>Training, integration, hardware, pilots, deployment and local support opportunities.</p><p><a href="business/">Explore the opportunity →</a></p></article>
 </div>
 
-## Find the right source
+## Choose your role
 
-- [Understand the ecosystem architecture](architecture/)
-- [Browse every organization repository](repositories/)
-- [Review safety responsibilities](safety/)
-- [Contribute through the governed workflow](contributing/)
+| I want to… | Best starting point | Primary outcome |
+| --- | --- | --- |
+| Run and train a robot | [Operator path](learn/use.md) | Operate missions and teach tasks safely |
+| Assemble my own platform | [Builder path](learn/build.md) | Build, bring up and accept a working robot |
+| Deploy it at a customer site | [Integrator path](learn/configure.md) | Configure and adapt a reliable system |
+| Extend code, firmware or hardware | [Developer path](learn/customize.md) | Build new capabilities and contribute |
+| Create a robotics business | [Entrepreneur path](business/index.md) | Validate, launch, deliver and support locally |
 
-For a reproducible snapshot, use [openamrobot-release](https://github.com/openAMRobot/openamrobot-release). Build commands, exact versions, configuration and implementation-sensitive specifications stay in their owning repositories.
+## Two journeys through the ecosystem
 
-<div class="oamr-legal">
-  <strong>Open technology, protected identity.</strong><br>
-  Copyright © 2021–2026 OpenAMRobot (Botshare LTD). Software is generally MIT, documentation CC BY 4.0, and hardware source CERN-OHL-P-2.0. Third-party terms remain applicable. See <a href="about/">About, legal and contact</a>.
+<p class="oamr-kicker">Robot ownership</p>
+<div class="oamr-path"><span>Understand</span><b>→</b><span>Build</span><b>→</b><span>Bring up</span><b>→</b><span>Configure</span><b>→</b><span>Train</span><b>→</b><span>Use</span><b>→</b><span>Maintain</span><b>→</b><span>Customize</span></div>
+
+<p class="oamr-kicker">Business building</p>
+<div class="oamr-path"><span>Discover</span><b>→</b><span>Choose a model</span><b>→</b><span>Validate</span><b>→</b><span>Launch</span><b>→</b><span>Sell</span><b>→</b><span>Deliver</span><b>→</b><span>Support</span><b>→</b><span>Scale</span></div>
+
+## Current platform
+
+<div class="oamr-grid">
+<article class="oamr-card"><span class="oamr-status oamr-status--stable">Active</span><h3>Mobile platform</h3><p>ROS 2 Jazzy, Nav2, SLAM, navigation, docking, simulation, firmware and open hardware.</p><p><a href="mobile_base/">Technical overview →</a></p></article>
+<article class="oamr-card"><span class="oamr-status oamr-status--stable">Active</span><h3>Operator interface</h3><p>Browser-based operation, visualization and no-code workflows.</p><p><a href="ui/">Explore the interface →</a></p></article>
+<article class="oamr-card"><span class="oamr-status oamr-status--beta">Developing</span><h3>Upper body & manipulation</h3><p>Lift, arm-agnostic manipulation, named poses and mobile-manipulation integration.</p><p><a href="upper_body/">See the architecture →</a></p></article>
+<article class="oamr-card"><span class="oamr-status oamr-status--experimental">Developing</span><h3>Demonstration pipeline</h3><p>Show, Correct, Judge workflows for capturing, replaying and evaluating demonstrations.</p><p><a href="learn/train/">Learn how teaching works →</a></p></article>
 </div>
+
+!!! info "Capability status"
+    Pages distinguish **stable**, **beta**, **experimental**, **planned**, **community** and **partner-supported** capabilities. Confirm the relevant repository and release before committing to a deployment.
+
+<div class="oamr-legal"><strong>Open technology, protected identity.</strong><br>Software is generally MIT, documentation CC BY 4.0, and hardware source CERN-OHL-P-2.0. Botshare Academy curriculum, certification and partner rights are separate commercial elements.</div>

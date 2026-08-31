@@ -13,11 +13,16 @@
 
 > **Domain expertise — not coding — becomes the programming interface.**
 
+<div class="oamr-path"><span>Qualify</span><b>→</b><span>Train instructors</span><b>→</b><span>Launch</span><b>→</b><span>Deliver</span><b>→</b><span>Certify</span><b>→</b><span>Develop pilots</span></div>
+
+!!! info "Part of a wider partner ecosystem"
+    Certified Training Partner is one OpenAMRobot business model. Organisations focused on integration, hardware, vertical solutions or local service should start with the [business-model overview](../business/business-models.md).
+
 Botshare Academy is the professional training and adoption layer of the OpenAMRobot ecosystem. It is built for **domain experts — the people who understand the task but are not robotics engineers**.
 
 Instead of teaching every participant to become a robotics specialist, we teach them to **operate a robot, demonstrate a task, correct its behaviour, evaluate the result, and connect the skill to a measurable business outcome**.
 
-The Certified Training Partner Program enables qualified innovation hubs, applied-technology centres, training providers, universities, industry associations, and robotics organisations to deliver this experience locally using a standardized platform, curriculum, and delivery model.
+The Certified Training Partner Program enables qualified innovation hubs, applied-technology centres, professional training providers, industry associations, robotics organisations, and selected applied educational institutions to deliver this experience locally using a standardized platform, curriculum, and delivery model.
 
 <div class="oamr-grid">
   <article class="oamr-card">
@@ -100,7 +105,7 @@ The program is designed primarily for organisations that already work with compa
 | **Applied technology & robotics centres** | Add a standardized training and customer-discovery offer around real robotics hardware. |
 | **Industry associations & chambers** | Offer practical automation programs to member companies and identify pilot opportunities. |
 | **Corporate training providers** | Add a differentiated Physical AI / robotics product line backed by a real platform. |
-| **Universities & technical institutes** | Extend applied robotics facilities with industry-facing training and practical certification. |
+| **Applied universities & technical institutes** | Extend applied robotics facilities with industry-facing training and practical certification where they already serve external companies. |
 | **Robotics integrators** | Build customer education, pre-sales qualification, and internal talent development around OpenAMRobot. |
 
 ### Strong partner profile
