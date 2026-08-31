@@ -1,6 +1,5 @@
 ---
 title: Configuration Model
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Configuration Model</h1><p>Document supported settings, defaults, effects and verification for configuration model.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

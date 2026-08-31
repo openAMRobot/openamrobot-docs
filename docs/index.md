@@ -32,9 +32,9 @@
 ## Current platform
 
 <div class="oamr-grid">
-<article class="oamr-card"><span class="oamr-status oamr-status--stable">Active</span><h3>Mobile platform</h3><p>ROS 2 Jazzy, Nav2, SLAM, navigation, docking, simulation, firmware and open hardware.</p><p><a href="mobile_base/">Technical overview →</a></p></article>
+<article class="oamr-card"><span class="oamr-status oamr-status--stable">Active</span><h3>Mobile platform</h3><p>ROS 2 Jazzy, Nav2, SLAM, navigation, docking, simulation, firmware and open hardware.</p><p><a href="reference/mobile-platform/">Technical overview →</a></p></article>
 <article class="oamr-card"><span class="oamr-status oamr-status--stable">Active</span><h3>Operator interface</h3><p>Browser-based operation, visualization and no-code workflows.</p><p><a href="ui/">Explore the interface →</a></p></article>
-<article class="oamr-card"><span class="oamr-status oamr-status--beta">Developing</span><h3>Upper body & manipulation</h3><p>Lift, arm-agnostic manipulation, named poses and mobile-manipulation integration.</p><p><a href="upper_body/">See the architecture →</a></p></article>
+<article class="oamr-card"><span class="oamr-status oamr-status--beta">Developing</span><h3>Upper body & manipulation</h3><p>Lift, arm-agnostic manipulation, named poses and mobile-manipulation integration.</p><p><a href="reference/upper-body/">See the architecture →</a></p></article>
 <article class="oamr-card"><span class="oamr-status oamr-status--experimental">Developing</span><h3>Demonstration pipeline</h3><p>Show, Correct, Judge workflows for capturing, replaying and evaluating demonstrations.</p><p><a href="learn/train/">Learn how teaching works →</a></p></article>
 </div>
 

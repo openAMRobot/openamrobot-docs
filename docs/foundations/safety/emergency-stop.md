@@ -1,6 +1,5 @@
 ---
 title: Emergency Stop
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Emergency Stop</h1><p>Explain emergency stop in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

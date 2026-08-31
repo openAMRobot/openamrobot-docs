@@ -1,6 +1,5 @@
 ---
 title: Updating Software
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Updating Software</h1><p>Define inspection, diagnosis, service evidence and acceptance for updating software.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

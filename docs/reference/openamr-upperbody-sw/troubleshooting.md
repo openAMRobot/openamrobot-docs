@@ -1,6 +1,5 @@
 ---
 title: Troubleshooting
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Troubleshooting</h1><p>Provide the learning-layer reference for troubleshooting and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

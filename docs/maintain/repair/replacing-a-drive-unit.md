@@ -1,6 +1,5 @@
 ---
 title: Replacing A Drive Unit
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Replacing A Drive Unit</h1><p>Define inspection, diagnosis, service evidence and acceptance for replacing a drive unit.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

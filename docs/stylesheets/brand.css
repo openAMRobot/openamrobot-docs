@@ -291,18 +291,21 @@ h6,
   font-size: .78rem;
 }
 
-.oamr-breadcrumbs ol {
+.md-typeset .oamr-breadcrumbs ol {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: .25rem;
   align-items: center;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
   list-style: none;
+  white-space: nowrap;
 }
 
-.oamr-breadcrumbs li {
+.md-typeset .oamr-breadcrumbs li {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
 }
 

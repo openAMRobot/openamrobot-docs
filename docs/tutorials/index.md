@@ -4,9 +4,9 @@ Tutorials explain concepts and complete learning paths. Version-sensitive comman
 
 Current starting points:
 
-- [Mobile base overview](../mobile_base/)
-- [Repository index](../repositories/)
-- [Getting started](../getting_started/)
-- [Architecture](../architecture/)
+- [Mobile platform overview](../reference/mobile-platform.md)
+- [Repository ecosystem](../reference/repositories.md)
+- [Start here](../start-here/index.md)
+- [Architecture](../reference/architecture.md)
 
 A tutorial must name the release, repository and version it was validated against. If it cannot be maintained, remove it from navigation rather than leaving an unverified procedure.

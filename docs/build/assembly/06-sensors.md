@@ -1,6 +1,5 @@
 ---
 title: 06 Sensors
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>06 Sensors</h1><p>Provide a safe, numbered and verifiable procedure for 06 sensors during a physical build.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

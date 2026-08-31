@@ -1,6 +1,5 @@
 ---
 title: First Mission
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>First Mission</h1><p>Guide an operator through first mission using task language.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

@@ -50,7 +50,6 @@ nav:
   - Home: index.md
   - Start here:
       - Choose your path: start-here/index.md
-      - Technical getting started: getting_started/index.md
   - Foundations:
       - foundations/index.md
       - Robot anatomy:
@@ -355,8 +354,13 @@ nav:
           - Release notes: maintain/updates/release-notes.md
   - Reference:
       - reference/index.md
-      - reference/architecture.md
-      - reference/delivery-layers.md
+      - Architecture: reference/architecture.md
+      - Delivery layers: reference/delivery-layers.md
+      - Repository ecosystem: reference/repositories.md
+      - Mobile platform: reference/mobile-platform.md
+      - Upper body: reference/upper-body.md
+      - Interfaces: reference/interfaces.md
+      - Communication: reference/communication.md
       - openamr-* · the mobile robot:
           - openamr-platform-sw:
               - Overview: reference/openamr-platform-sw/overview.md
@@ -506,6 +510,15 @@ plugins:
   - exclude:
       glob:
         - "templates/*"
+  - redirects:
+      redirect_maps:
+        "getting_started/index.md": "start-here/index.md"
+        "architecture/index.md": "reference/architecture.md"
+        "repositories/index.md": "reference/repositories.md"
+        "mobile_base/index.md": "reference/mobile-platform.md"
+        "upper_body/index.md": "reference/upper-body.md"
+        "interfaces/index.md": "reference/interfaces.md"
+        "communication/index.md": "reference/communication.md"
 
 extra:
   social:
