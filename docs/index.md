@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 <section class="oamr-hero"><div><span class="oamr-status">Open-source Embodied AI ecosystem</span><h1>Build robots. Train them for real work.</h1><p>Learn, build, operate and commercialize a modular ROS 2 platform designed to make robotics useful to domain experts – not only robotics specialists.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="start-here/">Choose your path</a><a class="oamr-button" href="learn/">Learn the platform</a><a class="oamr-button" href="business/">Build a business</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot project logo"></section>
 
 > **One promise, three doors.** Make Embodied AI unprecedentedly simple for domain experts – from reading and assembly to configuration, training, operation and maintenance.
