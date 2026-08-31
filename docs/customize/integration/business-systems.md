@@ -42,7 +42,7 @@ Document symptoms separately from causes. Include diagnostic evidence and a safe
 
 ## Owning OpenAMRobot source
 
-- [openamrobot-comm](https://github.com/openAMRobot/openamrobot-comm) — canonical source, versions, implementation and issue history.
+- [openamrobot-comm](https://github.com/openAMRobot/openamrobot-comm) – canonical source, versions, implementation and issue history.
 
 ## Contribution note
 

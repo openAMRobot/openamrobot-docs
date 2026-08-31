@@ -30,18 +30,18 @@ These figures are a snapshot of the largest single repository as of **29 August 
 
 The organization separates responsibilities so contributors can work in the right place without turning one repository into a monolith.
 
-- **openamr** — original OpenAMR project and historical reference implementation
-- **openamr-platform-sw** — mobile-platform ROS 2 software
-- **openamr-platform-fw** — embedded firmware
-- **openamr-platform-hw** — hardware, electronics, and mechanical sources
-- **openamrobot-ui** — operator and user interface
-- **openamrobot-interfaces** — shared ROS 2 interfaces and contracts
-- **openamrobot-comm** — communication components
-- **openamrobot-manipulation** — manipulation integration
-- **openamr-upperbody-sw / fw / hw** — upper-body software, firmware, and hardware
-- **openamrobot-docs** — central documentation
-- **openamrobot-release** — reproducible release snapshots
-- **openamrobot-manifest** — repository manifest and workspace composition
+- **openamr** – original OpenAMR project and historical reference implementation
+- **openamr-platform-sw** – mobile-platform ROS 2 software
+- **openamr-platform-fw** – embedded firmware
+- **openamr-platform-hw** – hardware, electronics, and mechanical sources
+- **openamrobot-ui** – operator and user interface
+- **openamrobot-interfaces** – shared ROS 2 interfaces and contracts
+- **openamrobot-comm** – communication components
+- **openamrobot-manipulation** – manipulation integration
+- **openamr-upperbody-sw / fw / hw** – upper-body software, firmware, and hardware
+- **openamrobot-docs** – central documentation
+- **openamrobot-release** – reproducible release snapshots
+- **openamrobot-manifest** – repository manifest and workspace composition
 
 For the complete and current list, use the GitHub organization directly.
 

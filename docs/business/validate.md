@@ -6,7 +6,7 @@
 
 <div class="oamr-path"><span>Qualified conversations</span><b>→</b><span>Discovery calls</span><b>→</b><span>Proposals</span><b>→</b><span>Paid engagement</span><b>→</b><span>Pilot</span></div>
 
-Ask about a real workflow—not general interest in robotics:
+Ask about a real workflow – not general interest in robotics:
 
 | Area | Questions |
 | --- | --- |

@@ -14,4 +14,4 @@
 - **Productization Sprint:** structured requirements, architecture, simulation or PoC and roadmap.
 
 !!! info "Capability honesty"
-    Program promises must follow demonstrated platform capability. Training by demonstration is taught through supported pipelines and bounded workflows—not as arbitrary task learning.
+    Program promises must follow demonstrated platform capability. Training by demonstration is taught through supported pipelines and bounded workflows – not as arbitrary task learning.

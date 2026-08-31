@@ -2,7 +2,7 @@
   <div>
     <span class="oamr-status">Botshare Academy</span>
     <h1>Certified Training Partner Program</h1>
-    <p>Bring practical Embodied AI and robotics training to your market using OpenAMRobot — with a standardized curriculum, Train-the-Trainer, certification, and a path from education to real automation projects.</p>
+    <p>Bring practical Embodied AI and robotics training to your market using OpenAMRobot – with a standardized curriculum, Train-the-Trainer, certification, and a path from education to real automation projects.</p>
     <div class="oamr-actions">
       <a class="oamr-button oamr-button--primary" href="mailto:info@botshare.ai?subject=Botshare%20Academy%20Partner%20Program">Become a Founding Partner</a>
       <a class="oamr-button" href="https://github.com/openAMRobot">Explore OpenAMRobot</a>
@@ -11,14 +11,14 @@
   <img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo">
 </section>
 
-> **Domain expertise — not coding — becomes the programming interface.**
+> **Domain expertise – not coding – becomes the programming interface.**
 
 <div class="oamr-path"><span>Qualify</span><b>→</b><span>Train instructors</span><b>→</b><span>Launch</span><b>→</b><span>Deliver</span><b>→</b><span>Certify</span><b>→</b><span>Develop pilots</span></div>
 
 !!! info "Part of a wider partner ecosystem"
     Certified Training Partner is one OpenAMRobot business model. Organisations focused on integration, hardware, vertical solutions or local service should start with the [business-model overview](../business/business-models.md).
 
-Botshare Academy is the professional training and adoption layer of the OpenAMRobot ecosystem. It is built for **domain experts — the people who understand the task but are not robotics engineers**.
+Botshare Academy is the professional training and adoption layer of the OpenAMRobot ecosystem. It is built for **domain experts – the people who understand the task but are not robotics engineers**.
 
 Instead of teaching every participant to become a robotics specialist, we teach them to **operate a robot, demonstrate a task, correct its behaviour, evaluate the result, and connect the skill to a measurable business outcome**.
 
