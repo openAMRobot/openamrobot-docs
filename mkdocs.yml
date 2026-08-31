@@ -16,16 +16,20 @@ theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.instant
+    - navigation.tracking
+    - navigation.prune
     - navigation.sections
     - navigation.top
     - navigation.indexes
     - navigation.footer
-    - toc.integrate
+    - toc.follow
     - search.suggest
     - search.highlight
     - search.share
     - content.code.copy
     - content.action.edit
+    - content.tabs.link
   palette:
     - scheme: default
       primary: blue
@@ -44,23 +48,427 @@ theme:
 
 nav:
   - Home: index.md
-  - Start Here: start-here/index.md
+  - Start Here:
+      - Choose Your Path: start-here/index.md
+      - Technical Getting Started: getting_started/index.md
   - Learn the Platform:
-      - Learning Path: learn/index.md
-      - Foundations: learn/foundations.md
-      - Build: learn/build.md
-      - Bring Up: learn/bring-up.md
-      - Configure: learn/configure.md
-      - Train: learn/train.md
-      - Use: learn/use.md
-      - Maintain: learn/maintain.md
-      - Customize: learn/customize.md
-      - Safety: safety/index.md
-      - Tutorials: tutorials/index.md
-      - Troubleshooting: troubleshooting/index.md
+      - Learning Path:
+          - Overview: learn/index.md
+          - Foundations: learn/foundations.md
+          - Build: learn/build.md
+          - Bring Up: learn/bring-up.md
+          - Configure: learn/configure.md
+          - Train: learn/train.md
+          - Use: learn/use.md
+          - Maintain: learn/maintain.md
+          - Customize: learn/customize.md
+      - Foundations:
+          - Overview: foundations/index.md
+          - Glossary: foundations/glossary.md
+          - Embodied AI:
+              - Overview: foundations/embodied-ai/index.md
+              - Datasets And Episodes: foundations/embodied-ai/datasets-and-episodes.md
+              - Policies And VLA: foundations/embodied-ai/policies-and-vla.md
+              - Show Correct Judge: foundations/embodied-ai/show-correct-judge.md
+              - Simulation Role: foundations/embodied-ai/simulation-role.md
+              - Why Demonstration: foundations/embodied-ai/why-demonstration.md
+          - Manipulation:
+              - Overview: foundations/manipulation/index.md
+              - Grippers And Grasping: foundations/manipulation/grippers-and-grasping.md
+              - Kinematics: foundations/manipulation/kinematics.md
+              - Lift And Vertical Reach: foundations/manipulation/lift-and-vertical-reach.md
+              - Motion Planning: foundations/manipulation/motion-planning.md
+              - Workspace And Reach: foundations/manipulation/workspace-and-reach.md
+          - Navigation:
+              - Overview: foundations/navigation/index.md
+              - Coordinate Frames: foundations/navigation/coordinate-frames.md
+              - Docking: foundations/navigation/docking.md
+              - Localization: foundations/navigation/localization.md
+              - Obstacle Avoidance: foundations/navigation/obstacle-avoidance.md
+              - Odometry: foundations/navigation/odometry.md
+              - Path Planning: foundations/navigation/path-planning.md
+              - Slam And Mapping: foundations/navigation/slam-and-mapping.md
+          - Robot Anatomy:
+              - Overview: foundations/robot-anatomy/index.md
+              - Actuators: foundations/robot-anatomy/actuators.md
+              - Chassis And Mechanics: foundations/robot-anatomy/chassis-and-mechanics.md
+              - Compute: foundations/robot-anatomy/compute.md
+              - Drive And Motion: foundations/robot-anatomy/drive-and-motion.md
+              - Power And Batteries: foundations/robot-anatomy/power-and-batteries.md
+              - Sensors: foundations/robot-anatomy/sensors.md
+          - ROS 2:
+              - Overview: foundations/ros2/index.md
+              - Debugging Tools: foundations/ros2/debugging-tools.md
+              - Launch Files: foundations/ros2/launch-files.md
+              - Nodes And Topics: foundations/ros2/nodes-and-topics.md
+              - Parameters: foundations/ros2/parameters.md
+              - ROS 2 Control: foundations/ros2/ros2-control.md
+              - Services And Actions: foundations/ros2/services-and-actions.md
+              - TF Frames: foundations/ros2/tf-frames.md
+              - URDF: foundations/ros2/urdf.md
+          - Safety:
+              - Overview: foundations/safety/index.md
+              - Battery Safety: foundations/safety/battery-safety.md
+              - Electrical Safety: foundations/safety/electrical-safety.md
+              - Emergency Stop: foundations/safety/emergency-stop.md
+              - Risk Assessment: foundations/safety/risk-assessment.md
+              - Working Around Robots: foundations/safety/working-around-robots.md
+      - Build:
+          - Overview: build/index.md
+          - Acceptance:
+              - Overview: build/acceptance/index.md
+              - Acceptance Tests: build/acceptance/acceptance-tests.md
+              - Documenting Your Build: build/acceptance/documenting-your-build.md
+              - Performance Baseline: build/acceptance/performance-baseline.md
+          - Assembly:
+              - Overview: build/assembly/index.md
+              - 00 Before You Start: build/assembly/00-before-you-start.md
+              - 01 Kit Contents: build/assembly/01-kit-contents.md
+              - 02 Chassis: build/assembly/02-chassis.md
+              - 03 Drive Units: build/assembly/03-drive-units.md
+              - 04 Power: build/assembly/04-power.md
+              - 05 Compute: build/assembly/05-compute.md
+              - 06 Sensors: build/assembly/06-sensors.md
+              - 07 Lift: build/assembly/07-lift.md
+              - 08 Arm Mounting: build/assembly/08-arm-mounting.md
+              - 09 First Power On: build/assembly/09-first-power-on.md
+              - 10 Acceptance: build/assembly/10-acceptance.md
+          - Bringup:
+              - Overview: build/bringup/index.md
+              - Common Bringup Failures: build/bringup/common-bringup-failures.md
+              - First Motion: build/bringup/first-motion.md
+              - First Power On: build/bringup/first-power-on.md
+              - Motor Check: build/bringup/motor-check.md
+              - Pre Power Checklist: build/bringup/pre-power-checklist.md
+              - Sensor Check: build/bringup/sensor-check.md
+          - Calibration:
+              - Overview: build/calibration/index.md
+              - Arm Alignment: build/calibration/arm-alignment.md
+              - Camera Extrinsics: build/calibration/camera-extrinsics.md
+              - Camera Intrinsics: build/calibration/camera-intrinsics.md
+              - Docking Alignment: build/calibration/docking-alignment.md
+              - IMU: build/calibration/imu.md
+              - LiDAR Mounting: build/calibration/lidar-mounting.md
+              - Wheel Odometry: build/calibration/wheel-odometry.md
+          - Electronics:
+              - Overview: build/electronics/index.md
+              - Connectors And Harness: build/electronics/connectors-and-harness.md
+              - Grounding: build/electronics/grounding.md
+              - Power Distribution: build/electronics/power-distribution.md
+              - Reading The Schematic: build/electronics/reading-the-schematic.md
+              - Wiring Overview: build/electronics/wiring-overview.md
+          - Kit:
+              - Overview: build/kit/index.md
+              - Bill Of Materials: build/kit/bill-of-materials.md
+              - Printed Parts: build/kit/printed-parts.md
+              - Sourcing Parts: build/kit/sourcing-parts.md
+              - Understanding The Kit: build/kit/understanding-the-kit.md
+          - Prepare:
+              - Overview: build/prepare/index.md
+              - Safety For Builders: build/prepare/safety-for-builders.md
+              - Skills You Need: build/prepare/skills-you-need.md
+              - Time And Planning: build/prepare/time-and-planning.md
+              - Tools And Workspace: build/prepare/tools-and-workspace.md
+          - Software:
+              - Overview: build/software/index.md
+              - Building From Source: build/software/building-from-source.md
+              - First Boot: build/software/first-boot.md
+              - Flashing: build/software/flashing.md
+              - Network Setup: build/software/network-setup.md
+              - Verifying The Install: build/software/verifying-the-install.md
+              - What The Image Contains: build/software/what-the-image-contains.md
+      - Use:
+          - Overview: use/index.md
+          - Blockly:
+              - Overview: use/blockly/index.md
+              - Arm Blocks: use/blockly/arm-blocks.md
+              - Blocks Reference: use/blockly/blocks-reference.md
+              - Conditions And Loops: use/blockly/conditions-and-loops.md
+              - Debugging A Program: use/blockly/debugging-a-program.md
+              - First Program: use/blockly/first-program.md
+          - Demonstration:
+              - Overview: use/demonstration/index.md
+              - Capturing: use/demonstration/capturing.md
+              - Evaluating: use/demonstration/evaluating.md
+              - Planning A Demonstration: use/demonstration/planning-a-demonstration.md
+              - Replaying: use/demonstration/replaying.md
+              - Reviewing Episodes: use/demonstration/reviewing-episodes.md
+              - When A Demo Is Bad: use/demonstration/when-a-demo-is-bad.md
+          - Driving:
+              - Overview: use/driving/index.md
+              - Controllers: use/driving/controllers.md
+              - Safe Driving: use/driving/safe-driving.md
+              - Teleoperation: use/driving/teleoperation.md
+          - Locations:
+              - Overview: use/locations/index.md
+              - Named Locations: use/locations/named-locations.md
+              - Named Poses: use/locations/named-poses.md
+              - Organising Your Site: use/locations/organising-your-site.md
+              - Teaching By Driving: use/locations/teaching-by-driving.md
+          - Mapping:
+              - Overview: use/mapping/index.md
+              - Creating A Map: use/mapping/creating-a-map.md
+              - Editing A Map: use/mapping/editing-a-map.md
+              - Multi Floor: use/mapping/multi-floor.md
+              - Saving And Loading: use/mapping/saving-and-loading.md
+          - Missions:
+              - Overview: use/missions/index.md
+              - Failure Policies: use/missions/failure-policies.md
+              - First Mission: use/missions/first-mission.md
+              - Mission Steps: use/missions/mission-steps.md
+              - Run History: use/missions/run-history.md
+              - Schedules: use/missions/schedules.md
+              - Templates: use/missions/templates.md
+          - Monitoring:
+              - Overview: use/monitoring/index.md
+              - Daily Operation: use/monitoring/daily-operation.md
+              - Logs: use/monitoring/logs.md
+              - Reading The Dashboard: use/monitoring/reading-the-dashboard.md
+              - Remote Access: use/monitoring/remote-access.md
+              - Robot States: use/monitoring/robot-states.md
+              - When Something Goes Wrong: use/monitoring/when-something-goes-wrong.md
+      - Configure:
+          - Overview: configure/index.md
+          - Configuration Model:
+              - Overview: configure/configuration-model/index.md
+              - Backup And Restore: configure/configuration-model/backup-and-restore.md
+              - Profiles: configure/configuration-model/profiles.md
+              - Versioning: configure/configuration-model/versioning.md
+              - Where Settings Live: configure/configuration-model/where-settings-live.md
+          - Docking Config:
+              - Overview: configure/docking-config/index.md
+              - Approach Tuning: configure/docking-config/approach-tuning.md
+              - Charging: configure/docking-config/charging.md
+              - Dock Detection: configure/docking-config/dock-detection.md
+              - Dock Hardware: configure/docking-config/dock-hardware.md
+          - Manipulation Config:
+              - Overview: configure/manipulation-config/index.md
+              - Gripper Config: configure/manipulation-config/gripper-config.md
+              - Manipulation Ready: configure/manipulation-config/manipulation-ready.md
+              - Named Poses Config: configure/manipulation-config/named-poses-config.md
+              - Planning Groups: configure/manipulation-config/planning-groups.md
+              - Workspace Limits: configure/manipulation-config/workspace-limits.md
+          - Navigation Tuning:
+              - Overview: configure/navigation-tuning/index.md
+              - Controllers: configure/navigation-tuning/controllers.md
+              - Costmaps: configure/navigation-tuning/costmaps.md
+              - Planners: configure/navigation-tuning/planners.md
+              - Recovery Behaviours: configure/navigation-tuning/recovery-behaviours.md
+              - Speed And Acceleration: configure/navigation-tuning/speed-and-acceleration.md
+          - Network:
+              - Overview: configure/network/index.md
+              - Multi Machine: configure/network/multi-machine.md
+              - Remote Ui: configure/network/remote-ui.md
+              - Security Basics: configure/network/security-basics.md
+              - Wifi And Ap: configure/network/wifi-and-ap.md
+          - Robot Description:
+              - Overview: configure/robot-description/index.md
+              - Collision Meshes: configure/robot-description/collision-meshes.md
+              - Editing The Description: configure/robot-description/editing-the-description.md
+              - Joints And Limits: configure/robot-description/joints-and-limits.md
+              - URDF Basics: configure/robot-description/urdf-basics.md
+          - Safety Limits:
+              - Overview: configure/safety-limits/index.md
+              - Choosing Limits: configure/safety-limits/choosing-limits.md
+              - Estop Config: configure/safety-limits/estop-config.md
+              - Speed Limits: configure/safety-limits/speed-limits.md
+              - Zones: configure/safety-limits/zones.md
+          - Sensors:
+              - Overview: configure/sensors/index.md
+              - Adding A Sensor Config: configure/sensors/adding-a-sensor-config.md
+              - Cameras: configure/sensors/cameras.md
+              - Encoders: configure/sensors/encoders.md
+              - IMU: configure/sensors/imu.md
+              - LiDAR: configure/sensors/lidar.md
+      - Customize:
+          - Overview: customize/index.md
+          - AI:
+              - Overview: customize/ai/index.md
+              - Dataset Preparation: customize/ai/dataset-preparation.md
+              - Deploying A Policy: customize/ai/deploying-a-policy.md
+              - Evaluating A Policy: customize/ai/evaluating-a-policy.md
+              - Fine Tuning: customize/ai/fine-tuning.md
+              - Training A Policy: customize/ai/training-a-policy.md
+          - Device Packages:
+              - Overview: customize/device-packages/index.md
+              - Adding A Sensor: customize/device-packages/adding-a-sensor.md
+              - Adding An Actuator: customize/device-packages/adding-an-actuator.md
+              - Adding An Arm: customize/device-packages/adding-an-arm.md
+              - Anatomy: customize/device-packages/anatomy.md
+              - Publishing A Package: customize/device-packages/publishing-a-package.md
+              - What Is A Device Package: customize/device-packages/what-is-a-device-package.md
+          - Firmware:
+              - Overview: customize/firmware/index.md
+              - Adding A Sensor Bridge: customize/firmware/adding-a-sensor-bridge.md
+              - Build And Flash: customize/firmware/build-and-flash.md
+              - Debugging Firmware: customize/firmware/debugging-firmware.md
+              - Firmware Architecture: customize/firmware/firmware-architecture.md
+              - Micro Ros: customize/firmware/micro-ros.md
+          - Hardware:
+              - Overview: customize/hardware/index.md
+              - Chassis Modification: customize/hardware/chassis-modification.md
+              - Mass And Stability: customize/hardware/mass-and-stability.md
+              - Mounting Plates: customize/hardware/mounting-plates.md
+              - PCB And Electronics: customize/hardware/pcb-and-electronics.md
+              - Power Budget: customize/hardware/power-budget.md
+          - Integration:
+              - Overview: customize/integration/index.md
+              - Business Systems: customize/integration/business-systems.md
+              - External Apis: customize/integration/external-apis.md
+              - Fleet: customize/integration/fleet.md
+          - Simulation:
+              - Overview: customize/simulation/index.md
+              - Adding A Robot Model: customize/simulation/adding-a-robot-model.md
+              - Building A World: customize/simulation/building-a-world.md
+              - Gazebo Setup: customize/simulation/gazebo-setup.md
+              - Scenario Testing: customize/simulation/scenario-testing.md
+              - Sim Vs Real: customize/simulation/sim-vs-real.md
+          - Software:
+              - Overview: customize/software/index.md
+              - Adding A Blockly Block: customize/software/adding-a-blockly-block.md
+              - Extending The Ui: customize/software/extending-the-ui.md
+              - Testing: customize/software/testing.md
+              - Working With Interfaces: customize/software/working-with-interfaces.md
+              - Workspace Setup: customize/software/workspace-setup.md
+              - Writing A Node: customize/software/writing-a-node.md
+      - Maintain & Repair:
+          - Overview: maintain/index.md
+          - Diagnosis:
+              - Overview: maintain/diagnosis/index.md
+              - Diagnostic Tools: maintain/diagnosis/diagnostic-tools.md
+              - Isolating A Fault: maintain/diagnosis/isolating-a-fault.md
+              - Reading Error States: maintain/diagnosis/reading-error-states.md
+          - Faults:
+              - Overview: maintain/faults/index.md
+              - Communication Faults: maintain/faults/communication-faults.md
+              - Drive Faults: maintain/faults/drive-faults.md
+              - Manipulation Faults: maintain/faults/manipulation-faults.md
+              - Navigation Faults: maintain/faults/navigation-faults.md
+              - Power Faults: maintain/faults/power-faults.md
+              - Sensor Faults: maintain/faults/sensor-faults.md
+          - Repair:
+              - Overview: maintain/repair/index.md
+              - Cable Repair: maintain/repair/cable-repair.md
+              - Replacing A Battery: maintain/repair/replacing-a-battery.md
+              - Replacing A Drive Unit: maintain/repair/replacing-a-drive-unit.md
+              - Replacing A Sensor: maintain/repair/replacing-a-sensor.md
+              - Spares List: maintain/repair/spares-list.md
+          - Routine:
+              - Overview: maintain/routine/index.md
+              - Daily Checks: maintain/routine/daily-checks.md
+              - Monthly Service: maintain/routine/monthly-service.md
+              - Weekly Checks: maintain/routine/weekly-checks.md
+          - Updates:
+              - Overview: maintain/updates/index.md
+              - Release Notes: maintain/updates/release-notes.md
+              - Rollback: maintain/updates/rollback.md
+              - Updating Firmware: maintain/updates/updating-firmware.md
+              - Updating Software: maintain/updates/updating-software.md
+      - Guidance:
+          - Safety: safety/index.md
+          - Tutorials: tutorials/index.md
+          - Troubleshooting: troubleshooting/index.md
   - Technical Reference:
       - Overview: reference/index.md
-      - Architecture: architecture/index.md
+      - Architecture: reference/architecture.md
+      - Delivery Layers: reference/delivery-layers.md
+      - Openamr Platform Fw:
+          - Concepts: reference/openamr-platform-fw/concepts.md
+          - Configuration: reference/openamr-platform-fw/configuration.md
+          - Overview: reference/openamr-platform-fw/overview.md
+          - Reference: reference/openamr-platform-fw/reference.md
+          - Setup: reference/openamr-platform-fw/setup.md
+          - Troubleshooting: reference/openamr-platform-fw/troubleshooting.md
+          - Tutorials: reference/openamr-platform-fw/tutorials.md
+      - Openamr Platform Hw:
+          - Concepts: reference/openamr-platform-hw/concepts.md
+          - Configuration: reference/openamr-platform-hw/configuration.md
+          - Overview: reference/openamr-platform-hw/overview.md
+          - Reference: reference/openamr-platform-hw/reference.md
+          - Setup: reference/openamr-platform-hw/setup.md
+          - Troubleshooting: reference/openamr-platform-hw/troubleshooting.md
+          - Tutorials: reference/openamr-platform-hw/tutorials.md
+      - Openamr Platform Sw:
+          - Concepts: reference/openamr-platform-sw/concepts.md
+          - Configuration: reference/openamr-platform-sw/configuration.md
+          - Overview: reference/openamr-platform-sw/overview.md
+          - Reference: reference/openamr-platform-sw/reference.md
+          - Setup: reference/openamr-platform-sw/setup.md
+          - Troubleshooting: reference/openamr-platform-sw/troubleshooting.md
+          - Tutorials: reference/openamr-platform-sw/tutorials.md
+      - Openamr Upperbody Fw:
+          - Concepts: reference/openamr-upperbody-fw/concepts.md
+          - Configuration: reference/openamr-upperbody-fw/configuration.md
+          - Overview: reference/openamr-upperbody-fw/overview.md
+          - Reference: reference/openamr-upperbody-fw/reference.md
+          - Setup: reference/openamr-upperbody-fw/setup.md
+          - Troubleshooting: reference/openamr-upperbody-fw/troubleshooting.md
+          - Tutorials: reference/openamr-upperbody-fw/tutorials.md
+      - Openamr Upperbody Hw:
+          - Concepts: reference/openamr-upperbody-hw/concepts.md
+          - Configuration: reference/openamr-upperbody-hw/configuration.md
+          - Overview: reference/openamr-upperbody-hw/overview.md
+          - Reference: reference/openamr-upperbody-hw/reference.md
+          - Setup: reference/openamr-upperbody-hw/setup.md
+          - Troubleshooting: reference/openamr-upperbody-hw/troubleshooting.md
+          - Tutorials: reference/openamr-upperbody-hw/tutorials.md
+      - Openamr Upperbody Sw:
+          - Concepts: reference/openamr-upperbody-sw/concepts.md
+          - Configuration: reference/openamr-upperbody-sw/configuration.md
+          - Overview: reference/openamr-upperbody-sw/overview.md
+          - Reference: reference/openamr-upperbody-sw/reference.md
+          - Setup: reference/openamr-upperbody-sw/setup.md
+          - Troubleshooting: reference/openamr-upperbody-sw/troubleshooting.md
+          - Tutorials: reference/openamr-upperbody-sw/tutorials.md
+      - Openamrobot Comm:
+          - Concepts: reference/openamrobot-comm/concepts.md
+          - Configuration: reference/openamrobot-comm/configuration.md
+          - Overview: reference/openamrobot-comm/overview.md
+          - Reference: reference/openamrobot-comm/reference.md
+          - Setup: reference/openamrobot-comm/setup.md
+          - Troubleshooting: reference/openamrobot-comm/troubleshooting.md
+          - Tutorials: reference/openamrobot-comm/tutorials.md
+      - Openamrobot Interfaces:
+          - Concepts: reference/openamrobot-interfaces/concepts.md
+          - Configuration: reference/openamrobot-interfaces/configuration.md
+          - Overview: reference/openamrobot-interfaces/overview.md
+          - Reference: reference/openamrobot-interfaces/reference.md
+          - Setup: reference/openamrobot-interfaces/setup.md
+          - Troubleshooting: reference/openamrobot-interfaces/troubleshooting.md
+          - Tutorials: reference/openamrobot-interfaces/tutorials.md
+      - Openamrobot Manifest:
+          - Concepts: reference/openamrobot-manifest/concepts.md
+          - Configuration: reference/openamrobot-manifest/configuration.md
+          - Overview: reference/openamrobot-manifest/overview.md
+          - Reference: reference/openamrobot-manifest/reference.md
+          - Setup: reference/openamrobot-manifest/setup.md
+          - Troubleshooting: reference/openamrobot-manifest/troubleshooting.md
+          - Tutorials: reference/openamrobot-manifest/tutorials.md
+      - Openamrobot Manipulation:
+          - Concepts: reference/openamrobot-manipulation/concepts.md
+          - Configuration: reference/openamrobot-manipulation/configuration.md
+          - Overview: reference/openamrobot-manipulation/overview.md
+          - Reference: reference/openamrobot-manipulation/reference.md
+          - Setup: reference/openamrobot-manipulation/setup.md
+          - Troubleshooting: reference/openamrobot-manipulation/troubleshooting.md
+          - Tutorials: reference/openamrobot-manipulation/tutorials.md
+      - Openamrobot Release:
+          - Concepts: reference/openamrobot-release/concepts.md
+          - Configuration: reference/openamrobot-release/configuration.md
+          - Overview: reference/openamrobot-release/overview.md
+          - Reference: reference/openamrobot-release/reference.md
+          - Setup: reference/openamrobot-release/setup.md
+          - Troubleshooting: reference/openamrobot-release/troubleshooting.md
+          - Tutorials: reference/openamrobot-release/tutorials.md
+      - Openamrobot Ui:
+          - Concepts: reference/openamrobot-ui/concepts.md
+          - Configuration: reference/openamrobot-ui/configuration.md
+          - Overview: reference/openamrobot-ui/overview.md
+          - Reference: reference/openamrobot-ui/reference.md
+          - Setup: reference/openamrobot-ui/setup.md
+          - Troubleshooting: reference/openamrobot-ui/troubleshooting.md
+          - Tutorials: reference/openamrobot-ui/tutorials.md
+      - System Architecture: architecture/index.md
       - Repository Map: repositories/index.md
       - Mobile Platform: mobile_base/index.md
       - Operator Interface: ui/index.md
@@ -69,27 +477,42 @@ nav:
       - Communication: communication/index.md
   - Solutions:
       - Overview: solutions/index.md
+      - Education Research: solutions/education-research.md
+      - Facility Services: solutions/facility-services.md
       - Intralogistics: solutions/intralogistics.md
-      - Retail & Replenishment: solutions/retail.md
       - Manufacturing: solutions/manufacturing.md
-      - Facility & Service Operations: solutions/facility-services.md
-      - Education & Research: solutions/education-research.md
       - Pilot Framework: solutions/pilot-framework.md
+      - Retail: solutions/retail.md
   - Build a Business:
-      - Opportunity: business/index.md
+      - Overview: business/index.md
       - Business Models: business/business-models.md
-      - Validate Demand: business/validate.md
-      - Launch & Deliver: business/launch-deliver.md
-      - Partner Program: business/partner-program.md
+      - Launch Deliver: business/launch-deliver.md
       - Partner Portal: business/partner-portal.md
+      - Partner Program: business/partner-program.md
+      - Validate: business/validate.md
   - Academy:
       - Overview: academy/index.md
-      - Programs: academy/programs.md
       - Certifications: academy/certifications.md
-      - Training Partner Program: academy/partner-program.md
-  - Community: community/index.md
+      - Partner Program: academy/partner-program.md
+      - Program 2: academy/program-2.md
+      - Program 3: academy/program-3.md
+      - Programs: academy/programs.md
+      - Verify: academy/verify.md
+  - Learning Tracks:
+      - Overview: tracks/index.md
+      - Beginner: tracks/beginner.md
+      - Builder: tracks/builder.md
+      - Developer: tracks/developer.md
+  - Community:
+      - Overview: community/index.md
+      - Contributing: community/contributing.md
+      - Documentation Standard: community/documentation-standard.md
+      - Get Involved: community/get-involved.md
+      - Support: community/support.md
   - About:
-      - Legal & Contact: about/index.md
+      - Overview: about/index.md
+      - Legal: about/legal.md
+      - The App: about/the-app.md
       - Visual Identity: about/visual-identity.md
   - Contributing:
       - Overview: contributing/index.md
