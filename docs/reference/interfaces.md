@@ -8,4 +8,4 @@ Interface definitions, package versions, compatibility rules and dependency inst
 - breaking interface changes require coordinated versioning and migration;
 - component-specific internal messages remain with their component unless multiple repositories consume them.
 
-See [Communication](../communication/) for the transport and integration boundary.
+See [Communication](communication.md) for the transport and integration boundary.

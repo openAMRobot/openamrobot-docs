@@ -1,6 +1,5 @@
 ---
 title: Creating A Map
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Creating A Map</h1><p>Guide an operator through creating a map using task language.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

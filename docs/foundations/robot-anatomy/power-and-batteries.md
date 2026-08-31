@@ -1,6 +1,5 @@
 ---
 title: Power And Batteries
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Power And Batteries</h1><p>Explain power and batteries in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

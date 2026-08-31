@@ -1,6 +1,5 @@
 ---
 title: Beginner
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Beginner</h1><p>Curate the pages and milestones required for the beginner learning track.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

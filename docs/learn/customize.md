@@ -12,4 +12,4 @@
 !!! note "Contribution path"
     Reusable improvements should follow the repository governance and contribution workflow so the ecosystem benefits from them.
 
-**Reference:** [Repository map](../repositories/) · [Interfaces](../interfaces/) · [Contributing](../contributing/)
+**Reference:** [Repository map](../reference/repositories.md) · [Interfaces](../reference/interfaces.md) · [Contributing](../contributing/index.md)

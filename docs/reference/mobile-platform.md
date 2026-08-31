@@ -15,4 +15,4 @@ The OpenAMRobot mobile base is split into independently versioned software, firm
 
 Use [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) when reproducing a coordinated release. Use the individual repositories when developing a component.
 
-Build commands, dependencies, supported ROS versions, parameters and implementation-sensitive diagrams live in their owning repositories.
+The owning repositories remain canonical for exact source, versions and machine-readable contracts. This knowledge hub explains how the layers work together and provides complete learning, build, operation, configuration and maintenance paths.

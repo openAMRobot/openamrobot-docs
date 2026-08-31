@@ -1,6 +1,5 @@
 ---
 title: Arm Alignment
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Arm Alignment</h1><p>Provide a safe, numbered and verifiable procedure for arm alignment during a physical build.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

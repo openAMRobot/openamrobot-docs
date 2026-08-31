@@ -1,6 +1,5 @@
 ---
 title: Policies And VLA
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Policies And VLA</h1><p>Explain policies and vla in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

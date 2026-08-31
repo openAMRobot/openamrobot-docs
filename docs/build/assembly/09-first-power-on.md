@@ -1,6 +1,5 @@
 ---
 title: 09 First Power On
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>09 First Power On</h1><p>Provide a safe, numbered and verifiable procedure for 09 first power on during a physical build.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

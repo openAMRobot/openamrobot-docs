@@ -1,45 +1,30 @@
----
-title: Architecture
-status: under-development
----
+# Architecture
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Architecture</h1><p>Provide the learning-layer reference for architecture and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+OpenAMRobot separates implementation, contracts, releases, durable documentation and governance so each concern has one owner while the complete platform remains understandable from this knowledge hub.
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Layers
 
-## What this page should contain
-
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
-
-## Content template
-
-| Field | To complete |
+| Layer | Owner |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| Mobile-base ROS 2 software | [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) |
+| Mobile-base firmware | [openamr-platform-fw](https://github.com/openAMRobot/openamr-platform-fw) |
+| Mobile-base hardware | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) |
+| Operator interface | [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) |
+| Shared ROS 2 contracts | [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces) |
+| Communication boundary | [openamrobot-comm](https://github.com/openAMRobot/openamrobot-comm) |
+| Upper-body components | [Upper-body overview](upper-body.md) |
+| Release coordination | [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) and [openamrobot-manifest](https://github.com/openAMRobot/openamrobot-manifest) |
+| Governance and contribution | [openAMRobot/.github](https://github.com/openAMRobot/.github) |
+| Learning and durable conceptual documentation | [openamrobot-docs](https://github.com/openAMRobot/openamrobot-docs) |
 
-### Procedure or explanation
+## Ownership rule
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+Implementation-sensitive source, exact versions and machine-readable contracts stay with the component that owns them. Shared contracts stay in interface or communication repositories. Cross-repository compatibility is captured by the manifest and release repositories.
 
-### If it did not work
+This site remains the self-contained learning layer: it explains what those elements mean, how they work together, how to choose among them and how to complete and verify a robot task.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+See the [Documentation Standard](../DOCUMENTATION_STANDARD.md) and complete [repository ecosystem](repositories.md).
 
-## Contribution note
+## Safety boundary
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+No single repository proves that an assembled robot is safe. Integrators must validate the complete configured system, including mechanical, electrical, firmware, software, communication and operator-control behavior. See [Working safely](../foundations/safety/index.md).

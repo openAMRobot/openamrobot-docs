@@ -1,6 +1,5 @@
 ---
 title: Integration
-status: under-development
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Integration</h1><p>Show how to extend integration without breaking platform contracts.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
