@@ -1,53 +1,122 @@
 ---
-title: Docking
+title: Docking and charging
+tags: [beginner, builder]
+description: How a robot finds its dock and gets onto it reliably, and why the last metre is the hard part.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Docking</h1><p>Explain docking in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# Docking and charging
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
-## What this page should contain
+**For:** anyone who wants to understand automatic docking.
+**Before you start:** [Localization](localization.md).
+**When you finish:** you will know why the last metre needs different techniques from the first
+twenty, and what makes docking reliable or not.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+## Why docking is its own problem
 
-## Content template
+Navigation gets the robot to within a few centimetres of a goal. That is excellent for a delivery
+point and useless for a charging contact, which needs millimetres and a specific heading.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+Two reasons ordinary navigation cannot close that gap:
 
-### Procedure or explanation
+**Precision.** Map-frame localization has error on the order of centimetres. Charging contacts have
+tolerances on the order of millimetres.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+**Reference.** Navigation positions the robot relative to the *map*. Docking must position it
+relative to the *dock*, which is a physical object that may have been nudged since the map was made.
 
-### If it did not work
+So docking switches reference frames for the final approach. It stops asking "where am I on the
+map" and starts asking "where am I relative to that dock, right now, as seen by my sensor."
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## Ways to find a dock
 
-## Owning OpenAMRobot source
+| Method | How | Strengths | Weaknesses |
+|:--|:--|:--|:--|
+| **Fiducial marker** | Camera detects a printed tag of known size | Cheap, precise, gives full 6-DoF pose | Needs light, needs line of sight |
+| **Retroreflective markers** | Lidar sees abnormally bright returns from reflective tape | Works in darkness, uses the existing lidar | Needs a lidar that reports intensity |
+| **Geometric shape** | Lidar detects a distinctive profile such as a V-notch | No added materials | Confusable with similar shapes |
+| **Magnetic or IR beacon** | Dock emits a signal the robot homes on | Simple, robust | Coarse; usually combined with something else |
 
-- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) – canonical source, versions, implementation and issue history.
+This platform uses the first: [AprilTag](https://april.eecs.umich.edu/software/apriltag), a
+fiducial family designed for exactly this. It is detected reliably at an angle, at distance, and
+under uneven lighting, and it yields a full pose rather than just a bearing.
 
-## Authoritative external references
+## The general sequence
 
-- [Nav2 documentation](https://docs.nav2.org/)
-- [ROS REP-105 coordinate conventions](https://www.ros.org/reps/rep-0105.html)
+Nearly every docking implementation has the same four phases, whatever the sensing method:
 
-## Contribution note
+1. **Approach.** Navigate to a staging pose near the dock using normal navigation. Map-frame
+   accuracy is enough here.
+2. **Acquire.** Find the marker. Usually rotate until it is detected and its pose reading is stable
+   over several frames.
+3. **Align.** Move so the robot is perpendicular to the dock face and on its centreline. This
+   matters because a straight-in final approach is far more repeatable than a curved one.
+4. **Engage.** Drive straight in, slowly, until contact or until the target standoff is reached.
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+The OpenAMRobot implementation follows exactly this, ending about 90 cm from the tag and square to
+it. Undocking is the reverse and deliberately simpler: reverse 1.5 m, spin 180°.
+
+## Why the alignment phase exists
+
+It is tempting to drive from wherever you are straight at the dock. This works badly.
+
+Approaching at an angle means the robot must curve as it closes, and any error in the curve
+compounds near the end where there is no room left to correct. Squaring up first converts a
+two-dimensional problem into a one-dimensional one: once you are on the centreline and
+perpendicular, the only remaining variable is distance.
+
+## What makes docking unreliable
+
+| Cause | Effect |
+|:--|:--|
+| Poor camera calibration | Pose estimate is systematically wrong; the robot aligns confidently to the wrong place |
+| Tag too small for the distance | Detection is noisy at range |
+| Uneven or changing lighting | Intermittent detection, jitter |
+| Dock physically moved | Map staging pose is wrong; the robot searches |
+| Floor slip during final approach | Odometry-based final motion overshoots |
+| Single tag | One bad reading has nothing to be checked against |
+
+The usual improvements, in order of effect: better calibration, larger or multiple tags, a
+visual-servo final stage that continuously corrects rather than driving a precomputed distance,
+and mechanical funnelling on the dock so the last centimetres are guided by shape rather than by
+software.
+
+## Safety
+
+!!! warning "Docking is a blind manoeuvre in many implementations, including this one"
+    In this stack, phases 2 to 4 publish velocity commands directly, bypassing the navigation
+    stack. The costmaps and collision monitor are not in the loop, so the robot **will not stop**
+    for something that enters its path during the approach.
+
+    Keep the dock approach clear. Do not stand in it. Closing this gap — routing the manoeuvre
+    through the navigation stack or adding lidar collision checking — is a stated roadmap item.
+
+This is a good example of a general principle: a robot behaviour that bypasses the safety pipeline
+for precision reasons must be documented as such, so that whoever deploys it knows where the
+boundary is.
+
+## Charging
+
+Docking gets the robot to the contacts. Charging is then an electrical problem: contact
+resistance, inrush current, a charger that must not energise until contact is confirmed, and a
+battery management system that decides when to stop.
+
+The dock should not be live until the robot reports engagement. Exposed live contacts in a space
+where people walk are a hazard, and a shorting risk from dropped metal objects.
+
+## Further reading
+
+- [AprilTag](https://april.eecs.umich.edu/software/apriltag)
+- [apriltag_ros](https://github.com/christianrauch/apriltag_ros)
+- [Nav2 docking server](https://docs.nav2.org/configuration/packages/configuring-docking-server.html)
+- [Camera calibration in ROS](https://docs.nav2.org/tutorials/docs/camera_calibration.html)
+
+## Related
+
+[Localization](localization.md) ·
+[openamr-platform-sw Concepts](../../reference/openamr-platform-sw/concepts.md#docking-apriltag-and-a-four-phase-approach) ·
+[Docking configuration](../../configure/docking-config/index.md)
+
+## Next
+
+[How manipulation works](../manipulation/index.md)

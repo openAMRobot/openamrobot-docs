@@ -21,6 +21,17 @@ PATHS = {
     "academy/": ("Domain Expert", "Beginner", "Builder", "Developer"),
 }
 
+PATH_ORDER = ("Domain Expert", "Beginner", "Integrator", "Builder", "Developer", "Entrepreneur")
+TAG_PATHS = {
+    "domain-expert": "Domain Expert",
+    "operator": "Domain Expert",
+    "beginner": "Beginner",
+    "integrator": "Integrator",
+    "builder": "Builder",
+    "developer": "Developer",
+    "entrepreneur": "Entrepreneur",
+}
+
 REPOSITORIES = {
     "build/": "openamr-platform-hw",
     "configure/": "openamr-platform-sw",
@@ -86,7 +97,13 @@ def _page_map(nav):
     return pages
 
 
-def _paths_for(source):
+def _paths_for(source, meta):
+    tags = meta.get("tags", [])
+    if isinstance(tags, str):
+        tags = [tags]
+    tagged_paths = {TAG_PATHS[tag.lower()] for tag in tags if tag.lower() in TAG_PATHS}
+    if tagged_paths:
+        return tuple(label for label in PATH_ORDER if label in tagged_paths)
     if source.startswith("paths/") and source != "paths/index.md":
         return (source.split("/", 1)[1].removesuffix(".md").replace("-", " ").title(),)
     for prefix, labels in PATHS.items():
@@ -117,6 +134,8 @@ def _siblings(page):
 
 
 def _title(page):
+    if page.meta.get("title"):
+        return page.meta["title"]
     if page.title:
         return page.title
     return Path(page.file.src_uri).stem.replace("-", " ").title()
@@ -142,6 +161,9 @@ def on_page_markdown(markdown, page, config, files, **kwargs):
         "/assets/openamrobot-logo.jpg",
     )
     source = page.file.src_uri
+    explicit_status = page.meta.get("status")
+    if explicit_status:
+        page.meta.setdefault("capability_status", str(explicit_status).title())
     for css_class, status in (
         ("oamr-status--stable", "Stable"),
         ("oamr-status--beta", "Beta"),
@@ -166,13 +188,16 @@ def on_page_markdown(markdown, page, config, files, **kwargs):
         crumbs.append(_link(parent_page, parent.title))
     crumbs.append(f'<span aria-current="page">{escape(_title(page))}</span>')
 
-    labels = _paths_for(source)
+    labels = _paths_for(source, page.meta)
     path_html = "".join(f"<span>{escape(label)}</span>" for label in labels)
+    status = page.meta.get("capability_status")
+    status_class = str(status).lower().replace(" ", "-") if status else ""
     top = (
         '<nav class="oamr-breadcrumbs" aria-label="Breadcrumb"><ol>'
         + "".join(f"<li>{crumb}</li>" for crumb in crumbs)
         + "</ol></nav>"
         + (f'<div class="oamr-track-labels" aria-label="Recommended paths">{path_html}</div>' if path_html else "")
+        + (f'<span class="oamr-status oamr-status--{escape(status_class)}">{escape(str(status))}</span>' if status else "")
     )
 
     related_pages = [pages[path] for path in RELATED.get(source, ()) if path in pages]
