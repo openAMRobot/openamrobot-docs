@@ -13,4 +13,4 @@
 <article class="oamr-card oamr-card--accent"><h3>Recover</h3><p>Recognize when something is wrong, stop safely and follow the correct escalation path.</p></article>
 </div>
 
-**Related:** [Operator interface](../ui/) · [Troubleshooting](../troubleshooting/)
+**Related:** [Operator interface](../ui/index.md) · [Troubleshooting](../troubleshooting/index.md)

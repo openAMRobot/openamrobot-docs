@@ -61,7 +61,7 @@ You can contribute by:
 - contributing to simulation, perception, manipulation, interfaces, and developer tooling;
 - using OpenAMRobot in research, education, or industrial pilots and sharing results with the community.
 
-Before contributing, review the [contribution workflow](../contributing/) and the repository-specific guidance for the component you plan to change.
+Before contributing, review the [contribution workflow](../contributing/index.md) and the repository-specific guidance for the component you plan to change.
 
 ## Open project, commercial ecosystem
 

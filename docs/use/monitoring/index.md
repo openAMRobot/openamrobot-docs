@@ -4,6 +4,10 @@ title: Monitoring
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Monitoring</h1><p>Complete monitoring through a clear, task-oriented workflow.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
+![OpenAMRobot health interface showing readiness and diagnostic information](https://raw.githubusercontent.com/openAMRobot/openamrobot-ui/main/docs/assets/health/health.png)
+
+*Use the Health view to confirm readiness and topic freshness before operation.*
+
 !!! info "Documentation framework"
     This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 

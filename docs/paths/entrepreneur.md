@@ -1,3 +1,8 @@
+---
+title: Entrepreneur path
+description: Validate a customer problem and build a delivery and support model around the OpenAMRobot ecosystem.
+---
+
 # Entrepreneur path
 
 For people building training, integration, hardware, pilot or support businesses around OpenAMRobot.

@@ -1,5 +1,6 @@
 ---
 title: Home
+description: Learn, build, operate, customize and commercialize the modular OpenAMRobot open-source Embodied AI platform.
 hide:
   - navigation
 ---

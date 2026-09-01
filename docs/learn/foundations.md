@@ -12,6 +12,6 @@
 </div>
 
 !!! note "Learning scope"
-    This section explains how the pieces relate. Exact implementation details remain in the [Technical Reference](../reference/) and owning repositories.
+    This section explains how the pieces relate. Exact implementation details remain in the [Technical Reference](../reference/index.md) and owning repositories.
 
 **Next:** [Build the platform](build.md) or [start in simulation](bring-up.md).

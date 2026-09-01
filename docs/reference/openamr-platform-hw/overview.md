@@ -1,5 +1,6 @@
 ---
 title: openamr-platform-hw overview
+description: Understand the OpenAMRobot mobile-platform hardware repository, CAD, electronics, revisions and validation status.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental · documentation-first</span><h1>Mobile platform hardware</h1><p>Maintained CAD, production files, wiring, BOMs, component data and safety notes for the differential-drive base.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

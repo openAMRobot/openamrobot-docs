@@ -1,3 +1,8 @@
+---
+title: Builder path
+description: Assemble, bring up, calibrate and accept a physical OpenAMRobot platform through controlled checks.
+---
+
 # Builder path
 
 For people assembling, bringing up and maintaining the physical platform.

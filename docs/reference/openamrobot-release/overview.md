@@ -1,5 +1,6 @@
 ---
 title: openamrobot-release overview
+description: Understand how OpenAMRobot releases package compatible software, firmware, hardware and documentation evidence.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Released · v0.0.1</span><h1>Frozen product-level source snapshot</h1><p>A versioned archive of the hardware, software, firmware, UI, interfaces, communication, documentation and governance repositories.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

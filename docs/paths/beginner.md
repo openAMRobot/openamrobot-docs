@@ -1,3 +1,8 @@
+---
+title: Beginner path
+description: Learn OpenAMRobot foundations and complete a first safe, verified result in simulation.
+---
+
 # Beginner path
 
 For a newcomer who wants a structured introduction before choosing a more specialized path.

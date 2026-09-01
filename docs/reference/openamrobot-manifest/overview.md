@@ -1,5 +1,6 @@
 ---
 title: openamrobot-manifest overview
+description: Understand how the OpenAMRobot manifest pins repositories and versions into reproducible ecosystem workspaces.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Active</span><h1>Assemble the source workspace</h1><p>A version-aware repository manifest for checking out the OpenAMRobot ecosystem together.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

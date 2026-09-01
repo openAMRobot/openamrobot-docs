@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": {% if page.file.src_uri == "index.md" %}"WebSite"{% elif page.file.src_uri.startswith("academy/program-") %}"Course"{% else %}"TechArticle"{% endif %},
+    {% if page.file.src_uri.startswith("academy/program-") %}"name"{% else %}"headline"{% endif %}: {{ page.title | tojson }},
+    "description": {{ page_description | default(config.site_description) | tojson }},
+    "url": {{ (config.site_url ~ page.url) | tojson }},
+    "author": {"@type": "Organization", "name": "OpenAMRobot", "url": "https://github.com/openAMRobot"},
+    "publisher": {"@type": "Organization", "name": "Botshare LTD", "url": "https://botshare.ai"}{% if page.meta.capability_status %},
+    "additionalProperty": {"@type": "PropertyValue", "name": "Capability status", "value": {{ page.meta.capability_status | tojson }}}{% endif %}
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": {{ config.site_url | tojson }}},
+      {"@type": "ListItem", "position": 2, "name": {{ page.title | tojson }}, "item": {{ (config.site_url ~ page.url) | tojson }}}
+    ]
+  }
+  </script>
+  {% endif %}
+{% endblock %}

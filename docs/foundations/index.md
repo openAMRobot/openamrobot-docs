@@ -1,5 +1,6 @@
 ---
 title: Foundations
+description: Understand robot anatomy, navigation, manipulation, demonstration learning, ROS 2 and safety before working with OpenAMRobot.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Core concepts</span><h1>Understand the robot before changing it</h1><p>Build the mental model needed to work safely with the mobile base, navigation, manipulation, ROS 2 and Embodied AI.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

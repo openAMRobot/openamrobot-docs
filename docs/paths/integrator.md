@@ -1,3 +1,8 @@
+---
+title: Integrator path
+description: Configure, deploy and verify an OpenAMRobot system for a site, workflow and acceptance target.
+---
+
 # Integrator path
 
 For people adapting a supported platform to a customer site, workflow or external system.

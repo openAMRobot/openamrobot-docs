@@ -1,5 +1,6 @@
 ---
 title: openamrobot-interfaces overview
+description: Find the shared OpenAMRobot ROS 2 messages, services, actions, stability rules and canonical contracts.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Shared interface contracts</h1><p>One source for reusable ROS 2 messages, services, actions and cross-repository schemas.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

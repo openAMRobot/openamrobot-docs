@@ -1,5 +1,6 @@
 ---
 title: Customize
+description: Extend OpenAMRobot software, firmware, hardware, simulation, AI workflows, device packages and integrations.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Mixed maturity</span><h1>Extend the platform through owned contracts</h1><p>Add devices, code, firmware, hardware, simulations or policies without duplicating another repository's responsibility.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

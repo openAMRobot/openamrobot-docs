@@ -103,7 +103,7 @@ Use sections 1–5 above, then explain how to open the files, file formats and c
 
 Keep the README to approximately 15 lines: title with “Legacy”, status, what it was, when it was superseded, and working links to the replacement. Do not present legacy setup instructions as current guidance.
 
-Use the maintained templates in [docs/templates/](templates/).
+Use the maintained [repository templates](https://github.com/openAMRobot/openamrobot-docs/tree/main/docs/templates).
 
 ## Cross-repository links
 
@@ -111,6 +111,18 @@ Use the maintained templates in [docs/templates/](templates/).
 - Use relative links within the same repository.
 - Each active component links to one canonical documentation-site section, and that section links back.
 - Maintain one canonical ecosystem diagram in openamrobot-docs/assets/; embed it elsewhere using its absolute raw URL.
+
+## Page connections
+
+Every published page must participate in the documentation graph. The build template supplies these controls from the navigation tree and maintained relationship map:
+
+- **Parent** — the section index that explains the page's context.
+- **Previous and next** — adjacent task pages within the same section, never an unrelated global sequence.
+- **Related** — two to four resolved concept, practice, failure or reference links where a deterministic pairing exists.
+- **Owning repository** — the repository canonical for versions, parameters, source and contracts.
+- **Feedback and contact** — a prefilled documentation issue and the maintained contact route.
+
+A page is not complete until every displayed connection resolves to a real destination. Prefer concept ↔ practice, practice ↔ failure, and learning ↔ technical reference relationships.
 
 ## Naming and terminology
 

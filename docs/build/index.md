@@ -1,5 +1,6 @@
 ---
 title: Build
+description: Prepare, assemble, install, bring up, calibrate and verify an OpenAMRobot mobile platform through controlled stages.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental build path</span><h1>Build a platform you can verify</h1><p>Move from workspace and parts to assembly, software, calibration and a recorded acceptance baseline.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
