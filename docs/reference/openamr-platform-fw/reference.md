@@ -1,48 +1,104 @@
 ---
-title: Reference
+title: Firmware ROS 2 contract
+tags: [developer, integrator]
+status: experimental
+description: Reference the micro-ROS transport, topic contract, startup state machine, IMU behavior, and LED diagnostics.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Reference</h1><p>Provide the learning-layer reference for reference and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# Firmware ROS 2 contract
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+**Canonical source:** [`openamr-platform-fw/docs/bringup/micro-ros-bringup.md`](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/bringup/micro-ros-bringup.md)
+**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
 
-## What this page should contain
+!!! warning "Experimental project documentation"
+    These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
 
-## Content template
+The firmware is a **micro-ROS** application. It connects to a **micro-ROS agent** on the host over
+USB serial and exposes the robot's topics. This page covers the connection, the topic contract, and
+the LED status codes.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## Transport & agent
 
-### Procedure or explanation
+The micro-ROS transport topology is shown below.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+![The Teensy 4.0 runs a micro-ROS client over USB serial 115200; the micro-ROS agent on the Pi 5 bridges it into the CycloneDDS ROS 2 graph. Teensy publishes /odom/unfiltered, /imu/data_raw, /imu/mag, /debug/left|right|pwm and subscribes /cmd_vel, /debug/openloop|tune|enc_cal; the host EKF/Madgwick produces filtered /imu/data + /odom for Nav2. The control loop runs only while the agent is connected; on disconnect the firmware fullStop()s](https://raw.githubusercontent.com/openAMRobot/openamr-platform-fw/main/docs/bringup/diagrams/micro-ros-node-topology.svg)
 
-### If it did not work
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+- **USB serial** at **`BAUDRATE = 115200`** — this must match the agent exactly.
+- Start the agent on the host, pointing at the Teensy's serial device. A non-interactive shell
+  does **not** source ROS, so source it and set the matching RMW/domain first (see the DDS note
+  below):
+  ```bash
+  source /opt/ros/jazzy/setup.bash
+  source ~/linorobot2_ws/install/setup.bash
+  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+  export ROS_DOMAIN_ID=0
+  ros2 run micro_ros_agent micro_ros_agent serial -b 115200 -D <teensy-serial-by-id>
+  ```
+  Use the stable `/dev/serial/by-id/usb-Teensyduino_USB_Serial_*-if00` path (not `/dev/ttyACM*`,
+  which can renumber).
+- The firmware also has an (unused here) WiFi transport option (`USE_WIFI_TRANSPORT`), disabled in
+  this config.
 
-## Owning OpenAMRobot source
+> ⚠️ **DDS must match the rest of the stack.** On this robot the host uses CycloneDDS on
+> `ROS_DOMAIN_ID=0`. A host defaulting to a different RMW/domain will not see the topics. The agent
+> may log harmless `Failed to parse type hash ... USER_DATA (null)` warnings — micro-ROS does not
+> populate type hashes; they are not errors.
 
-- [openamr-platform-fw](https://github.com/openAMRobot/openamr-platform-fw) – canonical source, versions, implementation and issue history.
+## Connection state machine
 
-## Contribution note
+The firmware pings the agent and manages entities automatically:
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+`WAITING_AGENT` → `AGENT_AVAILABLE` → `AGENT_CONNECTED` → (`AGENT_DISCONNECTED`) → `WAITING_AGENT`.
+
+On disconnect it calls `fullStop()` and destroys its ROS entities, then re-creates them when the
+agent returns. Time is synchronised with the agent on connect so stamps are in ROS time.
+
+## Topic contract
+
+| Topic | Direction | Type | QoS |
+|---|---|---|---|
+| `/cmd_vel` | in | `geometry_msgs/Twist` | reliable |
+| `/odom/unfiltered` | out | `nav_msgs/Odometry` | reliable |
+| `/imu/data_raw` | out | `sensor_msgs/Imu` | reliable |
+| `/imu/mag` | out | `sensor_msgs/MagneticField` | reliable | see note |
+| `/debug/left`, `/debug/right`, `/debug/pwm` | out | `geometry_msgs/Vector3` | **best-effort** |
+| `/debug/openloop` | in | `geometry_msgs/Vector3` | reliable |
+| `/debug/tune` | in | `geometry_msgs/Twist` | reliable |
+| `/debug/enc_cal` | in | `std_msgs/Float32MultiArray` | reliable |
+
+- The firmware publishes **raw** IMU (`/imu/data_raw` + `/imu/mag`); the host Madgwick/EKF pipeline
+  fuses them into the filtered `/imu/data` and `/odom`.
+- ⚠️ **No real magnetometer.** The board carries an **MPU6500**, driven through the MPU9250 driver
+  (WHO_AM_I workaround). The MPU6500 has **no magnetometer**, so `/imu/mag` is published for
+  message-shape compatibility but carries **no meaningful magnetic field** — do not fuse it as a
+  heading source. The host EKF should use the gyro/accel only (yaw from the gyro rate).
+- The `/debug/*` topics are covered in detail in
+  [debug telemetry](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/architecture/debug-telemetry.md).
+
+## IMU note
+
+The config enables `USE_MPU9250_IMU`, but the physical chip is an **MPU-6500** (`WHO_AM_I 0x70`).
+The MPU9250 driver recognises it; the MPU6050 driver rejects it. IMU init failure is fatal (see LED
+codes below).
+
+## LED status codes (pin 13)
+
+| Blink pattern | Meaning |
+|---|---|
+| Solid on | agent connected / idle (also toggles on each `/cmd_vel`) |
+| Toggling with control | actively driving in closed loop |
+| 2 blinks (loop) | fatal RCL error (`rclErrorLoop`) |
+| 3 blinks | IMU init failed — **also** any `createEntities()` RCL failure (the non-syslog `RCCHECK` flashes 3 then retries) |
+| 4 blinks | magnetometer init failed |
+
+After bringup, if you use the encoder ripple table, run the host alignment once per Teensy
+power-cycle — see [encoder calibration](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/architecture/encoder-calibration.md).
+
+## Engineering handoff
+
+- Record the repository commit, hardware revision, supply voltage, and test configuration with every result.
+- Stop if observed wiring, component labels, geometry, or topic behavior differs from this page; resolve the discrepancy in the owning repository first.
+- Report documentation or implementation defects through [the repository issue tracker](https://github.com/openAMRobot/openamr-platform-fw/issues).

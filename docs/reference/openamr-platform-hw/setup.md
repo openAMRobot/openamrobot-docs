@@ -1,48 +1,48 @@
 ---
-title: Setup
+title: Mechanical assembly
+tags: [builder]
+status: experimental
+description: Assemble and inspect the OpenAMRobot wheel modules using the maintained hardware procedure.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Setup</h1><p>Provide the learning-layer reference for setup and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# Mechanical assembly
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+**Canonical source:** [`openamr-platform-hw/manufacturing/assembly/README.md`](https://github.com/openAMRobot/openamr-platform-hw/blob/main/manufacturing/assembly/README.md)
+**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
 
-## What this page should contain
+!!! warning "Experimental project documentation"
+    These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+## 🔩 Wheel Assembly Tutorial
 
-## Content template
+[![Wheel Assembly](https://img.youtube.com/vi/FlsYwoiEAsk/maxresdefault.jpg)](https://youtu.be/FlsYwoiEAsk?list=PLlQYRQ1Q-yzqA89n-1vjrnNSw8hSucCKi)
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+▶️ Step-by-step assembly of the OpenAMRobot drive wheel module.
 
-### Procedure or explanation
+The drive-wheel assembly (motor + gearbox + drive shaft + brackets, `MMP.03.*` in
+[../../mechanical/](https://github.com/openAMRobot/openamr-platform-hw/blob/main/mechanical)) is assembled in the sequence shown below. Follow the same
+order left and right.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+**Step 1**
+![Wheel assembly step 1](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/manufacturing/assembly/AMR_wheel_assembly_1.png)
 
-### If it did not work
+**Step 2**
+![Wheel assembly step 2](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/manufacturing/assembly/AMR_wheel_assembly_2.png)
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+**Step 3**
+![Wheel assembly step 3](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/manufacturing/assembly/AMR_wheel_assembly_3.png)
 
-## Owning OpenAMRobot source
+**Step 4**
+![Wheel assembly step 4](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/manufacturing/assembly/AMR_wheel_assembly_4.png)
 
-- [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) – canonical source, versions, implementation and issue history.
+**Step 5**
+![Wheel assembly step 5](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/manufacturing/assembly/AMR_wheel_assembly_5.png)
 
-## Contribution note
+See the per-part production drawings (PDF/DXF) in
+[../../mechanical/cad/production_files/](https://github.com/openAMRobot/openamr-platform-hw/blob/main/mechanical/cad/production_files).
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+## Engineering handoff
+
+- Record the repository commit, hardware revision, supply voltage, and test configuration with every result.
+- Stop if observed wiring, component labels, geometry, or topic behavior differs from this page; resolve the discrepancy in the owning repository first.
+- Report documentation or implementation defects through [the repository issue tracker](https://github.com/openAMRobot/openamr-platform-hw/issues).
