@@ -2,12 +2,12 @@
 title: Monitoring
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Monitoring</h1><p>Guide an operator through monitoring using task language.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Monitoring</h1><p>Complete monitoring through a clear, task-oriented workflow.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
 !!! info "Documentation framework"
     This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
-## What this page should contain
+## Planned coverage
 
 - **Audience and outcome:** who uses this page and what verified state they should reach.
 - **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
@@ -16,11 +16,11 @@ title: Monitoring
 - **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
 - **Next step:** one clear continuation in the ownership or development path.
 
-## Content template
+## Completion criteria
 
-| Field | To complete |
+| Field | Required content |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
+| For | Name the primary path: Domain Expert, Beginner, Integrator, Builder, Developer or Entrepreneur |
 | Before you start | List exact prerequisites or state “nothing” |
 | When you finish | Describe a measurable outcome |
 | Capability status | Stable, beta, experimental, planned, community or partner-supported |

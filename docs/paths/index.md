@@ -1,3 +1,7 @@
+---
+title: Paths
+---
+
 # Paths
 
 Choose the path that matches what you need to accomplish now. A person can move between paths as their responsibilities grow.

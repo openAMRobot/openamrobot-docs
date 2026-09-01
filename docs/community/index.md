@@ -1,3 +1,7 @@
+---
+title: Community and GitHub
+---
+
 # OpenAMRobot Community & GitHub
 
 OpenAMRobot is developed in the open across a growing set of public repositories for software, firmware, hardware, interfaces, documentation, UI, releases, and manipulation.

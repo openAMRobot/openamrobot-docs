@@ -2,43 +2,24 @@
 title: Foundations
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Foundations</h1><p>Explain foundations in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Core concepts</span><h1>Understand the robot before changing it</h1><p>Build the mental model needed to work safely with the mobile base, navigation, manipulation, ROS 2 and Embodied AI.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## What you will understand
 
-## What this page should contain
+| Area | Why it matters | Continue with |
+| --- | --- | --- |
+| Robot anatomy | Connect mechanics, power, compute, sensors and actuators to observable behaviour | [Robot anatomy](robot-anatomy/index.md) |
+| Navigation | Understand frames, odometry, SLAM, localization, planning and docking | [How navigation works](navigation/index.md) |
+| Manipulation | Understand reach, kinematics, planning, grippers and the lift | [How manipulation works](manipulation/index.md) |
+| Embodied AI | See how demonstrations become datasets, policies and evaluated behaviour | [Teaching by demonstration](embodied-ai/index.md) |
+| ROS 2 | Read nodes, topics, actions, parameters, TF and launch composition | [ROS 2 in an afternoon](ros2/index.md) |
+| Safety | Recognize operating limits, stop conditions and required supervision | [Working safely](safety/index.md) |
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+## Recommended order
 
-## Content template
+<div class="oamr-path"><span>Anatomy</span><b>→</b><span>Safety</span><b>→</b><span>ROS 2</span><b>→</b><span>Navigation</span><b>→</b><span>Manipulation</span><b>→</b><span>Embodied AI</span></div>
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+You do not need every topic before starting. A Domain Expert can begin with safety and operation; a Builder should add anatomy and power; a Developer should complete the ROS 2 and interface material.
 
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! info "Capability boundary"
+    Foundations explains system concepts. Exact versions, parameters and interfaces remain in the repository that owns them; the current mobile software stack is experimental, and upper-body/manipulation implementation is planned and simulation-first.

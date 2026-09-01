@@ -1,3 +1,7 @@
+---
+title: Safety
+---
+
 # Safety
 
 OpenAMRobot combines moving machinery, electrical power, batteries, embedded firmware, networks and autonomous software. Public source availability is not a declaration of safety, regulatory compliance or fitness for a particular deployment.

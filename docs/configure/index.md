@@ -2,47 +2,20 @@
 title: Configure
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Configure</h1><p>Document supported settings, defaults, effects and verification for configure.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Turn source into a reproducible robot profile</h1><p>Describe geometry, sensors, navigation, docking, safety limits and networking without hiding which release and hardware revision they apply to.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Configuration map
 
-## What this page should contain
+| Area | Owns | Verify by |
+| --- | --- | --- |
+| [Configuration model](configuration-model/index.md) | Profiles, versions, backup and restore | Rebuilding the same effective configuration from source |
+| [Robot description](robot-description/index.md) | URDF, joints, limits and collision geometry | Inspecting TF, joint limits and collision models |
+| [Sensors](sensors/index.md) | Frames, drivers and sensor-specific parameters | Checking topic rates, frames and plausible values |
+| [Navigation](navigation-tuning/index.md) | Costmaps, planners, controllers and motion limits | Running repeatable navigation scenarios |
+| [Docking](docking-config/index.md) | Target geometry, detection, approach and charging | Repeating dock/undock tests from defined starts |
+| [Safety limits](safety-limits/index.md) | Speed, zones, stop behaviour and supervision | Testing every limit and stop condition |
+| [Network](network/index.md) | Wi-Fi, DDS, remote UI and access boundaries | Reconnecting and operating from the intended topology |
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+<div class="oamr-path"><span>Select release</span><b>→</b><span>Identify hardware</span><b>→</b><span>Apply profile</span><b>→</b><span>Verify</span><b>→</b><span>Record baseline</span></div>
 
-## Content template
-
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
-
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+Exact defaults and parameters are canonical in [`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw). This site explains their purpose, dependencies and verification sequence.

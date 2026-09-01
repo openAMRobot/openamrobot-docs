@@ -1,48 +1,20 @@
 ---
-title: Demonstration
+title: Teaching by demonstration
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Demonstration</h1><p>Guide an operator through demonstration using task language.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Developing workflow</span><h1>Show, review, correct and judge</h1><p>Turn a Domain Expert's task knowledge into structured demonstrations and explicit outcome criteria.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Workflow
 
-## What this page should contain
+<div class="oamr-path"><span>Plan</span><b>→</b><span>Capture</span><b>→</b><span>Review</span><b>→</b><span>Replay</span><b>→</b><span>Correct</span><b>→</b><span>Evaluate</span></div>
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+| Step | Question answered | Continue with |
+| --- | --- | --- |
+| Plan | What task, starting state, boundaries and success criteria are valid? | [Planning a demonstration](planning-a-demonstration.md) |
+| Capture | Which observations, actions and robot state belong in the episode? | [Capturing](capturing.md) |
+| Review | Is the episode complete, synchronized and representative? | [Reviewing episodes](reviewing-episodes.md) |
+| Replay | Can the recorded trajectory be reproduced within the safe envelope? | [Replaying](replaying.md) |
+| Evaluate | Does execution meet task-specific acceptance criteria? | [Evaluating](evaluating.md) |
 
-## Content template
-
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
-
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! info "Capability honesty"
+    This is the intended bounded workflow. It does not claim that the current public release can learn arbitrary tasks. Manipulation, dataset and policy pipelines are still developing and must identify the exact supported configuration.

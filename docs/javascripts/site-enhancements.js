@@ -70,10 +70,14 @@
     list.appendChild(home);
 
     let accumulated = "";
-    parts.forEach((part, index) => {
-      accumulated += `/${part}`;
+    const visibleParts = parts.slice(-2);
+    const hiddenDepth = parts.length - visibleParts.length;
+
+    visibleParts.forEach((part, index) => {
+      const sourceIndex = index + hiddenDepth;
+      accumulated = `/${parts.slice(0, sourceIndex + 1).join("/")}`;
       const item = document.createElement("li");
-      const isLast = index === parts.length - 1;
+      const isLast = index === visibleParts.length - 1;
       const label = isLast
         ? document.querySelector("h1")?.textContent?.trim() || humanize(part)
         : humanize(part);
@@ -105,16 +109,22 @@
 
     const path = window.location.pathname;
     const rules = [
+      [/^\/paths\/domain-expert\//, ["Domain Expert"]],
+      [/^\/paths\/beginner\//, ["Beginner"]],
+      [/^\/paths\/integrator\//, ["Integrator"]],
+      [/^\/paths\/builder\//, ["Builder"]],
+      [/^\/paths\/developer\//, ["Developer"]],
+      [/^\/paths\/entrepreneur\//, ["Entrepreneur"]],
       [/^\/foundations\//, ["Beginner", "Builder"]],
       [/^\/build\//, ["Builder", "Integrator"]],
-      [/^\/use\//, ["Operator"]],
+      [/^\/use\//, ["Domain Expert"]],
       [/^\/configure\//, ["Integrator"]],
       [/^\/customize\//, ["Developer", "Integrator"]],
-      [/^\/maintain\//, ["Operator", "Integrator"]],
-      [/^\/reference\//, ["Developer"]],
+      [/^\/maintain\//, ["Domain Expert", "Integrator"]],
+      [/^\/reference\//, ["Developer", "Integrator"]],
       [/^\/solutions\//, ["Integrator", "Entrepreneur"]],
-      [/^\/business\//, ["Entrepreneur", "Partner"]],
-      [/^\/academy\//, ["Learner", "Partner"]],
+      [/^\/business\//, ["Entrepreneur"]],
+      [/^\/academy\//, ["Domain Expert", "Beginner", "Builder", "Developer"]],
     ];
 
     const match = rules.find(([pattern]) => pattern.test(path));
@@ -122,7 +132,7 @@
 
     const wrapper = document.createElement("div");
     wrapper.className = "oamr-track-labels";
-    wrapper.setAttribute("aria-label", "Intended reader tracks");
+    wrapper.setAttribute("aria-label", "Recommended paths");
 
     match[1].forEach((label) => {
       const chip = document.createElement("span");
