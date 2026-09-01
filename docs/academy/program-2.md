@@ -1,44 +1,19 @@
----
-title: Program 2
----
+# Program 2 · Build & Own
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Program 2</h1><p>Describe the Academy scope, outcome and delivery model for program 2.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+Program 2 takes a learner from parts and documentation to a checked platform they can maintain. It connects the open hardware, firmware and ROS 2 repositories through one reproducible build path.
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+| For | Starting point | Verified outcome |
+| --- | --- | --- |
+| Builders, technicians and makers | Basic workshop and electrical skills | Assemble, bring up, calibrate and document a working platform |
 
-## What this page should contain
+## Learning sequence
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+<div class="oamr-path"><span>Prepare</span><b>→</b><span>Source</span><b>→</b><span>Assemble</span><b>→</b><span>Bring up</span><b>→</b><span>Calibrate</span><b>→</b><span>Accept</span><b>→</b><span>Maintain</span></div>
 
-## Content template
+The hardware design, BOM and manufacturing source live in `openamr-platform-hw`; embedded control lives in `openamr-platform-fw`; ROS 2 Jazzy integration lives in `openamr-platform-sw`. The current software stack is experimental: simulation, Nav2 and docking run end to end, while real-robot drivers and control remain in progress.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## Continue
 
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+- [Prepare to build](../build/prepare/index.md)
+- [Assembly](../build/assembly/index.md)
+- [Acceptance](../build/acceptance/index.md)

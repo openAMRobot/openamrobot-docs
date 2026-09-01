@@ -5,9 +5,9 @@
 ## Three-program pathway
 
 <div class="oamr-grid">
-<article class="oamr-card oamr-card--accent"><span class="oamr-status">Program 1</span><h3>Operate & Train</h3><p>Run missions, demonstrate tasks, correct behavior and judge outcomes. No coding required for the core path.</p></article>
-<article class="oamr-card"><span class="oamr-status">Program 2</span><h3>Build & Own</h3><p>Assemble, bring up, configure, calibrate and maintain the platform.</p></article>
-<article class="oamr-card"><span class="oamr-status">Program 3</span><h3>Customize & Engineer</h3><p>Extend software, firmware, hardware, interfaces, simulation and AI workflows.</p></article>
+<article class="oamr-card oamr-card--accent"><span class="oamr-status">Program 1</span><h3>Operate & Train</h3><p>Run missions, demonstrate tasks, correct behavior and judge outcomes. No coding required for the core path.</p><p><a href="program-1/">View Program 1 →</a></p></article>
+<article class="oamr-card"><span class="oamr-status">Program 2</span><h3>Build & Own</h3><p>Assemble, bring up, configure, calibrate and maintain the platform.</p><p><a href="program-2/">View Program 2 →</a></p></article>
+<article class="oamr-card"><span class="oamr-status">Program 3</span><h3>Customize & Engineer</h3><p>Extend software, firmware, hardware, interfaces, simulation and AI workflows.</p><p><a href="program-3/">View Program 3 →</a></p></article>
 <article class="oamr-card oamr-card--success"><span class="oamr-status oamr-status--stable">Corporate entry</span><h3>Robotics Opportunity Workshop</h3><p>Qualify a workflow, understand feasibility and ROI, and define an evidence-based next step.</p></article>
 </div>
 

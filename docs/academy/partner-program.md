@@ -51,7 +51,7 @@ The Certified Training Partner Program enables qualified innovation hubs, applie
 
 ## The learning model
 
-The primary entry point is the **Robot Operator & Trainer** program. Participants move from understanding a business problem to operating a robot and teaching it by demonstration.
+The primary entry point is the **Domain Expert · Operate & Train** program. Participants move from understanding a business problem to operating a robot and teaching it by demonstration.
 
 | Step | What the participant does | Business outcome |
 | --- | --- | --- |
@@ -63,7 +63,7 @@ The primary entry point is the **Robot Operator & Trainer** program. Participant
 | **6. Plan deployment** | Translate the result into a site, safety, cost, and pilot plan. | A decision-ready roadmap for the next step. |
 
 !!! tip "No coding required for the core path"
-    Technical programs are available for teams that want to build, customize, or engineer the platform, but coding is not the entry requirement for the Operator & Trainer pathway.
+    Technical programs are available for teams that want to build, customize, or engineer the platform, but coding is not the entry requirement for the Domain Expert path.
 
 ---
 
@@ -181,14 +181,14 @@ Partners can be authorized for one or more formats depending on their capabiliti
 | Format | Typical duration | Typical purpose |
 | --- | ---: | --- |
 | **Discovery Workshop** | 1 day | Hands-on introduction: operate the robot, navigate, and complete a first demonstration. |
-| **Robot Operator & Trainer** | Multi-session / cohort | Full practical pathway from robot operation to training by demonstration and assessment. |
+| **Domain Expert · Operate & Train** | Multi-session / cohort | Full practical pathway from robot operation to training by demonstration and assessment. |
 | **Corporate Enablement** | 4–8 weeks | Training cohort plus advisory around a selected automation task and deployment plan. |
 | **Build Your Robot** | Program-based | Guided assembly, configuration, calibration, and verification of the OpenAMRobot DIY platform. |
 | **Customize & Engineer** | Program-based | Technical depth covering selected software, firmware, electronics, and mechanical topics. |
 | **Demo Day / Test-Before-Invest** | 1 day | Partner-hosted practical robotics experience for SME and innovation communities. |
 
 !!! info "Start narrow, expand later"
-    A partner does not need to deliver the full portfolio on day one. Authorization can begin with the Discovery Workshop and Robot Operator & Trainer program, then expand as instructors, facilities, and local demand mature.
+    A partner does not need to deliver the full portfolio on day one. Authorization can begin with the Discovery Workshop and Domain Expert · Operate & Train program, then expand as instructors, facilities, and local demand mature.
 
 ---
 

@@ -49,7 +49,7 @@ theme:
 nav:
   - Home: index.md
   - Start here:
-      - Choose your path: start-here/index.md
+      - start-here/index.md
   - Foundations:
       - foundations/index.md
       - Robot anatomy:
@@ -459,19 +459,23 @@ nav:
               - Reference: reference/openamrobot-release/reference.md
               - Tutorials: reference/openamrobot-release/tutorials.md
               - Troubleshooting: reference/openamrobot-release/troubleshooting.md
-  - Tracks:
-      - tracks/index.md
-      - tracks/beginner.md
-      - tracks/builder.md
-      - tracks/developer.md
+  - Paths:
+      - paths/index.md
+      - Domain Expert: paths/domain-expert.md
+      - Beginner: paths/beginner.md
+      - Integrator: paths/integrator.md
+      - Builder: paths/builder.md
+      - Developer: paths/developer.md
+      - Entrepreneur: paths/entrepreneur.md
   - Academy:
       - academy/index.md
       - Program portfolio: academy/programs.md
-      - academy/program-2.md
-      - academy/program-3.md
-      - academy/certifications.md
-      - academy/partner-program.md
-      - academy/verify.md
+      - Program 1 · Operate & Train: academy/program-1.md
+      - Program 2 · Build & Own: academy/program-2.md
+      - Program 3 · Customize & Engineer: academy/program-3.md
+      - Practical certifications: academy/certifications.md
+      - Partner program: academy/partner-program.md
+      - Verify: academy/verify.md
   - Community:
       - community/index.md
       - community/get-involved.md
@@ -519,6 +523,10 @@ plugins:
         "upper_body/index.md": "reference/upper-body.md"
         "interfaces/index.md": "reference/interfaces.md"
         "communication/index.md": "reference/communication.md"
+        "tracks/index.md": "paths/index.md"
+        "tracks/beginner.md": "paths/beginner.md"
+        "tracks/builder.md": "paths/builder.md"
+        "tracks/developer.md": "paths/developer.md"
 
 extra:
   social:

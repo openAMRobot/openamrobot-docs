@@ -17,5 +17,5 @@
 | --- | --- | --- |
 | Robotics Opportunity Workshop | Companies with an unclear automation opportunity | Feasibility or pilot proposal |
 | Discovery Workshop / Demo Day | Hubs and professional communities | Cohort or corporate workshop |
-| Operator & Trainer program | Operations teams and domain experts | Enablement or deployment |
+| Domain Expert · Operate & Train | Operations teams and domain experts | Enablement or deployment |
 | Productization Sprint | Startups and engineering teams | Engineering project or PoC |
