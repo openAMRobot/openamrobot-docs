@@ -1,48 +1,68 @@
 ---
-title: Setup
+title: Build and flash the firmware
+tags: [builder, developer]
+status: experimental
+description: Build the pinned Teensy 4.0 firmware overlay and flash it with a reproducible toolchain.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Setup</h1><p>Provide the learning-layer reference for setup and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# Build and flash the firmware
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+**Canonical source:** [`openamr-platform-fw/docs/flashing/build-and-flash.md`](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/flashing/build-and-flash.md)
+**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
 
-## What this page should contain
+!!! warning "Experimental project documentation"
+    These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
 
-## Content template
+The overlay is built on top of a linorobot2 firmware checkout with PlatformIO and flashed to the
+Teensy 4.0 with `teensy_loader_cli`. See the [overlay README](https://github.com/openAMRobot/openamr-platform-fw/blob/main/boards/teensy_4_0/linorobot2_overlay/README.md)
+for how the overlay files map onto the linorobot2 base.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## Build
 
-### Procedure or explanation
+PlatformIO builds the `teensy40` environment, which uses `config/lino_base_config.h` (**not** any
+`dev_config.h`).
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+```bash
+cd <linorobot2_hardware>/firmware
+ROS_DISTRO=jazzy ~/.platformio/penv/bin/pio run -e teensy40
+```
 
-### If it did not work
+- On Ubuntu 24.04, PlatformIO **must** be run from its own venv (`~/.platformio/penv/bin/pio`, as
+  above) to avoid the PEP 668 "externally managed environment" restriction — a bare `pio` may fail.
+- First build ≈ 5 min (compiles micro-ROS); incremental ≈ 8 s.
+- The build output is `.pio/build/teensy40/firmware.hex`.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## Flash
 
-## Owning OpenAMRobot source
+Install `teensy_loader_cli` and the PJRC udev rules (`/etc/udev/rules.d/00-teensy.rules`). **Stop
+the micro-ROS agent first** to free the serial port.
 
-- [openamr-platform-fw](https://github.com/openAMRobot/openamr-platform-fw) – canonical source, versions, implementation and issue history.
+```bash
+pkill -f "[m]icro_ros_agent"
+HEX=<linorobot2_hardware>/firmware/.pio/build/teensy40/firmware.hex
+sudo teensy_loader_cli --mcu=TEENSY40 -s -w -v "$HEX"   # -s = soft reboot into the bootloader
+```
 
-## Contribution note
+> ⚠️ **`-s` (soft reboot) is timing-flaky** and may report `error writing`. When that happens the
+> board is already in **HalfKay** (bootloader; LED off, and it stays there). Retry once **without**
+> `-s`:
+> ```bash
+> sudo teensy_loader_cli --mcu=TEENSY40 -w -v "$HEX"
+> ```
+> The most reliable method is to press the Teensy's **physical button** to force HalfKay, then flash
+> with `-w`. A USB unplug/replug after a failed flash boots the last good firmware.
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+After flashing, restart the micro-ROS agent (or the host bring-up). See
+[micro-ROS bringup](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/bringup/micro-ros-bringup.md).
+
+> ⚠️ **A reflash reboots the Teensy and shifts the encoder zero.** If you use the encoder ripple
+> table, re-run the host alignment after every flash/power-cycle — see
+> [encoder calibration](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/architecture/encoder-calibration.md).
+
+## Engineering handoff
+
+- Record the repository commit, hardware revision, supply voltage, and test configuration with every result.
+- Stop if observed wiring, component labels, geometry, or topic behavior differs from this page; resolve the discrepancy in the owning repository first.
+- Report documentation or implementation defects through [the repository issue tracker](https://github.com/openAMRobot/openamr-platform-fw/issues).

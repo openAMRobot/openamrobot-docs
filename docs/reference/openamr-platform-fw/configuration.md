@@ -1,48 +1,118 @@
 ---
-title: Configuration
+title: Firmware configuration and tuning
+tags: [developer, domain-expert]
+status: experimental
+description: Configure and tune the OpenAMRobot firmware through its compiled settings and runtime debug contract.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Configuration</h1><p>Provide the learning-layer reference for configuration and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# Firmware configuration and tuning
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+**Canonical source:** [`openamr-platform-fw/docs/architecture/debug-telemetry.md`](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/architecture/debug-telemetry.md)
+**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
 
-## What this page should contain
+!!! warning "Experimental project documentation"
+    These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
 
-## Content template
+These topics are **additions to upstream linorobot2**, added for this robot. They were essential
+to diagnose the drivetrain and remain the live-tuning and commissioning interface. This page is
+the single source of truth for the debug interface; other docs link here.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## Published telemetry (Teensy → host)
 
-### Procedure or explanation
+The debug topic flow is shown below.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+![The /debug topics split by direction: Teensy->host telemetry (best-effort) /debug/left, /debug/right, /debug/pwm; host->Teensy commands (reliable) /debug/openloop (gated by ENABLE_POWERED_DEBUG, can move the motors), /debug/tune, /debug/enc_cal](https://raw.githubusercontent.com/openAMRobot/openamr-platform-fw/main/docs/architecture/diagrams/debug-telemetry-topic-map.svg)
 
-### If it did not work
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+All three are `geometry_msgs/msg/Vector3`, **BEST_EFFORT** QoS, published at the 50 Hz loop rate:
 
-## Owning OpenAMRobot source
+| Topic | x | y | z |
+|---|---|---|---|
+| `/debug/left`  | target rpm (LEFT)  | **measured rpm (LEFT, corrected)**  | cumulative encoder counts (LEFT) |
+| `/debug/right` | target rpm (RIGHT) | **measured rpm (RIGHT, corrected)** | cumulative encoder counts (RIGHT) |
+| `/debug/pwm`   | PWM LEFT | PWM RIGHT | 0 |
 
-- [openamr-platform-fw](https://github.com/openAMRobot/openamr-platform-fw) – canonical source, versions, implementation and issue history.
+> ⚠️ **The `y` field is the *corrected* rpm.** The firmware runs the measured rpm through the
+> small-window velocity estimator **and** the runtime ripple table (`calib_rpm`) *before*
+> publishing (`current_rpm1 → debug_cur_rpm1 → debug_left_msg.y`). Until an encoder table is
+> loaded, the ripple correction is unity passthrough, but the velocity-estimator smoothing is
+> always applied. If you need the raw signal, use the `z` counts. See
+> [encoder calibration](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/architecture/encoder-calibration.md).
 
-## Contribution note
+> ⚠️ **BEST_EFFORT QoS:** a subscriber must request best-effort too, otherwise it receives
+> nothing:
+> ```
+> ros2 topic echo /debug/right --qos-reliability best_effort
+> ```
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+## Commands (host → Teensy)
+
+### `/debug/openloop` — raw open-loop PWM (`geometry_msgs/msg/Vector3`, RELIABLE)
+
+Drives a **fixed PWM, bypassing the PID**, for hardware diagnosis (proving a motor/encoder
+channel independently of the closed loop).
+
+- **Only the `x` field is used, and it is applied to *both* motors** (motor2 additionally scaled
+  by `motor2_gain`). The `y` and `z` fields are ignored.
+- Active only when `|x| ≥ 1` **and** a message arrived within the last **300 ms** (its own
+  staleness timeout, separate from the `/cmd_vel` watchdog). Otherwise the loop falls back to
+  normal control.
+- **Validated & bounded**: NaN/Inf are rejected, and the value is clamped to
+  `OPENLOOP_PWM_LIMIT = 0.7 · PWM_MAX ≈ ±716` so a stray/huge command cannot slam the motors.
+- **Production gate**: driving motors from this path requires the `ENABLE_POWERED_DEBUG` build
+  flag (defined in the current commissioning build). In a production image with the flag removed,
+  the subscriber still exists (executor count unchanged) but cannot move the motors.
+
+```
+# hold both wheels at PWM 200, republished to beat the 300 ms staleness timeout
+ros2 topic pub -r 10 /debug/openloop geometry_msgs/msg/Vector3 "{x: 200.0, y: 0.0, z: 0.0}"
+```
+
+> ⚠️ A prior note described `/debug/openloop` as `x = left PWM, y = right PWM`. That is **not**
+> what the firmware does — `y` is ignored and `x` drives both wheels. Use `motor2_gain` (via
+> `/debug/tune`) if you need to bias the right wheel.
+
+### `/debug/tune` — live gain tuning (`geometry_msgs/msg/Twist`, RELIABLE)
+
+Updates the controller in RAM (compiled defaults are unchanged; a reflash restores them).
+
+| Field | Target | Applied when |
+|---|---|---|
+| `linear.x / y / z` | `K_P / K_I / K_D` (both PIDs) | always |
+| `angular.x` | `motor2_gain` (right-wheel PWM scale) | `> 0` |
+| `angular.y` | `kff` (feedforward gain, PWM/rpm) | `> 0` |
+| `angular.z` | `dither_amp` (anti-stiction dither, PWM) | `≥ 0` |
+
+> ⚠️ A code comment near the declaration lists `angular.z = ff_offset`; the **actual** callback
+> uses `angular.z = dither_amp`. `ff_offset` is fixed at its tuned default.
+
+```
+# set K_P=2.0 K_I=0.1 K_D=0.1, motor2_gain=1.0, kff=7.87, dither=92 (the compiled defaults)
+ros2 topic pub --once /debug/tune geometry_msgs/msg/Twist \
+  "{linear: {x: 2.0, y: 0.1, z: 0.1}, angular: {x: 1.0, y: 7.87, z: 92.0}}"
+```
+
+> A field guarded by `> 0` is left untouched when sent as `0` (so you can nudge one gain without
+> disturbing `motor2_gain`/`kff`); `angular.z` (dither) accepts `0` to disable it.
+
+### `/debug/enc_cal` — runtime encoder ripple table (`std_msgs/msg/Float32MultiArray`, RELIABLE)
+
+72 floats = 36 `LEFT_CAL` bins then 36 `RIGHT_CAL` bins. Loaded into RAM and applied instantly.
+Full explanation in [encoder calibration](https://github.com/openAMRobot/openamr-platform-fw/blob/main/docs/architecture/encoder-calibration.md).
+
+## Diagnostic recipes
+
+- **Motor/encoder health (wheels raised):** publish equal `/debug/openloop` on both wheels and
+  compare `/debug/left.y` vs `/debug/right.y` — this is how the motors/encoders were proven
+  healthy independently of the closed loop.
+- **Step-response tuning:** command a `/cmd_vel` step and record `/debug/left|right` (`x` target,
+  `y` measured) at ≥ 0.25 m/s (below that the rpm is too quantized to tune on).
+- All debug subscribers are RELIABLE; the telemetry publishers are BEST_EFFORT.
+
+## Engineering handoff
+
+- Record the repository commit, hardware revision, supply voltage, and test configuration with every result.
+- Stop if observed wiring, component labels, geometry, or topic behavior differs from this page; resolve the discrepancy in the owning repository first.
+- Report documentation or implementation defects through [the repository issue tracker](https://github.com/openAMRobot/openamr-platform-fw/issues).
