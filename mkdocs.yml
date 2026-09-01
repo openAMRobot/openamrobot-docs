@@ -462,11 +462,15 @@ nav:
   - Tracks:
       - tracks/index.md
       - tracks/beginner.md
+      - tracks/domain-expert.md
       - tracks/builder.md
+      - tracks/integrator.md
       - tracks/developer.md
+      - tracks/entrepreneur.md
   - Academy:
       - academy/index.md
       - Program portfolio: academy/programs.md
+      - academy/program-1.md
       - academy/program-2.md
       - academy/program-3.md
       - academy/certifications.md

@@ -20,7 +20,7 @@ title: When A Demo Is Bad
 
 | Field | To complete |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
+| For | Name one primary reader: beginner, domain expert, builder, integrator, developer or entrepreneur |
 | Before you start | List exact prerequisites or state “nothing” |
 | When you finish | Describe a measurable outcome |
 | Capability status | Stable, beta, experimental, planned, community or partner-supported |

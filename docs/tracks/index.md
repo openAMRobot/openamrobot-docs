@@ -2,43 +2,23 @@
 title: Tracks
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Tracks</h1><p>Curate the pages and milestones required for the tracks learning track.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status">Learning routes</span><h1>Choose one consistent track</h1><p>Six routes connect a reader’s goal to the relevant learning, technical and business documentation.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## The six OpenAMRobot tracks
 
-## What this page should contain
+These names are used consistently on the homepage, Start here, page templates and navigation.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+| Track | Choose it when you want to… | Primary destination |
+| --- | --- | --- |
+| [Beginner](beginner.md) | Learn robotics and understand the platform from first principles | [Foundations](../foundations/index.md) |
+| [Domain Expert](domain-expert.md) | Apply non-robotics process knowledge to operate and teach supported workflows | [Use](../use/index.md) |
+| [Builder](builder.md) | Assemble, bring up, calibrate and maintain a robot | [Build](../build/index.md) |
+| [Integrator](integrator.md) | Configure and deploy the platform for a site or workflow | [Configure](../configure/index.md) |
+| [Developer](developer.md) | Extend software, firmware, hardware, interfaces or AI workflows | [Customize](../customize/index.md) |
+| [Entrepreneur](entrepreneur.md) | Validate and operate a business around the ecosystem | [Business](../business/index.md) |
 
-## Content template
+## How tracks differ from Academy programs
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+A **track** is a free documentation route organized by reader goal. An **Academy program** is a structured learning and assessment offer that may combine several tracks. The Domain Expert track is the primary route for non-robotics specialists and connects directly to the guided App layer.
 
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+For example, Program 2 primarily uses the Builder track but also introduces Integrator material. The labels should therefore remain related, but they are not interchangeable.

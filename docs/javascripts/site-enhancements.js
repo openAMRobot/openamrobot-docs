@@ -107,7 +107,7 @@
     const rules = [
       [/^\/foundations\//, ["Beginner", "Builder"]],
       [/^\/build\//, ["Builder", "Integrator"]],
-      [/^\/use\//, ["Operator"]],
+      [/^\/use\//, ["Domain Expert"]],
       [/^\/configure\//, ["Integrator"]],
       [/^\/customize\//, ["Developer", "Integrator"]],
       [/^\/maintain\//, ["Operator", "Integrator"]],

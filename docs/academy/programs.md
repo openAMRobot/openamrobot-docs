@@ -2,9 +2,9 @@
 
 | Program | Audience | Promise | Primary delivery layer |
 | --- | --- | --- | --- |
-| **1 · Operate & Train** | Domain experts and operations teams | Operate and teach supported workflows without becoming robotics engineers | The App + guided delivery |
-| **2 · Build & Own** | Builders, technicians and makers | Assemble, configure and maintain an owned platform | Knowledge hub |
-| **3 · Customize & Engineer** | Developers, integrators and engineers | Extend the platform safely and reproducibly | Knowledge hub + GitHub |
+| [**1 · Operate & Train**](program-1.md) | Domain experts and operations teams | Operate and teach supported workflows without becoming robotics engineers | The App + guided delivery |
+| [**2 · Build & Own**](program-2.md) | Builders, technicians and makers | Assemble, configure and maintain an owned platform | Knowledge hub |
+| [**3 · Customize & Engineer**](program-3.md) | Developers, integrators and engineers | Extend the platform safely and reproducibly | Knowledge hub + GitHub |
 
 ## Corporate formats
 
