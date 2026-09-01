@@ -1,102 +1,20 @@
 ---
-title: Overview
-tags: [builder, developer]
-description: What openamr-platform-sw owns — the ROS 2 Jazzy stack for the OpenAMRobot mobile base.
+title: openamr-platform-sw overview
+description: Understand the OpenAMRobot ROS 2 mobile-platform software repository, its scope, maturity and canonical technical sources.
 ---
 
-# openamr-platform-sw · Overview
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Mobile platform software</h1><p>ROS 2 Jazzy robot description, Gazebo Harmonic simulation, Nav2 navigation and AprilTag-bundle docking.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-<span class="track track-builder">Builder</span> <span class="track track-developer">Developer</span>
-{: .track-row }
+[`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw) is the owning repository for the mobile base software stack.
 
-**For:** anyone who wants to understand or run the robot's ROS 2 software.
-**Before you start:** nothing, though [ROS 2 in an afternoon](../../foundations/ros2/index.md) helps.
-**When you finish:** you will know what this repository contains, what works today, and what does not.
+| Implemented now | In progress |
+| --- | --- |
+| Robot URDF and meshes | Top-level real-robot bring-up |
+| Gazebo Harmonic simulation and ROS/Gazebo bridge | `ros2_control` and low-level control integration |
+| Nav2, AMCL, SLAM resources and RViz | Production hardware drivers and broader perception |
+| Three-tag AprilTag dock/undock sequence | Hardware validation of production docking tolerances |
+| Docker and Ubuntu 24.04 setup paths | Rear obstacle awareness during undocking |
 
-!!! warning "Capability status: experimental"
-    The stack is tuned end to end **in the docking simulation**. Real-robot bringup — drivers,
-    control, hardware integration — is in progress and lands under the placeholder packages
-    described below. Treat simulation results as validated and hardware results as pending.
+The working simulation composes `openamrobot_description`, `openamrobot_gazebo`, `openamrobot_nav2` and `openamrobot_docking`. CycloneDDS is required by the documented Jazzy setup. The repository reports approximately 1–2 cm lateral and 1° yaw docking performance in simulation; the tighter production target still requires hardware validation.
 
-## What this repository owns
-
-`openamr-platform-sw` is the ROS 2 Jazzy software stack for the OpenAMRobot mobile base. Four
-things run end to end today:
-
-| Capability | What it does |
-|:--|:--|
-| **Robot description** | The URDF, meshes, mass and inertia, and the Gazebo sensor plugin tags |
-| **Simulation** | Gazebo Harmonic bringup, the ROS ↔ gz bridge, and the worlds |
-| **Navigation** | Nav2 with AMCL localizing on a saved map, plus the RViz layout |
-| **Autodocking** | AprilTag detection, the dock model, and the dock/undock sequencer |
-
-Everything else in the ecosystem lives elsewhere. Firmware is `openamr-platform-fw`, mechanics and
-electronics are `openamr-platform-hw`, the operator interface is `openamrobot-ui`, and the shared
-message definitions are `openamrobot-interfaces`.
-
-## Package map
-
-The colcon workspace is the `ros2/` subdirectory, not the repository root. This catches almost
-everybody once.
-
-```
-ros2/src/
-├── openamrobot_description/   URDF, meshes, Gazebo sensor tags
-├── openamrobot_gazebo/        simulator bringup, ros↔gz bridge, worlds
-├── openamrobot_nav2/          Nav2 stack, AMCL, map, RViz layout
-├── openamrobot_docking/       AprilTag, dock/undock sequencer, dock model
-├── openamrobot_bringup/       (placeholder) top-level launch compositions
-├── openamrobot_control/       (placeholder) ros2_control + low-level control
-├── openamrobot_drivers/       (placeholder) lidar, camera, IMU drivers
-└── openamrobot_perception/    (placeholder) perception beyond docking
-```
-
-The four placeholder packages are folder and README markers. They do not build. They reserve the
-architectural slot for real-robot work so that when it arrives it has an agreed home rather than
-being wedged into whichever package was nearest.
-
-## Separation of concerns
-
-The project enforces a strict ownership rule, and it is worth understanding before you contribute:
-
-| Package | Owns | Does **not** own |
-|:--|:--|:--|
-| `openamrobot_description` | URDF, meshes, mass and inertia, sensor plugin tags | Worlds, navigation, docking |
-| `openamrobot_gazebo` | Simulator bringup, ros↔gz bridge, worlds | Robot model, navigation, docking |
-| `openamrobot_nav2` | Nav2 parameters, AMCL on a saved map, RViz layout | Gazebo, docking |
-| `openamrobot_docking` | AprilTag detection, dock model, dock/undock sequencer, one-command sim bringup | Robot, simulator, navigation stack |
-
-A package may **reference** a sibling at launch composition time, using `FindPackageShare` and
-`IncludeLaunchDescription`. It must never **duplicate** a sibling's files. The practical
-consequence for a contributor: a docking change should normally touch only
-`ros2/src/openamrobot_docking/`. If it genuinely needs a change in a sibling package, say why in
-the pull request.
-
-## What is known to be incomplete
-
-Stated plainly, because knowing the limits is more useful than a feature list:
-
-- **Dock and undock bypass Nav2.** The sequencer publishes straight to `/cmd_vel`, so the lidar,
-  the costmaps and the collision monitor are not in the loop during those manoeuvres. If something
-  enters the robot's path while it is approaching or leaving the dock, the robot will not stop.
-- **Docking precision is good, not production-grade.** The current four-phase approach lands
-  within a few centimetres laterally and about one degree in yaw. The target is essentially
-  perfect reliability across lighting and pose variation, which needs a tighter visual-servo final
-  stage, better camera calibration, or multi-tag geometry.
-- **Real-robot bringup is not done.** Drivers, `ros2_control` integration and hardware interfaces
-  are the placeholder packages.
-
-## Where to go next
-
-| You want to | Go to |
-|:--|:--|
-| Run it | [Set up](setup.md) |
-| Understand how navigation and docking work | [Concepts](concepts.md) |
-| Change its behaviour | [Configuration](configuration.md) |
-| Look up a topic or launch argument | [Reference](reference.md) |
-| Follow a worked task | [Tutorials](tutorials.md) |
-| Fix something | [Troubleshooting](troubleshooting.md) |
-
----
-
-**Build it:** [`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw)
+**Start with:** the repository [quickstart](https://github.com/openAMRobot/openamr-platform-sw#quickstart--simulation-navigation--docking), then use this site for [Foundations](../../foundations/index.md), [Configuration](../../configure/index.md) and the [Beginner path](../../paths/beginner.md).

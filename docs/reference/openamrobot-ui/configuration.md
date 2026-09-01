@@ -1,117 +1,48 @@
 ---
 title: Configuration
-tags: [builder, developer]
-description: Connections, limits, security, data locations and secrets for the OpenAMRobot dashboard.
 ---
 
-# openamrobot-ui · Configuration
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Configuration</h1><p>Provide the learning-layer reference for configuration and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-<span class="track track-builder">Builder</span> <span class="track track-developer">Developer</span>
-{: .track-row }
+!!! info "Documentation framework"
+    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
-**For:** whoever is deploying the dashboard rather than just using it.
-**Before you start:** the dashboard running, per [Set up](setup.md).
-**When you finish:** connections, limits and access configured deliberately rather than by default.
+## What this page should contain
 
-## The Config page
+- **Audience and outcome:** who uses this page and what verified state they should reach.
+- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
+- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
+- **Verification:** observable output, measurement, test or acceptance criterion.
+- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
+- **Next step:** one clear continuation in the ownership or development path.
 
-`/config` holds connections, Demo Mode, speed limits and preferences. Most day-to-day settings live
-here rather than in files.
+## Content template
 
-| Setting | Effect |
-|:--|:--|
-| Connection profile | Which robot the dashboard talks to |
-| Demo Mode | Browser-side sample data, no robot commands |
-| Speed limits | Caps applied to manual driving |
-| Preferences | Display and interface behaviour |
+| Field | To complete |
+| --- | --- |
+| For | Name one primary reader: operator, builder, integrator or developer |
+| Before you start | List exact prerequisites or state “nothing” |
+| When you finish | Describe a measurable outcome |
+| Capability status | Stable, beta, experimental, planned, community or partner-supported |
+| Applies to | Release, hardware revision and configuration |
+| Safety | Hazards, limits, stop conditions and required supervision |
+| Verification | What the reader should see, hear, measure or test |
 
-Preferences and profiles live in the browser's `localStorage`. They do not travel to another
-browser or machine.
+### Procedure or explanation
 
-## Ports
+1. Establish the starting state.
+2. Complete one action or concept per subsection.
+3. Record commands, parameters, screenshots or measurements where useful.
+4. Verify the result before continuing.
 
-| Port | Service | Required |
-|:--|:--|:--|
-| `5050` | Flask UI and REST API | Yes |
-| `9090` | Rosbridge WebSocket | Yes |
-| `8080` | Web video server | Only for camera streams |
+### If it did not work
 
-A remote browser needs reachability to `5050` and `9090`.
+Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
 
-## Security and access
+## Owning OpenAMRobot source
 
-!!! danger "There is no authentication"
-    Only unauthenticated `AUTH_MODE=open` is implemented. **Anyone who can reach the UI and
-    rosbridge ports can view data and command the robot.**
+- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
 
-    `local` and `external` are reserved future modes. Requesting either currently falls back to
-    `open` and shows a warning.
+## Contribution note
 
-Deployment rules that follow from that:
-
-- Keep the dashboard on a **trusted local network**
-- **Do not expose** ports `5050`, `9090` or `8080` to the internet
-- Use firewall rules or an authenticated reverse proxy where network isolation is not sufficient
-- Do not commit `.env` files or API keys
-
-Read the repository's `SECURITY.md` before deploying outside a private lab network.
-
-This is a real constraint, not a formality. An open rosbridge on a routable address is a robot
-anyone can drive.
-
-## Secrets
-
-Voice Command needs an Anthropic API key, supplied at runtime:
-
-```bash
-ANTHROPIC_API_KEY="your-key" docker compose up
-```
-
-Real `.env` files are excluded from Docker images by design. Pass secrets at runtime. Never bake a
-key into an image, and never commit one.
-
-## Nav2 parameters
-
-The `/params` page reads and changes Nav2 parameters live. Convenient, and worth two cautions:
-
-- A live parameter change takes effect **immediately**, on a robot that may be moving.
-- Changes made here are **not persisted** to the platform's configuration files. After a restart
-  the robot returns to its configured values.
-
-Use `/params` to find a good value quickly. Then write it into the platform configuration so it
-survives. See [openamr-platform-sw Configuration](../openamr-platform-sw/configuration.md).
-
-## Data locations
-
-| Data | Location |
-|:--|:--|
-| Programs, locations, history, recordings, certificates | `~/.openamr_ui/` |
-| Docker backend data | Named volume `openamr_ui_data` |
-| Schedules, missions, devices, profiles, metrics, preferences | Browser `localStorage` |
-| Maps and routes | `ros2/src/openamr_ui_package/maps/` and `paths/` |
-
-### Back up before you
-
-- reinstall
-- clear browser storage
-- remove Docker volumes
-- switch browser or machine
-
-Browser-local data does not move by itself. This catches people who assume the dashboard is
-stateless because it runs in a browser. Half of it is not.
-
-## Fleet profiles
-
-`/fleet` holds robot profiles and selects the active robot. Each profile carries its own connection
-settings, so switching robots is a selection rather than a reconfiguration.
-
-Profiles are browser-local. A second operator on a second laptop configures their own.
-
-## Related
-
-[Set up](setup.md) · [Concepts](concepts.md#where-state-lives) ·
-[Security basics](../../learn/configure/network/security-basics.md)
-
----
-
-**Build it:** [`openamrobot-ui`](https://github.com/openAMRobot/openamrobot-ui)
+Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.

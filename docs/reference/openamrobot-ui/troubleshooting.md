@@ -1,143 +1,48 @@
 ---
 title: Troubleshooting
-tags: [builder, developer]
-description: Symptom-based diagnosis for the OpenAMRobot dashboard.
 ---
 
-# openamrobot-ui · Troubleshooting
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Troubleshooting</h1><p>Provide the learning-layer reference for troubleshooting and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-<span class="track track-builder">Builder</span> <span class="track track-developer">Developer</span>
-{: .track-row }
+!!! info "Documentation framework"
+    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
-**For:** someone whose dashboard is not behaving.
-**Before you start:** a terminal with the workspace sourced.
-**When you finish:** the cause identified, not just the symptom described.
+## What this page should contain
 
-## Diagnose in this order
+- **Audience and outcome:** who uses this page and what verified state they should reach.
+- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
+- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
+- **Verification:** observable output, measurement, test or acceptance criterion.
+- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
+- **Next step:** one clear continuation in the ownership or development path.
 
-The architecture is a chain. Work along it.
+## Content template
 
-```
-Browser  →  Flask (5050)  →  rosbridge (9090)  →  relays  →  ROS 2 topics  →  robot
-```
+| Field | To complete |
+| --- | --- |
+| For | Name one primary reader: operator, builder, integrator or developer |
+| Before you start | List exact prerequisites or state “nothing” |
+| When you finish | Describe a measurable outcome |
+| Capability status | Stable, beta, experimental, planned, community or partner-supported |
+| Applies to | Release, hardware revision and configuration |
+| Safety | Hazards, limits, stop conditions and required supervision |
+| Verification | What the reader should see, hear, measure or test |
 
-1. Does the page open? → Flask, port `5050`
-2. Is the indicator green? → rosbridge, port `9090`
-3. Are topics fresh on `/health`? → the robot stack
-4. Is one panel blank while others work? → that panel's relay or topic
+### Procedure or explanation
 
-## By symptom
+1. Establish the starting state.
+2. Complete one action or concept per subsection.
+3. Record commands, parameters, screenshots or measurements where useful.
+4. Verify the result before continuing.
 
-### Page does not open
+### If it did not work
 
-The UI process is not running, or port `5050` is taken.
+Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
 
-```bash
-docker compose logs -f          # Docker
-ros2 node list | grep ui        # manual
-```
+## Owning OpenAMRobot source
 
-Check nothing else is bound to `5050`. Running Docker and a manual install together will do exactly
-this.
+- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
 
-### Page opens, connection indicator is red
+## Contribution note
 
-Rosbridge is not reachable.
-
-- Is `rosbridge_websocket` in the logs?
-- Is the configured host correct in `/config`?
-- Is port `9090` reachable from the browser's machine, not just from the robot?
-
-Remote browsers need both `5050` **and** `9090`.
-
-### Green connection, but the map or pose is frozen
-
-!!! danger "Do not drive"
-    A frozen pose means the robot on screen is not where the robot is. Any goal you send is aimed
-    at a stale position.
-
-Open `/health` and check topic freshness. A green connection means the browser reached rosbridge.
-It says nothing about whether the robot is publishing.
-
-### Map alone is blank, everything else works
-
-The relay chain. This is the most instructive failure in the system.
-
-```bash
-ros2 topic hz /map          # is the source publishing?
-ros2 topic hz /ui/map       # is the relayed version publishing?
-ros2 node list | grep relay # is map_volatile_relay running?
-```
-
-If `/map` is fine and `/ui/map` is silent, the relay is down. The browser cannot consume `/map`
-directly because of its QoS durability. See [Concepts](concepts.md#why-relays-exist).
-
-### Camera alone is blank
-
-- Is the correct image topic selected?
-- Is `web_video_server` installed? The camera node only appears when it is.
-- Is port `8080` reachable?
-
-### Route or map buttons fail
-
-The optional helper node is not running:
-
-```bash
-ros2 launch openamr_ui_package physnode_launch.py
-```
-
-Map and route file operations depend on it. Without it the pages render but the buttons do nothing.
-
-### UI changes do not appear after editing
-
-The frontend is built and synced into the ROS package. Editing source is not enough:
-
-```bash
-bash scripts/build_frontend.sh
-bash scripts/sync_frontend_to_ros.sh
-cd ros2 && colcon build --symlink-install && source install/setup.bash
-```
-
-Then hard-refresh the browser. A cached bundle looks exactly like a build that did not happen.
-
-### My missions and schedules disappeared
-
-They were in `localStorage` for that browser profile. A different browser, a different machine, a
-cleared cache or a private window all mean they are not there.
-
-Not recoverable unless you backed up. See [Configuration](configuration.md#data-locations).
-
-### Scheduled actions stopped running
-
-Scheduler runs **in the browser tab**. Closing the tab, sleeping the laptop or navigating away
-stops it. Do not use Scheduler for anything that must run unattended.
-
-### Voice Command does not respond
-
-The backend needs an Anthropic API key at runtime:
-
-```bash
-ANTHROPIC_API_KEY="your-key" docker compose up
-```
-
-Check it is not committed anywhere, and that it is being passed rather than baked into the image.
-
-## Safety-related, not bugs
-
-| Behaviour | Reality |
-|:--|:--|
-| Dashboard E-STOP does not always stop the robot | It is a software stop: one zero-velocity command plus a Nav2 goal cancel. Not latched, not safety-rated, depends on browser, network, rosbridge and controller. **Keep a tested physical E-stop within reach.** |
-| Anyone on the network can drive the robot | Only `AUTH_MODE=open` is implemented. Keep it on a trusted network behind a firewall or authenticated proxy. |
-| Missions stop when the tab closes | They are browser-side by design. |
-
-## Still stuck
-
-- Repository troubleshooting guide and Lesson 12 on debugging with the ROS CLI:
-  [`docs/`](https://github.com/openAMRobot/openamrobot-ui/tree/main/docs)
-- Organisation discussions: [github.com/orgs/openAMRobot/discussions](https://github.com/orgs/openAMRobot/discussions)
-- Upstream: [rosbridge_suite](https://github.com/RobotWebTools/rosbridge_suite) ·
-  [ROS 2 QoS](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Quality-of-Service-Settings.html)
-
----
-
-**Build it:** [`openamrobot-ui`](https://github.com/openAMRobot/openamrobot-ui)
+Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
