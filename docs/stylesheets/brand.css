@@ -49,9 +49,15 @@ body {
 }
 
 .md-typeset table:not([class]) {
+  width: 100%;
   border: 1px solid var(--oamr-border);
   border-radius: var(--oamr-radius);
   box-shadow: none;
+}
+
+.md-typeset__table {
+  display: block;
+  width: 100%;
 }
 
 .md-typeset table:not([class]) th {
@@ -253,7 +259,7 @@ h6,
 
 .oamr-path {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: .5rem;
   align-items: center;
   margin: 1.2rem 0 2rem;
@@ -261,9 +267,12 @@ h6,
   border: 1px solid var(--oamr-border);
   border-radius: var(--oamr-radius);
   background: var(--oamr-surface);
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .oamr-path span {
+  flex: 0 0 auto;
   padding: .35rem .65rem;
   border-radius: var(--oamr-radius);
   background: var(--botshare-white);
@@ -273,6 +282,7 @@ h6,
 }
 
 .oamr-path b {
+  flex: 0 0 auto;
   color: var(--botshare-orange);
 }
 

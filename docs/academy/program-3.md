@@ -1,44 +1,19 @@
----
-title: Program 3
----
+# Program 3 · Customize & Engineer
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Program 3</h1><p>Describe the Academy scope, outcome and delivery model for program 3.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+Program 3 is the technical extension path for software, firmware, hardware, interfaces, simulation and manipulation. Work is organized by the repository that owns each contract.
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+| For | Starting point | Verified outcome |
+| --- | --- | --- |
+| Developers, integrators and engineers | Program 2 outcome or equivalent platform knowledge | Implement and document a tested extension without breaking repository boundaries |
 
-## What this page should contain
+## Learning sequence
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+<div class="oamr-path"><span>Select a contract</span><b>→</b><span>Set up</span><b>→</b><span>Implement</span><b>→</b><span>Test</span><b>→</b><span>Document</span><b>→</b><span>Contribute</span></div>
 
-## Content template
+The active mobile stack uses ROS 2 Jazzy, Gazebo Harmonic, Nav2 and AprilTag-bundle docking. The manipulation framework and upper-body repositories are planned for the v0.2 cycle and are simulation-first; their present pages describe interfaces and intended ownership, not released functionality.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## Continue
 
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+- [Customize](../customize/index.md)
+- [Repository ecosystem](../reference/repositories.md)
+- [Contributing](../community/contributing.md)

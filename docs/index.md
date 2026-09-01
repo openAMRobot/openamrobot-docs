@@ -20,11 +20,12 @@ hide:
 
 | I want to… | Best starting point | Primary outcome |
 | --- | --- | --- |
-| Run and train a robot | [Operator path](learn/use.md) | Operate missions and teach tasks safely |
-| Assemble my own platform | [Builder path](learn/build.md) | Build, bring up and accept a working robot |
-| Deploy it at a customer site | [Integrator path](learn/configure.md) | Configure and adapt a reliable system |
-| Extend code, firmware or hardware | [Developer path](learn/customize.md) | Build new capabilities and contribute |
-| Create a robotics business | [Entrepreneur path](business/index.md) | Validate, launch, deliver and support locally |
+| Apply task knowledge to run and train a robot | [Domain Expert path](paths/domain-expert.md) | Operate missions, demonstrate tasks and judge outcomes safely |
+| Learn robotics from the beginning | [Beginner path](paths/beginner.md) | Understand the platform and complete a first simulation |
+| Deploy it at a customer site | [Integrator path](paths/integrator.md) | Configure and adapt a reliable system |
+| Assemble my own platform | [Builder path](paths/builder.md) | Build, bring up and accept a working robot |
+| Extend code, firmware or hardware | [Developer path](paths/developer.md) | Build new capabilities and contribute |
+| Create a robotics business | [Entrepreneur path](paths/entrepreneur.md) | Validate, launch, deliver and support locally |
 
 ## Two journeys through the ecosystem
 
