@@ -1,48 +1,111 @@
 ---
 title: Tutorials
+tags: [beginner, builder, developer]
+description: Three worked tasks in the OpenAMRobot dashboard, starting with no robot at all.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Tutorials</h1><p>Provide the learning-layer reference for tutorials and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# openamrobot-ui · Tutorials
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+<span class="track track-beginner">Beginner</span> <span class="track track-builder">Builder</span> <span class="track track-developer">Developer</span>
+{: .track-row }
 
-## What this page should contain
+**For:** anyone with the dashboard open.
+**Before you start:** [Set up](setup.md), Demo Mode is enough for tutorials 1 and 2.
+**When you finish:** you will have explored the interface, built a visual program, and understood the relay chain.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+---
 
-## Content template
+## Tutorial 1 · Learn the interface without a robot
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+**Time:** 20 minutes. **Needs:** Demo Mode only. **Risk:** none.
 
-### Procedure or explanation
+```bash
+docker compose up --build
+```
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+Open `http://127.0.0.1:5050/`, choose **Explore without a robot**, and confirm the purple banner.
 
-### If it did not work
+Visit these five pages in order and answer the question for each:
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+| Page | Question to answer |
+|:--|:--|
+| Map `/` | Where is the robot, and what do the joystick controls do? |
+| Health `/health` | Which topics does the robot need, and what does "fresh" mean? |
+| Status `/info` | What is the battery doing, and where is the camera feed? |
+| Programs `/blocks` | What blocks exist, and what can they command? |
+| Config `/config` | Where is Demo Mode, and where are speed limits? |
 
-## Owning OpenAMRobot source
+**Why this order.** Map is where you will spend your time. Health is what you check before you
+trust anything. Config is where you turn Demo Mode off, and you should know where it is before you
+need it.
 
-- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
+**Verify:** you can find Demo Mode, the speed limits and the connection indicator without hunting.
 
-## Contribution note
+---
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+## Tutorial 2 · Build your first visual program
+
+**Time:** 20 minutes. **Needs:** Demo Mode. **Risk:** none.
+
+Open `/blocks`.
+
+1. Build a short program: move to a named location, wait, return.
+2. Run it and watch the execution highlight move through the blocks.
+3. Break it deliberately — reference a location that does not exist — and read the failure message.
+
+**What to look for.** The failure message. A good visual programming environment tells a
+non-programmer what went wrong in language they can act on. Note whether it does. That judgement is
+directly useful: it is exactly the feedback that improves the Programs page for the people it is
+built for.
+
+**Verify:** the program runs to completion in Demo Mode, and you can explain what each block did.
+
+---
+
+## Tutorial 3 · Follow a value from the robot to the screen
+
+**Time:** 30 minutes. **Needs:** a running simulation or robot, and a terminal. **Risk:** none, read-only.
+
+This is the tutorial that makes the architecture concrete.
+
+Start the simulation, then the UI. In a sourced terminal:
+
+```bash
+# 1 · The source topic
+ros2 topic hz /map
+ros2 topic info /map --verbose      # note the QoS durability
+
+# 2 · The relayed topic the browser actually reads
+ros2 topic hz /ui/map
+ros2 topic info /ui/map --verbose   # note the different QoS
+
+# 3 · The relay node doing the translation
+ros2 node list | grep relay
+```
+
+Now open `/health` in the dashboard and find the same topics listed with their freshness.
+
+**What you have just proved.** The browser does not read `/map`. It reads `/ui/map`, which exists
+because the QoS profile on `/map` is not one a browser negotiates reliably. The relay is not
+decoration; it is the reason the map appears at all.
+
+**Then break it.** Stop the relay node and watch the map page go blank while `/map` continues
+publishing perfectly. That is the exact symptom in the troubleshooting table, and now you know why.
+
+**Verify:** you can state which topic the browser subscribes to, and what happens when the relay
+stops.
+
+---
+
+## Where to go next
+
+| Interest | Next |
+|:--|:--|
+| Operating the robot properly | [Use](../../learn/use/index.md) |
+| The architecture | [Concepts](concepts.md) |
+| Deploying it | [Configuration](configuration.md) |
+| The repository's own lessons | [Lessons 00–13](https://github.com/openAMRobot/openamrobot-ui/blob/main/docs/lessons/README.md) |
+
+---
+
+**Build it:** [`openamrobot-ui`](https://github.com/openAMRobot/openamrobot-ui)
