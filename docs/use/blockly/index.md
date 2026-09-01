@@ -4,6 +4,10 @@ title: Blockly
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Blockly</h1><p>Complete blockly through a clear, task-oriented workflow.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
+![OpenAMRobot visual programming interface with Blockly robot actions](https://raw.githubusercontent.com/openAMRobot/openamrobot-ui/main/docs/assets/programs/blockly.png)
+
+*Visual programs combine bounded robot actions without requiring the Domain Expert to write ROS 2 code.*
+
 !!! info "Documentation framework"
     This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 

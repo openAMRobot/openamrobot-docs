@@ -1,5 +1,6 @@
 ---
 title: Configure
+description: Configure robot descriptions, sensors, navigation, docking, manipulation, safety limits and networking for OpenAMRobot.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Turn source into a reproducible robot profile</h1><p>Describe geometry, sensors, navigation, docking, safety limits and networking without hiding which release and hardware revision they apply to.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

@@ -4,6 +4,10 @@ title: Mapping
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Mapping</h1><p>Complete mapping through a clear, task-oriented workflow.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
+![OpenAMRobot map interface showing the robot pose and navigation environment](https://raw.githubusercontent.com/openAMRobot/openamrobot-ui/main/docs/assets/map/map.png)
+
+*Current OpenAMRobot UI map view. Interface details may vary by release.*
+
 !!! info "Documentation framework"
     This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 

@@ -1,3 +1,8 @@
+---
+title: Domain Expert path
+description: Operate, demonstrate, review and judge supported OpenAMRobot workflows using real process and quality expertise.
+---
+
 # Domain Expert path
 
 For people who understand the task, process or quality criteria and need to operate or teach a supported robot workflow.

@@ -1,5 +1,6 @@
 ---
 title: openamr-platform-sw overview
+description: Understand the OpenAMRobot ROS 2 mobile-platform software repository, its scope, maturity and canonical technical sources.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Mobile platform software</h1><p>ROS 2 Jazzy robot description, Gazebo Harmonic simulation, Nav2 navigation and AprilTag-bundle docking.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

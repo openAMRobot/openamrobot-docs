@@ -1,5 +1,6 @@
 ---
 title: Build a business
+description: Validate, launch, deliver and support services or products built around the OpenAMRobot ecosystem.
 ---
 
 <section class="oamr-hero"><div><span class="oamr-status">Build a business</span><h1>Create value around an open platform</h1><p>Build local capability in training, integration, pilots, hardware, deployment and support – without starting a robotics ecosystem from zero.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="business-models/">Choose a model</a><a class="oamr-button" href="partner-program/">Explore partnership</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>

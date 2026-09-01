@@ -1,5 +1,6 @@
 ---
 title: Paths
+description: Choose an OpenAMRobot path for Domain Experts, beginners, integrators, builders, developers or entrepreneurs.
 ---
 
 # Paths

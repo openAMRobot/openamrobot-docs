@@ -30,6 +30,15 @@ jobs:
       - name: Build documentation strictly
         run: mkdocs build --strict
 
+      - name: Check repository documentation rules
+        run: bash scripts/check_docs.sh
+
+      - name: Check generated links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress --root-dir site 'site/**/*.html'
+          fail: true
+
       - name: Configure GitHub Pages
         if: github.event_name == 'push'
         uses: actions/configure-pages@v5
@@ -54,3 +63,6 @@ jobs:
       - name: Deploy GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify the live custom domain
+        run: bash scripts/check_live_site.sh https://docs.openamrobot.ai

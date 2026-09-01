@@ -14,9 +14,11 @@ copyright: "Copyright © 2021-2026 OpenAMRobot (Botshare LTD) · CC BY 4.0"
 
 theme:
   name: material
+  custom_dir: overrides
   features:
     - navigation.tabs
     - navigation.instant
+    - navigation.instant.progress
     - navigation.tracking
     - navigation.prune
     - navigation.sections
@@ -476,6 +478,7 @@ nav:
       - Practical certifications: academy/certifications.md
       - Partner program: academy/partner-program.md
       - Verify: academy/verify.md
+  - Project status: status.md
   - Community:
       - community/index.md
       - community/get-involved.md
@@ -506,6 +509,10 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight:
       anchor_linenums: true
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
+  - abbr
 
 plugins:
   - search:
@@ -514,6 +521,7 @@ plugins:
   - exclude:
       glob:
         - "templates/*"
+        - "includes/*"
   - redirects:
       redirect_maps:
         "getting_started/index.md": "start-here/index.md"
@@ -527,6 +535,8 @@ plugins:
         "tracks/beginner.md": "paths/beginner.md"
         "tracks/builder.md": "paths/builder.md"
         "tracks/developer.md": "paths/developer.md"
+hooks:
+  - hooks/page_context.py
 
 extra:
   social:

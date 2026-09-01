@@ -1,3 +1,8 @@
+---
+title: Developer path
+description: Extend OpenAMRobot software, firmware, hardware and interfaces through tested, documented contributions.
+---
+
 # Developer path
 
 For contributors extending code, firmware, hardware, simulation, UI or shared interfaces.

@@ -1,5 +1,6 @@
 ---
 title: openamr-platform-fw overview
+description: Understand the OpenAMRobot embedded firmware repository, supported interfaces, maturity and canonical technical sources.
 ---
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Mobile platform firmware</h1><p>Teensy 4.0 micro-ROS motor control, encoder odometry, IMU integration and debug telemetry.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
