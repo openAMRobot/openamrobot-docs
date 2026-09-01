@@ -1,48 +1,175 @@
 ---
-title: Setup
+title: Set up
+tags: [builder, developer]
+description: Run the OpenAMRobot dashboard in Demo Mode or against a real robot.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Setup</h1><p>Provide the learning-layer reference for setup and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# openamrobot-ui · Set up
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
-## What this page should contain
+**For:** anyone who wants the dashboard running.
+**Before you start:** Docker, or Ubuntu 24.04 with ROS 2 Jazzy.
+**When you finish:** the dashboard open in your browser, in Demo Mode or connected to a robot.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+## Start in Demo Mode
 
-## Content template
+Five minutes, no robot, no ROS. Do this first even if you have hardware.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+```bash
+git clone https://github.com/openAMRobot/openamrobot-ui.git
+cd openamrobot-ui
+docker compose up --build
+```
 
-### Procedure or explanation
+Then:
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+1. Open `http://127.0.0.1:5050/`
+2. Choose **Explore without a robot** in the first-run guide
+3. If the guide does not appear, open `/config` and enable **Demo Mode**
+4. Confirm the **purple Demo Mode banner** and the **green connection indicator**
 
-### If it did not work
+Demo Mode uses browser-side sample data. Nothing you press commands a real robot.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## Requirements
 
-## Owning OpenAMRobot source
+| Use case | Required |
+|:--|:--|
+| Docker demo or deployment | Docker Engine and Docker Compose. Linux or WSL recommended for host networking. |
+| Manual installation | Ubuntu 24.04, ROS 2 Jazzy, Python 3, `colcon`, Node.js and npm |
+| Live operation | A separately running robot or simulation stack |
+| Remote browser | Access to TCP ports `5050`, `9090`, and optionally `8080` |
+| Voice Command | An Anthropic API key supplied to the backend at runtime |
 
-- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
+### Version compatibility
 
-## Contribution note
+| Component | Target | Note |
+|:--|:--|:--|
+| Ubuntu | 24.04 LTS | Manual-install target |
+| ROS 2 | Jazzy | Required by the documented packages and commands |
+| Node.js | 18 to 20 | Enforced by `engines` (`>=18 <21`). CI validates on Node 20. |
+| `openamr-platform-sw` | Jazzy branch, pinned commit | **TO CONFIRM** — record the known-good SHA per deployment |
+| Robot hardware | Topic-compatible platform | Revision not yet pinned. Validate drivers, limits, docking and E-stop per robot. |
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! note "Pin your platform commit"
+    Until platform and hardware releases are pinned, treat a known-working platform commit and
+    robot revision as part of each deployment's configuration. Write it down. A UI that worked last
+    month against an unpinned platform is not evidence that it works today.
+
+=== "Docker"
+
+    ```bash
+    docker compose up --build
+    ```
+
+    Useful:
+
+    ```bash
+    docker compose up -d       # background
+    docker compose logs -f     # follow logs
+    docker compose down        # stop, keep saved backend data
+    ```
+
+    With Voice Command:
+
+    ```bash
+    ANTHROPIC_API_KEY="your-key" docker compose up
+    ```
+
+    Real `.env` files are excluded from images. Pass secrets at runtime; never bake them in.
+
+    **Success check.** The dashboard opens on port `5050`, and the logs show `flask_app`,
+    `rosbridge_websocket`, `map_volatile_relay` and `nav_relays`. The camera node appears only when
+    `web_video_server` is installed.
+
+=== "Manual install"
+
+    Install ROS 2 Jazzy, Node.js, npm and the declared ROS dependencies, then:
+
+    ```bash
+    cd ~/openamrobot-ui
+    bash scripts/build_frontend.sh
+    bash scripts/sync_frontend_to_ros.sh
+
+    cd ros2
+    source /opt/ros/jazzy/setup.bash
+    colcon build --symlink-install
+    source install/setup.bash
+    ros2 launch openamr_ui_bringup ui.launch.py
+    ```
+
+    The backend needs Xacro for the Robot Description page.
+
+    **Success check:**
+
+    ```bash
+    ros2 pkg list | grep openamr_ui
+    ```
+
+    Should list `openamr_ui_bringup`, `openamr_ui_msgs` and `openamr_ui_package`.
+
+!!! warning "Do not run both"
+    Docker and a manual install will fight over the same ports. Pick one.
+
+## Connect to a real robot or simulation
+
+The robot stack and the UI are **separate workspaces**. Start the robot or simulation first, then
+the UI:
+
+```bash
+cd ~/openamrobot-ui/ros2
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+ros2 launch openamr_ui_bringup ui.launch.py
+```
+
+For map and route file operations, and route-following helpers:
+
+```bash
+ros2 launch openamr_ui_package physnode_launch.py
+```
+
+## Before enabling motion
+
+!!! danger "Work through this every time, on real hardware"
+    1. Turn **Demo Mode off**
+    2. Confirm the correct **robot connection profile**
+    3. Check the connection indicator is **green**
+    4. Open **Health** and confirm the required topics are **fresh**
+    5. Confirm the displayed **map and robot pose match the physical robot**
+    6. Set **conservative speed limits** and clear the operating area
+    7. **Test the physical emergency stop**
+
+    Step 5 is the one people skip. A stale pose means the robot on screen is not the robot in the
+    room, and every command you send is aimed somewhere else.
+
+    Step 7 matters because the dashboard's E-STOP is software only. See
+    [Overview](overview.md#the-e-stop-is-software-only).
+
+## Verify it worked
+
+- Dashboard opens on `5050`
+- Connection indicator green
+- Health page shows fresh topics
+- Map renders and the robot pose moves when the robot moves
+
+## If it did not work
+
+| Symptom | First check |
+|:--|:--|
+| Page does not open | UI process and port `5050` |
+| Page opens, connection red | Rosbridge process, configured host, port `9090` |
+| Green, but map or pose frozen | Health page topic freshness. **Do not drive.** |
+| Map alone blank | `/map`, `/ui/map`, and `map_volatile_relay` |
+| Camera alone blank | Selected image topic, and port `8080` if used |
+| Route or map buttons fail | Optional `physnode_launch.py` helpers not running |
+| UI changes do not appear | Rebuild, sync, rebuild the ROS package, hard-refresh |
+
+More in [Troubleshooting](troubleshooting.md).
+
+## Next
+
+[Tutorials](tutorials.md), or [Concepts](concepts.md) to understand what you just started.
+
+---
+
+**Build it:** [`openamrobot-ui`](https://github.com/openAMRobot/openamrobot-ui)

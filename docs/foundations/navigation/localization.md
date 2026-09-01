@@ -1,53 +1,117 @@
 ---
 title: Localization
+tags: [beginner, builder]
+description: How a robot works out where it is on a map it already has.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Localization</h1><p>Explain localization in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+# Localization
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
-## What this page should contain
+**For:** anyone who wants to understand how the robot knows its place.
+**Before you start:** [Coordinate frames](coordinate-frames.md) and [SLAM and mapping](slam-and-mapping.md).
+**When you finish:** you will understand particle filters well enough to debug them.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+## The job
 
-## Content template
+You have a map. The robot is somewhere on it. Odometry says roughly where, but odometry drifts.
+The laser sees walls. Localization reconciles the two into a single best estimate, continuously.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## Particle filters, in plain terms
 
-### Procedure or explanation
+AMCL — Adaptive Monte Carlo Localization — uses a **particle filter**. The idea is easier than the
+name.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+Imagine a thousand guesses about where the robot is. Each guess is a particle: a position and a
+heading.
 
-### If it did not work
+1. **Move.** The robot drives forward half a metre. Every particle moves half a metre in its own
+   heading, plus a little random noise to represent the fact that odometry is imperfect.
+2. **Sense.** The laser returns a scan. For each particle, ask: *if the robot were here, what would
+   the laser see?* Compare against the real scan.
+3. **Weight.** Particles that predicted well get high weight. Particles that predicted badly get
+   low weight.
+4. **Resample.** Draw a new set of particles, favouring the heavy ones. Bad guesses die out; good
+   ones multiply.
+5. **Repeat**, several times a second.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+Within a few metres of driving, the cloud collapses onto the true position and follows it.
 
-## Owning OpenAMRobot source
+**The "adaptive" part:** when the robot is confident, AMCL uses fewer particles and saves
+computation. When it becomes uncertain, it uses more. You can watch this happen in RViz — the cloud
+visibly tightens and spreads.
 
-- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) – canonical source, versions, implementation and issue history.
+## What you see in RViz
 
-## Authoritative external references
+The particle cloud is the best diagnostic in the stack, and it is free:
 
-- [Nav2 documentation](https://docs.nav2.org/)
-- [ROS REP-105 coordinate conventions](https://www.ros.org/reps/rep-0105.html)
+| Cloud looks like | Meaning |
+|:--|:--|
+| Tight blob, follows the robot | Healthy. Confident and correct. |
+| Wide scatter | Uncertain. Just started, or the environment is featureless. |
+| Stretched along a corridor | Position along the corridor is ambiguous. Normal. Resolves at a junction. |
+| Two separate clumps | The environment is genuinely ambiguous — identical aisles, symmetric rooms. |
+| Tight but in the wrong place | Confidently wrong. The worst state. Re-seed it. |
 
-## Contribution note
+## The initial pose
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+AMCL is not usually given a global search. It needs a starting guess.
+
+In RViz, *2D Pose Estimate* lets you click the robot's approximate position and drag its heading.
+Get within a metre or so and it converges quickly.
+
+Without a guess, one of three things happens: it converges slowly, it converges to the wrong place
+in a repetitive environment, or it never converges.
+
+Production systems solve this with a known start position — usually the charging dock, which is
+exactly where a docked robot is.
+
+## The kidnapped robot problem
+
+Pick a running robot up and put it somewhere else. Its particles are all clustered where it used to
+be, all now predicting badly.
+
+A particle filter can recover if it is configured to inject random particles when overall
+confidence collapses. That is a tuning decision, and it trades recovery ability against stability:
+too much injection makes a healthy filter jittery.
+
+Practically: if you move a robot by hand, re-seed the pose.
+
+## Parameters worth knowing
+
+| Parameter | What it controls | Symptom of too low | Symptom of too high |
+|:--|:--|:--|:--|
+| `min_particles` / `max_particles` | Cloud size | Fails to converge, or loses track | CPU load |
+| `laser_max_range` | How far scans are trusted | Ignores useful distant features | Noisy far returns pollute matching |
+| `odom_alpha1..4` | How much odometry is trusted | Filter ignores real motion | Cloud spreads too fast |
+| `update_min_d` / `update_min_a` | How far or how much rotation before an update | Wasted computation | Sluggish correction |
+
+Reference: [Nav2 AMCL configuration](https://docs.nav2.org/configuration/packages/configuring-amcl.html)
+
+!!! tip "Tune the environment first"
+    Before tuning the filter, ask whether the map is good and whether the space has features. A
+    localization problem in a long empty corridor is a space problem, not a parameter problem.
+
+## Localization and the transform tree
+
+Worth restating because it is the connection between two ideas: AMCL does not publish the robot's
+pose directly. It publishes the **`map` → `odom`** transform. Odometry publishes `odom` →
+`base_link`. Chain them and you have the robot on the map.
+
+This is why localization corrections appear as small jumps in `map` while `odom` stays perfectly
+smooth. See [Coordinate frames](coordinate-frames.md#why-both).
+
+## Further reading
+
+- [Nav2 AMCL](https://docs.nav2.org/configuration/packages/configuring-amcl.html)
+- [Monte Carlo localization](https://en.wikipedia.org/wiki/Monte_Carlo_localization)
+- [Particle filters](https://en.wikipedia.org/wiki/Particle_filter)
+- [Probabilistic Robotics](http://www.probabilistic-robotics.org/) — the standard text
+
+## Related
+
+[SLAM and mapping](slam-and-mapping.md) · [Path planning](path-planning.md) ·
+[openamr-platform-sw Concepts](../../reference/openamr-platform-sw/concepts.md)
+
+## Next
+
+[Path planning](path-planning.md)

@@ -211,6 +211,7 @@ nav:
           - When a demonstration is bad: use/demonstration/when-a-demo-is-bad.md
       - Monitoring and daily operation:
           - use/monitoring/index.md
+          - Safety in daily use: use/monitoring/safety.md
           - Daily operation: use/monitoring/daily-operation.md
           - Reading the dashboard: use/monitoring/reading-the-dashboard.md
           - Robot states: use/monitoring/robot-states.md
