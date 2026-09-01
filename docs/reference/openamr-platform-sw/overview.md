@@ -1,48 +1,19 @@
 ---
-title: Overview
+title: openamr-platform-sw overview
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Overview</h1><p>Provide the learning-layer reference for overview and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Mobile platform software</h1><p>ROS 2 Jazzy robot description, Gazebo Harmonic simulation, Nav2 navigation and AprilTag-bundle docking.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+[`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw) is the owning repository for the mobile base software stack.
 
-## What this page should contain
-
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
-
-## Content template
-
-| Field | To complete |
+| Implemented now | In progress |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| Robot URDF and meshes | Top-level real-robot bring-up |
+| Gazebo Harmonic simulation and ROS/Gazebo bridge | `ros2_control` and low-level control integration |
+| Nav2, AMCL, SLAM resources and RViz | Production hardware drivers and broader perception |
+| Three-tag AprilTag dock/undock sequence | Hardware validation of production docking tolerances |
+| Docker and Ubuntu 24.04 setup paths | Rear obstacle awareness during undocking |
 
-### Procedure or explanation
+The working simulation composes `openamrobot_description`, `openamrobot_gazebo`, `openamrobot_nav2` and `openamrobot_docking`. CycloneDDS is required by the documented Jazzy setup. The repository reports approximately 1–2 cm lateral and 1° yaw docking performance in simulation; the tighter production target still requires hardware validation.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+**Start with:** the repository [quickstart](https://github.com/openAMRobot/openamr-platform-sw#quickstart--simulation-navigation--docking), then use this site for [Foundations](../../foundations/index.md), [Configuration](../../configure/index.md) and the [Beginner path](../../paths/beginner.md).

@@ -48,16 +48,38 @@ body {
   color: inherit;
 }
 
-.md-typeset table:not([class]) {
-  width: 100%;
-  border: 1px solid var(--oamr-border);
-  border-radius: var(--oamr-radius);
-  box-shadow: none;
-}
-
 .md-typeset__table {
   display: block;
   width: 100%;
+  margin: 1rem 0 1.5rem;
+  overflow-x: auto;
+  border: 1px solid var(--oamr-border);
+  border-radius: var(--oamr-radius);
+  background: var(--botshare-white);
+}
+
+.md-typeset .md-typeset__table table:not([class]) {
+  display: table;
+  width: 100%;
+  min-width: 36rem;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  table-layout: auto;
+  box-shadow: none;
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: .75rem 1rem;
+  border-bottom: 1px solid var(--oamr-border);
+  vertical-align: top;
+}
+
+.md-typeset table:not([class]) th:first-child,
+.md-typeset table:not([class]) td:first-child {
+  width: 24%;
+  min-width: 9rem;
 }
 
 .md-typeset table:not([class]) th {
@@ -67,6 +89,15 @@ body {
 
 .md-typeset table:not([class]) tr:nth-child(even) td {
   background: rgba(0, 114, 198, .035);
+}
+
+.md-typeset table:not([class]) tr:last-child td {
+  border-bottom: 0;
+}
+
+[data-md-color-scheme="slate"] .md-typeset__table {
+  border-color: rgba(255, 255, 255, .13);
+  background: rgba(255, 255, 255, .03);
 }
 
 .md-typeset .admonition,
@@ -296,15 +327,15 @@ h6,
 }
 
 .oamr-breadcrumbs {
-  margin: 0 0 1rem;
+  margin: 0 0 .7rem;
   color: var(--oamr-muted);
-  font-size: .78rem;
+  font-size: .72rem;
 }
 
 .md-typeset .oamr-breadcrumbs ol {
   display: flex;
   flex-wrap: nowrap;
-  gap: .25rem;
+  gap: .35rem;
   align-items: center;
   margin: 0;
   padding: 0;
@@ -320,10 +351,10 @@ h6,
 }
 
 .oamr-breadcrumbs li:not(:last-child)::after {
-  margin-left: .25rem;
-  color: var(--botshare-orange);
-  content: "/";
-  font-weight: 800;
+  margin-left: .35rem;
+  color: var(--botshare-gray);
+  content: "›";
+  font-weight: 400;
 }
 
 .oamr-breadcrumbs a {
@@ -332,7 +363,7 @@ h6,
 
 .oamr-breadcrumbs [aria-current="page"] {
   color: var(--oamr-ink);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 [data-md-color-scheme="slate"] .oamr-breadcrumbs [aria-current="page"] {

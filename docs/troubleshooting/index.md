@@ -1,3 +1,7 @@
+---
+title: Troubleshooting
+---
+
 # Troubleshooting
 
 Start with the owning repository’s README and issue tracker because commands, dependencies and known defects are version-specific.

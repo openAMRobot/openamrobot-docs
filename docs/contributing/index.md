@@ -1,3 +1,7 @@
+---
+title: Contributing
+---
+
 # Contributing
 
 OpenAMRobot welcomes technically justified contributions through pull requests.

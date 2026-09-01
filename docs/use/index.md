@@ -2,47 +2,23 @@
 title: Use
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Use</h1><p>Guide an operator through use using task language.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental operation</span><h1>Operate supported workflows safely</h1><p>Move from controlled driving and maps to locations, missions, no-code programs, demonstrations and daily monitoring.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Operating areas
 
-## What this page should contain
+| Area | Use it to | Continue with |
+| --- | --- | --- |
+| Driving | Establish manual control and safe stop behaviour | [Driving](driving/index.md) |
+| Mapping | Create and maintain the robot's spatial reference | [Mapping your space](mapping/index.md) |
+| Locations | Name reusable destinations and poses | [Locations and poses](locations/index.md) |
+| Missions | Combine supported steps with failure policies and run history | [Missions](missions/index.md) |
+| Blockly | Build bounded workflows without writing ROS 2 code | [Programming without code](blockly/index.md) |
+| Demonstration | Capture, review and evaluate task demonstrations | [Teaching by demonstration](demonstration/index.md) |
+| Monitoring | Read robot state, logs and events during daily operation | [Monitoring](monitoring/index.md) |
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+<div class="oamr-path"><span>Inspect</span><b>→</b><span>Start</span><b>→</b><span>Run</span><b>→</b><span>Monitor</span><b>→</b><span>Recover or stop</span><b>→</b><span>Record</span></div>
 
-## Content template
+The browser interface lives in [`openamrobot-ui`](https://github.com/openAMRobot/openamrobot-ui). ROS 2 navigation and docking behaviour lives in [`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw).
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
-
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! warning "Know the supported boundary"
+    Verify release, robot profile, environment and safety assumptions before operation. A simulation result is not evidence that a physical deployment is safe or accepted.

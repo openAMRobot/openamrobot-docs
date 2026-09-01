@@ -1,48 +1,21 @@
 ---
-title: Overview
+title: openamr-platform-hw overview
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Overview</h1><p>Provide the learning-layer reference for overview and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental · documentation-first</span><h1>Mobile platform hardware</h1><p>Maintained CAD, production files, wiring, BOMs, component data and safety notes for the differential-drive base.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+[`openamr-platform-hw`](https://github.com/openAMRobot/openamr-platform-hw) is the canonical source for the physical mobile base.
 
-## What this page should contain
-
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
-
-## Content template
-
-| Field | To complete |
+| Subsystem | Current reference configuration |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| Compute | Raspberry Pi 5, 8 GB, Ubuntu Server 24.04 and ROS 2 Jazzy |
+| Microcontroller | Teensy 4.0; 3.3 V I/O and not 5 V tolerant |
+| Drive | Two 24 V, 60 W BLDC geared motors with ZBLD drivers |
+| Feedback | AS5040 wheel encoders and MPU6500 IMU |
+| Perception | RPLIDAR A1 and Raspberry Pi Camera Module 3 NoIR |
+| Geometry | 0.20 m wheel diameter and 0.46 m measured track |
 
-### Procedure or explanation
+The repository contains real mechanical CAD, per-part production files, electrical and mechanical BOMs, wiring/pinout documentation, datasheets and safety material. It also documents critical current limitations: no battery fuse, no battery-side disconnect/hardware E-stop, and no active Raspberry Pi 5 cooling in the reference build.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! danger "Electrical boundary"
+    Teensy 4.0 inputs are not 5 V tolerant, and the documented AS5040 encoders must use the 3.3 V rail. Verify the owning repository before wiring or powering hardware.

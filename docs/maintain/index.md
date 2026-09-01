@@ -1,48 +1,22 @@
 ---
-title: Maintain
+title: Maintain and repair
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Maintain</h1><p>Define inspection, diagnosis, service evidence and acceptance for maintain.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Service framework</span><h1>Keep evidence with every maintenance action</h1><p>Separate symptoms from causes, preserve configuration state and verify the robot before returning it to use.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Maintenance workflow
 
-## What this page should contain
+<div class="oamr-path"><span>Inspect</span><b>→</b><span>Capture evidence</span><b>→</b><span>Isolate</span><b>→</b><span>Repair or update</span><b>→</b><span>Verify</span><b>→</b><span>Record</span></div>
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+| Area | Purpose | Start here |
+| --- | --- | --- |
+| Routine maintenance | Detect wear, looseness, contamination and drift before failure | [Routine maintenance](routine/index.md) |
+| Diagnosis | Read states and logs, reproduce symptoms and isolate one subsystem | [Diagnosis](diagnosis/index.md) |
+| Common faults | Follow evidence-led triage by subsystem | [Common faults](faults/index.md) |
+| Repair | Restore a known configuration with appropriate parts and records | [Repair](repair/index.md) |
+| Updates | Apply versioned software or firmware with a tested rollback | [Updates](updates/index.md) |
 
-## Content template
+Before service, make the robot safe against unintended motion and stored energy. After service, repeat the affected acceptance checks and record parts, revisions, commits, configuration changes and results.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
-
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! info "Current scope"
+    These pages define the documentation and verification structure. Procedures remain planned until tested against an identified hardware revision and release.

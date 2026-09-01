@@ -1,3 +1,7 @@
+---
+title: Tutorials
+---
+
 # Tutorials
 
 Tutorials explain concepts and complete learning paths. Version-sensitive commands remain in their owning repositories and are linked rather than copied here.

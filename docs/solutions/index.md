@@ -1,3 +1,7 @@
+---
+title: Solutions
+---
+
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status">Solutions</span><h1>Start with the work, not the robot</h1><p>Use one shared platform and reusable capability patterns to address concrete operational problems.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="pilot-framework/">Plan a pilot</a><a class="oamr-button" href="../business/">Build a local offer</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
 ## Priority solution families

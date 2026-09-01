@@ -2,43 +2,23 @@
 title: Customize
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Customize</h1><p>Show how to extend customize without breaking platform contracts.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Mixed maturity</span><h1>Extend the platform through owned contracts</h1><p>Add devices, code, firmware, hardware, simulations or policies without duplicating another repository's responsibility.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Choose the owning layer
 
-## What this page should contain
+| Extension | Owning source | Start here |
+| --- | --- | --- |
+| ROS 2 behaviour and platform integration | `openamr-platform-sw` | [Software](software/index.md) |
+| Embedded control and bridges | `openamr-platform-fw` | [Firmware](firmware/index.md) |
+| Chassis, power and electronics | `openamr-platform-hw` | [Hardware](hardware/index.md) |
+| Shared messages, services and actions | `openamrobot-interfaces` | [Working with interfaces](software/working-with-interfaces.md) |
+| UI panels and Blockly blocks | `openamrobot-ui` | [Extending the UI](software/extending-the-ui.md) |
+| Reusable arms and devices | `openamrobot-manipulation` | [Device packages](device-packages/index.md) |
+| Worlds and scenario validation | Owning software repository | [Simulation](simulation/index.md) |
+| Datasets and policies | Developing manipulation/AI layer | [AI and policies](ai/index.md) |
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+<div class="oamr-path"><span>Choose contract</span><b>→</b><span>Check maturity</span><b>→</b><span>Implement</span><b>→</b><span>Test</span><b>→</b><span>Document</span><b>→</b><span>Contribute</span></div>
 
-## Content template
+The mobile simulation, navigation and docking stack is active but experimental. The shared manipulation framework and upper-body repositories are planned for the v0.2 cycle and simulation-first; their current contracts are design direction, not released implementation.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
-
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+Use the [repository map](../reference/repositories.md) before changing a contract and follow the [contribution workflow](../community/contributing.md) for DCO, contributor agreement, review and testing requirements.

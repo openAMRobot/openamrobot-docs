@@ -22,12 +22,13 @@ The hub covers:
 ## Ecosystem Repositories
 
 ### Platform Software
-
 ```text
 openamr-platform-sw
 ```
 
 ROS 2 software, simulation, navigation, docking, drivers, perception, and bringup.
+
+**Status:** Active documentation hub; individual subsystem maturity is stated on its page and in its owning repository.
 
 ### Platform Firmware
 
@@ -95,6 +96,12 @@ openamrobot-docs/
 - software
 - hardware
 - firmware
+
+## Repository boundaries
+
+- Exact versions, parameters, source code and interface contracts remain canonical in their owning repositories.
+- This repository owns cross-project architecture, learning paths, durable explanations and the published documentation site.
+- Tested commands should be linked to their owning repository instead of copied into multiple locations.
 
 ## Documentation Principles
 

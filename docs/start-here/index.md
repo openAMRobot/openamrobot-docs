@@ -1,4 +1,5 @@
 ---
+title: Start here
 hide:
   - navigation
 ---

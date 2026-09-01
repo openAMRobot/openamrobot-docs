@@ -1,48 +1,20 @@
 ---
-title: Overview
+title: openamrobot-ui overview
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Overview</h1><p>Provide the learning-layer reference for overview and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Active</span><h1>Browser robot interface</h1><p>Mapping, driving, Nav2 goals, cameras, routes, missions, Blockly, diagnostics and recordings without ROS tooling in the browser.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+[`openamrobot-ui`](https://github.com/openAMRobot/openamrobot-ui) is the active user-interface repository. Demo Mode runs the interface from browser-side sample data, so contributors can explore it without a robot or ROS connection.
 
-## What this page should contain
-
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
-
-## Content template
-
-| Field | To complete |
+| Area | Available capability |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| Map and drive | Live map, pose, goal selection, joystick, docking and waypoints |
+| Routes and missions | Reusable routes, schedules and multi-step missions |
+| Visual programming | Blockly workflows and optional voice-command integration |
+| Observation | Camera streams, telemetry, battery, URDF and joint state |
+| Health and history | Topic freshness, lifecycle, diagnostics, events and rosbag replay |
 
-### Procedure or explanation
+The documented quickstart uses Docker Compose and opens the interface at `127.0.0.1:5050`. Real robot or simulation operation starts the ROS 2 stack separately, then launches the UI workspace against it.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! warning "The dashboard stop is not an E-stop"
+    The red UI control sends a zero-velocity command and requests goal cancellation. It is not latched, safety-rated or independent of the browser and network. Physical hardware requires a tested physical emergency stop.

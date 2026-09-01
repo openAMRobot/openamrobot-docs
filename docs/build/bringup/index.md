@@ -1,48 +1,22 @@
 ---
-title: Bringup
+title: Bring-up
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Bringup</h1><p>Provide a safe, numbered and verifiable procedure for bringup during a physical build.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Hardware validation in progress</span><h1>Bring up one subsystem at a time</h1><p>Verify power, communication, motors and sensors before permitting normal robot motion.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Controlled sequence
 
-## What this page should contain
+<div class="oamr-path"><span>Pre-power</span><b>→</b><span>First power</span><b>→</b><span>Motor check</span><b>→</b><span>Sensor check</span><b>→</b><span>First motion</span></div>
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
-
-## Content template
-
-| Field | To complete |
+| Checkpoint | Continue only when |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| [Pre-power](pre-power-checklist.md) | Polarity, protection, grounding, connectors and mechanical clearances are verified |
+| [First power-on](first-power-on.md) | Rails are stable, no component overheats and the system can be stopped immediately |
+| [Motor and drive check](motor-check.md) | Direction, encoder feedback and commanded speed agree with the configuration |
+| [Sensor check](sensor-check.md) | Expected ROS 2 topics update with plausible frames, rates and values |
+| [First motion](first-motion.md) | The robot moves at reduced limits in a controlled area and stops as expected |
 
-### Procedure or explanation
+Record hardware revision, firmware commit, software release, robot profile and every measured result. Stop at the first unexpected state and use [common bring-up failures](common-bringup-failures.md) to collect evidence before changing multiple variables.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+!!! warning "Not yet a released real-robot procedure"
+    The owning software repository marks real-robot drivers and control as in progress. Treat these pages as the acceptance structure for tested contributions, not proof that every physical configuration is supported today.

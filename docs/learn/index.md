@@ -1,3 +1,7 @@
+---
+title: Learning path
+---
+
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status">The learning path</span><h1>From first principles to an owned robot</h1><p>A staged path to understand, build, configure, train, operate, maintain and customize OpenAMRobot.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="foundations/">Start with foundations</a><a class="oamr-button" href="../reference/">Technical reference</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
 <div class="oamr-path"><span>Understand</span><b>→</b><span>Build</span><b>→</b><span>Bring up</span><b>→</b><span>Configure</span><b>→</b><span>Train</span><b>→</b><span>Use</span><b>→</b><span>Maintain</span><b>→</b><span>Customize</span></div>

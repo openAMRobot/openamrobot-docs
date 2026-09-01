@@ -1,48 +1,17 @@
 ---
-title: Overview
+title: openamrobot-release overview
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Overview</h1><p>Provide the learning-layer reference for overview and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Released · v0.0.1</span><h1>Frozen product-level source snapshot</h1><p>A versioned archive of the hardware, software, firmware, UI, interfaces, communication, documentation and governance repositories.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+[`openamrobot-release`](https://github.com/openAMRobot/openamrobot-release) exists because GitHub's automatic archive for one repository cannot represent the multi-repository platform.
 
-## What this page should contain
-
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
-
-## Content template
-
-| Field | To complete |
+| Verify before use | Purpose |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| `RELEASE_NOTES.md` | Included capability and release context |
+| `KNOWN_LIMITATIONS.md` | Unsupported or incomplete behaviour |
+| `VERSION` | Product-level version identity |
+| `MANIFEST.json` | Participating repositories and source revisions |
+| `checksums.sha256` | Archive integrity |
 
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Owning OpenAMRobot source
-
-- [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+The current public snapshot is [`OpenAMRobot-v0.0.1-source.zip`](https://github.com/openAMRobot/openamrobot-release/releases/tag/v0.0.1). Live repositories may be newer; use the release archive when reproducibility matters.

@@ -1,3 +1,7 @@
+---
+title: About, legal and contact
+---
+
 # About, legal and contact
 
 ## Project and operator

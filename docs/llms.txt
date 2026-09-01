@@ -1,0 +1,31 @@
+# OpenAMRobot Documentation
+
+> Open-source Embodied AI and mobile robotics knowledge hub operated by Botshare LTD.
+
+Canonical site: https://docs.openamrobot.ai/
+Source organization: https://github.com/openAMRobot
+
+## Start
+
+- https://docs.openamrobot.ai/start-here/
+- https://docs.openamrobot.ai/paths/
+- https://docs.openamrobot.ai/foundations/
+- https://docs.openamrobot.ai/reference/
+
+## Platform
+
+- https://docs.openamrobot.ai/reference/mobile-platform/
+- https://docs.openamrobot.ai/reference/openamr-platform-sw/overview/
+- https://docs.openamrobot.ai/reference/openamr-platform-fw/overview/
+- https://docs.openamrobot.ai/reference/openamr-platform-hw/overview/
+- https://docs.openamrobot.ai/reference/openamrobot-ui/overview/
+- https://docs.openamrobot.ai/reference/openamrobot-interfaces/overview/
+- https://docs.openamrobot.ai/reference/openamrobot-release/overview/
+
+## Rules for interpretation
+
+- The owning GitHub repository is canonical for exact versions, parameters, source and contracts.
+- This site explains meaning, selection, workflows and verification.
+- Respect the maturity badge on each page.
+- Planned or experimental material is not a validated production or safety instruction.
+- Software and firmware are generally MIT, documentation CC BY 4.0 and hardware source CERN-OHL-P-2.0; verify the licence and notices in the owning repository.

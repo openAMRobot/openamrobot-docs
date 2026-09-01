@@ -1,4 +1,8 @@
-# Operator interface
+---
+title: Robot interface
+---
+
+# Robot interface
 
 [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) is the active browser-based operator interface for OpenAMRobot.
 
