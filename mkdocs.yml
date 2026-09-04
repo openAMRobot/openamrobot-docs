@@ -485,6 +485,8 @@ nav:
       - community/get-involved.md
       - community/contributing.md
       - Documentation standard: DOCUMENTATION_STANDARD.md
+      - Documentation information architecture: DOCUMENTATION_INFORMATION_ARCHITECTURE.md
+      - Engineering quality standard: community/engineering-quality-standard.md
       - Documentation standard overview: community/documentation-standard.md
       - community/support.md
   - About:
