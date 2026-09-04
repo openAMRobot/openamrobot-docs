@@ -72,6 +72,12 @@ openamrobot-docs/
 └── README.md
 ```
 
+## Standards
+
+- [Documentation Standard](docs/DOCUMENTATION_STANDARD.md)
+- [Documentation Information Architecture](docs/DOCUMENTATION_INFORMATION_ARCHITECTURE.md)
+- [Engineering Quality Standard](https://github.com/openAMRobot/.github/blob/main/ENGINEERING_QUALITY_STANDARD.md)
+
 ## Documentation Areas
 
 ### Core
