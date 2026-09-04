@@ -2,12 +2,22 @@
 title: Contributing
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Contributing</h1><p>Document contributing for the appropriate OpenAMRobot audience.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status">Standard adopted</span><h1>Contributing</h1><p>Use the same quality and information-architecture contract for every documentation contribution.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
 !!! info "Documentation framework"
     This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
-## What this page should contain
+## Required standards
+
+Before opening a documentation pull request, read:
+
+- the [Documentation Information Architecture](../DOCUMENTATION_INFORMATION_ARCHITECTURE.md);
+- the [Documentation Standard](../DOCUMENTATION_STANDARD.md);
+- the organization [Engineering Quality Standard](https://github.com/openAMRobot/.github/blob/main/ENGINEERING_QUALITY_STANDARD.md).
+
+Automated enforcement is planned but is not active yet. Authors and reviewers must therefore apply the architecture, canonical-source rule, audience declaration, verification requirement and honest readiness language manually.
+
+## What every page should contain
 
 - **Audience and outcome:** who uses this page and what verified state they should reach.
 - **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
