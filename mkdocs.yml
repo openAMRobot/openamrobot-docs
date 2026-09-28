@@ -506,6 +506,7 @@ extra_css:
 extra_javascript:
   - javascripts/github-organization-link.js
   - javascripts/site-enhancements.js
+  - javascripts/toc-toggle.js
 
 markdown_extensions:
   - admonition
