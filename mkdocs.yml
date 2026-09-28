@@ -362,6 +362,9 @@ nav:
       - Repository ecosystem: reference/repositories.md
       - Mobile platform: reference/mobile-platform.md
       - Upper body: reference/upper-body.md
+      - OpenAMRobot 2.0 design:
+          - reference/openamrobot-2/index.md
+          - Hardware architecture: reference/openamrobot-2/hardware-architecture.md
       - Interfaces: reference/interfaces.md
       - Communication: reference/communication.md
       - openamr-* · the mobile robot:
