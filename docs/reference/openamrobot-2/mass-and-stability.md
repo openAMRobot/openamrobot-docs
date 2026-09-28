@@ -9,7 +9,7 @@ description: The F2S stability and stopping model for OpenAMRobot 2.0, mass budg
 
 **Canonical source:** the F2S deliverable of the OpenAMRobot 2.0 execution plan, owned by the platform lead and published with the mechanical release in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw). This page explains the model and its current results; the workbook with the formulas is filed with the deliverable.
 
-**Applies to:** OpenAMRobot 2.0, model of 28 September 2026, pending measured inputs. For guidance on extending mass and stability in your own build, see [Mass and stability in the customization section](../../customize/hardware/mass-and-stability.md).
+**Applies to:** OpenAMRobot 2.0, model of 28 September 2026 at the 1350 mm installation height, pending measured inputs. For guidance on extending mass and stability in your own build, see [Mass and stability in the customization section](../../customize/hardware/mass-and-stability.md).
 
 !!! warning "Fabrication gate, not a certificate"
     F2S is the gate that must pass before any structural part is fabricated. It is a static and quasi-static model on flat floors. It does not replace the physical tipping and braking tests of the commissioning window, and it makes no safety certification claim.
@@ -29,9 +29,9 @@ description: The F2S stability and stopping model for OpenAMRobot 2.0, mass budg
 | Output | Result | Basis |
 |---|---|---|
 | Gross mass | About 93 kg | Cap 120 kg; chassis 21 kg from CAD volumes, battery 23 kg, arms with grippers 12 kg, mast about 10 kg, payload 3 kg |
-| Centre of gravity | 366 to 448 mm high across the four poses, within 35 mm of the drive axle | Lowest in travel pose, highest with both arms forward |
+| Centre of gravity | 372 to 427 mm high across the four poses, within 35 mm of the drive axle | Lowest in travel pose, highest with both arms forward; shoulder at 1350 mm |
 | Lowest static margin | 86 mm, drawer pull of 150 N at 1090 mm | Minimum 50 mm; the robot would tip at about 220 N |
-| Braking | Tipping needs more than 5.4 m/s² in the worst pose; traction limit about 3.5 m/s²; configured deceleration 2.5 m/s² | Both limits above the configured value |
+| Braking | Tipping needs more than 5.6 m/s² in the worst pose; traction limit about 3.5 m/s²; configured deceleration 2.5 m/s² | Both limits above the configured value |
 | Stopping distance at the 1.5 m/s ceiling | 0.82 m, including 0.25 s reaction latency | Minimum look-ahead for obstacle and floor sensing at the ceiling speed |
 | Wheel speed at 1.5 m/s | 143 rpm | Motor rated 200 rpm |
 | Drive pair | Within the 120 kg drivable-mass rating; about 650 N vertical load per motor in the rocking case | Allowable radial load requested from ZLTECH |

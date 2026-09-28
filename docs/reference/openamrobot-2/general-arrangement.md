@@ -9,7 +9,7 @@ description: Side, front and top views of OpenAMRobot 2.0 to scale, with the mas
 
 **Canonical source:** the platform CAD in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) and the upper-body CAD in [openamr-upperbody-hw](https://github.com/openAMRobot/openamr-upperbody-hw). The drawings below are derived from the platform STEP model and the official [OpenArm 2.0 CAD](https://docs.openarm.dev/hardware/openarm-2.0/general/); when either changes, the drawings are regenerated.
 
-**Applies to:** OpenAMRobot 2.0, design proposal of 28 September 2026. Dimensions in millimetres. The four shoulder positions and the own mast are proposed decisions; the plan of record still carries the earlier nine-position provision until the decision addendum is updated.
+**Applies to:** OpenAMRobot 2.0, design proposal of 28 September 2026. Dimensions in millimetres. The installation height, the four positions and the own mast are recorded in P-03 revision 18.2.
 
 !!! warning "Design proposal"
     The arrangement is drawn to scale from CAD, but four inputs are still open: the weighed chassis mass, the ZLTECH radial load limit, the hub-motor bracket and the arm supply without the OpenArm body. Battery and electronics outlines are placeholders until the mechanical work package (M-01) fixes them.
@@ -28,7 +28,7 @@ The interactive sheet contains the three views, a numbered parts list, the mast 
 
 <figure class="oamr-figure">
 <img src="/assets/hardware/openamrobot2-ga-elevations.jpg" alt="Side and front elevations of OpenAMRobot 2.0 at the same scale, arms stowed, shoulder axis at 1400 mm, height limit 1700 mm, numbered balloons for the parts list" loading="lazy">
-<figcaption>Side and front views at the same scale. Front is to the right in the side view. The arms are drawn stowed at the 1400 mm baseline; ghost outlines mark the other three shoulder positions.</figcaption>
+<figcaption>Side and front views at the same scale. Front is to the right in the side view. The arms are drawn stowed at the 1350 mm installation height; ghost outlines mark the other three shoulder positions (1300, 1400 and 1450 mm).</figcaption>
 </figure>
 
 <figure class="oamr-figure">
@@ -50,8 +50,8 @@ The interactive sheet contains the three views, a numbered parts list, the mast 
 
 | Element | Value | Why |
 |---|---|---|
-| Mast | One MISUMI HFS6-60120 aluminium profile, 1250 mm, on the platform centre bracket (8 M8 rivet nuts) | Same 6-series T-slots as the OpenArm pillar, so the arm plates bolt on unchanged and the official arm kinematics stay exact |
-| Shoulder positions | 1300, 1350, 1400 and 1450 mm above the floor, baseline 1400 mm | Reach at the low test height falls quickly above 1400 mm; stability changes little between positions |
+| Mast | One MISUMI HFS6-60120 aluminium profile, 1196 mm long with its top 1500 mm above the floor, on the platform centre bracket (8 M8 rivet nuts) | Same 6-series T-slots as the OpenArm pillar, so the arm plates bolt on unchanged and the official arm kinematics stay exact |
+| Shoulder positions | Four indexed positions, 1300, 1350, 1400 and 1450 mm above the floor; installation height 1350 mm | 1350 mm keeps about 350 mm of reach at the 820 mm test height; stability changes little between positions |
 | Maximum height | 1700 mm with the head camera on the mast top | Door and rack envelope of the target sites |
 | Battery | Centred 25 percent of the robot length from the rear | Balances the forward mass of the arms and keeps the centre of gravity near the drive axle |
 | Electronics | All inside the mobile platform | Shorter harnesses, protected enclosure, no electronics on the mast |
@@ -61,7 +61,7 @@ The interactive sheet contains the three views, a numbered parts list, the mast 
 
 Theoretical horizontal reach of the gripper at the A4 test heights, using the official 633 mm arm reach. Stability figures come from the [mass and stability model](mass-and-stability.md).
 
-| Shoulder axis | 1300 | 1350 | 1400 | 1450 |
+| Shoulder axis | 1300 | 1350 (installed) | 1400 | 1450 |
 |---|---|---|---|---|
 | Arm plate top (mm) | 1361 | 1411 | 1461 | 1511 |
 | Reach at 820 mm height (mm) | 413 | 346 | 254 | 62 |
