@@ -76,6 +76,16 @@ RELATED = {
     "reference/openamrobot-2/hardware-architecture.md": (
         "reference/openamr-platform-hw/concepts.md",
         "reference/mobile-platform.md",
+        "reference/openamrobot-2/general-arrangement.md",
+    ),
+    "reference/openamrobot-2/general-arrangement.md": (
+        "reference/upper-body.md",
+        "reference/openamrobot-2/mass-and-stability.md",
+        "reference/openamrobot-2/hardware-architecture.md",
+    ),
+    "reference/openamrobot-2/mass-and-stability.md": (
+        "customize/hardware/mass-and-stability.md",
+        "reference/openamrobot-2/general-arrangement.md",
     ),
 }
 
