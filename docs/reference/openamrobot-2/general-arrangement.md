@@ -9,7 +9,7 @@ description: Side, front and top views of OpenAMRobot 2.0 to scale, with the mas
 
 **Canonical source:** the platform CAD in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) and the upper-body CAD in [openamr-upperbody-hw](https://github.com/openAMRobot/openamr-upperbody-hw). The drawings below are derived from the platform STEP model and the official [OpenArm 2.0 CAD](https://docs.openarm.dev/hardware/openarm-2.0/general/); when either changes, the drawings are regenerated.
 
-**Applies to:** OpenAMRobot 2.0, design proposal of 28 September 2026. Dimensions in millimetres.
+**Applies to:** OpenAMRobot 2.0, design proposal of 28 September 2026. Dimensions in millimetres. The four shoulder positions and the own mast are proposed decisions; the plan of record still carries the earlier nine-position provision until the decision addendum is updated.
 
 !!! warning "Design proposal"
     The arrangement is drawn to scale from CAD, but four inputs are still open: the weighed chassis mass, the ZLTECH radial load limit, the hub-motor bracket and the arm supply without the OpenArm body. Battery and electronics outlines are placeholders until the mechanical work package (M-01) fixes them.

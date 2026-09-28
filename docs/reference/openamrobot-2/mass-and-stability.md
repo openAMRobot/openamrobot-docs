@@ -32,7 +32,7 @@ description: The F2S stability and stopping model for OpenAMRobot 2.0, mass budg
 | Centre of gravity | 366 to 448 mm high across the four poses, within 35 mm of the drive axle | Lowest in travel pose, highest with both arms forward |
 | Lowest static margin | 86 mm, drawer pull of 150 N at 1090 mm | Minimum 50 mm; the robot would tip at about 220 N |
 | Braking | Tipping needs more than 5.4 m/s² in the worst pose; traction limit about 3.5 m/s²; configured deceleration 2.5 m/s² | Both limits above the configured value |
-| Stopping distance at 1.5 m/s | 0.82 m, including 0.25 s reaction latency | Minimum look-ahead for obstacle and floor sensing at full speed |
+| Stopping distance at the 1.5 m/s ceiling | 0.82 m, including 0.25 s reaction latency | Minimum look-ahead for obstacle and floor sensing at the ceiling speed |
 | Wheel speed at 1.5 m/s | 143 rpm | Motor rated 200 rpm |
 | Drive pair | Within the 120 kg drivable-mass rating; about 650 N vertical load per motor in the rocking case | Allowable radial load requested from ZLTECH |
 | Geometry change | None | Battery to the rear, mast on the drive axle, flat-floor envelope |
@@ -54,7 +54,7 @@ description: The F2S stability and stopping model for OpenAMRobot 2.0, mass budg
 
 - Flat indoor floors. Thresholds and cable covers are crossed at crawl speed until the physical test replaces the assumed dynamic factor; the 35 mm castor wheels stop on small steps.
 - Drawer and door pulls up to 150 N at working height with the hands kept close to the body.
-- Speed limited to 1.5 m/s in software, with obstacle detection reaching at least 0.9 m ahead at that speed.
+- Command ceiling 1.5 m/s in software, treated as an analytical limit until the stopping tests set the accepted operating speed; obstacle detection must reach at least 0.9 m ahead at that speed.
 
 ## Next
 

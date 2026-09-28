@@ -49,7 +49,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 </style></head><body><div class="wrap">
 <header><div><h1>OpenAMRobot 2.0 general arrangement</h1>
 <p class="sub">Mobile platform with the own COTS mast and two OpenArm 2.0 arms. All views to scale from the MMP STEP, the official OpenArm 2.0 CAD and the F2S model. Dimensions in millimetres.</p></div>
-<table class="tb" aria-label="Title block"><tr><td>Status</td><td>Design proposal, pending measured inputs</td></tr><tr><td>Date</td><td>28 September 2026</td></tr><tr><td>Owner</td><td>Botshare Ltd, OpenAMRobot</td></tr><tr><td>Baseline</td><td>mast_1400, speed limit 1.5 m/s</td></tr></table></header>
+<table class="tb" aria-label="Title block"><tr><td>Status</td><td>Design proposal, pending measured inputs</td></tr><tr><td>Date</td><td>28 September 2026</td></tr><tr><td>Owner</td><td>Botshare Ltd, OpenAMRobot</td></tr><tr><td>Baseline</td><td>mast_1400 (preliminary), command ceiling 1.5 m/s (analytical)</td></tr></table></header>
 
 <h2>Elevations</h2>
 <p class="lede">Arms stowed at the 1400 mm baseline. The ghost plates on the side view mark the other three mounting positions. Balloon numbers refer to the parts list.</p>
@@ -442,7 +442,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <div class="tablewrap"><table class="list"><thead><tr><th>Item</th><th>Part</th><th>Key data</th><th>Source</th></tr></thead><tbody>
 <tr><td class="n"><span class="bal">1</span></td><td>Mobile platform MMP</td><td>Steel chassis 780 x 582 mm, deck face 294 mm</td><td class="src">MMP STEP</td></tr>
 <tr><td class="n"><span class="bal">2</span></td><td>Top cover</td><td>Non-structural, 630 x 576 mm</td><td class="src">MMP STEP</td></tr>
-<tr><td class="n"><span class="bal">3</span></td><td>Hub motor ZLTECH ZLLG80ASM250-L-B</td><td>200 mm, 24 V, double shaft, fail-safe brake, track 400 mm</td><td class="src">ZLTECH, BOM Issue 6</td></tr>
+<tr><td class="n"><span class="bal">3</span></td><td>Hub motor ZLTECH ZLLG80ASM250-L-B</td><td>200 mm, 24 V, double shaft, integrated holding brake (ratings pending F2A), track 400 mm</td><td class="src">ZLTECH, BOM Issue 6</td></tr>
 <tr><td class="n"><span class="bal">4</span></td><td>Swivel castor Blickle LPA-VSTH 35K</td><td>52 mm total height, 15 mm offset, 100 kg each</td><td class="src">Blickle</td></tr>
 <tr><td class="n"><span class="bal">5</span></td><td>Battery 8S1P EVE LF105</td><td>25.6 V, 105 Ah, 23 kg, centred 25 % of length from the rear</td><td class="src">Decision 27 Sep</td></tr>
 <tr><td class="n"><span class="bal">6</span></td><td>Electronics bay</td><td>Jetson J401, ZLAC8015D, contactors, STM32, DC/DC</td><td class="src">P-00</td></tr>
@@ -459,7 +459,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <tr><td class="n"><span class="bal">17</span></td><td>OpenArm 2.0 arm</td><td>7 DOF, 5.36 kg, reach 633 mm, nominal payload 4.1 kg</td><td class="src">openarm_description</td></tr>
 <tr><td class="n"><span class="bal">18</span></td><td>Gripper with wrist camera</td><td>0.77 kg, parallel fingers, in-hand RGB camera</td><td class="src">OpenArm 2.0 BOM</td></tr>
 <tr><td class="n"><span class="bal">19</span></td><td>Chest cover with E-stop</td><td>Second dual-channel E-stop, about 1.45 m</td><td class="src">OpenArm 2.0 STEP, P-00</td></tr>
-<tr><td class="n"><span class="bal">20</span></td><td>Head camera ZED mini</td><td>Stereo scene camera on the mast top</td><td class="src">OpenArm 2.0 BOM</td></tr>
+<tr><td class="n"><span class="bal">20</span></td><td>Head camera ZED-121210</td><td>Stereo scene camera on the mast top; exact SKU and interface pending the supplier mapping</td><td class="src">OpenArm 2.0 BOM</td></tr>
 </tbody></table></div>
 
 <h2>Plan view and stability</h2>
