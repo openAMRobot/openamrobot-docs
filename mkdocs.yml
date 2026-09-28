@@ -365,6 +365,8 @@ nav:
       - OpenAMRobot 2.0 design:
           - reference/openamrobot-2/index.md
           - Hardware architecture: reference/openamrobot-2/hardware-architecture.md
+          - General arrangement: reference/openamrobot-2/general-arrangement.md
+          - Mass and stability: reference/openamrobot-2/mass-and-stability.md
       - Interfaces: reference/interfaces.md
       - Communication: reference/communication.md
       - openamr-* · the mobile robot:

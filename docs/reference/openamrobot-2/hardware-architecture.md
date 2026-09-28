@@ -57,4 +57,4 @@ The diagram is regenerated from the BOM register at every BOM issue. A page carr
 
 ## Next
 
-[Mobile platform](../mobile-platform.md) lists the owning repositories of the base this architecture builds on.
+[General arrangement](general-arrangement.md) shows where these components sit on the robot.

@@ -5,7 +5,7 @@ status: planned
 description: The OpenAMRobot 2.0 development cycle in one place, hardware architecture, general arrangement, stability model, decisions taken and inputs still open.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Design in progress · development cycle 2</span><h1>OpenAMRobot 2.0 design</h1><p>Hardware architecture, general arrangement and stability model of the dual-arm mobile manipulator being designed between 21 September and 20 November 2026.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="hardware-architecture/">Hardware architecture</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Design in progress · development cycle 2</span><h1>OpenAMRobot 2.0 design</h1><p>Hardware architecture, general arrangement and stability model of the dual-arm mobile manipulator being designed between 21 September and 20 November 2026.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="hardware-architecture/">Hardware architecture</a><a class="oamr-button" href="general-arrangement/">General arrangement</a><a class="oamr-button" href="mass-and-stability/">Mass and stability</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
 **For:** builders, integrators and developers who need to know what the next robot looks like before the hardware exists.
 
@@ -21,6 +21,8 @@ OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a
 | Area | What this section documents | Owning repository |
 |---|---|---|
 | Hardware architecture | Connection model of compute, base controller, drives, power, sensors and arms (public extract of BOM Issue 7) | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) (BOM to be published with the electrical release) |
+| General arrangement | Side, front and top views to scale, mast and shoulder detail, parts list | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) and [openamr-upperbody-hw](https://github.com/openAMRobot/openamr-upperbody-hw) |
+| Mass and stability | The F2S stability and stopping model: mass budget, centre of gravity, tipping margins, stopping distance | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) |
 | Arms and manipulation | OpenArm 2.0 integration, device packages, fake-hardware baseline | [openamrobot-manipulation](https://github.com/openAMRobot/openamrobot-manipulation) |
 
 ## Decisions recorded so far

@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OpenAMRobot 2.0 general arrangement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9edf1;--ink:#1c2230;--muted:#56606a;--rule:#c5cdd5;--paper:#ffffff;--accent:#2d4a66;--red:#d8322d;--head:#1c2230;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161b;--ink:#e3e7ec;--muted:#9aa4ae;--rule:#2c343d;--head:#e3e7ec}}
+:root[data-theme="dark"]{--bg:#12161b;--ink:#e3e7ec;--muted:#9aa4ae;--rule:#2c343d;--head:#e3e7ec}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Barlow,Arial,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:1320px;margin:0 auto;padding:28px 20px 60px}
+header{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;border-bottom:2px solid var(--head);padding-bottom:14px;margin-bottom:26px}
+h1{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.4vw,48px);line-height:1.02;margin:0;letter-spacing:.005em}
+.sub{color:var(--muted);margin:6px 0 0;max-width:70ch}
+.tb{border-collapse:collapse;font-size:13px;min-width:320px}
+.tb td{border:1px solid var(--rule);padding:4px 10px}
+.tb td:first-child{color:var(--muted)}
+h2{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:27px;margin:40px 0 4px}
+.lede{color:var(--muted);margin:0 0 14px;max-width:80ch}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+figure{margin:0;background:var(--paper);border:1px solid #c5cdd5;border-radius:4px;padding:14px 14px 10px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #d7dde3;margin-top:8px;padding-top:8px;font-size:13px;color:#56606a}
+figcaption b{color:#1c2230;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
+.single{max-width:1000px}
+.tablewrap{overflow-x:auto;background:var(--paper);border:1px solid #c5cdd5;border-radius:4px;color:#1c2230}
+table.list{border-collapse:collapse;width:100%;font-size:14.5px}
+table.list th,table.list td{padding:8px 12px;border-bottom:1px solid #e1e6eb;text-align:left;vertical-align:top}
+table.list thead th{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;border-bottom:2px solid #1c2230;background:#f5f7f9}
+table.list tbody th{font-weight:500}
+td.n{width:52px}
+.bal{display:inline-grid;place-items:center;width:30px;height:30px;border:2px solid #1c2230;border-radius:50%;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px}
+td.src{color:#56606a;font-size:13px}
+td.hl{background:#fdecea;font-weight:600;color:#8f1e1a}
+.num td{text-align:right;font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:10px 24px;margin:12px 2px 0;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.sw{display:inline-block;width:26px;height:12px;border-radius:2px}
+.cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+.notes{background:var(--paper);border:1px solid #c5cdd5;border-radius:4px;padding:16px 18px;color:#1c2230;font-size:15px}
+.notes p{margin:0 0 12px} .notes p:last-child{margin:0}
+.key{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-size:13px;color:var(--muted)}
+@media (max-width:900px){.pair,.cols{grid-template-columns:1fr} header{grid-template-columns:1fr}}
+</style></head><body><div class="wrap">
+<header><div><h1>OpenAMRobot 2.0 general arrangement</h1>
+<p class="sub">Mobile platform with the own COTS mast and two OpenArm 2.0 arms. All views to scale from the MMP STEP, the official OpenArm 2.0 CAD and the F2S model. Dimensions in millimetres.</p></div>
+<table class="tb" aria-label="Title block"><tr><td>Status</td><td>Design proposal, pending measured inputs</td></tr><tr><td>Date</td><td>28 September 2026</td></tr><tr><td>Owner</td><td>Botshare Ltd, OpenAMRobot</td></tr><tr><td>Baseline</td><td>mast_1400, speed limit 1.5 m/s</td></tr></table></header>
+
+<h2>Elevations</h2>
+<p class="lede">Arms stowed at the 1400 mm baseline. The ghost plates on the side view mark the other three mounting positions. Balloon numbers refer to the parts list.</p>
+<div class="pair">
+<figure><svg viewBox="0 0 1240 1900" xmlns="http://www.w3.org/2000/svg" role="img"><title>Side view</title><desc>OpenAMRobot 2.0 side elevation to scale</desc><defs>
+<marker id="ahs" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 Z" fill="#2d4a66"/></marker>
+<pattern id="hatchs" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#7d8793" stroke-width="1.6"/></pattern>
+<pattern id="hatchAs" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="12" stroke="#a4680f" stroke-width="1.2" opacity=".6"/></pattern>
+</defs><line x1="70.0" y1="1760.0" x2="1020.0" y2="1760.0" stroke="#1c2230" stroke-width="3" />
+<rect x="70" y="1760" width="950" height="18" fill="url(#hatchs)" opacity=".55"/>
+<line x1="70.0" y1="60.0" x2="1020.0" y2="60.0" stroke="#d8322d" stroke-width="2" stroke-dasharray="18 10"/>
+<text x="1010.0" y="40.0" font-size="26" text-anchor="end" dominant-baseline="central" fill="#d8322d" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Height limit 1700</text>
+<rect x="150.0" y="1475.0" width="780.0" height="233.0" rx="10" fill="#dadde1" stroke="#4a5058" stroke-width="2.4" />
+<rect x="225.0" y="1465.0" width="630.0" height="10.0" rx="3" fill="#c3c8ce" stroke="#4a5058" stroke-width="2" />
+<line x1="160.0" y1="1490.0" x2="920.0" y2="1490.0" stroke="#8a9199" stroke-width="1.2" />
+<rect x="240.0" y="1525.0" width="210.0" height="170.0" rx="6" fill="url(#hatchAs)" stroke="#a4680f" stroke-width="2" stroke-dasharray="14 8"/>
+<rect x="240.0" y="1525.0" width="210.0" height="170.0" rx="6" fill="#f4dca8" stroke="none" stroke-width="0" opacity=".45"/>
+<text x="345.0" y="1590.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#6b420a" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Battery</text>
+<text x="345.0" y="1625.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#6b420a" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">23 kg</text>
+<rect x="710.0" y="1495.0" width="125.0" height="65.0" rx="6" fill="#e2e9f1" stroke="#4a5058" stroke-width="1.6" stroke-dasharray="12 7"/>
+<text x="772.0" y="1528.0" font-size="22" text-anchor="middle" dominant-baseline="central" fill="#3b4b5c" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Electronics</text>
+<circle cx="540.0" cy="1660.0" r="100" fill="#2b2f35" stroke="#111" stroke-width="2.4" />
+<circle cx="540.0" cy="1660.0" r="74" fill="#8a9098" stroke="#3d4249" stroke-width="2" />
+<circle cx="540.0" cy="1660.0" r="50" fill="#a9aeb5" stroke="#3d4249" stroke-width="1.5" />
+<circle cx="540.0" cy="1660.0" r="16" fill="#3d4249" stroke="#222" stroke-width="1.5" />
+<circle cx="573.0" cy="1660.0" r="5" fill="#3d4249" stroke="none" stroke-width="0" />
+<circle cx="556.5" cy="1631.4" r="5" fill="#3d4249" stroke="none" stroke-width="0" />
+<circle cx="523.5" cy="1631.4" r="5" fill="#3d4249" stroke="none" stroke-width="0" />
+<circle cx="507.0" cy="1660.0" r="5" fill="#3d4249" stroke="none" stroke-width="0" />
+<circle cx="523.5" cy="1688.6" r="5" fill="#3d4249" stroke="none" stroke-width="0" />
+<circle cx="556.5" cy="1688.6" r="5" fill="#3d4249" stroke="none" stroke-width="0" />
+<rect x="785.0" y="1708.0" width="60.0" height="6.0" rx="1" fill="#6c737b" stroke="#333" stroke-width="1.4" />
+<polygon points="803.0,1714.0 827.0,1714.0 808.0,1742.5 792.0,1742.5" fill="#8a9098" stroke="#333" stroke-width="1.4" stroke-linejoin="round" />
+<circle cx="800.0" cy="1742.5" r="17.5" fill="#2b2f35" stroke="#111" stroke-width="1.8" />
+<circle cx="800.0" cy="1742.5" r="5" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="235.0" y="1708.0" width="60.0" height="6.0" rx="1" fill="#6c737b" stroke="#333" stroke-width="1.4" />
+<polygon points="253.0,1714.0 277.0,1714.0 258.0,1742.5 242.0,1742.5" fill="#8a9098" stroke="#333" stroke-width="1.4" stroke-linejoin="round" />
+<circle cx="250.0" cy="1742.5" r="17.5" fill="#2b2f35" stroke="#111" stroke-width="1.8" />
+<circle cx="250.0" cy="1742.5" r="5" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="840.0" y="1515.0" width="55.0" height="70.0" rx="6" fill="#2f343b" stroke="#111" stroke-width="1.8" />
+<line x1="840.0" y1="1550.0" x2="1010.0" y2="1550.0" stroke="#d58a14" stroke-width="1.6" stroke-dasharray="6 5"/>
+<rect x="928.0" y="1502.0" width="14.0" height="33.0" rx="3" fill="#2f343b" stroke="#111" stroke-width="1.5" />
+<rect x="930.0" y="1596.0" width="24.0" height="43.0" rx="6" fill="#d8322d" stroke="#8f1e1a" stroke-width="1.6" />
+<rect x="930.0" y="1660.0" width="8.0" height="20.0" rx="1" fill="#2f6fa8" stroke="#173e63" stroke-width="1.2" />
+<rect x="142.0" y="1660.0" width="8.0" height="20.0" rx="1" fill="#2f6fa8" stroke="#173e63" stroke-width="1.2" />
+<rect x="405.0" y="1455.0" width="290.0" height="10.0" rx="2" fill="#c4ccd4" stroke="#56636f" stroke-width="2" />
+<polygon points="510.0,1455.0 510.0,1370.0 455.0,1455.0" fill="#cfd7de" stroke="#56636f" stroke-width="1.8" stroke-linejoin="round" />
+<polygon points="630.0,1455.0 630.0,1370.0 685.0,1455.0" fill="#cfd7de" stroke="#56636f" stroke-width="1.8" stroke-linejoin="round" />
+<rect x="510.0" y="205.0" width="120.0" height="1250.0" rx="2" fill="#e6ecf1" stroke="#56636f" stroke-width="2.4" />
+<line x1="525.0" y1="1448.0" x2="525.0" y2="212.0" stroke="#9aa6b1" stroke-width="1.1" />
+<line x1="555.0" y1="1448.0" x2="555.0" y2="212.0" stroke="#9aa6b1" stroke-width="1.1" />
+<line x1="585.0" y1="1448.0" x2="585.0" y2="212.0" stroke="#9aa6b1" stroke-width="1.1" />
+<line x1="615.0" y1="1448.0" x2="615.0" y2="212.0" stroke="#9aa6b1" stroke-width="1.1" />
+<circle cx="600.0" cy="1410.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1360.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1310.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1260.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1210.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1160.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1110.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1060.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="1010.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="960.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="910.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="860.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="810.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="760.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="710.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="660.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="610.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="560.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="510.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="460.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="410.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="360.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="310.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="260.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<circle cx="600.0" cy="210.0" r="4.5" fill="#ffffff" stroke="#56636f" stroke-width="1.4" />
+<line x1="518.0" y1="1420.0" x2="518.0" y2="430.0" stroke="#6a5acd" stroke-width="2.2" stroke-dasharray="16 9"/>
+<path d="M518 430 C 518 370, 550 360, 570 365" fill="none" stroke="#6a5acd" stroke-width="2.2" stroke-dasharray="16 9"/>
+<rect x="578.0" y="170.0" width="44.0" height="33.0" rx="5" fill="#2b2f35" stroke="#111" stroke-width="1.8" />
+<circle cx="622.0" cy="187.0" r="6" fill="#8a9098" stroke="#111" stroke-width="1" />
+<rect x="570.0" y="399.0" width="79.0" height="122.0" rx="4" fill="none" stroke="#8a9098" stroke-width="1.2" stroke-dasharray="7 6"/>
+<rect x="570.0" y="349.0" width="79.0" height="122.0" rx="4" fill="none" stroke="#8a9098" stroke-width="1.2" stroke-dasharray="7 6"/>
+<rect x="570.0" y="249.0" width="79.0" height="122.0" rx="4" fill="none" stroke="#8a9098" stroke-width="1.2" stroke-dasharray="7 6"/>
+<rect x="630.0" y="284.0" width="55.0" height="162.0" rx="10" fill="#5c636b" stroke="#1d2025" stroke-width="1.8" />
+<rect x="685.0" y="298.0" width="17.0" height="34.0" rx="6" fill="#d8322d" stroke="#8f1e1a" stroke-width="1.6" />
+<rect x="570.0" y="299.0" width="79.0" height="122.0" rx="4" fill="#262a30" stroke="#8a9098" stroke-width="1.4" />
+<circle cx="600.0" cy="360.0" r="49" fill="#3b4048" stroke="#8a9098" stroke-width="1.8" />
+<circle cx="600.0" cy="360.0" r="18" fill="#8a9098" stroke="#15181c" stroke-width="1.2" />
+<circle cx="634.0" cy="360.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<circle cx="624.0" cy="336.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<circle cx="600.0" cy="326.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<circle cx="576.0" cy="336.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<circle cx="566.0" cy="360.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<circle cx="576.0" cy="384.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<circle cx="600.0" cy="394.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<circle cx="624.0" cy="384.0" r="3" fill="#9aa1a9" stroke="none" stroke-width="0" />
+<rect x="570.0" y="409.0" width="60.0" height="171.0" rx="18" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<circle cx="600.0" cy="580.0" r="32" fill="#262a30" stroke="#15181c" stroke-width="2" />
+<circle cx="600.0" cy="580.0" r="10" fill="#8a9098" stroke="#15181c" stroke-width="1" />
+<rect x="575.0" y="612.0" width="50.0" height="148.0" rx="16" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<circle cx="600.0" cy="760.0" r="25" fill="#262a30" stroke="#15181c" stroke-width="2" />
+<circle cx="600.0" cy="760.0" r="8" fill="#8a9098" stroke="#15181c" stroke-width="1" />
+<rect x="580.0" y="785.0" width="40.0" height="25.0" rx="6" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<rect x="560.0" y="810.0" width="80.0" height="35.0" rx="4" fill="#5a6068" stroke="#15181c" stroke-width="2" />
+<rect x="565.0" y="845.0" width="20.0" height="123.0" rx="5" fill="#3b4048" stroke="#15181c" stroke-width="1.8" />
+<rect x="615.0" y="845.0" width="20.0" height="123.0" rx="5" fill="#3b4048" stroke="#15181c" stroke-width="1.8" />
+<rect x="640.0" y="818.0" width="18.0" height="20.0" rx="3" fill="#2f6fa8" stroke="#173e63" stroke-width="1.5" />
+<line x1="445.0" y1="460.0" x2="502.0" y2="460.0" stroke="#2d4a66" stroke-width="1.4" />
+<text x="435.0" y="460.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">1300</text>
+<line x1="445.0" y1="410.0" x2="502.0" y2="410.0" stroke="#2d4a66" stroke-width="1.4" />
+<text x="435.0" y="410.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">1350</text>
+<line x1="445.0" y1="360.0" x2="502.0" y2="360.0" stroke="#d8322d" stroke-width="2.4" />
+<text x="435.0" y="360.0" font-size="28" text-anchor="end" dominant-baseline="central" fill="#d8322d" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">1400</text>
+<line x1="445.0" y1="310.0" x2="502.0" y2="310.0" stroke="#2d4a66" stroke-width="1.4" />
+<text x="435.0" y="310.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">1450</text>
+<text x="435.0" y="250.0" font-size="24" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Shoulder axis</text>
+<circle cx="511.0" cy="1376.0" r="17" fill="#ffffff" stroke="#c4501f" stroke-width="2.4" />
+<path d="M511 1376 L511 1359 A17 17 0 0 1 528 1376 Z M511 1376 L511 1393 A17 17 0 0 1 494 1376 Z" fill="#c4501f"/>
+<text x="482.0" y="1376.0" font-size="24" text-anchor="end" dominant-baseline="central" fill="#c4501f" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">CoG</text>
+<line x1="95.0" y1="1760.0" x2="95.0" y2="1466.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahs)" marker-end="url(#ahs)"/>
+<text x="75.0" y="1613.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 75.0 1613.0)">294</text>
+<line x1="95.0" y1="1466.0" x2="95.0" y2="360.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahs)" marker-end="url(#ahs)"/>
+<text x="75.0" y="913.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 75.0 913.0)">1106</text>
+<line x1="95.0" y1="360.0" x2="95.0" y2="60.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahs)" marker-end="url(#ahs)"/>
+<text x="75.0" y="210.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 75.0 210.0)">300</text>
+<line x1="180.0" y1="1760.0" x2="180.0" y2="206.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahs)" marker-end="url(#ahs)"/>
+<text x="160.0" y="983.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 160.0 983.0)">1554 mast top</text>
+<line x1="85.0" y1="1466.0" x2="150.0" y2="1466.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="85.0" y1="360.0" x2="500.0" y2="360.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="85.0" y1="206.0" x2="500.0" y2="206.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="85.0" y1="60.0" x2="500.0" y2="60.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="150.0" y1="1760.0" x2="150.0" y2="1832.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="930.0" y1="1760.0" x2="930.0" y2="1832.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="150.0" y1="1820.0" x2="930.0" y2="1820.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahs)" marker-end="url(#ahs)"/>
+<text x="540.0" y="1798.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">780</text>
+<line x1="265.0" y1="1742.5" x2="265.0" y2="1887.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="815.0" y1="1742.5" x2="815.0" y2="1887.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="265.0" y1="1875.0" x2="815.0" y2="1875.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahs)" marker-end="url(#ahs)"/>
+<text x="540.0" y="1853.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">550 castor axes</text>
+<line x1="622.0" y1="180.0" x2="1154.0" y2="180.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="622.0" cy="180.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="180.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="180.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">20</text>
+<line x1="700.0" y1="310.0" x2="1154.0" y2="310.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="700.0" cy="310.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="310.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="310.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">19</text>
+<line x1="645.0" y1="355.0" x2="1154.0" y2="373.1" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="645.0" cy="355.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="374.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="374.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">16</text>
+<line x1="645.0" y1="410.0" x2="1154.0" y2="436.6" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="645.0" cy="410.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="438.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="438.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">15</text>
+<line x1="630.0" y1="510.0" x2="1154.0" y2="510.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="630.0" cy="510.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="510.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="510.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">17</text>
+<line x1="635.0" y1="910.0" x2="1154.3" y2="828.1" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="635.0" cy="910.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="824.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="824.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">18</text>
+<line x1="630.0" y1="1060.0" x2="1155.2" y2="895.8" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="630.0" cy="1060.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="888.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="888.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">12</text>
+<line x1="600.0" y1="1160.0" x2="1155.5" y2="960.8" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="600.0" cy="1160.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="952.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="952.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">13</text>
+<line x1="518.0" y1="1240.0" x2="1155.4" y2="1024.3" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="518.0" cy="1240.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1016.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1016.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">14</text>
+<line x1="690.0" y1="1460.0" x2="1159.5" y2="1095.9" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="690.0" cy="1460.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1080.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1080.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">11</text>
+<line x1="840.0" y1="1470.0" x2="1161.2" y2="1162.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="840.0" cy="1470.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1144.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1144.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">2</text>
+<line x1="835.0" y1="1520.0" x2="1160.7" y2="1225.4" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="835.0" cy="1520.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1208.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1208.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">6</text>
+<line x1="942.0" y1="1520.0" x2="1162.0" y2="1290.8" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="942.0" cy="1520.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1272.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1272.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">8</text>
+<line x1="895.0" y1="1545.0" x2="1159.0" y2="1351.4" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="895.0" cy="1545.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1336.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1336.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">7</text>
+<line x1="954.0" y1="1620.0" x2="1161.4" y2="1418.1" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="954.0" cy="1620.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1400.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1400.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">9</text>
+<line x1="450.0" y1="1640.0" x2="1154.7" y2="1470.1" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="450.0" cy="1640.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1464.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1464.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">5</text>
+<line x1="610.0" y1="1660.0" x2="1154.7" y2="1533.9" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="610.0" cy="1660.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1528.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1528.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">3</text>
+<line x1="938.0" y1="1670.0" x2="1155.3" y2="1600.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="938.0" cy="1670.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1592.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1592.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">10</text>
+<line x1="930.0" y1="1700.0" x2="1154.4" y2="1660.5" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="930.0" cy="1700.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1656.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1656.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">1</text>
+<line x1="815.0" y1="1730.0" x2="1154.0" y2="1720.7" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="815.0" cy="1730.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1720.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1720.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">4</text></svg><figcaption><b>Side view</b><span>Front to the right, hidden parts dashed</span></figcaption></figure>
+<figure><svg viewBox="0 0 1240 1990" xmlns="http://www.w3.org/2000/svg" role="img"><title>Front view</title><desc>OpenAMRobot 2.0 front elevation to scale</desc><defs>
+<marker id="ahf" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 Z" fill="#2d4a66"/></marker>
+<pattern id="hatchf" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#7d8793" stroke-width="1.6"/></pattern>
+<pattern id="hatchAf" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="12" stroke="#a4680f" stroke-width="1.2" opacity=".6"/></pattern>
+</defs><line x1="70.0" y1="1760.0" x2="1020.0" y2="1760.0" stroke="#1c2230" stroke-width="3" />
+<rect x="70" y="1760" width="950" height="18" fill="url(#hatchf)" opacity=".55"/>
+<line x1="70.0" y1="60.0" x2="1020.0" y2="60.0" stroke="#d8322d" stroke-width="2" stroke-dasharray="18 10"/>
+<text x="1010.0" y="40.0" font-size="26" text-anchor="end" dominant-baseline="central" fill="#d8322d" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Height limit 1700</text>
+<rect x="249.0" y="1475.0" width="582.0" height="233.0" rx="10" fill="#dadde1" stroke="#4a5058" stroke-width="2.4" />
+<rect x="252.0" y="1465.0" width="576.0" height="10.0" rx="3" fill="#c3c8ce" stroke="#4a5058" stroke-width="2" />
+<line x1="259.0" y1="1490.0" x2="821.0" y2="1490.0" stroke="#8a9199" stroke-width="1.2" />
+<rect x="715.0" y="1560.0" width="50.0" height="200.0" rx="14" fill="#2b2f35" stroke="#111" stroke-width="2.2" />
+<rect x="721.0" y="1600.0" width="38.0" height="120.0" rx="6" fill="#555b63" stroke="#111" stroke-width="1.2" />
+<rect x="725.0" y="1708.0" width="60.0" height="6.0" rx="1" fill="#6c737b" stroke="#333" stroke-width="1.4" />
+<polygon points="740.0,1714.0 770.0,1714.0 768.0,1742.5 742.0,1742.5" fill="#8a9098" stroke="#333" stroke-width="1.4" stroke-linejoin="round" />
+<rect x="741.5" y="1725.0" width="27.0" height="35.0" rx="6" fill="#2b2f35" stroke="#111" stroke-width="1.6" />
+<rect x="778.0" y="1660.0" width="24.0" height="20.0" rx="2" fill="#2f6fa8" stroke="#173e63" stroke-width="1.2" />
+<rect x="315.0" y="1560.0" width="50.0" height="200.0" rx="14" fill="#2b2f35" stroke="#111" stroke-width="2.2" />
+<rect x="321.0" y="1600.0" width="38.0" height="120.0" rx="6" fill="#555b63" stroke="#111" stroke-width="1.2" />
+<rect x="295.0" y="1708.0" width="60.0" height="6.0" rx="1" fill="#6c737b" stroke="#333" stroke-width="1.4" />
+<polygon points="340.0,1714.0 310.0,1714.0 312.0,1742.5 338.0,1742.5" fill="#8a9098" stroke="#333" stroke-width="1.4" stroke-linejoin="round" />
+<rect x="311.5" y="1725.0" width="27.0" height="35.0" rx="6" fill="#2b2f35" stroke="#111" stroke-width="1.6" />
+<rect x="278.0" y="1660.0" width="24.0" height="20.0" rx="2" fill="#2f6fa8" stroke="#173e63" stroke-width="1.2" />
+<rect x="478.0" y="1502.0" width="124.0" height="30.0" rx="6" fill="#2f343b" stroke="#111" stroke-width="1.6" />
+<circle cx="505.0" cy="1517.0" r="8" fill="#6d747c" stroke="none" stroke-width="0" />
+<circle cx="540.0" cy="1517.0" r="6" fill="#6d747c" stroke="none" stroke-width="0" />
+<circle cx="575.0" cy="1517.0" r="8" fill="#6d747c" stroke="none" stroke-width="0" />
+<rect x="515.0" y="1542.0" width="50.0" height="40.0" rx="5" fill="#2f343b" stroke="#111" stroke-width="1.6" />
+<line x1="515.0" y1="1560.0" x2="565.0" y2="1560.0" stroke="#d58a14" stroke-width="2" />
+<circle cx="410.0" cy="1618.0" r="24" fill="#d8322d" stroke="#8f1e1a" stroke-width="1.8" />
+<circle cx="410.0" cy="1618.0" r="9" fill="#f07a74" stroke="none" stroke-width="0" />
+<circle cx="670.0" cy="1625.0" r="16" fill="#3f8a3a" stroke="#1f4f1c" stroke-width="1.6" />
+<circle cx="528.0" cy="1670.0" r="9" fill="#ffffff" stroke="#333" stroke-width="1.4" />
+<circle cx="552.0" cy="1670.0" r="9" fill="#ffffff" stroke="#333" stroke-width="1.4" />
+<rect x="370.0" y="1455.0" width="340.0" height="10.0" rx="2" fill="#c4ccd4" stroke="#56636f" stroke-width="2" />
+<polygon points="510.0,1455.0 510.0,1390.0 450.0,1455.0" fill="#cfd7de" stroke="#56636f" stroke-width="1.8" stroke-linejoin="round" />
+<polygon points="570.0,1455.0 570.0,1390.0 630.0,1455.0" fill="#cfd7de" stroke="#56636f" stroke-width="1.8" stroke-linejoin="round" />
+<rect x="510.0" y="205.0" width="60.0" height="1250.0" rx="2" fill="#e6ecf1" stroke="#56636f" stroke-width="2.4" />
+<line x1="525.0" y1="1448.0" x2="525.0" y2="212.0" stroke="#9aa6b1" stroke-width="1.1" />
+<line x1="555.0" y1="1448.0" x2="555.0" y2="212.0" stroke="#9aa6b1" stroke-width="1.1" />
+<rect x="478.0" y="173.0" width="124.0" height="30.0" rx="6" fill="#2b2f35" stroke="#111" stroke-width="1.8" />
+<circle cx="508.0" cy="188.0" r="9" fill="#8a9098" stroke="#111" stroke-width="1" />
+<circle cx="572.0" cy="188.0" r="9" fill="#8a9098" stroke="#111" stroke-width="1" />
+<rect x="570.0" y="299.0" width="12.0" height="122.0" rx="2" fill="#262a30" stroke="#8a9098" stroke-width="1.2" />
+<rect x="582.0" y="311.0" width="51.0" height="98.0" rx="8" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<rect x="644.0" y="311.0" width="97.0" height="98.0" rx="10" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<circle cx="692.0" cy="360.0" r="16" fill="#8a9098" stroke="#15181c" stroke-width="1.2" />
+<rect x="665.0" y="409.0" width="60.0" height="171.0" rx="18" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<circle cx="695.0" cy="580.0" r="32" fill="#262a30" stroke="#15181c" stroke-width="2" />
+<circle cx="695.0" cy="580.0" r="10" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="670.0" y="612.0" width="50.0" height="148.0" rx="16" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<circle cx="695.0" cy="760.0" r="25" fill="#262a30" stroke="#15181c" stroke-width="2" />
+<circle cx="695.0" cy="760.0" r="8" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="675.0" y="785.0" width="40.0" height="25.0" rx="6" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<rect x="650.0" y="810.0" width="90.0" height="35.0" rx="4" fill="#5a6068" stroke="#15181c" stroke-width="2" />
+<rect x="655.0" y="845.0" width="20.0" height="123.0" rx="5" fill="#3b4048" stroke="#15181c" stroke-width="1.8" />
+<rect x="715.0" y="845.0" width="20.0" height="123.0" rx="5" fill="#3b4048" stroke="#15181c" stroke-width="1.8" />
+<rect x="686.0" y="819.0" width="18.0" height="17.0" rx="3" fill="#2f6fa8" stroke="#173e63" stroke-width="1.4" />
+<rect x="498.0" y="299.0" width="12.0" height="122.0" rx="2" fill="#262a30" stroke="#8a9098" stroke-width="1.2" />
+<rect x="447.0" y="311.0" width="51.0" height="98.0" rx="8" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<rect x="339.0" y="311.0" width="97.0" height="98.0" rx="10" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<circle cx="388.0" cy="360.0" r="16" fill="#8a9098" stroke="#15181c" stroke-width="1.2" />
+<rect x="355.0" y="409.0" width="60.0" height="171.0" rx="18" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<circle cx="385.0" cy="580.0" r="32" fill="#262a30" stroke="#15181c" stroke-width="2" />
+<circle cx="385.0" cy="580.0" r="10" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="360.0" y="612.0" width="50.0" height="148.0" rx="16" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<circle cx="385.0" cy="760.0" r="25" fill="#262a30" stroke="#15181c" stroke-width="2" />
+<circle cx="385.0" cy="760.0" r="8" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="365.0" y="785.0" width="40.0" height="25.0" rx="6" fill="#3b4048" stroke="#15181c" stroke-width="2" />
+<rect x="340.0" y="810.0" width="90.0" height="35.0" rx="4" fill="#5a6068" stroke="#15181c" stroke-width="2" />
+<rect x="345.0" y="845.0" width="20.0" height="123.0" rx="5" fill="#3b4048" stroke="#15181c" stroke-width="1.8" />
+<rect x="405.0" y="845.0" width="20.0" height="123.0" rx="5" fill="#3b4048" stroke="#15181c" stroke-width="1.8" />
+<rect x="376.0" y="819.0" width="18.0" height="17.0" rx="3" fill="#2f6fa8" stroke="#173e63" stroke-width="1.4" />
+<rect x="460.0" y="284.0" width="160.0" height="162.0" rx="12" fill="#5c636b" stroke="#1d2025" stroke-width="1.8" />
+<circle cx="540.0" cy="320.0" r="21" fill="#d8322d" stroke="#8f1e1a" stroke-width="1.8" />
+<circle cx="540.0" cy="320.0" r="8" fill="#f07a74" stroke="none" stroke-width="0" />
+<line x1="339.0" y1="1100.0" x2="741.0" y2="1100.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahf)" marker-end="url(#ahf)"/>
+<text x="540.0" y="1078.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Arm span 402</text>
+<line x1="339.0" y1="1082.0" x2="339.0" y2="409.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="741.0" y1="1082.0" x2="741.0" y2="409.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="95.0" y1="1760.0" x2="95.0" y2="1466.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahf)" marker-end="url(#ahf)"/>
+<text x="75.0" y="1613.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 75.0 1613.0)">294</text>
+<line x1="95.0" y1="1466.0" x2="95.0" y2="360.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahf)" marker-end="url(#ahf)"/>
+<text x="75.0" y="913.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 75.0 913.0)">1106</text>
+<line x1="95.0" y1="360.0" x2="95.0" y2="60.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahf)" marker-end="url(#ahf)"/>
+<text x="75.0" y="210.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 75.0 210.0)">300</text>
+<line x1="85.0" y1="1466.0" x2="249.0" y2="1466.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="85.0" y1="360.0" x2="339.0" y2="360.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="85.0" y1="60.0" x2="339.0" y2="60.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="249.0" y1="1760.0" x2="249.0" y2="1832.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="831.0" y1="1760.0" x2="831.0" y2="1832.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="249.0" y1="1820.0" x2="831.0" y2="1820.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahf)" marker-end="url(#ahf)"/>
+<text x="540.0" y="1798.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">582</text>
+<line x1="340.0" y1="1760.0" x2="340.0" y2="1887.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="740.0" y1="1760.0" x2="740.0" y2="1887.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="340.0" y1="1875.0" x2="740.0" y2="1875.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahf)" marker-end="url(#ahf)"/>
+<text x="540.0" y="1853.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">400 drive track</text>
+<line x1="325.0" y1="1760.0" x2="325.0" y2="1942.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="755.0" y1="1760.0" x2="755.0" y2="1942.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="325.0" y1="1930.0" x2="755.0" y2="1930.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahf)" marker-end="url(#ahf)"/>
+<text x="540.0" y="1908.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">430 castor axes</text>
+<line x1="602.0" y1="185.0" x2="1154.0" y2="185.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="602.0" cy="185.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="185.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="185.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">20</text>
+<line x1="560.0" y1="310.0" x2="1154.0" y2="310.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="560.0" cy="310.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="310.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="310.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">19</text>
+<line x1="741.0" y1="340.0" x2="1154.1" y2="372.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="741.0" cy="340.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="374.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="374.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">16</text>
+<line x1="582.0" y1="410.0" x2="1154.0" y2="436.8" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="582.0" cy="410.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="438.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="438.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">15</text>
+<line x1="725.0" y1="500.0" x2="1154.0" y2="501.9" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="725.0" cy="500.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="502.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="502.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">17</text>
+<line x1="570.0" y1="860.0" x2="1154.0" y2="860.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="570.0" cy="860.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="860.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="860.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">12</text>
+<line x1="735.0" y1="910.0" x2="1154.0" y2="923.2" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="735.0" cy="910.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="924.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="924.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">18</text>
+<line x1="710.0" y1="1460.0" x2="1157.1" y2="1220.3" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="710.0" cy="1460.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1208.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1208.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">11</text>
+<line x1="828.0" y1="1470.0" x2="1157.3" y2="1284.7" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="828.0" cy="1470.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1272.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1272.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">2</text>
+<line x1="602.0" y1="1515.0" x2="1155.2" y2="1343.7" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="602.0" cy="1515.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1336.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1336.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">8</text>
+<line x1="565.0" y1="1555.0" x2="1154.8" y2="1406.4" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="565.0" cy="1555.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1400.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1400.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">7</text>
+<line x1="434.0" y1="1618.0" x2="1154.5" y2="1469.3" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="434.0" cy="1618.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1464.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1464.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">9</text>
+<line x1="765.0" y1="1640.0" x2="1154.9" y2="1534.8" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="765.0" cy="1640.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1528.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1528.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">3</text>
+<line x1="802.0" y1="1670.0" x2="1154.5" y2="1597.3" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="802.0" cy="1670.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1592.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1592.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">10</text>
+<line x1="831.0" y1="1700.0" x2="1154.2" y2="1659.3" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="831.0" cy="1700.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1656.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1656.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">1</text>
+<line x1="768.0" y1="1740.0" x2="1154.0" y2="1721.3" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="768.0" cy="1740.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="1720.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="1720.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">4</text></svg><figcaption><b>Front view</b><span>Arms hang either side of the 60 mm mast</span></figcaption></figure>
+</div>
+
+<h2>Parts list</h2>
+<div class="tablewrap"><table class="list"><thead><tr><th>Item</th><th>Part</th><th>Key data</th><th>Source</th></tr></thead><tbody>
+<tr><td class="n"><span class="bal">1</span></td><td>Mobile platform MMP</td><td>Steel chassis 780 x 582 mm, deck face 294 mm</td><td class="src">MMP STEP</td></tr>
+<tr><td class="n"><span class="bal">2</span></td><td>Top cover</td><td>Non-structural, 630 x 576 mm</td><td class="src">MMP STEP</td></tr>
+<tr><td class="n"><span class="bal">3</span></td><td>Hub motor ZLTECH ZLLG80ASM250-L-B</td><td>200 mm, 24 V, double shaft, fail-safe brake, track 400 mm</td><td class="src">ZLTECH, BOM Issue 6</td></tr>
+<tr><td class="n"><span class="bal">4</span></td><td>Swivel castor Blickle LPA-VSTH 35K</td><td>52 mm total height, 15 mm offset, 100 kg each</td><td class="src">Blickle</td></tr>
+<tr><td class="n"><span class="bal">5</span></td><td>Battery 8S1P EVE LF105</td><td>25.6 V, 105 Ah, 23 kg, centred 25 % of length from the rear</td><td class="src">Decision 27 Sep</td></tr>
+<tr><td class="n"><span class="bal">6</span></td><td>Electronics bay</td><td>Jetson J401, ZLAC8015D, contactors, STM32, DC/DC</td><td class="src">P-00</td></tr>
+<tr><td class="n"><span class="bal">7</span></td><td>LiDAR Hokuyo UST-10LX</td><td>270 degree navigation scan, front</td><td class="src">P-00</td></tr>
+<tr><td class="n"><span class="bal">8</span></td><td>Base camera Orbbec Gemini 336L</td><td>Front face, tilted about 10 degrees up</td><td class="src">P-00</td></tr>
+<tr><td class="n"><span class="bal">9</span></td><td>Base E-stop and start button</td><td>Front panel, dual-channel E-stop</td><td class="src">P-00, MMP STEP</td></tr>
+<tr><td class="n"><span class="bal">10</span></td><td>Near-field sensors</td><td>2 ToF plus 1 ultrasonic per face</td><td class="src">P-00</td></tr>
+<tr><td class="n"><span class="bal">11</span></td><td>Mast base plate and brackets</td><td>Aluminium 10 mm on 8 x M8 rivet nuts, HBLFSDW6 brackets, rear brace</td><td class="src">MMP STEP, OpenArm CAD</td></tr>
+<tr><td class="n"><span class="bal">12</span></td><td>Mast MISUMI HFS6-60120</td><td>60 x 120 mm, 1250 mm long, top at 1554 mm, 5.7 kg</td><td class="src">MISUMI</td></tr>
+<tr><td class="n"><span class="bal">13</span></td><td>Index cross holes</td><td>Diameter 6.6 mm at 50 mm pitch over the full length</td><td class="src">Decision 28 Sep</td></tr>
+<tr><td class="n"><span class="bal">14</span></td><td>Cable duct</td><td>Rear slot zone, service loop to the shoulders</td><td class="src">Decision 27 Sep</td></tr>
+<tr><td class="n"><span class="bal">15</span></td><td>J1_A arm plates</td><td>OpenArm 2.0 part, 12 mm, bolted to the mast side slots</td><td class="src">OpenArm 2.0 STEP</td></tr>
+<tr><td class="n"><span class="bal">16</span></td><td>Shoulder motors J1 and J2</td><td>DAMIAO DM8009P, two per arm</td><td class="src">OpenArm 2.0 BOM</td></tr>
+<tr><td class="n"><span class="bal">17</span></td><td>OpenArm 2.0 arm</td><td>7 DOF, 5.36 kg, reach 633 mm, nominal payload 4.1 kg</td><td class="src">openarm_description</td></tr>
+<tr><td class="n"><span class="bal">18</span></td><td>Gripper with wrist camera</td><td>0.77 kg, parallel fingers, in-hand RGB camera</td><td class="src">OpenArm 2.0 BOM</td></tr>
+<tr><td class="n"><span class="bal">19</span></td><td>Chest cover with E-stop</td><td>Second dual-channel E-stop, about 1.45 m</td><td class="src">OpenArm 2.0 STEP, P-00</td></tr>
+<tr><td class="n"><span class="bal">20</span></td><td>Head camera ZED mini</td><td>Stereo scene camera on the mast top</td><td class="src">OpenArm 2.0 BOM</td></tr>
+</tbody></table></div>
+
+<h2>Plan view and stability</h2>
+<p class="lede">The dashed teal rectangle is the tipping boundary: the castor swivel axes moved inwards by their 15 mm offset. The centre of gravity stays inside it in every pose.</p>
+<figure class="single"><svg viewBox="0 0 1240 1000" xmlns="http://www.w3.org/2000/svg" role="img"><title>Top view</title><desc>OpenAMRobot 2.0 plan view to scale</desc><defs>
+<marker id="aht" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 Z" fill="#2d4a66"/></marker>
+<pattern id="hatcht" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#7d8793" stroke-width="1.6"/></pattern>
+<pattern id="hatchAt" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="12" stroke="#a4680f" stroke-width="1.2" opacity=".6"/></pattern>
+</defs><path d="M890 470 L776.9 356.9 A160 160 0 1 1 776.9 583.1 Z" fill="#e39a2a" fill-opacity=".16" stroke="#c07a12" stroke-width="1.6" stroke-dasharray="10 7"/>
+<rect x="170.0" y="179.0" width="780.0" height="582.0" rx="24" fill="#dadde1" stroke="#4a5058" stroke-width="2.4" />
+<rect x="245.0" y="182.0" width="630.0" height="576.0" rx="8" fill="#c3c8ce" stroke="#8a9199" stroke-width="1.2" opacity=".6"/>
+<rect x="300.0" y="270.0" width="520.0" height="400.0" rx="0" fill="#1b8a6b" stroke="#1b8a6b" stroke-width="2.2" fill-opacity=".10" stroke-dasharray="18 10"/>
+<rect x="260.0" y="320.0" width="210.0" height="300.0" rx="8" fill="url(#hatchAt)" stroke="#a4680f" stroke-width="2" stroke-dasharray="14 8"/>
+<rect x="260.0" y="320.0" width="210.0" height="300.0" rx="8" fill="#f4dca8" stroke="none" stroke-width="0" opacity=".45"/>
+<text x="342.0" y="452.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#6b420a" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Battery</text>
+<text x="342.0" y="484.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#6b420a" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">23 kg</text>
+<rect x="730.0" y="320.0" width="125.0" height="300.0" rx="8" fill="#e2e9f1" stroke="#4a5058" stroke-width="1.6" stroke-dasharray="12 7" fill-opacity=".7"/>
+<text x="792.0" y="370.0" font-size="22" text-anchor="middle" dominant-baseline="central" fill="#3b4b5c" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Electronics</text>
+<rect x="460.0" y="245.0" width="200.0" height="50.0" rx="10" fill="#2b2f35" stroke="#111" stroke-width="2.2" />
+<line x1="480.0" y1="293.0" x2="480.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="500.0" y1="293.0" x2="500.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="520.0" y1="293.0" x2="520.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="540.0" y1="293.0" x2="540.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="560.0" y1="293.0" x2="560.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="580.0" y1="293.0" x2="580.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="600.0" y1="293.0" x2="600.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="620.0" y1="293.0" x2="620.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="640.0" y1="293.0" x2="640.0" y2="247.0" stroke="#5b6168" stroke-width="1.2" />
+<rect x="536.0" y="295.0" width="48.0" height="35.0" rx="3" fill="#8a9098" stroke="#333" stroke-width="1.4" />
+<rect x="460.0" y="645.0" width="200.0" height="50.0" rx="10" fill="#2b2f35" stroke="#111" stroke-width="2.2" />
+<line x1="480.0" y1="647.0" x2="480.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="500.0" y1="647.0" x2="500.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="520.0" y1="647.0" x2="520.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="540.0" y1="647.0" x2="540.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="560.0" y1="647.0" x2="560.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="580.0" y1="647.0" x2="580.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="600.0" y1="647.0" x2="600.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="620.0" y1="647.0" x2="620.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<line x1="640.0" y1="647.0" x2="640.0" y2="693.0" stroke="#5b6168" stroke-width="1.2" />
+<rect x="536.0" y="610.0" width="48.0" height="35.0" rx="3" fill="#8a9098" stroke="#333" stroke-width="1.4" />
+<rect x="805.0" y="225.0" width="60.0" height="60.0" rx="4" fill="#aeb4ba" stroke="#333" stroke-width="1.4" />
+<rect x="802.5" y="241.5" width="35.0" height="27.0" rx="4" fill="#2b2f35" stroke="#111" stroke-width="1.4" />
+<circle cx="835.0" cy="255.0" r="5" fill="#333" stroke="none" stroke-width="0" />
+<rect x="805.0" y="655.0" width="60.0" height="60.0" rx="4" fill="#aeb4ba" stroke="#333" stroke-width="1.4" />
+<rect x="802.5" y="671.5" width="35.0" height="27.0" rx="4" fill="#2b2f35" stroke="#111" stroke-width="1.4" />
+<circle cx="835.0" cy="685.0" r="5" fill="#333" stroke="none" stroke-width="0" />
+<rect x="255.0" y="225.0" width="60.0" height="60.0" rx="4" fill="#aeb4ba" stroke="#333" stroke-width="1.4" />
+<rect x="252.5" y="241.5" width="35.0" height="27.0" rx="4" fill="#2b2f35" stroke="#111" stroke-width="1.4" />
+<circle cx="285.0" cy="255.0" r="5" fill="#333" stroke="none" stroke-width="0" />
+<rect x="255.0" y="655.0" width="60.0" height="60.0" rx="4" fill="#aeb4ba" stroke="#333" stroke-width="1.4" />
+<rect x="252.5" y="671.5" width="35.0" height="27.0" rx="4" fill="#2b2f35" stroke="#111" stroke-width="1.4" />
+<circle cx="285.0" cy="685.0" r="5" fill="#333" stroke="none" stroke-width="0" />
+<rect x="865.0" y="445.0" width="50.0" height="50.0" rx="6" fill="#2f343b" stroke="#111" stroke-width="1.6" />
+<circle cx="890.0" cy="470.0" r="14" fill="#56606a" stroke="#111" stroke-width="1" />
+<rect x="948.0" y="408.0" width="14.0" height="124.0" rx="3" fill="#2f343b" stroke="#111" stroke-width="1.4" />
+<rect x="950.0" y="579.0" width="24.0" height="42.0" rx="6" fill="#d8322d" stroke="#8f1e1a" stroke-width="1.4" />
+<rect x="950.0" y="324.0" width="16.0" height="32.0" rx="5" fill="#3f8a3a" stroke="#1f4f1c" stroke-width="1.4" />
+<rect x="425.0" y="300.0" width="290.0" height="340.0" rx="6" fill="#c4ccd4" stroke="#56636f" stroke-width="2" fill-opacity=".85"/>
+<circle cx="655.0" cy="320.0" r="9" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="646.0" y1="320.0" x2="664.0" y2="320.0" stroke="#333" stroke-width="0.8" />
+<line x1="655.0" y1="329.0" x2="655.0" y2="311.0" stroke="#333" stroke-width="0.8" />
+<circle cx="465.0" cy="320.0" r="9" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="456.0" y1="320.0" x2="474.0" y2="320.0" stroke="#333" stroke-width="0.8" />
+<line x1="465.0" y1="329.0" x2="465.0" y2="311.0" stroke="#333" stroke-width="0.8" />
+<circle cx="655.0" cy="620.0" r="9" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="646.0" y1="620.0" x2="664.0" y2="620.0" stroke="#333" stroke-width="0.8" />
+<line x1="655.0" y1="629.0" x2="655.0" y2="611.0" stroke="#333" stroke-width="0.8" />
+<circle cx="465.0" cy="620.0" r="9" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="456.0" y1="620.0" x2="474.0" y2="620.0" stroke="#333" stroke-width="0.8" />
+<line x1="465.0" y1="629.0" x2="465.0" y2="611.0" stroke="#333" stroke-width="0.8" />
+<circle cx="620.0" cy="420.0" r="8" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="612.0" y1="420.0" x2="628.0" y2="420.0" stroke="#333" stroke-width="0.8" />
+<line x1="620.0" y1="428.0" x2="620.0" y2="412.0" stroke="#333" stroke-width="0.8" />
+<circle cx="500.0" cy="420.0" r="8" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="492.0" y1="420.0" x2="508.0" y2="420.0" stroke="#333" stroke-width="0.8" />
+<line x1="500.0" y1="428.0" x2="500.0" y2="412.0" stroke="#333" stroke-width="0.8" />
+<circle cx="620.0" cy="520.0" r="8" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="612.0" y1="520.0" x2="628.0" y2="520.0" stroke="#333" stroke-width="0.8" />
+<line x1="620.0" y1="528.0" x2="620.0" y2="512.0" stroke="#333" stroke-width="0.8" />
+<circle cx="500.0" cy="520.0" r="8" fill="#ffffff" stroke="#333" stroke-width="1.8" />
+<line x1="492.0" y1="520.0" x2="508.0" y2="520.0" stroke="#333" stroke-width="0.8" />
+<line x1="500.0" y1="528.0" x2="500.0" y2="512.0" stroke="#333" stroke-width="0.8" />
+<rect x="530.0" y="440.0" width="120.0" height="60.0" rx="2" fill="#e6ecf1" stroke="#56636f" stroke-width="2.4" />
+<line x1="545.0" y1="500.0" x2="545.0" y2="440.0" stroke="#9aa6b1" stroke-width="1.1" />
+<line x1="575.0" y1="500.0" x2="575.0" y2="440.0" stroke="#9aa6b1" stroke-width="1.1" />
+<line x1="605.0" y1="500.0" x2="605.0" y2="440.0" stroke="#9aa6b1" stroke-width="1.1" />
+<line x1="635.0" y1="500.0" x2="635.0" y2="440.0" stroke="#9aa6b1" stroke-width="1.1" />
+<rect x="590.0" y="428.0" width="79.0" height="12.0" rx="2" fill="#262a30" stroke="#8a9098" stroke-width="1.2" />
+<rect x="571.0" y="377.0" width="98.0" height="51.0" rx="8" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<rect x="588.0" y="269.0" width="64.0" height="97.0" rx="10" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<circle cx="620.0" cy="318.0" r="14" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="590.0" y="500.0" width="79.0" height="12.0" rx="2" fill="#262a30" stroke="#8a9098" stroke-width="1.2" />
+<rect x="571.0" y="512.0" width="98.0" height="51.0" rx="8" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<rect x="588.0" y="574.0" width="64.0" height="97.0" rx="10" fill="#3b4048" stroke="#8a9098" stroke-width="1.6" />
+<circle cx="620.0" cy="622.0" r="14" fill="#8a9098" stroke="none" stroke-width="0" />
+<rect x="650.0" y="390.0" width="55.0" height="160.0" rx="8" fill="#5c636b" stroke="#1d2025" stroke-width="1.6" />
+<rect x="705.0" y="453.0" width="15.0" height="34.0" rx="4" fill="#d8322d" stroke="#8f1e1a" stroke-width="1.2" />
+<rect x="605.0" y="408.0" width="30.0" height="124.0" rx="5" fill="#2b2f35" stroke="#111" stroke-width="1.6" />
+<ellipse cx="550" cy="457" rx="32" ry="22" fill="#c4501f" fill-opacity=".22" stroke="#c4501f" stroke-width="2.2"/>
+<circle cx="734.0" cy="470.0" r="9" fill="#c4501f" stroke="#7a2f10" stroke-width="1.4" />
+<line x1="746" y1="705" x2="818" y2="705" stroke="#c4501f" stroke-width="1.6" marker-start="url(#aht)" marker-end="url(#aht)"/>
+<line x1="734.0" y1="480.0" x2="734.0" y2="715.0" stroke="#c4501f" stroke-width="1" stroke-dasharray="5 5"/>
+<line x1="820.0" y1="670.0" x2="820.0" y2="715.0" stroke="#c4501f" stroke-width="1" stroke-dasharray="5 5"/>
+<text x="777.0" y="735.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#c4501f" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">86 mm</text>
+<text x="734.0" y="502.0" font-size="22" text-anchor="middle" dominant-baseline="central" fill="#c4501f" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">P4</text>
+<line x1="980" y1="140" x2="1080" y2="140" stroke="#1c2230" stroke-width="2.4" marker-end="url(#aht)"/>
+<text x="1030.0" y="115.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Front</text>
+<line x1="170.0" y1="761.0" x2="170.0" y2="842.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="950.0" y1="761.0" x2="950.0" y2="842.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="170.0" y1="830.0" x2="950.0" y2="830.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#aht)" marker-end="url(#aht)"/>
+<text x="560.0" y="808.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">780</text>
+<line x1="285.0" y1="685.0" x2="285.0" y2="897.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="835.0" y1="685.0" x2="835.0" y2="897.0" stroke="#2d4a66" stroke-width="1.1" />
+<line x1="285.0" y1="885.0" x2="835.0" y2="885.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#aht)" marker-end="url(#aht)"/>
+<text x="560.0" y="863.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">550 castor axes</text>
+<line x1="55.0" y1="761.0" x2="55.0" y2="179.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#aht)" marker-end="url(#aht)"/>
+<text x="35.0" y="470.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 35.0 470.0)">582</text>
+<line x1="115.0" y1="670.0" x2="115.0" y2="270.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#aht)" marker-end="url(#aht)"/>
+<text x="95.0" y="470.0" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 95.0 470.0)">400 track</text>
+<line x1="105.0" y1="670.0" x2="460.0" y2="670.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="105.0" y1="270.0" x2="460.0" y2="270.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="45.0" y1="761.0" x2="170.0" y2="761.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="45.0" y1="179.0" x2="170.0" y2="179.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="865.0" y1="255.0" x2="1154.0" y2="255.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="865.0" cy="255.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="255.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="255.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">4</text>
+<line x1="915.0" y1="460.0" x2="1154.0" y2="460.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="915.0" cy="460.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="460.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="460.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">7</text>
+<line x1="650.0" y1="490.0" x2="1154.1" y2="522.3" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="650.0" cy="490.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="524.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="524.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">12</text>
+<line x1="855.0" y1="590.0" x2="1154.0" y2="590.0" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="855.0" cy="590.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="590.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="590.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">6</text>
+<line x1="420.0" y1="600.0" x2="1154.1" y2="652.2" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="420.0" cy="600.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="654.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="654.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">5</text>
+<line x1="669.0" y1="620.0" x2="1154.5" y2="713.1" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="669.0" cy="620.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="718.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="718.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">16</text>
+<line x1="715.0" y1="630.0" x2="1155.3" y2="773.9" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="715.0" cy="630.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="782.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="782.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">11</text>
+<line x1="660.0" y1="680.0" x2="1155.2" y2="838.1" stroke="#1c2230" stroke-width="1.1" opacity=".85"/>
+<circle cx="660.0" cy="680.0" r="4" fill="#1c2230"/>
+<circle cx="1180" cy="846.0" r="26" fill="#ffffff" stroke="#1c2230" stroke-width="2"/>
+<text x="1180" y="846.0" font-size="28" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">3</text></svg><figcaption><b>Top view</b><span>Front to the right</span></figcaption></figure>
+<div class="legend">
+<span><i class="sw" style="background:#1b8a6b33;border:2px dashed #1b8a6b"></i>Tipping boundary</span>
+<span><i class="sw" style="background:#c4501f44;border:2px solid #c4501f;border-radius:50%"></i>CoG envelope, travel and arm poses</span>
+<span><i class="sw" style="background:#c4501f;border-radius:50%;width:12px"></i>P4, drawer pull 150 N, 86 mm from the edge</span>
+<span><i class="sw" style="background:#e39a2a33;border:2px dashed #c07a12"></i>LiDAR 270 degree field</span>
+<span><i class="sw" style="background:#f4dca8;border:2px dashed #a4680f"></i>Battery under the deck</span>
+</div>
+
+<h2>Mast and shoulder mounting</h2>
+<p class="lede">The OpenArm J1_A plates bolt straight onto the side T-slots of the MISUMI profile, so the official arm kinematics stay exact and the shoulder moves in 50 mm steps.</p>
+<div class="cols">
+<figure><svg viewBox="0 0 1240 840" xmlns="http://www.w3.org/2000/svg" role="img"><title>Mast and shoulder detail</title><desc>Shoulder mounting elevation and section A-A</desc><defs>
+<marker id="ahd" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 Z" fill="#2d4a66"/></marker>
+<pattern id="hatchd" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#7d8793" stroke-width="1.6"/></pattern>
+<pattern id="hatchAd" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="12" stroke="#a4680f" stroke-width="1.2" opacity=".6"/></pattern>
+</defs><text x="408.0" y="40.0" font-size="30" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Elevation, shoulder zone</text>
+<rect x="312.0" y="176.0" width="192.0" height="544.0" rx="0" fill="#e6ecf1" stroke="#56636f" stroke-width="2.4" />
+<line x1="336.0" y1="720.0" x2="336.0" y2="176.0" stroke="#9aa6b1" stroke-width="1.2"/>
+<line x1="384.0" y1="720.0" x2="384.0" y2="176.0" stroke="#9aa6b1" stroke-width="1.2"/>
+<line x1="432.0" y1="720.0" x2="432.0" y2="176.0" stroke="#9aa6b1" stroke-width="1.2"/>
+<line x1="480.0" y1="720.0" x2="480.0" y2="176.0" stroke="#9aa6b1" stroke-width="1.2"/>
+<circle cx="456.0" cy="688.0" r="5.3" fill="#ffffff" stroke="#56636f" stroke-width="1.5"/>
+<circle cx="456.0" cy="608.0" r="5.3" fill="#ffffff" stroke="#56636f" stroke-width="1.5"/>
+<circle cx="456.0" cy="528.0" r="5.3" fill="#ffffff" stroke="#56636f" stroke-width="1.5"/>
+<circle cx="456.0" cy="448.0" r="5.3" fill="#ffffff" stroke="#56636f" stroke-width="1.5"/>
+<circle cx="456.0" cy="368.0" r="5.3" fill="#ffffff" stroke="#56636f" stroke-width="1.5"/>
+<circle cx="456.0" cy="288.0" r="5.3" fill="#ffffff" stroke="#56636f" stroke-width="1.5"/>
+<circle cx="456.0" cy="208.0" r="5.3" fill="#ffffff" stroke="#56636f" stroke-width="1.5"/>
+<rect x="408.0" y="510.4" width="126.4" height="195.2" rx="5" fill="none" stroke="#8a9098" stroke-width="1.4" stroke-dasharray="9 7"/>
+<rect x="408.0" y="430.4" width="126.4" height="195.2" rx="5" fill="none" stroke="#8a9098" stroke-width="1.4" stroke-dasharray="9 7"/>
+<rect x="408.0" y="270.4" width="126.4" height="195.2" rx="5" fill="none" stroke="#8a9098" stroke-width="1.4" stroke-dasharray="9 7"/>
+<rect x="408.0" y="350.4" width="126.4" height="195.2" rx="5" fill="#2c3036" stroke="#8a9098" stroke-width="1.6" fill-opacity=".93"/>
+<circle cx="432.0" cy="512.0" r="5" fill="#c3c9cf" stroke="#111" stroke-width="1"/>
+<circle cx="480.0" cy="512.0" r="5" fill="#c3c9cf" stroke="#111" stroke-width="1"/>
+<circle cx="432.0" cy="384.0" r="5" fill="#c3c9cf" stroke="#111" stroke-width="1"/>
+<circle cx="480.0" cy="384.0" r="5" fill="#c3c9cf" stroke="#111" stroke-width="1"/>
+<circle cx="456.0" cy="448.0" r="7" fill="#d8322d" stroke="#111" stroke-width="1.2"/>
+<line x1="264.0" y1="448.0" x2="568.0" y2="448.0" stroke="#d8322d" stroke-width="1.4" stroke-dasharray="14 5 3 5"/>
+<line x1="208.0" y1="608.0" x2="302.4" y2="608.0" stroke="#2d4a66" stroke-width="1.4"/>
+<text x="196.8" y="608.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1300</text>
+<line x1="208.0" y1="528.0" x2="302.4" y2="528.0" stroke="#2d4a66" stroke-width="1.4"/>
+<text x="196.8" y="528.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1350</text>
+<line x1="208.0" y1="448.0" x2="302.4" y2="448.0" stroke="#d8322d" stroke-width="2.4"/>
+<text x="196.8" y="448.0" font-size="27" text-anchor="end" dominant-baseline="central" fill="#d8322d" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1400</text>
+<line x1="208.0" y1="368.0" x2="302.4" y2="368.0" stroke="#2d4a66" stroke-width="1.4"/>
+<text x="196.8" y="368.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1450</text>
+<line x1="576.0" y1="368.0" x2="576.0" y2="288.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahd)" marker-end="url(#ahd)"/>
+<text x="598.0" y="328.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 598.0 328.0)">50</text>
+<line x1="632.0" y1="350.4" x2="632.0" y2="545.6" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahd)" marker-end="url(#ahd)"/>
+<text x="654.0" y="448.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 654.0 448.0)">122</text>
+<line x1="534.4" y1="368.0" x2="588.8" y2="368.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="534.4" y1="350.4" x2="644.8" y2="350.4" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="328.0" y1="720.0" x2="328.0" y2="560.0" stroke="#6a5acd" stroke-width="2.4" stroke-dasharray="16 9"/>
+<path d="M328.0 560.0 C 328.0 460.8, 376.0 444.8, 408.0 451.2" fill="none" stroke="#6a5acd" stroke-width="2.4" stroke-dasharray="16 9"/>
+<line x1="264.0" y1="416.0" x2="264.0" y2="480.0" stroke="#1c2230" stroke-width="2"/>
+<text x="264.0" y="396.8" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">A</text>
+<line x1="254.4" y1="448.0" x2="273.6" y2="448.0" stroke="#1c2230" stroke-width="2"/>
+<text x="985.0" y="40.0" font-size="30" text-anchor="middle" dominant-baseline="central" fill="#1c2230" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Section A-A, shoulder axis</text>
+<line x1="985.0" y1="153.0" x2="985.0" y2="257.0" stroke="#1c2230" stroke-width="2" marker-end="url(#ahd)"/>
+<text x="985.0" y="127.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Front</text>
+<rect x="743.2" y="324.6" width="132.6" height="254.8" rx="10" fill="#3b4048" stroke="#555" stroke-width="1.2" fill-opacity=".28" stroke-dasharray="7 5"/>
+<text x="809.5" y="283.0" font-size="22" text-anchor="middle" dominant-baseline="central" fill="#3b4048" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">J1 motor</text>
+<rect x="1094.2" y="324.6" width="132.6" height="254.8" rx="10" fill="#3b4048" stroke="#555" stroke-width="1.2" fill-opacity=".28" stroke-dasharray="7 5"/>
+<text x="1160.5" y="283.0" font-size="22" text-anchor="middle" dominant-baseline="central" fill="#3b4048" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">J1 motor</text>
+<rect x="907.0" y="374.0" width="156.0" height="312.0" rx="0" fill="url(#hatchd)" stroke="#56636f" stroke-width="2.4" />
+<rect x="907.0" y="374.0" width="156.0" height="312.0" rx="0" fill="#e6ecf1" stroke="none" stroke-width="0" fill-opacity=".5"/>
+<rect x="907.0" y="636.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="1043.0" y="636.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="907.0" y="558.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="1043.0" y="558.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="907.0" y="480.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="1043.0" y="480.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="907.0" y="402.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="1043.0" y="402.6" width="20.0" height="20.8" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="935.6" y="374.0" width="20.8" height="20.0" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="935.6" y="666.0" width="20.8" height="20.0" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="1013.6" y="374.0" width="20.8" height="20.0" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="1013.6" y="666.0" width="20.8" height="20.0" rx="0" fill="#ffffff" stroke="#56636f" stroke-width="1" />
+<rect x="875.8" y="324.6" width="31.2" height="205.4" rx="0" fill="#262a30" stroke="#111" stroke-width="1.4" />
+<rect x="849.8" y="487.5" width="83.2" height="7.0" rx="0" fill="#c3c9cf" stroke="#111" stroke-width="0.9" />
+<rect x="849.8" y="409.5" width="83.2" height="7.0" rx="0" fill="#c3c9cf" stroke="#111" stroke-width="0.9" />
+<rect x="1063.0" y="324.6" width="31.2" height="205.4" rx="0" fill="#262a30" stroke="#111" stroke-width="1.4" />
+<rect x="1037.0" y="487.5" width="83.2" height="7.0" rx="0" fill="#c3c9cf" stroke="#111" stroke-width="0.9" />
+<rect x="1037.0" y="409.5" width="83.2" height="7.0" rx="0" fill="#c3c9cf" stroke="#111" stroke-width="0.9" />
+<rect x="844.6" y="447.5" width="280.8" height="9.0" rx="0" fill="#d8322d" stroke="#111" stroke-width="0.9" />
+<rect x="951.2" y="628.8" width="67.6" height="46.8" rx="6" fill="#6a5acd" stroke="#6a5acd" stroke-width="1.4" fill-opacity=".3" stroke-dasharray="6 4"/>
+<line x1="907.0" y1="726.0" x2="1063.0" y2="726.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahd)" marker-end="url(#ahd)"/>
+<text x="985.0" y="750.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">60</text>
+<line x1="725.0" y1="374.0" x2="725.0" y2="686.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahd)" marker-end="url(#ahd)"/>
+<text x="703.0" y="530.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 703.0 530.0)">120</text>
+<line x1="678.2" y1="374.0" x2="901.8" y2="374.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<line x1="678.2" y1="686.0" x2="901.8" y2="686.0" stroke="#2d4a66" stroke-width="0.8" stroke-dasharray="4 6"/>
+<text x="985.0" y="786.0" font-size="22" text-anchor="middle" dominant-baseline="central" fill="#4b3fa8" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">Cable duct in the rear slot zone</text></svg><figcaption><b>Detail A</b><span>Elevation and section at the shoulder axis</span></figcaption></figure>
+<div class="notes">
+<p><span class="key" style="background:#d8322d"></span>One M6 through-bolt in the index cross hole locates both J1_A plates at the selected height.</p>
+<p><span class="key" style="background:#c3c9cf;border:1px solid #111"></span>M5 bolts into 6-series T-nuts carry the arm loads, four per plate.</p>
+<p><span class="key" style="border:2px dashed #8a9098"></span>Dashed outlines show the plate at mast_1300, mast_1350 and mast_1450.</p>
+<p><span class="key" style="background:#6a5acd66"></span>Arm and camera cables run in the rear slot zone and loop to each shoulder, long enough for one 50 mm step.</p>
+<p>Cross holes: diameter 6.6 mm at 50 mm pitch, ordered as a MISUMI alteration. Every height is a configuration ID propagated to URDF, MoveIt, calibration and dataset metadata.</p>
+</div></div>
+
+<h2>Mast positions compared</h2>
+<p class="lede">Height changes reach, not stability. Theoretical horizontal reach at the A4 test heights uses the official 633 mm arm reach.</p>
+<div class="tablewrap"><table class="list num"><thead><tr><th></th><th>mast_1300</th><th>mast_1350</th><th>mast_1400</th><th>mast_1450</th></tr></thead><tbody>
+<tr><th scope="row">Shoulder axis above floor, mm</th><td>1300</td><td>1350</td><td class="hl">1400</td><td>1450</td></tr>
+<tr><th scope="row">Arm plate top, mm</th><td>1361</td><td>1411</td><td class="hl">1461</td><td>1511</td></tr>
+<tr><th scope="row">Reach at 820 mm height, mm</th><td>413</td><td>346</td><td class="hl">254</td><td>62</td></tr>
+<tr><th scope="row">Reach at 960 mm height, mm</th><td>534</td><td>499</td><td class="hl">455</td><td>401</td></tr>
+<tr><th scope="row">Reach at 1090 mm height, mm</th><td>597</td><td>577</td><td class="hl">552</td><td>521</td></tr>
+<tr><th scope="row">Reach at 1355 mm height, mm</th><td>631</td><td>633</td><td class="hl">631</td><td>626</td></tr>
+<tr><th scope="row">CoG height in travel, mm</th><td>366</td><td>375</td><td class="hl">384</td><td>392</td></tr>
+<tr><th scope="row">Braking decel that tips the robot, m/s²</th><td>7.8</td><td>7.6</td><td class="hl">7.4</td><td>7.2</td></tr>
+</tbody></table></div>
+
+<h2>F2S stability and stopping summary</h2>
+<div class="tablewrap"><table class="list"><thead><tr><th>Output</th><th>Result</th><th>Basis</th></tr></thead><tbody>
+<tr><th scope="row">Gross mass</th><td>about 93 kg</td><td class="src">Cap 120 kg</td></tr>
+<tr><th scope="row">CoG envelope, four poses</th><td>366 to 448 mm high, within 35 mm of the drive axle</td><td class="src">Travel, arms forward, arm sideways, drawer pull</td></tr>
+<tr><th scope="row">Lowest static margin</th><td>86 mm, drawer pull 150 N at 1090 mm</td><td class="src">Minimum 50 mm; tips at about 220 N</td></tr>
+<tr><th scope="row">Stopping at 1.5 m/s</th><td>0.82 m at 2.5 m/s² with 0.25 s latency</td><td class="src">Tipping needs more than 5.4 m/s², traction limit 3.5 m/s²</td></tr>
+<tr><th scope="row">Drive pair</th><td>Within the ZLTECH 120 kg drivable-mass rating</td><td class="src">Rocking case about 650 N per motor, radial limit asked from ZLTECH</td></tr>
+<tr><th scope="row">Motor speed at the cap</th><td>143 rpm</td><td class="src">Rated 200 rpm</td></tr>
+<tr><th scope="row">Geometry change</th><td>None</td><td class="src">Battery rear, mast on the drive axle, flat floor envelope</td></tr>
+</tbody></table></div>
+<footer>Open inputs: weighed chassis mass, ZLTECH radial load limit and dynamic brake rating, final hub-motor bracket and track, arms supplied without the OpenArm body. Battery and electronics outlines are placeholders until M-01 fixes them.</footer>
+</div></body></html>
