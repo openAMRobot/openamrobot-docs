@@ -20,19 +20,21 @@ OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a
 
 | Area | What this section documents | Owning repository |
 |---|---|---|
-| Hardware architecture | Connection model of compute, base controller, drives, power, sensors and arms (BOM Issue 7) | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) |
+| Hardware architecture | Connection model of compute, base controller, drives, power, sensors and arms (public extract of BOM Issue 7) | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) (BOM to be published with the electrical release) |
 | Arms and manipulation | OpenArm 2.0 integration, device packages, fake-hardware baseline | [openamrobot-manipulation](https://github.com/openAMRobot/openamrobot-manipulation) |
 
 ## Decisions recorded so far
 
+Recorded means written in the decision addendum of the plan set (P-03). Rows marked proposed are agreed by the leads but not yet written there.
+
 | Decision | Value | Date |
 |---|---|---|
 | Drivetrain | Two ZLTECH ZLLG80ASM250-L-B hub motors with brakes, one ZLAC8015D V4.2 driver, 200 mm wheels | 21 September 2026 |
-| Battery | One 8S1P EVE LF105 LiFePO4 pack, 25.6 V, 105 Ah, Daly 150 A BMS, 20 A charger; battery centred at 25 percent of the robot length from the rear | 27 September 2026 |
+| Battery | One 8S1P EVE LF105 LiFePO4 pack, 25.6 V, 105 Ah, Daly 150 A BMS, 20 A charger (recorded); battery centred at 25 percent of the robot length from the rear (proposed) | 27 September 2026 |
 | Base camera | Orbbec Gemini 336L, front mounted, tilted 10 degrees up; head camera ZED-121210; two wrist cameras | 23 September 2026 |
-| Mast | Own COTS mast, one MISUMI HFS6-60120 profile with the OpenArm J1_A plates on its side slots, index holes every 50 mm | 27 September 2026 |
-| Shoulder height | Four mounting positions, 1300, 1350, 1400 and 1450 mm above the floor; baseline 1400 mm; maximum robot height 1700 mm | 28 September 2026 |
-| Speed | Software speed limit 1.5 m/s | 28 September 2026 |
+| Mast | Own COTS mast, one MISUMI HFS6-60120 profile with the OpenArm J1_A plates on its side slots, index holes every 50 mm | 27 September 2026, proposed |
+| Shoulder height | Preliminary 1400 mm (recorded); four mounting positions 1300, 1350, 1400 and 1450 mm and the withdrawal of the 1500 to 1700 mm provision are proposed; maximum robot height 1700 mm | 28 September 2026, partly proposed |
+| Speed | Command ceiling 1.5 m/s, treated as an analytical limit; the accepted operating speed follows from the stability model and the stopping tests | 28 September 2026, proposed |
 
 ## Inputs still open
 

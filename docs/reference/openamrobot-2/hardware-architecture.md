@@ -7,7 +7,7 @@ description: Interactive connection model of the OpenAMRobot 2.0 electronics, co
 
 # Hardware architecture (BOM Issue 7)
 
-**Canonical source:** the development BOM and evidence register maintained by the platform lead, published through [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw). This diagram is exported from BOM Issue 7 of 27 September 2026; the issue number in the diagram header tells you which BOM revision it represents.
+**Canonical source:** the OpenAMRobot 2.0 development BOM and evidence register maintained by the platform lead. It is an internal working document that is not yet committed to a repository; it will be published in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) with the electrical release. This diagram is a public extract of BOM Issue 7 of 27 September 2026 (a working issue; Issue 6 is the last issue recorded as canonical in the decision addendum): internal links, prices and owner columns are removed, and the issue number in the diagram header tells you which BOM issue it represents.
 
 **Applies to:** OpenAMRobot 2.0, development cycle 2. For the robot that has been built and driven, see the [current hardware architecture](../openamr-platform-hw/concepts.md).
 
@@ -40,13 +40,13 @@ Every branch fuse is drawn explicitly. Functional nodes such as the contactors K
 | Subsystem | Selection | Notes |
 |---|---|---|
 | Compute | NVIDIA Jetson Orin NX on a J401 carrier | ROS 2 Jazzy, Nav2, perception and the arm stack |
-| Base controller | STM32H743 (NUCLEO-H743ZI2, Gate B); Teensy 4.x remains the Gate A bench target | Portable C core, same firmware contract on both targets |
-| Drive bus | CAN1, 500 kbit/s, CANopen to the ZLAC8015D V4.2 driver | Two ZLLG80ASM250-L-B hub motors with fail-safe brakes |
+| Base controller | Gate A: the existing Teensy 4.0 on the legacy robot (PWM drivetrain, MPU6500). Gate B: STM32H743 on a NUCLEO-H743ZI2 bench board with the ZLAC8015D over CANopen | Portable C core, same firmware contract on both targets; release path decided 6 November, Teensy behind the I8 contract is the documented fallback |
+| Drive bus | CAN1, 500 kbit/s, CANopen to the ZLAC8015D V4.2 driver | Two ZLLG80ASM250-L-B hub motors with integrated holding brakes (spring-applied function and ratings pending the supplier evidence, F2A) |
 | Battery bus | CAN2, 250 kbit/s, isolated, Daly 150 A BMS | 8S1P EVE LF105 LiFePO4, 25.6 V, 105 Ah |
 | Safety chain | Dual-channel E-stops (base and chest), two monitored series contactors, fuse and disconnect | Hardware chain; firmware observes it and applies a secondary inhibit only |
-| IMU | ICM-42688-P on a mikroBUS SPI board connected to the MCU | Raw data published by firmware, filtered data by the host EKF |
+| IMU | Gate A: MPU6500 on the Teensy (I2C). Gate B path: ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI, admitted to the BOM only after the side-by-side comparison on 20 November | Raw data published by firmware on /imu/data_raw, filtered data by the host EKF on /imu/data |
 | Navigation sensors | Hokuyo UST-10LX LiDAR, Orbbec Gemini 336L base camera, ToF and ultrasonic near-field sensors on the MCU | Base camera tilted 10 degrees up, shared with docking |
-| Head and wrist cameras | ZED-121210 on the mast top, one camera per gripper | Calibrated as a set with the base camera |
+| Head and wrist cameras | ZED-121210 on the mast top (exact SKU and interface pending the supplier mapping), one camera per gripper | Calibrated as a set with the base camera |
 | Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | Mounted on the mast at the selected shoulder height |
 | Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
 
