@@ -49,6 +49,7 @@ REPOSITORIES = {
     "reference/openamrobot-ui/": "openamrobot-ui",
     "reference/openamrobot-manifest/": "openamrobot-manifest",
     "reference/openamrobot-release/": "openamrobot-release",
+    "reference/openamrobot-2/": "openamr-platform-hw",
 }
 
 RELATED = {
@@ -71,6 +72,20 @@ RELATED = {
     "customize/device-packages/adding-a-sensor.md": (
         "configure/sensors/adding-a-sensor-config.md",
         "reference/openamrobot-interfaces/overview.md",
+    ),
+    "reference/openamrobot-2/hardware-architecture.md": (
+        "reference/openamr-platform-hw/concepts.md",
+        "reference/mobile-platform.md",
+        "reference/openamrobot-2/general-arrangement.md",
+    ),
+    "reference/openamrobot-2/general-arrangement.md": (
+        "reference/upper-body.md",
+        "reference/openamrobot-2/mass-and-stability.md",
+        "reference/openamrobot-2/hardware-architecture.md",
+    ),
+    "reference/openamrobot-2/mass-and-stability.md": (
+        "customize/hardware/mass-and-stability.md",
+        "reference/openamrobot-2/general-arrangement.md",
     ),
 }
 
