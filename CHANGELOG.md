@@ -6,6 +6,8 @@ All notable changes to the OpenAMRobot documentation site are recorded here. The
 
 ### Added
 
+- Collapsible table of contents on desktop: an arrow in the right sidebar hides it and widens the page; a tab on the right edge brings it back. The choice is remembered in the browser.
+
 - Reference section "OpenAMRobot 2.0 design": section index, interactive hardware architecture diagram (BOM Issue 7), general arrangement drawings with parts list and mast detail, and the F2S mass and stability summary.
 - Embedded-drawing styles (`oamr-frame`, `oamr-figure`) in `stylesheets/brand.css`.
 - Cross-links from the mobile platform, upper body and reference index pages.
