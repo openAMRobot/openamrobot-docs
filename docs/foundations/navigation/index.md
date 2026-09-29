@@ -1,53 +1,201 @@
 ---
 title: Navigation
 ---
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Navigation</h1><p>Understand how OpenAMRobot localizes, plans, controls and moves through its environment.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Navigation</h1><p>Understand navigation and how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+## For
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+**Primary path:** Developer / Integrator
 
-## Planned coverage
+This page explains how navigation fits into the OpenAMRobot software stack. It provides the system-level architecture and links to the owning implementation repository.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+!!! warning "Current capability status"
+The current mobile-platform navigation stack is **experimental**. The software repository documents an end-to-end simulation using ROS 2 Jazzy, Gazebo Harmonic and Nav2. Real-robot integration and physical validation remain in progress.
 
-## Completion criteria
+## Before you start
 
-| Field | Required content |
-| --- | --- |
-| For | Name the primary path: Domain Expert, Beginner, Integrator, Builder, Developer or Entrepreneur |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+You should have a basic understanding of:
 
-### Procedure or explanation
+* ROS 2 nodes and topics
+* TF coordinate frames
+* odometry
+* laser scan data
+* maps and localization
+* Nav2 navigation concepts
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+For exact installation commands, package versions, parameters and launch procedures, use the canonical [`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw) repository.
 
-### If it did not work
+## Navigation architecture
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+At the system level, OpenAMRobot navigation follows this flow:
 
-## Owning OpenAMRobot source
+```text
+Sensors and robot state
+        │
+        ├── Laser scan
+        ├── Odometry
+        └── TF
+        │
+        ▼
+Localization
+        │
+        ├── Map
+        └── Robot pose
+        │
+        ▼
+Nav2
+ ┌───────────────┬────────────────┐
+ │               │                │
+ ▼               ▼                ▼
+Planner       Controller       Behaviors
+ │               │                │
+ └───────┬───────┴────────────────┘
+         ▼
+Velocity processing
+         ▼
+Collision monitoring
+         ▼
+Robot base
+         │
+         ▼
+Odometry / TF feedback
+```
 
-- [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) – canonical source, versions, implementation and issue history.
+The current platform navigation implementation separates localization and navigation responsibilities while using Nav2 for planning, control and behavior management.
 
-## Authoritative external references
+## Localization
 
-- [Nav2 documentation](https://docs.nav2.org/)
-- [ROS REP-105 coordinate conventions](https://www.ros.org/reps/rep-0105.html)
+Localization estimates the robot pose relative to the map.
 
-## Contribution note
+The current mobile-platform navigation stack uses map data, laser observations, odometry and TF relationships to maintain the robot's estimated pose.
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+See [Localization](localization.md) for the navigation-specific explanation.
+
+## Planning and control
+
+Navigation planning determines a path toward a goal while considering the environment represented by the navigation costmaps.
+
+The controller converts the planned path into velocity commands for the mobile base.
+
+The exact planner, controller, parameters and tuning values are maintained in the owning software repository.
+
+See:
+
+* [Path planning](path-planning.md)
+* [Obstacle avoidance](obstacle-avoidance.md)
+
+## Costmaps
+
+OpenAMRobot navigation uses navigation costmaps to represent obstacles and traversability for planning and control.
+
+At a system level:
+
+* the **global costmap** supports planning through the larger environment;
+* the **local costmap** represents the nearby environment used during motion control.
+
+The exact costmap layers, footprint, sensor configuration and tuning parameters belong to the current platform implementation.
+
+## Velocity and robot feedback
+
+The navigation command path can be understood as:
+
+```text
+Navigation controller
+        ↓
+Velocity processing
+        ↓
+Collision monitoring
+        ↓
+Robot base
+        ↓
+Odometry
+        ↓
+TF / navigation feedback
+```
+
+This feedback loop allows navigation to continuously relate commanded motion to the robot's estimated state and environment.
+
+The exact topic names, remappings and QoS settings are maintained by the owning repositories.
+
+## TF
+
+Navigation depends on consistent coordinate-frame relationships.
+
+The mobile platform uses TF to relate the map, odometry, robot base and sensor frames.
+
+A typical navigation relationship is:
+
+```text
+map
+ └── odom
+      └── base_link
+           ├── base_footprint
+           └── sensor frames
+```
+
+The exact frame names and sensor transforms are configuration-dependent and must be verified against the current platform implementation.
+
+See [Coordinate frames](coordinate-frames.md).
+
+## Mapping and localization
+
+Navigation can use a previously created map for localization, while SLAM provides a mapping workflow when a map is not yet available.
+
+These are different operating modes:
+
+```text
+SLAM
+  Mapping + localization
+        ↓
+      Map
+        ↓
+Localization
+  Localization on existing map
+        ↓
+      Nav2
+```
+
+See [SLAM and mapping](slam-and-mapping.md) and [Localization](localization.md).
+
+## Docking
+
+Docking builds on the navigation stack to move the robot toward a docking target and complete the docking sequence.
+
+The current platform software documents an AprilTag-based docking simulation integrated with Nav2.
+
+See [Docking](docking.md) for the system-level docking workflow.
+
+## Simulation and physical validation
+
+The current software stack provides an end-to-end simulation path using ROS 2 Jazzy, Gazebo Harmonic and Nav2.
+
+Simulation can be used to verify software integration and navigation behaviour, but simulation results do not establish physical robot acceptance or safety.
+
+Physical validation requires the appropriate hardware, sensors, calibration, safety controls and approved test procedures.
+
+## Verification
+
+Navigation documentation is considered verified only when the described behaviour can be traced to an approved implementation or evidence source.
+
+The current implementation source is:
+
+* [`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw)
+* [`openamr-platform-sw navigation documentation`](https://github.com/openAMRobot/openamr-platform-sw/tree/main/docs/navigation)
+
+Exact implementation details should be checked against that repository before publishing release-specific instructions.
+
+## Next steps
+
+* [Coordinate frames](coordinate-frames.md)
+* [Odometry](odometry.md)
+* [SLAM and mapping](slam-and-mapping.md)
+* [Localization](localization.md)
+* [Path planning](path-planning.md)
+* [Obstacle avoidance](obstacle-avoidance.md)
+* [Docking](docking.md)
+
+## Owning source
+
+[`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw) is the canonical source for the current mobile-platform navigation implementation, including implementation details, configuration, parameters, launch files and tests.
+
+This page provides the cross-project explanation and should not duplicate implementation-specific configuration.
