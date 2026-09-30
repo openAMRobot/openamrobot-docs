@@ -2,19 +2,19 @@
 * @BotshareAI @openAMRobot/openamrobot2-0_leads
 
 # Documentation
-/docs/ @BotshareAI
+/docs/ @BotshareAI @openAMRobot/openamrobot2-0_leads
 
 # Assets
-/assets/ @BotshareAI
+/assets/ @BotshareAI @openAMRobot/openamrobot2-0_leads
 
 # MkDocs
-/mkdocs.yml @BotshareAI
+/mkdocs.yml @BotshareAI @openAMRobot/openamrobot2-0_leads
 
 # Root governance files
-/README.md @BotshareAI
-/LICENSE @BotshareAI
-/CONTRIBUTING.md @BotshareAI
-/SECURITY.md @BotshareAI
-/NOTICE.md @BotshareAI
-/AUTHORS.md @BotshareAI
-/CHANGELOG.md @BotshareAI
+/README.md @BotshareAI @openAMRobot/openamrobot2-0_leads
+/LICENSE @BotshareAI @openAMRobot/openamrobot2-0_leads
+/CONTRIBUTING.md @BotshareAI @openAMRobot/openamrobot2-0_leads
+/SECURITY.md @BotshareAI @openAMRobot/openamrobot2-0_leads
+/NOTICE.md @BotshareAI @openAMRobot/openamrobot2-0_leads
+/AUTHORS.md @BotshareAI @openAMRobot/openamrobot2-0_leads
+/CHANGELOG.md @BotshareAI @openAMRobot/openamrobot2-0_leads
