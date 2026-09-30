@@ -7,7 +7,7 @@ description: Interactive connection model of the OpenAMRobot 2.0 electronics, co
 
 # Hardware architecture (BOM Issue 7)
 
-**Canonical source:** the OpenAMRobot 2.0 development BOM and evidence register maintained by the platform lead. It is an internal working document that is not yet committed to a repository; it will be published in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) with the electrical release. This diagram is a public extract of BOM Issue 7 of 27 September 2026 (a working issue; Issue 6 is the last issue recorded as canonical in the decision addendum): internal links, prices and owner columns are removed, and the issue number in the diagram header tells you which BOM issue it represents.
+**Canonical source:** the OpenAMRobot 2.0 development BOM and evidence register maintained by the platform lead. It is an internal working document that is not yet committed to a repository; it will be published in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) with the electrical release. This diagram is a public extract of BOM Issue 7 of 27 September 2026 (the canonical working issue under P-03 revision 18.2): internal links, prices and owner columns are removed, and the issue number in the diagram header tells you which BOM issue it represents.
 
 **Applies to:** OpenAMRobot 2.0, development cycle 2. For the robot that has been built and driven, see the [current hardware architecture](../openamr-platform-hw/concepts.md).
 
@@ -48,7 +48,7 @@ Every branch fuse is drawn explicitly. Functional nodes such as the contactors K
 | IMU, Gate B path (conditional) | ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI and INT1 on the STM32 path; selected for the manufacturing BOM only after the same-robot comparison against the MPU6500 on 20 November | Drawn as conditional in the diagram; not released and not current |
 | Navigation sensors | Hokuyo UST-10LX LiDAR, Orbbec Gemini 336L base camera, ToF and ultrasonic near-field sensors on the MCU | Base camera tilted 10 degrees up, shared with docking |
 | Head and wrist cameras | ZED-121210 on the mast top (exact SKU and interface pending the supplier mapping), one camera per gripper | Calibrated as a set with the base camera |
-| Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | Mounted on the mast at 1350 mm shoulder height (indexed positions 1300, 1350, 1400, 1450 mm) |
+| Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | Installed at mast_1350 (1350 mm shoulder axis); four indexed positions 1300, 1350, 1400 and 1450 mm. Mast top 1500 mm; the complete robot must remain at or below the 1700 mm assembled-height envelope |
 | Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
 
 ## What changes when the BOM changes

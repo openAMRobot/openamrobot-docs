@@ -35,7 +35,7 @@ Recorded means written in the decision addendum of the plan set (P-03, revision 
 | Battery | One 8S1P EVE LF105 LiFePO4 pack, 25.6 V, 105 Ah, Daly 150 A BMS, 20 A charger; battery centred at 25 percent of the robot length from the rear | 28 September 2026, recorded in P-03 revision 18.2 |
 | Base camera | Orbbec Gemini 336L, front mounted, tilted 10 degrees up; head camera ZED-121210; two wrist cameras | 23 September 2026 |
 | Mast | Own COTS mast, one MISUMI HFS6-60120 profile with the OpenArm J1_A plates on its side slots, index holes every 50 mm, mast top 1500 mm above the floor | 28 September 2026, recorded in P-03 revision 18.2 |
-| Shoulder height | Installation height 1350 mm (mast_1350); four indexed mounting positions 1300, 1350, 1400 and 1450 mm; mast top 1500 mm; maximum robot height 1700 mm | 28 September 2026, recorded in P-03 revision 18.2 |
+| Shoulder height | Installation height 1350 mm (mast_1350); four indexed mounting positions 1300, 1350, 1400 and 1450 mm; mast top 1500 mm; maximum assembled-height envelope 1700 mm (the robot may be lower, never higher; this is not shoulder height) | 28 September 2026, recorded in P-03 revision 18.2 |
 | Speed | Command ceiling 1.5 m/s, treated as an analytical limit; the accepted operating speed follows from the stability model and the stopping tests | 28 September 2026, recorded in P-03 revision 18.2 |
 
 ## Inputs still open

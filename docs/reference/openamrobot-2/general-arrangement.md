@@ -27,7 +27,7 @@ The interactive sheet contains the three views, a numbered parts list, the mast 
 ## Views
 
 <figure class="oamr-figure">
-<img src="/assets/hardware/openamrobot2-ga-elevations.jpg" alt="Side and front elevations of OpenAMRobot 2.0 at the same scale, arms stowed, shoulder axis at 1400 mm, height limit 1700 mm, numbered balloons for the parts list" loading="lazy">
+<img src="/assets/hardware/openamrobot2-ga-elevations.jpg" alt="Side and front elevations of OpenAMRobot 2.0 at the same scale, arms stowed, installed shoulder axis at 1350 mm, mast top at 1500 mm, assembled height no more than 1700 mm, numbered balloons for the parts list" loading="lazy">
 <figcaption>Side and front views at the same scale. Front is to the right in the side view. The arms are drawn stowed at the 1350 mm installation height; ghost outlines mark the other three shoulder positions (1300, 1400 and 1450 mm).</figcaption>
 </figure>
 
@@ -52,7 +52,7 @@ The interactive sheet contains the three views, a numbered parts list, the mast 
 |---|---|---|
 | Mast | One MISUMI HFS6-60120 aluminium profile, 1196 mm long with its top 1500 mm above the floor, on the platform centre bracket (8 M8 rivet nuts) | Same 6-series T-slots as the OpenArm pillar, so the arm plates bolt on unchanged and the official arm kinematics stay exact |
 | Shoulder positions | Four indexed positions, 1300, 1350, 1400 and 1450 mm above the floor; installation height 1350 mm | 1350 mm keeps about 350 mm of reach at the 820 mm test height; stability changes little between positions |
-| Maximum height | 1700 mm with the head camera on the mast top | Door and rack envelope of the target sites |
+| Maximum height | At most 1700 mm for the complete assembled robot including the head camera; the robot may be lower | Door and rack envelope of the target sites |
 | Battery | Centred 25 percent of the robot length from the rear | Balances the forward mass of the arms and keeps the centre of gravity near the drive axle |
 | Electronics | All inside the mobile platform | Shorter harnesses, protected enclosure, no electronics on the mast |
 | Drive and castors | Hub motors on the centre axle, four swivel castors, 52 mm total castor height | Existing platform geometry, no change to track or wheelbase |
