@@ -89,19 +89,13 @@ openamrobot-docs/
 - interfaces
 - UI
 
-### OpenAMR Platform
+### OpenAMRobot Platform
 
 - software
 - hardware
 - firmware
 - navigation
 - docking
-
-### OpenAMH Humanoid
-
-- software
-- hardware
-- firmware
 
 ## Repository boundaries
 
