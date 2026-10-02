@@ -41,7 +41,16 @@ Document symptoms separately from causes. Include diagnostic evidence and a safe
 
 ## Owning OpenAMRobot source
 
-- [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) – canonical source, versions, implementation and issue history.
+
+- [openAMRobot/openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces) – canonical source for interface definitions, reviewed snapshots, versions and implementation history.
+
+
+The interfaces repository is the canonical implementation home. This documentation repository describes how consumers work with the published interfaces and should not maintain a separate copy of the interface definitions.
+
+Consumers should use the reviewed interface snapshot published by the interfaces repository. When a reviewed snapshot is updated, consumers should update to that snapshot and rebuild affected packages.
+
+Changes to message fields, interface definitions or contract/package versions must be treated as interface changes. After such changes, rebuild affected consumers and verify that their generated interfaces and runtime dependencies match the reviewed snapshot.
+
 
 ## Contribution note
 
