@@ -43,7 +43,7 @@ The interactive sheet contains the three views, a numbered parts list, the mast 
 
 <figure class="oamr-figure">
 <img src="/assets/hardware/openamrobot2-ga-parts-list.jpg" alt="Parts list 1 to 20 for the general arrangement with key data and sources" loading="lazy">
-<figcaption>Parts list for the balloon numbers on the views.</figcaption>
+<figcaption>Parts list for the balloon numbers on the views. Item 7 in this image still names the superseded Hokuyo UST-10LX; the 2.0 LiDAR is the SLAMTEC RPLIDAR S3 (P-03 revision 18.4, item 13), as in the drawing sheet above.</figcaption>
 </figure>
 
 ## Layout decisions shown

@@ -28,7 +28,7 @@ datasheets. Status: ✅ = confirmed (label + datasheet), ⏳ = to read the exact
 | 3 | Motors ×2 | **Z4BLD60-24GN-30S** (ZD geared BLDC, 60 W / 24 V / 3.8 A / 3000 rpm / **P=5**) | ✅ nameplate | [analog F5B60-24GN-30S spec](https://www.omc-stepperonline.com/24v-60w-100rpm-geared-brushless-dc-motor-4-18nm-591-94oz-in-30-1-spur-gearbox-f5b60-24gn-30s-5gn30k) · [ZD](https://en.zd-motor.com/) |
 | 4 | Encoders ×2 | **AMS AS5040** (magnetic, quadrature A/B, marking "AS5040 AB 2.2") | ✅ | [AS5040 datasheet (ams, PDF)](https://www.mouser.com/datasheet/2/588/AS5040_DS000374_4_00-2066720.pdf) |
 | 5 | IMU | **TDK InvenSense MPU-6500** (board silk says "MPU-6050"/GY-521, but the chip is a 6500) | ✅ | MPU-6500 datasheet (TDK/InvenSense) |
-| 6 | LiDAR | **Slamtec RPLIDAR A1** (A1M8, by shape) | ⏳ confirm sticker | [slamtec.com RPLIDAR A1](https://www.slamtec.com/en/Lidar/A1) |
+| 6 | LiDAR | **Slamtec RPLIDAR A1** (A1M8, by shape), legacy (existing robot); the OpenAMRobot 2.0 LiDAR is the RPLIDAR S3 | ⏳ confirm sticker | [slamtec.com RPLIDAR A1](https://www.slamtec.com/en/Lidar/A1) |
 | 7 | Camera | **Sony IMX708** = Raspberry Pi **Camera Module 3 NoIR** | ✅ | [raspberrypi.com camera-3](https://www.raspberrypi.com/products/camera-module-3/) |
 | 8 | SBC | **Raspberry Pi 5** (Model B Rev 1.1, **8 GB** RAM — confirmed 2026-07-06 on the current board) | ✅ | [raspberrypi.com Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/) |
 | 9 | DC-DC 24 V→5 V | generic **~300 W 20 A CC/CV buck** (toroid + 2 trimpots) | ⏳ no clear model | (generic) |
