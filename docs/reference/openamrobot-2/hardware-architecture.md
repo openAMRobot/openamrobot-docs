@@ -46,10 +46,26 @@ Every branch fuse is drawn explicitly. Functional nodes such as the contactors K
 | Safety chain | Dual-channel E-stops (base and chest), two monitored series contactors, fuse and disconnect | Hardware chain; firmware observes it and applies a secondary inhibit only |
 | IMU, Gate A (current baseline) | MPU6500 on the Teensy 4.0 over I2C, on the legacy robot with the Jetson | Raw data published by firmware on /imu/data_raw, filtered data by the host EKF on /imu/data |
 | IMU, Gate B path (conditional) | ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI and INT1 on the STM32 path; selected for the manufacturing BOM only after the same-robot comparison against the MPU6500 on 20 November | Drawn as conditional in the diagram; not released and not current |
-| Navigation sensors | Hokuyo UST-10LX LiDAR, Orbbec Gemini 336L base camera, ToF and ultrasonic near-field sensors on the MCU | Base camera tilted 10 degrees up, shared with docking |
+| Navigation sensors | SLAMTEC RPLIDAR S3 (S3M1-R2) LiDAR, Orbbec Gemini 336L base camera, ToF and ultrasonic near-field sensors on the MCU | LiDAR details below. Base camera tilted 10 degrees up, shared with docking |
 | Head and wrist cameras | ZED-121210 on the mast top (exact SKU and interface pending the supplier mapping), one camera per gripper | Calibrated as a set with the base camera |
 | Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | Installed at mast_1350 (1350 mm shoulder axis); four indexed positions 1300, 1350, 1400 and 1450 mm. Mast top 1500 mm; the complete robot must remain at or below the 1700 mm assembled-height envelope |
 | Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
+
+## Navigation LiDAR (P-03 revision 18.4, item 13)
+
+The OpenAMRobot 2.0 navigation LiDAR is the SLAMTEC RPLIDAR S3 (model S3M1-R2). It replaces the RPLIDAR A1 of the existing robot and supersedes the Hokuyo UST-10LX that BOM Issue 7 still lists.
+
+| Item | Value |
+|---|---|
+| Data link | USB to the Jetson through a USB to UART adapter |
+| Supply | Regulated 5 V rail: 4.9 to 5.2 V, ripple at most 150 mV, start current 1.2 A, running current 0.45 A typical. There is no 12 V rail and no separate 24 V LiDAR branch |
+| Mounting | Existing A1 bracket plus a spacer plate, so the S3 scan plane sits at the A1 scan-plane height; the `lidar_link` frame position does not change. 4 x M2.5 mounting, screw engagement at most 4 mm; spacer thickness to be set from the Slamtec drawings |
+| Scan window | Fully open, no translucent cover |
+| Role | Functional sensing only, not a safety device |
+| Backup | RPLIDAR S2E, only if the S3 is unavailable |
+
+!!! note "Diagram not yet regenerated"
+    The interactive diagram above is BOM Issue 7. Its LiDAR labels are updated, but it still draws the withdrawn Hokuyo 24 V fused branch (F-LIDAR) and Ethernet link, and its embedded source rows still describe the Hokuyo. The next BOM issue replaces them.
 
 ## What changes when the BOM changes
 
