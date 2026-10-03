@@ -45,7 +45,7 @@ Document symptoms separately from causes. Include diagnostic evidence and a safe
 
 ## Verification and schema validation
 
-The canonical interface verification guidance is maintained in [verification.md](../../verification.md). Schema validation guidance is maintained in [schema-validation.md](../../schema-validation.md).
+The canonical interface verification guidance is maintained in the [openamrobot-interfaces verification documentation](https://github.com/openAMRobot/openamrobot-interfaces). Schema validation guidance is maintained in the [openamrobot-interfaces repository](https://github.com/openAMRobot/openamrobot-interfaces).
 
 Future domain contracts must register their schemas and positive and negative fixtures in `schemas/validation.json`. This keeps schema coverage and validation expectations in one governed location rather than creating repository-local schema or reason-code lists.
 
