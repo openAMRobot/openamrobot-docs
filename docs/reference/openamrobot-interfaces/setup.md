@@ -49,7 +49,7 @@ The canonical interface verification guidance is maintained in [verification.md]
 
 Future domain contracts must register their schemas and positive and negative fixtures in `schemas/validation.json`. This keeps schema coverage and validation expectations in one governed location rather than creating repository-local schema or reason-code lists.
 
-The documentation PRs [#12](https://github.com/openAMRobot/openamrobot-docs/pull/12) and [#13](https://github.com/openAMRobot/openamrobot-docs/pull/13) are pending until merged.
+The documentation PRs #12 and #13 established the interface documentation and validation guidance and are now merged.
 
 Where a domain does not yet have a schema, the corresponding schema coverage remains explicitly `NOT_APPLICABLE`. It should not be represented as passing schema coverage.
 
