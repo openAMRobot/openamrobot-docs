@@ -14,9 +14,9 @@ This page explains how navigation fits into the OpenAMRobot software stack. It p
 **When you finish:** you can identify the five main stages of the navigation flow—localization, Nav2 planning/control, velocity processing, collision monitoring, and the robot base—and locate the owning repository for their implementation details.
 
 !!! warning "Current capability and safety status"
-The current mobile-platform navigation stack is **experimental**. The software repository documents an end-to-end simulation using ROS 2 Jazzy, Gazebo Harmonic and Nav2. Real-robot integration and physical validation remain in progress.
+    The current mobile-platform navigation stack is **experimental**. The software repository documents an end-to-end simulation using ROS 2 Jazzy, Gazebo Harmonic and Nav2. Real-robot integration and physical validation remain in progress.
 
-Navigation behavior depends on correct sensor data, TF, odometry, localization and controller configuration. This page describes the system architecture; it does not establish physical safety limits, acceptance criteria or production readiness.
+    Navigation behavior depends on correct sensor data, TF, odometry, localization and controller configuration. This page describes the system architecture; it does not establish physical safety limits, acceptance criteria or production readiness.
 
 ## Before you start
 
