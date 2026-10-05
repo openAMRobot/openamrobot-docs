@@ -40,9 +40,10 @@ Every branch fuse is drawn explicitly. Functional nodes such as the contactors K
 | Subsystem | Selection | Notes |
 |---|---|---|
 | Compute | Seeed reComputer Robotics J401 carrier with NVIDIA Jetson Orin NX 16 GB and an NVMe SSD (the Robotics J401, not the classic J401) | ROS 2 Jazzy, Nav2, perception and the arm stack |
-| Base controller | Gate A: the existing Teensy 4.0 on the legacy robot (PWM drivetrain, MPU6500). Gate B: STM32H743 on a NUCLEO-H743ZI2 bench board with the ZLAC8015D over CANopen | Portable C core, same firmware contract on both targets; release path decided 6 November, Teensy behind the I8 contract is the documented fallback |
+| Base controller | Gate A: the existing Teensy 4.0 on the legacy robot (PWM drivetrain, MPU6500). Gate B: STM32H723ZG on a NUCLEO-H723ZG bench board (replaces the STM32H743 / NUCLEO-H743ZI2, P-03 rev18.5 item 14) with the ZLAC8015D over CANopen | Portable C core, same firmware contract on both targets; release path decided 6 November, Teensy behind the I8 contract is the documented fallback |
 | Drive bus | CAN1, 500 kbit/s, CANopen to the ZLAC8015D V4.2 driver | Two ZLLG80ASM250-L-B hub motors with integrated holding brakes (spring-applied function and ratings pending the supplier evidence, F2A) |
 | Battery bus | CAN2, 250 kbit/s, isolated, Daly 150 A BMS | 8S1P EVE LF105 LiFePO4, 25.6 V, 105 Ah |
+| Auxiliary bus | CAN3 on the third FDCAN, reserved for upper-body actuators | CAN mapping on the STM32H723: CAN1 traction, CAN2 BMS, CAN3 reserved for upper-body actuators; no CAN3 node is assigned yet |
 | Safety chain | Dual-channel E-stops (base and chest), two monitored series contactors, fuse and disconnect | Hardware chain; firmware observes it and applies a secondary inhibit only |
 | IMU, Gate A (current baseline) | MPU6500 on the Teensy 4.0 over I2C, on the legacy robot with the Jetson | Raw data published by firmware on /imu/data_raw, filtered data by the host EKF on /imu/data |
 | IMU, Gate B path (conditional) | ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI and INT1 on the STM32 path; selected for the manufacturing BOM only after the same-robot comparison against the MPU6500 on 20 November | Drawn as conditional in the diagram; not released and not current |
