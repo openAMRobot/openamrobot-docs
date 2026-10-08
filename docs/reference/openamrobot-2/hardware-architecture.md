@@ -47,13 +47,13 @@ Every branch fuse is drawn explicitly. Functional nodes such as the contactors K
 | IMU, Gate A (current baseline) | MPU6500 on the Teensy 4.0 over I2C, on the legacy robot with the Jetson | Raw data published by firmware on /imu/data_raw, filtered data by the host EKF on /imu/data |
 | IMU, Gate B path (conditional) | ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI and INT1 on the STM32 path; selected for the manufacturing BOM only after the same-robot comparison against the MPU6500 on 20 November | Drawn as conditional in the diagram; not released and not current |
 | Navigation sensors | Hokuyo UST-10LX LiDAR, Orbbec Gemini 336L base camera, ToF and ultrasonic near-field sensors on the MCU | Base camera tilted 10 degrees up, shared with docking |
-| Head and wrist cameras | ZED-121210 on the mast top (exact SKU and interface pending the supplier mapping), one camera per gripper | Calibrated as a set with the base camera |
-| Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | Installed at mast_1350 (1350 mm shoulder axis); four indexed positions 1300, 1350, 1400 and 1450 mm. Mast top 1500 mm; the complete robot must remain at or below the 1700 mm assembled-height envelope |
+| Head and wrist cameras | Stereolabs ZED Mini on the lift carriage, pitch 15 to 35 degrees down (exact interface pending the supplier mapping), one camera per gripper | Calibrated as a set with the base camera |
+| Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | On the lift carriage; shoulder 1000 to 1350 mm at the OpenArm arm mount point, 180 mm ahead of the lift-column axis on a two-position base plate (`bp000`, `bp050`). The complete robot must remain at or below the 1700 mm assembled-height envelope |
 | Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
 
 ## What changes when the BOM changes
 
-The diagram is regenerated from the BOM register at every BOM issue. A page carrying an older issue number than the register is out of date; report it through the feedback link rather than editing values by hand.
+The diagram is regenerated from the BOM register at every BOM issue. The upper-body allocation in the current diagram predates the option B mounting of 9 October 2026 (P-03 revision 18.9 item 18) and is updated with the next BOM issue; the table above follows option B. A page carrying an older issue number than the register is out of date; report it through the feedback link rather than editing values by hand.
 
 ## Next
 

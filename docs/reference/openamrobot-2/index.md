@@ -16,26 +16,28 @@ description: The OpenAMRobot 2.0 development cycle in one place, hardware archit
 
 ## What OpenAMRobot 2.0 is
 
-OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a fixed mast carrying two [OpenArm 2.0](https://docs.openarm.dev/) arms, an NVIDIA Jetson Orin NX compute module and an STM32-based base controller. The lift module of the earlier concept moves to a later release; the 2.0 upper body is a fixed mast with indexed mounting positions.
+OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a lift column carrying two [OpenArm 2.0](https://docs.openarm.dev/) arms, an NVIDIA Jetson Orin NX compute module and an STM32-based base controller. The lift column stands on a two-position base plate and moves the shoulder between 1000 and 1350 mm above the floor.
 
 | Area | What this section documents | Owning repository |
 |---|---|---|
 | Hardware architecture | Connection model of compute, base controller, drives, power, sensors and arms (public extract of BOM Issue 7) | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) (BOM to be published with the electrical release) |
-| General arrangement | Side, front and top views to scale, mast and shoulder detail, parts list | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) and [openamr-upperbody-hw](https://github.com/openAMRobot/openamr-upperbody-hw) |
+| General arrangement | Upper-body layout, height stack and configuration IDs; drawings regenerated from the option B CAD | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) and [openamr-upperbody-hw](https://github.com/openAMRobot/openamr-upperbody-hw) |
 | Mass and stability | The F2S stability and stopping model: mass budget, centre of gravity, tipping margins, stopping distance | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) |
 | Arms and manipulation | OpenArm 2.0 integration, device packages, fake-hardware baseline | [openamrobot-manipulation](https://github.com/openAMRobot/openamrobot-manipulation) |
 
 ## Decisions recorded so far
 
-Recorded means written in the decision addendum of the plan set (P-03, revision 18.2 of 28 September 2026).
+Recorded means written in the decision addendum of the plan set (P-03); the revision is given with each decision.
 
 | Decision | Value | Date |
 |---|---|---|
 | Drivetrain | Two ZLTECH ZLLG80ASM250-L-B hub motors with brakes, one ZLAC8015D V4.2 driver, 200 mm wheels | 21 September 2026 |
 | Battery | One 8S1P EVE LF105 LiFePO4 pack, 25.6 V, 105 Ah, Daly 150 A BMS, 20 A charger; battery centred at 25 percent of the robot length from the rear | 28 September 2026, recorded in P-03 revision 18.2 |
-| Base camera | Orbbec Gemini 336L, front mounted, tilted 10 degrees up; head camera ZED-121210; two wrist cameras | 23 September 2026 |
-| Mast | Own COTS mast, one MISUMI HFS6-60120 profile with the OpenArm J1_A plates on its side slots, index holes every 50 mm, mast top 1500 mm above the floor | 28 September 2026, recorded in P-03 revision 18.2 |
-| Shoulder height | Installation height 1350 mm (mast_1350); four indexed mounting positions 1300, 1350, 1400 and 1450 mm; mast top 1500 mm; maximum assembled-height envelope 1700 mm (the robot may be lower, never higher; this is not shoulder height) | 28 September 2026, recorded in P-03 revision 18.2 |
+| Base camera | Orbbec Gemini 336L, front mounted, tilted 10 degrees up (tilt configuration IDs `bt05`, `bt10`, `bt15`); two wrist cameras | 23 September 2026 |
+| Upper-body mounting (option B) | DOLD Hexalift V4 lift column, 350 mm stroke (530 mm retracted, 880 mm extended), 240 mm side fore-aft, on a 10 mm aluminium base plate on the 294 mm deck (top face 304 mm) with two column positions, centre (`bp000`) and +50 mm (`bp050`); MISUMI HFS6-60120 arm profile, 340 mm, on a 10 mm adapter plate on the column top; OpenArm arm mount point 180 mm ahead of the column axis, y = ±31 mm | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
+| Shoulder height | 1000 mm at the retracted lift (304 + 530 + 166) to 1350 mm fully extended (304 + 880 + 166), at the OpenArm arm mount point; lift height is joint state, calibrated stops `L1000`, `L1175`, `L1350`; maximum assembled height 1700 mm (the robot may be lower, never higher; this is not shoulder height) | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
+| Head camera | Stereolabs ZED Mini on the lift carriage, lens 22 mm ahead of and 223 mm above the arm mount point, pitch 15 to 35 degrees down in 5 degree steps, baseline 25 degrees | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
+| Configuration IDs | Column `dold_v4_350`, `tl3_400`; base plate `bp000`, `bp050`; head pitch `hp15` to `hp35`; base tilt `bt05`, `bt10`, `bt15` | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
 | Speed | Command ceiling 1.5 m/s, treated as an analytical limit; the accepted operating speed follows from the stability model and the stopping tests | 28 September 2026, recorded in P-03 revision 18.2 |
 
 ## Inputs still open
@@ -43,6 +45,8 @@ Recorded means written in the decision addendum of the plan set (P-03, revision 
 - Weighed mass of the existing chassis (the model uses steel volume from CAD).
 - ZLTECH data: allowable radial load per motor and the dynamic rating of the brake.
 - Hub-motor bracket design and the final track.
+- Supplier CAD: lift-column hole patterns, OpenArm J1_A plate outline and the orientation of the chassis deck pattern.
+- The stability (F2S) rerun for option B at full lift on both base-plate positions.
 - Confirmation that the arms can be supplied without the OpenArm body.
 
 When an input closes, the page that depends on it is updated and its verification date changes.
