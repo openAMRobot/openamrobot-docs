@@ -7,9 +7,9 @@ description: The F2S stability and stopping model for OpenAMRobot 2.0, mass budg
 
 # Mass and stability (F2S)
 
-**Canonical source:** the F2S deliverable of the OpenAMRobot 2.0 execution plan, owned by the platform lead and published with the mechanical release in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw). This page explains the model and its current results; the workbook with the formulas is filed with the deliverable.
+**Canonical source:** the F2S deliverable of the OpenAMRobot 2.0 execution plan, owned by the platform lead and published with the mechanical release in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw). This page explains the model and the status of its results; the workbook with the formulas is filed with the deliverable.
 
-**Applies to:** OpenAMRobot 2.0, model of 28 September 2026 at the 1350 mm installation height, pending measured inputs. For guidance on extending mass and stability in your own build, see [Mass and stability in the customization section](../../customize/hardware/mass-and-stability.md).
+**Applies to:** OpenAMRobot 2.0 with upper-body mounting option B (P-03 revision 18.9 item 18, 9 October 2026): lift column on a two-position base plate, shoulder 1000 to 1350 mm. For guidance on extending mass and stability in your own build, see [Mass and stability in the customization section](../../customize/hardware/mass-and-stability.md).
 
 !!! warning "Fabrication gate, not a certificate"
     F2S is the gate that must pass before any structural part is fabricated. It is a static and quasi-static model on flat floors. It does not replace the physical tipping and braking tests of the commissioning window, and it makes no safety certification claim.
@@ -24,33 +24,39 @@ description: The F2S stability and stopping model for OpenAMRobot 2.0, mass budg
 | How far does it travel before stopping? | Reaction latency plus braking at the configured deceleration, up to the speed limit |
 | Is the drive pair within its rating? | Gross mass against the ZLTECH 120 kg drivable-mass rating, plus the vertical load per motor in a rocking case with a dynamic factor |
 
-## Results (model of 28 September 2026)
+## Results
 
-| Output | Result | Basis |
-|---|---|---|
-| Gross mass | About 93 kg | Cap 120 kg; chassis 21 kg from CAD volumes, battery 23 kg, arms with grippers 12 kg, mast about 10 kg, payload 3 kg |
-| Centre of gravity | 372 to 427 mm high across the four poses, within 35 mm of the drive axle | Lowest in travel pose, highest with both arms forward; shoulder at 1350 mm |
-| Lowest static margin | 86 mm, drawer pull of 150 N at 1090 mm | Minimum 50 mm; the robot would tip at about 220 N |
-| Braking | Tipping needs more than 5.6 m/s² in the worst pose; traction limit about 3.5 m/s²; configured deceleration 2.5 m/s² | Both limits above the configured value |
-| Stopping distance at the 1.5 m/s ceiling | 0.82 m, including 0.25 s reaction latency | Minimum look-ahead for obstacle and floor sensing at the ceiling speed |
-| Wheel speed at 1.5 m/s | 143 rpm | Motor rated 200 rpm |
-| Drive pair | Within the 120 kg drivable-mass rating; about 650 N vertical load per motor in the rocking case | Allowable radial load requested from ZLTECH |
-| Geometry change | None | Battery to the rear, mast on the drive axle, flat-floor envelope |
+!!! note "Rerun pending for option B"
+    The model of 28 September 2026 was built for an upper body without a lift and is no longer current. Its results are withdrawn from this page. The model is being rerun for option B; results will be published here when the rerun is complete.
+
+The rerun covers:
+
+| Case | Option B values |
+|---|---|
+| Lift position | Fully extended, shoulder 1350 mm at the OpenArm arm mount point; retracted, shoulder 1000 mm |
+| Base-plate position | Both column positions, centre (`bp000`) and +50 mm (`bp050`) |
+| Upper-body geometry | Lift column 530 to 880 mm on the 304 mm base-plate top face, arm mount point 180 mm ahead of the column axis, head camera 22 mm ahead of and 223 mm above the arm mount point |
+| Height envelope | Complete robot at most 1700 mm at full lift extension |
+| Poses and loads | Travel, both arms forward with payload, one arm sideways, 150 N drawer pull at 1090 mm, braking and turning |
 
 ## Inputs and their status
 
 | Input | Source | Status |
 |---|---|---|
-| Platform geometry, castor and wheel positions, mast mounting face | Platform STEP model | From CAD |
+| Platform geometry, castor and wheel positions, base-plate mounting face | Platform STEP model | From CAD |
+| Lift column, base plate and arm profile geometry and masses | Supplier CAD and data for the DOLD Hexalift V4, option B layout | Supplier CAD pending |
 | Chassis mass | CAD volumes at steel density, top cover included | To be weighed |
-| Arm, gripper and body masses | Official OpenArm 2.0 description and CAD | Official |
+| Arm and gripper masses | Official OpenArm 2.0 description and CAD | Official |
 | Battery mass and position | Selected pack and the 25 percent placement decision | Decided, pack not yet built |
 | Castor offset and height | Supplier data, Blickle LPA-VSTH 35K | Official |
 | Wheel friction coefficient | Supplier data, ZLTECH | Official |
 | Radial load limit per motor | ZLTECH | Requested |
 | Dynamic factor for uneven floors | Assumed 1.5 | Replaced by the physical rocking test |
 
-## Operating envelope that follows
+## Operating envelope
+
+These limits come from the earlier model and are confirmed or replaced by the option B rerun.
+
 
 - Flat indoor floors. Thresholds and cable covers are crossed at crawl speed until the physical test replaces the assumed dynamic factor; the 35 mm castor wheels stop on small steps.
 - Drawer and door pulls up to 150 N at working height with the hands kept close to the body.
