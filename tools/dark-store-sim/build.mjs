@@ -1,0 +1,11 @@
+import * as esbuild from 'esbuild';
+import fs from 'fs';
+const r = await esbuild.build({ entryPoints: ['src/main.js'], bundle: true, minify: true, format: 'iife', write: false, target: 'es2020', legalComments: 'none' });
+const app = r.outputFiles[0].text.replace(/<\/script/gi, '<\\/script');
+const data = fs.readFileSync('src/openarm_data.js', 'utf8');
+const tpl = fs.readFileSync('index.tpl.html', 'utf8');
+const body = tpl.replace('<!--DATA-->', () => '<script>' + data + '</script>').replace('<!--APP-->', () => '<script>' + app + '</script>');
+fs.mkdirSync('out', { recursive: true });
+fs.writeFileSync('out/artifact.html', body);
+fs.writeFileSync('out/OpenAMRobot2_DarkStore_Pick_Sim.html', '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<style>body{margin:0}[hidden]{display:none!important}</style>\n</head>\n<body>\n' + body + '\n</body>\n</html>\n');
+console.log('bundle', app.length, 'total', body.length);
