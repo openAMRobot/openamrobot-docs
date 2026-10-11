@@ -56,10 +56,10 @@ export const STOW = { left: [0.25, -0.12, 0, 1.9, 0, -0.78, 0], right: mirrorQ([
 export class Robot {
   constructor(scene) {
     this.g = new THREE.Group(); this.g.name = 'OpenAMRobot'; scene.add(this.g);
-    this.sh = ROBOT.STOPS.L1000; this.bpKey = 'bp100'; this.bpX = ROBOT.BP.bp100; this.hp = 25; this.bt = 10; this.riser = 0;
+    this.sh = ROBOT.STOPS.L1000; this.bpKey = 'bp000'; this.bpX = ROBOT.BP.bp000; this.hp = 25; this.bt = 10; this.riser = 0;
     this.pose = { x: 0, y: 0, yaw: 0 };
     this.buildChassis(); this.buildColumn(); this.buildTotes(); this.buildArms();
-    this.setBP('bp100'); this.setLift(this.sh);
+    this.setBP('bp000'); this.setLift(this.sh);
     this.applyArm('left', STOW.left); this.applyArm('right', STOW.right);
     this.setGrip('left', 0.6); this.setGrip('right', 0.6);
   }
@@ -79,7 +79,7 @@ export class Robot {
     cov.position.z = R.DECK; cov.castShadow = true; cov.receiveShadow = true; g.add(cov);
     box(g, hx1 - hx0, 2 * hy, 0.002, MAT.steel, (hx0 + hx1) / 2, 0, R.DECK - 0.001);                     // steel deck in the cut-out
     const hg = new THREE.CircleGeometry(0.0045, 12);
-    for (const k in R.BP) for (const dx of [-0.13, 0.13]) for (const y of [-0.035, 0.035]) {           // M8 deck holes for the five plate positions
+    for (const k in R.BP) for (const dx of [-0.13, 0.13]) for (const y of [-0.035, 0.035]) {           // M8 deck holes for the two plate positions
       const h = new THREE.Mesh(hg, MAT.black); h.position.set(R.BP[k] + dx, y, R.DECK + 0.0005); g.add(h);
     }
     // drive wheels (hub motors) and castors
@@ -149,18 +149,24 @@ export class Robot {
     slots(m, C.L - 0.016, C.W - 0.012, innerH, top - C.HEAD - innerH / 2);
     box(m, 0.25, 0.072, C.HEAD, MAT.aluDark, 0, 0, top - C.HEAD / 2, 'head_plate');
     for (const s of [-1, 1]) box(m, 0.03, 0.012, 0.05, MAT.aluDark, s * 0.11, 0, top + 0.025);   // mounting straps
-    // carriage: vertical 60 x 60 profile, J1_A plates at the shoulder, chest E-stop, ZED Mini
-    const ph = ROBOT.MOUNT_ABOVE_COL + 0.105;
-    rbox(m, 0.06, 0.06, ph, 0.004, MAT.alu, 0, 0, top + ph / 2);
-    for (const s of [-1, 1]) { box(m, 0.008, 0.002, ph - 0.01, MAT.slot, 0, s * 0.0302, top + ph / 2); box(m, 0.002, 0.008, ph - 0.01, MAT.slot, s * 0.0302, 0, top + ph / 2); }
-    for (const s of [-1, 1]) { box(m, 0.05, 0.004, 0.05, MAT.aluDark, 0, s * 0.032, top + 0.03); box(m, 0.004, 0.05, 0.05, MAT.aluDark, s * 0.032, 0, top + 0.03); }
-    for (const s of [-1, 1]) box(m, 0.09, 0.001, 0.09, MAT.steel, 0, s * 0.0305, top + ROBOT.MOUNT_ABOVE_COL);   // 1 mm spacers
-    const ez = top + ROBOT.MOUNT_ABOVE_COL - 0.115;
-    box(m, 0.036, 0.07, 0.07, MAT.yellow, 0.03 + 0.018, 0, ez);
-    cylAxis(m, 0.019, 0.02, MAT.red, 0.03 + 0.046, 0, ez, 'x', 24);
-    box(m, 0.03, 0.03, 0.006, MAT.alu, 0.0, 0, top + ph + 0.003);
-    box(m, 0.012, 0.03, 0.04, MAT.aluDark, ROBOT.ZED_X - 0.03, 0, top + ph + 0.02);
-    this.zed = new THREE.Group(); this.zed.position.set(ROBOT.ZED_X, 0, top + ROBOT.MOUNT_ABOVE_COL + ROBOT.ZED_ABOVE_SH); m.add(this.zed);
+    // carriage (option B): 10 mm adapter plate on the column head, MISUMI HFS6-60120 arm profile 340 mm long,
+    // J1_A plates at the shoulder 180 mm ahead of the column axis, chest E-stop, ZED Mini.
+    // The adapter-plate outline is approximate until it is drawn.
+    const PR = ROBOT.PROFILE, px = ROBOT.MOUNT_X, pz0 = top + PR.ADAPTER, ax0 = -C.L / 2, ax1 = px + PR.X / 2;
+    box(m, ax1 - ax0, 0.072, PR.ADAPTER, MAT.aluDark, (ax0 + ax1) / 2, 0, top + PR.ADAPTER / 2, 'adapter_plate');
+    rbox(m, PR.X, PR.Y, PR.L, 0.004, MAT.alu, px, 0, pz0 + PR.L / 2);
+    for (const s of [-1, 1]) {
+      for (const dx of [-PR.X / 4, PR.X / 4]) box(m, 0.008, 0.002, PR.L - 0.01, MAT.slot, px + dx, s * (PR.Y / 2 + 0.0002), pz0 + PR.L / 2);
+      box(m, 0.002, 0.008, PR.L - 0.01, MAT.slot, px + s * (PR.X / 2 + 0.0002), 0, pz0 + PR.L / 2);
+    }
+    for (const s of [-1, 1]) box(m, 0.09, 0.001, 0.09, MAT.steel, px, s * 0.0305, top + ROBOT.MOUNT_ABOVE_COL);   // 1 mm spacers
+    const ez = top + ROBOT.MOUNT_ABOVE_COL - 0.115, ex = px + PR.X / 2;
+    box(m, 0.036, 0.07, 0.07, MAT.yellow, ex + 0.018, 0, ez);
+    cylAxis(m, 0.019, 0.02, MAT.red, ex + 0.046, 0, ez, 'x', 24);
+    const lensZ = top + ROBOT.MOUNT_ABOVE_COL + ROBOT.ZED_ABOVE_SH, ptop = pz0 + PR.L;
+    box(m, 0.03, 0.03, 0.006, MAT.alu, ROBOT.ZED_X - 0.03, 0, ptop + 0.003);
+    box(m, 0.012, 0.03, lensZ - ptop, MAT.aluDark, ROBOT.ZED_X - 0.03, 0, (ptop + lensZ) / 2);
+    this.zed = new THREE.Group(); this.zed.position.set(ROBOT.ZED_X, 0, lensZ); m.add(this.zed);
     box(this.zed, 0.0265, 0.1245, 0.0305, MAT.black, -0.013, 0, 0);
     for (const y of [-0.0315, 0.0315]) cylAxis(this.zed, 0.0085, 0.003, MAT.lens, 0.0005, y, 0, 'x', 20);
     this.zedTop = top + ROBOT.MOUNT_ABOVE_COL + ROBOT.ZED_ABOVE_SH;
@@ -203,7 +209,7 @@ export class Robot {
     };
     for (const side of ['left', 'right']) {
       const a = D.arms[side];
-      this.arm[side] = { mount: M4([0, a.mount.xyz[1], 0], a.mount.rpy),
+      this.arm[side] = { mount: M4([ROBOT.MOUNT_X, a.mount.xyz[1], 0], a.mount.rpy),
         J: a.joints.map(j => ({ T: M4(j.xyz, j.rpy), axis: V3(...j.axis).normalize(), lo: j.lo, hi: j.hi })),
         gBase: visual(a.base_visual), gLinks: a.joints.map(j => visual(j.visual)),
         fingers: a.fingers.map(f => ({ T: M4(f.xyz, f.rpy), axis: V3(...f.axis).normalize(), lo: f.lo, hi: f.hi, g: visual(f.visual) })),
@@ -267,7 +273,7 @@ export class Robot {
   refreshArms() { if (this.arm) for (const s of ['left', 'right']) this.applyArm(s, this.arm[s].q); }
   updateCable() {
     const ct = this.colTop(), P = ROBOT.PLATE_TOP;
-    const pts = [V3(-0.032, 0.012, ct + 0.06), V3(-0.06, 0.012, ct + 0.02), V3(-0.125, 0.014, ct - 0.06), V3(-0.15, 0.016, (ct + P) / 2 + 0.05), V3(-0.15, 0.016, P + 0.1), V3(-0.14, 0.016, P + 0.012)];
+    const pts = [V3(ROBOT.MOUNT_X - ROBOT.PROFILE.X / 2 - 0.012, 0.012, ct + 0.06), V3(0.03, 0.012, ct + 0.03), V3(-0.06, 0.012, ct + 0.02), V3(-0.125, 0.014, ct - 0.06), V3(-0.15, 0.016, (ct + P) / 2 + 0.05), V3(-0.15, 0.016, P + 0.1), V3(-0.14, 0.016, P + 0.012)];
     this.cable.geometry.dispose(); this.cable.geometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 48, 0.0055, 8, false);
   }
   setPose(x, y, yaw = 0) { this.pose = { x, y, yaw }; this.g.position.set(x, y, 0); this.g.rotation.set(0, 0, yaw); this.g.updateMatrixWorld(true); }
@@ -280,7 +286,7 @@ export class Robot {
     const ct = ROBOT.PLATE_TOP + C.RETRACTED + (sh - ROBOT.STOPS.L1000);
     const out = [B(ROBOT.X0, -ROBOT.HW, 0, ROBOT.X1, ROBOT.HW, ROBOT.COVER, 'chassis'),
       B(bpX - C.L / 2, -C.W / 2, ROBOT.PLATE_TOP, bpX + C.L / 2, C.W / 2, ct, 'lift column'),
-      B(bpX - 0.045, -0.045, ct, bpX + 0.075, 0.045, sh - 0.06, 'carriage / chest E-stop')];
+      B(bpX + ROBOT.MOUNT_X - ROBOT.PROFILE.X / 2, -ROBOT.PROFILE.Y / 2, ct, bpX + ROBOT.MOUNT_X + ROBOT.PROFILE.X / 2 + 0.065, ROBOT.PROFILE.Y / 2, sh - 0.06, 'arm profile / chest E-stop')];
     const T = TOTE, zf = ROBOT.COVER + this.riser;
     for (const s of [1, -1]) {
       const yi = s * T.YIN, yo = s * (T.YIN + T.W), lo = Math.min(yi, yo), hi = Math.max(yi, yo), x0 = T.X0, x1 = T.X0 + T.L, zt = zf + T.H;

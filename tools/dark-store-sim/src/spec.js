@@ -8,16 +8,18 @@ export const ROBOT = {
   X0: -0.39, X1: 0.39, HW: 0.291, DECK: 0.294, COVER: 0.296, BELLY: 0.052,
   WHEEL_R: 0.10, WHEEL_Y: 0.20, CASTER: [[0.26, 0.215], [0.26, -0.215], [-0.29, 0.215], [-0.29, -0.215]],
   PLATE_T: 0.010, PLATE_TOP: 0.304,              // 10 mm aluminium lift base plate on the steel deck
-  BP: { bp000: 0.0, bp050: 0.05, bp100: 0.10, bp150: 0.15, bp200: 0.20 },   // column axis fore-aft positions
+  BP: { bp000: 0.0, bp050: 0.05 },                // column axis fore-aft positions (option B: centre and +50 mm)
   // DOLD Hexalift V4 (BS-HM240G350530-MFF24): 240 x 60 mm basic dimension, 530 retracted, 880 extended
   COL: { L: 0.240, W: 0.060, RETRACTED: 0.530, STROKE: 0.350, HEAD: 0.012, MASS: 11.7,
          PUSH: 800, PULL: 400, SPEED: 0.018, M_LONG_STAT: 1200, M_LONG_DYN: 500, M_LAT_STAT: 450, M_LAT_DYN: 225 },
   MOUNT_ABOVE_COL: 0.166,                         // column top plate to OpenArm J1_A mount point
+  MOUNT_X: 0.180,                                 // column axis to OpenArm J1_A mount point, fore-aft (option B)
+  PROFILE: { X: 0.120, Y: 0.060, L: 0.340, ADAPTER: 0.010 },   // MISUMI HFS6-60120 arm profile on a 10 mm adapter plate
   MOUNT_Y: 0.031,                                 // 60 mm profile + 1 mm spacer
   STOPS: { L1000: 1.000, L1175: 1.175, L1350: 1.350 },
   GEMINI: { x: 0.392, z: 0.243 },                 // base camera front face, centred
   LIDAR_Z: 0.210,                                 // RPLIDAR S3 scan plane (A1 plane kept)
-  ZED_ABOVE_SH: 0.135, ZED_X: 0.045,              // ZED Mini on the carriage, relative to the column axis
+  ZED_ABOVE_SH: 0.223, ZED_X: 0.202,              // ZED Mini lens: 223 mm above and 22 mm ahead of the arm mount point (x from the column axis)
 };
 
 // Totes: open plastic totes on the front deck, either side of the column (sized to the deck; not a catalogue part)

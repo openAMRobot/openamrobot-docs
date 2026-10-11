@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-10-11
+
+### Changed
+
+- Dark-store pick simulation follows option B: two base-plate positions (`bp000` default, `bp050`) instead of five, the OpenArm arm mount point 180 mm ahead of the column axis on the HFS6-60120 arm profile, the ZED Mini lens 22 mm ahead of and 223 mm above the arm mount point, and packing-table spots measured from the shoulder. Source in `tools/dark-store-sim/`, rebuilt into `docs/assets/simulation/`.
+
 ## 2026-10-09
 
 ### Changed

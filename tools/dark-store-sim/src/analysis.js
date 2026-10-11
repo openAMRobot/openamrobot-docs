@@ -15,14 +15,14 @@ export class Analyzer {
   constructor(D, store, selfBoxes) {
     this.ch = { left: makeChain(D, 'left'), right: makeChain(D, 'right') };
     this.store = store; this.selfBoxes = selfBoxes; this.o = newFK(); this.o2 = newFK();
-    this.cfg = { gap: 0.05, gapAuto: true, ahead: 0.10, approach: 'horizontal', riser: 0.12, bpX: ROBOT.BP.bp100 };
+    this.cfg = { gap: 0.05, gapAuto: true, ahead: 0.10, approach: 'horizontal', riser: 0.12, bpX: ROBOT.BP.bp000 };
   }
 
   // robot parks with its chassis side `gap` from the target run, shoulder `ahead` behind the item along the aisle
   parkPose(slot, gap = this.cfg.gap) {
     const A = this.store.aisle, s = slot.side === 'L' ? 1 : -1;
     gap = Math.min(gap, A - 2 * ROBOT.HW - 0.05);
-    return { x: slot.pos.x - this.cfg.bpX - this.cfg.ahead, y: slot.cy + s * (A / 2 - gap - ROBOT.HW), yaw: 0, gap };
+    return { x: slot.pos.x - this.cfg.bpX - ROBOT.MOUNT_X - this.cfg.ahead, y: slot.cy + s * (A / 2 - gap - ROBOT.HW), yaw: 0, gap };
   }
   armFor(slot) { return slot.side === 'L' ? 'left' : 'right'; }
 
