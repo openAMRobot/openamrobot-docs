@@ -1,0 +1,23 @@
+{
+  "name": "openamrobot2-dark-store-sim",
+  "version": "1.0.0",
+  "description": "OpenAMRobot 2.0 dark-store pick simulation (three.js), single-file build",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs && node build_web.mjs",
+    "publish": "npm run build && cp out/web/index.html ../../docs/assets/simulation/openamrobot2-dark-store-sim.html",
+    "stills": "node scripts/stills.mjs",
+    "video": "node scripts/order-video.mjs full",
+    "blooper": "node scripts/blooper-video.mjs full"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@fontsource/barlow": "^5.0.13",
+    "@fontsource/barlow-semi-condensed": "^5.0.13",
+    "@fontsource/ibm-plex-mono": "^5.0.13",
+    "esbuild": "^0.20.2",
+    "playwright-core": "^1.47.2",
+    "three": "^0.160.0"
+  },
+  "private": true
+}

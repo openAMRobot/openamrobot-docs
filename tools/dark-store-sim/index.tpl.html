@@ -1,0 +1,197 @@
+<title>OpenAMRobot Dark-Store Pick Sim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-height work surface. 3D stage on the left (camera tiles docked at its foot), analysis rail on the right; stacks on phones. */
+:root {
+  --bg: #e9eeec; --panel: #f7f9f8; --ink: #142120; --mute: #5a6a67; --line: #d3dcd9; --chip: #e2e9e7; --chip-on: #142120; --chip-on-ink: #f7f9f8;
+  --accent: #0d7a72; --accent-soft: #d2ebe8; --signal: #e3a900; --good: #1d8a4b; --warn: #b77d00; --bad: #c4392c; --stage: #d9dfdd;
+  --f-ui: "Barlow", "Segoe UI", "Helvetica Neue", Arial, sans-serif; --f-label: "Barlow Semi Condensed", "Arial Narrow", "Segoe UI", sans-serif; --f-num: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1514; --panel: #151d1c; --ink: #e2ebe9; --mute: #91a29f; --line: #283533; --chip: #1e2928; --chip-on: #e2ebe9; --chip-on-ink: #0f1514;
+  --accent: #36b5aa; --accent-soft: #163a37; --signal: #f2c232; --good: #47c27c; --warn: #e6b23a; --bad: #ee6a5b; --stage: #0b100f; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1514; --panel: #151d1c; --ink: #e2ebe9; --mute: #91a29f; --line: #283533; --chip: #1e2928; --chip-on: #e2ebe9; --chip-on-ink: #0f1514;
+  --accent: #36b5aa; --accent-soft: #163a37; --signal: #f2c232; --good: #47c27c; --warn: #e6b23a; --bad: #ee6a5b; --stage: #0b100f; color-scheme: dark; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.45 var(--f-ui); }
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr; min-height: 0; }
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.brand { display: flex; flex-direction: column; min-width: 0; }
+.brand h1 { margin: 0; font: 700 19px/1.1 var(--f-label); letter-spacing: 0.01em; text-wrap: balance; }
+.brand h1 b { color: var(--accent); font-weight: 700; }
+.brand p { margin: 2px 0 0; color: var(--mute); font-size: 12.5px; }
+.cfg { margin-left: auto; font: 500 11.5px/1.3 var(--f-num); color: var(--mute); background: var(--chip); padding: 5px 8px; border-radius: 4px; overflow-wrap: anywhere; }
+.work { display: grid; grid-template-columns: minmax(0, 1fr) 410px; min-height: 0; }
+.stage { position: relative; min-height: 0; background: var(--stage); overflow: hidden; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.panel { overflow-y: auto; border-left: 1px solid var(--line); background: var(--panel); padding: 4px 16px 24px; min-width: 0; }
+section.blk { padding: 14px 0; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+section.blk:last-child { border-bottom: 0; }
+h2 { margin: 0; font: 700 12px/1 var(--f-label); text-transform: uppercase; letter-spacing: 0.09em; color: var(--mute); }
+label.f { display: grid; gap: 4px; font: 600 12.5px/1.2 var(--f-label); letter-spacing: 0.02em; }
+select, input[type=range] { width: 100%; }
+select { font: 500 14px var(--f-ui); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 7px 8px; }
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+button { font: 600 13px/1 var(--f-label); letter-spacing: 0.02em; color: var(--ink); background: var(--chip); border: 1px solid transparent; border-radius: 4px; padding: 7px 10px; cursor: pointer; }
+button:hover { border-color: var(--line); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+button.on { background: var(--chip-on); color: var(--chip-on-ink); }
+button.go { background: var(--accent); color: #fff; }
+button.rec { background: var(--bad); color: #fff; }
+button[disabled] { opacity: 0.45; cursor: default; }
+.lbl { font: 600 12px/1.2 var(--f-label); color: var(--mute); letter-spacing: 0.03em; min-width: 92px; }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+.target { display: grid; gap: 2px; }
+.target .code { font: 500 12px var(--f-num); color: var(--mute); }
+.target .name { font: 700 20px/1.15 var(--f-label); }
+.verdict { display: flex; align-items: baseline; gap: 10px; padding: 10px 12px; border-radius: 6px; background: var(--accent-soft); }
+.verdict.bad { background: color-mix(in srgb, var(--bad) 16%, var(--panel)); }
+.verdict.warn { background: color-mix(in srgb, var(--warn) 18%, var(--panel)); }
+.verdict strong { font: 700 17px/1.2 var(--f-label); }
+.verdict span { color: var(--mute); font-size: 13px; }
+ul.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+ul.checks li { display: grid; grid-template-columns: 12px 118px minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 6px 0; border-top: 1px dashed var(--line); }
+ul.checks li:first-child { border-top: 0; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--mute); transform: translateY(1px); }
+.dot.ok { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); } .dot.na { background: transparent; border: 1.5px solid var(--mute); }
+ul.checks .k { font: 600 12.5px/1.3 var(--f-label); }
+ul.checks .v { font-size: 13px; min-width: 0; }
+.mtx-wrap { overflow-x: auto; }
+table.mtx { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+table.mtx th { font: 600 11.5px var(--f-label); color: var(--mute); text-align: right; padding: 4px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.mtx th:first-child, table.mtx td:first-child { text-align: left; }
+table.mtx td { padding: 3px 6px; border-bottom: 1px solid var(--line); text-align: right; font-family: var(--f-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.mtx td:first-child { font-family: var(--f-num); font-size: 12px; white-space: nowrap; }
+table.mtx tr { cursor: pointer; }
+table.mtx tr.sel td { background: var(--accent-soft); }
+td.ok { color: var(--good); font-weight: 500; } td.warn { color: var(--warn); font-weight: 500; } td.bad { color: var(--bad); }
+td.pick { box-shadow: inset 0 -2px 0 var(--accent); }
+.note { color: var(--mute); font-size: 12.5px; margin: 0; }
+.notes { font-size: 12.5px; color: var(--mute); display: grid; gap: 6px; }
+.notes p { margin: 0; }
+.notes a { color: var(--accent); }
+/* stage overlays */
+.hud { position: absolute; left: 12px; top: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; pointer-events: none; }
+.hud > * { pointer-events: auto; }
+.hud .grp { display: flex; gap: 4px; background: color-mix(in srgb, var(--panel) 88%, transparent); padding: 4px; border-radius: 6px; border: 1px solid var(--line); backdrop-filter: blur(6px); }
+.hud .grp button { padding: 6px 9px; }
+.play { position: absolute; left: 12px; right: 12px; top: 56px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: color-mix(in srgb, var(--panel) 90%, transparent); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; backdrop-filter: blur(6px); }
+.play input { flex: 1; min-width: 60px; }
+.play .num { font-size: 12px; color: var(--mute); white-space: nowrap; }
+.play .phase { font: 600 12.5px var(--f-label); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 38%; }
+.tiles { position: absolute; left: 12px; right: 12px; bottom: 12px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; pointer-events: none; }
+.tile { position: relative; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; aspect-ratio: 16 / 10; }
+.tile .cap { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 6px; padding: 3px 6px; font: 600 11px/1.2 var(--f-label); color: #fff; background: linear-gradient(transparent, rgba(0,0,0,0.65)); }
+.tile .cap i { font-style: normal; font-weight: 500; opacity: 0.9; }
+.legend { position: absolute; right: 12px; top: 108px; font: 500 11.5px/1.5 var(--f-ui); color: var(--mute); background: color-mix(in srgb, var(--panel) 85%, transparent); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; display: grid; gap: 2px; pointer-events: none; }
+.legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; background: var(--c); vertical-align: -1px; }
+.busy { font: 500 12px var(--f-num); color: var(--mute); }
+@media (max-width: 900px) {
+  .work { grid-template-columns: 1fr; grid-template-rows: 62vh auto; }
+  .app { height: auto; }
+  .panel { border-left: 0; border-top: 1px solid var(--line); overflow: visible; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .legend { display: none; }
+  .play { gap: 4px; padding: 4px 6px; } .play button { padding: 6px 7px; font-size: 12px; } .play .phase { display: none; }
+  .cfg { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <h1><b>OpenAMRobot 2.0</b> · dark-store pick simulation</h1>
+      <p>Local grocery hub, aisles 3 and 4 with packing table · P-03 rev18.8 baseline: DOLD Hexalift V4 350 mm lift, 2 × OpenArm 2.0, totes front-left and front-right · for discussion, about ±2 cm</p>
+    </div>
+    <div class="cfg" id="cfgid"></div>
+  </header>
+  <main class="work">
+    <section class="stage" id="stage" aria-label="3D view">
+      <div class="hud">
+        <div class="grp" role="group" aria-label="View">
+          <button data-view="store">Store</button><button data-view="over" class="on">Overview</button><button data-view="aisle">Aisle</button><button data-view="side">Side</button><button data-view="top">Top</button><button data-view="follow">Follow</button>
+        </div>
+        <div class="grp" role="group" aria-label="Overlays">
+          <button id="b-tiles" class="on">Cameras</button><button id="b-q" class="on">High quality</button>
+        </div>
+      </div>
+      <div class="legend" id="legend">
+        <span style="--c:#2a5bd7">Working arm</span><span style="--c:#f1c40f">Target</span><span style="--c:#e0473a">Collision</span>
+      </div>
+      <div class="play" id="play">
+        <button id="b-cycle" class="go">Run pick cycle</button>
+        <button id="b-order">Run order (8 items)</button>
+        <button id="b-repl">Replenish</button>
+        <button id="b-pause" disabled>Pause</button>
+        <button id="b-reset">Reset</button>
+        <span class="chips" id="speed"><button data-s="1">1×</button><button data-s="3" class="on">3×</button><button data-s="8">8×</button></span>
+        <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Timeline">
+        <span class="num" id="tread">0.0 s</span>
+        <span class="phase" id="phase"></span>
+      </div>
+      <div class="tiles" id="tiles">
+        <div class="tile" data-cam="head"><div class="cap"><span>Head ZED Mini</span><i></i></div></div>
+        <div class="tile" data-cam="base"><div class="cap"><span>Base Gemini 336L</span><i></i></div></div>
+        <div class="tile" data-cam="wristL"><div class="cap"><span>Left wrist</span><i></i></div></div>
+        <div class="tile" data-cam="wristR"><div class="cap"><span>Right wrist</span><i></i></div></div>
+      </div>
+    </section>
+    <aside class="panel">
+      <section class="blk">
+        <h2>Pick target</h2>
+        <label class="f" for="slot">Shelf location (or click a product in the view)
+          <select id="slot"></select>
+        </label>
+        <div class="row"><span class="lbl">Row on shelf</span><span class="chips" id="rowc"><button data-v="0" class="on">Front</button><button data-v="1">2nd</button><button data-v="2">3rd</button></span></div>
+        <div class="target"><span class="code" id="t-code"></span><span class="name" id="t-name"></span></div>
+        <div class="verdict" id="verdict"><strong id="v-main">…</strong><span id="v-sub"></span></div>
+        <ul class="checks" id="checks"></ul>
+      </section>
+      <section class="blk">
+        <h2>Order run and recording</h2>
+        <p class="note">The demo order picks four items for each arm from both aisles, drives to the packing table, unloads both totes onto it (items standing) and returns to the dock. Record order video runs the order and saves the 3D view, camera tiles included, as a video file at the playback speed set above (3× gives about 2 minutes). Save run log exports the timeline of the last run as CSV.</p>
+        <div class="row"><button id="b-rec">Record order video</button><button id="b-log">Save run log (CSV)</button></div>
+        <p class="note" id="rec-msg" aria-live="polite"></p>
+      </section>
+      <section class="blk">
+        <h2>Lift stop comparison</h2>
+        <p class="note">Reach margin in cm for the front item of every product on every shelf level of the chosen aisle, arm on the same side. With auto park distance the robot tries 5, 10, 16 and 22 cm from the shelf front and keeps the first that works. Green ≥ 3 cm and collision-free, amber 0–3 cm or arm touches a shelf, red out of reach. Underline marks the stop the robot uses. Click a row to select it.</p>
+        <div class="row"><span class="chips" id="mtxa"><button data-v="3" class="on">Aisle 3</button><button data-v="4">Aisle 4</button></span><button id="b-mtx">Recompute</button><span class="busy" id="mtx-busy"></span></div>
+        <div class="mtx-wrap"><table class="mtx" id="mtx"></table></div>
+      </section>
+      <section class="blk">
+        <h2>Robot setup</h2>
+        <div class="row"><span class="lbl">Lift stop</span><span class="chips" id="stopc"><button data-v="auto" class="on">Auto</button><button data-v="L1000">L1000</button><button data-v="L1175">L1175</button><button data-v="L1350">L1350</button></span></div>
+        <label class="f" for="sh">Shoulder height <span class="num" id="sh-v"></span><input type="range" id="sh" min="1000" max="1350" step="5" value="1000"></label>
+        <div class="row"><span class="lbl">Base plate</span><span class="chips" id="bpc"><button data-v="bp000">0</button><button data-v="bp050">+50</button><button data-v="bp100" class="on">+100</button><button data-v="bp150">+150</button><button data-v="bp200">+200</button></span></div>
+        <label class="f" for="hp">Head camera pitch down <span class="num" id="hp-v"></span><input type="range" id="hp" min="15" max="35" step="5" value="25"></label>
+        <div class="row"><span class="lbl">Base camera tilt</span><span class="chips" id="btc"><button data-v="5">5°</button><button data-v="10" class="on">10°</button><button data-v="15">15°</button></span></div>
+        <div class="row"><span class="lbl">Tote riser</span><span class="chips" id="riserc"><button data-v="0">none</button><button data-v="0.05">50 mm</button><button data-v="0.08">80 mm</button><button data-v="0.12" class="on">120 mm</button></span></div>
+        <div class="row"><span class="lbl">Approach</span><span class="chips" id="apc"><button data-v="horizontal" class="on">Horizontal</button><button data-v="angled">Down to 45°</button></span></div>
+      </section>
+      <section class="blk">
+        <h2>Parking and store</h2>
+        <div class="row"><span class="lbl">Park distance</span><span class="chips" id="gapc"><button data-v="auto" class="on">Auto</button><button data-v="fixed">Fixed</button></span></div>
+        <label class="f" for="gap">Fixed chassis to shelf front <span class="num" id="gap-v"></span><input type="range" id="gap" min="0.03" max="0.25" step="0.01" value="0.05"></label>
+        <label class="f" for="ahead">Item ahead of the shoulder <span class="num" id="ahead-v"></span><input type="range" id="ahead" min="-0.2" max="0.35" step="0.01" value="0.10"></label>
+        <div class="row"><span class="lbl">Aisle width</span><span class="chips" id="aislec"><button data-v="1.0">1.00 m</button><button data-v="1.1" class="on">1.10 m</button><button data-v="1.2">1.20 m</button><button data-v="1.3">1.30 m</button></span></div>
+      </section>
+      <section class="blk notes">
+        <h2>Basis and assumptions</h2>
+        <p>Robot frame and heights follow P-03 rev18.8: floor Z = 0, steel deck 294 mm, 2 mm top cover, 10 mm aluminium base plate (top 304 mm), Hexalift V4 530 mm retracted and 880 mm extended, 166 mm from the column head plate to the OpenArm J1_A mount. Shoulder 1000 to 1350 mm with calibrated stops L1000, L1175 and L1350. Arm mounts at y ±31 mm on the 60 mm carriage profile (307 mm shoulder spacing).</p>
+        <p>Hexalift V4 (BS-HM240G350530-MFF24): 800 N push, 18 mm/s, 11.7 kg; moment ratings 1200 / 500 N·m lengthwise and 450 / 225 N·m lateral (static / dynamic). The column is drawn as a 240 × 60 mm profile from the manufacturer's published basic dimension; the outline is approximate until DOLD sends CAD.</p>
+        <p>OpenArm 2.0 kinematics and meshes come from the official openarm_description URDF. Payload 4.1 kg nominal and 6.0 kg peak including the end effector; the gripper mass of 0.5 kg used to get the net payload is an assumption. Jaws open to 88 mm; 8 mm clearance per side and 12 mm finger thickness are assumed for the neighbour check.</p>
+        <p>Reach margin is the extra distance the gripper could still travel along the approach direction beyond the grasp point, found with full 7-joint IK at the given stop. The collision screen uses spheres along the arm against shelves, uprights, totes, column and chassis; it ignores neighbouring products. Moments are static (gravity only) at the column foot, with the 5.5 kg arm mass split over the links by assumption.</p>
+        <p>Totes are 380 × 228 × 200 mm open totes sized to fit beside the column, on a 120 mm riser so both arms reach the tote floor at L1000; neither is a catalogue part. Items go into the tote lying along it and come out onto the 900 mm packing table standing upright. Products, brands and prices are invented for illustration; the store layout is a generic local grocery hub, not a specific operator.</p>
+        <p>Sources: <a href="https://www.dold-mechatronik.de/Lifting-column-Hexalift-800N-18mm-s-stroke-350mm-retracted-length-530mm-extended-length-880mm-with-strap" target="_blank" rel="noopener">DOLD Hexalift 800 N shop page</a>, <a href="https://www.dold-mechatronik.de/documents/Datasheets/AluminumProfiles/TelescopicLifters/telescopic_lifters_en.pdf" target="_blank" rel="noopener">Hexalift datasheet</a>, <a href="https://www.industrial-production.de/handhabungstechnik/hubsaeule-starke-hubsaeule.htm" target="_blank" rel="noopener">Hexalift basic dimension 240 × 60 mm</a>, <a href="https://www.cnx-software.com/2026/09/30/openarm-2-0-an-open-source-7-dof-robot-arm-with-qdd-joints-bilateral-force-feedback-in-hand-camera/" target="_blank" rel="noopener">OpenArm 2.0 specifications</a>.</p>
+      </section>
+    </aside>
+  </main>
+</div>
+<!--DATA-->
+<!--APP-->
