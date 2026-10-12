@@ -52,7 +52,7 @@ Every branch fuse is drawn explicitly. Functional nodes such as the contactors K
 | Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | Installed at mast_1350 (1350 mm shoulder axis); four indexed positions 1300, 1350, 1400 and 1450 mm. Mast top 1500 mm; the complete robot must remain at or below the 1700 mm assembled-height envelope |
 | Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
 
-## Navigation LiDAR (P-03 revision 18.4, item 13)
+## Navigation LiDAR (P-03 revision 19.0, items 13 and 19)
 
 The OpenAMRobot 2.0 navigation LiDAR is the SLAMTEC RPLIDAR S3 (model S3M1-R2). It replaces the RPLIDAR A1 of the existing robot and supersedes the Hokuyo UST-10LX that BOM Issue 7 still lists.
 
@@ -60,7 +60,9 @@ The OpenAMRobot 2.0 navigation LiDAR is the SLAMTEC RPLIDAR S3 (model S3M1-R2). 
 |---|---|
 | Data link | USB to the Jetson through a USB to UART adapter |
 | Supply | Regulated 5 V rail: 4.9 to 5.2 V, ripple at most 150 mV, start current 1.2 A, running current 0.45 A typical. There is no 12 V rail and no separate 24 V LiDAR branch |
-| Mounting | Existing A1 bracket plus a spacer plate, so the S3 scan plane sits at the A1 scan-plane height; the `lidar_link` frame position does not change. 4 x M2.5 mounting, screw engagement at most 4 mm; spacer thickness to be set from the Slamtec drawings |
+| Mounting | Existing MMP.07 A1 bracket and its 10 mm standoffs plus a 7.1 mm spacer plate. The S3 scan plane is 30.55 mm above its bottom face, so the beam sits 222.0 mm above the floor, the same height as the A1 beam. 4 x M2.5 mounting, screw engagement at most 4 mm |
+| Frame | `lidar_link` (0.330, 0, 0.124) from `base_link`, yaw pi; `base_link` is at the drive-axle midpoint, 98.0 mm above the floor. Gate A unit (RPLIDAR A1 on the existing robot): x 0.335, z 0.18 |
+| Body filter | `scan_body_filter_real.yaml` from v0.0.1, kept unchanged for the S3 |
 | Scan window | Fully open, no translucent cover |
 | Role | Functional sensing only, not a safety device |
 | Backup | RPLIDAR S2E, only if the S3 is unavailable |
