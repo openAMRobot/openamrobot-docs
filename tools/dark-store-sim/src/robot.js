@@ -92,21 +92,23 @@ export class Robot {
       box(g, 0.008, 0.03, 0.022, MAT.steel, x - 0.012, y, 0.035);
       cylAxis(g, 0.0175, 0.025, MAT.tyre, x - 0.015, y, 0.0175, 'y', 16);
     }
-    // LiDAR scan window (RPLIDAR S3 behind, scan plane 210 mm), open slot round the front corners
+    // LiDAR scan window (RPLIDAR S3 behind, scan plane 222 mm above the floor), open slot round the front corners
     const z = R.LIDAR_Z;
     box(g, 0.006, 0.50, 0.032, MAT.glossBlack, R.X1 + 0.0005, 0, z);
     for (const s of [-1, 1]) box(g, 0.13, 0.006, 0.032, MAT.glossBlack, R.X1 - 0.08, s * (R.HW + 0.0005), z);
-    cylAxis(g, 0.046, 0.04, MAT.black, R.X1 - 0.075, 0, z, 'z', 32);
-    // Gemini 336L (front centre, 243 mm) on a tilt pivot
-    this.gemini = new THREE.Group(); this.gemini.position.set(R.GEMINI.x, 0, R.GEMINI.z); g.add(this.gemini);
+    cylAxis(g, 0.046, 0.04, MAT.black, R.LIDAR_X, 0, z, 'z', 32);
+    // Gemini 336L (front centre, housing centre at base_camera_link, 142.5 mm above the floor) on a tilt pivot;
+    // the group origin is the housing front face, 13 mm (half the 26 mm depth) ahead of base_camera_link
+    this.gemini = new THREE.Group(); this.gemini.position.set(R.GEMINI.x + 0.013, 0, R.BASE_LINK_Z + R.GEMINI.z); g.add(this.gemini);
     box(this.gemini, 0.026, 0.124, 0.029, MAT.black, -0.013, 0, 0);
     for (const y of [-0.047, -0.016, 0.016, 0.047]) cylAxis(this.gemini, y === -0.016 ? 0.006 : 0.0045, 0.003, MAT.lens, 0.0005, y, 0, 'x', 16);
-    // TF-Luna (4) and MB7060 (front, rear)
-    for (const [x, y, s] of [[R.X1, 0.23, 1], [R.X1, -0.23, 1], [R.X0, 0.23, -1], [R.X0, -0.23, -1]]) {
-      box(g, 0.006, 0.035, 0.021, MAT.black, x + s * 0.002, y, 0.12);
-      for (const dy of [-0.008, 0.008]) cylAxis(g, 0.004, 0.003, MAT.lens, x + s * 0.005, y + dy, 0.12, 'x', 12);
+    // Four MB7060 in the front and rear edge holes (us_front_left, us_front_right, us_rear_left, us_rear_right)
+    // and two TF-Luna cliff sensors in the front and rear centre holes (tof_front, tof_rear), P-03 rev19.0
+    for (const [x, s] of [[R.X1, 1], [R.X0, -1]]) {
+      for (const y of [R.US_Y, -R.US_Y]) { cylAxis(g, 0.0115, 0.008, MAT.aluDark, x + s * 0.003, y, R.NEAR_Z, 'x', 20); cylAxis(g, 0.009, 0.004, MAT.black, x + s * 0.007, y, R.NEAR_Z, 'x', 20); }
+      box(g, 0.006, 0.035, 0.021, MAT.black, x + s * 0.002, 0, R.NEAR_Z);
+      for (const dy of [-0.008, 0.008]) cylAxis(g, 0.004, 0.003, MAT.lens, x + s * 0.005, dy, R.NEAR_Z, 'x', 12);
     }
-    for (const [x, s] of [[R.X1, 1], [R.X0, -1]]) { cylAxis(g, 0.0115, 0.008, MAT.aluDark, x + s * 0.003, 0.12, 0.135, 'x', 20); cylAxis(g, 0.009, 0.004, MAT.black, x + s * 0.007, 0.12, 0.135, 'x', 20); }
     // base E-stop (rear, top cover) with yellow housing
     box(g, 0.065, 0.065, 0.04, MAT.yellow, R.X0 + 0.06, -0.21, R.COVER + 0.02);
     cylAxis(g, 0.02, 0.022, MAT.red, R.X0 + 0.06, -0.21, R.COVER + 0.051, 'z', 24);

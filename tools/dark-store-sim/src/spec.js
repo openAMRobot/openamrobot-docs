@@ -1,5 +1,6 @@
 // Engineering baseline used by the simulation (metres, kg, N, N·m).
-// Robot frame (REP 105): base_link at the drive-axle midpoint on the floor projection, +X forward, +Y left, +Z up.
+// Robot frame (REP 105): origin at base_footprint, on the floor under the drive-axle midpoint, +X forward, +Y left, +Z up.
+// base_link is BASE_LINK_Z above it; x values equal base_link x. Heights (z) are from the floor unless a comment says "from base_link".
 
 export const DEG = Math.PI / 180;
 
@@ -8,7 +9,7 @@ export const ROBOT = {
   X0: -0.39, X1: 0.39, HW: 0.291, DECK: 0.294, COVER: 0.296, BELLY: 0.052,
   WHEEL_R: 0.10, WHEEL_Y: 0.20, CASTER: [[0.26, 0.215], [0.26, -0.215], [-0.29, 0.215], [-0.29, -0.215]],
   PLATE_T: 0.010, PLATE_TOP: 0.304,              // 10 mm aluminium lift base plate on the steel deck
-  BP: { bp000: 0.0, bp050: 0.05 },                // column axis fore-aft positions (option B: centre and +50 mm)
+  BP: { bp000: 0.060, bp050: 0.110 },            // column axis x from base_link: 330 mm behind the 780 mm front edge (P-03 rev19.0)
   // DOLD Hexalift V4 (BS-HM240G350530-MFF24): 240 x 60 mm basic dimension, 530 retracted, 880 extended
   COL: { L: 0.240, W: 0.060, RETRACTED: 0.530, STROKE: 0.350, HEAD: 0.012, MASS: 11.7,
          PUSH: 800, PULL: 400, SPEED: 0.018, M_LONG_STAT: 1200, M_LONG_DYN: 500, M_LAT_STAT: 450, M_LAT_DYN: 225 },
@@ -17,8 +18,10 @@ export const ROBOT = {
   PROFILE: { X: 0.120, Y: 0.060, L: 0.340, ADAPTER: 0.010 },   // MISUMI HFS6-60120 arm profile on a 10 mm adapter plate
   MOUNT_Y: 0.031,                                 // 60 mm profile + 1 mm spacer
   STOPS: { L1000: 1.000, L1175: 1.175, L1350: 1.350 },
-  GEMINI: { x: 0.392, z: 0.243 },                 // base camera front face, centred
-  LIDAR_Z: 0.210,                                 // RPLIDAR S3 scan plane (A1 plane kept)
+  BASE_LINK_Z: 0.098,                             // base_link (drive-axle midpoint) above the floor
+  GEMINI: { x: 0.376, z: 0.0445 },               // base_camera_link from base_link: housing centre 142.5 mm above the floor (P-03 rev19.0)
+  LIDAR_X: 0.330, LIDAR_Z: 0.222,               // RPLIDAR S3: lidar_link x from base_link; scan plane from the floor (z 0.124 from base_link)
+  NEAR_Z: 0.0914, US_Y: 0.130,                   // MB7060 edge holes (y +/-0.130) and TF-Luna centre holes, 91.4 mm above the floor
   ZED_ABOVE_SH: 0.223, ZED_X: 0.202,              // ZED Mini lens: 223 mm above and 22 mm ahead of the arm mount point (x from the column axis)
 };
 

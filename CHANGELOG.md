@@ -2,6 +2,19 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-10-12
+
+### Changed
+
+- OpenAMRobot 2.0 design pages follow P-03 revision 19.0 and BOM Issue 7.7:
+  - Column position: the column axis is 330 mm behind the chassis front edge, x +0.060 m from `base_link` at `bp000` and +0.110 m at `bp050`.
+  - Base camera: the Gemini 336L housing centre is 142.5 mm above the floor, `base_camera_link` (0.376, 0, 0.0445).
+  - Near-field sensors: four MB7060 ultrasonic sensors and two TF-Luna cliff sensors.
+  - IMU: the ICM-42688-P is on the centreline at x 0.195 m; the MPU6500 is the Gate A unit only.
+  - LiDAR: the RPLIDAR S3 beam is 222.0 mm above the floor.
+- The hardware architecture page no longer embeds the BOM Issue 7 diagram; the asset carries a superseded banner.
+- The dark-store simulation uses the same column, camera, LiDAR and near-field positions and is labelled visualization only; grocery requirements belong to OpenAMRobot 3.0.
+
 ## 2026-10-11
 
 ### Changed

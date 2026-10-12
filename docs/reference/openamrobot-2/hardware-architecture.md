@@ -1,39 +1,18 @@
 ---
-title: Hardware architecture (BOM Issue 7)
+title: Hardware architecture (BOM Issue 7.7)
 tags: [builder, integrator, developer]
 status: planned
-description: Interactive connection model of the OpenAMRobot 2.0 electronics, compute, base controller, drives, power, sensors and arms, generated from BOM Issue 7.
+description: The OpenAMRobot 2.0 electronics, compute, base controller, drives, power, sensors and arms in one table, following BOM Issue 7.7 and P-03 revision 19.0.
 ---
 
-# Hardware architecture (BOM Issue 7)
+# Hardware architecture (BOM Issue 7.7)
 
-**Canonical source:** the OpenAMRobot 2.0 development BOM and evidence register maintained by the platform lead. It is an internal working document that is not yet committed to a repository; it will be published in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) with the electrical release. This diagram is a public extract of BOM Issue 7 of 27 September 2026 (the canonical working issue under P-03 revision 18.2): internal links, prices and owner columns are removed, and the issue number in the diagram header tells you which BOM issue it represents.
+**Canonical source:** the OpenAMRobot 2.0 development BOM and evidence register maintained by the platform lead. It is an internal working document that is not yet committed to a repository; it will be published in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) with the electrical release. This page follows BOM Issue 7.7 of 12 October 2026 and P-03 revision 19.0 items 13 to 19.
 
 **Applies to:** OpenAMRobot 2.0, development cycle 2. For the robot that has been built and driven, see the [current hardware architecture](../openamr-platform-hw/concepts.md).
 
-!!! warning "Connection model, not a released schematic"
-    The diagram shows which component connects to which, over which bus, with which fuse. It is not a pin-released wiring diagram. Do not wire hardware from it; the electrical release (F7) will provide schematics and harness drawings.
-
-## Interactive diagram
-
-Use the tabs inside the diagram to switch views (Master, Overview, Power and protection, Safety chain, Communication), the layer list to hide or show connection types (battery, 24 V, 5 V, charge, safety, CAN1, CAN2, CAN-FD, USB, Ethernet, I2C, SPI, GPIO, mechanical), and the search box to find a component by BOM ID or model. Hover for details, click to pin a component. On a phone, open the full-screen version.
-
-<a class="oamr-button oamr-button--primary" href="/assets/hardware/openamrobot2-hardware-architecture-bom7.html" target="_blank" rel="noopener">Open full screen</a>
-
-<div class="oamr-frame oamr-frame--tall">
-<iframe src="/assets/hardware/openamrobot2-hardware-architecture-bom7.html" title="OpenAMRobot 2.0 hardware architecture, interactive diagram" loading="lazy"></iframe>
-</div>
-
-## How to read it
-
-| Line style | Meaning |
-|---|---|
-| Solid | Selected architecture |
-| Dashed | Conditional or alternative route |
-| Grey | Mounting or kit allocation, no electrical connection |
-| Unreleased detail (labelled as such in the diagram) | The supplier documentation does not release the detail yet |
-
-Every branch fuse is drawn explicitly. Functional nodes such as the contactors K1 and K2 split one BOM line into the roles it plays in the safety chain.
+!!! note "Interactive diagram withdrawn"
+    The interactive connection diagram generated from BOM Issue 7 (27 September 2026) is superseded by BOM Issue 7.7 and is no longer embedded here. A new diagram is regenerated with the electrical release (F7), which also provides the schematics and harness drawings. Do not wire hardware from this page.
 
 ## The architecture in one table
 
@@ -45,16 +24,18 @@ Every branch fuse is drawn explicitly. Functional nodes such as the contactors K
 | Battery bus | CAN2, 250 kbit/s, isolated, Daly 150 A BMS | 8S1P EVE LF105 LiFePO4, 25.6 V, 105 Ah |
 | Auxiliary bus | CAN3 on the third FDCAN, reserved for upper-body actuators | CAN mapping on the STM32H723: CAN1 traction, CAN2 BMS, CAN3 reserved for upper-body actuators; no CAN3 node is assigned yet |
 | Safety chain | Dual-channel E-stops (base and chest), two monitored series contactors, fuse and disconnect | Hardware chain; firmware observes it and applies a secondary inhibit only |
-| IMU, Gate A (current baseline) | MPU6500 on the Teensy 4.0 over I2C, on the legacy robot with the Jetson | Raw data published by firmware on /imu/data_raw, filtered data by the host EKF on /imu/data |
-| IMU, Gate B path (conditional) | ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI and INT1 on the STM32 path; selected for the manufacturing BOM only after the same-robot comparison against the MPU6500 on 20 November | Drawn as conditional in the diagram; not released and not current |
-| Navigation sensors | Hokuyo UST-10LX LiDAR, Orbbec Gemini 336L base camera, ToF and ultrasonic near-field sensors on the MCU | Base camera tilted 10 degrees up, shared with docking |
+| IMU | ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI on the STM32; `imu_link` on the centreline at x 0.195 m from `base_link`, axes aligned with `base_link`; WHO_AM_I 0x47 at boot | Raw data published by firmware on /imu/data_raw, filtered data by the host EKF on /imu/data. The conditional adoption after a same-robot comparison on 20 November is superseded by P-03 rev19.0 |
+| IMU, Gate A unit | MPU6500 on the Teensy 4.0 over I2C, on the legacy robot with the Jetson | Gate A only; not part of the OpenAMRobot 2.0 build |
+| Navigation LiDAR | SLAMTEC RPLIDAR S3 (S3M1-R2) on USB, regulated 5 V rail; `lidar_link` (0.330, 0, 0.124) from `base_link`, yaw pi, beam 222.0 mm above the floor | Functional sensing, not a safety device. The Hokuyo UST-10LX is superseded |
+| Base camera | Orbbec Gemini 336L, housing centre on the old camera centre, 142.5 mm above the floor; `base_camera_link` (0.376, 0, 0.0445) from `base_link`; front-panel opening about 126 x 36 mm | Up-tilt configurations `bt05`, `bt10` (baseline) and `bt15`; shared with docking |
+| Near-field sensors | Four MaxBotix MB7060 ultrasonic sensors in the front and rear panel edge holes (27.5 mm, y = ±0.130 m, 91.4 mm above the floor), each on its own STM32 UART; two Benewake TF-Luna ToF cliff sensors in the front and rear panel centre holes (22.0 mm; the rear hole is new), one UART each | Frames `us_front_left`, `us_front_right`, `us_rear_left`, `us_rear_right`, `tof_front`, `tof_rear` |
 | Head and wrist cameras | Stereolabs ZED Mini on the lift carriage, pitch 15 to 35 degrees down (exact interface pending the supplier mapping), one camera per gripper | Calibrated as a set with the base camera |
-| Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | On the lift carriage; shoulder 1000 to 1350 mm at the OpenArm arm mount point, 180 mm ahead of the lift-column axis on a two-position base plate (`bp000`, `bp050`). The complete robot must remain at or below the 1700 mm assembled-height envelope |
+| Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | On the lift carriage; shoulder 1000 to 1350 mm at the OpenArm arm mount point, 180 mm ahead of the lift-column axis on a two-position base plate. The column axis is 330 mm behind the 780 mm chassis front edge: x = +0.060 m from `base_link` at `bp000` and +0.110 m at `bp050`, so the OpenArm J1_A mount points are at x = +0.240 m and +0.290 m. The complete robot must remain at or below the 1700 mm assembled-height envelope |
 | Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
 
 ## What changes when the BOM changes
 
-The diagram is regenerated from the BOM register at every BOM issue. The upper-body allocation in the current diagram predates the option B mounting of 9 October 2026 (P-03 revision 18.9 item 18) and is updated with the next BOM issue; the table above follows option B. A page carrying an older issue number than the register is out of date; report it through the feedback link rather than editing values by hand.
+The table follows BOM Issue 7.7. When a later BOM issue or P-03 revision changes a value, this page is updated in the same pull request as the other pages that state it. A page carrying an older BOM issue than the register is out of date; report it through the feedback link rather than editing values by hand.
 
 ## Next
 

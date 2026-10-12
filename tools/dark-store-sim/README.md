@@ -15,7 +15,7 @@ Open `out/web/index.html` in a browser to test. Commit the refreshed file in `do
 
 ## Status
 
-Design discussion tool for the option B upper-body mounting of P-03 rev18.9 item 18 (DOLD Hexalift V4 lift on a two-position base plate, OpenArm 2.0 arm mount point 180 mm ahead of the column axis, front totes). Not a specification; about ±2 cm.
+Visualization only; grocery requirements belong to OpenAMRobot 3.0. Design discussion tool for the option B upper-body mounting of P-03 rev18.9 item 18 (DOLD Hexalift V4 lift on a two-position base plate, OpenArm 2.0 arm mount point 180 mm ahead of the column axis, front totes), with the column position and base sensor layout of P-03 rev19.0 (column axis x +0.060 m from base_link at bp000). Not a specification; about ±2 cm.
 
 ## Where to change what
 
