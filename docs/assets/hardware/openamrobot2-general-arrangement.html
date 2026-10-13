@@ -46,7 +46,8 @@ td.hl{background:#fdecea;font-weight:600;color:#8f1e1a}
 .key{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-size:13px;color:var(--muted)}
 @media (max-width:900px){.pair,.cols{grid-template-columns:1fr} header{grid-template-columns:1fr}}
-</style></head><body><div class="wrap">
+</style></head><body>
+<div role="note" id="superseded-banner" style="position:sticky;top:0;z-index:1000;margin:0;padding:12px 16px;background:#b3261e;color:#ffffff;font:600 16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center">Superseded by the option B upper-body mounting, P-03 rev18.9 item 18; regenerated drawing to follow</div><div class="wrap">
 <header><div><h1>OpenAMRobot 2.0 general arrangement</h1>
 <p class="sub">Mobile platform with the own COTS mast and two OpenArm 2.0 arms. All views to scale from the MMP STEP, the official OpenArm 2.0 CAD and the F2S model. Dimensions in millimetres.</p></div>
 <table class="tb" aria-label="Title block"><tr><td>Status</td><td>Design proposal, pending measured inputs</td></tr><tr><td>Date</td><td>28 September 2026</td></tr><tr><td>Owner</td><td>Botshare Ltd, OpenAMRobot</td></tr><tr><td>Baseline</td><td>mast_1350 installation height, mast top 1500 mm, command ceiling 1.5 m/s (analytical)</td></tr></table></header>
@@ -440,14 +441,14 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <div class="tablewrap"><table class="list"><thead><tr><th>Item</th><th>Part</th><th>Key data</th><th>Source</th></tr></thead><tbody>
 <tr><td class="n"><span class="bal">1</span></td><td>Mobile platform MMP</td><td>Steel chassis 780 x 582 mm, deck face 294 mm</td><td class="src">MMP STEP</td></tr>
 <tr><td class="n"><span class="bal">2</span></td><td>Top cover</td><td>Non-structural, 630 x 576 mm</td><td class="src">MMP STEP</td></tr>
-<tr><td class="n"><span class="bal">3</span></td><td>Hub motor ZLTECH ZLLG80ASM250-L-B</td><td>200 mm, 24 V, double shaft, holding brake (ratings pending F2A), track 400 mm</td><td class="src">ZLTECH, BOM Issue 6</td></tr>
+<tr><td class="n"><span class="bal">3</span></td><td>Hub motor ZLTECH ZLLG80ASM250-L-B</td><td>200 mm, 24 V, double shaft, holding brake (ratings pending F2A), track 400 mm</td><td class="src">ZLTECH, BOM Issue 7.7</td></tr>
 <tr><td class="n"><span class="bal">4</span></td><td>Swivel castor Blickle LPA-VSTH 35K</td><td>52 mm total height, 15 mm offset, 100 kg each</td><td class="src">Blickle</td></tr>
 <tr><td class="n"><span class="bal">5</span></td><td>Battery 8S1P EVE LF105</td><td>25.6 V, 105 Ah, 23 kg, centred 25 % of length from the rear</td><td class="src">Decision 27 Sep</td></tr>
 <tr><td class="n"><span class="bal">6</span></td><td>Electronics bay</td><td>Jetson J401, ZLAC8015D, contactors, STM32, DC/DC</td><td class="src">P-00</td></tr>
-<tr><td class="n"><span class="bal">7</span></td><td>LiDAR Hokuyo UST-10LX</td><td>270 degree navigation scan, front</td><td class="src">P-00</td></tr>
-<tr><td class="n"><span class="bal">8</span></td><td>Base camera Orbbec Gemini 336L</td><td>Front face, tilted about 10 degrees up</td><td class="src">P-00</td></tr>
+<tr><td class="n"><span class="bal">7</span></td><td>LiDAR SLAMTEC RPLIDAR S3 (S3M1-R2)</td><td>Navigation scan, front; existing MMP.07 A1 bracket, 10 mm standoffs and a 7.1 mm spacer plate, beam 222.0 mm above the floor (same as the A1); lidar_link (0.330, 0, 0.124) from base_link, yaw pi; scan window fully open, no translucent cover; USB via USB to UART adapter to the Jetson, regulated 5 V rail; functional sensing, not a safety device</td><td class="src">P-03 rev19.0 items 13 and 19</td></tr>
+<tr><td class="n"><span class="bal">8</span></td><td>Base camera Orbbec Gemini 336L</td><td>Front panel, housing centre on the old camera centre, 142.5 mm above the floor; base_camera_link (0.376, 0, 0.0445) from base_link; opening about 126 x 36 mm; up-tilt bt05, bt10 (baseline) or bt15</td><td class="src">P-03 rev19.0</td></tr>
 <tr><td class="n"><span class="bal">9</span></td><td>Base E-stop and start button</td><td>Front panel, dual-channel E-stop</td><td class="src">P-00, MMP STEP</td></tr>
-<tr><td class="n"><span class="bal">10</span></td><td>Near-field sensors</td><td>2 ToF plus 1 ultrasonic per face</td><td class="src">P-00</td></tr>
+<tr><td class="n"><span class="bal">10</span></td><td>Near-field sensors</td><td>4 x MaxBotix MB7060 ultrasonic in the front and rear edge holes (27.5 mm, y &#177;0.130 m, 91.4 mm above the floor); 2 x TF-Luna ToF cliff sensors in the front and rear centre holes (22.0 mm; new rear hole); frames us_front_left, us_front_right, us_rear_left, us_rear_right, tof_front, tof_rear</td><td class="src">P-03 rev19.0</td></tr>
 <tr><td class="n"><span class="bal">11</span></td><td>Mast base plate and brackets</td><td>Aluminium 10 mm on 8 x M8 rivet nuts, HBLFSDW6 brackets, rear brace</td><td class="src">MMP STEP, OpenArm CAD</td></tr>
 <tr><td class="n"><span class="bal">12</span></td><td>Mast MISUMI HFS6-60120</td><td>60 x 120 mm, 1196 mm long, mast top 1500 mm above the floor, 5.4 kg</td><td class="src">MISUMI</td></tr>
 <tr><td class="n"><span class="bal">13</span></td><td>Index cross holes</td><td>Diameter 6.6 mm at 50 mm pitch over the full length</td><td class="src">Decision 28 Sep</td></tr>

@@ -1,6 +1,7 @@
 // Fast OpenArm 2.0 kinematics (official URDF chain), allocation-free FK and damped-least-squares IK.
 // Robot frame: base_link at the drive-axle midpoint, +X forward, +Y left, +Z up.
 import * as THREE from 'three';
+import { ROBOT } from './spec.js';
 
 const TCP_LEN = 0.150;
 
@@ -10,7 +11,7 @@ function split(m) { const e = m.elements; return { R: [e[0], e[4], e[8], e[1], e
 export function makeChain(D, side) {
   const a = D.arms[side];
   return {
-    side, mount: split(m4([0, a.mount.xyz[1], 0], a.mount.rpy)),
+    side, mount: split(m4([ROBOT.MOUNT_X, a.mount.xyz[1], 0], a.mount.rpy)),
     fixed: a.joints.map(j => split(m4(j.xyz, j.rpy))),
     axis: a.joints.map(j => { const n = Math.hypot(...j.axis); return j.axis.map(v => v / n); }),
     lo: a.joints.map(j => j.lo), hi: a.joints.map(j => j.hi),
