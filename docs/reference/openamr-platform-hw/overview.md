@@ -13,7 +13,7 @@ description: Understand the OpenAMRobot mobile-platform hardware repository, CAD
 | Microcontroller | Teensy 4.0; 3.3 V I/O and not 5 V tolerant |
 | Drive | Two 24 V, 60 W BLDC geared motors with ZBLD drivers |
 | Feedback | AS5040 wheel encoders and MPU6500 IMU |
-| Perception | RPLIDAR A1 and Raspberry Pi Camera Module 3 NoIR |
+| Perception | RPLIDAR A1, legacy (existing robot), and Raspberry Pi Camera Module 3 NoIR; the OpenAMRobot 2.0 LiDAR is the RPLIDAR S3 |
 | Geometry | 0.20 m wheel diameter and 0.46 m measured track |
 
 The repository contains real mechanical CAD, per-part production files, electrical and mechanical BOMs, wiring/pinout documentation, datasheets and safety material. It also documents critical current limitations: no battery fuse, no battery-side disconnect/hardware E-stop, and no active Raspberry Pi 5 cooling in the reference build.

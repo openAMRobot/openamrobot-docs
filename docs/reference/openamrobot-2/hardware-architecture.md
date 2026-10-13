@@ -33,6 +33,21 @@ description: The OpenAMRobot 2.0 electronics, compute, base controller, drives, 
 | Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | On the lift carriage; shoulder 1000 to 1350 mm at the OpenArm arm mount point, 180 mm ahead of the lift-column axis on a two-position base plate. The column axis is 330 mm behind the 780 mm chassis front edge: x = +0.060 m from `base_link` at `bp000` and +0.110 m at `bp050`, so the OpenArm J1_A mount points are at x = +0.240 m and +0.290 m. The complete robot must remain at or below the 1700 mm assembled-height envelope |
 | Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
 
+## Navigation LiDAR (P-03 revision 19.0, items 13 and 19)
+
+The OpenAMRobot 2.0 navigation LiDAR is the SLAMTEC RPLIDAR S3 (model S3M1-R2). It replaces the RPLIDAR A1 of the existing robot. Its pose, beam height and role are in the table above.
+
+| Item | Value |
+|---|---|
+| Data link | USB to the Jetson through a USB to UART adapter |
+| Driver | `sllidar_ros2` at 1,000,000 baud; publishes `/scan` in frame `lidar_link` |
+| Supply | Regulated 5 V rail: 4.9 to 5.2 V, ripple at most 150 mV, start current 1.2 A, running current 0.45 A typical. There is no 12 V rail and no separate 24 V LiDAR branch |
+| Mounting | Existing MMP.07 A1 bracket and its 10 mm standoffs plus a 7.1 mm spacer plate. The S3 scan plane is 30.55 mm above its bottom face, so the beam sits at the same height as the A1 beam. 4 x M2.5 mounting, screw engagement at most 4 mm |
+| Frame | `base_link` is at the drive-axle midpoint, 98.0 mm above the floor. Gate A unit (RPLIDAR A1 on the existing robot): x 0.335, z 0.18 |
+| Body filter | `scan_body_filter_real.yaml` from v0.0.1, kept unchanged for the S3 |
+| Scan window | Fully open, no translucent cover |
+| Backup | RPLIDAR S2E, only if the S3 is unavailable |
+
 ## What changes when the BOM changes
 
 The table follows BOM Issue 7.7. When a later BOM issue or P-03 revision changes a value, this page is updated in the same pull request as the other pages that state it. A page carrying an older BOM issue than the register is out of date; report it through the feedback link rather than editing values by hand.
