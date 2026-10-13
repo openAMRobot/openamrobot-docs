@@ -13,6 +13,7 @@ description: Find canonical OpenAMRobot repositories, architecture, interfaces, 
 <article class="oamr-card"><h3><a href="mobile-platform/">Mobile platform</a></h3><p>Navigation, docking, bring-up, embedded control, CAD and electronics.</p></article>
 <article class="oamr-card"><h3><a href="upper-body/">Upper body</a></h3><p>Lift, robot arms, manipulation architecture and developing integrations.</p></article>
 <article class="oamr-card oamr-card--accent"><h3><a href="openamrobot-2/">OpenAMRobot 2.0 design</a></h3><p>Hardware architecture, general arrangement and stability model of the robot being designed in development cycle 2.</p></article>
+<article class="oamr-card"><h3><a href="use-cases/">Reference use cases</a></h3><p>The platform applied to concrete workflows: the OpenAMRobot 2.0 reference use case and, for 3.0, dark-store picking.</p></article>
 <article class="oamr-card"><h3><a href="interfaces/">Interfaces</a></h3><p>Messages, services, actions and stable contracts between components.</p></article>
 <article class="oamr-card"><h3><a href="communication/">Communication</a></h3><p>APIs, middleware, telemetry and external integration boundaries.</p></article>
 </div>

@@ -183,10 +183,11 @@ export class Planner {
         // place standing upright on the table
         const Ri = new THREE.Matrix4().extractRotation(off2.clone().invert()), u = V3(0, 0, 1).applyMatrix4(Ri);
         const psi = -Math.atan2(-u.y, -u.x);
-        const spots = [[0.08, 0.50], [0.17, 0.50], [0.26, 0.50], [0.10, 0.60], [0.20, 0.60], [0.30, 0.58]];
+        // table spots [y, x ahead of the shoulder]; the shoulder sits at bpX + MOUNT_X ahead of base_link
+        const spots = [[0.08, 0.40], [0.17, 0.40], [0.26, 0.40], [0.10, 0.50], [0.20, 0.50], [0.30, 0.48]], shX = bpX + ROBOT.MOUNT_X;
         let placed = null;
         for (; k < spots.length && !placed; k++) {
-          const [yy, xx] = spots[k], itemT = new THREE.Matrix4().makeRotationZ(psi).setPosition(xx, s * yy, Tb.h + 0.004);
+          const [yy, xx] = spots[k], itemT = new THREE.Matrix4().makeRotationZ(psi).setPosition(shX + xx, s * yy, Tb.h + 0.004);
           const Ep = itemT.clone().multiply(off2.clone().invert()), ep = Ep.elements, Pp = V3(0, 0, -ARMSPEC.TCP).applyMatrix4(Ep);
           const gp = { p: [Pp.x, Pp.y, Pp.z], a: [-ep[8], -ep[9], -ep[10]], c: [ep[4], ep[5], ep[6]], strict: true };
           const pre = { p: gp.p.map((v, i) => v - gp.a[i] * 0.12), a: gp.a, c: gp.c, strict: true };

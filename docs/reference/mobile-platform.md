@@ -12,7 +12,7 @@ The OpenAMRobot mobile base is split into independently versioned software, firm
 | Communication boundary | [openamrobot-comm](https://github.com/openAMRobot/openamrobot-comm) | Cross-component communication contracts |
 
 !!! info "OpenAMRobot 2.0"
-    The next mobile manipulator, with a fixed mast and two OpenArm 2.0 arms, is being designed in development cycle 2. Its hardware architecture, general arrangement and stability model are documented in the [OpenAMRobot 2.0 design](openamrobot-2/index.md) section.
+    The next mobile manipulator, with a lift column and two OpenArm 2.0 arms, is being designed in development cycle 2. Its hardware architecture, general arrangement and stability model are documented in the [OpenAMRobot 2.0 design](openamrobot-2/index.md) section.
 
 ## Start with a release
 
