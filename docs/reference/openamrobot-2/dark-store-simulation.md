@@ -12,7 +12,7 @@ description: Interactive 3D simulation of OpenAMRobot 2.0 picking a grocery orde
 **Applies to:** OpenAMRobot 2.0 with the DOLD Hexalift V4 350 mm lift on a two-position base plate, two OpenArm 2.0 arms with the pinch gripper mounted 180 mm ahead of the column axis, and two totes on the front deck.
 
 !!! note "Visualization only"
-    Visualization only; grocery requirements belong to OpenAMRobot 3.0. The dark store is an illustration of the OpenAMRobot 2.0 geometry, not a requirement or a release scope for 2.0.
+    Visualization only; grocery requirements belong to OpenAMRobot 3.0. The dark store is an illustration of the OpenAMRobot 2.0 geometry, not a requirement or a release scope for 2.0. The scenario is dark-store picking, a [reference use case for OpenAMRobot 3.0](../use-cases.md#dark-store-picking).
 
 !!! warning "Design proposal, about ±2 cm"
     Geometry comes from the current design baseline and supplier data sheets. The lift outline is drawn from the manufacturer's published 240 × 60 mm basic dimension and the adapter-plate outline is approximate until supplier CAD and the adapter-plate drawing arrive. Use the results to compare options and to plan pilots, not as a release or safety claim.
@@ -67,3 +67,4 @@ The findings were rechecked on 12 October 2026 with the column position of P-03 
 - [OpenAMRobot 2.0 design](index.md)
 - [Mass and stability (F2S)](mass-and-stability.md)
 - [Retail and replenishment](../../solutions/retail.md)
+- [Reference use cases](../use-cases.md) (dark-store picking is a reference use case for OpenAMRobot 3.0)
