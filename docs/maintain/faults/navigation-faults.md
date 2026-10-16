@@ -1,53 +1,92 @@
----
-title: Navigation Faults
----
+# Navigation Health and Faults
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Navigation Faults</h1><p>Define inspection, diagnosis, service evidence and acceptance for navigation faults.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+## Scope
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+Navigation status describes the navigation subsystem only. It is not a
+whole-robot readiness signal or a safety function.
 
-## What this page should contain
+The canonical definitions are maintained in
+[openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces),
+under `ros2/openamr_nav_msgs/`.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+## Runtime status contract
 
-## Content template
+The proposed status topic is `/navigation/status`, using `NavigationStatus`.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+The producer is tracked in
+[openamr-platform-sw issue #34](https://github.com/openAMRobot/openamr-platform-sw/issues/34).
+The topic name and runtime behavior must be confirmed with the producer
+implementation before being treated as deployed behavior.
 
-### Procedure or explanation
+The interface contract specifies:
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+- Reliable, transient-local QoS with depth 1.
+- Publication on field changes and a default 2 Hz heartbeat.
+- `CONTRACT_VERSION` is currently `1`.
+- Message field changes require a contract version bump and consumer rebuild.
+- Reason codes are append-only and must never be renumbered or reused.
+- Adding a reason-code constant alone does not require a version bump.
 
-### If it did not work
+These are contract requirements, not proof that a live producer implements them.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## Reading status safely
 
-## Owning OpenAMRobot source
+- `health` distinguishes unknown, OK, degraded, and fault states.
+- `navigation_readiness` describes navigation only.
+- `not_ready_reasons` lists reasons navigation is not ready.
+- `active_reasons` lists currently active reason codes.
+- `thresholds_id` is `UNSET` when no threshold profile is applied.
+- A zero value is not automatically evidence of healthy operation.
+- Fields documented as valid only in particular states must not be interpreted
+  as meaningful outside those states.
 
-- [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) – canonical source, versions, implementation and issue history.
+Consult `NavigationStatus.msg` and `CONTRACT.md` for the authoritative field
+definitions and validity rules.
 
-## Authoritative external references
+## Reason-code registry
 
-- [Nav2 documentation](https://docs.nav2.org/)
-- [ROS REP-105 coordinate conventions](https://www.ros.org/reps/rep-0105.html)
+Reason-code constants are defined in `NavigationStatus.msg`. Do not create
+a second independent registry.
 
-## Contribution note
+| Group | Codes |
+|---|---|
+| General | `NONE` (0) |
+| Navigation stack | `NAV_STACK_NOT_STARTED` (1001), `NAV_STACK_STARTING` (1002), `NAV_STACK_RESETTING` (1003), `NAV_NODE_INACTIVE` (1004), `NAV_CONFIG_FAULT` (1005) |
+| Sensors | `SENSOR_DATA_STALE` (2001), `SENSOR_NOT_CONFIGURED` (2002), `SENSOR_NO_DATA_YET` (2003), `SENSOR_DATA_INVALID` (2004), `SENSOR_RATE_LOW` (2005) |
+| Localization | `LOCALIZATION_NOT_INITIALIZED` (3001), `LOCALIZATION_UNCERTAIN` (3002), `LOCALIZATION_STALE_WHILE_MOVING` (3003), `LOCALIZATION_PAUSED_FOR_DOCKING` (3004), `TF_UNAVAILABLE` (3005) |
+| Navigation task | `GOAL_OUTSIDE_MAP` (4001), `GOAL_BLOCKED` (4002), `START_BLOCKED` (4003), `NO_VALID_PATH` (4004), `PLANNER_TIMEOUT` (4005), `CONTROLLER_TIMEOUT` (4006), `STUCK` (4007), `LOCAL_BLOCKED` (4008), `NAV_UNKNOWN_FAULT` (4009) |
+| Recovery | `RECOVERY_IN_PROGRESS` (5001), `RECOVERY_LIMIT_REACHED` (5002) |
+| Protection | `COLLISION_LAYER_INACTIVE` (6001), `MOTION_SOURCE_UNPROTECTED` (6002), `REAR_COVERAGE_UNAVAILABLE` (6003), `PROTECTION_STATE_UNKNOWN` (6004), `SPEED_LIMIT_ACTIVE` (6005), `REVERSE_SPEED_LIMITED` (6006), `MOTION_SOURCE_PARTIALLY_PROTECTED` (6007), `COLLISION_APPROACH_ACTIVE` (6008) |
+| Docking | `DOCK_ENGAGEMENT_UNKNOWN` (7001), `DOCK_TAGS_NOT_VISIBLE` (7002), `DOCK_ALIGNMENT_FAILED` (7003), `DOCK_TIMEOUT` (7004), `DOCK_STAGING_FAILED` (7005), `UNDOCK_FAILED` (7006), `UNDOCKING_BEFORE_GOAL` (7007), `DOCK_REASON_UNSPECIFIED` (7008) |
+| Parking | `PARK_TARGET_UNREACHABLE` (8001), `PARK_POSE_MISSED` (8002), `PARKING_NOT_IMPLEMENTED` (8003) |
+| Base/I8 | `BASE_LINK_LOST` (9001), `BASE_NOT_READY` (9002), `ESTOP_ACTIVE` (9003), `BATTERY_LOW` (9004) |
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+Reason-code constants identify conditions; operator-facing text and recommended
+actions should be maintained consistently with the canonical registry.
+
+## E-stop and base-controller limitations
+
+`ESTOP_ACTIVE` is reported only when fresh base telemetry explicitly reports
+an active E-stop. Missing or stale telemetry must instead be represented by
+`BASE_LINK_LOST` or `BASE_NOT_READY`, with navigation readiness set to
+`NAVIGATION_READINESS_NOT_READY`.
+
+Navigation status does not actuate, reset, or validate the physical E-stop,
+disable motor power, re-enable actuators, or guarantee that the robot is safe.
+Those responsibilities remain with the base/I8 safety implementation.
+
+## Traceability and known gaps
+
+The documentation search did not locate the source text for `Use_Case_1`
+requirements 3.1–3.7 or the authoritative P-02 mission-state definitions.
+Their exact requirement wording and state mappings therefore remain to be
+verified against the owning specification.
+
+Do not infer that a reason code maps to a particular P-02 state without that
+evidence. Add the requirement-to-interface, requirement-to-test, and
+requirement-to-mission-state mappings when the authoritative source is
+available.
+
+The `/navigation/status` producer is tracked in platform issue #34.
+Goal identity for checkpointing and resume is tracked in
+[platform issue #38](https://github.com/openAMRobot/openamr-platform-sw/issues/38).

@@ -43,6 +43,22 @@ Document symptoms separately from causes. Include diagnostic evidence and a safe
 
 - [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces) – canonical source, versions, implementation and issue history.
 
+## Verification and schema validation
+
+The canonical interface verification guidance is maintained in
+[docs/verification.md](https://github.com/openAMRobot/openamrobot-interfaces/blob/main/docs/verification.md).
+
+Schema validation guidance is maintained in
+[docs/schema-validation.md](https://github.com/openAMRobot/openamrobot-interfaces/blob/main/docs/schema-validation.md).
+
+Future domain contracts must register their schemas and positive and negative
+fixtures in `schemas/validation.json`. Where a domain has no schema, coverage
+must remain explicitly `NOT_APPLICABLE`, not passing.
+
+Repository-local checks do not complete H-CI. The downstream-consumer matrix,
+reusable workflow rollout and pinned validation environment remain separate
+work items and must be verified independently.
+
 ## Contribution note
 
 Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
