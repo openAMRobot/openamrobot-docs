@@ -3,12 +3,12 @@
 ## What to understand
 
 <div class="oamr-grid">
-<article class="oamr-card"><h3>Robot anatomy</h3><p>Drive, power, compute, sensors, actuators, chassis and mechanics.</p></article>
-<article class="oamr-card"><h3>Navigation</h3><p>Frames, odometry, SLAM, localization, planning, avoidance and docking.</p></article>
-<article class="oamr-card"><h3>Manipulation</h3><p>Kinematics, planning, grasping, workspace, reach and the lift.</p></article>
-<article class="oamr-card oamr-card--accent"><h3>Embodied AI</h3><p>Why demonstration matters; Show, Correct, Judge; datasets, policies and simulation.</p></article>
-<article class="oamr-card"><h3>ROS 2 in an afternoon</h3><p>Nodes, topics, services, actions, parameters, launch, TF, URDF and ros2_control.</p></article>
-<article class="oamr-card oamr-card--success"><h3>Working safely</h3><p>Moving robots, electricity, batteries, emergency stop and basic risk assessment.</p></article>
+<article class="oamr-card"><h3><a href="../../foundations/robot-anatomy/">Robot anatomy →</a></h3><p>Drive, power, compute, sensors, actuators, chassis and mechanics.</p></article>
+<article class="oamr-card"><h3><a href="../../foundations/navigation/">Navigation →</a></h3><p>Frames, odometry, SLAM, localization, planning, avoidance and docking.</p></article>
+<article class="oamr-card"><h3><a href="../../foundations/manipulation/">Manipulation →</a></h3><p>Kinematics, planning, grasping, workspace, reach and the lift.</p></article>
+<article class="oamr-card oamr-card--accent"><h3><a href="../../foundations/embodied-ai/">Embodied AI →</a></h3><p>Why demonstration matters; Show, Correct, Judge; datasets, policies and simulation.</p></article>
+<article class="oamr-card"><h3><a href="../../foundations/ros2/">ROS 2 in an afternoon →</a></h3><p>Nodes, topics, services, actions, parameters, launch, TF, URDF and ros2_control.</p></article>
+<article class="oamr-card oamr-card--success"><h3><a href="../../foundations/safety/">Working safely →</a></h3><p>Moving robots, electricity, batteries, emergency stop and basic risk assessment.</p></article>
 </div>
 
 !!! note "Learning scope"
