@@ -369,6 +369,7 @@ nav:
           - General arrangement: reference/openamrobot-2/general-arrangement.md
           - Mass and stability: reference/openamrobot-2/mass-and-stability.md
           - Dark-store pick simulation: reference/openamrobot-2/dark-store-simulation.md
+          - Roadmap and status: reference/openamrobot-2/roadmap.md
       - Interfaces: reference/interfaces.md
       - Communication: reference/communication.md
       - openamr-* · the mobile robot:
