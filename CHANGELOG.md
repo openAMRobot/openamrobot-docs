@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-10-20
+
+### Added
+
+- OpenAMRobot 2.0 roadmap and status (snapshot 19 October 2026): a reference page with five linked interactive pages (Overview, Robot, Hardware, Architecture, Progress), including a step-by-step action plan to v2.0.0 under `docs/assets/roadmap/`. Each part shows delivery status, runtime evidence and physical acceptance separately, with links to its evidence. Linked from the project status page.
+
 ## 2026-10-12
 
 ### Changed
