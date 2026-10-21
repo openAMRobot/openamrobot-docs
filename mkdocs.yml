@@ -366,6 +366,7 @@ nav:
       - OpenAMRobot 2.0 design:
           - reference/openamrobot-2/index.md
           - Hardware architecture: reference/openamrobot-2/hardware-architecture.md
+          - Safety and power (E-01): reference/openamrobot-2/safety-and-power.md
           - General arrangement: reference/openamrobot-2/general-arrangement.md
           - Mass and stability: reference/openamrobot-2/mass-and-stability.md
           - Dark-store pick simulation: reference/openamrobot-2/dark-store-simulation.md
