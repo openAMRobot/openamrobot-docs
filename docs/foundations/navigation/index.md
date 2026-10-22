@@ -103,25 +103,53 @@ The exact costmap layers, footprint, sensor configuration and tuning parameters 
 
 ## Velocity and robot feedback
 
-The navigation command path can be understood as:
+The configured Nav2 velocity-processing chain is:
 
 ```text
-Navigation controller
-        ↓
-Velocity processing
-        ↓
-Collision monitoring
-        ↓
-Robot base
-        ↓
-Odometry
-        ↓
-TF / navigation feedback
+Nav2 controller
+      |
+      v
+ /cmd_vel_nav
+      |
+      v
+Velocity smoother
+      |
+      v
+/cmd_vel_smoothed
+      |
+      v
+Collision monitor
+      |
+      v
+   /cmd_vel
+      |
+      v
+  Robot base
 ```
 
-This feedback loop allows navigation to continuously relate commanded motion to the robot's estimated state and environment.
+This diagram describes the configured processing chain, not a guarantee that
+every node is active in every launch configuration.
 
-The exact topic names, remappings and QoS settings are maintained by the owning repositories.
+In the current simulation wiring, Nav2 commands may be sent directly to
+`/cmd_vel`. Check the selected launch configuration before assuming that the
+velocity smoother and collision monitor are active.
+
+Odometry and TF provide feedback about the robot's estimated state. This
+feedback supports localization and navigation; it does not by itself establish
+that the robot is physically safe.
+
+The exact topic names, remappings and QoS settings are maintained by the owning
+repositories.
+
+**Docking exception:** the current docking implementation can bypass the Nav2
+collision monitor during part of the docking sequence. Do not assume that the
+Nav2 collision monitor protects that phase; consult the docking implementation
+and its obstacle-guard behaviour.
+
+**Safety:** the hardware E-stop chain, where implemented and validated on the
+applicable robot, acts independently of this software velocity path. A dashboard
+or software stop is not a substitute for the physical E-stop chain or approved
+safety procedures.
 
 ## TF
 
@@ -133,10 +161,10 @@ A typical navigation relationship is:
 
 ```text
 map
- └── odom
-      └── base_link
-           ├── base_footprint
-           └── sensor frames
+└── odom
+    └── base_footprint
+        └── base_link
+            └── sensor frames
 ```
 
 The exact frame names and sensor transforms are configuration-dependent and must be verified against the current platform implementation.
