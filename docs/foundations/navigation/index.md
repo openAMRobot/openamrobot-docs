@@ -162,9 +162,8 @@ A typical navigation relationship is:
 ```text
 map
 └── odom
-    └── base_footprint
-        └── base_link
-            └── sensor frames
+    └── base_link
+        └── sensor frames
 ```
 
 The exact frame names and sensor transforms are configuration-dependent and must be verified against the current platform implementation.
