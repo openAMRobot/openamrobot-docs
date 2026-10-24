@@ -2,6 +2,16 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-10-24
+
+### Changed
+
+- OpenAMRobot 2.0 roadmap snapshot of 24 October 2026, checked against P-03 rev19.7 (in force), E-01 rev1.4, BOM Issue 7.10 (corrected 24 October), P-02 rev19.2, the decisions register at 1c3f516 and main of every repository: system map, timeline with confirmed and proposed dates by source, the 35-step action plan, procurement state per BOM package, sensor frames with drift markers, the motion chain as designed and on main, and new Governance and organisation and Known drift sections.
+
+### Added
+
+- `scripts/check_roadmap.py`, run in CI: parses the embedded roadmap data, checks status counts, anchors, snapshot dates and forbidden terms.
+
 ## 2026-10-20
 
 ### Added

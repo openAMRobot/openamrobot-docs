@@ -33,6 +33,9 @@ jobs:
       - name: Check repository documentation rules
         run: bash scripts/check_docs.sh
 
+      - name: Check the roadmap pages
+        run: python3 scripts/check_roadmap.py
+
       - name: Check generated links
         uses: lycheeverse/lychee-action@v2
         with:
