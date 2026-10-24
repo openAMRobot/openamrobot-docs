@@ -2,16 +2,16 @@
 title: OpenAMRobot 2.0 roadmap and status
 tags: [integrator, developer, partner]
 status: active
-description: Interactive roadmap of OpenAMRobot 2.0 at the 19 October 2026 snapshot - what we are building, the planned architecture, where each part stands with evidence, and the work to v2.0.0 on 18 December 2026.
+description: Interactive roadmap of OpenAMRobot 2.0 at the 24 October 2026 snapshot - what we are building, the planned architecture, where each part stands with evidence, and the work to v2.0.0 on 18 December 2026.
 ---
 
 # OpenAMRobot 2.0 roadmap and status
 
-**Snapshot:** 19 October 2026. The pages are regenerated at each snapshot; check the date before relying on a status.
+**Snapshot:** 24 October 2026 (previous: 19 October 2026). The pages are regenerated at each snapshot; check the date before relying on a status. `scripts/check_roadmap.py` checks the pages in CI.
 
-**Canonical sources:** the OpenAMRobot 2.0 plan set (P-03 rev19.6, E-01 rev1.3, BOM Issue 7.10), the [decisions register](https://github.com/openAMRobot/.github), the main branches and open pull requests of the [openAMRobot repositories](https://github.com/openAMRobot), and the simulation audit of 19 October 2026. Each status on the pages links to its evidence.
+**Canonical sources:** the OpenAMRobot 2.0 plan set (P-03 rev19.7 in force, E-01 rev1.4, BOM Issue 7.10 corrected 24 October, P-02 rev19.2), the [decisions register](https://github.com/openAMRobot/.github) (decisions.yaml at 1c3f516), the main branches and open pull requests of the [openAMRobot repositories](https://github.com/openAMRobot) on 24 October 2026, and the simulation audit of 19 October 2026. Where two sources disagree, the pages show the design value with a drift marker; the Progress page lists every known drift. Each status on the pages links to its evidence.
 
-**Milestones:** Gate A 30 October 2026 · v2.0.0-rc.1 20 November 2026 · physical integration 23 November to 18 December 2026 · v2.0.0 18 December 2026.
+**Milestones:** Gate A and the electrical and safety release 30 October 2026 (P-02) · I8 freeze and STM32 go/no-go 6 November 2026, fallback Teensy (P-02) · Gate B regression 13 to 20 November 2026 (P-02) · v2.0.0-rc.1 20 November 2026 · physical integration 23 November to 18 December 2026 · v2.0.0 18 December 2026.
 
 !!! warning "Status, not acceptance"
     No physical acceptance is recorded yet for any part of OpenAMRobot 2.0. Simulation results ran at about 0.1 of real time with test fixtures and mock hardware in places; they are not safety evidence. The hardwired E-stop chain is the only safety function.
@@ -34,10 +34,10 @@ Five linked pages: Overview, Robot, Hardware, Architecture and Progress. On a ph
 | Page | What you find there |
 |---|---|
 | [Overview](/assets/roadmap/index.html) | The whole system on one map with the status of every part, the swimlane plan to v2.0.0 with the critical path to rc.1, and the shared base of release 001 and 2.0 |
-| [Robot](/assets/roadmap/robot.html) | The 2.0 robot at P-03 rev19.6 in 3D with its configuration switches, sensor coverage, and the simulation evidence per subsystem |
-| [Hardware](/assets/roadmap/hardware.html) | Power distribution, the safety chain and its state machine, the base design shared with release 001 and what carries over, and procurement risks |
-| [Architecture](/assets/roadmap/architecture.html) | ROS 2 packages, firmware and hardware layers, the motion command path today and planned, lifecycle, deployment, frames and interfaces, and an architecture review against upstream practice |
-| [Progress](/assets/roadmap/progress.html) | What needs attention now, rc.1 readiness, the action plan (what to do, in order, with owners and done-when tests), progress per area, requirement coverage and risks |
+| [Robot](/assets/roadmap/robot.html) | The 2.0 robot at P-03 rev19.7 in 3D with its configuration switches, sensor coverage, and the simulation evidence per subsystem |
+| [Hardware](/assets/roadmap/hardware.html) | Power distribution, the safety chain and its state machine, the base design shared with release 001 and what carries over, procurement state per BOM Issue 7.10 package, open design items and hardware drift |
+| [Architecture](/assets/roadmap/architecture.html) | ROS 2 packages, firmware and hardware layers, the motion command path as designed and on main, contract versions, lifecycle, deployment, frames and interfaces, and an architecture review against upstream practice |
+| [Progress](/assets/roadmap/progress.html) | What needs attention now, rc.1 readiness, the action plan (what to do, in order, with owners and done-when tests), progress per area, requirement coverage, governance and organisation, the known drift list and risks |
 
 ## Related
 

@@ -17,6 +17,6 @@ This page separates documentation structure from the maturity of the capability 
 | Manipulation and demonstration | Learning architecture available | Experimental and developing | [Repository ecosystem](reference/repositories.md) |
 | Academy | Program structure available | Commercial delivery outside this site | [Academy](academy/index.md) |
 
-For OpenAMRobot 2.0, the [roadmap and status](reference/openamrobot-2/roadmap.md) pages show each part's delivery status, runtime evidence and physical acceptance with links to the evidence.
+For OpenAMRobot 2.0, the [roadmap and status](reference/openamrobot-2/roadmap.md) pages (snapshot 24 October 2026, design source P-03 rev19.7) show each part's delivery status, runtime evidence and physical acceptance with links to the evidence, plus the known drift between sources.
 
 Capability badges on individual pages remain the more specific signal. Exact versions, parameters, source and contracts remain canonical in the owning repository.
