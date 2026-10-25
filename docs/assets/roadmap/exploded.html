@@ -39,7 +39,7 @@ button{font:600 13px/1 var(--f-label);letter-spacing:.02em;color:var(--ink);back
 button:hover{border-color:var(--line)}button.on,button[aria-pressed=true]{background:var(--ink);color:#fff}button.go{background:var(--accent);color:#fff}
 button[disabled]{opacity:.45;cursor:default}
 /* viewer */
-.xv{scroll-margin-top:var(--navh,44px);display:grid;grid-template-columns:minmax(0,1fr) 400px;height:calc(100vh - var(--navh,44px));min-height:560px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel)}
+.xv{scroll-margin-top:var(--navh,44px);display:grid;grid-template-columns:minmax(0,1fr) 400px;height:calc(100vh - var(--navh,44px));height:calc(100dvh - var(--navh,44px));min-height:560px;border-bottom:1px solid var(--line);background:var(--panel)}
 .stage{position:relative;min-height:0;background:var(--stage);overflow:hidden}
 .stage canvas{display:block;width:100%;height:100%;touch-action:none}
 .hud{position:absolute;left:12px;top:12px;right:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;pointer-events:none;z-index:6}
@@ -47,13 +47,15 @@ button[disabled]{opacity:.45;cursor:default}
 .grp{display:flex;flex-wrap:wrap;gap:4px;background:rgba(247,249,248,.92);padding:4px;border-radius:6px;border:1px solid var(--line)}
 .hint{font:500 12px/1.3 var(--f-ui);color:var(--mute);background:rgba(247,249,248,.92);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
 .stamp{position:absolute;left:12px;bottom:12px;z-index:6;font:600 12px/1.3 var(--f-label);color:var(--ink);background:rgba(247,249,248,.92);border:1px solid var(--line);border-radius:6px;padding:6px 8px;max-width:calc(100% - 24px)}
+.cap{position:absolute;left:50%;bottom:54px;transform:translateX(-50%);z-index:6;max-width:min(760px,calc(100% - 24px));padding:9px 16px;border-radius:8px;background:rgba(21,46,69,.9);color:#fff;font:600 17px/1.3 var(--f-label);letter-spacing:.01em;text-align:center;pointer-events:none}
 .colayer{position:absolute;inset:0;pointer-events:none;z-index:4;overflow:hidden}
 .colayer svg{position:absolute;inset:0;width:100%;height:100%}
 .colayer line{stroke:#26323a;stroke-width:1;opacity:.75}
-.cn{position:absolute;pointer-events:auto;min-width:22px;height:20px;padding:0 4px;border-radius:10px;border:1.5px solid #26323a;background:#fff;color:#142120;font:600 11.5px/17px var(--f-num);text-align:center;cursor:pointer;transform:translate(-50%,-50%)}
+.cn{position:absolute;pointer-events:auto;height:20px;padding:0 6px;border-radius:10px;border:1.5px solid #26323a;background:#fff;color:#142120;font:600 11.5px/17px var(--f-num);text-align:center;cursor:pointer;transform:translate(-50%,-50%);white-space:nowrap}
+.cn i{font:600 12px/17px var(--f-label);font-style:normal;letter-spacing:.01em;margin-left:5px}
 .cn.sel{background:var(--accent);border-color:var(--accent);color:#fff}
 .cn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.panel{overflow-y:auto;border-left:1px solid var(--line);background:#f7f9f8;padding:4px 16px 24px;min-width:0}
+.panel{overflow-y:auto;overscroll-behavior:contain;border-left:1px solid var(--line);background:#f7f9f8;padding:4px 16px 24px;min-width:0;min-height:0}
 .sheet-h{display:none}
 .blk{padding:12px 0;border-bottom:1px solid var(--line)}.blk:last-child{border-bottom:0}
 .blk h2{margin:0 0 8px;font:700 12px/1 var(--f-label);text-transform:uppercase;letter-spacing:.09em;color:var(--mute)}
@@ -79,14 +81,23 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
 .fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;background:var(--stage);text-align:center;z-index:7}
 .fallback img{max-width:100%;max-height:75%;object-fit:contain}
 .legend{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:12.5px;color:var(--mute);margin:6px 0 0}
+.vid{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:16px 0}
+.vid h2{margin:0 0 8px;font:700 20px/1.2 var(--f-label)}
+.vid video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#1b2a36;border-radius:6px}
+.vid p{margin:8px 0 0}
+body.render{background:#d9dfdd;overflow:hidden}
+body.render>*:not(.xv):not(#render-out){display:none!important}
+body.render .xv{display:block;position:fixed;left:0;top:0;height:auto;min-height:0;border:0}
+body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body.render .cap{display:none!important}
 @media (max-width:900px){
  .xv{grid-template-columns:1fr;grid-template-rows:auto;height:auto;min-height:0}
- .stage{height:calc(100vh - var(--navh,44px) - 72px);min-height:340px}
+ .stage{height:calc(100vh - var(--navh,44px) - 72px);height:calc(100dvh - var(--navh,44px) - 72px);min-height:340px}
  .panel{position:fixed;left:0;right:0;bottom:0;z-index:40;max-height:46vh;border-left:0;border-top:1px solid var(--line);border-radius:12px 12px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);padding:0 14px 16px}
  .panel.collapsed{max-height:64px;overflow:hidden}
  .sheet-h{display:flex;position:sticky;top:0;z-index:2;justify-content:space-between;align-items:center;gap:8px;background:#f7f9f8;padding:8px 0;border-bottom:1px solid var(--line)}
  .sheet-h b{font:700 14px var(--f-label)}
  body{padding-bottom:72px}
+ .cap{bottom:48px;font-size:15px}
 }
 @media (max-width:760px){.intro dl{grid-template-columns:1fr}.intro dt{margin-top:4px}.rm-nav .snap{margin-left:0;width:100%}main.rm{padding:10px}.hint{display:none}.grp button{padding:7px 8px}}
 @media print{.rm-nav{position:static}.panel{position:static;max-height:none}.hud{display:none}}
@@ -95,16 +106,22 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a><nav class="rm-nav" aria-label="Roadmap pages"><a class="brand" href="index.html">OpenAMRobot 2.0 Roadmap</a><ul><li><a href="index.html">Overview</a></li><li><a href="robot.html">Robot</a></li><li><a href="exploded.html" aria-current="page">Exploded view</a></li><li><a href="hardware.html">Hardware</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="progress.html">Progress</a></li></ul><span class="snap">Snapshot 24 Oct 2026</span></nav>
-<main class="rm" id="content"><header class="intro"><h1>Exploded view: OpenAMRobot 2.0</h1><dl><dt>What this shows</dt><dd>The 2.0 robot from the same model as the <a href="robot.html">Robot</a> page, assembled or pulled apart by subsystem, with every component numbered, its BOM Issue 7.11 row and a public source.</dd><dt>Geometry</dt><dd>Chassis parts are CAD-derived (CAD v0.2, openamr-platform-hw); base components are simplified envelopes; the lift, plates, arm profile and head camera are primitives from decided dimensions; the arms are the OpenArm 2.0 meshes. Components without a documented position are listed but not drawn.</dd><dt>Limits</dt><dd>Visualization only, about ±2 cm. No fasteners, cables or wiring routes are shown; none are documented for 2.0. The battery enclosure is a provisional allocation, dimensions not released.</dd></dl></header></main>
 <section class="xv" id="viewer" aria-label="Exploded view of OpenAMRobot 2.0">
   <div class="stage" id="stage">
     <div class="hud">
-      <div class="grp" role="group" aria-label="View controls">
-        <button id="b-explode" class="go" aria-pressed="false">Explode</button><button id="b-reset">Reset view</button><button id="b-nums" aria-pressed="true">Numbers</button>
+      <div class="grp" role="group" aria-label="View">
+        <button id="b-asm" aria-pressed="true">Assembled</button><button id="b-explode" aria-pressed="false">Explode robot</button><button id="b-open" aria-pressed="false">Open the base</button><button id="b-cut" aria-pressed="false">Cutaway</button>
+      </div>
+      <div class="grp" role="group" aria-label="Camera and labels">
+        <button id="b-reset">Reset view</button><button id="b-nums" aria-pressed="true">Labels</button>
+      </div>
+      <div class="grp" role="group" aria-label="Guided tour">
+        <button id="b-tour" class="go">Play tour</button><button id="b-pause" hidden aria-pressed="false">Pause</button><button id="b-stop" hidden>Stop</button><button id="b-rec" hidden>Record video</button>
       </div>
       <span class="hint">Drag to orbit, right-drag or two fingers to pan, scroll or pinch to zoom. Arrow keys pan when the view has focus.</span>
     </div>
     <div class="colayer" id="colayer"><svg id="colines" aria-hidden="true"></svg></div>
+    <div class="cap" id="cap" aria-live="polite" hidden></div>
     <div class="stamp" id="stamp" aria-live="polite">Assembled</div>
     <div class="fallback" id="fallback" hidden><img alt="OpenAMRobot 2.0 assembled, three-quarter view" data-src="model/exploded-static.png" width="960" height="720"><p class="small">The 3D view needs WebGL, which is not available in this browser. The component list stays available.</p></div>
   </div>
@@ -115,11 +132,11 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
       <p class="note" id="stages-note">Subsystem grouping for orientation. Not an assembly instruction; the 2.0 assembly guide is in preparation.</p>
       <div class="stepbar"><button id="b-prev" aria-label="Previous stage">Previous</button><span class="stepn" id="stepn" aria-live="polite">All stages</span><button id="b-next" aria-label="Next stage">Next</button><button id="b-all">Show all</button></div>
       <p class="stept" id="stept"></p>
-      <p class="stepx" id="stepx">Step through the eight subsystem groups; each step highlights only its components.</p>
+      <p class="stepx" id="stepx">Step through the eight subsystem groups; each step highlights only its components and frames them.</p>
     </section>
     <section class="blk" aria-labelledby="sel-h">
       <h2 id="sel-h">Selected component</h2>
-      <div class="card" id="card" aria-live="polite"><p class="small mute" style="margin:0">Select a component in the list, on a number in the view, or on the model. Escape clears the selection.</p></div>
+      <div class="card" id="card" aria-live="polite"><p class="small mute" style="margin:0">Select a component in the list, on a label in the view, or on the model. Escape clears the selection.</p></div>
     </section>
     <section class="blk" aria-labelledby="list-h">
       <h2 id="list-h">Components</h2>
@@ -128,20 +145,24 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
     </section>
   </aside>
 </section>
-<footer class="rm-foot"><p>Snapshot 24 Oct 2026. Geometry: the shared roadmap model in model/ (model.js, base_glb.js, openarm.js; exploded offsets and stages in exploded.json), also used by the Robot page. Base: chassis from CAD v0.2 (openamr-platform-hw), 2.0 components as envelopes per BOM Issue 7.11 (25 Oct 2026) and the battery position per B-02 Battery Guide rev18.8, generated by tools/cad/step_to_description_meshes.py in openamr-platform-sw (one GLB node per part). Upper body: option B (openamr-upperbody-hw, P-03 rev19.0 items 16 to 19), lift column and plates as primitives until supplier CAD is available. Arms: OpenArm 2.0 meshes and kinematics from the upstream openarm_description URDF (upstream licence). Release 001 components are excluded. The build stages are a subsystem grouping, not an assembly sequence. Licence: content CC-BY-4.0, software MIT, hardware CERN-OHL-P-2.0; three.js r160 under the MIT License. Fonts: Barlow, Barlow Semi Condensed and IBM Plex Mono under the SIL Open Font License 1.1.</p></footer>
+<main class="rm" id="content"><header class="intro"><h1>Exploded view: OpenAMRobot 2.0</h1><dl><dt>What this shows</dt><dd>The 2.0 robot from the same model as the <a href="robot.html">Robot</a> page: assembled, exploded by subsystem, with the base opened so that its internal components stand above the deck, or as a cutaway with the cover and panels translucent. Every component is numbered, with its BOM Issue 7.11 row and a public source.</dd><dt>Geometry</dt><dd>Chassis parts are CAD-derived (CAD v0.2, openamr-platform-hw); base components are simplified envelopes shaped from their datasheet dimensions (the battery as eight LF105 cell boxes inside the cell-group envelope); the lift, plates, arm profile and head camera are primitives from decided dimensions; the arms are the OpenArm 2.0 meshes. Components without a documented position are listed but not drawn.</dd><dt>Limits</dt><dd>Visualization only, about ±2 cm. No fasteners, cables or wiring routes are shown; none are documented for 2.0. The battery is a cell-group envelope, provisional, dimensions not released. Positions in the opened base and the exploded views are for reading the parts, not assembly positions.</dd></dl></header>
+<section class="vid" id="video" aria-labelledby="video-h"><h2 id="video-h">Tour video</h2><video id="tour-video" controls preload="none" playsinline poster="media/openamrobot-2-tour-1080p-poster.png" width="1920" height="1080"><source src="media/openamrobot-2-tour-1080p.mp4" type="video/mp4"></video><p class="small mute">The guided tour above, rendered offline from the same shared model: 1920 x 1080, 30 fps, H.264, no audio, 49.5 s; the vertical cut is 1080 x 1350. Download: <a href="media/openamrobot-2-tour-1080p.mp4" download>16:9 video (MP4)</a>, <a href="media/openamrobot-2-tour-1080x1350.mp4" download>4:5 vertical cut (MP4)</a>. Visualization only; not an assembly instruction.</p></section></main>
+<footer class="rm-foot"><p>Snapshot 24 Oct 2026. Geometry: the shared roadmap model in model/ (model.js, base_glb.js, openarm.js; exploded and opened-base offsets, labels and the tour script in exploded.json), also used by the Robot page; the tour, the in-browser recording and the rendered videos draw that model and nothing else. Base: chassis from CAD v0.2 (openamr-platform-hw), 2.0 components as envelopes per BOM Issue 7.11 (25 Oct 2026) shaped from their datasheets, and the battery position per B-02 Battery Guide rev18.8, generated by tools/cad/step_to_description_meshes.py in openamr-platform-sw (one GLB node per part). Upper body: option B (openamr-upperbody-hw, P-03 rev19.0 items 16 to 19), lift column and plates as primitives until supplier CAD is available. Arms: OpenArm 2.0 meshes and kinematics from the upstream openarm_description URDF (upstream licence). Release 001 components are excluded. The build stages are a subsystem grouping, not an assembly sequence. Licence: content CC-BY-4.0, software MIT, hardware CERN-OHL-P-2.0; three.js r160 under the MIT License. Fonts: Barlow, Barlow Semi Condensed and IBM Plex Mono under the SIL Open Font License 1.1.</p></footer>
 <script src="model/three-r160.min.js"></script><script src="model/base_glb.js"></script><script src="model/openarm.js"></script><script src="model/model.js"></script>
 <script>
 (function () {
   'use strict';
   var MODEL = window.OAMR_MODEL, COMPS = MODEL ? MODEL.COMPONENTS : [];
   var $ = function (id) { return document.getElementById(id); };
-  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var Q = new URLSearchParams(location.search);
+  var RENDER = Q.get('render') === '1';
+  var reduce = !RENDER && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var KIND = {cad: 'CAD-derived', envelope: 'Envelope', primitive: 'Primitive', none: 'Not drawn'};
   var NONE = 'No 3D geometry: position not specified in the 2.0 documentation';
   var PROV = 'provisional allocation, dimensions not released';
   var num = {}, byId = {};
   COMPS.forEach(function (c, i) { num[c.id] = i + 1; byId[c.id] = c; });
-  var X = {stages: [], components: {}}, stage = 0, selected = null;
+  var X = {stages: [], components: {}, labels: {}, views: {}, tour: null}, stage = 0, selected = null;
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[ch]; }); }
   function kindHtml(c) {
@@ -150,9 +171,9 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
   }
   function geomText(c) {
     if (c.geometry === 'none') return NONE;
-    if (c.provisional) return (c.label || 'Envelope, provisional') + '; ' + PROV + '; drawn at 35 % opacity';
+    if (c.provisional) return (c.label || 'Envelope, provisional') + '; ' + PROV + '; cells drawn at 70 % opacity inside a translucent envelope shell';
     if (c.geometry === 'primitive') return 'Primitive drawn from decided dimensions';
-    if (c.geometry === 'envelope') return 'Envelope (simplified component volume)';
+    if (c.geometry === 'envelope') return 'Envelope (simplified component volume, shaped from its datasheet dimensions)';
     return 'CAD-derived mesh';
   }
 
@@ -171,13 +192,13 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
     ol.innerHTML = html;
     ol.addEventListener('click', function (ev) {
       var b = ev.target.closest('button[data-c]');
-      if (b) select(selected === b.dataset.c ? null : b.dataset.c);
+      if (b) select(selected === b.dataset.c ? null : b.dataset.c, true);
     });
   }
   function showCard(c) {
     var card = $('card');
     if (!c) {
-      card.innerHTML = '<p class="small mute" style="margin:0">Select a component in the list, on a number in the view, or on the model. Escape clears the selection.</p>';
+      card.innerHTML = '<p class="small mute" style="margin:0">Select a component in the list, on a label in the view, or on the model. Escape clears the selection.</p>';
       return;
     }
     card.innerHTML = '<h3><span class="num">' + num[c.id] + '</span> ' + esc(c.name) + '</h3><dl>' +
@@ -201,29 +222,35 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
     var f = $('fallback'), img = f.querySelector('img');
     img.src = img.dataset.src;
     f.hidden = false;
-    $('b-explode').disabled = $('b-reset').disabled = $('b-nums').disabled = true;
+    ['b-asm', 'b-explode', 'b-open', 'b-cut', 'b-reset', 'b-nums', 'b-tour'].forEach(function (id) { $(id).disabled = true; });
   }
 
-  var scene, camera, controls, root, parts = {}, anchors = [], t = 0, target = 0, anim = null, need = true;
+  var scene, camera, controls, root, parts = {}, anchors = [], need = true;
   var stageEl = $('stage'), layer = $('colayer'), svg = $('colines'), nums = {};
-  var DIR = null;
+  var DIR = null, baseIds = {}, offR = {}, offB = {}, homeBox = {}, owner = {}, compStage = {};
+  // view weights: r explode robot, b open the base, c cutaway (current and target)
+  var W = {r: 0, b: 0, c: 0}, WT = {r: 0, b: 0, c: 0}, wAnim = null, camAnim = null;
+  COMPS.forEach(function (c) { (c.nodes || c.parts || []).forEach(function (p) { owner[p] = c.id; }); });
 
-  function partList(cid) {
-    var c = byId[cid], ids = c.nodes || c.parts || [], out = [];
-    ids.forEach(function (id) { (parts[id] || []).forEach(function (g) { out.push({id: id, g: g}); }); });
+  function pids(cid) { var c = byId[cid]; return c ? (c.nodes || c.parts || []) : []; }
+  function offsetAt(pid, w, out) {
+    var a = offR[pid], b = offB[pid];
+    out.set(0, 0, 0);
+    if (a) out.set(a[0] * w.r, a[1] * w.r, a[2] * w.r);
+    if (b) out.x += b[0] * w.b, out.y += b[1] * w.b, out.z += b[2] * w.b;
     return out;
   }
 
   function init3d() {
-    var D = MODEL.DIMS;
+    var D = MODEL.DIMS, st = $('stage');
     renderer = new THREE.WebGLRenderer({antialias: true, powerPreference: 'high-performance'});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(RENDER ? 1 : Math.min(window.devicePixelRatio || 1, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     renderer.domElement.setAttribute('tabindex', '0');
     renderer.domElement.setAttribute('aria-label', '3D model; drag to orbit, arrow keys to pan');
-    stageEl.insertBefore(renderer.domElement, stageEl.firstChild);
+    st.insertBefore(renderer.domElement, st.firstChild);
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xd9dfdd);
     camera = new THREE.PerspectiveCamera(32, 1, 0.02, 60);
@@ -249,7 +276,7 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
     var base = MODEL.base(THREE);
     base.position.z = D.BASE_LINK_Z;
     root.add(base);
-    base.children.forEach(function (g) { (parts[g.userData.id] = parts[g.userData.id] || []).push(g); });
+    base.children.forEach(function (g) { baseIds[g.userData.id] = true; (parts[g.userData.id] = parts[g.userData.id] || []).push(g); });
     var col = new THREE.Group(), mov = new THREE.Group(), zed = new THREE.Group();
     col.position.x = D.BP.bp000;
     root.add(col);
@@ -267,30 +294,34 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
     });
     root.updateMatrixWorld(true);
 
-    // per-mesh materials so that parts dim and highlight on their own
+    // per-mesh materials so that parts dim, fade and highlight on their own
+    var cellOpacity = (X.views.open_base || {}).cell_opacity || .7;
     for (var pid in parts) {
+      homeBox[pid] = new THREE.Box3();
       parts[pid].forEach(function (g) {
         var inv = new THREE.Quaternion();
         g.parent.getWorldQuaternion(inv).invert();
         g.userData.inv = inv;
         g.userData.home = g.position.clone();
+        homeBox[pid].expandByObject(g);
         g.traverse(function (o) {
           if (!o.isMesh) return;
           o.material = o.material.clone();
+          // the provisional battery cells read better at 70 % than at the shared 35 %; the shell keeps its alpha
+          if (g.userData.provisional && !o.userData.shell) o.material.opacity = cellOpacity;
           o.userData.base = {opacity: o.material.opacity, transparent: o.material.transparent, depthWrite: o.material.depthWrite,
             emissive: o.material.emissive ? o.material.emissive.getHex() : 0};
           o.userData.pid = pid;
         });
       });
     }
-    // callout anchors: world centre of each instance of a drawn component; the number goes to the
+    // callout anchors: world centre of each instance of a drawn component; the label goes to the
     // first instance that is not hidden behind another part
     COMPS.forEach(function (c) {
       if (c.geometry === 'none') return;
-      var inst = (c.nodes || c.parts || []).map(function (id) {
-        var box = new THREE.Box3();
-        (parts[id] || []).forEach(function (g) { box.expandByObject(g); });
-        if (box.isEmpty()) return null;
+      var inst = pids(c.id).map(function (id) {
+        var box = homeBox[id];
+        if (!box || box.isEmpty()) return null;
         var c0 = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
         var pts = [[0, 0, 0], [0, 0, .42], [.3, 0, 0], [-.3, 0, 0], [0, .3, 0], [0, -.3, 0]].map(function (k) {
           return new THREE.Vector3(c0.x + k[0] * s.x, c0.y + k[1] * s.y, c0.z + k[2] * s.z);
@@ -301,44 +332,206 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
     });
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = !reduce;
+    controls.enableDamping = !reduce && !RENDER;
     controls.dampingFactor = .12;
     controls.screenSpacePanning = true;
     controls.listenToKeyEvents(renderer.domElement);
     controls.addEventListener('change', function () { need = true; scheduleOcc(); });
     DIR = new THREE.Vector3(1.0, -0.82, 0.62).normalize();  // three-quarter view from the front right, above
-    window.addEventListener('resize', resize);
+    if (!RENDER) window.addEventListener('resize', resize);
     resize();
+    applyPose();
     resetView(true);
-    pickSetup();
-    requestAnimationFrame(loop);
+    if (!RENDER) {
+      pickSetup();
+      requestAnimationFrame(loop);
+    }
   }
 
-  // numbers only for components whose anchor is not hidden behind another part (checked when the view settles)
-  var occ = {}, occTimer = null, owner = {};
-  COMPS.forEach(function (c) { (c.nodes || c.parts || []).forEach(function (p) { owner[p] = c.id; }); });
+  // ---------------------------------------------------------------- pose: offsets, fades, highlight
+  var fadeSets = null;
+  function buildFades() {
+    var ob = X.views.open_base || {}, cut = X.views.cutaway || {}, hide = {};
+    (ob.hide_stages || []).forEach(function (s) { hide[s] = true; });
+    var up = {};
+    COMPS.forEach(function (c) { if (hide[(X.components[c.id] || {}).stage]) pids(c.id).forEach(function (p) { up[p] = true; }); });
+    fadeSets = {upper: up, open: ob.opacity || {}, cut: cut.opacity || {}};
+  }
+  function factor(pid) {
+    var f = 1;
+    if (fadeSets.upper[pid]) f *= 1 - W.b;
+    if (fadeSets.open[pid] !== undefined) f *= 1 - (1 - fadeSets.open[pid]) * W.b;
+    if (fadeSets.cut[pid] !== undefined) f *= 1 - (1 - fadeSets.cut[pid]) * W.c;
+    return f;
+  }
+  var focusSet = null;  // tour: components tinted without dimming the others
+  function visibleSet() {
+    if (selected) return [selected];
+    if (stage) return COMPS.filter(function (c) { return (X.components[c.id] || {}).stage === stage; }).map(function (c) { return c.id; });
+    return null;
+  }
+  function applyPose() {
+    var v = new THREE.Vector3(), set = visibleSet(), on = {}, hiSet = {};
+    if (set) set.forEach(function (cid) { pids(cid).forEach(function (p) { on[p] = true; }); });
+    (selected ? [selected] : focusSet || []).forEach(function (cid) { pids(cid).forEach(function (p) { hiSet[p] = true; }); });
+    for (var pid in parts) {
+      offsetAt(pid, W, v);
+      var f = factor(pid), dim = set && !on[pid], hi = hiSet[pid];
+      parts[pid].forEach(function (g) {
+        g.position.copy(g.userData.home).add(v.clone().applyQuaternion(g.userData.inv));
+        g.visible = f > .01;
+        g.traverse(function (o) {
+          if (!o.isMesh) return;
+          var m = o.material, b = o.userData.base, op = (dim ? Math.min(b.opacity, .12) : b.opacity) * f;
+          var tr = b.transparent || op < .999;
+          if (m.transparent !== tr) m.needsUpdate = true;
+          m.transparent = tr;
+          m.opacity = op;
+          m.depthWrite = tr ? (b.depthWrite && op > .6) : b.depthWrite;
+          if (m.emissive) m.emissive.setHex(hi ? (selected ? 0x0d5a54 : 0x073a36) : b.emissive);
+        });
+      });
+    }
+    var g = scene.userData.grid;
+    g.material.opacity = .55 * (1 - W.r);
+    g.visible = W.r < .98;
+    root.updateMatrixWorld(true);
+    need = true;
+  }
+
+  // ---------------------------------------------------------------- framing
+  function boxAt(list, w) {
+    var box = new THREE.Box3(), b = new THREE.Box3(), v = new THREE.Vector3();
+    list.forEach(function (pid) {
+      if (!homeBox[pid] || homeBox[pid].isEmpty()) return;
+      if (fadeSets.upper[pid] && w.b > .5) return;
+      offsetAt(pid, w, v);
+      b.copy(homeBox[pid]).translate(v);
+      box.union(b);
+    });
+    return box;
+  }
+  function frameList(spec, w) {
+    var ob = X.views.open_base || {};
+    if (spec === 'robot') return {list: Object.keys(parts)};
+    if (spec === 'base' && w.b > .5 && ob.frame) spec = ob.frame;  // opened base: the raised components and the deck
+    else if (spec === 'base') return {list: Object.keys(baseIds)};
+    var list = [];
+    (Array.isArray(spec) ? spec : [spec]).forEach(function (cid) { list = list.concat(pids(cid)); });
+    return {list: list};
+  }
+  // camera distance along dir so that the corners of the framed box fit the view (with a margin)
+  function fitView(spec, w, minR, aspect, dir) {
+    var f = frameList(spec, w), box = boxAt(f.list, w);
+    if (box.isEmpty()) box = boxAt(Object.keys(parts), w);
+    var c = box.getCenter(new THREE.Vector3()), half = box.getSize(new THREE.Vector3()).multiplyScalar(.5);
+    half.set(Math.max(half.x, minR || 0), Math.max(half.y, minR || 0), Math.max(half.z, minR || 0));
+    aspect = aspect || camera.aspect;
+    var fw = dir.clone().normalize(), right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 0, 1), fw).normalize();
+    if (right.lengthSq() < 1e-6) right.set(0, 1, 0);
+    var up = new THREE.Vector3().crossVectors(fw, right);
+    var ty = Math.tan(camera.fov * Math.PI / 360), tx = ty * aspect, d = 0, v = new THREE.Vector3(), M = 1.1;
+    for (var i = 0; i < 8; i++) {
+      v.set(i & 1 ? half.x : -half.x, i & 2 ? half.y : -half.y, i & 4 ? half.z : -half.z);
+      var z = v.dot(fw);
+      d = Math.max(d, z + Math.abs(v.dot(right)) * M / tx, z + Math.abs(v.dot(up)) * M / ty);
+    }
+    return {c: c, d: d};
+  }
+  function viewDir() {
+    var d = camera.position.clone().sub(controls.target).normalize();
+    if (d.z < .18) { d.z = .18; d.normalize(); }
+    return d;
+  }
+  function flyTo(spec, w, minR, dir) {
+    var d = (dir || viewDir()).clone(), f = fitView(spec, w, minR, null, d);
+    var p1 = f.c.clone().add(d.multiplyScalar(f.d));
+    if (reduce) {
+      camera.position.copy(p1);
+      controls.target.copy(f.c);
+      controls.update();
+      camAnim = null;
+      need = true;
+      return;
+    }
+    camAnim = {p0: camera.position.clone(), c0: controls.target.clone(), p1: p1, c1: f.c.clone(), s: performance.now(), dur: 900};
+  }
+  function currentFrame() {
+    if (selected) return {spec: [selected], minR: .2};
+    if (stage) {
+      var s = X.stages[stage - 1] || {};
+      return {spec: s.frame || 'base', minR: .25};
+    }
+    return {spec: WT.b > .5 ? 'base' : 'robot', minR: 0};
+  }
+  function resetView(jump) {
+    var f = currentFrame(), save = reduce;
+    if (jump) reduce = true;
+    flyTo(f.spec, WT, f.minR, DIR);
+    reduce = save;
+  }
+  function ease(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+  var MODE_TEXT = {asm: 'Assembled', robot: 'Exploded by subsystem', base: 'Base opened: cover lifted, panels out, components raised'};
+  function mode() { return WT.b > .5 ? 'base' : WT.r > .5 ? 'robot' : 'asm'; }
+  function setView(r, b, c) {
+    WT = {r: r, b: b, c: c};
+    var m = mode();
+    $('b-asm').setAttribute('aria-pressed', String(m === 'asm'));
+    $('b-explode').setAttribute('aria-pressed', String(m === 'robot'));
+    $('b-open').setAttribute('aria-pressed', String(m === 'base'));
+    $('b-cut').setAttribute('aria-pressed', String(c > .5));
+    $('stamp').textContent = MODE_TEXT[m] + (c > .5 ? '; cutaway (cover and panels translucent)' : '');
+    if (reduce) {
+      W = {r: r, b: b, c: c};
+      applyPose();
+    } else {
+      wAnim = {w0: {r: W.r, b: W.b, c: W.c}, w1: {r: r, b: b, c: c}, s: performance.now(), dur: 1000};
+    }
+    var f = currentFrame();
+    flyTo(f.spec, WT, f.minR);
+    scheduleOcc();
+  }
+  function resize() {
+    var w = RENDER ? RW : stageEl.clientWidth, h = RENDER ? RH : stageEl.clientHeight;
+    renderer.setSize(w, h, false);
+    if (RENDER) { renderer.domElement.style.width = w + 'px'; renderer.domElement.style.height = h + 'px'; }
+    camera.aspect = w / Math.max(h, 1);
+    camera.updateProjectionMatrix();
+    need = true;
+  }
+
+  // ---------------------------------------------------------------- occlusion and labels
+  var occ = {}, occTimer = null;
   function scheduleOcc() {
+    if (RENDER || tour) return;
     clearTimeout(occTimer);
     occTimer = setTimeout(function () { computeOcc(); need = true; }, 180);
   }
   function computeOcc() {
-    var ray = new THREE.Raycaster(), v = new THREE.Vector3(), dir = new THREE.Vector3();
+    var ray = new THREE.Raycaster(), v = new THREE.Vector3(), o = new THREE.Vector3(), dir = new THREE.Vector3();
     anchors.forEach(function (a) {
       occ[a.cid] = false;
+      if (W.b > .9 && X.labels[a.cid]) {  // raised above the deck in the opened base
+        occ[a.cid] = true;
+        a.pid = a.inst[0].pid;
+        a.centre = a.inst[0].centre;
+        return;
+      }
       for (var i = 0; i < a.inst.length; i++) {
-        var p = a.inst[i], o = offsetOf(p.pid) || [0, 0, 0];
+        var p = a.inst[i];
+        if (factor(p.pid) < .2) continue;
+        offsetAt(p.pid, W, o);
         for (var j = 0; j < p.pts.length; j++) {
-          var q = p.pts[j];
-          v.set(q.x + o[0] * t, q.y + o[1] * t, q.z + o[2] * t);
+          v.copy(p.pts[j]).add(o);
           dir.copy(v).sub(camera.position);
           var dist = dir.length();
           ray.set(camera.position, dir.normalize());
           ray.far = dist;
-          var hit = ray.intersectObject(root, true).filter(function (h) { return h.object.material.opacity > .2; })[0];
+          var hit = ray.intersectObject(root, true).filter(function (h) { return h.object.visible && h.object.material.opacity > .2; })[0];
           if (!hit || hit.distance > dist - .02 || owner[hit.object.userData.pid] === a.cid) {
             occ[a.cid] = true;
             a.pid = p.pid;
-            a.centre = q;
+            a.centre = p.pts[j];
             return;
           }
         }
@@ -347,171 +540,83 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
       a.centre = a.inst[0].centre;
     });
   }
-  function offsetOf(pid) {
-    for (var cid in X.components) {
-      var o = (X.components[cid].offsets || {})[pid];
-      if (o) return o;
-    }
-    return null;
+  var numsOn = true, UI = 1, mctx = document.createElement('canvas').getContext('2d');
+  var FONT_NUM = '"IBM Plex Mono", Consolas, monospace', FONT_LBL = '"Barlow Semi Condensed", "Arial Narrow", sans-serif';
+  function namesOn() { return W.b > .9 || !!stage || (tour && tourState && tourState.names); }
+  function labelText(cid) { return namesOn() && X.labels[cid] ? X.labels[cid] : ''; }
+  function labelSize(cid, name) {
+    mctx.font = '600 ' + 11.5 * UI + 'px ' + FONT_NUM;
+    var w = mctx.measureText(String(num[cid])).width;
+    if (name) { mctx.font = '600 ' + 12 * UI + 'px ' + FONT_LBL; w += 5 * UI + mctx.measureText(name).width; }
+    return {w: Math.max(22 * UI, w + 15 * UI), h: 20 * UI};
   }
-  function applyExplode() {
-    var v = new THREE.Vector3();
-    for (var pid in parts) {
-      var o = offsetOf(pid);
-      parts[pid].forEach(function (g) {
-        g.position.copy(g.userData.home);
-        if (o) g.position.add(v.set(o[0], o[1], o[2]).multiplyScalar(t).applyQuaternion(g.userData.inv));
-      });
-    }
-    scene.userData.grid.material.opacity = .55 * (1 - t);
-    scene.userData.grid.visible = t < .98;
-    root.updateMatrixWorld(true);
-  }
-  function fit(tt) {
-    // bounding sphere of the model at explode factor tt
-    var box = new THREE.Box3(), b = new THREE.Box3(), v = new THREE.Vector3();
-    for (var pid in parts) {
-      var o = offsetOf(pid) || [0, 0, 0];
-      parts[pid].forEach(function (g) {
-        b.setFromObject(g);
-        if (b.isEmpty()) return;
-        var d = v.set(o[0], o[1], o[2]).multiplyScalar(tt - t);
-        b.min.add(d);
-        b.max.add(d);
-        box.union(b);
-      });
-    }
-    var s = box.getBoundingSphere(new THREE.Sphere());
-    var fov = camera.fov * Math.PI / 180, hf = Math.atan(Math.tan(fov / 2) * Math.min(camera.aspect, 1));
-    return {c: s.center, d: s.radius / Math.sin(hf) * 1.02};
-  }
-  function resetView(jump) {
-    var f = fit(target);
-    var to = {p: f.c.clone().add(DIR.clone().multiplyScalar(f.d)), c: f.c.clone()};
-    if (jump || reduce) {
-      camera.position.copy(to.p);
-      controls.target.copy(to.c);
-      controls.update();
-      need = true;
-      return;
-    }
-    camAnim = {p0: camera.position.clone(), c0: controls.target.clone(), p1: to.p, c1: to.c, s: performance.now(), dur: 700};
-  }
-  var camAnim = null;
-  function ease(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
-  function setExplode(on) {
-    target = on ? 1 : 0;
-    $('b-explode').setAttribute('aria-pressed', String(on));
-    $('b-explode').textContent = on ? 'Assemble' : 'Explode';
-    $('stamp').textContent = on ? 'Exploded by subsystem' : 'Assembled';
-    // keep the view direction, refit the distance to the new extent
-    var f = fit(target), dir = camera.position.clone().sub(controls.target).normalize();
-    var p1 = f.c.clone().add(dir.multiplyScalar(f.d));
-    if (reduce) {
-      t = target;
-      applyExplode();
-      camera.position.copy(p1);
-      controls.target.copy(f.c);
-      controls.update();
-      need = true;
-      return;
-    }
-    anim = {t0: t, t1: target, s: performance.now(), dur: 900};
-    camAnim = {p0: camera.position.clone(), c0: controls.target.clone(), p1: p1, c1: f.c, s: performance.now(), dur: 900};
-  }
-  function resize() {
-    var w = stageEl.clientWidth, h = stageEl.clientHeight;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / Math.max(h, 1);
-    camera.updateProjectionMatrix();
-    need = true;
-  }
-
-  // ---------------------------------------------------------------- highlight and callouts
-  function visibleSet() {
-    if (selected) return [selected];
-    if (stage) return COMPS.filter(function (c) { return (X.components[c.id] || {}).stage === stage; }).map(function (c) { return c.id; });
-    return null;
-  }
-  function applyHighlight() {
-    var set = visibleSet(), on = {};
-    if (set) set.forEach(function (cid) { (byId[cid].nodes || byId[cid].parts || []).forEach(function (p) { on[p] = true; }); });
-    for (var pid in parts) {
-      parts[pid].forEach(function (g) {
-        g.traverse(function (o) {
-          if (!o.isMesh) return;
-          var m = o.material, b = o.userData.base, dim = set && !on[pid], hi = selected && on[pid];
-          m.transparent = dim || b.transparent;
-          m.opacity = dim ? Math.min(b.opacity, .12) : b.opacity;
-          m.depthWrite = dim ? false : b.depthWrite;
-          if (m.emissive) m.emissive.setHex(hi ? 0x0d5a54 : b.emissive);
-          m.needsUpdate = true;
-        });
-      });
-    }
-    if (camera) scheduleOcc();
-    document.querySelectorAll('#comps button[data-c]').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.c === selected));
-      b.classList.toggle('dim', !!(stage && !selected && (X.components[b.dataset.c] || {}).stage !== stage));
-    });
-    need = true;
-  }
-  var narrow = window.matchMedia ? matchMedia('(max-width: 900px)') : {matches: false};
-  function sheet(open) {
-    var p = $('panel'), b = $('b-sheet');
-    p.classList.toggle('collapsed', !open);
-    b.setAttribute('aria-expanded', String(open));
-    b.textContent = open ? 'Hide list' : 'Show list';
-  }
-  function navHeight() {
-    var n = document.querySelector('.rm-nav');
-    document.documentElement.style.setProperty('--navh', (n ? n.offsetHeight : 44) + 'px');
-  }
-  function select(cid) {
-    selected = cid;
-    if (cid && narrow.matches) sheet(true);
-    showCard(cid ? byId[cid] : null);
-    if (renderer) applyHighlight(); else document.querySelectorAll('#comps button[data-c]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.c === selected)); });
-  }
-  var numsOn = true;
-  function layout() {
-    var w = stageEl.clientWidth, h = stageEl.clientHeight, set = visibleSet(), allow = set ? {} : null;
+  // label placement without overlaps: rings of candidate positions around each anchor
+  function layout(w, h, blocked, only) {
+    var set = visibleSet(), allow = set ? {} : null, v = new THREE.Vector3(), o = new THREE.Vector3(), out = [];
     if (set) set.forEach(function (c) { allow[c] = true; });
-    var placed = [], lines = '', v = new THREE.Vector3(), seen = {};
-    var hud = stageEl.querySelector('.hud').getBoundingClientRect(), sr = stageEl.getBoundingClientRect();
-    var blocked = [{x0: hud.left - sr.left, y0: hud.top - sr.top, x1: hud.right - sr.left, y1: hud.bottom - sr.top + 4}];
-    var st = $('stamp').getBoundingClientRect();
-    blocked.push({x0: st.left - sr.left, y0: st.top - sr.top, x1: st.right - sr.left, y1: st.bottom - sr.top});
-    var cx = w / 2, cy = h / 2;
+    if (only) { allow = {}; only.forEach(function (c) { allow[c] = true; }); }
+    var cx = w / 2, cy = h / 2, placed = blocked.slice();
     var list = anchors.map(function (a) {
-      var o = offsetOf(a.pid) || [0, 0, 0];
-      v.set(a.centre.x + o[0] * t, a.centre.y + o[1] * t, a.centre.z + o[2] * t).project(camera);
+      offsetAt(a.pid, W, o);
+      v.copy(a.centre).add(o).project(camera);
       return {a: a, x: (v.x + 1) / 2 * w, y: (1 - v.y) / 2 * h, z: v.z};
-    }).filter(function (p) { return numsOn && p.z < 1 && (!allow || allow[p.a.cid]) && (occ[p.a.cid] !== false || p.a.cid === selected); });
-    list.sort(function (p, q) { return (p.a.cid === selected ? -1 : 0) - (q.a.cid === selected ? -1 : 0) || p.z - q.z; });
-    var R = [26, 40, 56, 74, 94];
+    }).filter(function (p) {
+      return (numsOn || only) && p.z < 1 && (!allow || allow[p.a.cid]) && factor(p.a.pid) > .2 &&
+        (only || occ[p.a.cid] !== false || p.a.cid === selected);
+    });
+    list.sort(function (p, q) { return (p.a.cid === selected ? -1 : 0) - (q.a.cid === selected ? -1 : 0) || (labelText(q.a.cid) ? 1 : 0) - (labelText(p.a.cid) ? 1 : 0) || p.z - q.z; });
+    var R = [28, 44, 62, 84, 110, 140, 175].map(function (r) { return r * UI; });
     list.forEach(function (p) {
-      var el = nums[p.a.cid], best = null;
+      var name = labelText(p.a.cid), sz = labelSize(p.a.cid, name), best = null, pad = 3 * UI;
       var base = Math.atan2(p.y - cy, p.x - cx);
       for (var ri = 0; ri < R.length && !best; ri++) {
         for (var k = 0; k < 16 && !best; k++) {
           var ang = base + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * Math.PI / 8;
-          var x = p.x + Math.cos(ang) * R[ri], y = p.y + Math.sin(ang) * R[ri];
-          var r = {x0: x - 13, y0: y - 11, x1: x + 13, y1: y + 11};
+          var x = p.x + Math.cos(ang) * (R[ri] + sz.w / 2 * Math.abs(Math.cos(ang))), y = p.y + Math.sin(ang) * R[ri];
+          var r = {x0: x - sz.w / 2 - pad, y0: y - sz.h / 2 - pad, x1: x + sz.w / 2 + pad, y1: y + sz.h / 2 + pad};
           if (r.x0 < 2 || r.y0 < 2 || r.x1 > w - 2 || r.y1 > h - 2) continue;
-          var hit = placed.concat(blocked).some(function (q) { return r.x0 < q.x1 && r.x1 > q.x0 && r.y0 < q.y1 && r.y1 > q.y0; });
+          var hit = placed.some(function (q) { return r.x0 < q.x1 && r.x1 > q.x0 && r.y0 < q.y1 && r.y1 > q.y0; });
           if (!hit) best = {x: x, y: y, r: r};
         }
       }
       if (!best) return;
       placed.push(best.r);
-      seen[p.a.cid] = true;
-      el.style.left = best.x + 'px';
-      el.style.top = best.y + 'px';
+      out.push({cid: p.a.cid, ax: p.x, ay: p.y, x: best.x, y: best.y, w: sz.w, h: sz.h, name: name,
+        sel: p.a.cid === selected || !!(focusSet && focusSet.indexOf(p.a.cid) >= 0)});
+    });
+    return out;
+  }
+  function blockedRects() {
+    var sr = stageEl.getBoundingClientRect(), out = [];
+    ['.hud', '#stamp', '#cap'].forEach(function (q) {
+      var el = stageEl.querySelector(q);
+      if (!el || el.hidden) return;
+      el = q === '.hud' ? el.children : [el];
+      Array.prototype.forEach.call(el, function (c) {
+        if (c.hidden || !c.offsetWidth) return;
+        var b = c.getBoundingClientRect();
+        out.push({x0: b.left - sr.left, y0: b.top - sr.top, x1: b.right - sr.left, y1: b.bottom - sr.top + 4});
+      });
+    });
+    return out;
+  }
+  var lastLabels = [];
+  function domLabels() {
+    var w = stageEl.clientWidth, h = stageEl.clientHeight, seen = {}, lines = '';
+    lastLabels = layout(w, h, blockedRects(), tour ? tourState.labels || [] : null);
+    lastLabels.forEach(function (L) {
+      var el = nums[L.cid];
+      if (!el) return;
+      seen[L.cid] = true;
+      var html = num[L.cid] + (L.name ? '<i>' + esc(L.name) + '</i>' : '');
+      if (el.dataset.h !== html) { el.innerHTML = html; el.dataset.h = html; }
+      el.style.left = L.x + 'px';
+      el.style.top = L.y + 'px';
+      el.style.minWidth = L.w + 'px';
       el.hidden = false;
-      el.classList.toggle('sel', p.a.cid === selected);
-      lines += '<line x1="' + p.x.toFixed(1) + '" y1="' + p.y.toFixed(1) + '" x2="' + best.x.toFixed(1) + '" y2="' + best.y.toFixed(1) + '"/>' +
-        '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="2" fill="#26323a"/>';
+      el.classList.toggle('sel', L.sel);
+      lines += '<line x1="' + L.ax.toFixed(1) + '" y1="' + L.ay.toFixed(1) + '" x2="' + L.x.toFixed(1) + '" y2="' + L.y.toFixed(1) + '"/>' +
+        '<circle cx="' + L.ax.toFixed(1) + '" cy="' + L.ay.toFixed(1) + '" r="2" fill="#26323a"/>';
     });
     for (var cid in nums) if (!seen[cid]) nums[cid].hidden = true;
     svg.innerHTML = lines;
@@ -525,106 +630,407 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
       b.setAttribute('aria-label', num[a.cid] + ' ' + byId[a.cid].name);
       b.tabIndex = -1;  // the component list carries keyboard selection
       b.hidden = true;
-      b.addEventListener('click', function () { select(selected === a.cid ? null : a.cid); });
+      b.addEventListener('click', function () { if (!tour) select(selected === a.cid ? null : a.cid, true); });
       layer.appendChild(b);
       nums[a.cid] = b;
     });
+  }
+
+  // ---------------------------------------------------------------- composite frame (recording and render mode)
+  // The WebGL frame with the labels and the caption drawn on top, in the page fonts, so that both are
+  // part of the recorded or rendered video.
+  var comp = null;
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+  function wrap(ctx, text, maxW) {
+    var words = text.split(' '), lines = [], cur = '';
+    words.forEach(function (wd) {
+      var t = cur ? cur + ' ' + wd : wd;
+      if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = wd; } else cur = t;
+    });
+    if (cur) lines.push(cur);
+    return lines;
+  }
+  function composite(labels, caption, cssW) {
+    var src = renderer.domElement, W0 = src.width, H0 = src.height;
+    if (!comp) comp = document.createElement('canvas');
+    if (comp.width !== W0 || comp.height !== H0) { comp.width = W0; comp.height = H0; }
+    var ctx = comp.getContext('2d'), k = W0 / cssW;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(src, 0, 0);
+    ctx.setTransform(k, 0, 0, k, 0, 0);
+    labels.forEach(function (L) {
+      ctx.strokeStyle = 'rgba(38,50,58,.75)';
+      ctx.lineWidth = 1 * UI;
+      ctx.beginPath();
+      ctx.moveTo(L.ax, L.ay);
+      ctx.lineTo(L.x, L.y);
+      ctx.stroke();
+      ctx.fillStyle = '#26323a';
+      ctx.beginPath();
+      ctx.arc(L.ax, L.ay, 2 * UI, 0, Math.PI * 2);
+      ctx.fill();
+      roundRect(ctx, L.x - L.w / 2, L.y - L.h / 2, L.w, L.h, L.h / 2);
+      ctx.fillStyle = L.sel ? '#0d7a72' : '#fff';
+      ctx.fill();
+      ctx.lineWidth = 1.5 * UI;
+      ctx.strokeStyle = L.sel ? '#0d7a72' : '#26323a';
+      ctx.stroke();
+      ctx.fillStyle = L.sel ? '#fff' : '#142120';
+      ctx.textBaseline = 'middle';
+      mctx.font = '600 ' + 11.5 * UI + 'px ' + FONT_NUM;
+      var nw = mctx.measureText(String(num[L.cid])).width, tw = L.w - 15 * UI, x0 = L.x - tw / 2;
+      ctx.font = '600 ' + 11.5 * UI + 'px ' + FONT_NUM;
+      ctx.textAlign = 'left';
+      ctx.fillText(String(num[L.cid]), L.name ? x0 : L.x - nw / 2, L.y + .5 * UI);
+      if (L.name) {
+        ctx.font = '600 ' + 12 * UI + 'px ' + FONT_LBL;
+        ctx.fillText(L.name, x0 + nw + 5 * UI, L.y + .5 * UI);
+      }
+    });
+    var cssH = H0 / k;
+    // wordmark, top left
+    ctx.font = '700 ' + 15 * UI + 'px ' + FONT_LBL;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = 'rgba(21,46,69,.92)';
+    ctx.fillText('OpenAMRobot 2.0', 18 * UI, 16 * UI);
+    ctx.font = '500 ' + 11.5 * UI + 'px ' + FONT_NUM;
+    ctx.fillStyle = 'rgba(20,33,32,.7)';
+    ctx.fillText('Roadmap model, visualization only', 18 * UI, 36 * UI);
+    if (caption) {
+      ctx.font = '600 ' + 19 * UI + 'px ' + FONT_LBL;
+      var maxW = Math.min(760 * UI, cssW - 48 * UI), lines = wrap(ctx, caption, maxW - 32 * UI), lh = 25 * UI;
+      var bw = Math.max.apply(null, lines.map(function (l) { return ctx.measureText(l).width; })) + 34 * UI;
+      var bh = lines.length * lh + 18 * UI, bx = cssW / 2 - bw / 2, by = cssH - bh - 34 * UI;
+      roundRect(ctx, bx, by, bw, bh, 8 * UI);
+      ctx.fillStyle = 'rgba(21,46,69,.9)';
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      lines.forEach(function (l, i) { ctx.fillText(l, cssW / 2, by + 9 * UI + lh * (i + .5)); });
+    }
+    return comp;
+  }
+
+  // ---------------------------------------------------------------- guided tour
+  // The tour is a pure function of time over the keyframes of exploded.json (tour.keys): view weights,
+  // camera (a framing spec plus azimuth, elevation and a distance factor), caption, labels. Live
+  // playback, the in-browser recording and the render mode all draw tourAt(t).
+  var tour = null, tourState = null, rec = null;
+  function keyCam(k, aspect) {
+    var w = {r: k.r || 0, b: k.b || 0, c: k.c || 0}, az = (k.az || 0) * Math.PI / 180, el = (k.el || 20) * Math.PI / 180;
+    var dir = new THREE.Vector3(Math.cos(el) * Math.cos(az), Math.cos(el) * Math.sin(az), Math.sin(el));
+    var f = fitView(k.frame || 'robot', w, k.min_r || 0, aspect, dir);
+    return {c: f.c, d: f.d * (k.zoom || 1), az: az, el: el, w: w};
+  }
+  var keyCache = null;
+  function tourKeys(aspect) {
+    if (keyCache && keyCache.aspect === aspect) return keyCache.keys;
+    var keys = X.tour.keys.map(function (k) { return {t: k.t, k: k, cam: keyCam(k, aspect)}; });
+    keyCache = {aspect: aspect, keys: keys};
+    return keys;
+  }
+  function tourDuration() { var k = X.tour.keys; return k[k.length - 1].t; }
+  function tourAt(t, aspect) {
+    var keys = tourKeys(aspect), i = 0;
+    while (i < keys.length - 2 && t >= keys[i + 1].t) i++;
+    var a = keys[i], b = keys[i + 1] || a, span = Math.max(b.t - a.t, 1e-6);
+    var u = Math.max(0, Math.min(1, (t - a.t) / span));
+    if (reduce) u = u >= 1 ? 1 : 0;  // reduced motion: hold each beat, then jump
+    var e = b.k.ease === 'linear' ? u : ease(u), L = function (x, y) { return x + (y - x) * e; };
+    var A = a.cam, B = b.cam, c = A.c.clone().lerp(B.c, e), d = L(A.d, B.d), az = L(A.az, B.az), el = L(A.el, B.el);
+    var pos = new THREE.Vector3(Math.cos(el) * Math.cos(az), Math.cos(el) * Math.sin(az), Math.sin(el)).multiplyScalar(d).add(c);
+    // caption: during a move the caption of the beat it moves to, otherwise the last caption shown
+    var cap = t > a.t && b.k.caption ? b.k.caption : null, names = false, labels = null, focus = null;
+    for (var j = Math.min(i, keys.length - 1); j >= 0 && !cap; j--) if (keys[j].k.caption) cap = keys[j].k.caption;
+    for (j = keys.length - 1; j >= 0; j--) if (t >= keys[j].t - 1e-9) { names = !!keys[j].k.names;
+      labels = keys[j].k.labels || null; focus = keys[j].k.focus || null; break; }
+    return {pos: pos, target: c, w: {r: L(A.w.r, B.w.r), b: L(A.w.b, B.w.b), c: L(A.w.c, B.w.c)}, caption: cap,
+      names: names, labels: labels, focus: focus};
+  }
+  function applyTour(t, aspect) {
+    tourState = tourAt(t, aspect);
+    W = tourState.w;
+    focusSet = tourState.focus;
+    applyPose();
+    camera.position.copy(tourState.pos);
+    controls.target.copy(tourState.target);
+    camera.lookAt(tourState.target);
+  }
+  function tourUi(on) {
+    $('b-tour').hidden = on;
+    $('b-pause').hidden = $('b-stop').hidden = !on;
+    $('b-rec').hidden = on || !canRecord();
+    ['b-asm', 'b-explode', 'b-open', 'b-cut', 'b-reset', 'b-prev', 'b-next', 'b-all'].forEach(function (id) { $(id).disabled = on; });
+    controls.enabled = !on;
+    $('cap').hidden = !on;
+  }
+  function startTour(record) {
+    if (tour) return;
+    selected = null;
+    showCard(null);
+    stage = 0;
+    showStage(0, true);
+    tour = {s: performance.now(), paused: null, record: record};
+    wAnim = camAnim = null;
+    tourUi(true);
+    $('stamp').textContent = record ? 'Recording the tour' : 'Guided tour';
+    $('b-pause').setAttribute('aria-pressed', 'false');
+    $('b-pause').textContent = 'Pause';
+  }
+  function stopTour() {
+    if (!tour) return;
+    var r = tour.record;
+    tour = null;
+    tourState = null;
+    focusSet = null;
+    tourUi(false);
+    setView(0, 0, 0);
+    if (r && rec) rec.stop();
+  }
+  function pauseTour() {
+    if (!tour) return;
+    var now = performance.now();
+    if (tour.paused === null) tour.paused = now; else { tour.s += now - tour.paused; tour.paused = null; }
+    var p = tour.paused !== null;
+    $('b-pause').setAttribute('aria-pressed', String(p));
+    $('b-pause').textContent = p ? 'Resume' : 'Pause';
+    if (rec && rec.state === 'recording' && p) rec.pause(); else if (rec && rec.state === 'paused' && !p) rec.resume();
+  }
+  function canRecord() {
+    return !!(window.MediaRecorder && HTMLCanvasElement.prototype.captureStream && renderer);
+  }
+  function recordTour() {
+    if (!canRecord() || tour) return;
+    var mime = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].filter(function (m) { return MediaRecorder.isTypeSupported(m); })[0];
+    if (!mime) { $('stamp').textContent = 'This browser cannot record WebM video.'; return; }
+    composite([], null, stageEl.clientWidth);
+    var chunks = [], stream = comp.captureStream(30);
+    rec = new MediaRecorder(stream, {mimeType: mime, videoBitsPerSecond: 8e6});
+    rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+    rec.onstop = function () {
+      var url = URL.createObjectURL(new Blob(chunks, {type: 'video/webm'})), a = document.createElement('a');
+      a.href = url;
+      a.download = 'openamrobot-2-tour-' + comp.width + 'x' + comp.height + '.webm';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      $('stamp').innerHTML = 'Recording saved as ' + esc(a.download) + ' (' + comp.width + ' x ' + comp.height + '). <a href="' + url + '" download="' + esc(a.download) + '">Download again</a>';
+      rec = null;
+    };
+    rec.start(1000);
+    startTour(true);
+  }
+
+  // ---------------------------------------------------------------- selection and stages
+  var narrow = window.matchMedia ? matchMedia('(max-width: 900px)') : {matches: false};
+  function sheet(open) {
+    var p = $('panel'), b = $('b-sheet');
+    p.classList.toggle('collapsed', !open);
+    b.setAttribute('aria-expanded', String(open));
+    b.textContent = open ? 'Hide list' : 'Show list';
+  }
+  function navHeight() {
+    var n = document.querySelector('.rm-nav');
+    document.documentElement.style.setProperty('--navh', (n ? n.offsetHeight : 44) + 'px');
+  }
+  function select(cid, fly) {
+    if (tour) return;
+    selected = cid;
+    if (cid && narrow.matches) sheet(true);
+    showCard(cid ? byId[cid] : null);
+    document.querySelectorAll('#comps button[data-c]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.c === selected)); });
+    if (!renderer) return;
+    applyPose();
+    scheduleOcc();
+    if (fly && (!cid || byId[cid].geometry !== 'none')) { var f = currentFrame(); flyTo(f.spec, WT, f.minR); }
+  }
+  function showStage(n, quiet) {
+    stage = n;
+    var s = X.stages[n - 1];
+    $('stepn').textContent = n ? 'Step ' + n + ' of ' + X.stages.length : 'All stages';
+    $('stept').textContent = s ? s.title : '';
+    $('stepx').textContent = s ? s.text : 'Step through the eight subsystem groups; each step highlights only its components and frames them.';
+    $('b-prev').disabled = n <= 1 && n !== 0;
+    $('b-next').disabled = n >= X.stages.length;
+    if (selected && n && (X.components[selected] || {}).stage !== n) selected = null, showCard(null);
+    document.querySelectorAll('#comps button[data-c]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.c === selected));
+      b.classList.toggle('dim', !!(stage && !selected && (X.components[b.dataset.c] || {}).stage !== stage));
+    });
+    if (!renderer) return;
+    applyPose();
+    scheduleOcc();
+    if (!quiet) { var f = currentFrame(); flyTo(f.spec, WT, f.minR); }
   }
 
   function pickSetup() {
     var ray = new THREE.Raycaster(), down = null, el = renderer.domElement;
     el.addEventListener('pointerdown', function (e) { down = {x: e.clientX, y: e.clientY}; });
     el.addEventListener('pointerup', function (e) {
-      if (!down || Math.abs(e.clientX - down.x) + Math.abs(e.clientY - down.y) > 5) return;
+      if (tour || !down || Math.abs(e.clientX - down.x) + Math.abs(e.clientY - down.y) > 5) return;
       var r = el.getBoundingClientRect();
       ray.setFromCamera(new THREE.Vector2((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), camera);
-      var hits = ray.intersectObject(root, true).filter(function (h) { return h.object.material.opacity > .2; });
+      var hits = ray.intersectObject(root, true).filter(function (h) { return h.object.visible && h.object.material.opacity > .2; });
       if (!hits.length) { select(null); return; }
-      var pid = hits[0].object.userData.pid;
-      var c = COMPS.filter(function (c) { return (c.nodes || c.parts || []).indexOf(pid) >= 0; })[0];
-      if (c) select(c.id === selected ? null : c.id);
+      var c = byId[owner[hits[0].object.userData.pid]];
+      if (c) select(c.id === selected ? null : c.id, true);
     });
   }
 
   function loop(now) {
-    if (anim) {
-      var k = Math.min(1, (now - anim.s) / anim.dur);
-      t = anim.t0 + (anim.t1 - anim.t0) * ease(k);
-      applyExplode();
-      if (k >= 1) { anim = null; scheduleOcc(); }
-      need = true;
+    if (tour) {
+      var el = (tour.paused !== null ? tour.paused : now) - tour.s, T = tourDuration();
+      applyTour(Math.min(el / 1000, T), camera.aspect);
+      $('cap').textContent = tourState.caption || '';
+      $('cap').hidden = !tourState.caption;
+      renderer.render(scene, camera);
+      domLabels();
+      if (tour.record) composite(lastLabels, tourState.caption, stageEl.clientWidth);
+      if (el / 1000 >= T + .4) stopTour();
+      requestAnimationFrame(loop);
+      return;
+    }
+    if (wAnim) {
+      var k = Math.min(1, (now - wAnim.s) / wAnim.dur), e = ease(k);
+      W = {r: wAnim.w0.r + (wAnim.w1.r - wAnim.w0.r) * e, b: wAnim.w0.b + (wAnim.w1.b - wAnim.w0.b) * e,
+        c: wAnim.w0.c + (wAnim.w1.c - wAnim.w0.c) * e};
+      applyPose();
+      if (k >= 1) { wAnim = null; scheduleOcc(); }
     }
     if (camAnim) {
-      var c = Math.min(1, (now - camAnim.s) / camAnim.dur), e = ease(c);
-      camera.position.lerpVectors(camAnim.p0, camAnim.p1, e);
-      controls.target.lerpVectors(camAnim.c0, camAnim.c1, e);
-      if (c >= 1) camAnim = null;
+      var c = Math.min(1, (now - camAnim.s) / camAnim.dur), ce = ease(c);
+      camera.position.lerpVectors(camAnim.p0, camAnim.p1, ce);
+      controls.target.lerpVectors(camAnim.c0, camAnim.c1, ce);
+      if (c >= 1) { camAnim = null; scheduleOcc(); }
       need = true;
     }
     if (controls.update()) need = true;
     if (need) {
       renderer.render(scene, camera);
-      layout();
+      domLabels();
       need = false;
     }
     requestAnimationFrame(loop);
   }
 
-  // ---------------------------------------------------------------- stages
-  function showStage(n) {
-    stage = n;
-    var s = X.stages[n - 1];
-    $('stepn').textContent = n ? 'Step ' + n + ' of ' + X.stages.length : 'All stages';
-    $('stept').textContent = s ? s.title : '';
-    $('stepx').textContent = s ? s.text : 'Step through the eight subsystem groups; each step highlights only its components.';
-    $('b-prev').disabled = n <= 1 && n !== 0 ? true : false;
-    $('b-next').disabled = n >= X.stages.length;
-    if (selected && n && (X.components[selected] || {}).stage !== n) selected = null, showCard(null);
-    if (renderer) applyHighlight(); else select(selected);
-  }
-
   function controlsSetup() {
-    $('b-explode').addEventListener('click', function () { setExplode(target === 0); });
+    $('b-asm').addEventListener('click', function () { setView(0, 0, WT.c); });
+    $('b-explode').addEventListener('click', function () { setView(mode() === 'robot' ? 0 : 1, 0, WT.c); });
+    $('b-open').addEventListener('click', function () { setView(0, mode() === 'base' ? 0 : 1, WT.c); });
+    $('b-cut').addEventListener('click', function () { setView(WT.r, WT.b, WT.c > .5 ? 0 : 1); });
     $('b-reset').addEventListener('click', function () { resetView(false); });
     $('b-nums').addEventListener('click', function () {
       numsOn = !numsOn;
       this.setAttribute('aria-pressed', String(numsOn));
       need = true;
     });
+    $('b-tour').addEventListener('click', function () { startTour(false); });
+    $('b-pause').addEventListener('click', pauseTour);
+    $('b-stop').addEventListener('click', stopTour);
+    $('b-rec').addEventListener('click', recordTour);
     $('b-prev').addEventListener('click', function () { showStage(Math.max(1, stage - 1)); });
     $('b-next').addEventListener('click', function () { showStage(Math.min(X.stages.length, stage + 1)); });
     $('b-all').addEventListener('click', function () { showStage(0); });
     $('b-sheet').addEventListener('click', function () { sheet($('panel').classList.contains('collapsed')); });
     window.addEventListener('resize', navHeight);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && selected) select(null); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (tour) stopTour(); else if (selected) select(null, true);
+    });
+  }
+
+  // ---------------------------------------------------------------- render mode
+  // exploded.html?render=1&frame=N&w=1920&h=1080: frame N of the tour at the tour fps, no UI, labels and
+  // caption drawn into the frame. window.__renderFrame(n) draws another frame without a reload and
+  // returns the frame as a PNG data URL; window.__tour gives the frame count.
+  var RW = Math.max(64, Math.min(4096, parseInt(Q.get('w'), 10) || 1920)), RH = Math.max(64, Math.min(4096, parseInt(Q.get('h'), 10) || 1080));
+  function renderSetup() {
+    document.body.classList.add('render');
+    var s = $('viewer');
+    s.style.width = RW + 'px';
+    s.style.height = RH + 'px';
+    stageEl.style.width = RW + 'px';
+    stageEl.style.height = RH + 'px';
+    UI = Math.min(RW, RH) / 620;
+  }
+  function renderFrame(n) {
+    var fps = X.tour.fps || 30, t = Math.max(0, n) / fps;
+    tour = tour || {s: 0, paused: null, record: false};
+    applyTour(Math.min(t, tourDuration()), RW / RH);
+    renderer.render(scene, camera);
+    var labels = layout(RW, RH, [{x0: 0, y0: 0, x1: 330 * UI, y1: 58 * UI}, {x0: RW / 2 - 400 * UI, y0: RH - 110 * UI, x1: RW / 2 + 400 * UI, y1: RH}],
+      tourState.labels || []);
+    var c = composite(labels, tourState.caption, RW);
+    var img = $('render-out');
+    if (!img) {
+      img = document.createElement('canvas');
+      img.id = 'render-out';
+      img.style.cssText = 'position:fixed;left:0;top:0;z-index:99';
+      document.body.appendChild(img);
+    }
+    img.width = c.width;
+    img.height = c.height;
+    img.getContext('2d').drawImage(c, 0, 0);
+    return c;
   }
 
   function start(data) {
-    if (data) X = data;
+    if (data) X = Object.assign(X, data);
+    X.labels = X.labels || {};
+    X.views = X.views || {};
+    COMPS.forEach(function (c) {
+      var e = X.components[c.id] || {};
+      compStage[c.id] = e.stage;
+      for (var p in e.offsets || {}) offR[p] = e.offsets[p];
+      for (p in e.open || {}) offB[p] = e.open[p];
+    });
+    buildFades();
     navHeight();
-    if (narrow.matches) sheet(false);
+    if (RENDER) renderSetup();
+    if (narrow.matches && !RENDER) sheet(false);
     buildList();
     controlsSetup();
-    showStage(0);
+    showStage(0, true);
     if (!MODEL || !THREE || !webgl()) { fallback(); return; }
     try {
       init3d();
       buildNums();
-      applyExplode();
-      applyHighlight();
+      applyPose();
       computeOcc();
+      if (!X.tour) $('b-tour').disabled = true;
+      $('b-rec').hidden = !canRecord() || !X.tour;
     } catch (err) {
       if (renderer && renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
       renderer = null;
       fallback();
       throw err;
     }
+    if (RENDER && X.tour) {
+      var fonts = document.fonts ? Promise.all(['600 20px "Barlow Semi Condensed"', '700 20px "Barlow Semi Condensed"',
+        '500 12px "IBM Plex Mono"', '600 12px "IBM Plex Mono"'].map(function (f) { return document.fonts.load(f); })) : Promise.resolve();
+      fonts.then(function () {
+        window.__renderFrame = function (n) { return renderFrame(n).toDataURL('image/png'); };
+        window.__tour = {fps: X.tour.fps || 30, frames: Math.round(tourDuration() * (X.tour.fps || 30)) + 1, w: RW, h: RH};
+        renderFrame(parseInt(Q.get('frame'), 10) || 0);
+        window.__frameReady = true;
+      });
+    }
   }
   fetch('model/exploded.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(start, function () {
       $('stamp').textContent = 'Exploded offsets could not be loaded; the assembled model is shown.';
       start(null);
-      $('b-explode').disabled = true;
+      ['b-explode', 'b-open', 'b-tour'].forEach(function (id) { $(id).disabled = true; });
     });
 })();
 </script>

@@ -113,7 +113,8 @@
 
   // Base GLB: a group "base_cad" in base_link (the caller sets z = BASE_LINK_Z) with one child group
   // per GLB node (name = id, userData = extras), one mesh per primitive. Provisional envelopes are
-  // drawn at 35 % opacity.
+  // drawn at 35 % opacity; a primitive whose GLB material has alpha under 1 (the battery envelope
+  // shell) is drawn at that alpha and marked userData.shell.
   M.base = function (THREE, b64) {
     var t = bytes((b64 || window.BASE_GLB).replace(/\./g, ''));
     var jl = new DataView(t.buffer).getUint32(12, true);
@@ -138,12 +139,14 @@
         var c = doc.materials[p.material].pbrMetallicRoughness.baseColorFactor;
         var mat = new THREE.MeshStandardMaterial({color: Math.round(c[0] * 255) << 16 | Math.round(c[1] * 255) << 8 |
           Math.round(c[2] * 255), roughness: .6, metalness: .15});
-        if (ex.provisional) {
+        var shell = c[3] !== undefined && c[3] < 1;
+        if (ex.provisional || shell) {
           mat.transparent = true;
-          mat.opacity = .35;
+          mat.opacity = shell ? Math.min(c[3], .35) : .35;
           mat.depthWrite = false;
         }
         var mesh = new THREE.Mesh(geo, mat);
+        if (shell) mesh.userData.shell = true;
         mesh.name = ex.id;
         mesh.castShadow = !ex.provisional;
         mesh.receiveShadow = true;
