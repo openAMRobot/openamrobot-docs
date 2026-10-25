@@ -17,7 +17,11 @@ parses them and fails when:
 - the shared model (model/model.js, model/base_glb.js, model/exploded.json)
   is inconsistent: an exploded.json id that model.js does not define, an
   invalid stage, a component without a source or with a non-public link, a
-  GLB node without id, class or source, or a page over its size budget.
+  GLB node without id, class or source, or a page over its size budget;
+- the exploded view lacks a control (explode robot, open the base, cutaway,
+  tour, pause, stop, record), its opened-base offsets, labels, view settings
+  or tour keyframes name unknown ids, the tour is not 40 to 50 s, or a tour
+  video or poster is missing, over 15 MB, or loads before it is played.
 
 Usage: python3 scripts/check_roadmap.py [--dir docs/assets/roadmap] [--today]
 """
@@ -39,8 +43,12 @@ STAGES_NOTE = "Subsystem grouping for orientation. Not an assembly instruction; 
 GEOMETRY = {"cad", "envelope", "primitive", "none"}
 GLB_CLASSES = {"chassis", "component", "envelope"}
 PUBLIC_LINK = re.compile(r"^https://github\.com/openAMRobot/(?:openamr-platform-hw|openamr-platform-sw|openamr-upperbody-hw)/(?:blob|tree)/main/\S+$")
-EXPLODED_MAX_BYTES = 300 * 1024
-EXPLODED_FIRST_LOAD_MAX_BYTES = 4 * 1024 * 1024
+EXPLODED_MAX_BYTES = 350 * 1024
+EXPLODED_CONTROLS = ["b-asm", "b-explode", "b-open", "b-cut", "b-reset", "b-nums", "b-tour", "b-pause", "b-stop", "b-rec"]
+MEDIA = ["media/openamrobot-2-tour-1080p.mp4", "media/openamrobot-2-tour-1080x1350.mp4"]
+MEDIA_MAX_BYTES = 15 * 1024 * 1024
+TOUR_SECONDS = (40.0, 50.0)
+EXPLODED_FIRST_LOAD_MAX_BYTES = 4 * 1000 * 1000  # page, scripts, exploded.json and video posters; not the videos
 STATUS = {"st-mat": "MERGED AND TESTED", "st-mun": "MERGED UNTESTED", "st-rev": "IN REVIEW",
           "st-prog": "IN PROGRESS", "st-doc": "DOCUMENTED ONLY", "st-not": "NOT STARTED", "st-blk": "BLOCKED"}
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
@@ -274,18 +282,89 @@ def check_model(root, html, err):
                 err("exploded.json", "offset %s of %s is not [x, y, z]" % (pid, cid))
         if byid[cid].get("geometry") != "none" and set(e.get("offsets", {})) != geo:
             err("exploded.json", "component %s: offsets must cover exactly its nodes or parts" % cid)
+        for pid, off in e.get("open", {}).items():
+            if pid not in geo:
+                err("exploded.json", "open offset %s is not a node or part of %s" % (pid, cid))
+            if not (isinstance(off, list) and len(off) == 3 and all(isinstance(v, (int, float)) for v in off)):
+                err("exploded.json", "open offset %s of %s is not [x, y, z]" % (pid, cid))
     for cid in byid:
         if cid not in ex.get("components", {}):
             err("exploded.json", "component %s has no entry (stage and offsets)" % cid)
-    # budgets: the page itself, and its first load (page, local scripts, exploded.json)
+    check_views(root, html, ex, byid, glb, err)
+    # budgets: the page itself, and its first load (page, local scripts, exploded.json; videos load on demand)
     size = len(html.encode("utf-8"))
     if size > EXPLODED_MAX_BYTES:
         err("exploded.html", "%d bytes, over %d" % (size, EXPLODED_MAX_BYTES))
     first = size + os.path.getsize(os.path.join(mdir, "exploded.json"))
-    for src in re.findall(r'<script src="([^"]+)"', html):
+    for src in re.findall(r'<script src="([^"]+)"', html) + re.findall(r'<video\b[^>]*\bposter="([^"]+)"', html):
         first += os.path.getsize(os.path.join(root, src))
     if first > EXPLODED_FIRST_LOAD_MAX_BYTES:
         err("exploded.html", "first load %d bytes, over %d" % (first, EXPLODED_FIRST_LOAD_MAX_BYTES))
+
+
+def check_views(root, html, ex, byid, glb, err):
+    """Opened base, cutaway, labels, the guided tour and its videos."""
+    allg = set(glb)
+    for c in byid.values():
+        allg.update(c.get("parts", []))
+    for cid, name in ex.get("labels", {}).items():
+        if cid not in byid or not str(name).strip():
+            err("exploded.json", "label %s names no component" % cid)
+    views = ex.get("views", {})
+    for v in ("open_base", "cutaway"):
+        if v not in views:
+            err("exploded.json", "views.%s is missing" % v)
+        for pid, op in views.get(v, {}).get("opacity", {}).items():
+            if pid not in allg or not (isinstance(op, (int, float)) and 0 <= op <= 1):
+                err("exploded.json", "views.%s opacity %s: unknown part or not 0 to 1" % (v, pid))
+    for cid in views.get("open_base", {}).get("frame", []):
+        if cid not in byid:
+            err("exploded.json", "views.open_base frame names unknown component %s" % cid)
+    for st in ex.get("stages", []):
+        fr = st.get("frame", "base")
+        if fr not in ("base", "robot") and not (isinstance(fr, list) and all(c in byid for c in fr)):
+            err("exploded.json", "stage %s frames %s" % (st.get("n"), fr))
+    tour = ex.get("tour") or {}
+    keys = tour.get("keys", [])
+    if tour.get("fps") != 30 or len(keys) < 2:
+        err("exploded.json", "tour needs fps 30 and at least two keyframes")
+    else:
+        ts = [k.get("t") for k in keys]
+        if ts[0] != 0 or any(b <= a for a, b in zip(ts, ts[1:])):
+            err("exploded.json", "tour keyframe times must start at 0 and increase")
+        if not TOUR_SECONDS[0] <= ts[-1] <= TOUR_SECONDS[1]:
+            err("exploded.json", "tour lasts %s s, not %s to %s s" % (ts[-1], TOUR_SECONDS[0], TOUR_SECONDS[1]))
+        if not keys[0].get("caption"):
+            err("exploded.json", "the first tour keyframe has no caption")
+        for k in keys:
+            fr = k.get("frame", "robot")
+            ids = ([] if fr in ("robot", "base") else fr if isinstance(fr, list) else [fr]) + k.get("labels", []) + k.get("focus", [])
+            for cid in ids:
+                if cid not in byid:
+                    err("exploded.json", "tour keyframe at %s s names unknown component %s" % (k.get("t"), cid))
+            for w in ("r", "b", "c"):
+                if not 0 <= k.get(w, 0) <= 1:
+                    err("exploded.json", "tour keyframe at %s s: %s outside 0 to 1" % (k.get("t"), w))
+    for cid in EXPLODED_CONTROLS:
+        if not re.search(r'<button id="%s"' % cid, html):
+            err("exploded.html", "control %s is missing" % cid)
+    for path in MEDIA:
+        full = os.path.join(root, path)
+        poster = full[:-4] + "-poster.png"
+        if not os.path.isfile(full):
+            err("exploded.html", "tour video %s is missing" % path)
+            continue
+        if os.path.getsize(full) > MEDIA_MAX_BYTES:
+            err("exploded.html", "%s is %d bytes, over %d" % (path, os.path.getsize(full), MEDIA_MAX_BYTES))
+        if not os.path.isfile(poster):
+            err("exploded.html", "poster %s is missing" % os.path.relpath(poster, root))
+        if 'href="%s"' % path not in html:
+            err("exploded.html", "no download link to %s" % path)
+    for v in re.findall(r"<video\b[^>]*>", html):
+        if 'preload="none"' not in v:
+            err("exploded.html", "a video loads before it is played (preload must be none)")
+    if 'src="%s"' % MEDIA[0] not in html:
+        err("exploded.html", "the 16:9 tour video is not shown on the page")
 
 
 def check_nav(p, html, err):
