@@ -92,4 +92,18 @@ the previous caption (middle) and shows the cutaway caption from 13.0 s, when th
 
 ## Videos
 
-VIDEO_TABLE
+Rendered with the existing `node scripts/render_tour.js` (unchanged; same settings: frame by frame at
+30 fps from `exploded.html?render=1`, `-c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p
+-movflags +faststart -an`), the roadmap folder served with `python3 -m http.server 8765`. Posters
+are the frame at 26 s (opened base) from the same render mode, palette-reduced PNG (192 colours);
+`model/exploded-static.png` is the raw 3D canvas of frame 0 at 960 x 720, palette-reduced (128 colours).
+
+| File | Size | Duration | Video | sha256 |
+|---|---|---|---|---|
+| `openamrobot-2-tour-1080p.mp4` | 9,309,909 bytes | 49.533 s | h264 1920x1080, 30 fps, yuv420p, 1486 frames, 1 stream (no audio) | `26fda64c1ee14a0537208ef080aaeb4a1780b6d1af2edda0ffce1fc16339eb0c` |
+| `openamrobot-2-tour-1080x1350.mp4` | 8,101,971 bytes | 49.533 s | h264 1080x1350, 30 fps, yuv420p, 1486 frames, 1 stream (no audio) | `b716cfdedd47d3af97847ba36a400bc78ecddc088a485d91e86cd5e6f049b200` |
+| `openamrobot-2-tour-1080p-poster.png` | 135,558 bytes | - | PNG poster | `4db2b01e290ffca585eaa8b411b3a70f785cd567f9bd57002ac4a16554e78cb9` |
+| `openamrobot-2-tour-1080x1350-poster.png` | 109,674 bytes | - | PNG poster | `99b78e46122d98b22ad11a426ed8ea2db30cac1984e137dc672a70a343c1d0a6` |
+
+Two 1080p renders from the same page are byte-identical (both sha256 `26fda64c...39eb0c`). Render
+times with SwiftShader: 746 s and 448 s (1080p), 413 s (1080x1350). Both videos are under 15 MB.
