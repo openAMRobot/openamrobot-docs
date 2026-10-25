@@ -12,20 +12,35 @@ parses them and fails when:
 - the snapshot dates disagree (with --today: are not today's date);
 - a forbidden term appears (em dash, prices, contact details, supplier or
   distributor names, quote numbers, personal first names, links into the
-  private audit repository, or a private term from ROADMAP_PRIVATE_TERMS).
+  private audit repository, or a private term from ROADMAP_PRIVATE_TERMS);
+- the top navigation of a page does not list the six pages in order;
+- the shared model (model/model.js, model/base_glb.js, model/exploded.json)
+  is inconsistent: an exploded.json id that model.js does not define, an
+  invalid stage, a component without a source or with a non-public link, a
+  GLB node without id, class or source, or a page over its size budget.
 
 Usage: python3 scripts/check_roadmap.py [--dir docs/assets/roadmap] [--today]
 """
 import argparse
+import base64
 import datetime as dt
 import hashlib
 import json
 import os
 import re
+import struct
 import sys
 from html.parser import HTMLParser
 
-PAGES = ["index.html", "robot.html", "hardware.html", "architecture.html", "progress.html"]
+PAGES = ["index.html", "robot.html", "exploded.html", "hardware.html", "architecture.html", "progress.html"]
+NAV = [("index.html", "Overview"), ("robot.html", "Robot"), ("exploded.html", "Exploded view"), ("hardware.html", "Hardware"),
+       ("architecture.html", "Architecture"), ("progress.html", "Progress")]
+STAGES_NOTE = "Subsystem grouping for orientation. Not an assembly instruction; the 2.0 assembly guide is in preparation."
+GEOMETRY = {"cad", "envelope", "primitive", "none"}
+GLB_CLASSES = {"chassis", "component", "envelope"}
+PUBLIC_LINK = re.compile(r"^https://github\.com/openAMRobot/(?:openamr-platform-hw|openamr-platform-sw|openamr-upperbody-hw)/(?:blob|tree)/main/\S+$")
+EXPLODED_MAX_BYTES = 300 * 1024
+EXPLODED_FIRST_LOAD_MAX_BYTES = 4 * 1024 * 1024
 STATUS = {"st-mat": "MERGED AND TESTED", "st-mun": "MERGED UNTESTED", "st-rev": "IN REVIEW",
           "st-prog": "IN PROGRESS", "st-doc": "DOCUMENTED ONLY", "st-not": "NOT STARTED", "st-blk": "BLOCKED"}
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
@@ -166,6 +181,126 @@ def counted(scope_nodes):
     return got
 
 
+def model_components(js):
+    """COMPONENTS registry of model/model.js (the JSON between its markers)."""
+    m = re.search(r"/\*COMPONENTS-JSON\*/(.*?)/\*COMPONENTS-JSON-END\*/", js, flags=re.S)
+    if not m:
+        raise ValueError("model.js has no COMPONENTS-JSON block")
+    return json.loads(m.group(1))
+
+
+def glb_nodes(payload):
+    """Nodes of the base GLB in model/base_glb.js (base64 with a '.' every 16 characters)."""
+    m = re.search(r'window\.BASE_GLB="([^"]+)"', payload)
+    if not m:
+        raise ValueError("base_glb.js does not set window.BASE_GLB")
+    raw = base64.b64decode(m.group(1).replace(".", ""))
+    if raw[:4] != b"glTF":
+        raise ValueError("BASE_GLB is not a binary glTF")
+    n = struct.unpack("<I", raw[12:16])[0]
+    return [x for x in json.loads(raw[20:20 + n])["nodes"] if "mesh" in x]
+
+
+def check_model(root, html, err):
+    """Shared model: registry, GLB nodes, exploded offsets and stages, sizes."""
+    mdir = os.path.join(root, "model")
+    try:
+        with open(os.path.join(mdir, "model.js"), encoding="utf-8") as f:
+            js = f.read()
+        comps = model_components(js)
+        with open(os.path.join(mdir, "base_glb.js"), encoding="utf-8") as f:
+            nodes = glb_nodes(f.read())
+        with open(os.path.join(mdir, "exploded.json"), encoding="utf-8") as f:
+            ex = json.load(f)
+    except (OSError, ValueError, KeyError) as e:
+        err("model", str(e))
+        return
+    ids = [c.get("id") for c in comps]
+    if len(set(ids)) != len(ids):
+        err("model.js", "duplicate component ids")
+    glb = {}
+    for n in nodes:
+        x = n.get("extras") or {}
+        for k in ("id", "class", "source"):
+            if not str(x.get(k, "")).strip():
+                err("base_glb.js", "GLB node %s has no %s" % (n.get("name"), k))
+        if x.get("class") not in GLB_CLASSES:
+            err("base_glb.js", "GLB node %s has class %s" % (n.get("name"), x.get("class")))
+        glb[x.get("id")] = x
+    used = set()
+    for c in comps:
+        cid = c.get("id")
+        for k in ("name", "purpose", "source", "link"):
+            if not str(c.get(k, "")).strip():
+                err("model.js", "component %s has no %s" % (cid, k))
+        if c.get("geometry") not in GEOMETRY:
+            err("model.js", "component %s has geometry %s" % (cid, c.get("geometry")))
+        if not PUBLIC_LINK.match(c.get("link", "")):
+            err("model.js", "component %s links %s, not a public openAMRobot GitHub file" % (cid, c.get("link")))
+        if c.get("provisional") and c.get("geometry") != "envelope":
+            err("model.js", "component %s is provisional but not an envelope" % cid)
+        for nid in c.get("nodes", []):
+            used.add(nid)
+            if nid not in glb:
+                err("model.js", "component %s names GLB node %s, which base_glb.js does not have" % (cid, nid))
+            elif bool(glb[nid].get("provisional")) != bool(c.get("provisional")):
+                err("model.js", "component %s and GLB node %s disagree on provisional" % (cid, nid))
+        for pid in c.get("parts", []):
+            if "'%s'" % pid not in js and not (pid.startswith("openarm_") and "'openarm_' + side" in js):
+                err("model.js", "component %s names part %s, which model.js does not build" % (cid, pid))
+        if c.get("geometry") == "none" and (c.get("nodes") or c.get("parts")):
+            err("model.js", "component %s is not drawn but names geometry" % cid)
+        if c.get("geometry") != "none" and not (c.get("nodes") or c.get("parts")):
+            err("model.js", "component %s is drawn but names no geometry" % cid)
+    for nid in sorted(set(glb) - used):
+        err("model.js", "GLB node %s belongs to no component" % nid)
+    stages = ex.get("stages", [])
+    if [s.get("n") for s in stages] != list(range(1, len(stages) + 1)) or not stages:
+        err("exploded.json", "stages must be numbered 1 to n")
+    if ex.get("stages_note") != STAGES_NOTE or STAGES_NOTE not in html:
+        err("exploded.json", "the stages note must read: " + STAGES_NOTE)
+    byid = {c.get("id"): c for c in comps}
+    for cid, e in ex.get("components", {}).items():
+        if cid not in byid:
+            err("exploded.json", "component %s is not defined in model.js" % cid)
+            continue
+        if e.get("stage") not in range(1, len(stages) + 1):
+            err("exploded.json", "component %s has invalid stage %s" % (cid, e.get("stage")))
+        geo = set(byid[cid].get("nodes", []) + byid[cid].get("parts", []))
+        for pid, off in e.get("offsets", {}).items():
+            if pid not in geo:
+                err("exploded.json", "offset %s is not a node or part of %s" % (pid, cid))
+            if not (isinstance(off, list) and len(off) == 3 and all(isinstance(v, (int, float)) for v in off)):
+                err("exploded.json", "offset %s of %s is not [x, y, z]" % (pid, cid))
+        if byid[cid].get("geometry") != "none" and set(e.get("offsets", {})) != geo:
+            err("exploded.json", "component %s: offsets must cover exactly its nodes or parts" % cid)
+    for cid in byid:
+        if cid not in ex.get("components", {}):
+            err("exploded.json", "component %s has no entry (stage and offsets)" % cid)
+    # budgets: the page itself, and its first load (page, local scripts, exploded.json)
+    size = len(html.encode("utf-8"))
+    if size > EXPLODED_MAX_BYTES:
+        err("exploded.html", "%d bytes, over %d" % (size, EXPLODED_MAX_BYTES))
+    first = size + os.path.getsize(os.path.join(mdir, "exploded.json"))
+    for src in re.findall(r'<script src="([^"]+)"', html):
+        first += os.path.getsize(os.path.join(root, src))
+    if first > EXPLODED_FIRST_LOAD_MAX_BYTES:
+        err("exploded.html", "first load %d bytes, over %d" % (first, EXPLODED_FIRST_LOAD_MAX_BYTES))
+
+
+def check_nav(p, html, err):
+    m = re.search(r'<nav class="rm-nav"[^>]*>.*?</nav>', html, flags=re.S)
+    if not m:
+        err(p, "no roadmap navigation")
+        return
+    links = re.findall(r'<li><a href="([^"]+)"( aria-current="page")?>([^<]+)</a></li>', m.group(0))
+    if [(h, txt) for h, _, txt in links] != NAV:
+        err(p, "navigation lists %s, expected %s" % ([txt for _, _, txt in links], [txt for _, txt in NAV]))
+    current = [h for h, cur, _ in links if cur]
+    if current != [p]:
+        err(p, "navigation marks %s as the current page" % current)
+
+
 def private_terms():
     raw = os.environ.get("ROADMAP_PRIVATE_TERMS", "")
     return [t.strip() for t in raw.split(",") if t.strip()]
@@ -183,8 +318,12 @@ def main():
 
     html, trees = {}, {}
     for p in PAGES:
-        with open(os.path.join(args.dir, p), encoding="utf-8") as f:
-            html[p] = f.read()
+        try:
+            with open(os.path.join(args.dir, p), encoding="utf-8") as f:
+                html[p] = f.read()
+        except OSError:
+            print("Roadmap check failed:\n  ERROR: %s: page missing" % p)
+            sys.exit(1)
         tr = Tree()
         tr.feed(strip_scripts(html[p]))
         trees[p] = tr
@@ -248,6 +387,11 @@ def main():
         if sorted(int(c) for c in crit) != sorted(int(c) for c in m.group(3).split(",")) or len(crit) != int(m.group(2)):
             err("progress.html", "critical-path step list does not match the critical-path markers")
 
+    # 1b. navigation and the shared model of the robot and exploded-view pages
+    for p in PAGES:
+        check_nav(p, html[p], err)
+    check_model(args.dir, html["exploded.html"], err)
+
     # 2. status count strips
     for p, tr in trees.items():
         for n in tr.root.walk():
@@ -300,8 +444,11 @@ def main():
 
     # 5. forbidden terms (visible text and attribute values, scripts included for embedded data)
     priv = [(t, re.compile(re.escape(t), re.I)) for t in private_terms()]
-    for p in PAGES:
-        t = html[p]
+    texts = dict(html)
+    for name in ("model/model.js", "model/exploded.json"):  # shared model text shown on the pages
+        with open(os.path.join(args.dir, name), encoding="utf-8") as f:
+            texts[name] = f.read()
+    for p, t in texts.items():
         if p == "robot.html":  # three.js bundle and mesh data are not page content
             t = re.sub(r"<script>window\.OPENARM=.*?</script>", "", t, flags=re.S)
             t = re.sub(r"<script>\(\(\)=>\{var Jh=.*?</script>", "", t, flags=re.S)

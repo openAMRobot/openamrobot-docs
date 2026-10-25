@@ -21,7 +21,7 @@ description: Interactive roadmap of OpenAMRobot 2.0 at the 24 October 2026 snaps
 
 ## Interactive roadmap
 
-Five linked pages: Overview, Robot, Hardware, Architecture and Progress. On a phone, open the full-screen version.
+Six linked pages: Overview, Robot, Exploded view, Hardware, Architecture and Progress. On a phone, open the full-screen version.
 
 <a class="oamr-button oamr-button--primary" href="/assets/roadmap/index.html" target="_blank" rel="noopener">Open full screen</a>
 
@@ -35,6 +35,7 @@ Five linked pages: Overview, Robot, Hardware, Architecture and Progress. On a ph
 |---|---|
 | [Overview](/assets/roadmap/index.html) | The whole system on one map with the status of every part, the swimlane plan to v2.0.0 with the critical path to rc.1, and the shared base of release 001 and 2.0 |
 | [Robot](/assets/roadmap/robot.html) | The 2.0 robot at P-03 rev19.7 in 3D with its configuration switches, sensor coverage, and the simulation evidence per subsystem |
+| [Exploded view](/assets/roadmap/exploded.html) | The same 3D model assembled or exploded by subsystem, with a numbered component list (BOM Issue 7.11 rows, geometry type and public source) and eight build stages by subsystem, a grouping for orientation and not an assembly instruction |
 | [Hardware](/assets/roadmap/hardware.html) | Power distribution, the safety chain and its state machine, the base design shared with release 001 and what carries over, procurement state per BOM Issue 7.10 package, open design items and hardware drift |
 | [Architecture](/assets/roadmap/architecture.html) | ROS 2 packages, firmware and hardware layers, the motion command path as designed and on main, contract versions, lifecycle, deployment, frames and interfaces, and an architecture review against upstream practice |
 | [Progress](/assets/roadmap/progress.html) | What needs attention now, rc.1 readiness, the action plan (what to do, in order, with owners and done-when tests), progress per area, requirement coverage, governance and organisation, the known drift list and risks |
