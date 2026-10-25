@@ -1,0 +1,42 @@
+{
+ "schema": "oamr-finish/1",
+ "about": "Finish colours of the shared roadmap model, keyed by part id (GLB node ids of model/base_glb.js and upper-body part ids of model/model.js). model.js applies them at load; parts not listed keep their colours. srgb is a standard screen approximation of the RAL reference; a physical RAL sample governs. Visualization only.",
+ "colours": {
+  "RAL 7035": {"name": "Light grey", "srgb": "#CBD0CC"},
+  "RAL 7016": {"name": "Anthracite grey (graphite)", "srgb": "#383E42"},
+  "RAL 9005": {"name": "Jet black", "srgb": "#0A0A0A"},
+  "RAL 5018": {"name": "Turquoise blue (cyan reference)", "srgb": "#3F888F"}
+ },
+ "finishes": {
+  "matte": {"roughness": 0.85, "metalness": 0.05},
+  "satin": {"roughness": 0.42, "metalness": 0.35}
+ },
+ "parts": {
+  "side_panel_left": {"ral": "RAL 7035", "finish": "matte"},
+  "side_panel_right": {"ral": "RAL 7035", "finish": "matte"},
+  "front_panel": {"ral": "RAL 7035", "finish": "matte"},
+  "rear_panel": {"ral": "RAL 7035", "finish": "matte"},
+  "cover": {"ral": "RAL 7016", "finish": "matte"},
+  "cover_flange_front": {"ral": "RAL 7016", "finish": "matte"},
+  "cover_flange_rear": {"ral": "RAL 7016", "finish": "matte"},
+  "support_front_left": {"ral": "RAL 7016", "finish": "matte"},
+  "support_front_right": {"ral": "RAL 7016", "finish": "matte"},
+  "support_rear_left": {"ral": "RAL 7016", "finish": "matte"},
+  "support_rear_right": {"ral": "RAL 7016", "finish": "matte"},
+  "centre_bracket": {"ral": "RAL 7016", "finish": "matte"},
+  "lidar_support": {"ral": "RAL 7016", "finish": "matte"},
+  "electronics_bracket": {"ral": "RAL 7016", "finish": "matte"},
+  "camera_mount": {"ral": "RAL 9005", "finish": "matte"},
+  "tof_mount_front": {"ral": "RAL 9005", "finish": "matte"},
+  "tof_mount_rear": {"ral": "RAL 9005", "finish": "matte"},
+  "ultrasonic_mount_front_left": {"ral": "RAL 9005", "finish": "matte"},
+  "ultrasonic_mount_front_right": {"ral": "RAL 9005", "finish": "matte"},
+  "ultrasonic_mount_rear_left": {"ral": "RAL 9005", "finish": "matte"},
+  "ultrasonic_mount_rear_right": {"ral": "RAL 9005", "finish": "matte"},
+  "arm_profile": {"ral": "RAL 7016", "finish": "satin"},
+  "adapter_plate": {"ral": "RAL 9005", "finish": "satin"},
+  "lift_base_plate": {"ral": "RAL 9005", "finish": "satin"},
+  "slot_cover_strips": {"ral": "RAL 5018", "finish": "matte"}
+ },
+ "unchanged": ["lift_column", "openarm_left", "openarm_right", "hub_motor_wheel_left", "hub_motor_wheel_right", "castor_front_left", "castor_front_right", "castor_rear_left", "castor_rear_right", "lidar", "base_camera", "ultrasonic_front_left", "ultrasonic_front_right", "ultrasonic_rear_left", "ultrasonic_rear_right", "tof_front", "tof_rear", "imu", "compute", "base_controller", "motor_driver", "head_camera", "head_camera_bracket", "battery", "base_plate", "controller_plate", "driver_mount", "lidar_spacer"]
+}

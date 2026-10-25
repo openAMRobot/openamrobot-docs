@@ -8,7 +8,10 @@
  *  - window.OPENARM (model/openarm.js): OpenArm 2.0 meshes and kinematics from the official
  *    openarm_description URDF (upstream licence);
  *  - the upper-body primitives below (lift base plate, lift column, adapter plate, arm profile,
- *    head camera), dimensions from openamr-upperbody-hw docs/mechanical/upper_body_option_B.md.
+ *    head camera), dimensions from openamr-upperbody-hw docs/mechanical/upper_body_option_B.md;
+ *  - model/finish.json: finish colours (RAL reference, sRGB approximation, matte or satin) keyed by
+ *    part id, applied at load to the GLB nodes and upper-body primitives it names. Without it the
+ *    model keeps its previous colours. Colours only; no geometry depends on it.
  *
  * The functions take the three.js namespace as THREE (robot.html passes its bundled r160,
  * exploded.html model/three-r160.min.js), so both pages build the same geometry. Every part
@@ -18,6 +21,30 @@
 (function () {
   'use strict';
   var M = (window.OAMR_MODEL = {});
+
+  // Finish colours (model/finish.json, next to this file). Read synchronously because the pages build
+  // the model right after this script; on any failure the finish is empty and nothing is recoloured.
+  M.FINISH = (function () {
+    try {
+      var s = document.currentScript, url = (s && s.src ? s.src.replace(/[^/]*$/, '') : 'model/') + 'finish.json';
+      var x = new XMLHttpRequest();
+      x.open('GET', url, false);
+      x.send(null);
+      return x.status === 200 || (x.status === 0 && x.responseText) ? JSON.parse(x.responseText) : null;
+    } catch (e) { return null; }
+  })();
+  // {color, roughness, metalness} of a part id, or null when finish.json does not name it.
+  M.finishOf = function (id) {
+    var f = M.FINISH, p = f && f.parts && f.parts[id], c = p && f.colours[p.ral], k = p && f.finishes[p.finish];
+    return c && k ? {color: parseInt(c.srgb.slice(1), 16), roughness: k.roughness, metalness: k.metalness} : null;
+  };
+  var finished = {};
+  // A material for part id: the finish of finish.json if it names the part, else the given material.
+  function finishMat(THREE, id, fallback) {
+    var f = M.finishOf(id);
+    if (!f) return fallback;
+    return (finished[id] = finished[id] || new THREE.MeshStandardMaterial(f));
+  }
 
   // Design values used by the geometry and by the robot page simulation (P-03 rev19.7, register).
   M.DIMS = {X0: -.39, X1: .39, HW: .291, DECK: .294, COVER: .296, BELLY: .052, WHEEL_R: .1, WHEEL_Y: .2,
@@ -80,6 +107,7 @@
 {"id":"lift_column","name":"Lift column","qty":1,"geometry":"primitive","bom":"MEC-018","purpose":"DOLD Hexalift V4, 350 mm stroke, 530 mm retracted, 240 mm side fore-aft.","source":"openamr-upperbody-hw option B; lift column CAD not yet available, lateral width drawn 60 mm","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["lift_column"]},
 {"id":"adapter_plate","name":"Adapter plate","qty":1,"geometry":"primitive","bom":"MEC-004","purpose":"10 mm plate on the column top that carries the arm profile.","source":"openamr-upperbody-hw option B; drawing pending","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["adapter_plate"]},
 {"id":"arm_profile","name":"Arm profile HFS6-60120","qty":1,"geometry":"primitive","bom":"MEC-003","purpose":"MISUMI HFS6-60120, 340 mm, carries the two arm mounts (J1_A plate outline pending).","source":"openamr-upperbody-hw option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["arm_profile"]},
+{"id":"slot_cover_strips","name":"Slot cover strips","qty":2,"geometry":"primitive","bom":"","purpose":"Two thin cosmetic strips in the front-most slot of each side face of the arm profile, above the arm mounts, about 85 mm long; colour from model/finish.json.","source":"Primitive drawn on the arm profile of option B; colour RAL 5018 (cyan reference) from model/finish.json","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["slot_cover_strips"]},
 {"id":"openarm","name":"OpenArm 2.0 arm","qty":2,"geometry":"cad","bom":"ARM-001","purpose":"Two 7-axis arms with grippers, mounted 180 mm ahead of the column axis.","source":"OpenArm 2.0 meshes and kinematics from the upstream openarm_description URDF; mount point per option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["openarm_left","openarm_right"]},
 {"id":"head_camera_bracket","name":"Head camera bracket","qty":1,"geometry":"primitive","bom":"ARM-011","purpose":"Pitch bracket on the profile top; supplier mount fit to be confirmed.","source":"openamr-upperbody-hw option B (camera body and bracket height pending supplier CAD)","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera_bracket"]},
 {"id":"head_camera","name":"Head stereo camera","qty":1,"geometry":"primitive","bom":"ARM-003","purpose":"Stereolabs ZED Mini, lens 22 mm ahead of and 223 mm above the shoulder, 25 degrees down baseline.","source":"openamr-upperbody-hw option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera"]},
@@ -139,6 +167,8 @@
         var c = doc.materials[p.material].pbrMetallicRoughness.baseColorFactor;
         var mat = new THREE.MeshStandardMaterial({color: Math.round(c[0] * 255) << 16 | Math.round(c[1] * 255) << 8 |
           Math.round(c[2] * 255), roughness: .6, metalness: .15});
+        var fin = M.finishOf(ex.id);  // finish.json colour of this GLB node, if any
+        if (fin) { mat.color.setHex(fin.color); mat.roughness = fin.roughness; mat.metalness = fin.metalness; }
         var shell = c[3] !== undefined && c[3] < 1;
         if (ex.provisional || shell) {
           mat.transparent = true;
@@ -259,7 +289,7 @@
       }
     };
     var fixed = parents.fixed, mov = parents.moving;
-    box(part(fixed, 'lift_base_plate'), .3, .1, D.PLATE_T, mats.alu, 0, 0, t - D.PLATE_T / 2, 'base_plate');
+    box(part(fixed, 'lift_base_plate'), .3, .1, D.PLATE_T, finishMat(THREE, 'lift_base_plate', mats.alu), 0, 0, t - D.PLATE_T / 2, 'base_plate');
     var col = part(fixed, 'lift_column'), i = e.RETRACTED - e.HEAD - .012;
     rbox(col, e.L, e.W, i, .007, mats.anod, 0, 0, t + i / 2);
     slots(col, e.L, e.W, i, t + i / 2);
@@ -270,15 +300,20 @@
     box(stage, .25, .072, e.HEAD, mats.aluDark, 0, 0, c - e.HEAD / 2, 'head_plate');
     for (var s = -1; s <= 1; s += 2) box(stage, .03, .012, .05, mats.aluDark, s * .11, 0, c + .025);
     var u = D.MOUNT_X, f = c + h.ADAPTER, d = -e.L / 2, p = u + h.X / 2;
-    box(part(mov, 'adapter_plate'), p - d, .072, h.ADAPTER, mats.aluDark, (d + p) / 2, 0, c + h.ADAPTER / 2, 'adapter_plate');
+    box(part(mov, 'adapter_plate'), p - d, .072, h.ADAPTER, finishMat(THREE, 'adapter_plate', mats.aluDark), (d + p) / 2, 0, c + h.ADAPTER / 2, 'adapter_plate');
     var prof = part(mov, 'arm_profile');
-    rbox(prof, h.X, h.Y, h.L, .004, mats.alu, u, 0, f + h.L / 2);
+    rbox(prof, h.X, h.Y, h.L, .004, finishMat(THREE, 'arm_profile', mats.alu), u, 0, f + h.L / 2);
     for (s = -1; s <= 1; s += 2) {
       box(prof, .008, .002, h.L - .01, mats.slot, u - h.X / 4, s * (h.Y / 2 + 2e-4), f + h.L / 2);
       box(prof, .008, .002, h.L - .01, mats.slot, u + h.X / 4, s * (h.Y / 2 + 2e-4), f + h.L / 2);
       box(prof, .002, .008, h.L - .01, mats.slot, u + s * (h.X / 2 + 2e-4), 0, f + h.L / 2);
     }
     for (s = -1; s <= 1; s += 2) box(prof, .09, .001, .09, mats.steel, u, s * .0305, c + D.MOUNT_ABOVE_COL);
+    // Slot cover strips (inside the arm-profile group): 85 mm in the front-most slot of each side face,
+    // above the arm mounts, 247.5 to 332.5 mm above the column top, so that they stay more than 150 mm
+    // from the chest E-stop the robot page draws on the profile front face.
+    var strips = part(prof, 'slot_cover_strips'), sm = finishMat(THREE, 'slot_cover_strips', mats.slot);
+    for (s = -1; s <= 1; s += 2) box(strips, .0085, .0026, .085, sm, u + h.X / 4, s * (h.Y / 2 + 5e-4), c + .29, 'slot_cover_strip');
     var m = c + D.MOUNT_ABOVE_COL + D.ZED_ABOVE_SH, y = f + h.L, br = part(mov, 'head_camera_bracket');
     box(br, .03, .03, .006, mats.alu, D.ZED_X - .03, 0, y + .003);
     box(br, .012, .03, m - y, mats.aluDark, D.ZED_X - .03, 0, (y + m) / 2);
