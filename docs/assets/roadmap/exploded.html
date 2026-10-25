@@ -150,7 +150,7 @@ ol.comps .q{font:500 12px var(--f-num);color:var(--mute)}
   }
   function geomText(c) {
     if (c.geometry === 'none') return NONE;
-    if (c.provisional) return 'Envelope, ' + PROV + '; drawn at 35 % opacity';
+    if (c.provisional) return (c.label || 'Envelope, provisional') + '; ' + PROV + '; drawn at 35 % opacity';
     if (c.geometry === 'primitive') return 'Primitive drawn from decided dimensions';
     if (c.geometry === 'envelope') return 'Envelope (simplified component volume)';
     return 'CAD-derived mesh';
