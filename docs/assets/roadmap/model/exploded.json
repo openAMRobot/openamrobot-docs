@@ -1,0 +1,291 @@
+{
+ "schema": 1,
+ "about": "Exploded offsets (metres, robot frame: x forward, y left, z up) and build-stage membership for docs/assets/roadmap/exploded.html, keyed by the component ids of model/model.js and their GLB node or part ids. Offsets move whole parts; no geometry changes. Checked by scripts/check_roadmap.py.",
+ "stages_note": "Subsystem grouping for orientation. Not an assembly instruction; the 2.0 assembly guide is in preparation.",
+ "stages": [
+  {
+   "n": 1,
+   "title": "Chassis structure",
+   "text": "Steel deck, front, rear and side panels, four corner supports and the centre bracket of CAD v0.2, the base design shared with release 001."
+  },
+  {
+   "n": 2,
+   "title": "Drive and castors",
+   "text": "Two hub motor wheels with brakes (brake side inboard) on the drive axle and four swivel castors under the deck corners. The motor driver sits on its mount on the deck."
+  },
+  {
+   "n": 3,
+   "title": "Power and safety",
+   "text": "The battery cell-group envelope on the rear deck behind the centre bracket (provisional); the BMS, power distribution board, fuse and wiring go behind and beside it and are not drawn. The safety relay set, E-stop, RESET button and charging receiver have no position in the 2.0 documentation and are listed only."
+  },
+  {
+   "n": 4,
+   "title": "Compute and base controller",
+   "text": "The electronics bracket with the Jetson Orin NX on its J401 carrier, the NUCLEO-H723ZG base controller on its plate and the IMU board."
+  },
+  {
+   "n": 5,
+   "title": "Near-field sensors, LiDAR and base camera",
+   "text": "Four ultrasonic sensors and two ToF cliff sensors in the panel holes with their mounts, the 2D LiDAR on its support and spacer, and the base RGB-D camera behind the front slot."
+  },
+  {
+   "n": 6,
+   "title": "Cover",
+   "text": "The top cover and its two sloped flanges close the base."
+  },
+  {
+   "n": 7,
+   "title": "Lift column and adapter plate",
+   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top."
+  },
+  {
+   "n": 8,
+   "title": "Arm profile and arms",
+   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket."
+  }
+ ],
+ "components": {
+  "base_plate": {
+   "stage": 1,
+   "offsets": {
+    "base_plate": [0, 0, 0]
+   }
+  },
+  "front_panel": {
+   "stage": 1,
+   "offsets": {
+    "front_panel": [0.32, 0, 0]
+   }
+  },
+  "rear_panel": {
+   "stage": 1,
+   "offsets": {
+    "rear_panel": [-0.32, 0, 0]
+   }
+  },
+  "side_panel": {
+   "stage": 1,
+   "offsets": {
+    "side_panel_left": [0, 0.34, 0],
+    "side_panel_right": [0, -0.34, 0]
+   }
+  },
+  "support": {
+   "stage": 1,
+   "offsets": {
+    "support_front_left": [0.14, 0.16, 0.04],
+    "support_front_right": [0.14, -0.16, 0.04],
+    "support_rear_left": [-0.14, 0.16, 0.04],
+    "support_rear_right": [-0.14, -0.16, 0.04]
+   }
+  },
+  "centre_bracket": {
+   "stage": 1,
+   "offsets": {
+    "centre_bracket": [0, 0, 0.1]
+   }
+  },
+  "hub_motor_wheel": {
+   "stage": 2,
+   "offsets": {
+    "hub_motor_wheel_left": [0, 0.5, 0],
+    "hub_motor_wheel_right": [0, -0.5, 0]
+   }
+  },
+  "castor": {
+   "stage": 2,
+   "offsets": {
+    "castor_front_left": [0, 0, -0.16],
+    "castor_front_right": [0, 0, -0.16],
+    "castor_rear_left": [0, 0, -0.16],
+    "castor_rear_right": [0, 0, -0.16]
+   }
+  },
+  "motor_driver": {
+   "stage": 2,
+   "offsets": {
+    "motor_driver": [0, 0, 0.3]
+   }
+  },
+  "driver_mount": {
+   "stage": 2,
+   "offsets": {
+    "driver_mount": [0, 0, 0.22]
+   }
+  },
+  "battery": {
+   "stage": 3,
+   "offsets": {
+    "battery": [-0.12, 0, 0.36]
+   }
+  },
+  "safety_relay_set": {
+   "stage": 3,
+   "offsets": {}
+  },
+  "estop": {
+   "stage": 3,
+   "offsets": {}
+  },
+  "reset_button": {
+   "stage": 3,
+   "offsets": {}
+  },
+  "wireless_charging_receiver": {
+   "stage": 3,
+   "offsets": {}
+  },
+  "electronics_bracket": {
+   "stage": 4,
+   "offsets": {
+    "electronics_bracket": [0, 0, 0.3]
+   }
+  },
+  "compute": {
+   "stage": 4,
+   "offsets": {
+    "compute": [0, 0, 0.44]
+   }
+  },
+  "controller_plate": {
+   "stage": 4,
+   "offsets": {
+    "controller_plate": [0, 0, 0.37]
+   }
+  },
+  "base_controller": {
+   "stage": 4,
+   "offsets": {
+    "base_controller": [0, 0, 0.41]
+   }
+  },
+  "imu": {
+   "stage": 4,
+   "offsets": {
+    "imu": [0, 0, 0.47]
+   }
+  },
+  "lidar_support": {
+   "stage": 5,
+   "offsets": {
+    "lidar_support": [0.12, 0, 0.3]
+   }
+  },
+  "lidar_spacer": {
+   "stage": 5,
+   "offsets": {
+    "lidar_spacer": [0.15, 0, 0.37]
+   }
+  },
+  "lidar": {
+   "stage": 5,
+   "offsets": {
+    "lidar": [0.18, 0, 0.46]
+   }
+  },
+  "camera_mount": {
+   "stage": 5,
+   "offsets": {
+    "camera_mount": [0.22, 0, 0.06]
+   }
+  },
+  "base_camera": {
+   "stage": 5,
+   "offsets": {
+    "base_camera": [0.46, 0, 0.1]
+   }
+  },
+  "ultrasonic_mount": {
+   "stage": 5,
+   "offsets": {
+    "ultrasonic_mount_front_left": [0.22, 0, 0],
+    "ultrasonic_mount_front_right": [0.22, 0, 0],
+    "ultrasonic_mount_rear_left": [-0.22, 0, 0],
+    "ultrasonic_mount_rear_right": [-0.22, 0, 0]
+   }
+  },
+  "ultrasonic": {
+   "stage": 5,
+   "offsets": {
+    "ultrasonic_front_left": [0.46, 0, 0],
+    "ultrasonic_front_right": [0.46, 0, 0],
+    "ultrasonic_rear_left": [-0.46, 0, 0],
+    "ultrasonic_rear_right": [-0.46, 0, 0]
+   }
+  },
+  "tof_mount": {
+   "stage": 5,
+   "offsets": {
+    "tof_mount_front": [0.22, 0, 0],
+    "tof_mount_rear": [-0.22, 0, 0]
+   }
+  },
+  "tof": {
+   "stage": 5,
+   "offsets": {
+    "tof_front": [0.46, 0, 0],
+    "tof_rear": [-0.46, 0, 0]
+   }
+  },
+  "cover": {
+   "stage": 6,
+   "offsets": {
+    "cover": [0, 0, 0.62]
+   }
+  },
+  "cover_flange": {
+   "stage": 6,
+   "offsets": {
+    "cover_flange_front": [0.12, 0, 0.62],
+    "cover_flange_rear": [-0.12, 0, 0.62]
+   }
+  },
+  "lift_base_plate": {
+   "stage": 7,
+   "offsets": {
+    "lift_base_plate": [0, 0, 0.74]
+   }
+  },
+  "lift_column": {
+   "stage": 7,
+   "offsets": {
+    "lift_column": [0, 0, 0.82]
+   }
+  },
+  "adapter_plate": {
+   "stage": 7,
+   "offsets": {
+    "adapter_plate": [0, 0, 0.92]
+   }
+  },
+  "arm_profile": {
+   "stage": 8,
+   "offsets": {
+    "arm_profile": [0, 0, 1.0]
+   }
+  },
+  "openarm": {
+   "stage": 8,
+   "offsets": {
+    "openarm_left": [0, 0.3, 1.04],
+    "openarm_right": [0, -0.3, 1.04]
+   }
+  },
+  "head_camera_bracket": {
+   "stage": 8,
+   "offsets": {
+    "head_camera_bracket": [0, 0, 1.08]
+   }
+  },
+  "head_camera": {
+   "stage": 8,
+   "offsets": {
+    "head_camera": [0, 0, 1.14]
+   }
+  },
+  "arm_kit_estop": {
+   "stage": 8,
+   "offsets": {}
+  }
+ }
+}
