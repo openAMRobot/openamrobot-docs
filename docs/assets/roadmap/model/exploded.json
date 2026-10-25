@@ -642,6 +642,16 @@
     ]
    }
   },
+  "slot_cover_strips": {
+   "stage": 8,
+   "offsets": {
+    "slot_cover_strips": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
   "openarm": {
    "stage": 8,
    "offsets": {

@@ -749,9 +749,10 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     var e = b.k.ease === 'linear' ? u : ease(u), L = function (x, y) { return x + (y - x) * e; };
     var A = a.cam, B = b.cam, c = A.c.clone().lerp(B.c, e), d = L(A.d, B.d), az = L(A.az, B.az), el = L(A.el, B.el);
     var pos = new THREE.Vector3(Math.cos(el) * Math.cos(az), Math.cos(el) * Math.sin(az), Math.sin(el)).multiplyScalar(d).add(c);
-    // caption: during a move the caption of the beat it moves to, otherwise the last caption shown
-    var cap = t > a.t && b.k.caption ? b.k.caption : null, names = false, labels = null, focus = null;
-    for (var j = Math.min(i, keys.length - 1); j >= 0 && !cap; j--) if (keys[j].k.caption) cap = keys[j].k.caption;
+    // caption: the caption of the last beat the camera has arrived at (a new caption shows only once
+    // its keyframe time is reached, never during the move towards it)
+    var cap = null, names = false, labels = null, focus = null, j;
+    for (j = keys.length - 1; j >= 0 && !cap; j--) if (t >= keys[j].t - 1e-9 && keys[j].k.caption) cap = keys[j].k.caption;
     for (j = keys.length - 1; j >= 0; j--) if (t >= keys[j].t - 1e-9) { names = !!keys[j].k.names;
       labels = keys[j].k.labels || null; focus = keys[j].k.focus || null; break; }
     return {pos: pos, target: c, w: {r: L(A.w.r, B.w.r), b: L(A.w.b, B.w.b), c: L(A.w.c, B.w.c)}, caption: cap,
