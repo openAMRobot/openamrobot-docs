@@ -25,7 +25,8 @@ parses them and fails when:
   OAMR_MODEL.build), or a renderer look other than model/look.js (calibration,
   light-look fallback and its frame probe included), or robot.html does not
   start with the Follow preset, Frames and Labels off and High quality on, or
-  tints one arm; or
+  tints one arm, or model/model.js draws a light strip (an led material or a
+  cyan emissive colour) on the robot; or
   model/finish.json names an unknown material class or part;
 - the exploded view lacks a control (explode robot, open the base, cutaway,
   tour, pause, stop, record), its opened-base offsets, labels, view settings
@@ -457,6 +458,31 @@ def check_shared(root, html, err):
         err("robot.html", "%d bytes, over %d" % (size, ROBOT_MAX_BYTES))
 
 
+def emissive_cyan(v):
+    """True for an emissive colour (integer, 0x hex or #hex) that reads cyan: green and blue well above red."""
+    v = v.strip().lower()
+    n = int(v, 16) if v.startswith(("0x", "#")) and len(v.lstrip("#0x")) else int(v) if v.isdigit() else None
+    if n is None:
+        return False
+    r, g, b = n >> 16 & 255, n >> 8 & 255, n & 255
+    return g > 90 and b > 90 and min(g, b) > r + 50
+
+
+def check_no_light_strips(root, err):
+    """The robot carries no status light strips: model/model.js (the only robot builder) may not define an
+    led material or any material with a cyan emissive colour."""
+    try:
+        with open(os.path.join(root, "model", "model.js"), encoding="utf-8") as f:
+            js = f.read()
+    except OSError:
+        return
+    if re.search(r"\bmats\.led\b|\bled\s*:\s*new\b", js):
+        err("model.js", "an led material is defined or used on the robot; the robot has no light strips")
+    for m in re.finditer(r"emissive\s*:\s*(0x[0-9a-fA-F]+|#[0-9a-fA-F]{6}|\d+)", js):
+        if emissive_cyan(m.group(1)):
+            err("model.js", "cyan emissive colour %s on the robot; the robot has no light strips" % m.group(1))
+
+
 def check_finish(root, err, comps, glb_prims):
     """model/finish.json: classes of known parts, primitives that exist, known texture names."""
     try:
@@ -598,6 +624,7 @@ def main():
         check_nav(p, html[p], err)
     check_model(args.dir, html["exploded.html"], err)
     check_shared(args.dir, html, err)
+    check_no_light_strips(args.dir, err)
 
     # 2. status count strips
     for p, tr in trees.items():
