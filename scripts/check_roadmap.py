@@ -469,6 +469,9 @@ def check_finish(root, err, comps, glb_prims):
         for k in ("roughness", "metalness"):
             if not isinstance(c.get(k), (int, float)) or not 0 <= c[k] <= 1:
                 err("finish.json", "class %s: %s not 0 to 1" % (name, k))
+        for k in ("specular", "env_scale"):
+            if k in c and (not isinstance(c[k], (int, float)) or not 0 <= c[k] <= 1):
+                err("finish.json", "class %s: %s not 0 to 1" % (name, k))
         for k in ("normal_map", "roughness_map"):
             if k in c and c[k] not in ("orange_peel", "layer_lines", "brushed"):
                 err("finish.json", "class %s: unknown texture %s" % (name, c[k]))

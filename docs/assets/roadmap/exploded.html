@@ -269,7 +269,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     // shared look (model/look.js): room environment, key light with soft shadows, contact shadow under the base
     scene.environment = LOOK.environment(THREE, renderer);
     var key = LOOK.keyLight(THREE, {intensity: CAL.key});
-    scene.add(key, key.target);
+    scene.add(key, key.target, LOOK.rimLight(THREE, CAL.rim));
     var catcher = LOOK.shadowCatcher(THREE, 4), contact = LOOK.contactShadow(THREE, .95, .78, 0);
     scene.add(catcher, contact);
     scene.userData.ground = [catcher, contact];

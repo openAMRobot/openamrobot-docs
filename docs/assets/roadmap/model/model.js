@@ -120,7 +120,7 @@
   };
 
   // A material of class cls (finish.json classes) with colour hex, plus extra material parameters.
-  // A class with clearcoat gives a MeshPhysicalMaterial, else a MeshStandardMaterial. userData.tile
+  // A class with clearcoat or specular gives a MeshPhysicalMaterial, else a MeshStandardMaterial. userData.tile
   // (metres per texture tile) tells M.prepare to give the meshes planar texture coordinates.
   M.classMaterial = function (THREE, cls, color, extra) {
     var c = classDef(cls) || {}, p = {color: c.srgb ? parseInt(c.srgb.slice(1), 16) : color, roughness: c.roughness, metalness: c.metalness};
@@ -136,9 +136,12 @@
       p.clearcoat = c.clearcoat;
       if (c.clearcoat_roughness !== undefined) p.clearcoatRoughness = c.clearcoat_roughness;
     }
-    var m = new (c.clearcoat !== undefined ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial)(Object.assign(p, extra || {}));
+    if (c.specular !== undefined) p.specularIntensity = c.specular;
+    var phys = c.clearcoat !== undefined || c.specular !== undefined;
+    var m = new (phys ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial)(Object.assign(p, extra || {}));
     m.userData.cls = cls;
     if (c.tile_m) m.userData.tile = c.tile_m;
+    if (c.env_scale) m.userData.envScale = c.env_scale;  // environment intensity relative to the page value (look.js robotEnv)
     return m;
   };
 
@@ -239,11 +242,11 @@
 ]/*COMPONENTS-JSON-END*/;
 
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
-  // aluminium of the lift and upper body (anodised class); lens: ZED Mini lenses (sensor glass class);
+  // aluminium of the lift column, lift stage and head bracket (class of lift_column, satin); lens: ZED Mini lenses (sensor glass class);
   // arm: OpenArm 2.0 vertex colours as delivered; armHi: the robot page highlight of an arm. steel, slot,
   // black and the robot page fittings (skirt, red, yellow, led, cable, resetLit) keep their values.
   M.materials = function (THREE) {
-    var S = THREE.MeshStandardMaterial, A = 'anodised_aluminium';
+    var S = THREE.MeshStandardMaterial, A = M.classOf('lift_column') || 'anodised_aluminium';
     return {skirt: new S({color: 2830391, roughness: .55}),
       black: new S({color: 1382428, roughness: .35, metalness: .2}),
       steel: new S({color: 4869973, roughness: .45, metalness: .7}), alu: M.classMaterial(THREE, A, 13225426),

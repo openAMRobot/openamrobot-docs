@@ -4,7 +4,8 @@ and the light-look fallback from model/look.js. Every replacement must match exa
 
 - robot materials take the calibrated environment intensity (OAMR_LOOK.CAL.robot), exposure from CAL;
 - the existing High quality toggle also switches the robot between the full and the light look;
-- the first 30 frames are probed (rendered every frame); over 33 ms on average: light look;
+- the first 30 frames are probed (rendered every frame); over 33 ms on average: light look, and the
+  High quality toggle shows off (it is switched off as a user would), so one click restores the full look;
   ?look=full or ?look=light forces a look and skips the probe;
 - the arm highlight picks the material of the current look.
 
@@ -35,6 +36,6 @@ sub("Rt.update()&&(dt=!0),dt&&(dt=!1,n3())", "Rt.update()&&(dt=!0),(dt||%s.probi
 sub("window.OAMR_LOOK.apply(jn,he,{exposure:1.05});", "%s.apply(jn,he,{exposure:%s.CAL.robot.exposure});" % (L, L))
 sub("requestAnimationFrame(Wh);location",
     "requestAnimationFrame(Wh);(function(){var f=%s.forced();f?f===\"light\"&&OBlook(!0):"
-    "%s.startProbe(function(m){m>%s.FRAME_BUDGET_MS&&OBlook(!0)})})();location" % (L, L, L))
+    "%s.startProbe(function(m){m>%s.FRAME_BUDGET_MS&&(C0.hq?N0(\"b-q\").click():OBlook(!0))})})();location" % (L, L, L))
 open(path, "w", encoding="utf-8").write(html)
 print("page %d bytes" % len(html.encode("utf-8")))

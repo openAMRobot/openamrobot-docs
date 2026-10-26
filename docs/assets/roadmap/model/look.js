@@ -25,10 +25,10 @@
   // Per page: tone mapping exposure, key light intensity (exploded view; the robot page keeps its store
   // lights), environment intensity of the robot materials (dielectric and metal classes).
   L.CAL = {
-    exploded: {exposure: 1.2, key: 2.8, envDielectric: .14, envMetal: 1.3},
-    robot: {exposure: 1.05, envDielectric: .08, envMetal: 1.3}  // exposure as before: the store look is unchanged
+    exploded: {exposure: 1.2, key: 2.8, rim: 2, envDielectric: .14, envMetal: 1.3},
+    robot: {exposure: 1.05, envDielectric: .16, envMetal: 1.3}  // exposure as before: the store look is unchanged
   };
-  L.METAL_CLASSES = ['anodised_aluminium', 'heatsink', 'sensor_glass'];  // keep the environment in the light look
+  L.METAL_CLASSES = ['anodised_aluminium', 'satin_aluminium', 'heatsink', 'sensor_glass'];  // keep the environment in the light look
   L.FRAME_BUDGET_MS = 33;
   L.PROBE_FRAMES = 30;
 
@@ -52,11 +52,11 @@
   };
 
   var isMetal = function (m) { return L.METAL_CLASSES.indexOf(m.userData && m.userData.cls) >= 0; };
-  // Environment intensity of the robot materials (cal: {envDielectric, envMetal}).
+  // Environment intensity of the robot materials (cal: {envDielectric, envMetal}; times the class env_scale).
   L.robotEnv = function (root, cal) {
     root.traverse(function (o) {
       var m = o.isMesh && o.material;
-      if (m && m.isMeshStandardMaterial) m.envMapIntensity = isMetal(m) ? cal.envMetal : cal.envDielectric;
+      if (m && m.isMeshStandardMaterial) m.envMapIntensity = (isMetal(m) ? cal.envMetal : cal.envDielectric) * (m.userData.envScale || 1);
     });
   };
 
@@ -98,6 +98,17 @@
     m.position.set(x || 0, 0, 3e-4);
     m.renderOrder = -1;
     return m;
+  };
+
+  // Weak fill light from the rear left, so that the faces turned away from the key light (rear and left
+  // side panels) keep their light grey. A hemisphere light oriented to the rear left (sky white, ground
+  // black): diffuse only, so it adds no specular glint on the glossier parts at grazing angles. Pages that
+  // light their own scene (the robot page store) do not add it.
+  L.rimLight = function (THREE, intensity) {
+    var r = new THREE.HemisphereLight(0xffffff, 0x000000, intensity === undefined ? 1 : intensity);
+    r.position.set(-2.2, 2.0, .45);
+    r.name = 'look_rim';
+    return r;
   };
 
   // Hemisphere light that stands in for the environment on the non-metal materials in the light look.

@@ -9,14 +9,12 @@ const { chromium } = require('playwright');
     await p.goto(`http://localhost:${port}/${page}`, {waitUntil: 'domcontentloaded'});
     await p.waitForFunction(() => window.OAMR_LOOK && window.OAMR_LOOK.lastProbeMs !== undefined, null, {timeout: 600000});
     const st = await p.evaluate(() => ({probeMs: +window.OAMR_LOOK.lastProbeMs.toFixed(1), light: window.OAMR_LOOK.isLight(),
-      hq: (document.getElementById('b-hq') || document.getElementById('b-q')).outerHTML.slice(0, 80), sw: document.documentElement.scrollWidth}));
+      hq: (document.getElementById('b-hq') || document.getElementById('b-q')).outerHTML.slice(0, 60), hqOn: window.__sim ? window.__sim.S.hq : document.getElementById('b-hq').getAttribute('aria-pressed') === 'true', sw: document.documentElement.scrollWidth}));
     if (page === 'exploded.html' && w === 1280) {  // toggle back to full and to light again
       await p.click('#b-hq'); st.afterClick1 = await p.evaluate(() => [window.OAMR_LOOK.isLight(), document.getElementById('b-hq').getAttribute('aria-pressed')]);
-      await p.click('#b-hq'); st.afterClick2 = await p.evaluate(() => [window.OAMR_LOOK.isLight(), document.getElementById('b-hq').getAttribute('aria-pressed')]);
     }
     if (page === 'robot.html' && w === 1280) {
       await p.click('#b-q'); st.afterClick1 = await p.evaluate(() => [window.OAMR_LOOK.isLight(), window.__sim.S.hq]);
-      await p.click('#b-q'); st.afterClick2 = await p.evaluate(() => [window.OAMR_LOOK.isLight(), window.__sim.S.hq]);
     }
     await p.waitForTimeout(3000);
     res[page + '@' + w] = Object.assign(st, {msgs});
