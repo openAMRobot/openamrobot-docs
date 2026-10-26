@@ -243,7 +243,7 @@
 
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
   // aluminium of the lift column, lift stage and head bracket (class of lift_column, satin); lens: ZED Mini lenses (sensor glass class);
-  // arm: OpenArm 2.0 vertex colours as delivered; armHi: the robot page highlight of an arm. steel, slot,
+  // arm: OpenArm 2.0 vertex colours as delivered, one material for both arms (no highlight tint). steel, slot,
   // black and the robot page fittings (skirt, red, yellow, led, cable, resetLit) keep their values.
   M.materials = function (THREE) {
     var S = THREE.MeshStandardMaterial, A = M.classOf('lift_column') || 'anodised_aluminium';
@@ -257,9 +257,7 @@
       resetLit: new S({color: 2056145, emissive: 732282, emissiveIntensity: .6, roughness: .3}),
       lens: M.classMaterial(THREE, M.classOf('head_camera', 'lens') || 'sensor_glass', 329224),
       cable: new S({color: 1711135, roughness: .6}),
-      arm: M.classMaterial(THREE, 'openarm_as_delivered', 16777215, {vertexColors: true, side: THREE.DoubleSide}),
-      armHi: new THREE.MeshPhysicalMaterial({vertexColors: true, roughness: .42, metalness: .15, side: THREE.DoubleSide,
-        emissive: 2776023, emissiveIntensity: .35})};
+      arm: M.classMaterial(THREE, 'openarm_as_delivered', 16777215, {vertexColors: true, side: THREE.DoubleSide})};
   };
 
   function bytes(b64) {

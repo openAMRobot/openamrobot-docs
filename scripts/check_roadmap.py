@@ -23,7 +23,9 @@ parses them and fails when:
   on robot.html only, the store addons model/three-r160-store.min.js), robot
   geometry or robot materials of their own (anything but one call of
   OAMR_MODEL.build), or a renderer look other than model/look.js (calibration,
-  light-look fallback and its frame probe included); or
+  light-look fallback and its frame probe included), or robot.html does not
+  start with the Follow preset, Frames and Labels off and High quality on, or
+  tints one arm; or
   model/finish.json names an unknown material class or part;
 - the exploded view lacks a control (explode robot, open the base, cutaway,
   tour, pause, stop, record), its opened-base offsets, labels, view settings
@@ -426,6 +428,19 @@ def check_shared(root, html, err):
         for call in ("CAL", "robotEnv(", "lightLook(", "startProbe(", "forced("):
             if call not in inline:
                 err(p, "must use the calibrated look and the light-look fallback of model/look.js (%s)" % call.rstrip("("))
+    # robot.html page defaults: view preset Follow, Frames and Labels off, High quality on; one arm material
+    h = html["robot.html"]
+    for what, rx in [("view preset Follow selected", r'<button data-view="follow" class="on">'),
+                     ("view preset Follow at start", r'view:"follow",'), ("Follow applied at start", r'P2\("follow"\)'),
+                     ("Frames off", r'<button id="b-frames" aria-pressed="false">'), ("Frames off at start", r'\bvar fs=!1;'),
+                     ("Labels off", r'<button id="b-labels" aria-pressed="false">'), ("Labels off at start", r'\bvr=!1,'),
+                     ("High quality on", r'<button id="b-q" class="on">'), ("High quality on at start", r'\bhq:!Mr,')]:
+        if not re.search(rx, h):
+            err("robot.html", "page default not as required: %s" % what)
+    if len(re.findall(r'<button data-view="[a-z]+" class="on">', h)) != 1:
+        err("robot.html", "exactly one view preset must be selected")
+    if re.search(r"armHi|=e===s\?\w+:kc", h):
+        err("robot.html", "the arms must share the as-delivered arm material (no working-arm tint)")
     for f in [THREE_CORE] + THREE_ADDONS["robot.html"]:
         if not os.path.isfile(os.path.join(root, f)):
             err("model", "%s is missing" % f)
