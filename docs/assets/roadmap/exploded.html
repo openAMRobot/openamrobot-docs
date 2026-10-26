@@ -113,7 +113,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
         <button id="b-asm" aria-pressed="true">Assembled</button><button id="b-explode" aria-pressed="false">Explode robot</button><button id="b-open" aria-pressed="false">Open the base</button><button id="b-cut" aria-pressed="false">Cutaway</button>
       </div>
       <div class="grp" role="group" aria-label="Camera and labels">
-        <button id="b-reset">Reset view</button><button id="b-nums" aria-pressed="true">Labels</button>
+        <button id="b-reset">Reset view</button><button id="b-nums" aria-pressed="true">Labels</button><button id="b-hq" aria-pressed="true" title="Off: light look for slow devices (environment on metal and glass only, contact shadow without shadow map)">High quality</button>
       </div>
       <div class="grp" role="group" aria-label="Guided tour">
         <button id="b-tour" class="go">Play tour</button><button id="b-pause" hidden aria-pressed="false">Pause</button><button id="b-stop" hidden>Stop</button><button id="b-rec" hidden>Record video</button>
@@ -211,7 +211,19 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
   }
 
   // ---------------------------------------------------------------- 3D
-  var THREE = window.THREE, LOOK = window.OAMR_LOOK, renderer = null;
+  var THREE = window.THREE, LOOK = window.OAMR_LOOK, CAL = LOOK ? LOOK.CAL.exploded : null, renderer = null;
+  var light = false, fill = null, lookTouched = false;  // light look (fallback): High quality off or a slow device
+  function setLook(on) {
+    light = !!on;
+    $('b-hq').setAttribute('aria-pressed', String(!light));
+    if (!renderer) return;
+    LOOK.lightLook(THREE, root, light);
+    renderer.shadowMap.enabled = !light;
+    renderer.shadowMap.needsUpdate = true;
+    fill.visible = light;
+    scene.traverse(function (o) { if (o.material) o.material.needsUpdate = true; });
+    applyPose();
+  }
   function webgl() {
     try {
       var c = document.createElement('canvas');
@@ -222,7 +234,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     var f = $('fallback'), img = f.querySelector('img');
     img.src = img.dataset.src;
     f.hidden = false;
-    ['b-asm', 'b-explode', 'b-open', 'b-cut', 'b-reset', 'b-nums', 'b-tour'].forEach(function (id) { $(id).disabled = true; });
+    ['b-asm', 'b-explode', 'b-open', 'b-cut', 'b-reset', 'b-nums', 'b-hq', 'b-tour'].forEach(function (id) { $(id).disabled = true; });
   }
 
   var scene, camera, controls, root, parts = {}, anchors = [], need = true;
@@ -245,7 +257,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     var st = $('stage');
     renderer = new THREE.WebGLRenderer({antialias: true, powerPreference: 'high-performance'});
     renderer.setPixelRatio(RENDER ? 1 : Math.min(window.devicePixelRatio || 1, 2));
-    LOOK.apply(THREE, renderer, {exposure: .9});
+    LOOK.apply(THREE, renderer, {exposure: CAL.exposure});
     renderer.shadowMap.autoUpdate = false;  // the shadows change only when parts move (applyPose)
     renderer.domElement.setAttribute('tabindex', '0');
     renderer.domElement.setAttribute('aria-label', '3D model; drag to orbit, arrow keys to pan');
@@ -256,11 +268,14 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     camera.up.set(0, 0, 1);
     // shared look (model/look.js): room environment, key light with soft shadows, contact shadow under the base
     scene.environment = LOOK.environment(THREE, renderer);
-    var key = LOOK.keyLight(THREE);
+    var key = LOOK.keyLight(THREE, {intensity: CAL.key});
     scene.add(key, key.target);
     var catcher = LOOK.shadowCatcher(THREE, 4), contact = LOOK.contactShadow(THREE, .95, .78, 0);
     scene.add(catcher, contact);
     scene.userData.ground = [catcher, contact];
+    fill = LOOK.fillLight(THREE);  // light look only: stands in for the environment on non-metal materials
+    fill.visible = false;
+    scene.add(fill);
     var grid = new THREE.GridHelper(4, 40, 0x9aa7a3, 0xb9c3c0);
     grid.rotation.x = Math.PI / 2;
     grid.material.transparent = true;
@@ -271,6 +286,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     // the shared model (MODEL.build, as on the Robot page): lift at L1000, bp000, head pitch 25 degrees
     var robot = MODEL.build(THREE, {headPitch: 25});
     root = robot.root;
+    LOOK.robotEnv(root, CAL);
     scene.add(root);
     parts = robot.parts;
     baseIds = robot.baseIds;
@@ -377,7 +393,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     var g = scene.userData.grid;
     g.material.opacity = .55 * (1 - W.r);
     g.visible = W.r < .98;
-    scene.userData.ground.forEach(function (o) { o.visible = g.visible; o.material.opacity = (o.userData.op = o.userData.op || o.material.opacity) * (1 - W.r); });
+    scene.userData.ground.forEach(function (o, i) { o.visible = g.visible && (i > 0 || !light); o.material.opacity = (o.userData.op = o.userData.op || o.material.opacity) * (1 - W.r); });
     root.updateMatrixWorld(true);
     renderer.shadowMap.needsUpdate = true;
     need = true;
@@ -900,10 +916,12 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       need = true;
     }
     if (controls.update()) need = true;
-    if (need) {
+    var probing = LOOK.probing();
+    if (need || probing) {
       renderer.render(scene, camera);
       domLabels();
       need = false;
+      if (probing) LOOK.frame(now);
     }
     requestAnimationFrame(loop);
   }
@@ -914,6 +932,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     $('b-open').addEventListener('click', function () { setView(0, mode() === 'base' ? 0 : 1, WT.c); });
     $('b-cut').addEventListener('click', function () { setView(WT.r, WT.b, WT.c > .5 ? 0 : 1); });
     $('b-reset').addEventListener('click', function () { resetView(false); });
+    $('b-hq').addEventListener('click', function () { lookTouched = true; setLook(!light); });
     $('b-nums').addEventListener('click', function () {
       numsOn = !numsOn;
       this.setAttribute('aria-pressed', String(numsOn));
@@ -969,6 +988,23 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     return c;
   }
 
+  // window.__renderKey(k): one frame for a pose written like a tour keyframe (frame, az, el, zoom, r, b, c,
+  // labels, names, caption), as a PNG data URL; for preview pictures. Render mode only.
+  function renderKey(k) {
+    tour = tour || {s: 0, paused: null, record: false};
+    var cam = keyCam(k, RW / RH);
+    tourState = {labels: k.labels || [], names: !!k.names, caption: k.caption || null, focus: null};
+    W = cam.w;
+    focusSet = null;
+    applyPose();
+    camera.position.set(Math.cos(cam.el) * Math.cos(cam.az), Math.cos(cam.el) * Math.sin(cam.az), Math.sin(cam.el)).multiplyScalar(cam.d).add(cam.c);
+    controls.target.copy(cam.c);
+    camera.lookAt(cam.c);
+    renderer.render(scene, camera);
+    var labels = layout(RW, RH, [{x0: 0, y0: 0, x1: 330 * UI, y1: 58 * UI}], tourState.labels);
+    return composite(labels, tourState.caption, RW).toDataURL('image/png');
+  }
+
   function start(data) {
     if (data) X = Object.assign(X, data);
     X.labels = X.labels || {};
@@ -994,6 +1030,9 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       computeOcc();
       if (!X.tour) $('b-tour').disabled = true;
       $('b-rec').hidden = !canRecord() || !X.tour;
+      var forced = LOOK.forced();
+      if (forced) setLook(forced === 'light');
+      else if (!RENDER) LOOK.startProbe(function (ms) { if (ms > LOOK.FRAME_BUDGET_MS && !lookTouched) setLook(true); });
     } catch (err) {
       if (renderer && renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
       renderer = null;
@@ -1005,6 +1044,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
         '500 12px "IBM Plex Mono"', '600 12px "IBM Plex Mono"'].map(function (f) { return document.fonts.load(f); })) : Promise.resolve();
       fonts.then(function () {
         window.__renderFrame = function (n) { return renderFrame(n).toDataURL('image/png'); };
+        window.__renderKey = renderKey;
         window.__tour = {fps: X.tour.fps || 30, frames: Math.round(tourDuration() * (X.tour.fps || 30)) + 1, w: RW, h: RH};
         renderFrame(parseInt(Q.get('frame'), 10) || 0);
         window.__frameReady = true;

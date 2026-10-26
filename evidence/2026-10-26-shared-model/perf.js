@@ -6,7 +6,8 @@ const { chromium } = require('playwright');
 const N = 30, WARM = 5;
 const med = a => { a = a.slice().sort((x, y) => x - y); return a[a.length >> 1]; };
 (async () => {
-  const [port] = process.argv.slice(2);
+  const [port, look] = process.argv.slice(2);  // look: full or light (?look=; omitted for the #56 pages)
+  const q = look ? 'look=' + look : '';
   const b = await chromium.launch({args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist']});
   const out = {};
   let p = await b.newPage({viewport: {width: 1280, height: 800}});
@@ -27,14 +28,14 @@ const med = a => { a = a.slice().sort((x, y) => x - y); return a[a.length >> 1];
       T = v;
     }});
   });
-  await p.goto(`http://localhost:${port}/exploded.html?render=1&w=1280&h=800&frame=0`);
+  await p.goto(`http://localhost:${port}/exploded.html?render=1&w=1280&h=800&frame=0${q ? '&' + q : ''}`);
   await p.waitForFunction(() => window.__renderFrame);
   out.exploded_pose = await p.evaluate(([N, W]) => { const t = []; for (let i = 0; i < N + W; i++) { window.__rt = []; window.__renderFrame(60 + i * 20); if (i >= W) t.push(window.__rt.reduce((a, b) => a + b, 0)); } return t; }, [N, WARM]);
   out.exploded_orbit = await p.evaluate(([N, W]) => { const [r, s, c] = window.__last, t = []; for (let i = 0; i < N + W; i++) { window.__rt = []; r.render(s, c); if (i >= W) t.push(window.__rt[0]); } return t; }, [N, WARM]);
   await p.close();
   p = await b.newPage({viewport: {width: 1280, height: 800}});
   p.setDefaultTimeout(600000);
-  await p.goto(`http://localhost:${port}/robot.html`, {waitUntil: 'domcontentloaded'});
+  await p.goto(`http://localhost:${port}/robot.html${q ? '?' + q : ''}`, {waitUntil: 'domcontentloaded'});
   await p.waitForFunction(() => window.__sim && window.__sim.robot);
   await p.waitForTimeout(5000);
   out.robot = await p.evaluate(([N, W]) => {
