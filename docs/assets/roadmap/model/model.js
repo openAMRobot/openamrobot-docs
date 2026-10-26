@@ -9,13 +9,15 @@
  *    openarm_description URDF (upstream licence);
  *  - the upper-body primitives below (lift base plate, lift column, adapter plate, arm profile,
  *    head camera), dimensions from openamr-upperbody-hw docs/mechanical/upper_body_option_B.md;
- *  - model/finish.json: finish colours (RAL reference, sRGB approximation, matte or satin) keyed by
- *    part id, applied at load to the GLB nodes and upper-body primitives it names. Without it the
- *    model keeps its previous colours. Colours only; no geometry depends on it.
+ *  - model/finish.json: finish colours (RAL reference, sRGB approximation) keyed by part id, and the
+ *    material class of each part (physically based roughness and metalness, small procedural
+ *    textures generated below at load). Without it the model keeps its previous colours and values.
+ *    No geometry depends on it.
  *
- * The functions take the three.js namespace as THREE (robot.html passes its bundled r160,
- * exploded.html model/three-r160.min.js), so both pages build the same geometry. Every part
- * group carries userData.id, the key of COMPONENTS and of model/exploded.json.
+ * M.build is the one entry point of both pages (robot.html and exploded.html): it returns the robot
+ * as one object (root group, part groups, lift and head pivots, arm rigs, materials). The pages only
+ * position it and add their own features. THREE is the namespace of model/three-r160.min.js. Every
+ * part group carries userData.id, the key of COMPONENTS and of model/exploded.json.
  * Robot frame: floor origin, x forward, y left, z up (base_link 0.098 m above the floor).
  */
 (function () {
@@ -38,13 +40,135 @@
     var f = M.FINISH, p = f && f.parts && f.parts[id], c = p && f.colours[p.ral], k = p && f.finishes[p.finish];
     return c && k ? {color: parseInt(c.srgb.slice(1), 16), roughness: k.roughness, metalness: k.metalness} : null;
   };
-  var finished = {};
-  // A material for part id: the finish of finish.json if it names the part, else the given material.
-  function finishMat(THREE, id, fallback) {
-    var f = M.finishOf(id);
-    if (!f) return fallback;
-    return (finished[id] = finished[id] || new THREE.MeshStandardMaterial(f));
+  // Material class of part id (primitive prim of a GLB node, or a named sub-part), or null.
+  M.classOf = function (id, prim) {
+    var c = M.FINISH && M.FINISH.class_of && M.FINISH.class_of[id];
+    if (!c || typeof c === 'string') return c || null;
+    return c[String(prim)] || c['*'] || null;
+  };
+  var classDef = function (cls) { return (cls && M.FINISH && M.FINISH.classes && M.FINISH.classes[cls]) || null; };
+
+  // Procedural textures of the material classes: tileable, at most 256 x 256, generated once at load
+  // from a fixed seed (the same pixels on every load), linear data (normal and roughness maps).
+  var TEX = {}, BRUSH_MEAN = .9;
+  function lattice(n, cells, seed) {  // tileable value noise, n x n samples, cells x cells lattice
+    var g = [], out = new Float32Array(n * n), i, x, y;
+    for (i = 0; i < cells * cells; i++) g.push((seed = seed * 16807 % 2147483647) / 2147483647);
+    for (y = 0; y < n; y++) for (x = 0; x < n; x++) {
+      var fx = x * cells / n, fy = y * cells / n, x0 = Math.floor(fx), y0 = Math.floor(fy), tx = fx - x0, ty = fy - y0;
+      var x1 = (x0 + 1) % cells, y1 = (y0 + 1) % cells, a = g[y0 * cells + x0], b = g[y0 * cells + x1];
+      var c = g[y1 * cells + x0], d = g[y1 * cells + x1];
+      tx = tx * tx * (3 - 2 * tx);
+      ty = ty * ty * (3 - 2 * ty);
+      out[y * n + x] = a + (b - a) * tx + (c - a) * ty + (a - b - c + d) * tx * ty;
+    }
+    return out;
   }
+  function dataTexture(THREE, px, n) {
+    var t = new THREE.DataTexture(px, n, n, THREE.RGBAFormat);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.magFilter = THREE.LinearFilter;
+    t.minFilter = THREE.LinearMipmapLinearFilter;
+    t.generateMipmaps = true;
+    t.colorSpace = THREE.NoColorSpace;
+    t.needsUpdate = true;
+    return t;
+  }
+  function normalMap(THREE, h, n, k) {  // height field (tileable) to a tangent-space normal map
+    var px = new Uint8Array(n * n * 4);
+    for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) {
+      var dx = (h[y * n + (x + 1) % n] - h[y * n + (x + n - 1) % n]) * k;
+      var dy = (h[(y + 1) % n * n + x] - h[(y + n - 1) % n * n + x]) * k, l = Math.sqrt(dx * dx + dy * dy + 1), i = (y * n + x) * 4;
+      px[i] = Math.round((-dx / l * .5 + .5) * 255);
+      px[i + 1] = Math.round((-dy / l * .5 + .5) * 255);
+      px[i + 2] = Math.round((1 / l * .5 + .5) * 255);
+      px[i + 3] = 255;
+    }
+    return dataTexture(THREE, px, n);
+  }
+  M.texture = function (THREE, name) {
+    if (TEX[name]) return TEX[name];
+    var n, h, i, a, b;
+    if (name === 'orange_peel') {  // powder coat: two octaves of soft bumps, about 1.2 and 0.6 mm
+      n = 256;
+      a = lattice(n, 24, 7);
+      b = lattice(n, 48, 11);
+      h = new Float32Array(n * n);
+      for (i = 0; i < h.length; i++) h[i] = .65 * a[i] + .35 * b[i];
+      return (TEX[name] = normalMap(THREE, h, n, 6));
+    }
+    if (name === 'layer_lines') {  // print layers: 16 ridges per tile along v, a little noise
+      n = 64;
+      a = lattice(n, 8, 5);
+      h = new Float32Array(n * n);
+      for (i = 0; i < h.length; i++) h[i] = .5 + .5 * Math.cos(2 * Math.PI * 16 * Math.floor(i / n) / n) + .15 * a[i];
+      return (TEX[name] = normalMap(THREE, h, n, 1.2));
+    }
+    if (name === 'brushed') {  // roughness map, streaks along v; values 0.8 to 1 (mean BRUSH_MEAN) scale the class roughness
+      n = 256;
+      a = lattice(n, 4, 3);
+      var px = new Uint8Array(n * n * 4), col = [], s = 13;
+      for (i = 0; i < n; i++) col.push((s = s * 16807 % 2147483647) / 2147483647);
+      for (i = 0; i < n * n; i++) {
+        var x = i % n, v = .8 + .2 * (.55 * col[x] + .25 * col[(x + 1) % n] + .2 * a[i]);
+        px[i * 4] = px[i * 4 + 1] = px[i * 4 + 2] = Math.round(v * 255);
+        px[i * 4 + 3] = 255;
+      }
+      return (TEX[name] = dataTexture(THREE, px, n));
+    }
+    return null;
+  };
+
+  // A material of class cls (finish.json classes) with colour hex, plus extra material parameters.
+  // A class with clearcoat gives a MeshPhysicalMaterial, else a MeshStandardMaterial. userData.tile
+  // (metres per texture tile) tells M.prepare to give the meshes planar texture coordinates.
+  M.classMaterial = function (THREE, cls, color, extra) {
+    var c = classDef(cls) || {}, p = {color: c.srgb ? parseInt(c.srgb.slice(1), 16) : color, roughness: c.roughness, metalness: c.metalness};
+    if (c.normal_map) {
+      p.normalMap = M.texture(THREE, c.normal_map);
+      p.normalScale = new THREE.Vector2(c.normal_scale, c.normal_scale);
+    }
+    if (c.roughness_map) {
+      p.roughnessMap = M.texture(THREE, c.roughness_map);
+      p.roughness = c.roughness / BRUSH_MEAN;  // the map averages BRUSH_MEAN, so the mean roughness is the class value
+    }
+    if (c.clearcoat !== undefined) {
+      p.clearcoat = c.clearcoat;
+      if (c.clearcoat_roughness !== undefined) p.clearcoatRoughness = c.clearcoat_roughness;
+    }
+    var m = new (c.clearcoat !== undefined ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial)(Object.assign(p, extra || {}));
+    m.userData.cls = cls;
+    if (c.tile_m) m.userData.tile = c.tile_m;
+    return m;
+  };
+
+  var finished = {};
+  // A material for part id: the finish colour of finish.json if it names the part (with the values of
+  // its material class, else of its finish), else the given material.
+  function finishMat(THREE, id, fallback) {
+    var f = M.finishOf(id), cls = M.classOf(id);
+    if (!f) return fallback;
+    return (finished[id] = finished[id] || (cls ? M.classMaterial(THREE, cls, f.color) : new THREE.MeshStandardMaterial(f)));
+  }
+
+  // Planar texture coordinates (metres / tile, projected along the dominant normal axis: u, v = y, z or
+  // x, z on the sides, x, y on top) for meshes whose material has a texture tile. Positions, normals and
+  // indices are unchanged; only the uv attribute is set. Runs once per geometry.
+  M.prepare = function (THREE, obj) {
+    obj.traverse(function (o) {
+      var g = o.isMesh && o.geometry, t = o.isMesh && o.material && o.material.userData && o.material.userData.tile;
+      if (!t || g.userData.uvTile === t || !g.attributes.normal) return;
+      var p = g.attributes.position, nr = g.attributes.normal, uv = new Float32Array(p.count * 2);
+      for (var i = 0; i < p.count; i++) {
+        var ax = Math.abs(nr.getX(i)), ay = Math.abs(nr.getY(i)), az = Math.abs(nr.getZ(i));
+        var u = ax >= ay && ax >= az ? p.getY(i) : p.getX(i), v = az > ax && az > ay ? p.getY(i) : p.getZ(i);
+        uv[i * 2] = u / t;
+        uv[i * 2 + 1] = v / t;
+      }
+      g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+      g.userData.uvTile = t;
+    });
+  };
 
   // Design values used by the geometry and by the robot page simulation (P-03 rev19.7, register).
   M.DIMS = {X0: -.39, X1: .39, HW: .291, DECK: .294, COVER: .296, BELLY: .052, WHEEL_R: .1, WHEEL_Y: .2,
@@ -114,23 +238,25 @@
 {"id":"arm_kit_estop","name":"Arm kit E-stop","qty":1,"geometry":"none","bom":"ARM-008","purpose":"The second of the two E-stop buttons of the robot, supplied with the arm kit.","source":"BOM Issue 7.11 ARM-008; no position in the 2.0 documentation","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md"}
 ]/*COMPONENTS-JSON-END*/;
 
-  // Materials of the robot page (z0 there). arm and armHi: OpenArm vertex-colour materials.
+  // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
+  // aluminium of the lift and upper body (anodised class); lens: ZED Mini lenses (sensor glass class);
+  // arm: OpenArm 2.0 vertex colours as delivered; armHi: the robot page highlight of an arm. steel, slot,
+  // black and the robot page fittings (skirt, red, yellow, led, cable, resetLit) keep their values.
   M.materials = function (THREE) {
-    var P = THREE.MeshPhysicalMaterial, S = THREE.MeshStandardMaterial;
-    return {body: new P({color: 15527664, roughness: .38, metalness: 0, clearcoat: .35, clearcoatRoughness: .5}),
-      cover: new P({color: 16185336, roughness: .32, clearcoat: .4}), skirt: new S({color: 2830391, roughness: .55}),
+    var S = THREE.MeshStandardMaterial, A = 'anodised_aluminium';
+    return {skirt: new S({color: 2830391, roughness: .55}),
       black: new S({color: 1382428, roughness: .35, metalness: .2}),
-      glossBlack: new P({color: 658189, roughness: .08, clearcoat: 1}),
-      steel: new S({color: 4869973, roughness: .45, metalness: .7}), alu: new S({color: 13225426, roughness: .32, metalness: .75}),
-      aluDark: new S({color: 10133671, roughness: .38, metalness: .75}),
-      anod: new S({color: 14146270, roughness: .28, metalness: .65}), slot: new S({color: 2895926, roughness: .6, metalness: .3}),
+      steel: new S({color: 4869973, roughness: .45, metalness: .7}), alu: M.classMaterial(THREE, A, 13225426),
+      aluDark: M.classMaterial(THREE, A, 10133671), anod: M.classMaterial(THREE, A, 14146270),
+      slot: new S({color: 2895926, roughness: .6, metalness: .3}),
       red: new S({color: 14164767, roughness: .35}), yellow: new S({color: 15909376, roughness: .45}),
-      tyre: new S({color: 1776928, roughness: .85}), led: new S({color: 801592, emissive: 1692613, emissiveIntensity: 2}),
-      lens: new P({color: 329224, roughness: .02, clearcoat: 1, metalness: .3}), cable: new S({color: 1711135, roughness: .6}),
-      orange: new S({color: 15759890, roughness: .5}),
-      arm: new P({vertexColors: true, roughness: .42, metalness: .15, clearcoat: .3, side: THREE.DoubleSide}),
-      armHi: new P({vertexColors: true, roughness: .42, metalness: .15, side: THREE.DoubleSide, emissive: 2776023,
-        emissiveIntensity: .35})};
+      led: new S({color: 801592, emissive: 1692613, emissiveIntensity: 2}),
+      resetLit: new S({color: 2056145, emissive: 732282, emissiveIntensity: .6, roughness: .3}),
+      lens: M.classMaterial(THREE, M.classOf('head_camera', 'lens') || 'sensor_glass', 329224),
+      cable: new S({color: 1711135, roughness: .6}),
+      arm: M.classMaterial(THREE, 'openarm_as_delivered', 16777215, {vertexColors: true, side: THREE.DoubleSide}),
+      armHi: new THREE.MeshPhysicalMaterial({vertexColors: true, roughness: .42, metalness: .15, side: THREE.DoubleSide,
+        emissive: 2776023, emissiveIntensity: .35})};
   };
 
   function bytes(b64) {
@@ -142,7 +268,8 @@
   // Base GLB: a group "base_cad" in base_link (the caller sets z = BASE_LINK_Z) with one child group
   // per GLB node (name = id, userData = extras), one mesh per primitive. Provisional envelopes are
   // drawn at 35 % opacity; a primitive whose GLB material has alpha under 1 (the battery envelope
-  // shell) is drawn at that alpha and marked userData.shell.
+  // shell) is drawn at that alpha and marked userData.shell. Each primitive takes the material class
+  // finish.json gives it (M.classOf(node id, primitive index)) and the finish colour of its node, if any.
   M.base = function (THREE, b64) {
     var t = bytes((b64 || window.BASE_GLB).replace(/\./g, ''));
     var jl = new DataView(t.buffer).getUint32(12, true);
@@ -155,7 +282,7 @@
       var g = new THREE.Group(), ex = node.extras || {id: node.name};
       g.name = ex.id;
       g.userData = Object.assign({id: ex.id, part: true}, ex);
-      doc.meshes[node.mesh].primitives.forEach(function (p) {
+      doc.meshes[node.mesh].primitives.forEach(function (p, pi) {
         var pa = doc.accessors[p.attributes.POSITION], ia = doc.accessors[p.indices];
         var geo = new THREE.BufferGeometry();
         geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(slice(doc.bufferViews[pa.bufferView])), 3));
@@ -165,10 +292,13 @@
         geo.computeVertexNormals();
         geo.computeBoundingSphere();
         var c = doc.materials[p.material].pbrMetallicRoughness.baseColorFactor;
-        var mat = new THREE.MeshStandardMaterial({color: Math.round(c[0] * 255) << 16 | Math.round(c[1] * 255) << 8 |
-          Math.round(c[2] * 255), roughness: .6, metalness: .15});
-        var fin = M.finishOf(ex.id);  // finish.json colour of this GLB node, if any
-        if (fin) { mat.color.setHex(fin.color); mat.roughness = fin.roughness; mat.metalness = fin.metalness; }
+        var hex = Math.round(c[0] * 255) << 16 | Math.round(c[1] * 255) << 8 | Math.round(c[2] * 255);
+        var fin = M.finishOf(ex.id), cls = M.classOf(ex.id, pi), def = classDef(cls), mat;  // finish.json colour and class
+        if (def && !def.keep) mat = M.classMaterial(THREE, cls, fin ? fin.color : hex);
+        else {
+          mat = new THREE.MeshStandardMaterial({color: hex, roughness: .6, metalness: .15});
+          if (fin) { mat.color.setHex(fin.color); mat.roughness = fin.roughness; mat.metalness = fin.metalness; }
+        }
         var shell = c[3] !== undefined && c[3] < 1;
         if (ex.provisional || shell) {
           mat.transparent = true;
@@ -211,38 +341,51 @@
     return m;
   }
 
-  // One arm as a group of link meshes at joint angles q, in the robot frame (lift at shoulder height
-  // sh, column axis at bpX); the same forward kinematics as the robot page.
-  M.arm = function (THREE, side, geos, mats, q, sh, bpX) {
-    var D = M.DIMS, a = window.OPENARM.arms[side], grp = new THREE.Group();
+  // One arm as a group "openarm_<side>" of link groups (matrix set by the caller, matrixAutoUpdate off):
+  // gBase, gLinks (seven joints) and fingers[i].g, each holding its visual mesh at the URDF visual origin.
+  M.armRig = function (THREE, side, geos, mats) {
+    var a = window.OPENARM.arms[side], grp = new THREE.Group();
     grp.name = 'openarm_' + side;
     grp.userData = {id: 'openarm_' + side, part: true};
+    var link = function (v) {
+      var g = new THREE.Group();
+      g.matrixAutoUpdate = false;
+      if (v && geos[v.key]) {
+        var mesh = new THREE.Mesh(geos[v.key], mats.arm);
+        mesh.castShadow = mesh.receiveShadow = true;
+        mesh.matrixAutoUpdate = false;
+        mesh.matrix.copy(xyzrpy(THREE, v.xyz, v.rpy)).multiply(new THREE.Matrix4().makeScale(v.scale[0], v.scale[1], v.scale[2]));
+        g.add(mesh);
+      }
+      grp.add(g);
+      return g;
+    };
+    return {group: grp, gBase: link(a.base_visual), gLinks: a.joints.map(function (j) { return link(j.visual); }),
+      fingers: a.fingers.map(function (f) { return {g: link(f.visual)}; })};
+  };
+
+  // Pose an arm rig at joint angles q and grip (0 closed to 1 open), in the robot frame (lift at shoulder
+  // height sh, column axis at bpX); the same forward kinematics as the robot page simulation.
+  M.poseArm = function (THREE, rig, side, q, grip, sh, bpX) {
+    var D = M.DIMS, a = window.OPENARM.arms[side];
     q = q || M.ARM_POSE[side];
+    grip = grip === undefined ? M.ARM_GRIP : grip;
     sh = sh === undefined ? D.STOPS.L1000 : sh;
     bpX = bpX === undefined ? D.BP.bp000 : bpX;
-    var vis = function (v, m) {
-      if (!v || !geos[v.key]) return;
-      var mesh = new THREE.Mesh(geos[v.key], mats.arm);
-      mesh.castShadow = mesh.receiveShadow = true;
-      mesh.matrixAutoUpdate = false;
-      mesh.matrix.copy(m).multiply(xyzrpy(THREE, v.xyz, v.rpy)).multiply(new THREE.Matrix4().makeScale(v.scale[0], v.scale[1], v.scale[2]));
-      grp.add(mesh);
-    };
     var l = new THREE.Matrix4().makeTranslation(bpX, 0, sh).multiply(xyzrpy(THREE, [D.MOUNT_X, a.mount.xyz[1], 0], a.mount.rpy));
-    vis(a.base_visual, l);
+    rig.gBase.matrix.copy(l);
     var r = new THREE.Matrix4();
     a.joints.forEach(function (j, i) {
       l.multiply(xyzrpy(THREE, j.xyz, j.rpy));
       l.multiply(r.makeRotationAxis(new THREE.Vector3().fromArray(j.axis).normalize(), q[i]));
-      vis(j.visual, l);
+      rig.gLinks[i].matrix.copy(l);
     });
-    a.fingers.forEach(function (f) {
+    a.fingers.forEach(function (f, i) {
       var lim = Math.abs(f.lo) > Math.abs(f.hi) ? f.lo : f.hi;
-      var m = l.clone().multiply(xyzrpy(THREE, f.xyz, f.rpy))
-        .multiply(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3().fromArray(f.axis).normalize(), lim * M.ARM_GRIP));
-      vis(f.visual, m);
+      rig.fingers[i].g.matrix.copy(l).multiply(xyzrpy(THREE, f.xyz, f.rpy))
+        .multiply(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3().fromArray(f.axis).normalize(), lim * grip));
     });
-    return grp;
+    rig.group.traverse(function (o) { o.matrixWorldNeedsUpdate = true; });
   };
 
   // Upper-body primitives, added to the caller's groups: fixed (on the lift base plate, x at the column
@@ -322,5 +465,166 @@
     cyl(zed, .0085, .003, mats.lens, 5e-4, -.0315, 0, 'x', 20);
     cyl(zed, .0085, .003, mats.lens, 5e-4, .0315, 0, 'x', 20);
     return out;
+  };
+
+  // ---------------------------------------------------------------- robot page fittings
+  // Items the robot page draws on the robot that are not in the component registry (and so not in the
+  // exploded view): base-plate hole marks, base and chest E-stop, RESET button, belly skirt, LED strips,
+  // side and rear decals, lift-column screw heads, label and foot light, lift cable, wrist cameras.
+  // Built only with M.build(THREE, {fittings: true}).
+  function canvasTexture(THREE, w, h, draw) {
+    var c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    draw(c.getContext('2d'), w, h);
+    var t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 8;
+    return t;
+  }
+  function decalTexture(THREE) {
+    return canvasTexture(THREE, 1024, 128, function (s, w, h) {
+      s.clearRect(0, 0, w, h);
+      s.fillStyle = '#1b2a3a';
+      s.font = '600 76px Helvetica, Arial';
+      s.textAlign = 'left';
+      s.textBaseline = 'middle';
+      s.fillText('Open', 20, h / 2);
+      var a = s.measureText('Open').width;
+      s.fillStyle = '#0f8f86';
+      s.fillText('AMRobot', 20 + a, h / 2);
+      var b = s.measureText('AMRobot').width;
+      s.fillStyle = '#8a96a3';
+      s.font = '500 40px Helvetica';
+      s.fillText('2.0', 40 + a + b, h / 2 + 8);
+    });
+  }
+  function labelTexture(THREE, lines, bg, fg, w, h) {
+    return canvasTexture(THREE, w, h, function (r) {
+      r.fillStyle = bg;
+      r.fillRect(0, 0, w, h);
+      r.fillStyle = fg;
+      r.textAlign = 'center';
+      r.font = 'bold ' + Math.round(h * .38) + 'px Helvetica, Arial';
+      r.fillText(lines[0], w / 2, h * .5);
+      r.font = Math.round(h * .2) + 'px Helvetica, Arial';
+      r.globalAlpha = .8;
+      r.fillText(lines[1], w / 2, h * .82);
+      r.globalAlpha = 1;
+    });
+  }
+  function box(THREE, g, x, y, z, m, px, py, pz) {
+    var c = new THREE.Mesh(new THREE.BoxGeometry(x, y, z), m);
+    c.position.set(px, py, pz);
+    c.castShadow = c.receiveShadow = true;
+    g.add(c);
+    return c;
+  }
+  function cyl(THREE, g, r, len, m, px, py, pz, axis, seg) {
+    var c = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, seg), m);
+    c.castShadow = true;
+    if (axis === 'x') c.rotation.z = Math.PI / 2; else c.rotation.x = Math.PI / 2;
+    c.position.set(px, py, pz);
+    g.add(c);
+    return c;
+  }
+  function plane(THREE, g, w, h, m, rx, ry, px, py, pz) {
+    var c = new THREE.Mesh(new THREE.PlaneGeometry(w, h), m);
+    c.rotation.set(rx, ry, 0);
+    c.position.set(px, py, pz);
+    g.add(c);
+    return c;
+  }
+  function chassisFittings(THREE, g, mats) {
+    var D = M.DIMS, hole = new THREE.CircleGeometry(.0045, 12), k, x, y, s;
+    for (k in D.BP) for (x of [-.13, .13]) for (y of [-.035, .035]) {
+      var h = new THREE.Mesh(hole, mats.black);
+      h.position.set(D.BP[k] + x, y, D.DECK + 5e-4);
+      g.add(h);
+    }
+    box(THREE, g, .006, .065, .065, mats.yellow, D.X1 + .003, -.2, .255);  // base E-stop on the front panel
+    cyl(THREE, g, .012, .016, mats.black, D.X1 + .014, -.2, .255, 'x', 16);
+    cyl(THREE, g, .02, .016, mats.red, D.X1 + .028, -.2, .255, 'x', 24);
+    cyl(THREE, g, .015, .008, mats.black, D.X0 + .06, -.21, D.COVER + .004, 'z', 20);  // RESET on the rear deck
+    cyl(THREE, g, .011, .008, mats.resetLit, D.X0 + .06, -.21, D.COVER + .012, 'z', 20);
+    box(THREE, g, .2, .16, .012, mats.skirt, -.17, 0, D.BELLY - .012);
+    for (s of [-1, 1]) box(THREE, g, .62, .003, .008, mats.led, -.02, s * (D.HW + .001), .272);
+    box(THREE, g, .003, .4, .008, mats.led, D.X0 - .001, 0, .272);
+    var decal = new THREE.MeshStandardMaterial({map: decalTexture(THREE), transparent: true, roughness: .5});
+    for (s of [-1, 1]) plane(THREE, g, .4, .05, decal, Math.PI / 2, s > 0 ? Math.PI : 0, -.08, s * (D.HW + .0015), .17);
+    plane(THREE, g, .34, .043, decal, Math.PI / 2, -Math.PI / 2, D.X0 - .0015, -.05, .155);
+  }
+  // Lift cable from the arm profile down the column back to the plate, for the column top at z colTop.
+  M.cableGeometry = function (THREE, colTop) {
+    var e = colTop, t = M.DIMS.PLATE_TOP, D = M.DIMS, V = THREE.Vector3;
+    return new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new V(D.MOUNT_X - D.PROFILE.X / 2 - .012, .012, e + .06),
+      new V(.03, .012, e + .03), new V(-.06, .012, e + .02), new V(-.125, .014, e - .06), new V(-.15, .016, (e + t) / 2 + .05),
+      new V(-.15, .016, t + .1), new V(-.14, .016, t + .012)]), 48, .0055, 8, false);
+  };
+  function columnFittings(THREE, col, mov, mats) {
+    var D = M.DIMS, e = D.COL, t = D.PLATE_TOP, x, y;
+    for (x of [-.13, .13]) for (y of [-.035, .035]) cyl(THREE, col, .0065, .005, mats.steel, x, y, t + .0025, 'z', 6);
+    plane(THREE, col, .11, .035, new THREE.MeshStandardMaterial({map: labelTexture(THREE, ['HEXALIFT V4', '800 N · 18 mm/s · 24 V'],
+      '#e9ecef', '#1d2733', 512, 160), roughness: .5}), Math.PI / 2, 0, 0, -e.W / 2 - .0012, t + .12);
+    box(THREE, col, e.L + .03, e.W + .03, .006, mats.led, 0, 0, t + .003);
+    var z = t + e.RETRACTED + D.MOUNT_ABOVE_COL - .115, f = D.MOUNT_X + D.PROFILE.X / 2;  // chest E-stop on the profile front
+    box(THREE, mov, .036, .07, .07, mats.yellow, f + .018, 0, z);
+    cyl(THREE, mov, .019, .02, mats.red, f + .046, 0, z, 'x', 24);
+    var cable = new THREE.Mesh(new THREE.BufferGeometry(), mats.cable);
+    cable.castShadow = true;
+    col.add(cable);
+    return {cable: cable};
+  }
+  function wristCameras(THREE, g, mats) {  // camera bodies; the robot page sets the group matrices
+    var out = {};
+    ['left', 'right'].forEach(function (s) {
+      var o = new THREE.Group(), c = new THREE.Mesh(new THREE.BoxGeometry(.018, .018, .012), mats.black);
+      o.matrixAutoUpdate = false;
+      c.position.z = .006;
+      o.add(c);
+      g.add(o);
+      out[s] = o;
+    });
+    return out;
+  }
+
+  // ---------------------------------------------------------------- the robot
+  // The robot as one object, built the same way for both pages: root (group "OpenAMRobot", robot frame),
+  // base (base_cad, GLB parts), col (lift assembly at the base-plate position bp), mov (lift stage; its
+  // z is the lift travel), zed (head camera pivot, pitch headPitch degrees), arms (rigs posed at
+  // ARM_POSE), parts ({part id: [groups]}), baseIds, mats. o.fittings adds the robot page fittings and
+  // returns them as fit ({cable, wrist}).
+  M.build = function (THREE, o) {
+    o = o || {};
+    var D = M.DIMS, mats = M.materials(THREE), R = {mats: mats, parts: {}, baseIds: {}, arms: {}};
+    var add = function (id, g) { (R.parts[id] = R.parts[id] || []).push(g); };
+    var root = R.root = new THREE.Group();
+    root.name = 'OpenAMRobot';
+    var base = R.base = M.base(THREE);
+    base.position.z = D.BASE_LINK_Z;
+    root.add(base);
+    base.children.forEach(function (g) { R.baseIds[g.userData.id] = true; add(g.userData.id, g); });
+    if (o.fittings) chassisFittings(THREE, root, mats);
+    var col = R.col = new THREE.Group(), mov = R.mov = new THREE.Group(), zed = R.zed = new THREE.Group();
+    col.name = 'lift_assembly';
+    col.position.x = D.BP[o.bp || 'bp000'];
+    root.add(col);
+    col.add(mov);
+    zed.position.set(D.ZED_X, 0, D.PLATE_TOP + D.COL.RETRACTED + D.MOUNT_ABOVE_COL + D.ZED_ABOVE_SH);
+    zed.rotation.y = (o.headPitch === undefined ? 25 : o.headPitch) * Math.PI / 180;
+    mov.add(zed);
+    var ub = M.upperBody(THREE, {fixed: col, moving: mov, zed: zed}, mats);
+    for (var id in ub) ub[id].forEach(function (g) { add(id, g); });
+    if (o.fittings) R.fit = columnFittings(THREE, col, mov, mats);
+    var geos = M.armGeometries(THREE);
+    ['left', 'right'].forEach(function (s) {
+      var rig = R.arms[s] = M.armRig(THREE, s, geos, mats);
+      root.add(rig.group);
+      add(rig.group.userData.id, rig.group);
+      M.poseArm(THREE, rig, s);
+    });
+    if (o.fittings) R.fit.wrist = wristCameras(THREE, root, mats);
+    M.prepare(THREE, root);
+    return R;
   };
 })();
