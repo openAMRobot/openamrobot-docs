@@ -1,7 +1,7 @@
 ---
 title: Coordinate frames
 tags: [beginner, builder]
-description: map, odom and base_link — the three frames every robot navigation argument is really about.
+description: How map, odom and base_link relate in mobile robot navigation.
 ---
 
 # Coordinate frames
@@ -24,18 +24,18 @@ updated. Ask for any frame relative to any other and the system walks the tree f
 
 In ROS 2 this is [tf2](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Tf2.html).
 
-## The three frames that matter
+## The coordinate frames that matter
 
-By convention, described in [REP 105](https://www.ros.org/reps/rep-0105.html), a mobile robot has
-three:
+REP 105 describes the conventional frame hierarchy used in mobile robot navigation:
 
 ```
-map  ──────►  odom  ──────►  base_link
- │              │              │
- │              │              └── the robot itself
- │              └── smooth, drifts
- └── accurate, jumps
+map ──► odom ──► base_link ──► sensor frames
+│        │             │
+│        │             └── robot body reference
+│        └── smooth, but drifts
+└── globally referenced; localization may correct it
 ```
+REP 105 describes the conventional mobile-robot frame hierarchy, which may include `base_footprint`. The selected platform configuration inspected for this page uses `base_link` directly as the odometry child frame and Nav2 base frame; its URDF does not define `base_footprint`. Verify the active TF tree for the platform and launch configuration you are using.
 
 ### `base_link`
 
@@ -75,11 +75,11 @@ globally correct positions from `map`, no contradiction between them.
 
 Publishers:
 
-| Transform | Published by |
-|:--|:--|
-| `map` → `odom` | The localizer, AMCL in this stack |
-| `odom` → `base_link` | The odometry source |
-| `base_link` → sensors | `robot_state_publisher`, from the URDF |
+| Transform or relationship | Source or status |
+|---|---|
+| `map` → `odom` | AMCL/localization configuration; verify the active publisher for the selected launch |
+| `odom` → `base_link` | Gazebo odometry configuration specifies `odom` as parent and `base_link` as child |
+| `base_link` → sensor frames | Robot description and TF publishers; verify the active publisher for each sensor |
 
 ## Sensor frames
 
