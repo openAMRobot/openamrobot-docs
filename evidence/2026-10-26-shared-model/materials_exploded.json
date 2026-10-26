@@ -60,9 +60,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "e9e9eb",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -162,9 +162,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -230,9 +230,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -247,9 +247,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -264,9 +264,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -281,9 +281,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -298,9 +298,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "cbd0cc",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -383,9 +383,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -400,9 +400,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "cbd0cc",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -417,9 +417,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "cbd0cc",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -434,9 +434,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "cbd0cc",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -451,9 +451,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -468,9 +468,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -485,9 +485,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -502,9 +502,9 @@
    1
   ],
   "after": [
-   "MeshStandardMaterial",
+   "MeshPhysicalMaterial",
    "383e42",
-   0.6,
+   0.62,
    0,
    1
   ]
@@ -657,8 +657,8 @@
   "after": [
    "MeshStandardMaterial",
    "c9cdd2",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  },
@@ -674,8 +674,8 @@
   "after": [
    "MeshStandardMaterial",
    "9aa0a7",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  },
@@ -691,8 +691,8 @@
   "after": [
    "MeshStandardMaterial",
    "9aa0a7",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  },
@@ -708,8 +708,8 @@
   "after": [
    "MeshStandardMaterial",
    "9aa0a7",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  },
@@ -759,8 +759,8 @@
   "after": [
    "MeshStandardMaterial",
    "c9cdd2",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  },
@@ -776,8 +776,8 @@
   "after": [
    "MeshStandardMaterial",
    "9aa0a7",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  },
@@ -810,8 +810,8 @@
   "after": [
    "MeshStandardMaterial",
    "d7dade",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  },
@@ -827,8 +827,8 @@
   "after": [
    "MeshStandardMaterial",
    "9aa0a7",
-   0.3889,
-   0.9,
+   0.4,
+   0.8,
    1
   ]
  }

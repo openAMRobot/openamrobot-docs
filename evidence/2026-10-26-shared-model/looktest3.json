@@ -1,0 +1,42 @@
+{
+ "exploded.html@1280": {
+  "probeMs": 377.2,
+  "light": true,
+  "hq": "<button id=\"b-hq\" aria-pressed=\"false\" title=\"Off: light loo",
+  "hqOn": false,
+  "sw": 1280,
+  "afterClick1": [
+   false,
+   "true"
+  ],
+  "msgs": []
+ },
+ "exploded.html@375": {
+  "probeMs": 287.8,
+  "light": true,
+  "hq": "<button id=\"b-hq\" aria-pressed=\"false\" title=\"Off: light loo",
+  "hqOn": false,
+  "sw": 375,
+  "msgs": []
+ },
+ "robot.html@1280": {
+  "probeMs": 15524.9,
+  "light": true,
+  "hq": "<button id=\"b-q\" class=\"\">High quality</button>",
+  "hqOn": false,
+  "sw": 1280,
+  "afterClick1": [
+   false,
+   true
+  ],
+  "msgs": []
+ },
+ "robot.html@375": {
+  "probeMs": 997.2,
+  "light": true,
+  "hq": "<button id=\"b-q\" class=\"\">High quality</button>",
+  "hqOn": false,
+  "sw": 375,
+  "msgs": []
+ }
+}

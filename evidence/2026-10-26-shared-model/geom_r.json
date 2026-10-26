@@ -1,0 +1,28 @@
+{
+ "page": "robot.html",
+ "meshesBefore": 203,
+ "meshesAfter": 203,
+ "matched": 203,
+ "unmatchedBefore": [],
+ "unmatchedAfter": [],
+ "maxMatrixDiff": 0,
+ "opacityOrVisibilityChanged": 0,
+ "uvAdded": 22,
+ "materialChanges": 53,
+ "errs": [
+  [],
+  []
+ ],
+ "sil": {
+  "front": {
+   "litBefore": 149425,
+   "litAfter": 149425,
+   "differing": 0
+  },
+  "rear": {
+   "litBefore": 162490,
+   "litAfter": 162490,
+   "differing": 0
+  }
+ }
+}

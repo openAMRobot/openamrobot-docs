@@ -86,12 +86,11 @@ image, so the pipeline matches. Robot page: the 3D stage after the Overview and 
 | `robot_1280_overview_before.png` | `robot_1280_overview_after.png` |
 | `robot_1280_side_before.png` | `robot_1280_side_after.png` |
 | `exploded_1280_page_before.png`, `exploded_375_before.png`, `robot_375_before.png` | `exploded_1280_page_after.png`, `exploded_375_after.png`, `robot_375_after.png` |
-| | `exploded_base_detail_2x_after.png` (2560 x 1440 render, base crop) |
 
 Console at 375 and 1280 px, both pages, before and after: no errors, no warnings, no failed requests,
 no horizontal scroll (scrollWidth equal to the viewport width).
 
-## Colour calibration (follow-up 1)
+## Colour calibration (follow-up 1; values superseded by review round 2 below)
 
 The first version of the look washed out the finish (RAL 7035 panels near white, RAL 7016 cover mid-grey).
 `model/look.js` now calibrates per page (`OAMR_LOOK.CAL`):
@@ -162,6 +161,68 @@ stay under the 1 MB image limit of `scripts/check_docs.sh`.
 | `preview/09_light_look_assembled_front_three_quarter.png` | light look (fallback), same pose as 01 |
 | `preview/contact_sheet.png` | all nine, labelled |
 
+## Review round 2: cover sheen, satin lift column, rear fill, framing, toggle
+
+**Cover (powder_coated_steel).** The rear three-quarter view showed a mirror-like reflection on the RAL 7016
+cover. `covertest.js` traced it to the key light's specular lobe at a grazing angle (it stays with the
+normal map off and with no environment); effective roughness was 0.60 with no roughness map. The class is
+now roughness 0.62 (no roughness map, so 0.62 is the effective value), orange-peel normal 0.06 (was 0.12)
+and specular 0.3 (three.js `specularIntensity`, MeshPhysicalMaterial). The brightest cover pixel in that
+view, same pose: 196 (was), 179 at roughness 0.65, 117 with specular 0.3: a soft sheen.
+
+**Lift column.** It rendered flat white (anodised class: metalness 0.9 reflecting the room at full
+environment). New class `satin_aluminium` for the lift column and the head camera bracket (also the lift
+stage and the robot page tote rails, which share these materials): roughness 0.4, metalness 0.8,
+environment at 0.38 of the page value for metals; colours of model.js unchanged; slot lines and geometry
+unchanged. `coltest.js`, median green channel of the column faces: front 215 (its colour `#D7DADE`), right
+side 178, rear 169, left side 216 (was 237, 223, 219, 240).
+
+**Rear fill (look.js `rimLight`).** A hemisphere light oriented to the rear left (sky white, ground black,
+intensity 2 on the exploded view): diffuse only. A low directional rim light was tried first; it put a
+specular glint on the cover top seen from the front (cover +43 %), so it was replaced. The robot page keeps
+its store lighting (a light there would light the whole store).
+
+Calibration now: exploded.html exposure 1.2, key 2.8, rear fill 2, environment 0.14 (dielectric) and 1.3
+(metal); robot.html exposure 1.05 (unchanged), environment 0.16 and 1.3.
+
+| View | Part (finish.json sRGB) | Pixels | Before (`514f719`): median sRGB, luma (max channel) | After: median sRGB, luma (max channel) |
+|---|---|---|---|---|
+| exploded, assembled (front) | side panel (`#CBD0CC`) | 10,740 | 192 195 192, -6.1 % (6.3) | 200 202 200, **-2.5 %** (2.9) |
+| exploded, assembled (front) | cover (`#383E42`) | 13,439 | 54 59 63, -4.6 % (4.8) | 56 64 69, **+2.7 %** (4.5) |
+| exploded, assembled (front) | arm profile (`#383E42`) | 4,612 | 56 62 67, +0.1 % (1.5) | 57 63 67, **+1.6 %** (1.8) |
+| exploded, rear three-quarter | rear (left) side panel (`#CBD0CC`) | 16,239 | 122 125 123, -39.9 % (39.9) | 202 204 202, **-1.6 %** (1.9) |
+| exploded, rear three-quarter | rear panel (`#CBD0CC`) | 7,863 | 62 65 63, -68.9 % (69.5) | 192 195 193, **-6.0 %** (6.3) |
+| robot page, Side preset | arm profile (`#383E42`) | 333 | 53 59 63, -4.9 % (5.4) | 54 60 63, **-3.4 %** (4.5) |
+| robot page, Overview preset | side panel (`#CBD0CC`) | 78 | 187 187 180, -9.8 % (11.8) | 192 193 187, **-6.9 %** (8.3) |
+| robot page, Overview preset | cover (`#383E42`) | 18,559 | 64 67 67, +8.8 % (14.3) | 54 59 61, **-4.8 %** (7.6) |
+| robot page, Overview preset | arm profile (`#383E42`) | 212 | 56 61 63, -1.5 % (4.5) | 56 61 63, **-1.5 %** (4.5) |
+
+Rear samples: the rear three-quarter preview pose (az 140, el 18), faces toward the fill direction and
+the camera. Raw rows: `colour_v3.jsonl` (first four lines `514f719`, last four this state).
+
+**Previews.** 05 is framed by `preview.js` so the exploded robot fills 80.6 % of the image height (rows
+that differ between a render with and without the robot). 07 and 08: Frames and Labels switched off for
+these pictures only (the page defaults stay on). All nine regenerated, each under 1 MB (07, 08 and the
+contact sheet palette-reduced to 256 colours).
+
+**Toggle after the automatic switch.** robot.html: the probe callback now switches High quality off as a
+click would (light look, GTAO off), so the toggle shows off and one click restores the full look.
+exploded.html already showed off. `looktest3.json`: exploded.html 1280 px probe 377 ms, light, toggle off,
+one click: full look, toggle on; robot.html 1280 px probe 15,525 ms, light, High quality off, one click:
+full look, High quality on; 375 px both pages light with the toggle off; no console messages.
+
+**Rerun.** Geometry: exploded 132/132, robot 203/203 meshes, largest matrix difference 0, 0 differing
+silhouette pixels front and rear (`geom_x.json`, `geom_r.json`). Frame times (same machine, median of 30):
+
+| Frame | #56 (rounds 1, 2) | Full look | Light look |
+|---|---|---|---|
+| exploded.html, parts moving | 343, 380 ms | 1,063 ms | 334 ms (-3 to -12 %) |
+| exploded.html, orbit | 152, 176 ms | 497 ms | 148 ms (-3 to -16 %) |
+| robot.html, store, high quality | 19,695, 18,546 ms | 18,202 ms | 17,339 ms |
+
+The specular powder coat (MeshPhysicalMaterial) did not slow the full look down measurably (1,063 against
+1,183 ms before this round, within run-to-run spread). Screenshots marked after were rerun (full look).
+
 ## Performance
 
 `perf.js`: same machine (4 vCPU container, no GPU, SwiftShader), 1280 x 800, median of 30 renders after
@@ -221,6 +282,8 @@ node colour.js 8803 exploded; node colour.js 8802 exploded   # colour samples (8
 node colour.js 8802 robot '[{}]' side; node colour.js 8802 robot '[{}]' over
 node looktest.js 8802                                  # probe and toggles
 node preview.js 8802 preview                           # preview pictures
+node colour.js <port> exploded '[{}]' rear              # rear samples
+node covertest.js 8802 cv; node coltest.js 8802 . '<variants>'   # cover sheen and column variants
 ```
 
 Ports: 8800 serves the #56 roadmap folder, 8802 this change (`python3 -m http.server`).
