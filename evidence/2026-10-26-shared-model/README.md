@@ -223,6 +223,79 @@ silhouette pixels front and rear (`geom_x.json`, `geom_r.json`). Frame times (sa
 The specular powder coat (MeshPhysicalMaterial) did not slow the full look down measurably (1,063 against
 1,183 ms before this round, within run-to-run spread). Screenshots marked after were rerun (full look).
 
+## Review round 3: arm colour on the robot page, page defaults
+
+**Cause of the lavender arm.** robot.html swapped the *working arm* (the arm chosen for the pick target) to
+a second material, `armHi`: the same as-delivered vertex colours plus a blue emissive (`#2A5BD7`,
+intensity 0.35), described by a "Working arm" legend chip. Under the store lights the emissive read as
+lavender; the other arm kept the as-delivered material. exploded.html never used `armHi`, so both arms
+were grey there. Store lights, environment reflection and material cloning were checked and are not the
+cause: in each look both arms resolve to one material object. Fix (`patch_robot_defaults.py`, model.js):
+the highlight swap now assigns the as-delivered material to both arms, `armHi` and the legend chip are
+removed. In the light look both arms use the same Lambert twin. No geometry change.
+
+`armcolour.js` (robot.html, both looks, Overview and Side presets, camera tiles, Frames and Labels off):
+each link group of both rigs is tagged for the colour sampler; faces turned to the camera, edges eroded,
+median sRGB per link and per whole arm. Material identity in the page: before, 2 arm materials (left
+`MeshPhysicalMaterial` emissive `2a5bd7`, right emissive `000000`); after, 1 in the full look
+(`MeshPhysicalMaterial`, emissive `000000`) and 1 in the light look (`MeshLambertMaterial`).
+
+Chromaticity (each channel over the luma of its own arm, the tint; largest channel difference, left
+against right) and luma, same link, page pose (the pick-target pose of the page: the working arm reaches
+into the shelf, the other is parked):
+
+| Look | Preset | Link | Before: left, right sRGB | Before: chroma, luma | After: left, right sRGB | After: chroma, luma |
+|---|---|---|---|---|---|---|
+| full | Overview | 2 | 177 180 203, 83 81 78 | 16.8 %, +122.9 % | 123 120 115, 83 81 78 | **0.5 %**, +48.1 % |
+| full | Overview | 3 | 169 173 197, 84 82 79 | 17.9 %, +111.5 % | 120 117 112, 84 82 79 | **0.6 %**, +42.7 % |
+| full | Overview | whole arm | 177 180 202, 99 97 93 | 16.6 %, +86.3 % | 119 116 111, 99 97 93 | **0.4 %**, +19.7 % |
+| full | Side | 3 | 144 149 182, 103 100 96 | 26.6 %, +49.8 % | 81 79 75, 103 100 96 | **0.9 %**, -21.1 % |
+| full | Side | whole arm | 144 150 183, 101 99 95 | 26.4 %, +52.4 % | 80 77 74, 101 99 95 | **1.4 %**, -21.9 % |
+| light | Overview | 2 | | | 91 88 84, 53 52 49 | **1.0 %**, +69.9 % |
+| light | Side | whole arm | | | 46 45 43, 71 69 65 | **1.5 %**, -34.8 % |
+
+Both arms now have the same colour (chroma within 1.7 % in every link, preset and look). Their luma still
+differs in the page pose, because the two arms stand in different poses and places under the store lights:
+the working arm reaches towards the lit shelf, the parked arm faces the aisle, and in the Side preset the
+camera sees the outside of one arm and the inside of the other. That is lighting and view, not material.
+With both arms in the model's mirrored rest pose (`mirrored`, test only) the links the Overview camera sees
+alike agree within 5 % in luma as well:
+
+| Look | Preset (mirrored pose) | Link | Left, right sRGB | Chroma | Luma |
+|---|---|---|---|---|---|
+| full | Overview | 2 | 82 80 77, 83 81 78 | 0.1 % | **-1.2 %** |
+| full | Overview | 3 | 82 81 77, 84 82 79 | 1.0 % | **-1.6 %** |
+| light | Overview | 0 | 82 80 75, 84 82 78 | 1.4 % | **-2.5 %** |
+| light | Overview | 1 | 105 102 97, 108 105 100 | 0.2 % | **-2.8 %** |
+| light | Overview | 2 | 53 52 49, 53 52 49 | 0.0 % | **0.0 %** |
+| light | Overview | 3 | 52 51 48, 53 52 49 | 0.1 % | **-1.9 %** |
+| full | Overview | 0 (mount, seen from different sides) | 92 90 87, 120 117 112 | 1.0 % | -23.1 % |
+| full | Side | 3 (outside against inside of the arm) | 76 74 71, 103 100 96 | 0.2 % | -26.0 % |
+
+So the 5 % criterion holds in luma where the two arms are seen alike (same pose, mirrored view); in the
+page pose and in the Side preset the luma difference is the store lighting on differently placed arms,
+which this change does not alter (store lighting is page-specific and out of scope). Raw rows:
+`arm_colour_before.jsonl` (`d60f4af`), `arm_colour_after.jsonl`.
+
+**Page defaults (robot.html).** View preset Follow, Frames off, Labels off (`patch_robot_defaults.py`; the
+buttons still switch them on); High quality on by default on wide screens as before (`hq: !Mr`; narrow
+screens start with it off, unchanged), the frame probe and `?look=` unchanged. `check_roadmap.py` checks
+the preset, the Frames and Labels buttons and start values, High quality, a single selected preset and the
+absence of an arm tint. Previews 07 and 08 regenerated (their pictures already had Frames and Labels off).
+
+**Rerun.** Geometry: exploded 132/132, robot 203/203, largest matrix difference 0, 0 differing silhouette
+pixels (`geom_x.json`, `geom_r.json`). Probe and toggle (`looktest4.json`): all four page and width
+combinations switch to the light look on SwiftShader with the toggle off; one click restores the full
+look; no console messages. Defaults at 375 and 1280 px (`defaults.js`, pages loaded with no parameters,
+read after 25 s):
+
+| Page | View preset | Frames | Labels | High quality | Look at 25 s | Console | scrollWidth |
+|---|---|---|---|---|---|---|---|
+| robot.html 1280 px | Follow | off | off | on | full (probe still running at about 8 s per frame) | no messages | 1280 |
+| robot.html 375 px | Follow | off | off | off (narrow-screen default, unchanged) | light (probe done) | no messages | 375 |
+| exploded.html 1280 px | | | | off (probe) | light (probe, SwiftShader) | no messages | 1280 |
+| exploded.html 375 px | | | | off (probe) | light (probe, SwiftShader) | no messages | 375 |
+
 ## Performance
 
 `perf.js`: same machine (4 vCPU container, no GPU, SwiftShader), 1280 x 800, median of 30 renders after

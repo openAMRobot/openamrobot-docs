@@ -1,0 +1,8 @@
+{"look":"full","preset":"over","materials":{"distinctArmMaterials":2,"left":["MeshPhysicalMaterial emissive 2a5bd7"],"right":["MeshPhysicalMaterial emissive 000000"]}}
+{"look":"full","preset":"side","materials":{"distinctArmMaterials":2,"left":["MeshPhysicalMaterial emissive 2a5bd7"],"right":["MeshPhysicalMaterial emissive 000000"]}}
+{"look":"full","mode":"camera","pose":"page","preset":"over","link":0,"left":[162,167,195],"nLeft":464,"right":[121,118,113],"nRight":598,"lumaDiff":42,"maxChannel":72.6,"chroma":21.5}
+{"look":"full","mode":"camera","pose":"page","preset":"over","link":2,"left":[177,180,203],"nLeft":911,"right":[83,81,78],"nRight":955,"lumaDiff":122.9,"maxChannel":160.3,"chroma":16.8}
+{"look":"full","mode":"camera","pose":"page","preset":"over","link":3,"left":[169,173,197],"nLeft":1058,"right":[84,82,79],"nRight":1144,"lumaDiff":111.5,"maxChannel":149.4,"chroma":17.9}
+{"look":"full","mode":"camera","pose":"page","preset":"over","link":"arm","left":[177,180,202],"nLeft":5775,"right":[99,97,93],"nRight":4238,"lumaDiff":86.3,"maxChannel":117.2,"chroma":16.6}
+{"look":"full","mode":"camera","pose":"page","preset":"side","link":3,"left":[144,149,182],"nLeft":4929,"right":[103,100,96],"nRight":9120,"lumaDiff":49.8,"maxChannel":89.6,"chroma":26.6}
+{"look":"full","mode":"camera","pose":"page","preset":"side","link":"arm","left":[144,150,183],"nLeft":6391,"right":[101,99,95],"nRight":38471,"lumaDiff":52.4,"maxChannel":92.6,"chroma":26.4}
