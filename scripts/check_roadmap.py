@@ -18,6 +18,15 @@ parses them and fails when:
   is inconsistent: an exploded.json id that model.js does not define, an
   invalid stage, a component without a source or with a non-public link, a
   GLB node without id, class or source, or a page over its size budget;
+- robot.html or exploded.html carry a second three.js (an inline copy of the
+  three.js core, or a three.js script other than model/three-r160.min.js and,
+  on robot.html only, the store addons model/three-r160-store.min.js), robot
+  geometry or robot materials of their own (anything but one call of
+  OAMR_MODEL.build), or a renderer look other than model/look.js (calibration,
+  light-look fallback and its frame probe included), or robot.html does not
+  start with the Follow preset, Frames and Labels off and High quality on, or
+  tints one arm; or
+  model/finish.json names an unknown material class or part;
 - the exploded view lacks a control (explode robot, open the base, cutaway,
   tour, pause, stop, record), its opened-base offsets, labels, view settings
   or tour keyframes name unknown ids, the tour is not 40 to 50 s, or a tour
@@ -44,11 +53,24 @@ GEOMETRY = {"cad", "envelope", "primitive", "none"}
 GLB_CLASSES = {"chassis", "component", "envelope"}
 PUBLIC_LINK = re.compile(r"^https://github\.com/openAMRobot/(?:openamr-platform-hw|openamr-platform-sw|openamr-upperbody-hw)/(?:blob|tree)/main/\S+$")
 EXPLODED_MAX_BYTES = 350 * 1024
-EXPLODED_CONTROLS = ["b-asm", "b-explode", "b-open", "b-cut", "b-reset", "b-nums", "b-tour", "b-pause", "b-stop", "b-rec"]
+EXPLODED_CONTROLS = ["b-asm", "b-explode", "b-open", "b-cut", "b-reset", "b-nums", "b-hq", "b-tour", "b-pause", "b-stop", "b-rec"]
 MEDIA = ["media/openamrobot-2-tour-1080p.mp4", "media/openamrobot-2-tour-1080x1350.mp4"]
 MEDIA_MAX_BYTES = 15 * 1024 * 1024
 TOUR_SECONDS = (40.0, 50.0)
 EXPLODED_FIRST_LOAD_MAX_BYTES = 4 * 1000 * 1000  # page, scripts, exploded.json and video posters; not the videos
+ROBOT_MAX_BYTES = 600 * 1024  # robot.html without a bundled three.js
+THREE_CORE = "model/three-r160.min.js"
+THREE_ADDONS = {"robot.html": ["model/three-r160-store.min.js"], "exploded.html": []}
+# three.js core text: none of it may appear in a page's inline scripts or in the addon file
+THREE_CORE_MARKS = ["__THREE__", "isWebGLRenderer", "THREE.WebGLRenderer:"]
+# robot construction outside model/model.js: model internals called from a page, or code that only the
+# robot builder has (OpenArm link meshes, robot page fittings, the robot materials)
+ROBOT_MARKS = [r"\b(?:OAMR_)?MODEL\.(?:base|upperBody|armGeometries|armRig|arm|materials|classMaterial|texture)\(", r"\bBASE_GLB\b",
+               r"OPENARM\.meshes", r"HEXALIFT V4", r'fillText\("AMRobot"', r"makeScale\(\w+\.scale\[0\]",
+               r"vertexColors:\s*(?:!0|true)", r"emissive:\s*(?:732282|2776023)\b", r"\b(?:13225426|10133671|14146270|329224)\b"]
+# renderer look outside model/look.js
+LOOK_MARKS = [r"\.toneMapping\s*=", r"\.toneMappingExposure\s*=", r"\.outputColorSpace\s*=", r"\.shadowMap\.type\s*=",
+              r"\bRoomEnvironment\b", r"\bPMREMGenerator\b"]
 STATUS = {"st-mat": "MERGED AND TESTED", "st-mun": "MERGED UNTESTED", "st-rev": "IN REVIEW",
           "st-prog": "IN PROGRESS", "st-doc": "DOCUMENTED ONLY", "st-not": "NOT STARTED", "st-blk": "BLOCKED"}
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
@@ -197,8 +219,9 @@ def model_components(js):
     return json.loads(m.group(1))
 
 
-def glb_nodes(payload):
-    """Nodes of the base GLB in model/base_glb.js (base64 with a '.' every 16 characters)."""
+def glb_nodes(payload, prims=False):
+    """Nodes of the base GLB in model/base_glb.js (base64 with a '.' every 16 characters); with prims,
+    each node carries _prims, the primitive count of its mesh."""
     m = re.search(r'window\.BASE_GLB="([^"]+)"', payload)
     if not m:
         raise ValueError("base_glb.js does not set window.BASE_GLB")
@@ -206,7 +229,12 @@ def glb_nodes(payload):
     if raw[:4] != b"glTF":
         raise ValueError("BASE_GLB is not a binary glTF")
     n = struct.unpack("<I", raw[12:16])[0]
-    return [x for x in json.loads(raw[20:20 + n])["nodes"] if "mesh" in x]
+    doc = json.loads(raw[20:20 + n])
+    nodes = [x for x in doc["nodes"] if "mesh" in x]
+    if prims:
+        for x in nodes:
+            x["_prims"] = len(doc["meshes"][x["mesh"]]["primitives"])
+    return nodes
 
 
 def check_model(root, html, err):
@@ -291,6 +319,9 @@ def check_model(root, html, err):
         if cid not in ex.get("components", {}):
             err("exploded.json", "component %s has no entry (stage and offsets)" % cid)
     check_views(root, html, ex, byid, glb, err)
+    with open(os.path.join(mdir, "base_glb.js"), encoding="utf-8") as f:
+        prims = {(n.get("extras") or {}).get("id"): n.get("_prims", 0) for n in glb_nodes(f.read(), prims=True)}
+    check_finish(root, err, comps, prims)
     # budgets: the page itself, and its first load (page, local scripts, exploded.json; videos load on demand)
     size = len(html.encode("utf-8"))
     if size > EXPLODED_MAX_BYTES:
@@ -365,6 +396,102 @@ def check_views(root, html, ex, byid, glb, err):
             err("exploded.html", "a video loads before it is played (preload must be none)")
     if 'src="%s"' % MEDIA[0] not in html:
         err("exploded.html", "the 16:9 tour video is not shown on the page")
+
+
+def check_shared(root, html, err):
+    """robot.html and exploded.html: one three.js, the robot only from model/model.js, the look from model/look.js."""
+    for p in ("robot.html", "exploded.html"):
+        h = html[p]
+        srcs = re.findall(r'<script src="([^"]+)"', h)
+        threes = [x for x in srcs if "three" in os.path.basename(x).lower()]
+        if threes != [THREE_CORE] + THREE_ADDONS[p]:
+            err(p, "three.js scripts %s, expected %s" % (threes, [THREE_CORE] + THREE_ADDONS[p]))
+        for need in ("model/model.js", "model/look.js"):
+            if srcs.count(need) != 1:
+                err(p, "must load %s once" % need)
+        inline = "".join(re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", h, flags=re.S))
+        for mark in THREE_CORE_MARKS:
+            if mark in inline:
+                err(p, "an inline script carries three.js core code (%s); use %s" % (mark, THREE_CORE))
+        if len(re.findall(r"OAMR_MODEL\.build\(|\bMODEL\.build\(", inline)) != 1:
+            err(p, "must build the robot with exactly one call of OAMR_MODEL.build")
+        for rx in ROBOT_MARKS:
+            m = re.search(rx, inline)
+            if m:
+                err(p, "robot geometry or materials defined in the page (%s); they belong in model/model.js" % m.group(0))
+        for rx in LOOK_MARKS:
+            m = re.search(rx, inline)
+            if m:
+                err(p, "renderer look set in the page (%s); it belongs in model/look.js" % m.group(0))
+        if not re.search(r"(?:OAMR_)?LOOK\.apply\(", inline) or not re.search(r"(?:OAMR_)?LOOK\.environment\(", inline):
+            err(p, "must take tone mapping, colour output, shadows and environment from model/look.js")
+        for call in ("CAL", "robotEnv(", "lightLook(", "startProbe(", "forced("):
+            if call not in inline:
+                err(p, "must use the calibrated look and the light-look fallback of model/look.js (%s)" % call.rstrip("("))
+    # robot.html page defaults: view preset Follow, Frames and Labels off, High quality on; one arm material
+    h = html["robot.html"]
+    for what, rx in [("view preset Follow selected", r'<button data-view="follow" class="on">'),
+                     ("view preset Follow at start", r'view:"follow",'), ("Follow applied at start", r'P2\("follow"\)'),
+                     ("Frames off", r'<button id="b-frames" aria-pressed="false">'), ("Frames off at start", r'\bvar fs=!1;'),
+                     ("Labels off", r'<button id="b-labels" aria-pressed="false">'), ("Labels off at start", r'\bvr=!1,'),
+                     ("High quality on", r'<button id="b-q" class="on">'), ("High quality on at start", r'\bhq:!Mr,')]:
+        if not re.search(rx, h):
+            err("robot.html", "page default not as required: %s" % what)
+    if len(re.findall(r'<button data-view="[a-z]+" class="on">', h)) != 1:
+        err("robot.html", "exactly one view preset must be selected")
+    if re.search(r"armHi|=e===s\?\w+:kc", h):
+        err("robot.html", "the arms must share the as-delivered arm material (no working-arm tint)")
+    for f in [THREE_CORE] + THREE_ADDONS["robot.html"]:
+        if not os.path.isfile(os.path.join(root, f)):
+            err("model", "%s is missing" % f)
+    try:
+        with open(os.path.join(root, THREE_ADDONS["robot.html"][0]), encoding="utf-8") as f:
+            addons = f.read()
+        for mark in THREE_CORE_MARKS:
+            if mark in addons:
+                err(THREE_ADDONS["robot.html"][0], "carries three.js core code (%s)" % mark)
+    except OSError:
+        pass
+    size = len(html["robot.html"].encode("utf-8"))
+    if size > ROBOT_MAX_BYTES:
+        err("robot.html", "%d bytes, over %d" % (size, ROBOT_MAX_BYTES))
+
+
+def check_finish(root, err, comps, glb_prims):
+    """model/finish.json: classes of known parts, primitives that exist, known texture names."""
+    try:
+        with open(os.path.join(root, "model", "finish.json"), encoding="utf-8") as f:
+            fin = json.load(f)
+    except (OSError, ValueError) as e:
+        err("finish.json", str(e))
+        return
+    classes = fin.get("classes", {})
+    parts = set(glb_prims)
+    for c in comps:
+        parts.update(c.get("parts", []))
+    for pid in list(fin.get("parts", {})) + list(fin.get("class_of", {})):
+        if pid not in parts:
+            err("finish.json", "part %s is neither a GLB node nor a part of model.js" % pid)
+    for pid, cl in fin.get("class_of", {}).items():
+        for key, name in ({"*": cl} if isinstance(cl, str) else cl).items():
+            if name not in classes:
+                err("finish.json", "part %s names unknown class %s" % (pid, name))
+            if key not in ("*", "lens") and pid in glb_prims and not (key.isdigit() and int(key) < glb_prims[pid]):
+                err("finish.json", "part %s has no primitive %s" % (pid, key))
+    for name, c in classes.items():
+        if c.get("keep"):
+            continue
+        for k in ("roughness", "metalness"):
+            if not isinstance(c.get(k), (int, float)) or not 0 <= c[k] <= 1:
+                err("finish.json", "class %s: %s not 0 to 1" % (name, k))
+        for k in ("specular", "env_scale"):
+            if k in c and (not isinstance(c[k], (int, float)) or not 0 <= c[k] <= 1):
+                err("finish.json", "class %s: %s not 0 to 1" % (name, k))
+        for k in ("normal_map", "roughness_map"):
+            if k in c and c[k] not in ("orange_peel", "layer_lines", "brushed"):
+                err("finish.json", "class %s: unknown texture %s" % (name, c[k]))
+        if ("normal_map" in c or "roughness_map" in c) and not c.get("tile_m"):
+            err("finish.json", "class %s has a texture but no tile_m" % name)
 
 
 def check_nav(p, html, err):
@@ -470,6 +597,7 @@ def main():
     for p in PAGES:
         check_nav(p, html[p], err)
     check_model(args.dir, html["exploded.html"], err)
+    check_shared(args.dir, html, err)
 
     # 2. status count strips
     for p, tr in trees.items():
@@ -524,13 +652,16 @@ def main():
     # 5. forbidden terms (visible text and attribute values, scripts included for embedded data)
     priv = [(t, re.compile(re.escape(t), re.I)) for t in private_terms()]
     texts = dict(html)
-    for name in ("model/model.js", "model/exploded.json"):  # shared model text shown on the pages
-        with open(os.path.join(args.dir, name), encoding="utf-8") as f:
-            texts[name] = f.read()
+    for name in ("model/model.js", "model/look.js", "model/finish.json", "model/exploded.json"):  # shared model text
+        try:
+            with open(os.path.join(args.dir, name), encoding="utf-8") as f:
+                texts[name] = f.read()
+        except OSError:
+            err(name, "missing")
     for p, t in texts.items():
-        if p == "robot.html":  # three.js bundle and mesh data are not page content
+        if p == "robot.html":  # the minified store application and mesh data are not page content
             t = re.sub(r"<script>window\.OPENARM=.*?</script>", "", t, flags=re.S)
-            t = re.sub(r"<script>\(\(\)=>\{var Jh=.*?</script>", "", t, flags=re.S)
+            t = re.sub(r"<script>\(\(\)=>\{var jn=window\.THREE.*?</script>", "", t, flags=re.S)
         t = re.sub(r"url\(data:[^)]*\)", "", t)
         for label, rx in FORBIDDEN + [("private term", r) for _, r in priv]:
             for m in rx.finditer(t):

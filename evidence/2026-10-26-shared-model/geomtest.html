@@ -1,0 +1,61 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#000">
+<script src="model/three-r160.min.js"></script><script src="model/base_glb.js"></script><script src="model/openarm.js"></script><script src="model/model.js"></script>
+<script>
+// Builds the shared robot as exploded.html does (before: base, upperBody, arm; after: MODEL.build),
+// dumps every mesh and renders flat-white silhouettes. Test page, not committed to the site.
+(function () {
+  var THREE = window.THREE, MODEL = window.OAMR_MODEL, D = MODEL.DIMS, root;
+  if (MODEL.build) root = MODEL.build(THREE, {headPitch: 25}).root;
+  else {
+    var mats = MODEL.materials(THREE);
+    root = new THREE.Group();
+    var base = MODEL.base(THREE); base.position.z = D.BASE_LINK_Z; root.add(base);
+    var col = new THREE.Group(), mov = new THREE.Group(), zed = new THREE.Group();
+    col.position.x = D.BP.bp000; root.add(col); col.add(mov);
+    zed.position.set(D.ZED_X, 0, D.PLATE_TOP + D.COL.RETRACTED + D.MOUNT_ABOVE_COL + D.ZED_ABOVE_SH);
+    zed.rotation.y = 25 * Math.PI / 180; mov.add(zed);
+    MODEL.upperBody(THREE, {fixed: col, moving: mov, zed: zed}, mats);
+    var geos = MODEL.armGeometries(THREE);
+    ['left', 'right'].forEach(function (s) { root.add(MODEL.arm(THREE, s, geos, mats)); });
+  }
+  window.__root = root;
+  root.updateMatrixWorld(true);
+  window.__dump = function () { return dumpMeshes(root); };
+  window.__sil = function (dir) { return silhouette(THREE, root, dir); };
+})();
+function hashArr(a) {  // FNV-1a over the bytes of a typed array
+  var b = new Uint8Array(a.buffer, a.byteOffset, a.byteLength), h = 2166136261;
+  for (var i = 0; i < b.length; i++) { h ^= b[i]; h = Math.imul(h, 16777619) >>> 0; }
+  return h.toString(16);
+}
+function partOf(o) { while (o && !(o.userData && o.userData.id)) o = o.parent; return o ? o.userData.id : '-'; }
+function dumpMeshes(root) {
+  var out = [];
+  root.traverse(function (o) {
+    if (!o.isMesh) return;
+    var g = o.geometry, m = o.material;
+    out.push({part: partOf(o), pos: hashArr(g.attributes.position.array), n: g.attributes.position.count,
+      idx: g.index ? hashArr(g.index.array) : '', mw: Array.from(o.matrixWorld.elements), visible: o.visible,
+      color: m.color ? m.color.getHexString() : '', opacity: m.opacity, transparent: m.transparent,
+      roughness: m.roughness, metalness: m.metalness, type: m.type, uv: !!g.attributes.uv});
+  });
+  return out;
+}
+function silhouette(THREE, root, dir) {
+  var W = 1280, H = 960, r = new THREE.WebGLRenderer({antialias: false, preserveDrawingBuffer: true});
+  r.setSize(W, H); r.setPixelRatio(1);
+  var sc = new THREE.Scene(); sc.background = new THREE.Color(0); sc.overrideMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide});
+  var parent = root.parent; sc.add(root);
+  var cam = new THREE.PerspectiveCamera(32, W / H, .05, 20); cam.up.set(0, 0, 1);
+  var c = new THREE.Vector3(.05, 0, .72), d = new THREE.Vector3().fromArray(dir).normalize();
+  cam.position.copy(c).addScaledVector(d, 3.4); cam.lookAt(c);
+  r.render(sc, cam);
+  var px = new Uint8Array(W * H * 4), gl = r.getContext(); gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  var mask = new Uint8Array(W * H), lit = 0;
+  for (var i = 0; i < W * H; i++) { mask[i] = px[i * 4] > 127 ? 1 : 0; lit += mask[i]; }
+  var url = r.domElement.toDataURL('image/png');
+  if (parent) parent.add(root);
+  r.dispose();
+  return {lit: lit, mask: Array.from(mask).join(''), png: url};
+}
+</script></body></html>

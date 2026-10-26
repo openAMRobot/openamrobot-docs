@@ -1,0 +1,835 @@
+[
+ {
+  "part": "base_camera",
+  "before": [
+   "MeshStandardMaterial",
+   "050505",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "050505",
+   0.05,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "base_camera",
+  "before": [
+   "MeshStandardMaterial",
+   "333842",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "333842",
+   0.05,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "base_controller",
+  "before": [
+   "MeshStandardMaterial",
+   "0f3d1f",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0f3d1f",
+   0.4,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "base_plate",
+  "before": [
+   "MeshStandardMaterial",
+   "e9e9eb",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "e9e9eb",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "camera_mount",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.6,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "castor_front_left",
+  "before": [
+   "MeshStandardMaterial",
+   "d9d9d1",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "161616",
+   0.9,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "castor_front_right",
+  "before": [
+   "MeshStandardMaterial",
+   "d9d9d1",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "161616",
+   0.9,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "castor_rear_left",
+  "before": [
+   "MeshStandardMaterial",
+   "d9d9d1",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "161616",
+   0.9,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "castor_rear_right",
+  "before": [
+   "MeshStandardMaterial",
+   "d9d9d1",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "161616",
+   0.9,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "centre_bracket",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "compute",
+  "before": [
+   "MeshStandardMaterial",
+   "0f3d1f",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0f3d1f",
+   0.4,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "compute",
+  "before": [
+   "MeshStandardMaterial",
+   "0d2e17",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0d2e17",
+   0.4,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "compute",
+  "before": [
+   "MeshStandardMaterial",
+   "b3b5ba",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "b3b5ba",
+   0.45,
+   0.85,
+   1
+  ]
+ },
+ {
+  "part": "cover",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "cover_flange_front",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "cover_flange_rear",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "electronics_bracket",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "front_panel",
+  "before": [
+   "MeshStandardMaterial",
+   "cbd0cc",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "cbd0cc",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "hub_motor_wheel_left",
+  "before": [
+   "MeshStandardMaterial",
+   "1f1f21",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "161616",
+   0.9,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "hub_motor_wheel_right",
+  "before": [
+   "MeshStandardMaterial",
+   "1f1f21",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "161616",
+   0.9,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "imu",
+  "before": [
+   "MeshStandardMaterial",
+   "0d1f12",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0d1f12",
+   0.4,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "lidar",
+  "before": [
+   "MeshStandardMaterial",
+   "050508",
+   0.6,
+   0.15,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "050508",
+   0.05,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "lidar_support",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "rear_panel",
+  "before": [
+   "MeshStandardMaterial",
+   "cbd0cc",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "cbd0cc",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "side_panel_left",
+  "before": [
+   "MeshStandardMaterial",
+   "cbd0cc",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "cbd0cc",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "side_panel_right",
+  "before": [
+   "MeshStandardMaterial",
+   "cbd0cc",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "cbd0cc",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "support_front_left",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "support_front_right",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "support_rear_left",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "support_rear_right",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "383e42",
+   0.62,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "tof_mount_front",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.6,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "tof_mount_rear",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.6,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "ultrasonic_mount_front_left",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.6,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "ultrasonic_mount_front_right",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.6,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "ultrasonic_mount_rear_left",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.6,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "ultrasonic_mount_rear_right",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.85,
+   0.05,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.6,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "head_camera",
+  "before": [
+   "MeshPhysicalMaterial",
+   "050608",
+   0.02,
+   0.3,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "050608",
+   0.05,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "head_camera",
+  "before": [
+   "MeshPhysicalMaterial",
+   "050608",
+   0.02,
+   0.3,
+   1
+  ],
+  "after": [
+   "MeshPhysicalMaterial",
+   "050608",
+   0.05,
+   0,
+   1
+  ]
+ },
+ {
+  "part": "lift_column",
+  "before": [
+   "MeshStandardMaterial",
+   "c9cdd2",
+   0.32,
+   0.75,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "c9cdd2",
+   0.4,
+   0.8,
+   1
+  ]
+ },
+ {
+  "part": "lift_column",
+  "before": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.38,
+   0.75,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.4,
+   0.8,
+   1
+  ]
+ },
+ {
+  "part": "lift_column",
+  "before": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.38,
+   0.75,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.4,
+   0.8,
+   1
+  ]
+ },
+ {
+  "part": "lift_column",
+  "before": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.38,
+   0.75,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.4,
+   0.8,
+   1
+  ]
+ },
+ {
+  "part": "adapter_plate",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.42,
+   0.35,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.3889,
+   0.9,
+   1
+  ]
+ },
+ {
+  "part": "arm_profile",
+  "before": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.42,
+   0.35,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "383e42",
+   0.3889,
+   0.9,
+   1
+  ]
+ },
+ {
+  "part": "head_camera_bracket",
+  "before": [
+   "MeshStandardMaterial",
+   "c9cdd2",
+   0.32,
+   0.75,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "c9cdd2",
+   0.4,
+   0.8,
+   1
+  ]
+ },
+ {
+  "part": "head_camera_bracket",
+  "before": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.38,
+   0.75,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.4,
+   0.8,
+   1
+  ]
+ },
+ {
+  "part": "lift_base_plate",
+  "before": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.42,
+   0.35,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "0a0a0a",
+   0.3889,
+   0.9,
+   1
+  ]
+ },
+ {
+  "part": "lift_column",
+  "before": [
+   "MeshStandardMaterial",
+   "d7dade",
+   0.28,
+   0.65,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "d7dade",
+   0.4,
+   0.8,
+   1
+  ]
+ },
+ {
+  "part": "lift_column",
+  "before": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.38,
+   0.75,
+   1
+  ],
+  "after": [
+   "MeshStandardMaterial",
+   "9aa0a7",
+   0.4,
+   0.8,
+   1
+  ]
+ }
+]

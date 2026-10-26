@@ -1,0 +1,28 @@
+{
+ "page": "geomtest.html",
+ "meshesBefore": 132,
+ "meshesAfter": 132,
+ "matched": 132,
+ "unmatchedBefore": [],
+ "unmatchedAfter": [],
+ "maxMatrixDiff": 0,
+ "opacityOrVisibilityChanged": 0,
+ "uvAdded": 22,
+ "materialChanges": 49,
+ "errs": [
+  [],
+  []
+ ],
+ "sil": {
+  "front": {
+   "litBefore": 126726,
+   "litAfter": 126726,
+   "differing": 0
+  },
+  "rear": {
+   "litBefore": 129512,
+   "litAfter": 129512,
+   "differing": 0
+  }
+ }
+}
