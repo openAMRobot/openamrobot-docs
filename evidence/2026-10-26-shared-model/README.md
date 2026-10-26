@@ -1,5 +1,8 @@
 # One shared robot model and physically based materials, step 1: evidence (26 Oct 2026)
 
+Updated after review: colour calibration, light-look fallback, preview pictures (sections below). The
+screenshots marked after and the geometry check were rerun after the calibration (full look).
+
 Evidence for the shared robot model of `docs/assets/roadmap/robot.html` (dark-store page) and
 `docs/assets/roadmap/exploded.html`: one three.js, one robot builder, one material system, one look.
 Visualization only; not mechanical, electrical or safety evidence. Base: `5981e3b` (main after #56).
@@ -88,6 +91,77 @@ image, so the pipeline matches. Robot page: the 3D stage after the Overview and 
 Console at 375 and 1280 px, both pages, before and after: no errors, no warnings, no failed requests,
 no horizontal scroll (scrollWidth equal to the viewport width).
 
+## Colour calibration (follow-up 1)
+
+The first version of the look washed out the finish (RAL 7035 panels near white, RAL 7016 cover mid-grey).
+`model/look.js` now calibrates per page (`OAMR_LOOK.CAL`):
+
+| Page | Exposure | Key light | Environment, dielectric classes | Environment, metal and glass classes |
+|---|---|---|---|---|
+| exploded.html | 1.2 (was 0.9) | 2.8, moved to the camera side, front right above, about 55 degrees from the front, side and top faces (was 1.6, front left) | 0.14 (was 1) | 1.3 (was 1) |
+| robot.html | 1.05 (unchanged, so the store look is unchanged) | the store lights, unchanged | 0.08 (was 1) | 1.3 (was 1) |
+
+Shadows, contact shadow and material classes are unchanged. `colour.js` with `colour_sampler.js`: the
+page's own frame, a part-ID pass and a normal pass of the same camera; pixels of the part whose 5 x 5
+neighbourhood is the same part, whose face points to the key light (n . L > 0.35) and to the camera;
+median sRGB per part. Exploded view: render mode frame 0 (assembled), 1280 x 720, key direction of the
+calibrated light for both states (so the same pixels are compared). Robot page: `?look=full`, 1280 x 800,
+camera tiles off, the store key light. Luma difference to the finish.json sRGB value (Rec. 709 weights on
+sRGB values); largest single-channel difference in brackets. Before: branch head `b28a92f`.
+
+| View | Part (finish.json sRGB) | Pixels | Before: median sRGB, luma | After: median sRGB, luma |
+|---|---|---|---|---|
+| exploded, assembled | side panel (`#CBD0CC`, 203 208 204) | 10,740 | 182 185 183, -10.9 % (11.1) | 192 195 192, **-6.1 %** (6.3) |
+| exploded, assembled | cover (`#383E42`, 56 62 66) | 13,439 | 113 117 121, +90.8 % (101.8) | 54 59 63, **-4.6 %** (4.8) |
+| exploded, assembled | arm profile (`#383E42`) | 4,612 | 33 37 40, -40.4 % (41.1) | 56 62 67, **+0.1 %** (1.5) |
+| robot page, Side preset | arm profile (`#383E42`) | 333 | 48 53 56, -14.5 % (15.2) | 53 59 62, **-5.0 %** (6.1) |
+| robot page, Side preset | side panel, cover | 0 | not in view (the preset frames the upper body) | not in view |
+| robot page, Overview preset | side panel (`#CBD0CC`) | 78 | 228 229 227, +10.6 % (12.3) | 186 187 180, **-9.9 %** (11.8) |
+| robot page, Overview preset | cover (`#383E42`) | 18,559 | 124 130 133, +111.3 % (121.4) | 64 67 67, **+8.8 %** (14.3) |
+| robot page, Overview preset | arm profile (`#383E42`) | 212 | 49 53 55, -14.3 % (16.7) | 56 61 63, **-1.5 %** (4.5) |
+
+All lit faces are within 10 % in luma. On the robot page the store lights are warm (area lights `#FFF5E8`),
+so the cover reads 14 % high in red; the side panel shows only 78 pixels in the Overview preset.
+
+## Light look fallback (follow-up 2)
+
+`OAMR_LOOK.lightLook`: the robot materials of the metal and glass classes (anodised aluminium, heatsink,
+sensor glass) keep the environment; the others switch to Lambert twins (same colour, map, vertex colours,
+opacity; no image-based light); robot shadows off; the contact shadow stays. exploded.html also turns its
+shadow map off, hides the shadow catcher and adds a hemisphere light for the non-metal parts.
+
+| Page | Switches to the light look | Back to the full look |
+|---|---|---|
+| exploded.html | new "High quality" toggle off; or the first 30 frames (rendered every frame while probing) average over 33 ms and the toggle was not used | toggle on |
+| robot.html | existing "High quality" toggle off (it also turns GTAO off, as before); or the first 30 frames average over 33 ms (the toggle then stays as it was) | toggle on |
+
+`?look=full` or `?look=light` forces a look and skips the probe; the exploded render mode (videos,
+previews) is always the full look unless `look=light` is given. Default: the full look.
+`looktest.js` on SwiftShader: exploded.html probe 296.7 ms (1280 px) and 287.2 ms (375 px), robot.html
+12,690 ms and 1,135 ms: all four switched to the light look; the toggles switch back and forth as listed;
+no console errors or warnings; no horizontal scroll.
+
+## Preview pictures (follow-up 3)
+
+`preview.js`, 1920 x 1080, page UI hidden, full look (calibrated) unless noted. Exploded-view pictures
+from the render mode (`exploded.html?render=1`, `window.__renderKey` with a pose written like a tour
+keyframe; the wordmark of the render mode stays); robot-page pictures from `robot.html?look=full` with
+everything but the 3D canvas hidden. 07, 08 and the contact sheet are palette-reduced (256 colours) to
+stay under the 1 MB image limit of `scripts/check_docs.sh`.
+
+| File | Picture |
+|---|---|
+| `preview/01_assembled_front_three_quarter.png` | robot assembled, front three-quarter, whole robot |
+| `preview/02_assembled_rear_three_quarter.png` | robot assembled, rear three-quarter |
+| `preview/03_base_close_up_front_three_quarter.png` | base close-up, front three-quarter (panels, cover, sensors, wheels and castors) |
+| `preview/04_upper_body_close_up.png` | upper body: lift column, adapter plate, arm profile with the cyan strips, arms, head camera |
+| `preview/05_exploded_explode_robot.png` | exploded view, Explode robot |
+| `preview/06_exploded_open_base_labels.png` | exploded view, Open the base, name labels |
+| `preview/07_robot_page_side_dark_store.png` | robot page, Side preset, dark store |
+| `preview/08_robot_page_overview_dark_store.png` | robot page, Overview preset, dark store |
+| `preview/09_light_look_assembled_front_three_quarter.png` | light look (fallback), same pose as 01 |
+| `preview/contact_sheet.png` | all nine, labelled |
+
 ## Performance
 
 `perf.js`: same machine (4 vCPU container, no GPU, SwiftShader), 1280 x 800, median of 30 renders after
@@ -98,6 +172,17 @@ no horizontal scroll (scrollWidth equal to the viewport width).
 | exploded.html, parts moving (tour frames, shadow map updated) | 343, 380 ms | 1134, 1039 ms | +231 %, +173 % |
 | exploded.html, camera only (orbit) | 152, 176 ms | 531, 520 ms | +249 %, +195 % |
 | robot.html, store scene, high quality (GTAO, camera tiles) | 19,695, 18,546 ms | 18,843, 18,374 ms | -4 %, -1 % |
+
+After the calibration, both looks (`perf.js 8802 full`, `perf.js 8802 light`, one round each):
+
+| Frame | #56 (rounds 1, 2) | Full look | Light look |
+|---|---|---|---|
+| exploded.html, parts moving | 343, 380 ms | 1,183 ms (+211 to +245 %) | 290 ms (-15 to -24 %) |
+| exploded.html, orbit | 152, 176 ms | 514 ms (+192 to +238 %) | 135 ms (-11 to -23 %) |
+| robot.html, store, high quality | 19,695, 18,546 ms | 18,867 ms (-4 %, +2 %) | 17,410 ms (-12 %, -6 %) |
+
+The light look is within the budget (faster than #56); the full look is not, on this CPU rasteriser. On a
+device that slow the probe selects the light look (it did on SwiftShader, 287 to 297 ms per frame).
 
 **The 10 % budget is not met on exploded.html on this machine.** Breakdown of one exploded frame
 after (`prof*.js` runs, same set-up): 1,020 to 1,084 ms with everything; without shadows 848 to 863 ms;
@@ -131,13 +216,19 @@ python3 linkcheck.py site                             # 34,571 local links, 0 mi
 node geomcheck.js 8800 8802 geomtest.html gx          # exploded: 132/132 meshes, 0 differing pixels
 node geomcheck.js 8800 8802 robot.html gr             # robot: 203/203 meshes, 0 differing pixels
 node perf.js 8800; node perf.js 8802                  # two rounds each
+node perf.js 8802 full; node perf.js 8802 light       # after the calibration
+node colour.js 8803 exploded; node colour.js 8802 exploded   # colour samples (8803: branch head b28a92f)
+node colour.js 8802 robot '[{}]' side; node colour.js 8802 robot '[{}]' over
+node looktest.js 8802                                  # probe and toggles
+node preview.js 8802 preview                           # preview pictures
 ```
 
 Ports: 8800 serves the #56 roadmap folder, 8802 this change (`python3 -m http.server`).
 
 ## Not verified
 
-- Frame time on a GPU; the budget result above is SwiftShader only.
+- Frame time on a GPU, and how many real devices the 33 ms probe sends to the light look; SwiftShader only.
+- Colour on calibrated displays; the samples are sRGB values of the rendered frame.
 - The offline link check ran with a Python equivalent, not lychee (the CI step runs lychee).
 - The tour videos, posters and `model/exploded-static.png` still show the #56 look; not re-rendered in this step.
 - Visual review on real displays and browsers other than headless Chromium.

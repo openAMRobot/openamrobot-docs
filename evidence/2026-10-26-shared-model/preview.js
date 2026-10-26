@@ -7,10 +7,10 @@ const fs = require('fs');
 const UPPER = ['lift_column', 'adapter_plate', 'arm_profile', 'slot_cover_strips', 'openarm', 'head_camera', 'head_camera_bracket'];
 const BASE_LABELS = ['battery', 'motor_driver', 'compute', 'base_controller', 'imu', 'lidar', 'base_camera', 'ultrasonic', 'tof'];
 const SHOTS = [
-  ['01_assembled_front_three_quarter', {frame: 'robot', az: -40, el: 18}],
-  ['02_assembled_rear_three_quarter', {frame: 'robot', az: 140, el: 20}],
-  ['03_base_close_up_front_three_quarter', {frame: 'base', az: -35, el: 20, min_r: .3}],
-  ['04_upper_body_close_up', {frame: UPPER, az: -32, el: 10, min_r: .25}],
+  ['01_assembled_front_three_quarter', {frame: 'robot', az: -40, el: 16, zoom: .82}],
+  ['02_assembled_rear_three_quarter', {frame: 'robot', az: 140, el: 18, zoom: .82}],
+  ['03_base_close_up_front_three_quarter', {frame: 'base', az: -35, el: 5, min_r: .3, zoom: .85}],
+  ['04_upper_body_close_up', {frame: ['arm_profile', 'openarm', 'head_camera', 'head_camera_bracket', 'adapter_plate'], az: -28, el: 12, min_r: .25, zoom: .9}],
   ['05_exploded_explode_robot', {frame: 'robot', r: 1, az: -40, el: 18}],
   ['06_exploded_open_base_labels', {frame: 'base', b: 1, az: -40, el: 26, labels: BASE_LABELS, names: true}],
 ];

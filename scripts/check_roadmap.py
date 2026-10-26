@@ -22,7 +22,8 @@ parses them and fails when:
   three.js core, or a three.js script other than model/three-r160.min.js and,
   on robot.html only, the store addons model/three-r160-store.min.js), robot
   geometry or robot materials of their own (anything but one call of
-  OAMR_MODEL.build), or a renderer look other than model/look.js; or
+  OAMR_MODEL.build), or a renderer look other than model/look.js (calibration,
+  light-look fallback and its frame probe included); or
   model/finish.json names an unknown material class or part;
 - the exploded view lacks a control (explode robot, open the base, cutaway,
   tour, pause, stop, record), its opened-base offsets, labels, view settings
@@ -422,6 +423,9 @@ def check_shared(root, html, err):
                 err(p, "renderer look set in the page (%s); it belongs in model/look.js" % m.group(0))
         if not re.search(r"(?:OAMR_)?LOOK\.apply\(", inline) or not re.search(r"(?:OAMR_)?LOOK\.environment\(", inline):
             err(p, "must take tone mapping, colour output, shadows and environment from model/look.js")
+        for call in ("CAL", "robotEnv(", "lightLook(", "startProbe(", "forced("):
+            if call not in inline:
+                err(p, "must use the calibrated look and the light-look fallback of model/look.js (%s)" % call.rstrip("("))
     for f in [THREE_CORE] + THREE_ADDONS["robot.html"]:
         if not os.path.isfile(os.path.join(root, f)):
             err("model", "%s is missing" % f)
