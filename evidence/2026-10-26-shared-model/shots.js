@@ -1,7 +1,7 @@
 // Page screenshots: robot.html presets and 375 px pages; console errors, warnings, failed requests, horizontal scroll.
 const { chromium } = require('playwright');
 (async () => {
-  const [port, tag] = process.argv.slice(2);
+  const [port, tag] = process.argv.slice(2), q = process.argv[5] ? '?' + process.argv[5] : '';  // e.g. look=full
   const b = await chromium.launch(Object.assign({}, {args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist']}));
   const report = {};
   const run = async (page, w, h, fn) => {
@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
     p.on('pageerror', e => msgs.push('pageerror: ' + e.message));
     p.on('requestfailed', r => msgs.push('requestfailed: ' + r.url()));
     p.setDefaultTimeout(300000);
-    await p.goto(`http://localhost:${port}/${page}`, {waitUntil: 'domcontentloaded'});
+    await p.goto(`http://localhost:${port}/${page}${q}`, {waitUntil: 'domcontentloaded'});
     await fn(p);
     const sw = await p.evaluate(() => [document.documentElement.scrollWidth, innerWidth]);
     report[page + '@' + w] = {msgs, scrollWidth: sw[0], viewport: sw[1]};
