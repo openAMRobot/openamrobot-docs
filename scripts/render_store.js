@@ -13,6 +13,8 @@
 //   --workers N (default 1), --frames A:B (render frames A to B-1 only, no video), --frames-dir DIR (keep the PNG
 //   frames there), --resume 1 (keep complete frames already in --frames-dir and render only the missing ones), --base URL (default http://localhost:8765/), --hashes FILE (write the sha256 of every frame).
 //   --crf Q: x264 quality (default 23; higher is smaller).
+//   --target-bytes N: two-pass encode (x264 medium) to the bitrate that lands the video near N bytes; --bitrate K:
+//   two-pass at K kbit/s.
 //   --recaption 1: lay the page's current corner caption (window.__captionOverlay, opaque box) over every frame
 //   while encoding, for frames rendered before a caption change.
 //   --still T --cam C --out FILE.png|jpg: one picture at sim time T instead of a video.
@@ -97,8 +99,19 @@ const png = u => Buffer.from(u.slice(u.indexOf(',') + 1), 'base64');
     fs.writeFileSync(path.join(dir, 'caption.png'), overlay);
     input.push('-i', path.join(dir, 'caption.png'), '-filter_complex', '[0:v][1:v]overlay=0:0:format=rgb');
   }
-  const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', ...input,
-    '-c:v', 'libx264', '-preset', 'veryfast', '-crf', String(opt.crf || 23), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
+  let r;
+  if (opt['target-bytes'] || opt.bitrate) {
+    // two-pass encode to an average bitrate: given, or from the target size over the video duration (2 % for the
+    // container); the size lands near the target instead of depending on a fixed CRF
+    const kbps = opt.bitrate ? parseInt(opt.bitrate, 10) : Math.floor(+opt['target-bytes'] * 8 / ((b - a) / fps) * .98 / 1000);
+    const log = path.join(dir, 'x264-2pass'), enc = ['-c:v', 'libx264', '-preset', 'medium', '-b:v', kbps + 'k', '-pix_fmt', 'yuv420p', '-passlogfile', log];
+    console.error(`two-pass encode at ${kbps} kbit/s`);
+    r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', ...input, ...enc, '-pass', '1', '-an', '-f', 'mp4', '/dev/null'], { stdio: 'inherit' });
+    if (r.status === 0) r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', ...input, ...enc, '-pass', '2', '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
+  } else {
+    r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', ...input,
+      '-c:v', 'libx264', '-preset', 'veryfast', '-crf', String(opt.crf || 23), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
+  }
   if (!opt['frames-dir']) fs.rmSync(dir, { recursive: true, force: true });
   process.exit(r.status);
 })();
