@@ -25,7 +25,10 @@ parses them and fails when:
   OAMR_MODEL.build), or a renderer look other than model/look.js (calibration,
   light-look fallback and its frame probe included), or robot.html does not
   start with the Follow preset, Frames and Labels off and High quality on, or
-  tints one arm; or
+  tints one arm, or model/model.js draws a light strip (an led material or a
+  cyan emissive colour) on the robot, or the robot page store video, pictures,
+  thumbnails or contact sheet are missing, over their size limits, not
+  labelled as simulation visualization, or push its first load over budget; or
   model/finish.json names an unknown material class or part;
 - the exploded view lacks a control (explode robot, open the base, cutaway,
   tour, pause, stop, record), its opened-base offsets, labels, view settings
@@ -56,6 +59,16 @@ EXPLODED_MAX_BYTES = 350 * 1024
 EXPLODED_CONTROLS = ["b-asm", "b-explode", "b-open", "b-cut", "b-reset", "b-nums", "b-hq", "b-tour", "b-pause", "b-stop", "b-rec"]
 MEDIA = ["media/openamrobot-2-tour-1080p.mp4", "media/openamrobot-2-tour-1080x1350.mp4"]
 MEDIA_MAX_BYTES = 15 * 1024 * 1024
+# robot.html: offline-rendered store video and pictures (simulation visualization)
+STORE_VIDEO = "media/openamrobot-2-store-1080p.mp4"
+STORE_POSTER = "media/openamrobot-2-store-1080p-poster.png"
+STORE_PICTURES = [("01_aisle_follow", (1920, 1080)), ("02_pick_side", (1920, 1080)), ("03_place_tote", (1920, 1080)),
+                  ("04_front_low", (1920, 1080)), ("05_store_overview", (1920, 1080)), ("06_dock", (1920, 1080)),
+                  ("02_pick_side_1080x1350", (1080, 1350)), ("04_front_low_1080x1350", (1080, 1350))]
+STORE_SHEET = "media/store/contact_sheet.jpg"
+PICTURE_MAX_BYTES = 1000 * 1000
+THUMB_MAX_BYTES = 120 * 1000
+ROBOT_FIRST_LOAD_MAX_BYTES = 4093278 + 100 * 1024  # #58 first load (page, scripts, finish.json) plus 100 KB
 TOUR_SECONDS = (40.0, 50.0)
 EXPLODED_FIRST_LOAD_MAX_BYTES = 4 * 1000 * 1000  # page, scripts, exploded.json and video posters; not the videos
 ROBOT_MAX_BYTES = 600 * 1024  # robot.html without a bundled three.js
@@ -457,6 +470,31 @@ def check_shared(root, html, err):
         err("robot.html", "%d bytes, over %d" % (size, ROBOT_MAX_BYTES))
 
 
+def emissive_cyan(v):
+    """True for an emissive colour (integer, 0x hex or #hex) that reads cyan: green and blue well above red."""
+    v = v.strip().lower()
+    n = int(v, 16) if v.startswith(("0x", "#")) and len(v.lstrip("#0x")) else int(v) if v.isdigit() else None
+    if n is None:
+        return False
+    r, g, b = n >> 16 & 255, n >> 8 & 255, n & 255
+    return g > 90 and b > 90 and min(g, b) > r + 50
+
+
+def check_no_light_strips(root, err):
+    """The robot carries no status light strips: model/model.js (the only robot builder) may not define an
+    led material or any material with a cyan emissive colour."""
+    try:
+        with open(os.path.join(root, "model", "model.js"), encoding="utf-8") as f:
+            js = f.read()
+    except OSError:
+        return
+    if re.search(r"\bmats\.led\b|\bled\s*:\s*new\b", js):
+        err("model.js", "an led material is defined or used on the robot; the robot has no light strips")
+    for m in re.finditer(r"emissive\s*:\s*(0x[0-9a-fA-F]+|#[0-9a-fA-F]{6}|\d+)", js):
+        if emissive_cyan(m.group(1)):
+            err("model.js", "cyan emissive colour %s on the robot; the robot has no light strips" % m.group(1))
+
+
 def check_finish(root, err, comps, glb_prims):
     """model/finish.json: classes of known parts, primitives that exist, known texture names."""
     try:
@@ -492,6 +530,74 @@ def check_finish(root, err, comps, glb_prims):
                 err("finish.json", "class %s: unknown texture %s" % (name, c[k]))
         if ("normal_map" in c or "roughness_map" in c) and not c.get("tile_m"):
             err("finish.json", "class %s has a texture but no tile_m" % name)
+
+
+def jpeg_size(path):
+    """(width, height) of a baseline or progressive JPEG, from its SOF segment."""
+    with open(path, "rb") as f:
+        d = f.read()
+    if d[:2] != b"\xff\xd8":
+        return None
+    i = 2
+    while i + 9 < len(d):
+        if d[i] != 0xFF:
+            return None
+        m, n = d[i + 1], struct.unpack(">H", d[i + 2:i + 4])[0]
+        if m in (0xC0, 0xC1, 0xC2):
+            h, w = struct.unpack(">HH", d[i + 5:i + 9])
+            return w, h
+        i += 2 + n
+    return None
+
+
+def check_store_media(root, html, err):
+    """robot.html: the store video (poster, preload none, download link), the pictures and their lazy
+    thumbnails, all labelled as simulation visualization, within their size limits and the first-load budget."""
+    h = html["robot.html"]
+    full = os.path.join(root, STORE_VIDEO)
+    if not os.path.isfile(full):
+        err("robot.html", "store video %s is missing" % STORE_VIDEO)
+    elif os.path.getsize(full) > MEDIA_MAX_BYTES:
+        err("robot.html", "%s is %d bytes, over %d" % (STORE_VIDEO, os.path.getsize(full), MEDIA_MAX_BYTES))
+    poster = os.path.join(root, STORE_POSTER)
+    if not os.path.isfile(poster) or os.path.getsize(poster) > PICTURE_MAX_BYTES:
+        err("robot.html", "poster %s is missing or over %d bytes" % (STORE_POSTER, PICTURE_MAX_BYTES))
+    if 'src="%s"' % STORE_VIDEO not in h or 'href="%s" download' % STORE_VIDEO not in h:
+        err("robot.html", "the store video is not shown with a download link")
+    for v in re.findall(r"<video\b[^>]*>", h):
+        if 'preload="none"' not in v or "poster=" not in v:
+            err("robot.html", "a video loads before it is played or has no poster")
+    if "Simulation visualization" not in h or "Not footage of the real robot" not in h:
+        err("robot.html", "the store video and pictures must be labelled as simulation visualization, not real-robot footage")
+    for name, (w, hh) in STORE_PICTURES:
+        pic, th = "media/store/%s.jpg" % name, "media/store/thumbs/%s.jpg" % name
+        fp = os.path.join(root, pic)
+        if not os.path.isfile(fp):
+            err("robot.html", "picture %s is missing" % pic)
+            continue
+        if os.path.getsize(fp) > PICTURE_MAX_BYTES:
+            err("robot.html", "%s is %d bytes, over %d" % (pic, os.path.getsize(fp), PICTURE_MAX_BYTES))
+        if jpeg_size(fp) != (w, hh):
+            err("robot.html", "%s is %s, not %d x %d" % (pic, jpeg_size(fp), w, hh))
+        ft = os.path.join(root, th)
+        if not os.path.isfile(ft) or os.path.getsize(ft) > THUMB_MAX_BYTES:
+            err("robot.html", "thumbnail %s is missing or over %d bytes" % (th, THUMB_MAX_BYTES))
+        if not re.search(r'<a href="%s"><img data-src="%s"[^>]*loading="lazy"' % (re.escape(pic), re.escape(th)), h):
+            err("robot.html", "%s is not linked from a lazy-loaded thumbnail" % pic)
+    sheet = os.path.join(root, STORE_SHEET)
+    if not os.path.isfile(sheet) or os.path.getsize(sheet) > PICTURE_MAX_BYTES:
+        err("robot.html", "contact sheet %s is missing or over %d bytes" % (STORE_SHEET, PICTURE_MAX_BYTES))
+    # first load: page, scripts, finish.json, images that are not lazy, video posters (thumbnails carry data-src and
+    # get their src from an IntersectionObserver when the grid comes near the viewport)
+    first = len(h.encode("utf-8")) + os.path.getsize(os.path.join(root, "model", "finish.json"))
+    for src in re.findall(r'<script src="([^"]+)"', h) + re.findall(r'<video\b[^>]*\bposter="([^"]+)"', h):
+        first += os.path.getsize(os.path.join(root, src)) if os.path.isfile(os.path.join(root, src)) else 0
+    for tag in re.findall(r"<img\b[^>]*>", strip_scripts(h)):
+        m = re.search(r'src="([^"]+)"', tag)
+        if m and 'loading="lazy"' not in tag and not m.group(1).startswith("data:") and os.path.isfile(os.path.join(root, m.group(1))):
+            first += os.path.getsize(os.path.join(root, m.group(1)))
+    if first > ROBOT_FIRST_LOAD_MAX_BYTES:
+        err("robot.html", "first load %d bytes, over %d (#58 plus 100 KB)" % (first, ROBOT_FIRST_LOAD_MAX_BYTES))
 
 
 def check_nav(p, html, err):
@@ -598,6 +704,8 @@ def main():
         check_nav(p, html[p], err)
     check_model(args.dir, html["exploded.html"], err)
     check_shared(args.dir, html, err)
+    check_no_light_strips(args.dir, err)
+    check_store_media(args.dir, html, err)
 
     # 2. status count strips
     for p, tr in trees.items():

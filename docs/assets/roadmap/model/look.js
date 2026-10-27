@@ -159,10 +159,13 @@
   // The material to show for m in the current look (pages that swap materials themselves).
   L.pick = function (m) { return lightOn && m && m.isMeshStandardMaterial && !isMetal(m) ? twins.get(m) || m : m; };
 
-  // Look forced by the URL (?look=full or ?look=light), else null.
+  // Look forced by the URL (?look=full or ?look=light, or render mode: full), else null.
+  // The offline render mode (?render=1, videos and pictures) is always the full look unless ?look= says
+  // otherwise, and never runs the frame-time probe.
   L.forced = function () {
-    var v = new URLSearchParams(location.search).get('look');
-    return v === 'full' || v === 'light' ? v : null;
+    var q = new URLSearchParams(location.search), v = q.get('look');
+    if (v === 'full' || v === 'light') return v;
+    return q.get('render') === '1' ? 'full' : null;
   };
 
   // Frame-time probe: the page renders every frame while probing() is true and calls frame(timestamp)

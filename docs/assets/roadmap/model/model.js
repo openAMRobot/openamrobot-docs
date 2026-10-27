@@ -244,7 +244,7 @@
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
   // aluminium of the lift column, lift stage and head bracket (class of lift_column, satin); lens: ZED Mini lenses (sensor glass class);
   // arm: OpenArm 2.0 vertex colours as delivered, one material for both arms (no highlight tint). steel, slot,
-  // black and the robot page fittings (skirt, red, yellow, led, cable, resetLit) keep their values.
+  // black and the robot page fittings (skirt, red, yellow, cable, resetLit) keep their values.
   M.materials = function (THREE) {
     var S = THREE.MeshStandardMaterial, A = M.classOf('lift_column') || 'anodised_aluminium';
     return {skirt: new S({color: 2830391, roughness: .55}),
@@ -253,7 +253,6 @@
       aluDark: M.classMaterial(THREE, A, 10133671), anod: M.classMaterial(THREE, A, 14146270),
       slot: new S({color: 2895926, roughness: .6, metalness: .3}),
       red: new S({color: 14164767, roughness: .35}), yellow: new S({color: 15909376, roughness: .45}),
-      led: new S({color: 801592, emissive: 1692613, emissiveIntensity: 2}),
       resetLit: new S({color: 2056145, emissive: 732282, emissiveIntensity: .6, roughness: .3}),
       lens: M.classMaterial(THREE, M.classOf('head_camera', 'lens') || 'sensor_glass', 329224),
       cable: new S({color: 1711135, roughness: .6}),
@@ -470,8 +469,9 @@
 
   // ---------------------------------------------------------------- robot page fittings
   // Items the robot page draws on the robot that are not in the component registry (and so not in the
-  // exploded view): base-plate hole marks, base and chest E-stop, RESET button, belly skirt, LED strips,
-  // side and rear decals, lift-column screw heads, label and foot light, lift cable, wrist cameras.
+  // exploded view): base-plate hole marks, base and chest E-stop, RESET button, belly skirt, side and rear
+  // decals, lift-column screw heads and label, lift cable, wrist cameras. No light strips: the robot carries
+  // no status lights (the LED strips and the column foot light of earlier versions were removed).
   // Built only with M.build(THREE, {fittings: true}).
   function canvasTexture(THREE, w, h, draw) {
     var c = document.createElement('canvas');
@@ -549,8 +549,6 @@
     cyl(THREE, g, .015, .008, mats.black, D.X0 + .06, -.21, D.COVER + .004, 'z', 20);  // RESET on the rear deck
     cyl(THREE, g, .011, .008, mats.resetLit, D.X0 + .06, -.21, D.COVER + .012, 'z', 20);
     box(THREE, g, .2, .16, .012, mats.skirt, -.17, 0, D.BELLY - .012);
-    for (s of [-1, 1]) box(THREE, g, .62, .003, .008, mats.led, -.02, s * (D.HW + .001), .272);
-    box(THREE, g, .003, .4, .008, mats.led, D.X0 - .001, 0, .272);
     var decal = new THREE.MeshStandardMaterial({map: decalTexture(THREE), transparent: true, roughness: .5});
     for (s of [-1, 1]) plane(THREE, g, .4, .05, decal, Math.PI / 2, s > 0 ? Math.PI : 0, -.08, s * (D.HW + .0015), .17);
     plane(THREE, g, .34, .043, decal, Math.PI / 2, -Math.PI / 2, D.X0 - .0015, -.05, .155);
@@ -567,7 +565,6 @@
     for (x of [-.13, .13]) for (y of [-.035, .035]) cyl(THREE, col, .0065, .005, mats.steel, x, y, t + .0025, 'z', 6);
     plane(THREE, col, .11, .035, new THREE.MeshStandardMaterial({map: labelTexture(THREE, ['HEXALIFT V4', '800 N · 18 mm/s · 24 V'],
       '#e9ecef', '#1d2733', 512, 160), roughness: .5}), Math.PI / 2, 0, 0, -e.W / 2 - .0012, t + .12);
-    box(THREE, col, e.L + .03, e.W + .03, .006, mats.led, 0, 0, t + .003);
     var z = t + e.RETRACTED + D.MOUNT_ABOVE_COL - .115, f = D.MOUNT_X + D.PROFILE.X / 2;  // chest E-stop on the profile front
     box(THREE, mov, .036, .07, .07, mats.yellow, f + .018, 0, z);
     cyl(THREE, mov, .019, .02, mats.red, f + .046, 0, z, 'x', 24);
