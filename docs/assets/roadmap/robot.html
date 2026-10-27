@@ -379,7 +379,8 @@ if(location.hash&&location.hash.indexOf('#s-')===0){var t=document.querySelector
 <script>
 // Offline render mode of the robot page (robot.html?render=1&frame=N&w=W&h=H&fps=F&speed=K&cam=C). One
 // "Run order (8 items)" run; frame N shows sim time N / F x K. cam: auto (Follow, with short cuts to the Side
-// view around each shelf grasp), follow, side, over, aisle, top, store, front (front three-quarter, low) or
+// view around each shelf grasp), follow, side, over, aisle, top, store, front (front three-quarter, low, from
+// ahead along the aisle), pick (across the aisle onto the picking arm and its shelf) or
 // tote (above the totes). Everything a frame shows is a function of its sim time and camera. Video frames carry
 // the playback speed in their corner caption; pictures (__renderAt) do not.
 (function () {
@@ -410,10 +411,16 @@ if(location.hash&&location.hash.indexOf('#s-')===0){var t=document.querySelector
   function camera(cam, t) {
     var p = S.robot.pose, yaw = p.yaw || 0;
     if (cam === 'auto') cam = inCut(t) ? 'side' : 'follow';
+    if (cam === 'pick') {  // across the aisle onto the arm that picks (the nearest grasp) and its shelf
+      var near = info.picks.reduce(function (b, q) { return Math.abs(q.t - t) < Math.abs(b.t - t) ? q : b; }, info.picks[0]);
+      var sp = near.side === 'right' ? -1 : 1, pp = rotate(p, yaw, [-.55, -sp * .62, 1.42]), pt = rotate(p, yaw, [.32, sp * .42, 1.0]);
+      S.closeUp(pp[0], pp[1], pp[2], pt[0], pt[1], pt[2]);
+      return;
+    }
     if (cam === 'front' || cam === 'tote') {
       var side = cam === 'tote' ? (info.sideAt(t) === 'right' ? -1 : 1) : 1;
-      var pos = cam === 'front' ? rotate(p, yaw, [1.75, -1.25, .55]) : rotate(p, yaw, [-.75, side * 1.05, 1.6]);
-      var tgt = cam === 'front' ? rotate(p, yaw, [.1, 0, .72]) : rotate(p, yaw, [.12, side * .2, .42]);
+      var pos = cam === 'front' ? rotate(p, yaw, [2.3, -.32, .5]) : rotate(p, yaw, [-.75, side * 1.05, 1.6]);
+      var tgt = cam === 'front' ? rotate(p, yaw, [-.05, .05, .78]) : rotate(p, yaw, [.12, side * .2, .42]);
       S.closeUp(pos[0], pos[1], pos[2], tgt[0], tgt[1], tgt[2]);
     } else S.setView(cam);
   }

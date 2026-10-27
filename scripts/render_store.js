@@ -12,6 +12,7 @@
 // Options: --fps F (default 30), --speed K (sim seconds per video second, default 6.4), --cam C (default auto),
 //   --workers N (default 1), --frames A:B (render frames A to B-1 only, no video), --frames-dir DIR (keep the PNG
 //   frames there), --resume 1 (keep complete frames already in --frames-dir and render only the missing ones), --base URL (default http://localhost:8765/), --hashes FILE (write the sha256 of every frame).
+//   --crf Q: x264 quality (default 23; higher is smaller).
 //   --recaption 1: lay the page's current corner caption (window.__captionOverlay, opaque box) over every frame
 //   while encoding, for frames rendered before a caption change.
 //   --still T --cam C --out FILE.png|jpg: one picture at sim time T instead of a video.
@@ -97,7 +98,7 @@ const png = u => Buffer.from(u.slice(u.indexOf(',') + 1), 'base64');
     input.push('-i', path.join(dir, 'caption.png'), '-filter_complex', '[0:v][1:v]overlay=0:0:format=rgb');
   }
   const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', ...input,
-    '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
+    '-c:v', 'libx264', '-preset', 'veryfast', '-crf', String(opt.crf || 23), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
   if (!opt['frames-dir']) fs.rmSync(dir, { recursive: true, force: true });
   process.exit(r.status);
 })();
