@@ -11,7 +11,7 @@
 //   node scripts/render_store.js 1920 1080 docs/assets/roadmap/media/openamrobot-2-store-1080p.mp4 --fps 30 --speed 6.4 --workers 2
 // Options: --fps F (default 30), --speed K (sim seconds per video second, default 6.4), --cam C (default auto),
 //   --workers N (default 1), --frames A:B (render frames A to B-1 only, no video), --frames-dir DIR (keep the PNG
-//   frames there), --base URL (default http://localhost:8765/), --hashes FILE (write the sha256 of every frame).
+//   frames there), --resume 1 (keep complete frames already in --frames-dir and render only the missing ones), --base URL (default http://localhost:8765/), --hashes FILE (write the sha256 of every frame).
 //   --still T --cam C --out FILE.png|jpg: one picture at sim time T instead of a video.
 const { chromium } = require('playwright');
 const { spawnSync } = require('child_process');
@@ -61,19 +61,26 @@ const png = u => Buffer.from(u.slice(u.indexOf(',') + 1), 'base64');
   const dir = opt['frames-dir'] || fs.mkdtempSync(path.join(os.tmpdir(), 'store-frames-'));
   fs.mkdirSync(dir, { recursive: true });
   const n = Math.max(1, +(opt.workers || 1)), per = Math.ceil((b - a) / n), t0 = Date.now(), errors = [];
+  const frameFile = f => path.join(dir, `${String(f).padStart(5, '0')}.png`);
+  const complete = file => { try { const d = fs.readFileSync(file); return d.length > 12 && d.subarray(d.length - 8, d.length - 4).toString() === 'IEND'; } catch (e) { return false; } };
   console.error(`run ${info.T.toFixed(1)} s sim, speed ${speed}, ${fps} fps: frames ${a} to ${b - 1} of ${info.frames}, ${n} worker(s)`);
   await Promise.all(Array.from({ length: n }, async (_, k) => {
     const lo = a + k * per, hi = Math.min(b, lo + per);
     if (lo >= hi) return;
+    const todo = [];
+    for (let f = lo; f < hi; f++) if (!(opt.resume !== undefined && complete(frameFile(f)))) todo.push(f);
+    if (!todo.length) return;
     const browser = await launch(), { page, errs } = await open(browser);
-    for (let f = lo; f < hi; f++) {
-      fs.writeFileSync(path.join(dir, `${String(f).padStart(5, '0')}.png`), png(await page.evaluate(i => window.__renderFrame(i), f)));
-      if ((f - lo) % 30 === 0) console.error(`worker ${k}: frame ${f} (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
+    for (const f of todo) {
+      const tmp = frameFile(f) + '.part';  // written whole, then renamed: a frame on disk is always complete
+      fs.writeFileSync(tmp, png(await page.evaluate(i => window.__renderFrame(i), f)));
+      fs.renameSync(tmp, frameFile(f));
+      if (f % 30 === 0) console.error(`worker ${k}: frame ${f} (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
     }
     errors.push(...errs);
     await browser.close();
   }));
-  console.error(`rendered ${b - a} frames in ${((Date.now() - t0) / 1000).toFixed(0)} s`);
+  console.error(`frames ${a} to ${b - 1} done in ${((Date.now() - t0) / 1000).toFixed(0)} s`);
   if (opt.hashes) {
     const lines = [];
     for (let f = a; f < b; f++) lines.push(crypto.createHash('sha256').update(fs.readFileSync(path.join(dir, `${String(f).padStart(5, '0')}.png`))).digest('hex') + `  ${String(f).padStart(5, '0')}.png`);
