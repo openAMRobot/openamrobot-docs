@@ -1,7 +1,8 @@
 // Offline render mode of the robot page (robot.html?render=1&frame=N&w=W&h=H&fps=F&speed=K&cam=C). One
 // "Run order (8 items)" run; frame N shows sim time N / F x K. cam: auto (Follow, with short cuts to the Side
 // view around each shelf grasp), follow, side, over, aisle, top, store, front (front three-quarter, low) or
-// tote (above the totes). Everything a frame shows is a function of its sim time and camera.
+// tote (above the totes). Everything a frame shows is a function of its sim time and camera. Video frames carry
+// the playback speed in their corner caption; pictures (__renderAt) do not.
 (function () {
   'use strict';
   var Q = new URLSearchParams(location.search);
@@ -37,38 +38,51 @@
       S.closeUp(pos[0], pos[1], pos[2], tgt[0], tgt[1], tgt[2]);
     } else S.setView(cam);
   }
-  function compose(fmt) {
+  // Corner caption, opaque box: "OpenAMRobot 2.0, simulation visualization" and, on video frames, the
+  // playback speed (sim seconds per video second, the speed parameter of the render).
+  function speedText() { return (Math.round(SPEED * 10) / 10) + 'x speed'; }
+  function caption(x, U, h, withSpeed) {
+    var text = 'OpenAMRobot 2.0, simulation visualization' + (withSpeed ? ', ' + speedText() : '');
+    x.font = '600 ' + 13 * U + 'px "Barlow Semi Condensed", "Arial Narrow", sans-serif';
+    var tw = x.measureText(text).width, bw = tw + 22 * U, bh = 26 * U, bx = 16 * U, by = h - bh - 16 * U, r = 6 * U;
+    x.beginPath();
+    x.moveTo(bx + r, by);
+    x.arcTo(bx + bw, by, bx + bw, by + bh, r);
+    x.arcTo(bx + bw, by + bh, bx, by + bh, r);
+    x.arcTo(bx, by + bh, bx, by, r);
+    x.arcTo(bx, by, bx + bw, by, r);
+    x.closePath();
+    x.fillStyle = 'rgb(21,46,69)';
+    x.fill();
+    x.fillStyle = '#fff';
+    x.textBaseline = 'middle';
+    x.textAlign = 'left';
+    x.fillText(text, bx + 11 * U, by + bh / 2 + .5 * U);
+  }
+  function compose(fmt, withSpeed) {
     var src = S.renderer.domElement;
     comp.width = src.width;
     comp.height = src.height;
-    var x = comp.getContext('2d'), k = src.width / W, U = Math.min(W, H) / 620 * k;
+    var x = comp.getContext('2d'), U = Math.min(W, H) / 620 * (src.width / W);
     x.drawImage(src, 0, 0);
-    if (CAPTION) {
-      var text = 'OpenAMRobot 2.0, simulation visualization';
-      x.font = '600 ' + 13 * U + 'px "Barlow Semi Condensed", "Arial Narrow", sans-serif';
-      var tw = x.measureText(text).width, bw = tw + 22 * U, bh = 26 * U, bx = 16 * U, by = comp.height - bh - 16 * U, r = 6 * U;
-      x.beginPath();
-      x.moveTo(bx + r, by);
-      x.arcTo(bx + bw, by, bx + bw, by + bh, r);
-      x.arcTo(bx + bw, by + bh, bx, by + bh, r);
-      x.arcTo(bx, by + bh, bx, by, r);
-      x.arcTo(bx, by, bx + bw, by, r);
-      x.closePath();
-      x.fillStyle = 'rgba(21,46,69,.9)';
-      x.fill();
-      x.fillStyle = '#fff';
-      x.textBaseline = 'middle';
-      x.textAlign = 'left';
-      x.fillText(text, bx + 11 * U, by + bh / 2 + .5 * U);
-    }
+    if (CAPTION) caption(x, U, comp.height, withSpeed);
     return fmt === 'jpeg' ? comp.toDataURL('image/jpeg', .9) : comp.toDataURL('image/png');
   }
-  function at(t, cam, fmt) {
+  // The caption of a video frame alone on a transparent canvas (PNG), for overlaying frames rendered
+  // with an earlier caption.
+  function captionOverlay() {
+    var c = document.createElement('canvas'), src = S.renderer.domElement;
+    c.width = src.width;
+    c.height = src.height;
+    caption(c.getContext('2d'), Math.min(W, H) / 620 * (src.width / W), c.height, true);
+    return c.toDataURL('image/png');
+  }
+  function at(t, cam, fmt, withSpeed) {
     t = Math.max(0, Math.min(info.T, t));
     S.applyAt(t);
     camera(cam || CAM, t);
     S.render();
-    return compose(fmt);
+    return compose(fmt, withSpeed);
   }
   function setup() {
     S = window.__sim;
@@ -87,7 +101,8 @@
     info = {fps: FPS, speed: SPEED, T: tl.T, frames: Math.floor(tl.T / SPEED * FPS) + 1, picks: picks, places: places, w: W, h: H, cam: CAM,
       sideAt: function (t) { var s = 'left'; picks.forEach(function (p) { if (p.t <= t) s = p.side; }); return s; }};
     window.__store = {fps: FPS, speed: SPEED, T: tl.T, frames: info.frames, picks: picks, places: places, w: W, h: H, cam: CAM};
-    window.__renderFrame = function (n, fmt) { return at(n / FPS * SPEED, CAM, fmt); };
+    window.__renderFrame = function (n, fmt) { return at(n / FPS * SPEED, CAM, fmt, true); };
+    window.__captionOverlay = captionOverlay;
     window.__renderAt = function (t, cam, fmt) { return at(t, cam, fmt); };
     window.__frameReady = true;
   }

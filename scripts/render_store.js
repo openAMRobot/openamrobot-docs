@@ -12,6 +12,8 @@
 // Options: --fps F (default 30), --speed K (sim seconds per video second, default 6.4), --cam C (default auto),
 //   --workers N (default 1), --frames A:B (render frames A to B-1 only, no video), --frames-dir DIR (keep the PNG
 //   frames there), --resume 1 (keep complete frames already in --frames-dir and render only the missing ones), --base URL (default http://localhost:8765/), --hashes FILE (write the sha256 of every frame).
+//   --recaption 1: lay the page's current corner caption (window.__captionOverlay, opaque box) over every frame
+//   while encoding, for frames rendered before a caption change.
 //   --still T --cam C --out FILE.png|jpg: one picture at sim time T instead of a video.
 const { chromium } = require('playwright');
 const { spawnSync } = require('child_process');
@@ -55,6 +57,7 @@ const png = u => Buffer.from(u.slice(u.indexOf(',') + 1), 'base64');
   }
   const probe = await launch(), first = await open(probe);
   const info = await first.page.evaluate(() => window.__store);
+  const overlay = opt.recaption !== undefined ? png(await first.page.evaluate(() => window.__captionOverlay())) : null;
   await probe.close();
   let [a, b] = opt.frames ? opt.frames.split(':').map(Number) : [0, info.frames];
   b = Math.min(b, info.frames);
@@ -88,7 +91,12 @@ const png = u => Buffer.from(u.slice(u.indexOf(',') + 1), 'base64');
   }
   if (errors.length) { console.error('console errors:', errors); process.exit(1); }
   if (opt.frames) return;
-  const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(fps), '-start_number', '0', '-i', path.join(dir, '%05d.png'),
+  const input = ['-framerate', String(fps), '-start_number', '0', '-i', path.join(dir, '%05d.png')];
+  if (overlay) {  // the page's current corner caption over every frame (frames rendered with an earlier caption)
+    fs.writeFileSync(path.join(dir, 'caption.png'), overlay);
+    input.push('-i', path.join(dir, 'caption.png'), '-filter_complex', '[0:v][1:v]overlay=0:0:format=rgb');
+  }
+  const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', ...input,
     '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
   if (!opt['frames-dir']) fs.rmSync(dir, { recursive: true, force: true });
   process.exit(r.status);

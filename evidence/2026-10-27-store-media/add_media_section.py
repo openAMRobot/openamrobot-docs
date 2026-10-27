@@ -2,11 +2,11 @@
 """Add the "Video and pictures" section below the 3D view of docs/assets/roadmap/robot.html (one replacement,
 must match once). Duration and size of the video are passed in; the pictures are listed in PICTURES.
 
-Usage: python3 add_media_section.py docs/assets/roadmap/robot.html <duration s> <video bytes> <fps>
+Usage: python3 add_media_section.py docs/assets/roadmap/robot.html <duration s> <video bytes> <fps> <speed> <sim s>
 """
 import sys
 
-path, dur, size, fps = sys.argv[1], float(sys.argv[2]), int(sys.argv[3]), sys.argv[4]
+path, dur, size, fps, speed, sim = sys.argv[1], float(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5], float(sys.argv[6])
 PICTURES = [
     ("01_aisle_follow", "Driving down the aisle, seen from behind and above (Follow view)"),
     ("02_pick_side", "Arm reaching into a shelf to pick an item (Side view)"),
@@ -32,13 +32,13 @@ section = (
     'real robot and not evidence of its behaviour; the pick sequence is an illustration (3.0 scope store, 2.0 is built for Use Case 1).</p>'
     '<video id="store-video" controls preload="none" playsinline poster="media/store/thumbs/store_video_poster.jpg" width="1920" height="1080">'
     '<source src="media/openamrobot-2-store-1080p.mp4" type="video/mp4"></video>'
-    '<p class="small mute">Store run: 1920 x 1080, %s fps, H.264, no audio, %.1f s, %.1f MB, the camera follows the robot with short cuts to the side view at each pick. '
+    '<p class="small mute">Store run: 1920 x 1080, %s fps, H.264, no audio, %.1f s, %.1f MB; played at %sx speed (%.1f s of simulated time in %.1f s of video). The camera follows the robot with short cuts to the side view at each pick. '
     'Download: <a href="media/openamrobot-2-store-1080p.mp4" download>store video (MP4)</a>, '
     '<a href="media/openamrobot-2-store-1080p-poster.png">poster (PNG)</a>, '
     '<a href="media/store/contact_sheet.jpg">all pictures on one sheet (JPEG)</a>.</p>'
     '<ul aria-label="Pictures of the store simulation">%s</ul>'
     '<p class="small mute">Pictures: 1920 x 1080 (two also 1080 x 1350), JPEG, from the same render mode; select a thumbnail for the full picture.</p>'
-    '</section></main>\n') % (fps, dur, size / 1e6, items)
+    '</section></main>\n') % (fps, dur, size / 1e6, speed, sim, dur, items)
 old = '</div>\n<main class="rm" style="padding-top:16px"><section class="card" id="config">'
 if html.count(old) != 1:
     sys.exit("anchor not found once")
