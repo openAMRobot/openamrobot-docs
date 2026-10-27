@@ -9,7 +9,7 @@ import sys
 path, dur, size, fps, speed, sim = sys.argv[1], float(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5], float(sys.argv[6])
 PICTURES = [
     ("01_aisle_follow", "Driving down the aisle, seen from behind and above (Follow view)"),
-    ("02_pick_side", "Arm reaching into a shelf to pick an item (Side view)"),
+    ("02_pick_side", "Arm reaching into a shelf to pick an item, close view from across the aisle"),
     ("03_place_tote", "Arm placing an item into a tote"),
     ("04_front_low", "In the aisle, front three-quarter, low camera, totes visible"),
     ("05_store_overview", "Overview of the store with the robot in an aisle"),
@@ -19,7 +19,7 @@ PICTURES = [
 ]
 html = open(path, encoding="utf-8").read()
 items = "".join(
-    '<li><a href="media/store/%s.jpg"><img src="media/store/thumbs/%s.jpg" alt="%s (simulation visualization)" width="%d" height="%d" loading="lazy" decoding="async"></a><span>%s</span></li>'
+    '<li><a href="media/store/%s.jpg"><img data-src="media/store/thumbs/%s.jpg" alt="%s (simulation visualization)" width="%d" height="%d" loading="lazy" decoding="async"></a><span>%s</span></li>'
     % (n, n, t, 640 if "1350" not in n else 512, 360 if "1350" not in n else 640, t) for n, t in PICTURES)
 section = (
     '<main class="rm" style="padding-top:16px"><section class="card" id="media"><h2>Video and pictures</h2>'
@@ -38,7 +38,18 @@ section = (
     '<a href="media/store/contact_sheet.jpg">all pictures on one sheet (JPEG)</a>.</p>'
     '<ul aria-label="Pictures of the store simulation">%s</ul>'
     '<p class="small mute">Pictures: 1920 x 1080 (two also 1080 x 1350), JPEG, from the same render mode; select a thumbnail for the full picture.</p>'
+    # thumbnails get their src only when the grid comes within 200 px of the viewport (loading="lazy" alone
+    # starts far earlier and would add every thumbnail to the first load)
+    '<script>(function(){var im=[].slice.call(document.querySelectorAll("#media img[data-src]"));'
+    'function show(i){i.src=i.getAttribute("data-src");i.removeAttribute("data-src")}'
+    'if(!("IntersectionObserver" in window)){im.forEach(show);return}'
+    'var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){show(e.target);o.unobserve(e.target)}})},{rootMargin:"200px"});'
+    'im.forEach(function(i){o.observe(i)})})();</script>'
     '</section></main>\n') % (fps, dur, size / 1e6, speed, sim, dur, items)
+start = '<main class="rm" style="padding-top:16px"><section class="card" id="media">'
+if start in html:  # replace an earlier version of the section
+    i = html.index(start)
+    html = html[:i] + html[html.index('</section></main>\n', i) + len('</section></main>\n'):]
 old = '</div>\n<main class="rm" style="padding-top:16px"><section class="card" id="config">'
 if html.count(old) != 1:
     sys.exit("anchor not found once")

@@ -1,0 +1,101 @@
+{
+ "page": "robot.html",
+ "meshesBefore": 203,
+ "meshesAfter": 199,
+ "matched": 199,
+ "unmatchedBefore": [
+  {
+   "part": "-",
+   "box": {
+    "centre_mm": [
+     -20,
+     -292,
+     272
+    ],
+    "size_mm": [
+     620,
+     3,
+     8
+    ]
+   },
+   "color": "0c3b38",
+   "emissive": "19d3c5",
+   "type": "MeshStandardMaterial"
+  },
+  {
+   "part": "-",
+   "box": {
+    "centre_mm": [
+     -20,
+     292,
+     272
+    ],
+    "size_mm": [
+     620,
+     3,
+     8
+    ]
+   },
+   "color": "0c3b38",
+   "emissive": "19d3c5",
+   "type": "MeshStandardMaterial"
+  },
+  {
+   "part": "-",
+   "box": {
+    "centre_mm": [
+     -391,
+     0,
+     272
+    ],
+    "size_mm": [
+     3,
+     400,
+     8
+    ]
+   },
+   "color": "0c3b38",
+   "emissive": "19d3c5",
+   "type": "MeshStandardMaterial"
+  },
+  {
+   "part": "-",
+   "box": {
+    "centre_mm": [
+     60,
+     0,
+     307
+    ],
+    "size_mm": [
+     270,
+     90,
+     6
+    ]
+   },
+   "color": "0c3b38",
+   "emissive": "19d3c5",
+   "type": "MeshStandardMaterial"
+  }
+ ],
+ "unmatchedAfter": [],
+ "maxMatrixDiff": 0,
+ "opacityOrVisibilityChanged": 0,
+ "uvAdded": 0,
+ "materialChanges": 0,
+ "errs": [
+  [],
+  []
+ ],
+ "sil": {
+  "front": {
+   "litBefore": 149425,
+   "litAfter": 149050,
+   "differing": 375
+  },
+  "rear": {
+   "litBefore": 162490,
+   "litAfter": 161794,
+   "differing": 696
+  }
+ }
+}

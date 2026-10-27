@@ -582,12 +582,13 @@ def check_store_media(root, html, err):
         ft = os.path.join(root, th)
         if not os.path.isfile(ft) or os.path.getsize(ft) > THUMB_MAX_BYTES:
             err("robot.html", "thumbnail %s is missing or over %d bytes" % (th, THUMB_MAX_BYTES))
-        if not re.search(r'<a href="%s"><img src="%s"[^>]*loading="lazy"' % (re.escape(pic), re.escape(th)), h):
+        if not re.search(r'<a href="%s"><img data-src="%s"[^>]*loading="lazy"' % (re.escape(pic), re.escape(th)), h):
             err("robot.html", "%s is not linked from a lazy-loaded thumbnail" % pic)
     sheet = os.path.join(root, STORE_SHEET)
     if not os.path.isfile(sheet) or os.path.getsize(sheet) > PICTURE_MAX_BYTES:
         err("robot.html", "contact sheet %s is missing or over %d bytes" % (STORE_SHEET, PICTURE_MAX_BYTES))
-    # first load: page, scripts, finish.json, images that are not lazy, video posters
+    # first load: page, scripts, finish.json, images that are not lazy, video posters (thumbnails carry data-src and
+    # get their src from an IntersectionObserver when the grid comes near the viewport)
     first = len(h.encode("utf-8")) + os.path.getsize(os.path.join(root, "model", "finish.json"))
     for src in re.findall(r'<script src="([^"]+)"', h) + re.findall(r'<video\b[^>]*\bposter="([^"]+)"', h):
         first += os.path.getsize(os.path.join(root, src)) if os.path.isfile(os.path.join(root, src)) else 0
