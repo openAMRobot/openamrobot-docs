@@ -18,7 +18,7 @@
   {
    "n": 3,
    "title": "Power and safety",
-   "text": "The battery cell-group envelope on the rear deck behind the centre bracket (provisional), drawn as eight LF105 cell boxes inside the envelope; the BMS, power distribution board, fuse and wiring go behind and beside it and are not drawn. The safety relay set, E-stop, RESET button and charging receiver have no position in the 2.0 documentation and are listed only.",
+   "text": "The battery cell-group envelope on the rear deck behind the centre bracket (provisional), drawn as eight LF105 cell boxes inside the envelope; the BMS, power distribution board, fuse and wiring go behind and beside it and are not drawn. The base E-stop (robot left) and the RESET button (robot right) sit in the front-panel holes of the release 001 buttons (P-03 rev20.0 item 24), drawn as placeholders from datasheet dimensions. The safety relay set and the charging receiver have no position in the 2.0 documentation and are listed only.",
    "frame": "base"
   },
   {
@@ -258,11 +258,37 @@
   },
   "estop": {
    "stage": 3,
-   "offsets": {}
+   "offsets": {
+    "estop": [
+     0.46,
+     0,
+     0
+    ]
+   },
+   "open": {
+    "estop": [
+     0.3,
+     0,
+     0
+    ]
+   }
   },
   "reset_button": {
    "stage": 3,
-   "offsets": {}
+   "offsets": {
+    "reset_button": [
+     0.46,
+     0,
+     0
+    ]
+   },
+   "open": {
+    "reset_button": [
+     0.3,
+     0,
+     0
+    ]
+   }
   },
   "wireless_charging_receiver": {
    "stage": 3,

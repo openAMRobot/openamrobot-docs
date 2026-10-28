@@ -294,6 +294,8 @@ def check_model(root, html, err):
                 err("model.js", "component %s names GLB node %s, which base_glb.js does not have" % (cid, nid))
             elif bool(glb[nid].get("provisional")) != bool(c.get("provisional")):
                 err("model.js", "component %s and GLB node %s disagree on provisional" % (cid, nid))
+            elif bool(glb[nid].get("placeholder")) != bool(c.get("placeholder")):
+                err("model.js", "component %s and GLB node %s disagree on placeholder" % (cid, nid))
         for pid in c.get("parts", []):
             if "'%s'" % pid not in js and not (pid.startswith("openarm_") and "'openarm_' + side" in js):
                 err("model.js", "component %s names part %s, which model.js does not build" % (cid, pid))
@@ -493,6 +495,45 @@ def check_no_light_strips(root, err):
     for m in re.finditer(r"emissive\s*:\s*(0x[0-9a-fA-F]+|#[0-9a-fA-F]{6}|\d+)", js):
         if emissive_cyan(m.group(1)):
             err("model.js", "cyan emissive colour %s on the robot; the robot has no light strips" % m.group(1))
+
+
+def function_body(src, start):
+    """Text of the brace block that opens at the first '{' after index start."""
+    i = src.index("{", start)
+    depth = 0
+    for j in range(i, len(src)):
+        depth += {"{": 1, "}": -1}.get(src[j], 0)
+        if depth == 0:
+            return src[i:j + 1]
+    return src[i:]
+
+
+def check_no_duplicate_fittings(root, html, err):
+    """The base E-stop and RESET come from the GLB only (nodes estop and reset_button): the robot page fittings
+    (model/model.js chassisFittings) draw neither again, and robot.html buildTotes draws no tote rails on the
+    cover (not in the BOM or the CAD); the totes are their own groups."""
+    try:
+        with open(os.path.join(root, "model", "model.js"), encoding="utf-8") as f:
+            js = f.read()
+    except OSError:
+        return
+    m = re.search(r"function chassisFittings\s*\(", js)
+    if not m:
+        err("model.js", "chassisFittings not found")
+    else:
+        body = function_body(js, m.end())
+        for mat in ("red", "yellow", "resetLit"):
+            if re.search(r"\bmats\.%s\b" % mat, body):
+                err("model.js", "chassisFittings draws a base E-stop or RESET (mats.%s); they come from the GLB" % mat)
+    if re.search(r"\bresetLit\b", js):
+        err("model.js", "resetLit material defined; the RESET button comes from the GLB")
+    m = re.search(r"\bbuildTotes\(\)\s*\{", html["robot.html"])
+    if not m:
+        err("robot.html", "buildTotes not found")
+    else:
+        body = function_body(html["robot.html"], m.start())
+        if re.search(r"\(this\.g,", body) or "aluDark" in body:
+            err("robot.html", "buildTotes adds geometry outside the totes (tote rails on the cover); not in the BOM or the CAD")
 
 
 def check_finish(root, err, comps, glb_prims):
@@ -705,6 +746,7 @@ def main():
     check_model(args.dir, html["exploded.html"], err)
     check_shared(args.dir, html, err)
     check_no_light_strips(args.dir, err)
+    check_no_duplicate_fittings(args.dir, html, err)
     check_store_media(args.dir, html, err)
 
     # 2. status count strips

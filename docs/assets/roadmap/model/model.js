@@ -211,8 +211,8 @@
 {"id":"driver_mount","name":"Motor driver mount","qty":1,"geometry":"cad","bom":"","purpose":"Holds the motor driver on the deck.","source":"CAD v0.2 instance driver_mount v2 (production file MMP.02.00.00.002)","link":"https://github.com/openAMRobot/openamr-platform-hw/blob/main/mechanical/cad/production_files/MMP.02.00.00.002%20Motor%20driver%20mount.STEP","nodes":["driver_mount"]},
 {"id":"battery","name":"Battery cell-group envelope","qty":1,"geometry":"envelope","provisional":true,"label":"Cell-group envelope, provisional (not the complete battery assembly)","bom":"PWR-001, PWR-028","purpose":"Eight EVE LF105 cells upright in one row across the robot (8S1P LiFePO4), on the rear deck with the front face 2 mm behind the centre bracket. Not the complete battery assembly: the BMS, power distribution board, pack fuse, terminals and wiring are not drawn and are never on top of the cells; they go in the BMS and power distribution zone behind it.","source":"PROVENANCE.yaml components.battery: cell-group envelope 314 (y) x 140 (x) x 210 (z) mm (cell layout plus 5 mm per outer face), position computed by the openamr-platform-sw converter (project-lead decision of 25 Oct 2026)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml","nodes":["battery"]},
 {"id":"safety_relay_set","name":"Safety relay, contactors, main fuse and disconnect","qty":1,"geometry":"none","bom":"SAF-002, SAF-003, PWR-003, PWR-004","purpose":"Hardwired safety chain and main power protection.","source":"PROVENANCE.yaml components.safety_relay_set (not modelled)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml"},
-{"id":"estop","name":"Base E-stop","qty":1,"geometry":"none","bom":"SAF-001","purpose":"One of the two E-stop buttons of the robot.","source":"PROVENANCE.yaml components.estop (not modelled)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml"},
-{"id":"reset_button","name":"RESET button","qty":1,"geometry":"none","bom":"SAF-005","purpose":"The only RESET button of the safety chain.","source":"PROVENANCE.yaml components.reset_button (not modelled)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml"},
+{"id":"estop","name":"Base E-stop","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder from datasheet dimensions (Schneider STEP not yet read)","bom":"SAF-001","purpose":"One of the two E-stop buttons of the robot, in the front-panel hole of the release 001 E-stop on the robot left (+y).","source":"PROVENANCE.yaml components.estop: placeholder geometry centred on the release 001 button hole axis at x 390.0, y +130.0, z 44.5 mm in base_link (P-03 rev20.0 item 24; openamr-platform-sw PR #100 at 1939b82)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml","nodes":["estop"]},
+{"id":"reset_button","name":"RESET button","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder from datasheet dimensions (Schneider STEP not yet read)","bom":"SAF-005","purpose":"The only RESET button of the safety chain, in the front-panel hole of the release 001 start button on the robot right (-y).","source":"PROVENANCE.yaml components.reset_button: placeholder geometry centred on the release 001 button hole axis at x 390.0, y -130.0, z 44.5 mm in base_link (P-03 rev20.0 items 20 and 24; openamr-platform-sw PR #100 at 1939b82)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml","nodes":["reset_button"]},
 {"id":"wireless_charging_receiver","name":"Wireless charging receiver","qty":1,"geometry":"none","bom":"WCH-002","purpose":"TZBOT WCM-500-24 receiver for normal charging.","source":"PROVENANCE.yaml components.wireless_charging_receiver (not modelled)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml"},
 {"id":"electronics_bracket","name":"Electronics bracket","qty":1,"geometry":"cad","bom":"","purpose":"Carries the compute module and the base controller above the deck.","source":"CAD v0.2 instance electronics_bracket v19 (production file MMP.04.00.00.002)","link":"https://github.com/openAMRobot/openamr-platform-hw/blob/main/mechanical/cad/production_files/MMP.04.00.00.002%20Electronics%20bracket.STEP","nodes":["electronics_bracket"]},
 {"id":"compute","name":"Compute (Jetson Orin NX on J401 carrier)","qty":1,"geometry":"envelope","bom":"CMP-001, CMP-002","purpose":"Runs the ROS 2 software of the robot.","source":"PROVENANCE.yaml components.compute (as in the CAD; heatsink kit not in the CAD)","link":"https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/meshes/PROVENANCE.yaml","nodes":["compute"]},
@@ -244,7 +244,7 @@
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
   // aluminium of the lift column, lift stage and head bracket (class of lift_column, satin); lens: ZED Mini lenses (sensor glass class);
   // arm: OpenArm 2.0 vertex colours as delivered, one material for both arms (no highlight tint). steel, slot,
-  // black and the robot page fittings (skirt, red, yellow, cable, resetLit) keep their values.
+  // black and the robot page fittings (skirt, red, yellow, cable) keep their values.
   M.materials = function (THREE) {
     var S = THREE.MeshStandardMaterial, A = M.classOf('lift_column') || 'anodised_aluminium';
     return {skirt: new S({color: 2830391, roughness: .55}),
@@ -253,7 +253,6 @@
       aluDark: M.classMaterial(THREE, A, 10133671), anod: M.classMaterial(THREE, A, 14146270),
       slot: new S({color: 2895926, roughness: .6, metalness: .3}),
       red: new S({color: 14164767, roughness: .35}), yellow: new S({color: 15909376, roughness: .45}),
-      resetLit: new S({color: 2056145, emissive: 732282, emissiveIntensity: .6, roughness: .3}),
       lens: M.classMaterial(THREE, M.classOf('head_camera', 'lens') || 'sensor_glass', 329224),
       cable: new S({color: 1711135, roughness: .6}),
       arm: M.classMaterial(THREE, 'openarm_as_delivered', 16777215, {vertexColors: true, side: THREE.DoubleSide})};
@@ -543,11 +542,7 @@
       h.position.set(D.BP[k] + x, y, D.DECK + 5e-4);
       g.add(h);
     }
-    box(THREE, g, .006, .065, .065, mats.yellow, D.X1 + .003, -.2, .255);  // base E-stop on the front panel
-    cyl(THREE, g, .012, .016, mats.black, D.X1 + .014, -.2, .255, 'x', 16);
-    cyl(THREE, g, .02, .016, mats.red, D.X1 + .028, -.2, .255, 'x', 24);
-    cyl(THREE, g, .015, .008, mats.black, D.X0 + .06, -.21, D.COVER + .004, 'z', 20);  // RESET on the rear deck
-    cyl(THREE, g, .011, .008, mats.resetLit, D.X0 + .06, -.21, D.COVER + .012, 'z', 20);
+    // the base E-stop and the RESET button come from the GLB (nodes estop and reset_button, placeholders)
     box(THREE, g, .2, .16, .012, mats.skirt, -.17, 0, D.BELLY - .012);
     var decal = new THREE.MeshStandardMaterial({map: decalTexture(THREE), transparent: true, roughness: .5});
     for (s of [-1, 1]) plane(THREE, g, .4, .05, decal, Math.PI / 2, s > 0 ? Math.PI : 0, -.08, s * (D.HW + .0015), .17);
