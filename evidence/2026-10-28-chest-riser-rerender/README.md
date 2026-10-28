@@ -23,6 +23,12 @@ parts and colours), Getac ZX10 box 275 x 192 x 17.9 mm in landscape with a 1 mm 
 head light 158 x 17 x 20 mm aluminium bar (long side across the chest, 20 mm deep) with a 148 x 13 mm
 diffuse window on the front face; no glow, no light source in the scene.
 
+Shared build option `chestPlaceholders` (`OAMR_MODEL.build(THREE, {chestPlaceholders: false})`, default true):
+off draws the chest E-stop only. The exploded view builds with it on (all three items, static, no arm
+motion, Placeholder badges). The robot page store scene builds with it off: the arms pass through the Getac
+and head light placeholder positions during the order run (collision check below), so they are not shown
+there until work package M-09 sets their positions; the page says so. No geometry was deleted.
+
 ## Stills
 
 `node scripts/render_store.js 1280 720 --still 0 --cam front|rear --out <file>` on robot.html, and frame 0
@@ -31,9 +37,9 @@ PNG.
 
 | File | Content |
 |---|---|
-| `robot_front_before.png`, `robot_front_after.png` | Before: illustrative chest E-stop (yellow box, red head) on the profile front, totes without support. After: bottom up on the profile front the chest E-stop placeholder (same parts and colours as the base E-stop), the Getac ZX10 box (screen forward) and the head light bar; a 20 x 20 mm aluminium riser frame under each tote |
+| `robot_front_before.png`, `robot_front_after.png` | Before: illustrative chest E-stop (yellow box, red head) on the profile front, totes without support. After (chestPlaceholders off): the chest E-stop placeholder on the profile front (same parts and colours as the base E-stop), no Getac and no head light; a 20 x 20 mm aluminium riser frame under each tote |
 | `robot_rear_before.png`, `robot_rear_after.png` | Rear: riser frames under both totes, standing on the cover; no tote rails |
-| `exploded_assembled_before.png`, `exploded_assembled_after.png` | Exploded view, assembled: chest E-stop, Getac ZX10 and head light on the profile front |
+| `exploded_assembled_before.png`, `exploded_assembled_after.png` | Exploded view, assembled (chestPlaceholders on): chest E-stop, Getac ZX10 and head light on the profile front |
 
 ## Geometry check
 
@@ -42,10 +48,11 @@ t = 0) and of a fresh `OAMR_MODEL.build` on exploded.html, compared by path, ver
 world box, colour, roughness, metalness and emissive colour.
 
 - Against main 7ac6543: robot page 194 meshes identical; removed 2 (the illustrative chest E-stop); added 3
-  (chest_estop), 2 (getac_tablet), 2 (head_light) and 16 (tote riser bars). Exploded build: 138 identical,
-  7 added (chest_estop, getac_tablet, head_light). Nothing else changed.
-- Against the previous branch state c3d4d71 (Banner head light, Getac not drawn): only the head light
-  replaced (2 meshes removed, 2 added) and the Getac box added (2 meshes).
+  (chest_estop) and 16 (tote riser bars). Exploded build: 138 identical, 7 added (chest_estop 3,
+  getac_tablet 2, head_light 2). Nothing else changed.
+- Against abb897e (Getac and head light drawn on both pages): robot page 213 identical, the 4 Getac and head
+  light meshes removed, nothing added; exploded build 145 identical, nothing changed. The tour videos,
+  posters and model/exploded-static.png rendered from abb897e therefore stay.
 
 Robot-frame boxes at bp000 (m): chest E-stop x 0.300 to 0.382, z 0.8615 to 0.9085; Getac x 0.300 to 0.3179,
 y -0.1375 to 0.1375, z 0.9185 to 1.1105; head light x 0.300 to 0.320, y -0.079 to 0.079, z 1.1515 to 1.1685
@@ -53,16 +60,23 @@ y -0.1375 to 0.1375, z 0.9185 to 1.1105; head light x 0.300 to 0.320, y -0.079 t
 
 ## Collision check
 
-`collision.json` from `node collision_check.js collision.json` (page served on port 8765): robot.html order
-run in the render mode at speed 4 and 24 fps (1536 frames, 255.9 s of simulated time), every 10th frame (154
-samples); bounding boxes of every arm link mesh (base, link1 to link7, two fingers, both arms) against the
-chest E-stop, the Getac ZX10 and the head light, computed per vertex in the robot frame. Boxes are
-axis-aligned, so an overlap marks possible contact, not proven mesh contact. The arms, the pick logic and the
-items were not changed.
+Both runs: `node collision_check.js <out.json>` (page served on port 8765), robot.html order run in the
+render mode at speed 4 and 24 fps (1536 frames, 255.9 s of simulated time), every 10th frame (154 samples);
+bounding boxes of every arm link mesh (base, link1 to link7, two fingers, both arms) against each chest item
+drawn in the scene, computed per vertex in the robot frame. Boxes are axis-aligned, so an overlap marks
+possible contact, not proven mesh contact. The arms, the pick logic and the items were not changed.
+`minGap` in each JSON gives the closest approach per link and item.
 
-Method change: the first report (Banner state) used world-axis boxes, which grow while the robot turns; it
-listed 18 head light overlaps. With world-axis boxes the current state gives 124; the robot-frame boxes
-below remove the turn inflation. `minGap` in the JSON gives the closest approach per link and item.
+### Store scene as rendered (chestPlaceholders off)
+
+`collision_store_scene.json`: chest items in the scene: chest_estop only. 0 overlaps.
+
+### Getac ZX10 and head light at their placeholder positions (input for work package M-09)
+
+`collision_chest_placeholders_m09.json`, run on abb897e, where robot.html drew all three chest items.
+The first report (Banner state) used world-axis boxes, which grow while the robot turns; it listed 18 head
+light overlaps. With world-axis boxes abb897e gives 124; the robot-frame boxes below remove the turn
+inflation.
 
 37 overlaps in 23 of 154 sampled frames: 31 with the Getac ZX10 (right link2 9, right link3 7, left link2 6,
 right link5 4, left link5 3, right link6 1, left link7 1), 6 with the head light (right link5 3, right link4

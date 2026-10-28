@@ -1,0 +1,114 @@
+{
+ "frames": 1536,
+ "fps": 24,
+ "speed": 4,
+ "T": 255.90176515006084,
+ "samples": 154,
+ "items": [
+  "chest_estop"
+ ],
+ "overlaps": [],
+ "minGap": {
+  "left base / chest_estop": {
+   "gap": 0.0305,
+   "frame": 0,
+   "t": 0
+  },
+  "left link1 / chest_estop": {
+   "gap": 0.0691,
+   "frame": 1530,
+   "t": 255
+  },
+  "left link2 / chest_estop": {
+   "gap": 0.0845,
+   "frame": 80,
+   "t": 13.33
+  },
+  "left link3 / chest_estop": {
+   "gap": 0.08,
+   "frame": 610,
+   "t": 101.67
+  },
+  "left link4 / chest_estop": {
+   "gap": 0.0735,
+   "frame": 610,
+   "t": 101.67
+  },
+  "left link5 / chest_estop": {
+   "gap": 0.0555,
+   "frame": 1140,
+   "t": 190
+  },
+  "left link6 / chest_estop": {
+   "gap": 0.0605,
+   "frame": 1120,
+   "t": 186.67
+  },
+  "left link7 / chest_estop": {
+   "gap": 0.0518,
+   "frame": 1120,
+   "t": 186.67
+  },
+  "left finger1 / chest_estop": {
+   "gap": 0.0964,
+   "frame": 1070,
+   "t": 178.33
+  },
+  "left finger2 / chest_estop": {
+   "gap": 0.1042,
+   "frame": 1090,
+   "t": 181.67
+  },
+  "right base / chest_estop": {
+   "gap": 0.0305,
+   "frame": 0,
+   "t": 0
+  },
+  "right link1 / chest_estop": {
+   "gap": 0.0691,
+   "frame": 1530,
+   "t": 255
+  },
+  "right link2 / chest_estop": {
+   "gap": 0.0845,
+   "frame": 170,
+   "t": 28.33
+  },
+  "right link3 / chest_estop": {
+   "gap": 0.0523,
+   "frame": 550,
+   "t": 91.67
+  },
+  "right link4 / chest_estop": {
+   "gap": 0.0498,
+   "frame": 550,
+   "t": 91.67
+  },
+  "right link5 / chest_estop": {
+   "gap": 0.0589,
+   "frame": 1390,
+   "t": 231.67
+  },
+  "right link6 / chest_estop": {
+   "gap": 0.0929,
+   "frame": 1390,
+   "t": 231.67
+  },
+  "right link7 / chest_estop": {
+   "gap": 0.0997,
+   "frame": 1390,
+   "t": 231.67
+  },
+  "right finger1 / chest_estop": {
+   "gap": 0.1001,
+   "frame": 1470,
+   "t": 245
+  },
+  "right finger2 / chest_estop": {
+   "gap": 0.1317,
+   "frame": 1300,
+   "t": 216.67
+  }
+ },
+ "errs": []
+}

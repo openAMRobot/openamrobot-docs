@@ -593,8 +593,8 @@
   // Chest equipment (M.CHEST), in the moving group mov (lift stage, profile front face at x MOUNT_X +
   // PROFILE.X / 2 from the column axis): the chest E-stop as a copy of the GLB estop meshes (same
   // geometry and materials as the base E-stop placeholder), the Getac ZX10 box and the head light bar.
-  // Returns the part groups.
-  function chestItems(THREE, R, mov, mats) {
+  // With all false only the chest E-stop is drawn (build option chestPlaceholders). Returns the part groups.
+  function chestItems(THREE, R, mov, mats, all) {
     var D = M.DIMS, C = M.CHEST.drawn, c = D.PLATE_TOP + D.COL.RETRACTED, f = D.MOUNT_X + D.PROFILE.X / 2, out = [];
     var part = function (id) {
       var g = new THREE.Group();
@@ -615,6 +615,7 @@
       });
       g.add(cp);
     }
+    if (!all) return out;
     var slab = function (g, x, y, zz, m, px, pz) {
       var k = new THREE.Mesh(new THREE.BoxGeometry(x, y, zz), m);
       k.position.set(px, 0, pz);
@@ -637,7 +638,9 @@
   // base (base_cad, GLB parts), col (lift assembly at the base-plate position bp), mov (lift stage; its
   // z is the lift travel), zed (head camera pivot, pitch headPitch degrees), arms (rigs posed at
   // ARM_POSE), parts ({part id: [groups]}), baseIds, mats. o.fittings adds the robot page fittings and
-  // returns them as fit ({cable, wrist}).
+  // returns them as fit ({cable, wrist}). o.chestPlaceholders (default true) draws the Getac ZX10 and the
+  // head light; false leaves them out (chest E-stop only), for the robot page store scene, where the arms
+  // pass through them until work package M-09 sets their positions.
   M.build = function (THREE, o) {
     o = o || {};
     var D = M.DIMS, mats = M.materials(THREE), R = {mats: mats, parts: {}, baseIds: {}, arms: {}};
@@ -659,7 +662,7 @@
     mov.add(zed);
     var ub = M.upperBody(THREE, {fixed: col, moving: mov, zed: zed}, mats);
     for (var id in ub) ub[id].forEach(function (g) { add(id, g); });
-    chestItems(THREE, R, mov, mats).forEach(function (g) { add(g.userData.id, g); });
+    chestItems(THREE, R, mov, mats, o.chestPlaceholders !== false).forEach(function (g) { add(g.userData.id, g); });
     if (o.fittings) R.fit = columnFittings(THREE, col, mov, mats);
     var geos = M.armGeometries(THREE);
     ['left', 'right'].forEach(function (s) {

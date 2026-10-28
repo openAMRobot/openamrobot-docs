@@ -595,6 +595,29 @@ def check_chest_and_riser(root, html, err, comps):
         err("model.js", "chestItems not found")
     elif re.search(r"emissive|Light\(", function_body(js, fm.end())):
         err("model.js", "chestItems gives the head light a glow or a light source")
+    # Build option chestPlaceholders: on (default) all three chest items, off the chest E-stop only. The exploded
+    # view keeps it on; the robot page store scene turns it off until work package M-09 sets the positions.
+    fm = re.search(r"function chestItems\s*\(THREE, R, mov, mats, (\w+)\)\s*\{", js)
+    if not fm:
+        err("model.js", "chestItems takes no chestPlaceholders flag (THREE, R, mov, mats, all)")
+    else:
+        b = function_body(js, fm.end() - 1)
+        cut = re.search(r"if \(!%s\) return out;" % fm.group(1), b)
+        pos = {cid: b.find("part('%s')" % cid) for cid in CHEST_ORDER}
+        if not cut or not (0 <= pos["chest_estop"] < cut.start() < min(pos["getac_tablet"], pos["head_light"])):
+            err("model.js", "chestItems must draw the chest E-stop first and stop before the Getac and head light "
+                "when chestPlaceholders is off")
+    if "chestItems(THREE, R, mov, mats, o.chestPlaceholders !== false)" not in js:
+        err("model.js", "M.build does not pass chestPlaceholders (default on) to chestItems")
+    builds = {page: re.findall(r"MODEL\.build\(\w+,\s*(\{[^}]*\})\)", html[page]) for page in ("robot.html", "exploded.html")}
+    off = lambda a: re.search(r"chestPlaceholders\s*:\s*(!1|false)\b", a) is not None
+    if not builds["exploded.html"] or any(off(a) or "chestPlaceholders" in a for a in builds["exploded.html"]):
+        err("exploded.html", "the exploded view must build the model with all three chest items (chestPlaceholders on)")
+    if len(builds["robot.html"]) != 1 or not off(builds["robot.html"][0]):
+        err("robot.html", "the store scene must build the model with chestPlaceholders off (chest E-stop only, no Getac "
+            "or head light until work package M-09)")
+    if "not shown in this store scene until work package M-09" not in html["robot.html"]:
+        err("robot.html", "the page does not state that the Getac and head light are not shown until work package M-09")
     h = html["robot.html"]
     bm = re.search(r"\bbuildTotes\(\)\s*\{", h)
     body = function_body(h, bm.start()) if bm else ""

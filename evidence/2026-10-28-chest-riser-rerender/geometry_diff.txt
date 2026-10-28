@@ -1,50 +1,38 @@
-# main 7ac6543 -> this branch (Falcon head light, Getac drawn)
-== robot before 196 after 217 unchanged 194 removed 2 added 23
-  - 1 x lift_assembly/Group/Mesh verts 148 colour d8231f box ((-0.914, -2.169, 0.866), (-0.894, -2.131, 0.904))
-  - 1 x lift_assembly/Group/Mesh verts 24 colour f2c200 box ((-0.95, -2.185, 0.85), (-0.914, -2.115, 0.92))
-  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 36 colour 73757a box ((-0.95, -2.165, 0.8615), (-0.904, -2.135, 0.9085))
-  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour 9ea1a6 box ((-0.904, -2.161, 0.874), (-0.882, -2.139, 0.896))
-  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour bf1414 box ((-0.882, -2.17, 0.865), (-0.868, -2.13, 0.905))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box ((-0.95, -2.2875, 0.9185), (-0.9331, -2.0125, 1.1105))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box ((-0.9331, -2.2875, 0.9185), (-0.9321, -2.0125, 1.1105))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box ((-0.95, -2.229, 1.1515), (-0.93, -2.071, 1.1685))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box ((-0.93, -2.224, 1.1535), (-0.929, -2.076, 1.1665))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-1.25, -1.884, 0.396), (-0.87, -1.864, 0.416))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.092, 0.396), (-0.87, -2.072, 0.416))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-0.89, -2.072, 0.396), (-0.87, -1.884, 0.416))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.072, 0.396), (-1.23, -1.884, 0.416))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-0.89, -1.884, 0.296), (-0.87, -1.864, 0.396))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-0.89, -2.092, 0.296), (-0.87, -2.072, 0.396))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-1.25, -1.884, 0.296), (-1.23, -1.864, 0.396))
-  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.092, 0.296), (-1.23, -2.072, 0.396))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.228, 0.396), (-0.87, -2.208, 0.416))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.436, 0.396), (-0.87, -2.416, 0.416))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-0.89, -2.416, 0.396), (-0.87, -2.228, 0.416))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.416, 0.396), (-1.23, -2.228, 0.416))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-0.89, -2.228, 0.296), (-0.87, -2.208, 0.396))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-0.89, -2.436, 0.296), (-0.87, -2.416, 0.396))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.228, 0.296), (-1.23, -2.208, 0.396))
-  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box ((-1.25, -2.436, 0.296), (-1.23, -2.416, 0.396))
+# main 7ac6543 -> this branch (robot page with chestPlaceholders off)
+== robot before 196 after 213 unchanged 194 removed 2 added 19
+  - 1 x lift_assembly/Group/Mesh verts 24 colour f2c200 box [[-0.95, -2.185, 0.85], [-0.914, -2.115, 0.92]]
+  - 1 x lift_assembly/Group/Mesh verts 148 colour d8231f box [[-0.914, -2.169, 0.866], [-0.894, -2.131, 0.904]]
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 36 colour 73757a box [[-0.95, -2.165, 0.8615], [-0.904, -2.135, 0.9085]]
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour 9ea1a6 box [[-0.904, -2.161, 0.874], [-0.882, -2.139, 0.896]]
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour bf1414 box [[-0.882, -2.17, 0.865], [-0.868, -2.13, 0.905]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-0.89, -2.072, 0.396], [-0.87, -1.884, 0.416]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.072, 0.396], [-1.23, -1.884, 0.416]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-1.25, -1.884, 0.396], [-0.87, -1.864, 0.416]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.092, 0.396], [-0.87, -2.072, 0.416]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-0.89, -1.884, 0.296], [-0.87, -1.864, 0.396]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-0.89, -2.092, 0.296], [-0.87, -2.072, 0.396]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-1.25, -1.884, 0.296], [-1.23, -1.864, 0.396]]
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.092, 0.296], [-1.23, -2.072, 0.396]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-0.89, -2.416, 0.396], [-0.87, -2.228, 0.416]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.416, 0.396], [-1.23, -2.228, 0.416]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.228, 0.396], [-0.87, -2.208, 0.416]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.436, 0.396], [-0.87, -2.416, 0.416]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-0.89, -2.228, 0.296], [-0.87, -2.208, 0.396]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-0.89, -2.436, 0.296], [-0.87, -2.416, 0.396]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.228, 0.296], [-1.23, -2.208, 0.396]]
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 colour c9cdd2 box [[-1.25, -2.436, 0.296], [-1.23, -2.416, 0.396]]
 == exploded before 138 after 145 unchanged 138 removed 0 added 7
-  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 36 colour 73757a box ((0.3, -0.015, 0.8615), (0.346, 0.015, 0.9085))
-  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour 9ea1a6 box ((0.346, -0.011, 0.874), (0.368, 0.011, 0.896))
-  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour bf1414 box ((0.368, -0.02, 0.865), (0.382, 0.02, 0.905))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box ((0.3, -0.1375, 0.9185), (0.3169, 0.1375, 1.1105))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box ((0.3169, -0.1375, 0.9185), (0.3179, 0.1375, 1.1105))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box ((0.3, -0.079, 1.1515), (0.32, 0.079, 1.1685))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box ((0.32, -0.074, 1.1535), (0.321, 0.074, 1.1665))
-# previous branch state c3d4d71 (Banner head light, no Getac) -> this branch
-== robot before 215 after 217 unchanged 213 removed 2 added 4
-  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box ((-0.95, -2.323, 1.146), (-0.929, -1.977, 1.174))
-  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box ((-0.929, -2.293, 1.148), (-0.928, -2.007, 1.172))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box ((-0.95, -2.2875, 0.9185), (-0.9331, -2.0125, 1.1105))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box ((-0.9331, -2.2875, 0.9185), (-0.9321, -2.0125, 1.1105))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box ((-0.95, -2.229, 1.1515), (-0.93, -2.071, 1.1685))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box ((-0.93, -2.224, 1.1535), (-0.929, -2.076, 1.1665))
-== exploded before 143 after 145 unchanged 141 removed 2 added 4
-  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box ((0.3, -0.173, 1.146), (0.321, 0.173, 1.174))
-  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box ((0.321, -0.143, 1.148), (0.322, 0.143, 1.172))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box ((0.3, -0.1375, 0.9185), (0.3169, 0.1375, 1.1105))
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box ((0.3169, -0.1375, 0.9185), (0.3179, 0.1375, 1.1105))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box ((0.3, -0.079, 1.1515), (0.32, 0.079, 1.1685))
-  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box ((0.32, -0.074, 1.1535), (0.321, 0.074, 1.1665))
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 36 colour 73757a box [[0.3, -0.015, 0.8615], [0.346, 0.015, 0.9085]]
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour 9ea1a6 box [[0.346, -0.011, 0.874], [0.368, 0.011, 0.896]]
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour bf1414 box [[0.368, -0.02, 0.865], [0.382, 0.02, 0.905]]
+  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box [[0.3, -0.1375, 0.9185], [0.3169, 0.1375, 1.1105]]
+  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box [[0.3169, -0.1375, 0.9185], [0.3179, 0.1375, 1.1105]]
+  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box [[0.3, -0.079, 1.1515], [0.32, 0.079, 1.1685]]
+  + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box [[0.32, -0.074, 1.1535], [0.321, 0.074, 1.1665]]
+# abb897e (Getac and head light drawn on both pages) -> this branch
+== robot before 217 after 213 unchanged 213 removed 4 added 0
+  - 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box [[-0.95, -2.2875, 0.9185], [-0.9331, -2.0125, 1.1105]]
+  - 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box [[-0.9331, -2.2875, 0.9185], [-0.9321, -2.0125, 1.1105]]
+  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box [[-0.95, -2.229, 1.1515], [-0.93, -2.071, 1.1685]]
+  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box [[-0.93, -2.224, 1.1535], [-0.929, -2.076, 1.1665]]
+== exploded before 145 after 145 unchanged 145 removed 0 added 0
