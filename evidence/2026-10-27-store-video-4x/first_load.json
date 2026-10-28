@@ -1,0 +1,52 @@
+{
+ "before": {
+  "bytes": 4164335,
+  "media": [
+   "media/store/thumbs/store_video_poster.jpg"
+  ]
+ },
+ "after": {
+  "bytes": 4164300,
+  "media": [
+   "media/store/thumbs/store_video_poster.jpg"
+  ]
+ },
+ "afterScroll": [
+  {
+   "src": true,
+   "loaded": false
+  },
+  {
+   "src": true,
+   "loaded": false
+  },
+  {
+   "src": true,
+   "loaded": false
+  },
+  {
+   "src": true,
+   "loaded": false
+  },
+  {
+   "src": true,
+   "loaded": false
+  },
+  {
+   "src": true,
+   "loaded": false
+  },
+  {
+   "src": true,
+   "loaded": false
+  },
+  {
+   "src": true,
+   "loaded": false
+  }
+ ],
+ "afterScrollMedia": [
+  "media/store/thumbs/store_video_poster.jpg"
+ ],
+ "growth": -35
+}
