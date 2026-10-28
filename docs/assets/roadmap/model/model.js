@@ -244,7 +244,7 @@
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
   // aluminium of the lift column, lift stage and head bracket (class of lift_column, satin); lens: ZED Mini lenses (sensor glass class);
   // arm: OpenArm 2.0 vertex colours as delivered, one material for both arms (no highlight tint). steel, slot,
-  // black and the robot page fittings (skirt, red, yellow, cable, resetLit) keep their values.
+  // black and the robot page fittings (skirt, red, yellow, cable) keep their values.
   M.materials = function (THREE) {
     var S = THREE.MeshStandardMaterial, A = M.classOf('lift_column') || 'anodised_aluminium';
     return {skirt: new S({color: 2830391, roughness: .55}),
@@ -253,7 +253,6 @@
       aluDark: M.classMaterial(THREE, A, 10133671), anod: M.classMaterial(THREE, A, 14146270),
       slot: new S({color: 2895926, roughness: .6, metalness: .3}),
       red: new S({color: 14164767, roughness: .35}), yellow: new S({color: 15909376, roughness: .45}),
-      resetLit: new S({color: 2056145, emissive: 732282, emissiveIntensity: .6, roughness: .3}),
       lens: M.classMaterial(THREE, M.classOf('head_camera', 'lens') || 'sensor_glass', 329224),
       cable: new S({color: 1711135, roughness: .6}),
       arm: M.classMaterial(THREE, 'openarm_as_delivered', 16777215, {vertexColors: true, side: THREE.DoubleSide})};
@@ -543,11 +542,7 @@
       h.position.set(D.BP[k] + x, y, D.DECK + 5e-4);
       g.add(h);
     }
-    box(THREE, g, .006, .065, .065, mats.yellow, D.X1 + .003, -.2, .255);  // base E-stop on the front panel
-    cyl(THREE, g, .012, .016, mats.black, D.X1 + .014, -.2, .255, 'x', 16);
-    cyl(THREE, g, .02, .016, mats.red, D.X1 + .028, -.2, .255, 'x', 24);
-    cyl(THREE, g, .015, .008, mats.black, D.X0 + .06, -.21, D.COVER + .004, 'z', 20);  // RESET on the rear deck
-    cyl(THREE, g, .011, .008, mats.resetLit, D.X0 + .06, -.21, D.COVER + .012, 'z', 20);
+    // the base E-stop and the RESET button come from the GLB (nodes estop and reset_button, placeholders)
     box(THREE, g, .2, .16, .012, mats.skirt, -.17, 0, D.BELLY - .012);
     var decal = new THREE.MeshStandardMaterial({map: decalTexture(THREE), transparent: true, roughness: .5});
     for (s of [-1, 1]) plane(THREE, g, .4, .05, decal, Math.PI / 2, s > 0 ? Math.PI : 0, -.08, s * (D.HW + .0015), .17);

@@ -15,7 +15,7 @@
 //   --crf Q: x264 quality (default 23; higher is smaller).
 //   --recaption 1: lay the page's current corner caption (window.__captionOverlay, opaque box) over every frame
 //   while encoding, for frames rendered before a caption change.
-//   --still T --cam C --out FILE.png|jpg: one picture at sim time T instead of a video.
+//   --still T --cam C --out FILE.png|jpg: one picture at sim time T instead of a video (cam rear: raised rear three-quarter).
 const { chromium } = require('playwright');
 const { spawnSync } = require('child_process');
 const crypto = require('crypto');
