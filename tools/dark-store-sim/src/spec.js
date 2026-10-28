@@ -22,7 +22,7 @@ export const ROBOT = {
   GEMINI: { x: 0.376, z: 0.0445 },               // base_camera_link from base_link: housing centre 142.5 mm above the floor (P-03 rev19.0)
   LIDAR_X: 0.330, LIDAR_Z: 0.222,               // RPLIDAR S3: lidar_link x from base_link; scan plane from the floor (z 0.124 from base_link)
   NEAR_Z: 0.0914, US_Y: 0.130,                   // MB7060 edge holes (y +/-0.130) and TF-Luna centre holes, 91.4 mm above the floor
-  ZED_ABOVE_SH: 0.223, ZED_X: 0.202,              // ZED Mini lens: 223 mm above and 22 mm ahead of the arm mount point (x from the column axis)
+  ZED_ABOVE_SH: 0.223, ZED_X: 0.222,              // ZED Mini lens: 223 mm above and 42 mm ahead of the arm mount point (x from the column axis; P-03 rev20.0, 28 Oct 2026)
 };
 
 // Totes: open plastic totes on the front deck, either side of the column (sized to the deck; not a catalogue part)
