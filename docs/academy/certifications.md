@@ -12,4 +12,4 @@ Botshare Academy certifications are intended to verify demonstrated capability, 
 !!! warning "Open source and certification are separate"
     Anyone may learn from and use OpenAMRobot under its licenses. Official Botshare Academy certification, assessments and verification are separate commercial services.
 
-Certificate issuance and public verification will be handled through the Academy platform.
+Certificate issuance and public verification will be handled through the Academy platform at [academy.botshare.ai](https://academy.botshare.ai/).
