@@ -537,11 +537,11 @@ def check_no_duplicate_fittings(root, html, err):
 
 
 CHEST_ORDER = ["chest_estop", "getac_tablet", "head_light"]  # P-03 rev20.0 item 24, bottom up
-# P-03 rev20.0 item 24, 28 Oct 2026 correction: Getac ZX80 234 x 149.8 x 17.6 mm mounted portrait (x depth 17.6,
-# y across 149.8, z height 234); Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
-CHEST_SIZES = {"getac_tablet": [0.0176, 0.1498, 0.234], "head_light": [0.02, 0.158, 0.017]}
+# P-03 rev20.0 item 24, 28 Oct 2026 correction: Getac ZX80 234 x 149.8 x 17.6 mm mounted landscape (x depth 17.6,
+# y across 234, z height 149.8); Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
+CHEST_SIZES = {"getac_tablet": [0.0176, 0.234, 0.1498], "head_light": [0.02, 0.158, 0.017]}
 # the replaced Getac ZX10 (275 x 192 x 17.9 mm) must not come back in the model or the robot and exploded pages
-CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm"]
+CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)portrait"]
 
 
 def check_chest_and_riser(root, html, err, comps):
@@ -573,7 +573,7 @@ def check_chest_and_riser(root, html, err, comps):
                        ("exploded.html", html["exploded.html"])):
         for pat in CHEST_RETIRED:
             if re.search(pat, text):
-                err(name, "names the replaced Getac ZX10 (%s); the chest tablet is the Getac ZX80 (P-03 rev20.0 item 24)" % pat)
+                err(name, "names the replaced Getac ZX10 or a portrait mounting (%s); the chest tablet is the Getac ZX80, mounted landscape (P-03 rev20.0 item 24)" % pat)
     m = re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js, flags=re.S)
     chest = json.loads(m.group(1)) if m else {}
     if chest.get("order") != CHEST_ORDER:
