@@ -56,7 +56,7 @@ export const STOW = { left: [0.25, -0.12, 0, 1.9, 0, -0.78, 0], right: mirrorQ([
 export class Robot {
   constructor(scene) {
     this.g = new THREE.Group(); this.g.name = 'OpenAMRobot'; scene.add(this.g);
-    this.sh = ROBOT.STOPS.L1000; this.bpKey = 'bp000'; this.bpX = ROBOT.BP.bp000; this.hp = 25; this.bt = 10; this.riser = 0;
+    this.sh = ROBOT.STOPS.L1000; this.bpKey = 'bp000'; this.bpX = ROBOT.BP.bp000; this.hp = 30; this.bt = 10; this.riser = 0;
     this.pose = { x: 0, y: 0, yaw: 0 };
     this.buildChassis(); this.buildColumn(); this.buildTotes(); this.buildArms();
     this.setBP('bp000'); this.setLift(this.sh);
@@ -142,6 +142,11 @@ export class Robot {
     box(a, C.L + 0.004, C.W + 0.004, 0.012, MAT.aluDark, 0, 0, P + outerH - 0.006);           // stage collar
     const lab = new THREE.Mesh(new THREE.PlaneGeometry(0.11, 0.035), new THREE.MeshStandardMaterial({ map: signTex(['HEXALIFT V4', '800 N · 18 mm/s · 24 V'], '#e9ecef', '#1d2733', 512, 160), roughness: 0.5 }));
     lab.rotation.set(Math.PI / 2, 0, 0); lab.position.set(0, -C.W / 2 - 0.0012, P + 0.12); a.add(lab);
+    // second E-stop on the rear face of the static column, close to its upper edge (P-03 rev20.0 item 24, 28 Oct 2026);
+    // Schneider XB4BS8445 with ZBE-102 as on the base. Position is a placeholder until M-09.
+    const sz = P + outerH - 0.05;
+    box(a, 0.036, 0.07, 0.07, MAT.yellow, -C.L / 2 - 0.018, 0, sz);
+    cylAxis(a, 0.019, 0.02, MAT.red, -C.L / 2 - 0.046, 0, sz, 'x', 24);
     // status light ring at the column foot
     box(a, C.L + 0.03, C.W + 0.03, 0.006, MAT.led, 0, 0, P + 0.003);
     // moving parts
@@ -152,7 +157,8 @@ export class Robot {
     box(m, 0.25, 0.072, C.HEAD, MAT.aluDark, 0, 0, top - C.HEAD / 2, 'head_plate');
     for (const s of [-1, 1]) box(m, 0.03, 0.012, 0.05, MAT.aluDark, s * 0.11, 0, top + 0.025);   // mounting straps
     // carriage (option B): 10 mm adapter plate on the column head, MISUMI HFS6-60120 arm profile 340 mm long,
-    // J1_A plates at the shoulder 180 mm ahead of the column axis, chest E-stop, ZED Mini.
+    // J1_A plates at the shoulder 180 mm ahead of the column axis, ZED Mini. The second E-stop is on the static column (above).
+    // The chest equipment envelope (Getac ZX80, head light) stays in the self-collision box below; its position comes from M-09.
     // The adapter-plate outline is approximate until it is drawn.
     const PR = ROBOT.PROFILE, px = ROBOT.MOUNT_X, pz0 = top + PR.ADAPTER, ax0 = -C.L / 2, ax1 = px + PR.X / 2;
     box(m, ax1 - ax0, 0.072, PR.ADAPTER, MAT.aluDark, (ax0 + ax1) / 2, 0, top + PR.ADAPTER / 2, 'adapter_plate');
@@ -162,9 +168,6 @@ export class Robot {
       box(m, 0.002, 0.008, PR.L - 0.01, MAT.slot, px + s * (PR.X / 2 + 0.0002), 0, pz0 + PR.L / 2);
     }
     for (const s of [-1, 1]) box(m, 0.09, 0.001, 0.09, MAT.steel, px, s * 0.0305, top + ROBOT.MOUNT_ABOVE_COL);   // 1 mm spacers
-    const ez = top + ROBOT.MOUNT_ABOVE_COL - 0.115, ex = px + PR.X / 2;
-    box(m, 0.036, 0.07, 0.07, MAT.yellow, ex + 0.018, 0, ez);
-    cylAxis(m, 0.019, 0.02, MAT.red, ex + 0.046, 0, ez, 'x', 24);
     const lensZ = top + ROBOT.MOUNT_ABOVE_COL + ROBOT.ZED_ABOVE_SH, ptop = pz0 + PR.L;
     box(m, 0.03, 0.03, 0.006, MAT.alu, ROBOT.ZED_X - 0.03, 0, ptop + 0.003);
     box(m, 0.012, 0.03, lensZ - ptop, MAT.aluDark, ROBOT.ZED_X - 0.03, 0, (ptop + lensZ) / 2);
@@ -288,7 +291,7 @@ export class Robot {
     const ct = ROBOT.PLATE_TOP + C.RETRACTED + (sh - ROBOT.STOPS.L1000);
     const out = [B(ROBOT.X0, -ROBOT.HW, 0, ROBOT.X1, ROBOT.HW, ROBOT.COVER, 'chassis'),
       B(bpX - C.L / 2, -C.W / 2, ROBOT.PLATE_TOP, bpX + C.L / 2, C.W / 2, ct, 'lift column'),
-      B(bpX + ROBOT.MOUNT_X - ROBOT.PROFILE.X / 2, -ROBOT.PROFILE.Y / 2, ct, bpX + ROBOT.MOUNT_X + ROBOT.PROFILE.X / 2 + 0.065, ROBOT.PROFILE.Y / 2, sh - 0.06, 'arm profile / chest E-stop')];
+      B(bpX + ROBOT.MOUNT_X - ROBOT.PROFILE.X / 2, -ROBOT.PROFILE.Y / 2, ct, bpX + ROBOT.MOUNT_X + ROBOT.PROFILE.X / 2 + 0.065, ROBOT.PROFILE.Y / 2, sh - 0.06, 'arm profile / chest equipment')];
     const T = TOTE, zf = ROBOT.COVER + this.riser;
     for (const s of [1, -1]) {
       const yi = s * T.YIN, yo = s * (T.YIN + T.W), lo = Math.min(yi, yo), hi = Math.max(yi, yo), x0 = T.X0, x1 = T.X0 + T.L, zt = zf + T.H;

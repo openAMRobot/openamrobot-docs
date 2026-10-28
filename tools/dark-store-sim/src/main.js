@@ -449,7 +449,7 @@ new ResizeObserver(resize).observe(stage);
 
 // ------------------------------------------------------------------------------------------- start
 $('tiles').hidden = !S.tiles; $('b-tiles').classList.toggle('on', S.tiles); $('b-q').classList.toggle('on', S.hq);
-$('hp-v').textContent = '25°'; $('gap-v').textContent = '5 cm'; $('ahead-v').textContent = '+10 cm'; setRecUI('');
+robot.setHeadPitch(30); $('hp-v').textContent = '30°'; $('gap-v').textContent = '5 cm'; $('ahead-v').textContent = '+10 cm'; setRecUI('');
 buildSelect(); drawMatrix(); resize(); analyse(); setView('over'); setPlayUI();
 requestAnimationFrame(loop);
 if (location.hash !== '#nomtx') setTimeout(computeMatrix, 400);
