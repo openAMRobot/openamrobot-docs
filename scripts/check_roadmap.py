@@ -536,20 +536,29 @@ def check_no_duplicate_fittings(root, html, err):
             err("robot.html", "buildTotes adds geometry outside the totes (tote rails on the cover); not in the BOM or the CAD")
 
 
-CHEST_ORDER = ["chest_estop", "getac_tablet", "head_light"]  # P-03 rev20.0 item 24, bottom up
+# P-03 rev20.0 item 24, layout update of 28 Oct 2026: the second E-stop (formerly the chest E-stop) on the rear
+# face of the static DOLD lift profile, close to its upper edge; the moving chest bottom up: head light, then
+# the Getac, the head light top edge 30 mm below the Getac bottom edge.
+CHEST_ORDER = ["head_light", "getac_tablet"]
+CHEST_IDS = ["second_estop"] + CHEST_ORDER
+LIGHT_TABLET_GAP = 0.03
 # P-03 rev20.0 item 24, 28 Oct 2026 correction: Getac ZX80 234 x 149.8 x 17.6 mm mounted landscape (x depth 17.6,
 # y across 234, z height 149.8); Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
 CHEST_SIZES = {"getac_tablet": [0.0176, 0.234, 0.1498], "head_light": [0.02, 0.158, 0.017]}
 # the replaced Getac ZX10 (275 x 192 x 17.9 mm) must not come back in the model or the robot and exploded pages
-CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)portrait"]
+CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)portrait", r"chest_estop"]
+# head camera (P-03 rev20.0 items 15, 17 and 18, 28 Oct 2026): lens 42 mm ahead of the shoulder, baseline hp30
+HEAD_PITCH_BASELINE = 30
+ZED_X = 0.222
 
 
 def check_chest_and_riser(root, html, err, comps):
-    """Chest equipment (P-03 rev20.0 item 24): the three registry entries exist and are placeholders, the
-    OpenArm kit button (ARM-008) is gone, M.CHEST lists them bottom up and the drawn ones rise in that order,
-    exactly one chest E-stop is drawn (chestItems only; no red or yellow button in the robot page fittings),
-    and the head light has no glow or light source. Tote riser (robot.html): one riser group per tote that
-    follows the riser value and is hidden at 0."""
+    """Second E-stop and chest equipment (P-03 rev20.0 item 24, layout update of 28 Oct 2026): the three
+    registry entries exist and are placeholders, the OpenArm kit button (ARM-008) is gone, the second E-stop is
+    built once on the static lift profile (rear face, facing rearward, near its upper edge), M.CHEST lists the
+    moving chest bottom up with the head light 30 mm under the Getac, no red or yellow button in the robot page
+    fittings, and the head light has no glow or light source. Head camera: hp30 baseline and the 42 mm lens
+    position. Tote riser (robot.html): one riser group per tote that follows the riser value and is hidden at 0."""
     try:
         with open(os.path.join(root, "model", "model.js"), encoding="utf-8") as f:
             js = f.read()
@@ -557,8 +566,8 @@ def check_chest_and_riser(root, html, err, comps):
         return
     byid = {c.get("id"): c for c in comps}
     if "arm_kit_estop" in byid:
-        err("model.js", "arm_kit_estop (ARM-008, withdrawn) is still in the registry; the chest E-stop is chest_estop")
-    for cid in CHEST_ORDER:
+        err("model.js", "arm_kit_estop (ARM-008, withdrawn) is still in the registry; the second E-stop is second_estop")
+    for cid in CHEST_IDS:
         c = byid.get(cid)
         if not c:
             err("model.js", "chest item %s is missing from the registry" % cid)
@@ -573,15 +582,13 @@ def check_chest_and_riser(root, html, err, comps):
                        ("exploded.html", html["exploded.html"])):
         for pat in CHEST_RETIRED:
             if re.search(pat, text):
-                err(name, "names the replaced Getac ZX10 or a portrait mounting (%s); the chest tablet is the Getac ZX80, mounted landscape (P-03 rev20.0 item 24)" % pat)
+                err(name, "names a replaced chest layout item (%s): the tablet is the Getac ZX80 mounted landscape and "
+                    "the second E-stop (second_estop) is on the static lift profile (P-03 rev20.0 item 24)" % pat)
     m = re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js, flags=re.S)
     chest = json.loads(m.group(1)) if m else {}
     if chest.get("order") != CHEST_ORDER:
-        err("model.js", "M.CHEST order %s, expected %s (bottom up)" % (chest.get("order"), CHEST_ORDER))
+        err("model.js", "M.CHEST order %s, expected %s (moving chest, bottom up)" % (chest.get("order"), CHEST_ORDER))
     drawn = chest.get("drawn", {})
-    zs = [drawn[c]["z"] for c in CHEST_ORDER if c in drawn]
-    if zs != sorted(zs) or len(set(zs)) != len(zs):
-        err("model.js", "M.CHEST drawn items do not rise in the decided order: %s" % zs)
     for cid in CHEST_ORDER:
         geo = (byid.get(cid) or {}).get("geometry")
         if cid not in drawn or geo in (None, "none"):
@@ -591,24 +598,31 @@ def check_chest_and_riser(root, html, err, comps):
             err("model.js", "chest item %s size %s, expected %s from its source" % (cid, (drawn.get(cid) or {}).get("size"), size))
     stack = [(cid, drawn[cid]["z"] - drawn[cid]["size"][2] / 2, drawn[cid]["z"] + drawn[cid]["size"][2] / 2)
              for cid in CHEST_ORDER if cid in drawn and "size" in drawn[cid]]
-    for (c1, _, top), (c2, bottom, _) in zip(stack, stack[1:]):
-        if bottom <= top:
-            err("model.js", "chest items %s and %s overlap in height" % (c1, c2))
+    if len(stack) == 2:
+        gap = stack[1][1] - stack[0][2]
+        if abs(gap - LIGHT_TABLET_GAP) > 0.0005:
+            err("model.js", "head light top edge %.4f m below the Getac bottom edge, expected %.3f m" % (gap, LIGHT_TABLET_GAP))
     for cid, bottom, top in stack:
         if bottom < 0.01 or top > 0.35:  # arm profile from 10 to 350 mm above the column top
             err("model.js", "chest item %s leaves the arm-profile height (%.4f to %.4f m)" % (cid, bottom, top))
-    if len(re.findall(r"part\('chest_estop'\)", js)) != 1:
-        err("model.js", "the chest E-stop must be built exactly once (chestItems)")
-    for fn in ("columnFittings", "chassisFittings"):
-        fm = re.search(r"function %s\s*\(" % fn, js)
-        if fm and re.search(r"\bmats\.(red|yellow)\b", function_body(js, fm.end())):
-            err("model.js", "%s draws an E-stop (red or yellow); E-stops come from the GLB and chestItems" % fn)
+    se = chest.get("second_estop") or {}
+    if not 0.02 <= se.get("below_top", -1) <= 0.06:  # centre 20 to 60 mm below the static profile top
+        err("model.js", "M.CHEST second_estop below_top %s: the second E-stop sits close to the static profile upper edge" % se.get("below_top"))
+    if len(re.findall(r"part\('second_estop', R\.col\)", js)) != 1 or re.search(r"part\('second_estop'\)", js):
+        err("model.js", "the second E-stop must be built exactly once, in the static lift group (part('second_estop', R.col))")
     fm = re.search(r"function chestItems\s*\(", js)
+    body = function_body(js, fm.end()) if fm else ""
+    if fm and not ("-D.COL.L / 2" in body and "rotation.z = Math.PI" in body):
+        err("model.js", "chestItems must put the second E-stop on the rear face of the static profile (x -COL.L/2), facing rearward")
+    for fn in ("columnFittings", "chassisFittings"):
+        fm2 = re.search(r"function %s\s*\(" % fn, js)
+        if fm2 and re.search(r"\bmats\.(red|yellow)\b", function_body(js, fm2.end())):
+            err("model.js", "%s draws an E-stop (red or yellow); E-stops come from the GLB and chestItems" % fn)
     if not fm:
         err("model.js", "chestItems not found")
-    elif re.search(r"emissive|Light\(", function_body(js, fm.end())):
+    elif re.search(r"emissive|Light\(", body):
         err("model.js", "chestItems gives the head light a glow or a light source")
-    # Build option chestPlaceholders: on (default) all three chest items, off the chest E-stop only. The exploded
+    # Build option chestPlaceholders: on (default) all three items, off the second E-stop only. The exploded
     # view keeps it on; the robot page store scene turns it off until work package M-09 sets the positions.
     fm = re.search(r"function chestItems\s*\(THREE, R, mov, mats, (\w+)\)\s*\{", js)
     if not fm:
@@ -616,9 +630,9 @@ def check_chest_and_riser(root, html, err, comps):
     else:
         b = function_body(js, fm.end() - 1)
         cut = re.search(r"if \(!%s\) return out;" % fm.group(1), b)
-        pos = {cid: b.find("part('%s')" % cid) for cid in CHEST_ORDER}
-        if not cut or not (0 <= pos["chest_estop"] < cut.start() < min(pos["getac_tablet"], pos["head_light"])):
-            err("model.js", "chestItems must draw the chest E-stop first and stop before the Getac and head light "
+        pos = {cid: b.find("part('%s'" % cid) for cid in CHEST_IDS}
+        if not cut or not (0 <= pos["second_estop"] < cut.start() < min(pos["getac_tablet"], pos["head_light"])):
+            err("model.js", "chestItems must draw the second E-stop first and stop before the Getac and head light "
                 "when chestPlaceholders is off")
     if "chestItems(THREE, R, mov, mats, o.chestPlaceholders !== false)" not in js:
         err("model.js", "M.build does not pass chestPlaceholders (default on) to chestItems")
@@ -627,10 +641,30 @@ def check_chest_and_riser(root, html, err, comps):
     if not builds["exploded.html"] or any(off(a) or "chestPlaceholders" in a for a in builds["exploded.html"]):
         err("exploded.html", "the exploded view must build the model with all three chest items (chestPlaceholders on)")
     if len(builds["robot.html"]) != 1 or not off(builds["robot.html"][0]):
-        err("robot.html", "the store scene must build the model with chestPlaceholders off (chest E-stop only, no tablet "
+        err("robot.html", "the store scene must build the model with chestPlaceholders off (second E-stop only, no tablet "
             "or head light until work package M-09)")
     if "not shown in this store scene until work package M-09" not in html["robot.html"]:
         err("robot.html", "the page does not state that the Getac and head light are not shown until work package M-09")
+    # Head camera baseline hp30 and lens 42 mm ahead of the shoulder (P-03 rev20.0 items 15, 17 and 18)
+    pitch = lambda a: (re.search(r"headPitch\s*:\s*(\d+)", a) or [None, None])[1]
+    for page in ("robot.html", "exploded.html"):
+        if not builds[page] or any(pitch(a) != str(HEAD_PITCH_BASELINE) for a in builds[page]):
+            err(page, "the shared model must be built with headPitch %d (hp30 baseline)" % HEAD_PITCH_BASELINE)
+    if "o.headPitch === undefined ? %d : o.headPitch" % HEAD_PITCH_BASELINE not in js:
+        err("model.js", "M.build default head pitch is not the hp30 baseline")
+    zm = re.search(r"ZED_X:\s*([\d.]+)", js)
+    if not zm or abs(float(zm.group(1)) - ZED_X) > 1e-6:
+        err("model.js", "M.DIMS.ZED_X %s, expected %.3f (lens 42 mm ahead of the shoulder)" % (zm and zm.group(1), ZED_X))
+    h = html["robot.html"]
+    for need, what in (('this.hp=%d,' % HEAD_PITCH_BASELINE, "initial head pitch state"),
+                       ('id="hp" min="15" max="35" step="5" value="%d"' % HEAD_PITCH_BASELINE, "head pitch slider value"),
+                       ('N0("hp-v").textContent="%d\\xB0"' % HEAD_PITCH_BASELINE, "head pitch readout"),
+                       ('<b>hp%d</b> <span class="kind k-dec">default</span>' % HEAD_PITCH_BASELINE, "configuration table default")):
+        if need not in h:
+            err("robot.html", "%s is not hp%d" % (what, HEAD_PITCH_BASELINE))
+    for bad in ("default hp25", "<b>hp25</b>", "head_pitch hp25,", "22 mm ahead", "0.202, 0, 0.389"):
+        if bad in h:
+            err("robot.html", "still states the former head camera baseline (%s)" % bad)
     h = html["robot.html"]
     bm = re.search(r"\bbuildTotes\(\)\s*\{", h)
     body = function_body(h, bm.start()) if bm else ""

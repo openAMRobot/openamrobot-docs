@@ -41,7 +41,7 @@ Recorded means written in the decision addendum of the plan set (P-03); the revi
 | IMU | ICM-42688-P on the centreline at x = 0.195 m from `base_link`, WHO_AM_I 0x47; the MPU6500 is the Gate A unit only | 12 October 2026, recorded in P-03 revision 19.0 |
 | BOM issue | OpenAMRobot 2.0 Detailed Hardware BOM, Issue 7.7 | 12 October 2026 |
 | Shoulder height | 1000 mm at the retracted lift (304 + 530 + 166) to 1350 mm fully extended (304 + 880 + 166), at the OpenArm arm mount point; lift height is joint state, calibrated stops `L1000`, `L1175`, `L1350`; maximum assembled height 1700 mm (the robot may be lower, never higher; this is not shoulder height) | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
-| Head camera | Stereolabs ZED Mini on the lift carriage, lens 22 mm ahead of and 223 mm above the arm mount point, pitch 15 to 35 degrees down in 5 degree steps, baseline 25 degrees | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
+| Head camera | Stereolabs ZED Mini on the lift carriage, lens 42 mm ahead of and 223 mm above the arm mount point, pitch 15 to 35 degrees down in 5 degree steps, baseline 30 degrees | 9 October 2026, recorded in P-03 revision 18.9 item 18; lens 20 mm forward and baseline 30 degrees (was 25) on 28 October 2026, P-03 revision 20.0 items 15, 17 and 18 |
 | Configuration IDs | Column `dold_v4_350`, `tl3_400`; base plate `bp000`, `bp050`; head pitch `hp15` to `hp35`; base tilt `bt05`, `bt10`, `bt15` | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
 | Speed | Command ceiling 1.5 m/s, treated as an analytical limit; the accepted operating speed follows from the stability model and the stopping tests | 28 September 2026, recorded in P-03 revision 18.2 |
 

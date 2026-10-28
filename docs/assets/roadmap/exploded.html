@@ -287,8 +287,8 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     scene.add(grid);
     scene.userData.grid = grid;
 
-    // the shared model (MODEL.build, as on the Robot page): lift at L1000, bp000, head pitch 25 degrees
-    var robot = MODEL.build(THREE, {headPitch: 25});
+    // the shared model (MODEL.build, as on the Robot page): lift at L1000, bp000, head pitch 30 degrees (hp30)
+    var robot = MODEL.build(THREE, {headPitch: 30});
     root = robot.root;
     LOOK.robotEnv(root, CAL);
     scene.add(root);

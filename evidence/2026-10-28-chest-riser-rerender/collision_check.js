@@ -1,5 +1,5 @@
 // node collide_rf.js <out.json>: robot.html order run (render mode, speed 4, 24 fps); every 10th frame, the bounding box in the
-// robot frame (precise, per vertex; axes of the robot, so a turn of the robot does not grow the boxes) of each arm link mesh against each chest item (chest_estop, getac_tablet, head_light); overlaps reported.
+// robot frame (precise, per vertex; axes of the robot, so a turn of the robot does not grow the boxes) of each arm link mesh against the second E-stop and each chest item (second_estop, getac_tablet, head_light); overlaps reported.
 const { chromium } = require('playwright'); const fs = require('fs');
 (async () => {
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
@@ -13,7 +13,7 @@ const { chromium } = require('playwright'); const fs = require('fs');
     const rbox = obj => { const b = new THREE.Box3(); obj.traverse(o => { if (!o.isMesh) return; m.multiplyMatrices(inv, o.matrixWorld);
       const p = o.geometry.attributes.position; for (let i = 0; i < p.count; i++) b.expandByPoint(v.fromBufferAttribute(p, i).applyMatrix4(m)); }); return b; };
     const names = ['base', 'link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7'];
-    const items = {}; R.g.traverse(o => { if (o.userData && (o.userData.id === 'chest_estop' || o.userData.id === 'getac_tablet' || o.userData.id === 'head_light') && o.isGroup && !items[o.userData.id]) items[o.userData.id] = o; });
+    const items = {}; R.g.traverse(o => { if (o.userData && (o.userData.id === 'second_estop' || o.userData.id === 'getac_tablet' || o.userData.id === 'head_light') && o.isGroup && !items[o.userData.id]) items[o.userData.id] = o; });
     let minGap = {}, n = 0;
     for (let f = 0; f < st.frames; f += 10) {
       const t = f / fps * sp; S.applyAt(t); R.g.updateMatrixWorld(true); inv.copy(R.g.matrixWorld).invert(); n++;

@@ -42,7 +42,7 @@
   {
    "n": 7,
    "title": "Lift column and adapter plate",
-   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top.",
+   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top. On the rear face of the static column profile, close to its upper edge: the second E-stop, a placeholder until work package M-09.",
    "frame": [
     "lift_base_plate",
     "lift_column",
@@ -52,7 +52,7 @@
   {
    "n": 8,
    "title": "Arm profile and arms",
-   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket. On the front of the profile, bottom up: the chest E-stop, the Getac ZX80 tablet (landscape) and the head light, placeholders until work package M-09.",
+   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket (lens 42 mm ahead of the shoulder, 30 degrees down). On the front of the profile, bottom up: the head light and the Getac ZX80 tablet (landscape), placeholders until work package M-09.",
    "frame": [
     "arm_profile",
     "openarm",
@@ -713,13 +713,13 @@
     ]
    }
   },
-  "chest_estop": {
-   "stage": 8,
+  "second_estop": {
+   "stage": 7,
    "offsets": {
-    "chest_estop": [
-     0.14,
+    "second_estop": [
+     -0.14,
      0,
-     1.0
+     0.86
     ]
    }
   },
@@ -754,7 +754,7 @@
   "imu": "IMU",
   "ultrasonic": "Ultrasonic",
   "tof": "ToF",
-  "chest_estop": "Chest E-stop",
+  "second_estop": "Second E-stop",
   "head_light": "Head light",
   "getac_tablet": "Getac ZX80"
  },

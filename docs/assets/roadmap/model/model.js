@@ -182,17 +182,19 @@
     MOUNT_ABOVE_COL: .166, MOUNT_X: .18, PROFILE: {X: .12, Y: .06, L: .34, ADAPTER: .01}, MOUNT_Y: .031,
     STOPS: {L1000: 1, L1175: 1.175, L1350: 1.35}, BASE_LINK_Z: .098, GEMINI: {x: .387, z: .046}, LIDAR_X: .33,
     LIDAR_Z: .22205, IMU: {x: .0544, z: .121, yaw: -90}, TOF_X: .39, US_XF: .39, US_XR: -.39, NEAR_Z: .0914,
-    US_Y: .13, ZED_ABOVE_SH: .223, ZED_X: .202};
+    US_Y: .13, ZED_ABOVE_SH: .223, ZED_X: .222};  // ZED_X: lens 42 mm ahead of the shoulder (P-03 rev20.0 item 18, 28 Oct 2026)
 
-  // Chest equipment on the moving chest (P-03 rev20.0 item 24), bottom up; placeholders until work package
-  // M-09. z: centre above the column top (lift stage at L1000 = 0), x: from the arm-profile front face.
-  // chest_estop: a copy of the GLB node estop (openamr-platform-sw #100 placeholder), its panel face (x 0.390
-  // in base_link) moved 48 mm ahead of the profile face so that the contact block stands on it. getac_tablet:
-  // Getac ZX80 box 234 x 149.8 x 17.6 mm (P-03 rev20.0 item 24, 28 Oct 2026), landscape (234 wide, 149.8 tall),
-  // screen forward, centred in the height between the chest E-stop and the head light; dock not drawn.
-  // head_light: Falcon Illumination FLDL-i150x15-W (P-03 rev20.0 item 24, 28 Oct 2026): housing 158 x 17 x 20 mm,
-  // lit area 148 x 13 mm, long side across the chest, 20 mm deep. size: [x depth, y across, z height] in metres.
-  M.CHEST = /*CHEST-JSON*/{"order": ["chest_estop", "getac_tablet", "head_light"], "drawn": {"chest_estop": {"z": 0.051, "panel_ahead": 0.048, "glb_node": "estop", "glb_axis": [0.39, 0.13, 0.0445]}, "getac_tablet": {"z": 0.196, "size": [0.0176, 0.234, 0.1498]}, "head_light": {"z": 0.326, "size": [0.02, 0.158, 0.017], "window": [0.148, 0.013]}}}/*CHEST-JSON-END*/;
+  // Second E-stop and chest equipment (P-03 rev20.0 item 24, layout update of 28 Oct 2026); placeholders until
+  // work package M-09. second_estop: on the rear face of the static DOLD lift profile, close to its upper edge,
+  // facing rearward, so it stays at the same height whatever the lift position; a copy of the GLB node estop
+  // (openamr-platform-sw #100 placeholder), its panel face (x 0.390 in base_link) 48 mm behind the profile rear
+  // face so that the contact block stands on it; below_top: centre below the static profile top. order: the
+  // moving chest bottom up; z: centre above the column top (lift stage at L1000 = 0), x: from the arm-profile
+  // front face. head_light: Falcon Illumination FLDL-i150x15-W, housing 158 x 17 x 20 mm, lit area 148 x 13 mm,
+  // long side across the chest, 20 mm deep, its top edge 30 mm below the Getac bottom edge. getac_tablet: Getac
+  // ZX80 box 234 x 149.8 x 17.6 mm, landscape (234 wide, 149.8 tall), screen forward, 50 mm higher than the
+  // earlier placeholder; dock not drawn. size: [x depth, y across, z height] in metres.
+  M.CHEST = /*CHEST-JSON*/{"second_estop": {"below_top": 0.04, "panel_ahead": 0.048, "glb_node": "estop", "glb_axis": [0.39, 0.13, 0.0445]}, "order": ["head_light", "getac_tablet"], "drawn": {"head_light": {"z": 0.1326, "size": [0.02, 0.158, 0.017], "window": [0.148, 0.013]}, "getac_tablet": {"z": 0.246, "size": [0.0176, 0.234, 0.1498]}}, "gap_light_tablet": 0.03}/*CHEST-JSON-END*/;
 
   // Arm pose of the assembled view (joint angles, rad); the right arm mirrors the left.
   var mirror = function (q) { return [-q[0], -q[1], -q[2], q[3], -q[4], -q[5], -q[6]]; };
@@ -247,10 +249,10 @@
 {"id":"slot_cover_strips","name":"Slot cover strips","qty":2,"geometry":"primitive","bom":"","purpose":"Two thin cosmetic strips in the front-most slot of each side face of the arm profile, above the arm mounts, about 85 mm long; colour from model/finish.json.","source":"Primitive drawn on the arm profile of option B; colour RAL 5018 (cyan reference) from model/finish.json","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["slot_cover_strips"]},
 {"id":"openarm","name":"OpenArm 2.0 arm","qty":2,"geometry":"cad","bom":"ARM-001","purpose":"Two 7-axis arms with grippers, mounted 180 mm ahead of the column axis.","source":"OpenArm 2.0 meshes and kinematics from the upstream openarm_description URDF; mount point per option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["openarm_left","openarm_right"]},
 {"id":"head_camera_bracket","name":"Head camera bracket","qty":1,"geometry":"primitive","bom":"ARM-011","purpose":"Pitch bracket on the profile top; supplier mount fit to be confirmed.","source":"openamr-upperbody-hw option B (camera body and bracket height pending supplier CAD)","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera_bracket"]},
-{"id":"head_camera","name":"Head stereo camera","qty":1,"geometry":"primitive","bom":"ARM-003","purpose":"Stereolabs ZED Mini, lens 22 mm ahead of and 223 mm above the shoulder, 25 degrees down baseline.","source":"openamr-upperbody-hw option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera"]},
-{"id":"chest_estop","name":"Chest E-stop","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: the base E-stop placeholder geometry of openamr-platform-sw PR #100 (Schneider XB4BS8445 with ZBE-102, datasheet dimensions)","placeholder_note":"placeholder position until work package M-09: centred on the front of the arm profile, lowest of the chest items","bom":"SAF-001","purpose":"The second of the two E-stop buttons of the robot (SAF-001, quantity 2 in BOM Issue 7.14: base front and chest), on the moving chest. It replaces the withdrawn OpenArm kit button (ARM-008).","source":"P-03 rev20.0 item 24 (chest layout bottom up: chest E-stop, Getac ZX80 tablet, head light); BOM Issue 7.14 SAF-001; geometry from the GLB node estop","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["chest_estop"]},
-{"id":"getac_tablet","name":"Operator tablet Getac ZX80","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Getac ZX80 outer dimensions 234 x 149.8 x 17.6 mm, 590 g (P-03 rev20.0 item 24, 28 Oct 2026 correction), mounted landscape (234 mm wide, 149.8 mm tall) with the screen forward; the dock is not drawn","placeholder_note":"placeholder position until work package M-09: centred on the front of the arm profile, between the chest E-stop and the head light","bom":"UI-001","purpose":"Detachable operator tablet on the moving chest, between the chest E-stop and the head light.","source":"P-03 rev20.0 item 24, 28 Oct 2026 correction (Getac ZX80, 234 x 149.8 x 17.6 mm, landscape); BOM Issue 7.14 UI-001 correction pending","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["getac_tablet"]},
-{"id":"head_light","name":"Head light","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Falcon Illumination FLDL-i150x15-W LED bar light, white, diffuse (housing 158 x 17 x 20 mm, lit area 148 x 13 mm, metal housing with acrylic cover); no light source is drawn","placeholder_note":"placeholder position until work package M-09: across the arm-profile front above the tablet, highest of the chest items","bom":"AUX-001","purpose":"Head light on the moving chest, switched and optionally PWM-dimmed by the lift node.","source":"P-03 rev20.0 item 24 (correction of 28 Oct 2026: Falcon FLDL-i150x15-W replaces the Banner WLS28); BOM Issue 7.14 AUX-001; Falcon FLDL-i150x15-W technical data","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_light"]}
+{"id":"head_camera","name":"Head stereo camera","qty":1,"geometry":"primitive","bom":"ARM-003","purpose":"Stereolabs ZED Mini, lens 42 mm ahead of and 223 mm above the shoulder, 30 degrees down baseline (hp30).","source":"openamr-upperbody-hw option B; P-03 rev20.0 items 15, 17 and 18 (28 Oct 2026: lens 20 mm forward, baseline hp30, was hp25)","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera"]},
+{"id":"second_estop","name":"Second E-stop","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: the base E-stop placeholder geometry of openamr-platform-sw PR #100 (Schneider XB4BS8445 with ZBE-102, datasheet dimensions)","placeholder_note":"placeholder position until work package M-09: on the rear face of the static lift profile, close to its upper edge, facing rearward","bom":"SAF-001","purpose":"The second of the two E-stop buttons of the robot (SAF-001, quantity 2 in BOM Issue 7.14), formerly the chest E-stop, on the static lift profile so it stays at the same height whatever the lift position. It replaces the withdrawn OpenArm kit button (ARM-008).","source":"P-03 rev20.0 item 24 (layout update of 28 Oct 2026: second E-stop on the rear face of the static DOLD lift profile, close to its upper edge); BOM Issue 7.14 SAF-001; geometry from the GLB node estop","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["second_estop"]},
+{"id":"getac_tablet","name":"Operator tablet Getac ZX80","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Getac ZX80 outer dimensions 234 x 149.8 x 17.6 mm, 590 g (P-03 rev20.0 item 24, 28 Oct 2026 correction), mounted landscape (234 mm wide, 149.8 mm tall) with the screen forward; the dock is not drawn","placeholder_note":"placeholder position until work package M-09: centred on the front of the arm profile, above the head light, 50 mm higher than the earlier placeholder","bom":"UI-001","purpose":"Detachable operator tablet on the moving chest, above the head light.","source":"P-03 rev20.0 item 24, 28 Oct 2026 correction (Getac ZX80, 234 x 149.8 x 17.6 mm, landscape); BOM Issue 7.14 UI-001 correction pending","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["getac_tablet"]},
+{"id":"head_light","name":"Head light","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Falcon Illumination FLDL-i150x15-W LED bar light, white, diffuse (housing 158 x 17 x 20 mm, lit area 148 x 13 mm, metal housing with acrylic cover); no light source is drawn","placeholder_note":"placeholder position until work package M-09: across the arm-profile front under the tablet, its top edge 30 mm below the tablet bottom edge","bom":"AUX-001","purpose":"Head light on the moving chest, switched and optionally PWM-dimmed by the lift node.","source":"P-03 rev20.0 item 24 (correction of 28 Oct 2026: Falcon FLDL-i150x15-W replaces the Banner WLS28; layout update of 28 Oct 2026: under the tablet); BOM Issue 7.14 AUX-001; Falcon FLDL-i150x15-W technical data","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_light"]}
 ]/*COMPONENTS-JSON-END*/;
 
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
@@ -464,8 +466,8 @@
     }
     for (s = -1; s <= 1; s += 2) box(prof, .09, .001, .09, mats.steel, u, s * .0305, c + D.MOUNT_ABOVE_COL);
     // Slot cover strips (inside the arm-profile group): 85 mm in the front-most slot of each side face,
-    // above the arm mounts, 247.5 to 332.5 mm above the column top, so that they stay more than 150 mm
-    // from the chest E-stop on the profile front face (M.CHEST).
+    // above the arm mounts, 247.5 to 332.5 mm above the column top (placed when the chest E-stop was on the
+    // profile front face; unchanged).
     var strips = part(prof, 'slot_cover_strips'), sm = finishMat(THREE, 'slot_cover_strips', mats.slot);
     for (s = -1; s <= 1; s += 2) box(strips, .0085, .0026, .085, sm, u + h.X / 4, s * (h.Y / 2 + 5e-4), c + .29, 'slot_cover_strip');
     var m = c + D.MOUNT_ABOVE_COL + D.ZED_ABOVE_SH, y = f + h.L, br = part(mov, 'head_camera_bracket');
@@ -480,7 +482,7 @@
 
   // ---------------------------------------------------------------- robot page fittings
   // Items the robot page draws on the robot that are not in the component registry (and so not in the
-  // exploded view): base-plate hole marks, base and chest E-stop, RESET button, belly skirt, side and rear
+  // exploded view): base-plate hole marks, belly skirt, side and rear
   // decals, lift-column screw heads and label, lift cable, wrist cameras. No light strips: the robot carries
   // no status lights (the LED strips and the column foot light of earlier versions were removed).
   // Built only with M.build(THREE, {fittings: true}).
@@ -572,7 +574,7 @@
     for (x of [-.13, .13]) for (y of [-.035, .035]) cyl(THREE, col, .0065, .005, mats.steel, x, y, t + .0025, 'z', 6);
     plane(THREE, col, .11, .035, new THREE.MeshStandardMaterial({map: labelTexture(THREE, ['HEXALIFT V4', '800 N · 18 mm/s · 24 V'],
       '#e9ecef', '#1d2733', 512, 160), roughness: .5}), Math.PI / 2, 0, 0, -e.W / 2 - .0012, t + .12);
-    // the chest E-stop is a registry part (chest_estop, M.CHEST), drawn on both pages
+    // the second E-stop is a registry part (second_estop, M.CHEST), drawn on both pages
     var cable = new THREE.Mesh(new THREE.BufferGeometry(), mats.cable);
     cable.castShadow = true;
     col.add(cable);
@@ -591,30 +593,36 @@
     return out;
   }
 
-  // Chest equipment (M.CHEST), in the moving group mov (lift stage, profile front face at x MOUNT_X +
-  // PROFILE.X / 2 from the column axis): the chest E-stop as a copy of the GLB estop meshes (same
-  // geometry and materials as the base E-stop placeholder), the Getac ZX80 box and the head light bar.
-  // With all false only the chest E-stop is drawn (build option chestPlaceholders). Returns the part groups.
+  // Second E-stop and chest equipment (M.CHEST). The second E-stop, a copy of the GLB estop meshes (same
+  // geometry and materials as the base E-stop placeholder), goes in the static group col (lift assembly,
+  // column axis at x 0) on the rear face of the static profile, turned to face rearward. The head light bar
+  // and the Getac ZX80 box go in the moving group mov (lift stage, profile front face at x MOUNT_X +
+  // PROFILE.X / 2 from the column axis). With all false only the second E-stop is drawn (build option
+  // chestPlaceholders). Returns the part groups.
   function chestItems(THREE, R, mov, mats, all) {
     var D = M.DIMS, C = M.CHEST.drawn, c = D.PLATE_TOP + D.COL.RETRACTED, f = D.MOUNT_X + D.PROFILE.X / 2, out = [];
-    var part = function (id) {
+    var part = function (id, parent) {
       var g = new THREE.Group();
       g.name = id;
       g.userData = {id: id, part: true, placeholder: true};
-      mov.add(g);
+      (parent || mov).add(g);
       out.push(g);
       return g;
     };
-    var src = (R.parts[C.chest_estop.glb_node] || [])[0];
+    var e = M.CHEST.second_estop, src = (R.parts[e.glb_node] || [])[0];
     if (src) {
-      var e = C.chest_estop, ax = e.glb_axis, g = part('chest_estop'), cp = new THREE.Group();
-      cp.position.set(f + e.panel_ahead - ax[0], -ax[1], c + e.z - ax[2]);  // GLB estop meshes are in base_link
+      // static profile top: the column top cap, D.COL.HEAD + 6 mm below the retracted column top
+      var ax = e.glb_axis, g = part('second_estop', R.col), turn = new THREE.Group(), cp = new THREE.Group();
+      turn.position.set(-D.COL.L / 2, 0, c - D.COL.HEAD - .006 - e.below_top);
+      turn.rotation.z = Math.PI;  // face rearward
+      cp.position.set(e.panel_ahead - ax[0], -ax[1], -ax[2]);  // GLB estop meshes are in base_link
       src.children.forEach(function (m) {
         var k = new THREE.Mesh(m.geometry, m.material.clone());
         k.castShadow = k.receiveShadow = true;
         cp.add(k);
       });
-      g.add(cp);
+      turn.add(cp);
+      g.add(turn);
     }
     if (!all) return out;
     var slab = function (g, x, y, zz, m, px, pz) {
@@ -639,8 +647,9 @@
   // base (base_cad, GLB parts), col (lift assembly at the base-plate position bp), mov (lift stage; its
   // z is the lift travel), zed (head camera pivot, pitch headPitch degrees), arms (rigs posed at
   // ARM_POSE), parts ({part id: [groups]}), baseIds, mats. o.fittings adds the robot page fittings and
-  // returns them as fit ({cable, wrist}). o.chestPlaceholders (default true) draws the Getac ZX80 and the
-  // head light; false leaves them out (chest E-stop only), for the robot page store scene, where the arms
+  // returns them as fit ({cable, wrist}). o.headPitch: head camera pitch down in degrees (default 30, the hp30
+  // baseline of P-03 rev20.0 items 15 and 17). o.chestPlaceholders (default true) draws the Getac ZX80 and the
+  // head light; false leaves them out (second E-stop only), for the robot page store scene, where the arms
   // pass through them until work package M-09 sets their positions.
   M.build = function (THREE, o) {
     o = o || {};
@@ -659,7 +668,7 @@
     root.add(col);
     col.add(mov);
     zed.position.set(D.ZED_X, 0, D.PLATE_TOP + D.COL.RETRACTED + D.MOUNT_ABOVE_COL + D.ZED_ABOVE_SH);
-    zed.rotation.y = (o.headPitch === undefined ? 25 : o.headPitch) * Math.PI / 180;
+    zed.rotation.y = (o.headPitch === undefined ? 30 : o.headPitch) * Math.PI / 180;
     mov.add(zed);
     var ub = M.upperBody(THREE, {fixed: col, moving: mov, zed: zed}, mats);
     for (var id in ub) ub[id].forEach(function (g) { add(id, g); });
