@@ -5,7 +5,7 @@ const { chromium } = require('playwright'); const fs = require('fs');
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 640, height: 360 } }); p.setDefaultTimeout(1800000);
   const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.goto('http://localhost:8765/robot.html?render=1&w=640&h=360&fps=24&speed=4&cam=auto#nomtx', { waitUntil: 'domcontentloaded' });
+  await p.goto('http://localhost:8765/' + (process.argv[3] || 'robot.html') + '?render=1&w=640&h=360&fps=24&speed=4&cam=auto#nomtx', { waitUntil: 'domcontentloaded' });
   await p.waitForFunction(() => window.__frameReady === true);
   const res = await p.evaluate(() => {
     const S = window.__sim, THREE = S.THREE, R = S.robot, st = window.__store, out = [], fps = st.fps, sp = st.speed;

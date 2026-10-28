@@ -537,8 +537,11 @@ def check_no_duplicate_fittings(root, html, err):
 
 
 CHEST_ORDER = ["chest_estop", "getac_tablet", "head_light"]  # P-03 rev20.0 item 24, bottom up
-# Getac ZX10 specification 275 x 192 x 17.9 mm; Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm (P-03 rev20.0 item 24)
-CHEST_SIZES = {"getac_tablet": [0.0179, 0.275, 0.192], "head_light": [0.02, 0.158, 0.017]}
+# P-03 rev20.0 item 24, 28 Oct 2026 correction: Getac ZX80 234 x 149.8 x 17.6 mm mounted portrait (x depth 17.6,
+# y across 149.8, z height 234); Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
+CHEST_SIZES = {"getac_tablet": [0.0176, 0.1498, 0.234], "head_light": [0.02, 0.158, 0.017]}
+# the replaced Getac ZX10 (275 x 192 x 17.9 mm) must not come back in the model or the robot and exploded pages
+CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm"]
 
 
 def check_chest_and_riser(root, html, err, comps):
@@ -561,6 +564,16 @@ def check_chest_and_riser(root, html, err, comps):
             err("model.js", "chest item %s is missing from the registry" % cid)
         elif not c.get("placeholder"):
             err("model.js", "chest item %s is not marked placeholder" % cid)
+    try:
+        with open(os.path.join(root, "model", "exploded.json"), encoding="utf-8") as f:
+            xj = f.read()
+    except OSError:
+        xj = ""
+    for name, text in (("model.js", js), ("exploded.json", xj), ("robot.html", html["robot.html"]),
+                       ("exploded.html", html["exploded.html"])):
+        for pat in CHEST_RETIRED:
+            if re.search(pat, text):
+                err(name, "names the replaced Getac ZX10 (%s); the chest tablet is the Getac ZX80 (P-03 rev20.0 item 24)" % pat)
     m = re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js, flags=re.S)
     chest = json.loads(m.group(1)) if m else {}
     if chest.get("order") != CHEST_ORDER:
@@ -614,7 +627,7 @@ def check_chest_and_riser(root, html, err, comps):
     if not builds["exploded.html"] or any(off(a) or "chestPlaceholders" in a for a in builds["exploded.html"]):
         err("exploded.html", "the exploded view must build the model with all three chest items (chestPlaceholders on)")
     if len(builds["robot.html"]) != 1 or not off(builds["robot.html"][0]):
-        err("robot.html", "the store scene must build the model with chestPlaceholders off (chest E-stop only, no Getac "
+        err("robot.html", "the store scene must build the model with chestPlaceholders off (chest E-stop only, no tablet "
             "or head light until work package M-09)")
     if "not shown in this store scene until work package M-09" not in html["robot.html"]:
         err("robot.html", "the page does not state that the Getac and head light are not shown until work package M-09")

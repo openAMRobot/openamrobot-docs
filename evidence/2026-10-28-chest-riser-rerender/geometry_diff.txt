@@ -25,14 +25,14 @@
   + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 36 colour 73757a box [[0.3, -0.015, 0.8615], [0.346, 0.015, 0.9085]]
   + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour 9ea1a6 box [[0.346, -0.011, 0.874], [0.368, 0.011, 0.896]]
   + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 colour bf1414 box [[0.368, -0.02, 0.865], [0.382, 0.02, 0.905]]
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box [[0.3, -0.1375, 0.9185], [0.3169, 0.1375, 1.1105]]
-  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box [[0.3169, -0.1375, 0.9185], [0.3179, 0.1375, 1.1105]]
+  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box [[0.3, -0.0749, 0.913], [0.3166, 0.0749, 1.147]]
+  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box [[0.3166, -0.0749, 0.913], [0.3176, 0.0749, 1.147]]
   + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box [[0.3, -0.079, 1.1515], [0.32, 0.079, 1.1685]]
   + 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box [[0.32, -0.074, 1.1535], [0.321, 0.074, 1.1665]]
-# abb897e (Getac and head light drawn on both pages) -> this branch
-== robot before 217 after 213 unchanged 213 removed 4 added 0
-  - 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box [[-0.95, -2.2875, 0.9185], [-0.9331, -2.0125, 1.1105]]
-  - 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box [[-0.9331, -2.2875, 0.9185], [-0.9321, -2.0125, 1.1105]]
-  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour c9cdd2 box [[-0.95, -2.229, 1.1515], [-0.93, -2.071, 1.1685]]
-  - 1 x lift_assembly/Group/head_light/Mesh verts 24 colour e7f1f8 box [[-0.93, -2.224, 1.1535], [-0.929, -2.076, 1.1665]]
-== exploded before 145 after 145 unchanged 145 removed 0 added 0
+# b685d48 (Getac ZX10 landscape in the exploded build) -> this branch (Getac ZX80 portrait)
+== robot before 213 after 213 unchanged 213 removed 0 added 0
+== exploded before 145 after 145 unchanged 143 removed 2 added 2
+  - 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box [[0.3, -0.1375, 0.9185], [0.3169, 0.1375, 1.1105]]
+  - 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box [[0.3169, -0.1375, 0.9185], [0.3179, 0.1375, 1.1105]]
+  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 323232 box [[0.3, -0.0749, 0.913], [0.3166, 0.0749, 1.147]]
+  + 1 x lift_assembly/Group/getac_tablet/Mesh verts 24 colour 0c0c0c box [[0.3166, -0.0749, 0.913], [0.3176, 0.0749, 1.147]]
