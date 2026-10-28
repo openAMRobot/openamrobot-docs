@@ -537,6 +537,8 @@ def check_no_duplicate_fittings(root, html, err):
 
 
 CHEST_ORDER = ["chest_estop", "getac_tablet", "head_light"]  # P-03 rev20.0 item 24, bottom up
+# Getac ZX10 specification 275 x 192 x 17.9 mm; Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm (P-03 rev20.0 item 24)
+CHEST_SIZES = {"getac_tablet": [0.0179, 0.275, 0.192], "head_light": [0.02, 0.158, 0.017]}
 
 
 def check_chest_and_riser(root, html, err, comps):
@@ -569,8 +571,19 @@ def check_chest_and_riser(root, html, err, comps):
         err("model.js", "M.CHEST drawn items do not rise in the decided order: %s" % zs)
     for cid in CHEST_ORDER:
         geo = (byid.get(cid) or {}).get("geometry")
-        if (cid in drawn) != (geo not in (None, "none")):
-            err("model.js", "chest item %s: drawn in M.CHEST and registry geometry disagree" % cid)
+        if cid not in drawn or geo in (None, "none"):
+            err("model.js", "chest item %s is not drawn (M.CHEST drawn and a registry geometry)" % cid)
+    for cid, size in CHEST_SIZES.items():  # placeholder sizes from their sources, x depth, y across, z height (m)
+        if (drawn.get(cid) or {}).get("size") != size:
+            err("model.js", "chest item %s size %s, expected %s from its source" % (cid, (drawn.get(cid) or {}).get("size"), size))
+    stack = [(cid, drawn[cid]["z"] - drawn[cid]["size"][2] / 2, drawn[cid]["z"] + drawn[cid]["size"][2] / 2)
+             for cid in CHEST_ORDER if cid in drawn and "size" in drawn[cid]]
+    for (c1, _, top), (c2, bottom, _) in zip(stack, stack[1:]):
+        if bottom <= top:
+            err("model.js", "chest items %s and %s overlap in height" % (c1, c2))
+    for cid, bottom, top in stack:
+        if bottom < 0.01 or top > 0.35:  # arm profile from 10 to 350 mm above the column top
+            err("model.js", "chest item %s leaves the arm-profile height (%.4f to %.4f m)" % (cid, bottom, top))
     if len(re.findall(r"part\('chest_estop'\)", js)) != 1:
         err("model.js", "the chest E-stop must be built exactly once (chestItems)")
     for fn in ("columnFittings", "chassisFittings"):
