@@ -49,7 +49,7 @@ export class Analyzer {
     for (let i = 1; i < 8; i++) {
       if (skipJaws && i === 7) continue;
       for (const ob of obs) {
-        if (ob.name === 'carriage / chest E-stop' && i < 2) continue;
+        if (ob.name === 'carriage / chest equipment' && i < 2) continue;
         const d = boxDist(o.pts[i], ob.box) - PT_R[i];
         if (d < clear) clear = d;
         if (d < 0) hits.push({ part: PT_NAME[i], obstacle: ob.name, d });
@@ -136,7 +136,7 @@ export class Analyzer {
       for (let i = 0; i < 7; i++) { Mx += W[i] * o.pts[i][1]; My += W[i] * (o.pts[i][0] - bpX); m += W[i]; }
       if (it) { Mx += it * o.tcp[1]; My += it * (o.tcp[0] - bpX); m += it; }
     }
-    const carriage = 2.5;   // profile, plates, E-stop, ZED Mini, cable (assumed)
+    const carriage = 2.5;   // profile, plates, chest equipment, ZED Mini, cable (assumed)
     return { lat: Math.abs(Mx) * g0, long: Math.abs(My) * g0, liftLoad: (m + carriage) * g0 };
   }
 

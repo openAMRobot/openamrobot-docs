@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-10-28
+
+### Changed
+
+- OpenAMRobot 2.0 upper-body decisions of 28 October 2026 (P-03 rev20.0 corrections line and items 15, 17, 18 and 24; E-01 rev1.5) in the reference pages, the roadmap hardware and progress pages and the dark-store pick simulation: chest tablet Getac ZX80 (replaces the ZX10), Falcon FLDL-i150x15-W head light (the Banner WLS28 is dropped), chest layout from the bottom up (head light, 30 mm gap, Getac; placeholders until M-09), the second E-stop, a Schneider XB4BS8445 with ZBE-102, on the rear face of the static lift column (the OpenArm kit button is superseded), fuse F-PD renamed F-PANEL, and the ZED Mini lens 42 mm ahead of the arm mount point with baseline pitch `hp30`. The simulation draws the second E-stop on the static column and starts at 30 degrees head pitch; the BOM Issue 7 diagram carries a superseded note.
+
 ## 2026-10-24
 
 ### Changed

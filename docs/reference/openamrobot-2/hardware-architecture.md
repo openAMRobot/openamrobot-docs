@@ -23,7 +23,7 @@ description: The OpenAMRobot 2.0 electronics, compute, base controller, drives, 
 | Drive bus | CAN1, 500 kbit/s, CANopen to the ZLAC8015D V4.2 driver | Two ZLLG80ASM250-L-B hub motors with integrated holding brakes (spring-applied function and ratings pending the supplier evidence, F2A) |
 | Battery bus | CAN2, 250 kbit/s, isolated, Daly 150 A BMS | 8S1P EVE LF105 LiFePO4, 25.6 V, 105 Ah |
 | Auxiliary bus | CAN3 on the third FDCAN, reserved for upper-body actuators | CAN mapping on the STM32H723: CAN1 traction, CAN2 BMS, CAN3 reserved for upper-body actuators; no CAN3 node is assigned yet |
-| Safety chain | Dual-channel E-stops (base and chest), two monitored series contactors, fuse and disconnect | Hardware chain; firmware observes it and applies a secondary inhibit only |
+| Safety chain | Dual-channel E-stops (base front, and the second one on the rear face of the static lift column, both Schneider XB4BS8445 with ZBE-102; P-03 revision 20.0 item 24), two monitored series contactors, fuse and disconnect | Hardware chain; firmware observes it and applies a secondary inhibit only |
 | IMU | ICM-42688-P on a mikroBUS board (MIKROE-4237) over SPI on the STM32; `imu_link` on the centreline at x 0.195 m from `base_link`, axes aligned with `base_link`; WHO_AM_I 0x47 at boot | Raw data published by firmware on /imu/data_raw, filtered data by the host EKF on /imu/data. The conditional adoption after a same-robot comparison on 20 November is superseded by P-03 rev19.0 |
 | IMU, Gate A unit | MPU6500 on the Teensy 4.0 over I2C, on the legacy robot with the Jetson | Gate A only; not part of the OpenAMRobot 2.0 build |
 | Navigation LiDAR | SLAMTEC RPLIDAR S3 (S3M1-R2) on USB, regulated 5 V rail; `lidar_link` (0.330, 0, 0.124) from `base_link`, yaw pi, beam 222.0 mm above the floor | Functional sensing, not a safety device. The Hokuyo UST-10LX is superseded |
@@ -31,7 +31,7 @@ description: The OpenAMRobot 2.0 electronics, compute, base controller, drives, 
 | Near-field sensors | Four MaxBotix MB7060 ultrasonic sensors in the front and rear panel edge holes (27.5 mm, y = ±0.130 m, 91.4 mm above the floor), each on its own STM32 UART; two Benewake TF-Luna ToF cliff sensors in the front and rear panel centre holes (22.0 mm; the rear hole is new), one UART each | Frames `us_front_left`, `us_front_right`, `us_rear_left`, `us_rear_right`, `tof_front`, `tof_rear` |
 | Head and wrist cameras | Stereolabs ZED Mini on the lift carriage, pitch 15 to 35 degrees down (exact interface pending the supplier mapping), one camera per gripper | Calibrated as a set with the base camera |
 | Arms | Two OpenArm 2.0 arms with grippers, CAN-FD | On the lift carriage; shoulder 1000 to 1350 mm at the OpenArm arm mount point, 180 mm ahead of the lift-column axis on a two-position base plate. The column axis is 330 mm behind the 780 mm chassis front edge: x = +0.060 m from `base_link` at `bp000` and +0.110 m at `bp050`, so the OpenArm J1_A mount points are at x = +0.240 m and +0.290 m. The complete robot must remain at or below the 1700 mm assembled-height envelope |
-| Operator panel | Getac ZX10 detachable tablet | Non-authoritative; no actuation path |
+| Operator panel | Getac ZX80 tablet (8 inch, 234 x 149.8 x 17.6 mm, 590 g, IP67, USB-C PD), mounted landscape on the chest; powered from F-PANEL with the Falcon FLDL-i150x15-W head light below it (P-03 revision 20.0 item 24; the Getac ZX10 is superseded 28 October 2026) | Non-authoritative; no actuation path |
 
 ## Navigation LiDAR (P-03 revision 19.0, items 13 and 19)
 
