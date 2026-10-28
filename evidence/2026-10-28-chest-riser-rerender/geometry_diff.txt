@@ -1,0 +1,30 @@
+== robot before 196 after 215 unchanged 194 removed 2 added 21
+  - 1 x lift_assembly/Group/Mesh verts 148 color d8231f
+  - 1 x lift_assembly/Group/Mesh verts 24 color f2c200
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 36 color 73757a visible True
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 color 9ea1a6 visible True
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 color bf1414 visible True
+  + 1 x lift_assembly/Group/head_light/Mesh verts 24 color c9cdd2 visible True
+  + 1 x lift_assembly/Group/head_light/Mesh verts 24 color e7f1f8 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_left/tote_riser_left/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+  + 1 x tote_right/tote_riser_right/Mesh verts 24 color c9cdd2 visible True
+== exploded before 138 after 143 unchanged 138 removed 0 added 5
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 36 color 73757a visible True
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 color 9ea1a6 visible True
+  + 1 x lift_assembly/Group/chest_estop/Group/Mesh verts 384 color bf1414 visible True
+  + 1 x lift_assembly/Group/head_light/Mesh verts 24 color c9cdd2 visible True
+  + 1 x lift_assembly/Group/head_light/Mesh verts 24 color e7f1f8 visible True

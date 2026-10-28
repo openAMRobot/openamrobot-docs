@@ -52,7 +52,7 @@
   {
    "n": 8,
    "title": "Arm profile and arms",
-   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket.",
+   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket. On the front of the profile, bottom up: the chest E-stop, the Getac ZX10 tablet (listed, not drawn) and the head light, placeholders until work package M-09.",
    "frame": [
     "arm_profile",
     "openarm",
@@ -713,9 +713,29 @@
     ]
    }
   },
-  "arm_kit_estop": {
+  "chest_estop": {
+   "stage": 8,
+   "offsets": {
+    "chest_estop": [
+     0.14,
+     0,
+     1.0
+    ]
+   }
+  },
+  "getac_tablet": {
    "stage": 8,
    "offsets": {}
+  },
+  "head_light": {
+   "stage": 8,
+   "offsets": {
+    "head_light": [
+     0.14,
+     0,
+     1.06
+    ]
+   }
   }
  },
  "labels": {
@@ -727,7 +747,9 @@
   "base_camera": "Gemini 336L",
   "imu": "IMU",
   "ultrasonic": "Ultrasonic",
-  "tof": "ToF"
+  "tof": "ToF",
+  "chest_estop": "Chest E-stop",
+  "head_light": "Head light"
  },
  "views": {
   "about": "open_base: the opened base (cover and flanges lifted and faded, panels out, internal components raised for reading; not assembly positions; the upper body is hidden). cutaway: opacity of the closing parts.",

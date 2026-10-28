@@ -172,9 +172,10 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       (c.placeholder ? '<span class="kind k-prov">Placeholder</span>' : '');
   }
   function geomText(c) {
+    if (c.placeholder && c.geometry === 'none') return c.label || NONE;
     if (c.geometry === 'none') return NONE;
     if (c.provisional) return (c.label || 'Envelope, provisional') + '; ' + PROV + '; cells drawn at 70 % opacity inside a translucent envelope shell';
-    if (c.placeholder) return (c.label || 'Placeholder') + '; ' + PLACEHOLDER;
+    if (c.placeholder) return (c.label || 'Placeholder') + '; ' + (c.placeholder_note || PLACEHOLDER);
     if (c.geometry === 'primitive') return 'Primitive drawn from decided dimensions';
     if (c.geometry === 'envelope') return 'Envelope (simplified component volume, shaped from its datasheet dimensions)';
     return 'CAD-derived mesh';

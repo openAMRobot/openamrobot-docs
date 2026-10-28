@@ -536,6 +536,65 @@ def check_no_duplicate_fittings(root, html, err):
             err("robot.html", "buildTotes adds geometry outside the totes (tote rails on the cover); not in the BOM or the CAD")
 
 
+CHEST_ORDER = ["chest_estop", "getac_tablet", "head_light"]  # P-03 rev20.0 item 24, bottom up
+
+
+def check_chest_and_riser(root, html, err, comps):
+    """Chest equipment (P-03 rev20.0 item 24): the three registry entries exist and are placeholders, the
+    OpenArm kit button (ARM-008) is gone, M.CHEST lists them bottom up and the drawn ones rise in that order,
+    exactly one chest E-stop is drawn (chestItems only; no red or yellow button in the robot page fittings),
+    and the head light has no glow or light source. Tote riser (robot.html): one riser group per tote that
+    follows the riser value and is hidden at 0."""
+    try:
+        with open(os.path.join(root, "model", "model.js"), encoding="utf-8") as f:
+            js = f.read()
+    except OSError:
+        return
+    byid = {c.get("id"): c for c in comps}
+    if "arm_kit_estop" in byid:
+        err("model.js", "arm_kit_estop (ARM-008, withdrawn) is still in the registry; the chest E-stop is chest_estop")
+    for cid in CHEST_ORDER:
+        c = byid.get(cid)
+        if not c:
+            err("model.js", "chest item %s is missing from the registry" % cid)
+        elif not c.get("placeholder"):
+            err("model.js", "chest item %s is not marked placeholder" % cid)
+    m = re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js, flags=re.S)
+    chest = json.loads(m.group(1)) if m else {}
+    if chest.get("order") != CHEST_ORDER:
+        err("model.js", "M.CHEST order %s, expected %s (bottom up)" % (chest.get("order"), CHEST_ORDER))
+    drawn = chest.get("drawn", {})
+    zs = [drawn[c]["z"] for c in CHEST_ORDER if c in drawn]
+    if zs != sorted(zs) or len(set(zs)) != len(zs):
+        err("model.js", "M.CHEST drawn items do not rise in the decided order: %s" % zs)
+    for cid in CHEST_ORDER:
+        geo = (byid.get(cid) or {}).get("geometry")
+        if (cid in drawn) != (geo not in (None, "none")):
+            err("model.js", "chest item %s: drawn in M.CHEST and registry geometry disagree" % cid)
+    if len(re.findall(r"part\('chest_estop'\)", js)) != 1:
+        err("model.js", "the chest E-stop must be built exactly once (chestItems)")
+    for fn in ("columnFittings", "chassisFittings"):
+        fm = re.search(r"function %s\s*\(" % fn, js)
+        if fm and re.search(r"\bmats\.(red|yellow)\b", function_body(js, fm.end())):
+            err("model.js", "%s draws an E-stop (red or yellow); E-stops come from the GLB and chestItems" % fn)
+    fm = re.search(r"function chestItems\s*\(", js)
+    if not fm:
+        err("model.js", "chestItems not found")
+    elif re.search(r"emissive|Light\(", function_body(js, fm.end())):
+        err("model.js", "chestItems gives the head light a glow or a light source")
+    h = html["robot.html"]
+    bm = re.search(r"\bbuildTotes\(\)\s*\{", h)
+    body = function_body(h, bm.start()) if bm else ""
+    if "tote_riser_" not in body or "riserFit(" not in body:
+        err("robot.html", "buildTotes draws no tote riser (one riser group per tote, fitted to the riser value)")
+    sm = re.search(r"\bsetRiser\(\w+\)\s*\{", h)
+    if not sm or "riserFit(" not in function_body(h, sm.start()):
+        err("robot.html", "setRiser does not refit the tote risers to the riser value")
+    fm = re.search(r"\briserFit\((\w+),(\w+)\)\s*\{", h)
+    if not fm or not re.search(r"\.visible=%s>" % fm.group(2), function_body(h, fm.start())):
+        err("robot.html", "riserFit does not hide the riser at riser 0")
+
+
 def check_finish(root, err, comps, glb_prims):
     """model/finish.json: classes of known parts, primitives that exist, known texture names."""
     try:
@@ -747,6 +806,8 @@ def main():
     check_shared(args.dir, html, err)
     check_no_light_strips(args.dir, err)
     check_no_duplicate_fittings(args.dir, html, err)
+    with open(os.path.join(args.dir, "model", "model.js"), encoding="utf-8") as f:
+        check_chest_and_riser(args.dir, html, err, model_components(f.read()))
     check_store_media(args.dir, html, err)
 
     # 2. status count strips

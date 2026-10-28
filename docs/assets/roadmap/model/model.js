@@ -184,6 +184,14 @@
     LIDAR_Z: .22205, IMU: {x: .0544, z: .121, yaw: -90}, TOF_X: .39, US_XF: .39, US_XR: -.39, NEAR_Z: .0914,
     US_Y: .13, ZED_ABOVE_SH: .223, ZED_X: .202};
 
+  // Chest equipment on the moving chest (P-03 rev20.0 item 24), bottom up; placeholders until work package
+  // M-09. z: centre above the column top (lift stage at L1000 = 0), x: from the arm-profile front face.
+  // chest_estop: a copy of the GLB node estop (openamr-platform-sw #100 placeholder), its panel face (x 0.390
+  // in base_link) moved 48 mm ahead of the profile face so that the contact block stands on it. getac_tablet:
+  // not drawn (no datasheet dimensions). head_light: Banner WLS28-2CW285DXPWMQ (publication 179493 Rev H):
+  // housing 346 mm long (L2), lighted length 286 mm (L3), section 28 x 21 mm; across the profile front.
+  M.CHEST = /*CHEST-JSON*/{"order": ["chest_estop", "getac_tablet", "head_light"], "drawn": {"chest_estop": {"z": 0.051, "panel_ahead": 0.048, "glb_node": "estop", "glb_axis": [0.39, 0.13, 0.0445]}, "head_light": {"z": 0.326, "housing": [0.021, 0.346, 0.028], "lighted": 0.286}}}/*CHEST-JSON-END*/;
+
   // Arm pose of the assembled view (joint angles, rad); the right arm mirrors the left.
   var mirror = function (q) { return [-q[0], -q[1], -q[2], q[3], -q[4], -q[5], -q[6]]; };
   M.ARM_POSE = {left: [.25, -.12, 0, 1.9, 0, -.78, 0], right: mirror([.25, -.12, 0, 1.9, 0, -.78, 0])};
@@ -238,7 +246,9 @@
 {"id":"openarm","name":"OpenArm 2.0 arm","qty":2,"geometry":"cad","bom":"ARM-001","purpose":"Two 7-axis arms with grippers, mounted 180 mm ahead of the column axis.","source":"OpenArm 2.0 meshes and kinematics from the upstream openarm_description URDF; mount point per option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["openarm_left","openarm_right"]},
 {"id":"head_camera_bracket","name":"Head camera bracket","qty":1,"geometry":"primitive","bom":"ARM-011","purpose":"Pitch bracket on the profile top; supplier mount fit to be confirmed.","source":"openamr-upperbody-hw option B (camera body and bracket height pending supplier CAD)","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera_bracket"]},
 {"id":"head_camera","name":"Head stereo camera","qty":1,"geometry":"primitive","bom":"ARM-003","purpose":"Stereolabs ZED Mini, lens 22 mm ahead of and 223 mm above the shoulder, 25 degrees down baseline.","source":"openamr-upperbody-hw option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera"]},
-{"id":"arm_kit_estop","name":"Arm kit E-stop","qty":1,"geometry":"none","bom":"ARM-008","purpose":"The second of the two E-stop buttons of the robot, supplied with the arm kit.","source":"BOM Issue 7.11 ARM-008; no position in the 2.0 documentation","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md"}
+{"id":"chest_estop","name":"Chest E-stop","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: the base E-stop placeholder geometry of openamr-platform-sw PR #100 (Schneider XB4BS8445 with ZBE-102, datasheet dimensions)","placeholder_note":"placeholder position until work package M-09: centred on the front of the arm profile, lowest of the chest items","bom":"SAF-001","purpose":"The second of the two E-stop buttons of the robot (SAF-001, quantity 2 in BOM Issue 7.14: base front and chest), on the moving chest. It replaces the withdrawn OpenArm kit button (ARM-008).","source":"P-03 rev20.0 item 24 (chest layout bottom up: chest E-stop, Getac ZX10, head light); BOM Issue 7.14 SAF-001; geometry from the GLB node estop","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["chest_estop"]},
+{"id":"getac_tablet","name":"Operator tablet Getac ZX10","qty":1,"geometry":"none","placeholder":true,"label":"Placeholder, not drawn: the Getac ZX10 datasheet outer dimensions are not available to this model (exact generation and SKU pending in BOM Issue 7.14)","bom":"UI-001","purpose":"Detachable operator tablet on the moving chest, between the chest E-stop and the head light.","source":"P-03 rev20.0 item 24 (chest layout); BOM Issue 7.14 UI-001; position placeholder until work package M-09","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md"},
+{"id":"head_light","name":"Head light","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Banner WLS28-2CW285DXPWMQ outline from Banner publication 179493 Rev H (housing 346 mm, lighted length 286 mm, section 28 x 21 mm); no light source is drawn","placeholder_note":"placeholder position and orientation until work package M-09: across the top of the arm-profile front, highest of the chest items","bom":"AUX-001","purpose":"Head light on the moving chest, switched and dimmed by the lift node (PWM).","source":"P-03 rev20.0 item 24; BOM Issue 7.14 AUX-001; Banner publication 179493 Rev H (15 Sep 2025)","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_light"]}
 ]/*COMPONENTS-JSON-END*/;
 
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
@@ -453,7 +463,7 @@
     for (s = -1; s <= 1; s += 2) box(prof, .09, .001, .09, mats.steel, u, s * .0305, c + D.MOUNT_ABOVE_COL);
     // Slot cover strips (inside the arm-profile group): 85 mm in the front-most slot of each side face,
     // above the arm mounts, 247.5 to 332.5 mm above the column top, so that they stay more than 150 mm
-    // from the chest E-stop the robot page draws on the profile front face.
+    // from the chest E-stop on the profile front face (M.CHEST).
     var strips = part(prof, 'slot_cover_strips'), sm = finishMat(THREE, 'slot_cover_strips', mats.slot);
     for (s = -1; s <= 1; s += 2) box(strips, .0085, .0026, .085, sm, u + h.X / 4, s * (h.Y / 2 + 5e-4), c + .29, 'slot_cover_strip');
     var m = c + D.MOUNT_ABOVE_COL + D.ZED_ABOVE_SH, y = f + h.L, br = part(mov, 'head_camera_bracket');
@@ -560,9 +570,7 @@
     for (x of [-.13, .13]) for (y of [-.035, .035]) cyl(THREE, col, .0065, .005, mats.steel, x, y, t + .0025, 'z', 6);
     plane(THREE, col, .11, .035, new THREE.MeshStandardMaterial({map: labelTexture(THREE, ['HEXALIFT V4', '800 N · 18 mm/s · 24 V'],
       '#e9ecef', '#1d2733', 512, 160), roughness: .5}), Math.PI / 2, 0, 0, -e.W / 2 - .0012, t + .12);
-    var z = t + e.RETRACTED + D.MOUNT_ABOVE_COL - .115, f = D.MOUNT_X + D.PROFILE.X / 2;  // chest E-stop on the profile front
-    box(THREE, mov, .036, .07, .07, mats.yellow, f + .018, 0, z);
-    cyl(THREE, mov, .019, .02, mats.red, f + .046, 0, z, 'x', 24);
+    // the chest E-stop is a registry part (chest_estop, M.CHEST), drawn on both pages
     var cable = new THREE.Mesh(new THREE.BufferGeometry(), mats.cable);
     cable.castShadow = true;
     col.add(cable);
@@ -578,6 +586,44 @@
       g.add(o);
       out[s] = o;
     });
+    return out;
+  }
+
+  // Chest equipment (M.CHEST), in the moving group mov (lift stage, profile front face at x MOUNT_X +
+  // PROFILE.X / 2 from the column axis): the chest E-stop as a copy of the GLB estop meshes (same
+  // geometry and materials as the base E-stop placeholder) and the head light bar. Returns the part groups.
+  function chestItems(THREE, R, mov, mats) {
+    var D = M.DIMS, C = M.CHEST.drawn, c = D.PLATE_TOP + D.COL.RETRACTED, f = D.MOUNT_X + D.PROFILE.X / 2, out = [];
+    var part = function (id) {
+      var g = new THREE.Group();
+      g.name = id;
+      g.userData = {id: id, part: true, placeholder: true};
+      mov.add(g);
+      out.push(g);
+      return g;
+    };
+    var src = (R.parts[C.chest_estop.glb_node] || [])[0];
+    if (src) {
+      var e = C.chest_estop, ax = e.glb_axis, g = part('chest_estop'), cp = new THREE.Group();
+      cp.position.set(f + e.panel_ahead - ax[0], -ax[1], c + e.z - ax[2]);  // GLB estop meshes are in base_link
+      src.children.forEach(function (m) {
+        var k = new THREE.Mesh(m.geometry, m.material.clone());
+        k.castShadow = k.receiveShadow = true;
+        cp.add(k);
+      });
+      g.add(cp);
+    }
+    var h = C.head_light, hs = h.housing, hl = part('head_light'), z = c + h.z;
+    var bar = function (x, y, zz, m, px) {
+      var b = new THREE.Mesh(new THREE.BoxGeometry(x, y, zz), m);
+      b.position.set(px, 0, z);
+      b.castShadow = b.receiveShadow = true;
+      hl.add(b);
+      return b;
+    };
+    bar(hs[0], hs[1], hs[2], mats.alu, f + hs[0] / 2);  // clear anodised aluminium housing
+    bar(.001, h.lighted, hs[2] - .004, new THREE.MeshStandardMaterial({color: 15200760, roughness: .35, metalness: 0}),
+      f + hs[0] + .0005);  // diffuse polycarbonate window over the lighted length; no glow, no lamp in the scene
     return out;
   }
 
@@ -608,6 +654,7 @@
     mov.add(zed);
     var ub = M.upperBody(THREE, {fixed: col, moving: mov, zed: zed}, mats);
     for (var id in ub) ub[id].forEach(function (g) { add(id, g); });
+    chestItems(THREE, R, mov, mats).forEach(function (g) { add(g.userData.id, g); });
     if (o.fittings) R.fit = columnFittings(THREE, col, mov, mats);
     var geos = M.armGeometries(THREE);
     ['left', 'right'].forEach(function (s) {
