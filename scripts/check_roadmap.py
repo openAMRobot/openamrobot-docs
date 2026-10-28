@@ -294,6 +294,8 @@ def check_model(root, html, err):
                 err("model.js", "component %s names GLB node %s, which base_glb.js does not have" % (cid, nid))
             elif bool(glb[nid].get("provisional")) != bool(c.get("provisional")):
                 err("model.js", "component %s and GLB node %s disagree on provisional" % (cid, nid))
+            elif bool(glb[nid].get("placeholder")) != bool(c.get("placeholder")):
+                err("model.js", "component %s and GLB node %s disagree on placeholder" % (cid, nid))
         for pid in c.get("parts", []):
             if "'%s'" % pid not in js and not (pid.startswith("openarm_") and "'openarm_' + side" in js):
                 err("model.js", "component %s names part %s, which model.js does not build" % (cid, pid))

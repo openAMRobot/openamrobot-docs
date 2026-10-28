@@ -39,8 +39,8 @@
   "lift_base_plate": {"ral": "RAL 9005", "finish": "satin"},
   "slot_cover_strips": {"ral": "RAL 5018", "finish": "matte"}
  },
- "unchanged": ["lift_column", "openarm_left", "openarm_right", "lidar", "base_camera", "ultrasonic_front_left", "ultrasonic_front_right", "ultrasonic_rear_left", "ultrasonic_rear_right", "tof_front", "tof_rear", "imu", "compute", "base_controller", "motor_driver", "head_camera", "head_camera_bracket", "battery", "base_plate", "controller_plate", "driver_mount", "lidar_spacer"],
- "unchanged_note": "Parts whose colour is not set here (colour of the GLB or of model.js). The hub motor wheels and the castor wheels take the colour of the rubber class.",
+ "unchanged": ["lift_column", "openarm_left", "openarm_right", "lidar", "base_camera", "ultrasonic_front_left", "ultrasonic_front_right", "ultrasonic_rear_left", "ultrasonic_rear_right", "tof_front", "tof_rear", "imu", "compute", "base_controller", "motor_driver", "head_camera", "head_camera_bracket", "battery", "base_plate", "controller_plate", "driver_mount", "lidar_spacer", "estop", "reset_button"],
+ "unchanged_note": "Parts whose colour is not set here (colour of the GLB or of model.js). The hub motor wheels and the castor wheels take the colour of the rubber class. The base E-stop and the RESET button keep the colours of the GLB (safety colours keep their meaning).",
  "classes": {
   "powder_coated_steel": {"about": "Powder-coated steel sheet: dielectric coat, subtle orange-peel relief. specular 0.3 (three.js specularIntensity) damps the grazing-angle reflection of the textured coat, so the RAL 7016 cover shows a soft sheen, not a mirror; roughness 0.62 with no roughness map.", "roughness": 0.62, "metalness": 0.0, "specular": 0.3, "normal_map": "orange_peel", "normal_scale": 0.06, "tile_m": 0.03},
   "anodised_aluminium": {"about": "Anodised aluminium: metallic, brushed roughness variation along the length of the part.", "roughness": 0.35, "metalness": 0.9, "roughness_map": "brushed", "tile_m": 0.05},

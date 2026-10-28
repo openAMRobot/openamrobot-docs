@@ -140,7 +140,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     </section>
     <section class="blk" aria-labelledby="list-h">
       <h2 id="list-h">Components</h2>
-      <div class="legend"><span class="kind k-cad">CAD-derived</span><span class="kind k-envelope">Envelope</span><span class="kind k-primitive">Primitive</span><span class="kind k-prov">Provisional</span><span class="kind k-none">Not drawn</span></div>
+      <div class="legend"><span class="kind k-cad">CAD-derived</span><span class="kind k-envelope">Envelope</span><span class="kind k-primitive">Primitive</span><span class="kind k-prov">Provisional</span><span class="kind k-prov">Placeholder</span><span class="kind k-none">Not drawn</span></div>
       <ol class="comps" id="comps"></ol>
     </section>
   </aside>
@@ -160,6 +160,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
   var KIND = {cad: 'CAD-derived', envelope: 'Envelope', primitive: 'Primitive', none: 'Not drawn'};
   var NONE = 'No 3D geometry: position not specified in the 2.0 documentation';
   var PROV = 'provisional allocation, dimensions not released';
+  var PLACEHOLDER = 'placeholder envelope at the documented position; shape and size not yet from the manufacturer model';
   var num = {}, byId = {};
   COMPS.forEach(function (c, i) { num[c.id] = i + 1; byId[c.id] = c; });
   var X = {stages: [], components: {}, labels: {}, views: {}, tour: null}, stage = 0, selected = null;
@@ -167,11 +168,13 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
   function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[ch]; }); }
   function kindHtml(c) {
     return '<span class="kind k-' + c.geometry + '">' + KIND[c.geometry] + '</span>' +
-      (c.provisional ? '<span class="kind k-prov">Provisional</span>' : '');
+      (c.provisional ? '<span class="kind k-prov">Provisional</span>' : '') +
+      (c.placeholder ? '<span class="kind k-prov">Placeholder</span>' : '');
   }
   function geomText(c) {
     if (c.geometry === 'none') return NONE;
     if (c.provisional) return (c.label || 'Envelope, provisional') + '; ' + PROV + '; cells drawn at 70 % opacity inside a translucent envelope shell';
+    if (c.placeholder) return (c.label || 'Placeholder') + '; ' + PLACEHOLDER;
     if (c.geometry === 'primitive') return 'Primitive drawn from decided dimensions';
     if (c.geometry === 'envelope') return 'Envelope (simplified component volume, shaped from its datasheet dimensions)';
     return 'CAD-derived mesh';
