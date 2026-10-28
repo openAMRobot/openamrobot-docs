@@ -1118,7 +1118,7 @@
     ]
    },
    {
-    "t": 45.5,
+    "t": 45.0,
     "frame": [
      "lift_column",
      "arm_profile",
@@ -1130,6 +1130,47 @@
     "zoom": 1.2,
     "focus": [
      "openarm"
+    ]
+   },
+   {
+    "t": 46.0,
+    "frame": [
+     "lift_stop_sensors",
+     "flag_rod",
+     "lift_flag"
+    ],
+    "az": 70,
+    "el": 12,
+    "zoom": 1.1,
+    "caption": "Lift stop sensors: three fixed inductive sensors on the static column, one steel flag moving with the lift (L1000, L1175, L1350)",
+    "labels": [
+     "lift_stop_sensors",
+     "lift_flag"
+    ],
+    "focus": [
+     "lift_stop_sensors",
+     "lift_flag",
+     "flag_rod"
+    ]
+   },
+   {
+    "t": 47.0,
+    "frame": [
+     "lift_stop_sensors",
+     "flag_rod",
+     "lift_flag"
+    ],
+    "az": 70,
+    "el": 12,
+    "zoom": 1.1,
+    "labels": [
+     "lift_stop_sensors",
+     "lift_flag"
+    ],
+    "focus": [
+     "lift_stop_sensors",
+     "lift_flag",
+     "flag_rod"
     ]
    },
    {
