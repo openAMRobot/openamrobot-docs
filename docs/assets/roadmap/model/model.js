@@ -179,7 +179,7 @@
     BP: {bp000: .06, bp050: .11},
     COL: {L: .24, W: .06, RETRACTED: .53, STROKE: .35, HEAD: .012, MASS: 11.7, PUSH: 800, PULL: 400, SPEED: .018,
       M_LONG_STAT: 1200, M_LONG_DYN: 500, M_LAT_STAT: 450, M_LAT_DYN: 225},
-    MOUNT_ABOVE_COL: .166, MOUNT_X: .18, PROFILE: {X: .12, Y: .06, L: .34, ADAPTER: .01}, MOUNT_Y: .031,
+    MOUNT_ABOVE_COL: .166, MOUNT_X: .18, PROFILE: {X: .12, Y: .06, L: .34, ADAPTER: .01, ADAPTER_W: .1}, MOUNT_Y: .031,
     STOPS: {L1000: 1, L1175: 1.175, L1350: 1.35}, BASE_LINK_Z: .098, GEMINI: {x: .387, z: .046}, LIDAR_X: .33,
     LIDAR_Z: .22205, IMU: {x: .0544, z: .121, yaw: -90}, TOF_X: .39, US_XF: .39, US_XR: -.39, NEAR_Z: .0914,
     US_Y: .13, ZED_ABOVE_SH: .223, ZED_X: .222};  // ZED_X: lens 42 mm ahead of the shoulder (P-03 rev20.0 item 18, 28 Oct 2026)
@@ -195,6 +195,17 @@
   // ZX80 box 234 x 149.8 x 17.6 mm, landscape (234 wide, 149.8 tall), screen forward, 50 mm higher than the
   // earlier placeholder; dock not drawn. size: [x depth, y across, z height] in metres.
   M.CHEST = /*CHEST-JSON*/{"second_estop": {"below_top": 0.04, "panel_ahead": 0.048, "glb_node": "estop", "glb_axis": [0.39, 0.13, 0.0445]}, "order": ["head_light", "getac_tablet"], "drawn": {"head_light": {"z": 0.1326, "size": [0.02, 0.158, 0.017], "window": [0.148, 0.013]}, "getac_tablet": {"z": 0.246, "size": [0.0176, 0.234, 0.1498]}}, "gap_light_tablet": 0.03}/*CHEST-JSON-END*/;
+
+  // Lift stop sensor set (P-03 rev20.0 item 24; drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-001 to LFT-006),
+  // placeholders until work package M-09. LIFT-SNS-01 shows the set on a narrow end face of the static profile
+  // without naming the end; the rear face carries the second E-stop at the S3 height and the front face the
+  // lift cable, so the set is drawn on the left side face (+y). Static group: three SICK IME12-04BNSZC0S on
+  // SICK BEF-WN-M12 brackets, z above the column base (base-plate top), sensor axis along x, 15 mm from the face
+  // (View 2). Moving group: MISUMI 5 series 20 x 20 rod, 430 mm, hanging from the adapter plate underside with
+  // the corner bracket; SS400 flag 45 x 20 x 2 mm, centre 410 mm below the plate underside, 2 mm air gap to
+  // the sensor faces; the rod 9 mm beside the sensors (30 to 50 mm from the face). x values: from the column
+  // axis; face_x: the sensor faces. bracket_h: height of the bracket, not given in LIFT-SNS-01 (drawn 25 mm).
+  M.LIFT_SENSE = /*LIFT-JSON*/{"face": "left", "z": [0.12, 0.295, 0.47], "stops": ["L1000", "L1175", "L1350"], "axis_off": 0.015, "sensor": {"d": 0.012, "len": 0.048}, "face_x": -0.095, "gap": 0.002, "flag": [0.002, 0.045, 0.02], "flag_off": 0.005, "flag_below_plate": 0.41, "rod": {"w": 0.02, "len": 0.43, "off": 0.03}, "bracket": {"leg": 0.04, "t": 0.004, "at": 0.028}, "bracket_h": 0.025}/*LIFT-JSON-END*/;
 
   // Arm pose of the assembled view (joint angles, rad); the right arm mirrors the left.
   var mirror = function (q) { return [-q[0], -q[1], -q[2], q[3], -q[4], -q[5], -q[6]]; };
@@ -250,9 +261,14 @@
 {"id":"openarm","name":"OpenArm 2.0 arm","qty":2,"geometry":"cad","bom":"ARM-001","purpose":"Two 7-axis arms with grippers, mounted 180 mm ahead of the column axis.","source":"OpenArm 2.0 meshes and kinematics from the upstream openarm_description URDF; mount point per option B","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["openarm_left","openarm_right"]},
 {"id":"head_camera_bracket","name":"Head camera bracket","qty":1,"geometry":"primitive","bom":"ARM-011","purpose":"Pitch bracket on the profile top; supplier mount fit to be confirmed.","source":"openamr-upperbody-hw option B (camera body and bracket height pending supplier CAD)","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera_bracket"]},
 {"id":"head_camera","name":"Head stereo camera","qty":1,"geometry":"primitive","bom":"ARM-003","purpose":"Stereolabs ZED Mini, lens 42 mm ahead of and 223 mm above the shoulder, 30 degrees down baseline (hp30).","source":"openamr-upperbody-hw option B; P-03 rev20.0 items 15, 17 and 18 (28 Oct 2026: lens 20 mm forward, baseline hp30, was hp25)","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_camera"]},
-{"id":"second_estop","name":"Second E-stop","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: the base E-stop placeholder geometry of openamr-platform-sw PR #100 (Schneider XB4BS8445 with ZBE-102, datasheet dimensions)","placeholder_note":"placeholder position until work package M-09: on the rear face of the static lift profile, close to its upper edge, facing rearward","bom":"SAF-001","purpose":"The second of the two E-stop buttons of the robot (SAF-001, quantity 2 in BOM Issue 7.14), formerly the chest E-stop, on the static lift profile so it stays at the same height whatever the lift position. It replaces the withdrawn OpenArm kit button (ARM-008).","source":"P-03 rev20.0 item 24 (layout update of 28 Oct 2026: second E-stop on the rear face of the static DOLD lift profile, close to its upper edge); BOM Issue 7.14 SAF-001; geometry from the GLB node estop","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["second_estop"]},
+{"id":"second_estop","name":"Second E-stop","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: the base E-stop placeholder geometry of openamr-platform-sw PR #100 (Schneider XB4BS8445 with ZBE-102, datasheet dimensions)","placeholder_note":"placeholder position until work package M-09: on the rear face of the static lift profile, facing rearward, centre 40 mm below its upper edge (P-03 position); the order run is first clear of the arms and carried items at a centre 180 mm below the edge (over the 100 mm limit, input for M-09)","bom":"SAF-001","purpose":"The second of the two E-stop buttons of the robot (SAF-001, quantity 2 in BOM Issue 7.14), formerly the chest E-stop, on the static lift profile so it stays at the same height whatever the lift position. It replaces the withdrawn OpenArm kit button (ARM-008).","source":"P-03 rev20.0 item 24 (layout update of 28 Oct 2026: second E-stop on the rear face of the static DOLD lift profile, close to its upper edge); BOM Issue 7.14 SAF-001; geometry from the GLB node estop","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["second_estop"]},
 {"id":"getac_tablet","name":"Operator tablet Getac ZX80","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Getac ZX80 outer dimensions 234 x 149.8 x 17.6 mm, 590 g (P-03 rev20.0 item 24, 28 Oct 2026 correction), mounted landscape (234 mm wide, 149.8 mm tall) with the screen forward; the dock is not drawn","placeholder_note":"placeholder position until work package M-09: centred on the front of the arm profile, above the head light, 50 mm higher than the earlier placeholder","bom":"UI-001","purpose":"Detachable operator tablet on the moving chest, above the head light.","source":"P-03 rev20.0 item 24, 28 Oct 2026 correction (Getac ZX80, 234 x 149.8 x 17.6 mm, landscape); BOM Issue 7.14 UI-001 correction pending","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["getac_tablet"]},
-{"id":"head_light","name":"Head light","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Falcon Illumination FLDL-i150x15-W LED bar light, white, diffuse (housing 158 x 17 x 20 mm, lit area 148 x 13 mm, metal housing with acrylic cover); no light source is drawn","placeholder_note":"placeholder position until work package M-09: across the arm-profile front under the tablet, its top edge 30 mm below the tablet bottom edge","bom":"AUX-001","purpose":"Head light on the moving chest, switched and optionally PWM-dimmed by the lift node.","source":"P-03 rev20.0 item 24 (correction of 28 Oct 2026: Falcon FLDL-i150x15-W replaces the Banner WLS28; layout update of 28 Oct 2026: under the tablet); BOM Issue 7.14 AUX-001; Falcon FLDL-i150x15-W technical data","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_light"]}
+{"id":"head_light","name":"Head light","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: Falcon Illumination FLDL-i150x15-W LED bar light, white, diffuse (housing 158 x 17 x 20 mm, lit area 148 x 13 mm, metal housing with acrylic cover); no light source is drawn","placeholder_note":"placeholder position until work package M-09: across the arm-profile front under the tablet, its top edge 30 mm below the tablet bottom edge","bom":"AUX-001","purpose":"Head light on the moving chest, switched and optionally PWM-dimmed by the lift node.","source":"P-03 rev20.0 item 24 (correction of 28 Oct 2026: Falcon FLDL-i150x15-W replaces the Banner WLS28; layout update of 28 Oct 2026: under the tablet); BOM Issue 7.14 AUX-001; Falcon FLDL-i150x15-W technical data","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["head_light"]},
+{"id":"lift_stop_sensors","name":"Lift stop sensors","qty":3,"geometry":"envelope","placeholder":true,"label":"Placeholder: SICK IME12-04BNSZC0S inductive sensor, M12 flush, 4 mm, NPN NO, drawn as an M12 x 48 mm cylinder","placeholder_note":"placeholder position until work package M-09: left side face (+y) of the static profile; LIFT-SNS-01 names no end face; z 120, 295 and 470 mm above the column base (L1000, L1175, L1350)","bom":"LFT-001","purpose":"Three fixed stop sensors on the static lift profile, one per calibrated lift stop; the lift node reads them (functional sensing, not a safety function).","source":"P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-001","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["lift_stop_sensors"]},
+{"id":"lift_sensor_brackets","name":"Stop sensor brackets","qty":3,"geometry":"envelope","placeholder":true,"label":"Placeholder: SICK BEF-WN-M12 angle bracket, legs 40 mm and 4 mm thick from LIFT-SNS-01 View 2; height not given (drawn 25 mm)","placeholder_note":"placeholder position until work package M-09: left side face (+y) of the static profile; LIFT-SNS-01 names no end face","bom":"LFT-003","purpose":"Holds each stop sensor in a T-slot of the static lift profile (slot size TBC from the DOLD STEP).","source":"P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-003","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["lift_sensor_brackets"]},
+{"id":"flag_rod","name":"Flag rod","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: MISUMI 5 series 20 x 20 profile, 430 mm, one end tapped M5","placeholder_note":"placeholder position until work package M-09: hangs from the adapter plate underside, 30 to 50 mm from the left side face, 9 mm beside the sensors; it moves with the lift","bom":"LFT-004","purpose":"Carries the steel flag along the lift travel.","source":"P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-004","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["flag_rod"]},
+{"id":"rod_corner_bracket","name":"Rod corner bracket","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: MISUMI 5 series corner bracket, 20 square","placeholder_note":"placeholder position until work package M-09: under the adapter plate at the top of the flag rod","bom":"LFT-005","purpose":"Stops the flag rod rotating under the adapter plate.","source":"P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-005","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["rod_corner_bracket"]},
+{"id":"lift_flag","name":"Steel flag","qty":1,"geometry":"envelope","placeholder":true,"label":"Placeholder: SS400 plate 45 x 20 x 2 mm with 2 x 4.5 mm holes","placeholder_note":"placeholder position until work package M-09: centre 410 mm below the adapter plate underside, 2 mm in front of the sensor faces; faces S1, S2 and S3 at L1000, L1175 and L1350","bom":"LFT-006","purpose":"The only ferrous part near the sensors; it switches the sensor it faces.","source":"P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-006","link":"https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md","parts":["lift_flag"]}
 ]/*COMPONENTS-JSON-END*/;
 
   // The robot materials that are not per part (the GLB nodes get theirs in M.base). alu, aluDark and anod:
@@ -456,7 +472,7 @@
     box(stage, .25, .072, e.HEAD, mats.aluDark, 0, 0, c - e.HEAD / 2, 'head_plate');
     for (var s = -1; s <= 1; s += 2) box(stage, .03, .012, .05, mats.aluDark, s * .11, 0, c + .025);
     var u = D.MOUNT_X, f = c + h.ADAPTER, d = -e.L / 2, p = u + h.X / 2;
-    box(part(mov, 'adapter_plate'), p - d, .072, h.ADAPTER, finishMat(THREE, 'adapter_plate', mats.aluDark), (d + p) / 2, 0, c + h.ADAPTER / 2, 'adapter_plate');
+    box(part(mov, 'adapter_plate'), p - d, h.ADAPTER_W, h.ADAPTER, finishMat(THREE, 'adapter_plate', mats.aluDark), (d + p) / 2, 0, c + h.ADAPTER / 2, 'adapter_plate');
     var prof = part(mov, 'arm_profile');
     rbox(prof, h.X, h.Y, h.L, .004, finishMat(THREE, 'arm_profile', mats.alu), u, 0, f + h.L / 2);
     for (s = -1; s <= 1; s += 2) {
@@ -566,8 +582,8 @@
   M.cableGeometry = function (THREE, colTop) {
     var e = colTop, t = M.DIMS.PLATE_TOP, D = M.DIMS, V = THREE.Vector3;
     return new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new V(D.MOUNT_X - D.PROFILE.X / 2 - .012, .012, e + .06),
-      new V(.03, .012, e + .03), new V(-.06, .012, e + .02), new V(-.125, .014, e - .06), new V(-.15, .016, (e + t) / 2 + .05),
-      new V(-.15, .016, t + .1), new V(-.14, .016, t + .012)]), 48, .0055, 8, false);
+      new V(.03, .012, e + .03), new V(-.06, -.03, e + .02), new V(-.125, -.035, e - .06), new V(-.15, -.035, (e + t) / 2 + .05),
+      new V(-.15, -.035, t + .1), new V(-.14, -.035, t + .012)]), 48, .0055, 8, false);  // rear drop beside the second E-stop (-y)
   };
   function columnFittings(THREE, col, mov, mats) {
     var D = M.DIMS, e = D.COL, t = D.PLATE_TOP, x, y;
@@ -597,9 +613,8 @@
   // geometry and materials as the base E-stop placeholder), goes in the static group col (lift assembly,
   // column axis at x 0) on the rear face of the static profile, turned to face rearward. The head light bar
   // and the Getac ZX80 box go in the moving group mov (lift stage, profile front face at x MOUNT_X +
-  // PROFILE.X / 2 from the column axis). With all false only the second E-stop is drawn (build option
-  // chestPlaceholders). Returns the part groups.
-  function chestItems(THREE, R, mov, mats, all) {
+  // PROFILE.X / 2 from the column axis). The same on both pages. Returns the part groups.
+  function chestItems(THREE, R, mov, mats) {
     var D = M.DIMS, C = M.CHEST.drawn, c = D.PLATE_TOP + D.COL.RETRACTED, f = D.MOUNT_X + D.PROFILE.X / 2, out = [];
     var part = function (id, parent) {
       var g = new THREE.Group();
@@ -624,7 +639,6 @@
       turn.add(cp);
       g.add(turn);
     }
-    if (!all) return out;
     var slab = function (g, x, y, zz, m, px, pz) {
       var k = new THREE.Mesh(new THREE.BoxGeometry(x, y, zz), m);
       k.position.set(px, 0, pz);
@@ -642,15 +656,58 @@
     return out;
   }
 
+  // Lift stop sensor set (M.LIFT_SENSE) on the left side face (+y) of the static profile: sensors and brackets
+  // in the static group col, rod, corner bracket and flag in the moving group mov (z at L1000). Returns the part
+  // groups.
+  function liftSensors(THREE, R, mov, mats) {
+    var D = M.DIMS, L = M.LIFT_SENSE, t = D.PLATE_TOP, y0 = D.COL.W / 2, c = D.PLATE_TOP + D.COL.RETRACTED, out = [];
+    var part = function (id, parent) {
+      var g = new THREE.Group();
+      g.name = id;
+      g.userData = {id: id, part: true, placeholder: true};
+      parent.add(g);
+      out.push(g);
+      return g;
+    };
+    var box = function (g, x, y, z, m, px, py, pz) {
+      var k = new THREE.Mesh(new THREE.BoxGeometry(x, y, z), m);
+      k.position.set(px, py, pz);
+      k.castShadow = k.receiveShadow = true;
+      g.add(k);
+      return k;
+    };
+    var sensors = part('lift_stop_sensors', R.col), brackets = part('lift_sensor_brackets', R.col);
+    var s = L.sensor, ys = y0 + L.axis_off, back = L.face_x + s.len, b = L.bracket, bx = back - b.at;
+    L.z.forEach(function (dz) {
+      var z = t + dz;
+      cyl(THREE, sensors, s.d / 2, s.len - .003, mats.steel, L.face_x + .003 + (s.len - .003) / 2, ys, z, 'x', 20);
+      cyl(THREE, sensors, s.d / 2 - .0005, .003, mats.black, L.face_x + .0015, ys, z, 'x', 20);  // sensing face
+      for (var k = 0; k < 2; k++) cyl(THREE, sensors, .0095, .004, mats.steel, bx + (k ? -b.t - .002 : .002), ys, z, 'x', 6);
+      box(brackets, b.leg, b.t, L.bracket_h, mats.steel, bx - b.t - b.leg / 2 + b.t, y0 + b.t / 2, z);  // leg on the face
+      box(brackets, b.t, b.leg, L.bracket_h, mats.steel, bx - b.t / 2, y0 + b.leg / 2, z);  // leg carrying the sensor
+    });
+    var r = L.rod, rx = L.face_x - L.gap - L.flag[0] - r.w / 2, ry = y0 + r.off + r.w / 2;
+    var rod = part('flag_rod', mov), alu = mats.alu;
+    box(rod, r.w, r.w, r.len, alu, rx, ry, c - r.len / 2);
+    for (var q = -1; q <= 1; q += 2) {  // slot lines on the two faces seen from the side
+      box(rod, .006, .002, r.len - .004, mats.slot, rx, ry + q * (r.w / 2 + 2e-4), c - r.len / 2);
+    }
+    var cb = part('rod_corner_bracket', mov);  // 20 square corner bracket: one leg under the plate, one on the rod
+    box(cb, r.w, r.w, .003, alu, rx, ry - r.w / 2 - r.w / 2, c - .0015);
+    box(cb, r.w, .003, r.w, alu, rx, ry - r.w / 2 - .0015, c - .003 - r.w / 2);
+    var fl = part('lift_flag', mov), f = L.flag;
+    box(fl, f[0], f[1], f[2], mats.steel, L.face_x - L.gap - f[0] / 2, y0 + L.flag_off + f[1] / 2, c - L.flag_below_plate);
+    return out;
+  }
+
   // ---------------------------------------------------------------- the robot
   // The robot as one object, built the same way for both pages: root (group "OpenAMRobot", robot frame),
   // base (base_cad, GLB parts), col (lift assembly at the base-plate position bp), mov (lift stage; its
   // z is the lift travel), zed (head camera pivot, pitch headPitch degrees), arms (rigs posed at
   // ARM_POSE), parts ({part id: [groups]}), baseIds, mats. o.fittings adds the robot page fittings and
   // returns them as fit ({cable, wrist}). o.headPitch: head camera pitch down in degrees (default 30, the hp30
-  // baseline of P-03 rev20.0 items 15 and 17). o.chestPlaceholders (default true) draws the Getac ZX80 and the
-  // head light; false leaves them out (second E-stop only), for the robot page store scene, where the arms
-  // pass through them until work package M-09 sets their positions.
+  // baseline of P-03 rev20.0 items 15 and 17). Both pages draw the same robot: only o.fittings (robot page
+  // scene items that are not registry parts) differs.
   M.build = function (THREE, o) {
     o = o || {};
     var D = M.DIMS, mats = M.materials(THREE), R = {mats: mats, parts: {}, baseIds: {}, arms: {}};
@@ -672,7 +729,8 @@
     mov.add(zed);
     var ub = M.upperBody(THREE, {fixed: col, moving: mov, zed: zed}, mats);
     for (var id in ub) ub[id].forEach(function (g) { add(id, g); });
-    chestItems(THREE, R, mov, mats, o.chestPlaceholders !== false).forEach(function (g) { add(g.userData.id, g); });
+    chestItems(THREE, R, mov, mats).forEach(function (g) { add(g.userData.id, g); });
+    liftSensors(THREE, R, mov, mats).forEach(function (g) { add(g.userData.id, g); });
     if (o.fittings) R.fit = columnFittings(THREE, col, mov, mats);
     var geos = M.armGeometries(THREE);
     ['left', 'right'].forEach(function (s) {

@@ -1,146 +1,163 @@
-# Second E-stop, chest placeholders, head camera hp30, tote riser, re-rendered media: evidence (28 Oct 2026)
+# Upper-body layout of 28 Oct 2026, lift stop sensors, one model on both pages: evidence
 
-Simulation visualization only; not mechanical, electrical or safety evidence. The second E-stop, tablet and head
-light positions are placeholders until work package M-09 (P-03 rev20.0 item 24). The riser is an illustration,
-not a BOM part. The E-stops are drawn geometry only; no safety logic is touched.
+Simulation visualization only; not mechanical, electrical or safety evidence. The second E-stop, tablet, head
+light and lift stop sensor set positions are placeholders until work package M-09. The riser is an illustration,
+not a BOM part. E-stops and sensors are drawn geometry only; no safety logic is touched.
 
 ## Sources
 
-P-03 Decision Addendum rev20.0, read through the Google Drive connector on 28 Oct 2026 (last modified 19:32 UTC):
-
-- 28 Oct 2026 corrections and layout update (head of the document): "tablet is the Getac ZX80 instead of the
-  ZX10, same landscape orientation"; "the second E-stop moves from the moving chest to the rear face of the
-  static DOLD lift profile, close to its upper edge; the Getac moves 50 mm up; the head light moves under the
-  Getac, its top edge 30 mm below the Getac bottom edge; positions are placeholders until M-09"; "Head camera
-  (items 15, 17 and 18): lens moved 20 mm forward, now 42 mm ahead of the shoulder, and baseline pitch 30
-  degrees down (hp30, was hp25)".
-- Item 15: "Head-camera pitch is 15 to 35 degrees down in 5 degree steps, baseline 30 degrees (raised from 25
-  degrees ..., 28 Oct 2026 ...)". Item 17: "head_pitch (hp15 to hp35, baseline hp30 since 28 Oct 2026, was
-  hp25)". Item 18: "lens 42 mm ahead of (moved 20 mm forward ...; was 22 mm) and 223 mm above the shoulder".
-- Item 24: "Second E-stop (formerly the chest E-stop): on the rear face of the static DOLD lift profile, close to
-  its upper edge, so it stays at the same height whatever the lift position"; "Chest layout on the moving part,
-  from bottom up: head light 30 mm below the Getac bottom edge, then the Getac 50 mm higher than the earlier
-  placeholder"; Getac ZX80 "234 mm wide x 149.8 mm tall x 17.6 mm, 590 g ..., mounted landscape like the ZX10 it
-  replaces"; head light Falcon Illumination FLDL-i150x15-W, housing 158 x 17 x 20 mm, lit area 148 x 13 mm.
+- P-03 Decision Addendum rev20.0 (read through the Google Drive connector on 28 Oct 2026): item 24 and the layout
+  update of 28 Oct 2026 (second E-stop on the rear face of the static DOLD lift profile, close to its upper edge;
+  moving chest bottom up head light, its top edge 30 mm below the Getac, then the Getac ZX80, 234 mm wide x
+  149.8 mm tall x 17.6 mm, landscape, 50 mm higher than before; lift stop sensors at z 120, 295 and 470 mm above
+  the column base, flag centre 410 mm below the adapter plate underside, 2 mm air gap); items 15, 17 and 18 (head
+  camera lens 42 mm ahead of the shoulder, baseline pitch hp30, was hp25; adapter plate 360 x 100 mm).
+- Drawing LIFT-SNS-01 rev 1 (27 Oct 2026, read through the Google Drive connector): View 1 side elevation at
+  L1000 (sensors S1 to S3 on a 60 mm end face of the static profile, rod hanging from the adapter plate overhang,
+  M5 through the plate, corner bracket against rotation; static profile top "assumed z = 500 (TBC)"); View 2
+  section at a sensor (sensor axis parallel to the face, 15 mm from it; flag 2 mm in front of the sensor face,
+  5 to 50 mm from the profile face; rod 9 mm beside the sensor, 30 to 50 mm from the face; bracket legs 40 mm,
+  4 mm thick).
+- BOM Issue 7.14: LFT-001 three SICK IME12-04BNSZC0S, LFT-002 three cables (not drawn), LFT-003 three SICK
+  BEF-WN-M12 (5308447), LFT-004 MISUMI 5 series 20 x 20 profile L 430 tapped M5, LFT-005 MISUMI 5 series corner
+  bracket 20 square, LFT-006 SS400 plate 45 x 20 x 2 with 2 x 4.5 mm holes, LFT-007 fasteners (not drawn); SAF-001.
 - Pending with their owners (not changed here): BOM Issue 7.14 UI-001 and UI-002 still name the previous tablet;
-  the register CONFIG-IDS entry still gives hp25 as the head_pitch baseline; the platform-sw URDF evidence row on
-  progress.html still records hp25; the BOM extract pages (hardware.html, BOM 7 architecture page) mirror the BOM
-  and keep the BOM text for the head camera and tablet; the mass-and-stability page records the geometry the
-  stability analysis used (lens 22 mm).
-- The Falcon technical data page (Baumer product page 24090) is not reachable from this environment; the head
-  light dimensions are the ones P-03 quotes.
+  the register CONFIG-IDS entry gives hp25; the platform-sw URDF still has the lens 22 mm ahead and hp25.
 
-## Drawn placeholders
+## What is drawn (both pages, one model)
 
-- Second E-stop (`second_estop`, base E-stop parts and colours from the GLB node estop): on the rear face of the
-  static DOLD profile, facing rearward, centre 40 mm below the static profile top (16.5 mm from the button top
-  to the upper edge); built in the static lift group, so it stays at the same height at every lift position.
-- Moving chest, front face of the arm profile, bottom up: head light 158 x 17 x 20 mm aluminium bar with a
-  148 x 13 mm diffuse window, no glow and no light source; its top edge 30 mm below the Getac bottom edge; Getac
-  ZX80 box 234 x 149.8 x 17.6 mm, landscape, dark grey housing with a 1 mm black screen face forward, 50 mm
-  higher than the earlier placeholder; dock not drawn.
-- Head camera: lens 42 mm ahead of and 223 mm above the shoulder (bracket moved with it, still on the profile
-  top); pitch 30 degrees down by default on both pages (`headPitch: 30`; robot.html state, slider, readout and
-  configuration table hp30). The pitch options hp15 to hp35 stay. Before this change robot.html built the model
-  with `headPitch: 0` and never applied its hp25 state at load, so the store scene drew the camera level while
-  the page said hp25; it now draws hp30.
+- One robot on both pages: the `chestPlaceholders` option is removed; robot.html builds with `fittings` and
+  `headPitch: 30`, exploded.html with `headPitch: 30`. Only robot page scene items that are not registry parts
+  (store, totes, riser, decals, lift cable, wrist cameras) differ.
+- Second E-stop: rear face of the static profile, facing rearward, centre 40 mm below its upper edge (P-03
+  position, see the sweep below).
+- Moving chest: head light (top edge 30 mm below the Getac bottom edge), Getac ZX80 landscape box.
+- Lift stop sensor set (LFT-001, LFT-003 to LFT-006): LIFT-SNS-01 shows an end face but names neither end, and its
+  60 mm plate overhang matches neither end of option B (front 120 mm under the arm profile, rear 0); the rear face
+  carries the second E-stop at the S3 height. The set is therefore drawn on the left side face (+y), placeholder
+  until M-09. Sensors and brackets in the static group at z 120, 295 and 470 mm above the column base; rod,
+  corner bracket and flag in the moving group. check_roadmap.py checks that the flag faces S1, S2 and S3 at
+  L1000, L1175 and L1350 (flag centre = plate underside - 410 mm = 120, 295, 470 mm above the column base), the
+  2 mm gap and the 9 mm rod offset.
+- Finding for M-01 and M-09: with the 100 mm adapter plate (20 mm side overhang) the rod, 30 to 50 mm from the
+  face as in View 2, sits 10 to 30 mm outside the plate edge; the M5 fixing through the plate in View 1 needs the
+  plate over the rod. The corner bracket is drawn bridging the plate edge.
 
-Shared build option `chestPlaceholders` (`OAMR_MODEL.build(THREE, {chestPlaceholders: false})`, default true):
-off draws the second E-stop only. The exploded view builds with it on (all three items, Placeholder badges). The
-robot page store scene builds with it off: the arms pass through the tablet and head light placeholder positions
-(collision check below), so they are not shown there until work package M-09 sets their positions; the page says
-so. No geometry was deleted.
+## Visible defects fixed (before c646911, after this branch)
 
-## Stills
+| Fix | Crop |
+|---|---|
+| Lift cable ran through the second E-stop housing (its rear drop hung at y 0.012 to 0.016 m, 30 mm behind the rear face, where the E-stop now stands); the rear drop now runs beside the rear face on the -y side (y -0.03 to -0.035 m), clear of the E-stop at every lift position | `fix_cable_second_estop_before_after.png` |
+| Adapter plate drawn 72 mm wide; P-03 item 18 gives 360 x 100 mm; now 100 mm (20 mm side overhang) | `fix_adapter_plate_width_before_after.png` |
 
-`node scripts/render_store.js 1280 720 --still 0 --cam front|rear --out <file>` on robot.html, and frame 0 of the
-exploded.html render mode (the one `scripts/render_tour.js` uses). Before: main at 7ac6543. After: this branch.
-Palette-reduced PNG.
+No other visible defect was found in the review stills of both pages (front, rear, side, top; close-ups of the
+base, column, chest and head).
+
+## Stills (1280 x 720, palette-reduced PNG)
 
 | File | Content |
 |---|---|
-| `robot_front_before.png`, `robot_front_after.png` | Before: illustrative chest E-stop on the profile front, totes without support. After (chestPlaceholders off): no E-stop, tablet or head light on the profile front; head camera at hp30, 20 mm further forward; a 20 x 20 mm aluminium riser frame under each tote |
-| `robot_rear_before.png`, `robot_rear_after.png` | After: the second E-stop on the rear face of the static lift profile near its upper edge; riser frames under both totes; no tote rails |
-| `exploded_assembled_before.png`, `exploded_assembled_after.png` | Exploded view, assembled (chestPlaceholders on): head light under the landscape Getac ZX80 on the profile front, head camera at hp30; the second E-stop is on the far side of the column in this view |
-| `store_t65_second_estop_overlap.png` | Store run at t = 65 s, rear camera: the right gripper carries a bottle over the column rear into the right tote, past the second E-stop (the one store-scene overlap below) |
+| `robot_front_after.png`, `robot_rear_after.png`, `robot_overview_after.png` | robot.html front, rear and store overview (render mode, t = 0) |
+| `exploded_assembled_after.png`, `exploded_rear_after.png` | exploded.html assembled, front and rear three-quarter |
+| `column_top_L1000.png`, `column_top_L1350.png` | Column top close-ups: second E-stop, sensors, rod and flag, lift cable at L1000 and L1350 |
+| `lift_sensors_exploded.png` | Exploded view, assembled: the sensor set on the left side face |
+| `store_t65_second_estop_overlap.png` | Store run at 65 s: the right gripper with a bottle at the column rear |
+| `*_before.png` | main 7ac6543 |
 
-## Geometry check
+## Geometry diff
 
-`geometry_diff.txt` (inventory from `geometry_dump.js`): every mesh of the robot page scene (render mode, t = 0)
-and of a fresh `OAMR_MODEL.build` on exploded.html, compared by path, vertex count, position hash, world box,
-colour, roughness, metalness and emissive colour.
+`geometry_diff.txt` (inventory from `geometry_dump.js`): against main 7ac6543, robot page 186 identical, 10 removed,
+55 added; exploded build 132 identical, 6 removed, 37 added. Against c646911: robot page 211 identical, 2 replaced
+(adapter plate, lift cable), 28 added (Getac 2 and head light 2 now drawn on the robot page, sensors 12, brackets
+6, rod 3, corner bracket 2, flag 1); exploded build 144 identical, adapter plate replaced, 24 added (the sensor set).
 
-- Against main 7ac6543: robot page 188 identical, 8 removed, 25 added; exploded build 133 identical, 5 removed,
-  12 added. The changes are the second E-stop (replaces the illustrative chest E-stop), the head camera body,
-  lenses and bracket and the head_camera_link marker (lens 42 mm, hp30), the tablet and head light (exploded
-  view only) and the 16 tote riser bars (robot page only). Nothing else changed.
-- Against e3dc4a8: robot page 204 identical, 9 replaced (second E-stop, head camera, bracket, frame marker);
-  exploded build 133 identical, 12 replaced (the same plus tablet and head light).
+## Synchronization audit
 
-Robot-frame boxes at bp000, L1000 (m): second E-stop x -0.142 to -0.060, y -0.020 to 0.020, z 0.7525 to 0.7995
-(static profile rear face at x -0.060, top at z 0.816); head light x 0.300 to 0.321, y -0.079 to 0.079, z 0.9581
-to 0.9751; Getac ZX80 x 0.300 to 0.3176, y -0.117 to 0.117, z 1.0051 to 1.1549; head camera x 0.2516 to 0.2898,
-z 1.2097 to 1.2493; bracket x 0.237 to 0.267.
+`node scripts/audit_sync.js` writes `scripts/sync_audit.json`; check_roadmap.py fails when it reports a mismatch or
+is older than model.js, exploded.json, robot.html or exploded.html. Robot page at L1000, bp000, hp30, arms at the
+assembled pose; exploded view in the render mode at frame 0 (explode factor 0, largest part offset from home
+0 m). 63 part groups, 0 mismatches. The robot page applies the order-run timeline at load (left
+arm at its first pick pose); the audit sets both arms to the assembled pose first.
 
-## Collision check
+## Collision report
 
-`node collision_check.js <out.json> [page]` (page served on port 8765; default robot.html): robot.html order run
-in the render mode at speed 4 and 24 fps (1536 frames, 255.9 s of simulated time), every 10th frame (154
-samples); bounding boxes of every arm link mesh (base, link1 to link7, two fingers, both arms) against the second
-E-stop and each chest item drawn in the scene, computed per vertex in the robot frame. Boxes are axis-aligned,
-so an overlap marks possible contact, not proven mesh contact. The arms, the pick logic and the items were not
-changed; nothing was moved. `minGap` in each JSON gives the closest approach per link and item.
+`node collision_check.js collision.json` (page served on port 8765): robot.html order run in the render mode at
+speed 4 and 24 fps (1536 frames, 255.9 s of simulated time), every 10th frame (154 samples); boxes in
+the robot frame. Movers: every arm link (base, link1 to link7, two fingers, both arms) and the item a gripper
+carries. Targets: Getac, head light, head camera, head camera bracket, second E-stop, rod, corner bracket, flag,
+each sensor and each bracket. Axis-aligned boxes: an overlap marks possible contact, not proven mesh contact.
+Arms and pick logic unchanged; nothing moved.
 
-### Store scene as rendered (chestPlaceholders off)
+37 overlaps in 20 sampled frames: getac_tablet 23, rod_corner_bracket 3, head_light 2, flag_rod 2, second_estop 2, lift_stop_sensors_S3 2, lift_sensor_brackets_S3 2, head_camera 1.
 
-`collision_store_scene.json`: items in the scene: second_estop only. 1 overlap, kept and
-reported as an input for M-09 (the store video shows the gripper passing it at about 16 s of video, 65 s of
-simulated time):
+| Frame | Sim time (s) | Mover | Target | Box overlap x, y, z (m) |
+|---|---|---|---|---|
+| 190 | 31.67 | right link2 | getac_tablet | 0.0112, 0.0125, 0.0026 |
+| 190 | 31.67 | right link3 | head_light | 0.021, 0.006, 0.017 |
+| 360 | 60.00 | right link5 | getac_tablet | 0.0176, 0.0159, 0.0017 |
+| 390 | 65.00 | right finger1 | flag_rod | 0.0188, 0.0224, 0.0159 |
+| 390 | 65.00 | right finger1 | rod_corner_bracket | 0.0188, 0.02, 0.0159 |
+| 390 | 65.00 | right finger2 | second_estop | 0.0114, 0.04, 0.0307 |
+| 390 | 65.00 | right finger2 | rod_corner_bracket | 0.02, 0.0145, 0.023 |
+| 390 | 65.00 | right finger2 | lift_stop_sensors_S3 | 0.0255, 0.0165, 0.0147 |
+| 390 | 65.00 | right finger2 | lift_sensor_brackets_S3 | 0.04, 0.0245, 0.0177 |
+| 390 | 65.00 | carried item (right) | second_estop | 0.016, 0.0037, 0.047 |
+| 390 | 65.00 | carried item (right) | flag_rod | 0.02, 0.0224, 0.1707 |
+| 390 | 65.00 | carried item (right) | rod_corner_bracket | 0.02, 0.02, 0.023 |
+| 390 | 65.00 | carried item (right) | lift_stop_sensors_S3 | 0.048, 0.0165, 0.019 |
+| 390 | 65.00 | carried item (right) | lift_sensor_brackets_S3 | 0.04, 0.04, 0.025 |
+| 550 | 91.67 | right link2 | getac_tablet | 0.0113, 0.0125, 0.0027 |
+| 550 | 91.67 | right link3 | head_light | 0.021, 0.0067, 0.017 |
+| 670 | 111.67 | left link5 | getac_tablet | 0.0176, 0.024, 0.0872 |
+| 680 | 113.33 | left link4 | getac_tablet | 0.0054, 0.0042, 0.0269 |
+| 690 | 115.00 | left link5 | getac_tablet | 0.0176, 0.0335, 0.0765 |
+| 690 | 115.00 | left link7 | getac_tablet | 0.0107, 0.0158, 0.0801 |
+| 930 | 155.00 | right link2 | getac_tablet | 0.0045, 0.0125, 0.0073 |
+| 1080 | 180.00 | left link2 | getac_tablet | 0.0073, 0.0124, 0.0696 |
+| 1130 | 188.33 | left link2 | getac_tablet | 0.0112, 0.0125, 0.0107 |
+| 1140 | 190.00 | left link2 | getac_tablet | 0.011, 0.0125, 0.0073 |
+| 1180 | 196.67 | left link2 | getac_tablet | 0.003, 0.0124, 0.0626 |
+| 1190 | 198.33 | left link2 | getac_tablet | 0.0067, 0.0125, 0.0618 |
+| 1240 | 206.67 | left link2 | getac_tablet | 0.0009, 0.0125, 0.0572 |
+| 1290 | 215.00 | right link3 | getac_tablet | 0.0076, 0.0421, 0.0976 |
+| 1290 | 215.00 | right link4 | getac_tablet | 0.0176, 0.0576, 0.029 |
+| 1290 | 215.00 | right link4 | head_camera | 0.0382, 0.0028, 0.038 |
+| 1290 | 215.00 | right link5 | getac_tablet | 0.0006, 0.0739, 0.0996 |
+| 1300 | 216.67 | right link4 | getac_tablet | 0.0176, 0.0532, 0.027 |
+| 1300 | 216.67 | right link5 | getac_tablet | 0.0176, 0.0746, 0.0997 |
+| 1400 | 233.33 | right link2 | getac_tablet | 0.011, 0.0125, 0.0286 |
+| 1410 | 235.00 | right link2 | getac_tablet | 0.0156, 0.0125, 0.0475 |
+| 1420 | 236.67 | right link2 | getac_tablet | 0.0116, 0.0125, 0.0325 |
+| 1460 | 243.33 | right link2 | getac_tablet | 0.0094, 0.0125, 0.0095 |
 
-| Frame | Sim time (s) | Arm | Link | Item | Box overlap x, y, z (m) |
-|---|---|---|---|---|---|
-| 390 | 65.00 | right | finger2 | second_estop | 0.0114, 0.04, 0.0307 |
+Lift parts against the scene (308 entries): sensors S1 and S2 overlap the left tote body in every
+sampled frame (box overlap 0.021 x 0.0032 x 0.0175 m and 0.021 x 0.0032 x 0.019 m: the tote wall is 3.2 mm
+inside the sensor envelope); no overlap of the rod, flag, corner bracket, brackets or S3 with the totes, risers or
+the lift cable (closest: corner bracket to cable 18.3 mm, flag to cable 13.3 mm, brackets to cable 8.3 mm).
 
-Closest other approaches to the second E-stop: right finger1 18.6 mm and right link7 21.3 mm, both at t = 65 s.
+### Second E-stop height sweep
 
-### Getac ZX80, head light and second E-stop at their placeholder positions (input for work package M-09)
+The E-stop box moved down from the drawn position in 10 mm steps against every mover over the full run:
 
-`collision_chest_placeholders_m09.json`: the same run on a temporary copy of robot.html with the option on (all
-three items drawn; the copy was deleted after the run). 26 overlaps in 20 of 154 sampled
-frames: 23 with the Getac ZX80 (right link2 7, left link2 6, right link5 3, left link5 2, right link4 2, left link4 1, left link7 1, right link3 1), 2 with the head light
-(right link3 2), 1 with the second E-stop (right finger2 1).
+| Moved down (mm) | Centre below the static top (mm) | Overlaps | Movers |
+|---|---|---|---|
+| 0 | 40 | 2 | carried item (right), right finger2 |
+| 10 | 50 | 2 | carried item (right), right finger2 |
+| 20 | 60 | 2 | carried item (right), right finger2 |
+| 30 | 70 | 2 | carried item (right), right finger2 |
+| 40 | 80 | 1 | carried item (right) |
+| 50 | 90 | 1 | carried item (right) |
+| 60 | 100 | 1 | carried item (right) |
+| 70 | 110 | 1 | carried item (right) |
+| 80 | 120 | 1 | carried item (right) |
+| 90 | 130 | 1 | carried item (right) |
+| 100 | 140 | 1 | carried item (right) |
+| 110 | 150 | 1 | carried item (right) |
+| 120 | 160 | 1 | carried item (right) |
+| 130 | 170 | 1 | carried item (right) |
+| 140 | 180 | 0 | - |
+| 150 | 190 | 0 | - |
 
-| Frame | Sim time (s) | Arm | Link | Item | Box overlap x, y, z (m) |
-|---|---|---|---|---|---|
-| 190 | 31.67 | right | link2 | getac_tablet | 0.0112, 0.0125, 0.0026 |
-| 190 | 31.67 | right | link3 | head_light | 0.021, 0.006, 0.017 |
-| 360 | 60.00 | right | link5 | getac_tablet | 0.0176, 0.0159, 0.0017 |
-| 390 | 65.00 | right | finger2 | second_estop | 0.0114, 0.04, 0.0307 |
-| 550 | 91.67 | right | link2 | getac_tablet | 0.0113, 0.0125, 0.0027 |
-| 550 | 91.67 | right | link3 | head_light | 0.021, 0.0067, 0.017 |
-| 670 | 111.67 | left | link5 | getac_tablet | 0.0176, 0.024, 0.0872 |
-| 680 | 113.33 | left | link4 | getac_tablet | 0.0054, 0.0042, 0.0269 |
-| 690 | 115.00 | left | link5 | getac_tablet | 0.0176, 0.0335, 0.0765 |
-| 690 | 115.00 | left | link7 | getac_tablet | 0.0107, 0.0158, 0.0801 |
-| 930 | 155.00 | right | link2 | getac_tablet | 0.0045, 0.0125, 0.0073 |
-| 1080 | 180.00 | left | link2 | getac_tablet | 0.0073, 0.0124, 0.0696 |
-| 1130 | 188.33 | left | link2 | getac_tablet | 0.0112, 0.0125, 0.0107 |
-| 1140 | 190.00 | left | link2 | getac_tablet | 0.011, 0.0125, 0.0073 |
-| 1180 | 196.67 | left | link2 | getac_tablet | 0.003, 0.0124, 0.0626 |
-| 1190 | 198.33 | left | link2 | getac_tablet | 0.0067, 0.0125, 0.0618 |
-| 1240 | 206.67 | left | link2 | getac_tablet | 0.0009, 0.0125, 0.0572 |
-| 1290 | 215.00 | right | link3 | getac_tablet | 0.0076, 0.0421, 0.0976 |
-| 1290 | 215.00 | right | link4 | getac_tablet | 0.0176, 0.0576, 0.029 |
-| 1290 | 215.00 | right | link5 | getac_tablet | 0.0006, 0.0739, 0.0996 |
-| 1300 | 216.67 | right | link4 | getac_tablet | 0.0176, 0.0532, 0.027 |
-| 1300 | 216.67 | right | link5 | getac_tablet | 0.0176, 0.0746, 0.0997 |
-| 1400 | 233.33 | right | link2 | getac_tablet | 0.011, 0.0125, 0.0286 |
-| 1410 | 235.00 | right | link2 | getac_tablet | 0.0156, 0.0125, 0.0475 |
-| 1420 | 236.67 | right | link2 | getac_tablet | 0.0116, 0.0125, 0.0325 |
-| 1460 | 243.33 | right | link2 | getac_tablet | 0.0094, 0.0125, 0.0095 |
-
-Other placement findings: the ZX80 box (234 mm across) extends 87 mm beyond each side face of the 60 mm profile,
-the head light (158 mm) 49 mm; both sit where the upper arm links pass. The second E-stop stands 82 mm behind the
-static profile rear face (x -0.142 m at bp000, -0.092 m at bp050), in the path the right gripper takes to the
-right tote. The robot page pick logic keeps its 65 mm "arm profile / chest E-stop" self-collision box in front of
-the profile, as before (pick logic unchanged); nothing occupies it now in the store scene.
+The first clear height is 140 mm below the drawn position, a centre 180 mm below the static profile top: more than
+the 100 mm allowed, so the P-03 position (centre 40 mm below the top) is kept; the registry records the result as
+an input for M-09.

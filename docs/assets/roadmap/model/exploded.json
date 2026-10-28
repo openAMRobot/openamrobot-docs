@@ -42,11 +42,14 @@
   {
    "n": 7,
    "title": "Lift column and adapter plate",
-   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top. On the rear face of the static column profile, close to its upper edge: the second E-stop, a placeholder until work package M-09.",
+   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top. On the rear face of the static column profile, close to its upper edge: the second E-stop. On its left side face: the three lift stop sensors on their brackets, and the flag rod with its corner bracket and steel flag hanging from the adapter plate. Placeholders until work package M-09.",
    "frame": [
     "lift_base_plate",
     "lift_column",
-    "adapter_plate"
+    "adapter_plate",
+    "second_estop",
+    "lift_stop_sensors",
+    "flag_rod"
    ]
   },
   {
@@ -742,6 +745,56 @@
      1.06
     ]
    }
+  },
+  "lift_stop_sensors": {
+   "stage": 7,
+   "offsets": {
+    "lift_stop_sensors": [
+     0,
+     0.1,
+     0.82
+    ]
+   }
+  },
+  "lift_sensor_brackets": {
+   "stage": 7,
+   "offsets": {
+    "lift_sensor_brackets": [
+     0,
+     0.07,
+     0.82
+    ]
+   }
+  },
+  "flag_rod": {
+   "stage": 7,
+   "offsets": {
+    "flag_rod": [
+     0,
+     0.16,
+     0.92
+    ]
+   }
+  },
+  "rod_corner_bracket": {
+   "stage": 7,
+   "offsets": {
+    "rod_corner_bracket": [
+     0,
+     0.14,
+     0.95
+    ]
+   }
+  },
+  "lift_flag": {
+   "stage": 7,
+   "offsets": {
+    "lift_flag": [
+     0,
+     0.19,
+     0.92
+    ]
+   }
   }
  },
  "labels": {
@@ -756,7 +809,12 @@
   "tof": "ToF",
   "second_estop": "Second E-stop",
   "head_light": "Head light",
-  "getac_tablet": "Getac ZX80"
+  "getac_tablet": "Getac ZX80",
+  "lift_stop_sensors": "Lift stop sensors",
+  "lift_sensor_brackets": "Sensor brackets",
+  "flag_rod": "Flag rod",
+  "rod_corner_bracket": "Rod corner bracket",
+  "lift_flag": "Steel flag"
  },
  "views": {
   "about": "open_base: the opened base (cover and flanges lifted and faded, panels out, internal components raised for reading; not assembly positions; the upper body is hidden). cutaway: opacity of the closing parts.",

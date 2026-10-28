@@ -1049,6 +1049,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       fonts.then(function () {
         window.__renderFrame = function (n) { return renderFrame(n).toDataURL('image/png'); };
         window.__renderKey = renderKey;
+        window.__model = {root: root, parts: parts};  // render mode only: the live model, for scripts/audit_sync.js
         window.__tour = {fps: X.tour.fps || 30, frames: Math.round(tourDuration() * (X.tour.fps || 30)) + 1, w: RW, h: RH};
         renderFrame(parseInt(Q.get('frame'), 10) || 0);
         window.__frameReady = true;
