@@ -829,6 +829,41 @@ def check_store_media(root, html, err):
         err("robot.html", "first load %d bytes, over %d (#58 plus 100 KB)" % (first, ROBOT_FIRST_LOAD_MAX_BYTES))
 
 
+def mp4_seconds(path):
+    """Duration of an MP4 file from its mvhd box (seconds)."""
+    with open(path, "rb") as f:
+        d = f.read()
+    i = d.find(b"mvhd")
+    if i < 0:
+        return None
+    if d[i + 4] == 1:
+        ts, du = struct.unpack(">IQ", d[i + 24:i + 36])
+    else:
+        ts, du = struct.unpack(">II", d[i + 16:i + 24])
+    return du / ts
+
+
+def check_store_video_text(root, html, err):
+    """robot.html: the text under the store video states the duration of the file and a speed that matches the
+    simulated time over that duration (the caption of the render carries the same speed)."""
+    full = os.path.join(root, STORE_VIDEO)
+    if not os.path.isfile(full):
+        return
+    m = re.search(r"no audio, ([\d.]+) s, ([\d.]+) MB; played at ([\d.]+)x speed \(([\d.]+) s of simulated time in ([\d.]+) s of video\)",
+                  html["robot.html"])
+    if not m:
+        err("robot.html", "the store video text does not state duration, size and speed")
+        return
+    dur = mp4_seconds(full)
+    stated, mb, speed, sim, vid = (float(v) for v in m.groups())
+    if dur is None or abs(stated - dur) > 0.1 or abs(vid - dur) > 0.1:
+        err("robot.html", "store video text says %.1f s, the file lasts %s s" % (stated, dur))
+    if abs(mb - os.path.getsize(full) / 1e6) > 0.05:
+        err("robot.html", "store video text says %.1f MB, the file is %d bytes" % (mb, os.path.getsize(full)))
+    if dur and abs(sim / dur - speed) > 0.05 * speed:
+        err("robot.html", "store video text says %gx speed, %.1f s of sim time in %.1f s is %.2fx" % (speed, sim, dur, sim / dur))
+
+
 def check_nav(p, html, err):
     m = re.search(r'<nav class="rm-nav"[^>]*>.*?</nav>', html, flags=re.S)
     if not m:
@@ -935,6 +970,7 @@ def main():
     check_shared(args.dir, html, err)
     check_no_light_strips(args.dir, err)
     check_no_duplicate_fittings(args.dir, html, err)
+    check_store_video_text(args.dir, html, err)
     with open(os.path.join(args.dir, "model", "model.js"), encoding="utf-8") as f:
         comps = model_components(f.read())
     check_chest_and_riser(args.dir, html, err, comps)

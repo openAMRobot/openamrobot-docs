@@ -1,0 +1,50 @@
+2026-10-28T21:11:08Z pic 01_aisle_follow start
+2026-10-28T21:11:50Z pic 01_aisle_follow done
+2026-10-28T21:11:50Z pic 02_pick_side start
+2026-10-28T21:12:24Z pic 02_pick_side done
+2026-10-28T21:12:24Z pic 03_place_tote start
+2026-10-28T21:12:57Z pic 03_place_tote done
+2026-10-28T21:12:57Z pic 04_front_low start
+2026-10-28T21:13:38Z pic 04_front_low done
+2026-10-28T21:13:38Z pic 05_store_overview start
+2026-10-28T21:14:16Z pic 05_store_overview done
+2026-10-28T21:14:16Z pic 06_dock start
+2026-10-28T21:14:46Z pic 06_dock done
+2026-10-28T21:14:46Z pic 02_pick_side_1080x1350 start
+2026-10-28T21:15:16Z pic 02_pick_side_1080x1350 done
+2026-10-28T21:15:16Z pic 04_front_low_1080x1350 start
+2026-10-28T21:15:49Z pic 04_front_low_1080x1350 done
+2026-10-28T21:15:49Z tour1080a start
+real	26m57.380s
+2026-10-28T21:42:46Z tour1080a done
+2026-10-28T21:42:46Z tour1080b start
+real	26m19.637s
+2026-10-28T22:09:06Z tour1080b done
+2026-10-28T22:09:06Z tour1080x1350 start
+real	27m50.461s
+2026-10-28T22:36:57Z tour1080x1350 done
+2026-10-28T22:36:57Z exploded stills start
+2026-10-28T22:37:12Z exploded stills done
+2026-10-28T22:37:12Z det1 start
+run 255.9 s sim, speed 4, 24 fps: frames 0 to 59 of 1536, 1 worker(s)
+frames 0 to 59 done in 882 s
+real	14m50.432s
+2026-10-28T22:52:03Z det1 done
+2026-10-28T22:52:03Z det2 start
+run 255.9 s sim, speed 4, 24 fps: frames 0 to 59 of 1536, 2 worker(s)
+frames 0 to 59 done in 811 s
+real	13m39.419s
+2026-10-28T23:05:42Z det2 done
+2026-10-28T23:05:42Z store start
+run 255.9 s sim, speed 4, 24 fps: frames 0 to 1535 of 1536, 1 worker(s)
+2026-10-28T23:12:13Z resumed after container restart
+2026-10-28T23:12:15Z store start
+run 255.9 s sim, speed 4, 24 fps: frames 0 to 1535 of 1536, 1 worker(s)
+2026-10-29T05:50:44Z resumed after container restart
+2026-10-29T05:50:45Z store start
+run 255.9 s sim, speed 4, 24 fps: frames 0 to 1535 of 1536, 1 worker(s)
+frames 0 to 1535 done in 2904 s
+two-pass encode at 1776 kbit/s for 14500000 bytes
+pass 2 at 1776 kbit/s: 14076327 bytes
+real	49m41.098s
+2026-10-29T06:40:27Z store done
