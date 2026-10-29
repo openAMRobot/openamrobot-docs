@@ -172,9 +172,10 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       (c.placeholder ? '<span class="kind k-prov">Placeholder</span>' : '');
   }
   function geomText(c) {
+    if (c.placeholder && c.geometry === 'none') return c.label || NONE;
     if (c.geometry === 'none') return NONE;
     if (c.provisional) return (c.label || 'Envelope, provisional') + '; ' + PROV + '; cells drawn at 70 % opacity inside a translucent envelope shell';
-    if (c.placeholder) return (c.label || 'Placeholder') + '; ' + PLACEHOLDER;
+    if (c.placeholder) return (c.label || 'Placeholder') + '; ' + (c.placeholder_note || PLACEHOLDER);
     if (c.geometry === 'primitive') return 'Primitive drawn from decided dimensions';
     if (c.geometry === 'envelope') return 'Envelope (simplified component volume, shaped from its datasheet dimensions)';
     return 'CAD-derived mesh';
@@ -286,8 +287,8 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     scene.add(grid);
     scene.userData.grid = grid;
 
-    // the shared model (MODEL.build, as on the Robot page): lift at L1000, bp000, head pitch 25 degrees
-    var robot = MODEL.build(THREE, {headPitch: 25});
+    // the shared model (MODEL.build, as on the Robot page): lift at L1000, bp000, head pitch 30 degrees (hp30)
+    var robot = MODEL.build(THREE, {headPitch: 30});
     root = robot.root;
     LOOK.robotEnv(root, CAL);
     scene.add(root);
@@ -1048,6 +1049,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       fonts.then(function () {
         window.__renderFrame = function (n) { return renderFrame(n).toDataURL('image/png'); };
         window.__renderKey = renderKey;
+        window.__model = {root: root, parts: parts};  // render mode only: the live model, for scripts/audit_sync.js
         window.__tour = {fps: X.tour.fps || 30, frames: Math.round(tourDuration() * (X.tour.fps || 30)) + 1, w: RW, h: RH};
         renderFrame(parseInt(Q.get('frame'), 10) || 0);
         window.__frameReady = true;

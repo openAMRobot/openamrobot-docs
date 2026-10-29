@@ -1,0 +1,68 @@
+{
+ "pages": {
+  "robot.html@1280": {
+   "view": [
+    "follow"
+   ],
+   "frames": false,
+   "labels": false,
+   "hq": true,
+   "scrollWidth": 1280,
+   "innerWidth": 1280,
+   "msgs": []
+  },
+  "robot.html@375": {
+   "view": [
+    "follow"
+   ],
+   "frames": false,
+   "labels": false,
+   "hq": false,
+   "scrollWidth": 375,
+   "innerWidth": 375,
+   "msgs": []
+  },
+  "exploded.html@1280": {
+   "view": [],
+   "frames": null,
+   "labels": null,
+   "hq": null,
+   "scrollWidth": 1280,
+   "innerWidth": 1280,
+   "msgs": []
+  },
+  "exploded.html@375": {
+   "view": [],
+   "frames": null,
+   "labels": null,
+   "hq": null,
+   "scrollWidth": 375,
+   "innerWidth": 375,
+   "msgs": []
+  }
+ },
+ "firstLoad": {
+  "before": {
+   "bytes": 4179171,
+   "media": [
+    "media/store/thumbs/store_video_poster.jpg"
+   ]
+  },
+  "after": {
+   "bytes": 4195668,
+   "media": [
+    "media/store/thumbs/store_video_poster.jpg"
+   ]
+  }
+ },
+ "record": {
+  "started": [
+   "Stop recording",
+   "Recording at 3\u00d7 speed. It stops by itself when the robot is back at the dock."
+  ],
+  "stopped": [
+   "Record order video",
+   "Video saved (0.0 MB, WEBM)."
+  ]
+ }
+}

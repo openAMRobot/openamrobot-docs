@@ -42,17 +42,20 @@
   {
    "n": 7,
    "title": "Lift column and adapter plate",
-   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top.",
+   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top. On the rear face of the static column profile, close to its upper edge: the second E-stop. On its left side face: the three lift stop sensors on their brackets, and the flag rod with its corner bracket and steel flag hanging from the adapter plate. Placeholders until work package M-09.",
    "frame": [
     "lift_base_plate",
     "lift_column",
-    "adapter_plate"
+    "adapter_plate",
+    "second_estop",
+    "lift_stop_sensors",
+    "flag_rod"
    ]
   },
   {
    "n": 8,
    "title": "Arm profile and arms",
-   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket.",
+   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket (lens 42 mm ahead of the shoulder, 30 degrees down). On the front of the profile, bottom up: the head light and the Getac ZX80 tablet (landscape), placeholders until work package M-09.",
    "frame": [
     "arm_profile",
     "openarm",
@@ -713,9 +716,85 @@
     ]
    }
   },
-  "arm_kit_estop": {
+  "second_estop": {
+   "stage": 7,
+   "offsets": {
+    "second_estop": [
+     -0.14,
+     0,
+     0.86
+    ]
+   }
+  },
+  "getac_tablet": {
    "stage": 8,
-   "offsets": {}
+   "offsets": {
+    "getac_tablet": [
+     0.14,
+     0,
+     1.03
+    ]
+   }
+  },
+  "head_light": {
+   "stage": 8,
+   "offsets": {
+    "head_light": [
+     0.14,
+     0,
+     1.06
+    ]
+   }
+  },
+  "lift_stop_sensors": {
+   "stage": 7,
+   "offsets": {
+    "lift_stop_sensors": [
+     0,
+     0.1,
+     0.82
+    ]
+   }
+  },
+  "lift_sensor_brackets": {
+   "stage": 7,
+   "offsets": {
+    "lift_sensor_brackets": [
+     0,
+     0.07,
+     0.82
+    ]
+   }
+  },
+  "flag_rod": {
+   "stage": 7,
+   "offsets": {
+    "flag_rod": [
+     0,
+     0.16,
+     0.92
+    ]
+   }
+  },
+  "rod_corner_bracket": {
+   "stage": 7,
+   "offsets": {
+    "rod_corner_bracket": [
+     0,
+     0.14,
+     0.95
+    ]
+   }
+  },
+  "lift_flag": {
+   "stage": 7,
+   "offsets": {
+    "lift_flag": [
+     0,
+     0.19,
+     0.92
+    ]
+   }
   }
  },
  "labels": {
@@ -727,7 +806,15 @@
   "base_camera": "Gemini 336L",
   "imu": "IMU",
   "ultrasonic": "Ultrasonic",
-  "tof": "ToF"
+  "tof": "ToF",
+  "second_estop": "Second E-stop",
+  "head_light": "Head light",
+  "getac_tablet": "Getac ZX80",
+  "lift_stop_sensors": "Lift stop sensors",
+  "lift_sensor_brackets": "Sensor brackets",
+  "flag_rod": "Flag rod",
+  "rod_corner_bracket": "Rod corner bracket",
+  "lift_flag": "Steel flag"
  },
  "views": {
   "about": "open_base: the opened base (cover and flanges lifted and faded, panels out, internal components raised for reading; not assembly positions; the upper body is hidden). cutaway: opacity of the closing parts.",
@@ -1031,7 +1118,7 @@
     ]
    },
    {
-    "t": 45.5,
+    "t": 45.0,
     "frame": [
      "lift_column",
      "arm_profile",
@@ -1043,6 +1130,47 @@
     "zoom": 1.2,
     "focus": [
      "openarm"
+    ]
+   },
+   {
+    "t": 46.0,
+    "frame": [
+     "lift_stop_sensors",
+     "flag_rod",
+     "lift_flag"
+    ],
+    "az": 70,
+    "el": 12,
+    "zoom": 1.1,
+    "caption": "Lift stop sensors: three fixed inductive sensors on the static column, one steel flag moving with the lift (L1000, L1175, L1350)",
+    "labels": [
+     "lift_stop_sensors",
+     "lift_flag"
+    ],
+    "focus": [
+     "lift_stop_sensors",
+     "lift_flag",
+     "flag_rod"
+    ]
+   },
+   {
+    "t": 47.0,
+    "frame": [
+     "lift_stop_sensors",
+     "flag_rod",
+     "lift_flag"
+    ],
+    "az": 70,
+    "el": 12,
+    "zoom": 1.1,
+    "labels": [
+     "lift_stop_sensors",
+     "lift_flag"
+    ],
+    "focus": [
+     "lift_stop_sensors",
+     "lift_flag",
+     "flag_rod"
     ]
    },
    {

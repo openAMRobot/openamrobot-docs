@@ -536,6 +536,194 @@ def check_no_duplicate_fittings(root, html, err):
             err("robot.html", "buildTotes adds geometry outside the totes (tote rails on the cover); not in the BOM or the CAD")
 
 
+# P-03 rev20.0 item 24, layout update of 28 Oct 2026: the second E-stop (formerly the chest E-stop) on the rear
+# face of the static DOLD lift profile, close to its upper edge; the moving chest bottom up: head light, then
+# the Getac, the head light top edge 30 mm below the Getac bottom edge.
+CHEST_ORDER = ["head_light", "getac_tablet"]
+CHEST_IDS = ["second_estop"] + CHEST_ORDER
+LIGHT_TABLET_GAP = 0.03
+# P-03 rev20.0 item 24, 28 Oct 2026 correction: Getac ZX80 234 x 149.8 x 17.6 mm mounted landscape (x depth 17.6,
+# y across 234, z height 149.8); Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
+CHEST_SIZES = {"getac_tablet": [0.0176, 0.234, 0.1498], "head_light": [0.02, 0.158, 0.017]}
+# the replaced Getac ZX10 (275 x 192 x 17.9 mm) must not come back in the model or the robot and exploded pages
+CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)portrait", r"chest_estop"]
+# head camera (P-03 rev20.0 items 15, 17 and 18, 28 Oct 2026): lens 42 mm ahead of the shoulder, baseline hp30
+HEAD_PITCH_BASELINE = 30
+LIFT_PARTS = {"lift_stop_sensors": "LFT-001", "lift_sensor_brackets": "LFT-003", "flag_rod": "LFT-004",
+              "rod_corner_bracket": "LFT-005", "lift_flag": "LFT-006"}
+LIFT_SENSOR_Z = [0.12, 0.295, 0.47]  # above the column base, P-03 rev20.0 item 24
+ZED_X = 0.222
+
+
+def check_chest_and_riser(root, html, err, comps):
+    """Second E-stop and chest equipment (P-03 rev20.0 item 24, layout update of 28 Oct 2026): the three
+    registry entries exist and are placeholders, the OpenArm kit button (ARM-008) is gone, the second E-stop is
+    built once on the static lift profile (rear face, facing rearward, near its upper edge), M.CHEST lists the
+    moving chest bottom up with the head light 30 mm under the Getac, no red or yellow button in the robot page
+    fittings, and the head light has no glow or light source. Head camera: hp30 baseline and the 42 mm lens
+    position. Tote riser (robot.html): one riser group per tote that follows the riser value and is hidden at 0."""
+    try:
+        with open(os.path.join(root, "model", "model.js"), encoding="utf-8") as f:
+            js = f.read()
+    except OSError:
+        return
+    byid = {c.get("id"): c for c in comps}
+    if "arm_kit_estop" in byid:
+        err("model.js", "arm_kit_estop (ARM-008, withdrawn) is still in the registry; the second E-stop is second_estop")
+    for cid in CHEST_IDS:
+        c = byid.get(cid)
+        if not c:
+            err("model.js", "chest item %s is missing from the registry" % cid)
+        elif not c.get("placeholder"):
+            err("model.js", "chest item %s is not marked placeholder" % cid)
+    try:
+        with open(os.path.join(root, "model", "exploded.json"), encoding="utf-8") as f:
+            xj = f.read()
+    except OSError:
+        xj = ""
+    for name, text in (("model.js", js), ("exploded.json", xj), ("robot.html", html["robot.html"]),
+                       ("exploded.html", html["exploded.html"])):
+        for pat in CHEST_RETIRED:
+            if re.search(pat, text):
+                err(name, "names a replaced chest layout item (%s): the tablet is the Getac ZX80 mounted landscape and "
+                    "the second E-stop (second_estop) is on the static lift profile (P-03 rev20.0 item 24)" % pat)
+    m = re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js, flags=re.S)
+    chest = json.loads(m.group(1)) if m else {}
+    if chest.get("order") != CHEST_ORDER:
+        err("model.js", "M.CHEST order %s, expected %s (moving chest, bottom up)" % (chest.get("order"), CHEST_ORDER))
+    drawn = chest.get("drawn", {})
+    for cid in CHEST_ORDER:
+        geo = (byid.get(cid) or {}).get("geometry")
+        if cid not in drawn or geo in (None, "none"):
+            err("model.js", "chest item %s is not drawn (M.CHEST drawn and a registry geometry)" % cid)
+    for cid, size in CHEST_SIZES.items():  # placeholder sizes from their sources, x depth, y across, z height (m)
+        if (drawn.get(cid) or {}).get("size") != size:
+            err("model.js", "chest item %s size %s, expected %s from its source" % (cid, (drawn.get(cid) or {}).get("size"), size))
+    stack = [(cid, drawn[cid]["z"] - drawn[cid]["size"][2] / 2, drawn[cid]["z"] + drawn[cid]["size"][2] / 2)
+             for cid in CHEST_ORDER if cid in drawn and "size" in drawn[cid]]
+    if len(stack) == 2:
+        gap = stack[1][1] - stack[0][2]
+        if abs(gap - LIGHT_TABLET_GAP) > 0.0005:
+            err("model.js", "head light top edge %.4f m below the Getac bottom edge, expected %.3f m" % (gap, LIGHT_TABLET_GAP))
+    for cid, bottom, top in stack:
+        if bottom < 0.01 or top > 0.35:  # arm profile from 10 to 350 mm above the column top
+            err("model.js", "chest item %s leaves the arm-profile height (%.4f to %.4f m)" % (cid, bottom, top))
+    se = chest.get("second_estop") or {}
+    if not 0.02 <= se.get("below_top", -1) <= 0.06:  # centre 20 to 60 mm below the static profile top
+        err("model.js", "M.CHEST second_estop below_top %s: the second E-stop sits close to the static profile upper edge" % se.get("below_top"))
+    if len(re.findall(r"part\('second_estop', R\.col\)", js)) != 1 or re.search(r"part\('second_estop'\)", js):
+        err("model.js", "the second E-stop must be built exactly once, in the static lift group (part('second_estop', R.col))")
+    fm = re.search(r"function chestItems\s*\(", js)
+    body = function_body(js, fm.end()) if fm else ""
+    if fm and not ("-D.COL.L / 2" in body and "rotation.z = Math.PI" in body):
+        err("model.js", "chestItems must put the second E-stop on the rear face of the static profile (x -COL.L/2), facing rearward")
+    for fn in ("columnFittings", "chassisFittings"):
+        fm2 = re.search(r"function %s\s*\(" % fn, js)
+        if fm2 and re.search(r"\bmats\.(red|yellow)\b", function_body(js, fm2.end())):
+            err("model.js", "%s draws an E-stop (red or yellow); E-stops come from the GLB and chestItems" % fn)
+    if not fm:
+        err("model.js", "chestItems not found")
+    elif re.search(r"emissive|Light\(", body):
+        err("model.js", "chestItems gives the head light a glow or a light source")
+    # One robot on both pages: the same M.build, chestItems and liftSensors without page options; only
+    # fittings (robot page scene items that are not registry parts) may differ.
+    if re.search(r"chestPlaceholders|function chestItems\s*\([^)]*,\s*all\)|if \(!all\) return out;", js):
+        err("model.js", "chestItems has a page option again; both pages draw the same robot")
+    if "chestItems(THREE, R, mov, mats).forEach" not in js or "liftSensors(THREE, R, mov, mats).forEach" not in js:
+        err("model.js", "M.build does not draw the chest items and the lift stop sensor set on every build")
+    builds = {page: re.findall(r"MODEL\.build\(\w+,\s*(\{[^}]*\})\)", html[page]) for page in ("robot.html", "exploded.html")}
+    keys = lambda a: set(re.findall(r"(\w+)\s*:", a))
+    for page, allowed in (("robot.html", {"fittings", "headPitch"}), ("exploded.html", {"headPitch"})):
+        if len(builds[page]) != 1 or not keys(builds[page][0]) <= allowed:
+            err(page, "builds the shared model with options %s; only %s are allowed (one robot on both pages)"
+                % (builds[page], sorted(allowed)))
+    # Lift stop sensor set (P-03 rev20.0 item 24, LIFT-SNS-01 rev 1, BOM Issue 7.14 LFT-001 to LFT-006): the flag
+    # faces S1, S2 and S3 at L1000, L1175 and L1350, the 2 mm gap and the 9 mm rod offset.
+    lm = re.search(r"/\*LIFT-JSON\*/(.*?)/\*LIFT-JSON-END\*/", js, flags=re.S)
+    ls = json.loads(lm.group(1)) if lm else {}
+    for cid, bom in LIFT_PARTS.items():
+        c = byid.get(cid)
+        if not c or c.get("bom") != bom or not c.get("placeholder"):
+            err("model.js", "lift sensor part %s (%s) missing, with another BOM ID or not a placeholder" % (cid, bom))
+    if ls.get("z") != LIFT_SENSOR_Z or ls.get("flag_below_plate") != 0.41 or ls.get("gap") != 0.002 \
+            or ls.get("flag") != [0.002, 0.045, 0.02] or (ls.get("rod") or {}).get("len") != 0.43:
+        err("model.js", "M.LIFT_SENSE differs from LIFT-SNS-01 rev 1 (sensors z 120/295/470, flag 410 mm below the plate, 2 mm gap, 45 x 20 x 2 flag, 430 mm rod)")
+    else:
+        dm = re.search(r"STOPS:\s*\{L1000:\s*([\d.]+),\s*L1175:\s*([\d.]+),\s*L1350:\s*([\d.]+)\}", js)
+        stops = [float(v) for v in dm.groups()] if dm else []
+        for k, (dz, stop) in enumerate(zip(ls["z"], stops)):
+            # plate underside = base-plate top + retracted column + lift travel; flag centre 410 mm below it
+            flag = 0.53 + (stop - stops[0]) - ls["flag_below_plate"]
+            if abs(flag - dz) > 1e-6:
+                err("model.js", "at %s the flag centre is %.3f m above the column base, the sensor S%d is at %.3f m" % (ls["stops"][k], flag, k + 1, dz))
+        s_out = ls["axis_off"] + ls["sensor"]["d"] / 2
+        if abs(ls["rod"]["off"] - s_out - 0.009) > 1e-6:
+            err("model.js", "the flag rod is %.4f m beside the sensors, LIFT-SNS-01 gives 9 mm" % (ls["rod"]["off"] - s_out))
+    if not re.search(r"part\('lift_stop_sensors', R\.col\)", js) or not re.search(r"part\('flag_rod', mov\)", js) \
+            or not re.search(r"part\('lift_flag', mov\)", js):
+        err("model.js", "the sensors must be in the static lift group and the rod and flag in the moving group")
+    # Head camera baseline hp30 and lens 42 mm ahead of the shoulder (P-03 rev20.0 items 15, 17 and 18)
+    pitch = lambda a: (re.search(r"headPitch\s*:\s*(\d+)", a) or [None, None])[1]
+    for page in ("robot.html", "exploded.html"):
+        if not builds[page] or any(pitch(a) != str(HEAD_PITCH_BASELINE) for a in builds[page]):
+            err(page, "the shared model must be built with headPitch %d (hp30 baseline)" % HEAD_PITCH_BASELINE)
+    if "o.headPitch === undefined ? %d : o.headPitch" % HEAD_PITCH_BASELINE not in js:
+        err("model.js", "M.build default head pitch is not the hp30 baseline")
+    zm = re.search(r"ZED_X:\s*([\d.]+)", js)
+    if not zm or abs(float(zm.group(1)) - ZED_X) > 1e-6:
+        err("model.js", "M.DIMS.ZED_X %s, expected %.3f (lens 42 mm ahead of the shoulder)" % (zm and zm.group(1), ZED_X))
+    h = html["robot.html"]
+    for need, what in (('this.hp=%d,' % HEAD_PITCH_BASELINE, "initial head pitch state"),
+                       ('id="hp" min="15" max="35" step="5" value="%d"' % HEAD_PITCH_BASELINE, "head pitch slider value"),
+                       ('N0("hp-v").textContent="%d\\xB0"' % HEAD_PITCH_BASELINE, "head pitch readout"),
+                       ('<b>hp%d</b> <span class="kind k-dec">default</span>' % HEAD_PITCH_BASELINE, "configuration table default")):
+        if need not in h:
+            err("robot.html", "%s is not hp%d" % (what, HEAD_PITCH_BASELINE))
+    for bad in ("default hp25", "<b>hp25</b>", "head_pitch hp25,", "22 mm ahead", "0.202, 0, 0.389"):
+        if bad in h:
+            err("robot.html", "still states the former head camera baseline (%s)" % bad)
+    h = html["robot.html"]
+    bm = re.search(r"\bbuildTotes\(\)\s*\{", h)
+    body = function_body(h, bm.start()) if bm else ""
+    if "tote_riser_" not in body or "riserFit(" not in body:
+        err("robot.html", "buildTotes draws no tote riser (one riser group per tote, fitted to the riser value)")
+    sm = re.search(r"\bsetRiser\(\w+\)\s*\{", h)
+    if not sm or "riserFit(" not in function_body(h, sm.start()):
+        err("robot.html", "setRiser does not refit the tote risers to the riser value")
+    fm = re.search(r"\briserFit\((\w+),(\w+)\)\s*\{", h)
+    if not fm or not re.search(r"\.visible=%s>" % fm.group(2), function_body(h, fm.start())):
+        err("robot.html", "riserFit does not hide the riser at riser 0")
+
+
+SYNC_FILES = ["model/model.js", "model/exploded.json", "robot.html", "exploded.html"]
+
+
+def check_sync_audit(root, err, comps):
+    """One robot on both pages: scripts/sync_audit.json (written by scripts/audit_sync.js) must be current (its
+    sha256 fingerprint matches the files it read), cover every registry part and report no mismatch between the
+    robot page and the exploded view (drawn on both, exploded.json stage and offset, mesh count, transforms)."""
+    path = os.path.join(root, "..", "..", "..", "scripts", "sync_audit.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            a = json.load(f)
+    except (OSError, ValueError):
+        err("sync_audit.json", "missing; run node scripts/audit_sync.js")
+        return
+    for f in SYNC_FILES:
+        with open(os.path.join(root, f), "rb") as fh:
+            if hashlib.sha256(fh.read()).hexdigest() != a.get("fingerprint", {}).get(f):
+                err("sync_audit.json", "older than %s; rerun node scripts/audit_sync.js" % f)
+    seen = {r.get("part") for r in a.get("rows", [])}
+    for c in comps:
+        for pid in c.get("nodes") or c.get("parts") or []:
+            if pid not in seen:
+                err("sync_audit.json", "registry part %s (%s) is not in the audit" % (pid, c.get("id")))
+    for m in a.get("mismatches", []):
+        err("sync_audit.json", "robot page and exploded view differ: %s" % m)
+    if a.get("errors"):
+        err("sync_audit.json", "page errors during the audit: %s" % a["errors"])
+
+
 def check_finish(root, err, comps, glb_prims):
     """model/finish.json: classes of known parts, primitives that exist, known texture names."""
     try:
@@ -639,6 +827,41 @@ def check_store_media(root, html, err):
             first += os.path.getsize(os.path.join(root, m.group(1)))
     if first > ROBOT_FIRST_LOAD_MAX_BYTES:
         err("robot.html", "first load %d bytes, over %d (#58 plus 100 KB)" % (first, ROBOT_FIRST_LOAD_MAX_BYTES))
+
+
+def mp4_seconds(path):
+    """Duration of an MP4 file from its mvhd box (seconds)."""
+    with open(path, "rb") as f:
+        d = f.read()
+    i = d.find(b"mvhd")
+    if i < 0:
+        return None
+    if d[i + 4] == 1:
+        ts, du = struct.unpack(">IQ", d[i + 24:i + 36])
+    else:
+        ts, du = struct.unpack(">II", d[i + 16:i + 24])
+    return du / ts
+
+
+def check_store_video_text(root, html, err):
+    """robot.html: the text under the store video states the duration of the file and a speed that matches the
+    simulated time over that duration (the caption of the render carries the same speed)."""
+    full = os.path.join(root, STORE_VIDEO)
+    if not os.path.isfile(full):
+        return
+    m = re.search(r"no audio, ([\d.]+) s, ([\d.]+) MB; played at ([\d.]+)x speed \(([\d.]+) s of simulated time in ([\d.]+) s of video\)",
+                  html["robot.html"])
+    if not m:
+        err("robot.html", "the store video text does not state duration, size and speed")
+        return
+    dur = mp4_seconds(full)
+    stated, mb, speed, sim, vid = (float(v) for v in m.groups())
+    if dur is None or abs(stated - dur) > 0.1 or abs(vid - dur) > 0.1:
+        err("robot.html", "store video text says %.1f s, the file lasts %s s" % (stated, dur))
+    if abs(mb - os.path.getsize(full) / 1e6) > 0.05:
+        err("robot.html", "store video text says %.1f MB, the file is %d bytes" % (mb, os.path.getsize(full)))
+    if dur and abs(sim / dur - speed) > 0.05 * speed:
+        err("robot.html", "store video text says %gx speed, %.1f s of sim time in %.1f s is %.2fx" % (speed, sim, dur, sim / dur))
 
 
 def check_nav(p, html, err):
@@ -747,6 +970,11 @@ def main():
     check_shared(args.dir, html, err)
     check_no_light_strips(args.dir, err)
     check_no_duplicate_fittings(args.dir, html, err)
+    check_store_video_text(args.dir, html, err)
+    with open(os.path.join(args.dir, "model", "model.js"), encoding="utf-8") as f:
+        comps = model_components(f.read())
+    check_chest_and_riser(args.dir, html, err, comps)
+    check_sync_audit(args.dir, err, comps)
     check_store_media(args.dir, html, err)
 
     # 2. status count strips
