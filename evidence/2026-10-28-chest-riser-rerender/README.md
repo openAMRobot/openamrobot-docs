@@ -161,3 +161,28 @@ The E-stop box moved down from the drawn position in 10 mm steps against every m
 The first clear height is 140 mm below the drawn position, a centre 180 mm below the static profile top: more than
 the 100 mm allowed, so the P-03 position (centre 40 mm below the top) is kept; the registry records the result as
 an input for M-09.
+
+## Media (rendered from 654c1ed; scene identical at the final head)
+
+| File | Size | Video | sha256 (first 16) |
+|---|---|---|---|
+| `media/openamrobot-2-store-1080p.mp4` | 14,076,327 bytes | 1920 x 1080, 24 fps, 1536 frames, 64.0 s, H.264, no audio, 4x speed | beb2e19eed5f1be9 |
+| `media/openamrobot-2-tour-1080p.mp4` | 9,856,115 bytes | 1920 x 1080, 30 fps, 1486 frames, 49.5 s (two renders byte-identical) | 2c123ad63e2a6843 |
+| `media/openamrobot-2-tour-1080x1350.mp4` | 8,517,327 bytes | 1080 x 1350, 30 fps, 1486 frames, 49.5 s | 10cc7284bcec1077 |
+| `media/openamrobot-2-store-1080p-poster.png` | 479,430 bytes | frame 788, 192 colours | c26cb7a559ff633c |
+| `media/store/thumbs/store_video_poster.jpg` | 59,451 bytes | 640 x 360 | 2b6d5de40f8e031f |
+
+All 25 media files with full sha256: `store_media/media_sha256.txt`. Render log: `store_media/render_log.txt`
+(pictures about 40 s each; tours 26 min 57 s, 26 min 20 s, 27 min 50 s; determinism 60 frames 14 min 50 s with
+one worker and 13 min 39 s with two, identical; store video 23:05 to 06:40 UTC wall time including two container
+restarts, resumed from saved frames, last segment 299 frames in 2904 s and the two-pass encode). Sample frames
+at 10, 30, 50, 70 and 90 % of the store video and two tour frames (26 s and the lift sensor beat at 46.5 s):
+`store_media/`.
+
+## Page checks
+
+`page_checks/page_checks.json` (`node evidence/2026-10-27-store-media/page_checks.js`, branch on 8765, main on
+8767): robot.html and exploded.html at 375 and 1280 px without console errors, warnings or failed requests, no
+horizontal scroll; robot.html defaults unchanged (Follow, Frames off, Labels off, High quality on at 1280 px and
+off at 375 px, as on main); first load 4,195,668 bytes (main 4,179,171, budget 4,195,678); Record order video
+starts and stops.
