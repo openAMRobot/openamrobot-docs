@@ -1,18 +1,18 @@
 ---
-title: Hardware architecture (BOM Issue 7.7)
+title: Hardware architecture (BOM Issue 7.14)
 tags: [builder, integrator, developer]
 status: planned
-description: The OpenAMRobot 2.0 electronics, compute, base controller, drives, power, sensors and arms in one table, following BOM Issue 7.7 and P-03 revision 19.0.
+description: The OpenAMRobot 2.0 electronics, compute, base controller, drives, power, sensors and arms in one table, following BOM Issue 7.14 and P-03 revision 20.2.
 ---
 
-# Hardware architecture (BOM Issue 7.7)
+# Hardware architecture (BOM Issue 7.14)
 
-**Canonical source:** the OpenAMRobot 2.0 development BOM and evidence register maintained by the platform lead. It is an internal working document that is not yet committed to a repository; it will be published in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) with the electrical release. This page follows BOM Issue 7.7 of 12 October 2026 and P-03 revision 19.0 items 13 to 19; the rows for the safety chain, power, IMU and operator panel are updated to the plan set of 1 November 2026 (P-03 revision 20.2, E-01 revision 1.6, M-01 revision 19.7, BOM Issue 7.14). Components follow the availability rule: in stock at two or more suppliers.
+**Canonical source:** the OpenAMRobot 2.0 development BOM and evidence register maintained by the platform lead. It is an internal working document that is not yet committed to a repository; it will be published in [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) with the electrical release. This page follows BOM Issue 7.14 (27 October 2026, with the 1 November 2026 changes) and the plan set of 1 November 2026 (P-03 revision 20.2, E-01 revision 1.6, M-01 revision 19.7); BOM Issue 7 to 7.13 are retired. Rows that cite an earlier P-03 revision record where that decision was taken. Components follow the availability rule: in stock at two or more independent suppliers; a single-source part appears only as a named option next to a second-sourced alternative, and parts with no stock are not selected.
 
 **Applies to:** OpenAMRobot 2.0, development cycle 2. For the robot that has been built and driven, see the [current hardware architecture](../openamr-platform-hw/concepts.md).
 
 !!! note "Interactive diagram withdrawn"
-    The interactive connection diagram generated from BOM Issue 7 (27 September 2026) is superseded by BOM Issue 7.7 and is no longer embedded here. A new diagram is regenerated with the electrical release (F7), which also provides the schematics and harness drawings. Do not wire hardware from this page.
+    The interactive connection diagram generated from BOM Issue 7 (27 September 2026) is superseded by later BOM issues (BOM Issue 7.14 is in force) and is no longer embedded here. A new diagram is regenerated with the electrical release (F7), which also provides the schematics and harness drawings. Do not wire hardware from this page.
 
 ## The architecture in one table
 
@@ -50,7 +50,7 @@ The OpenAMRobot 2.0 navigation LiDAR is the SLAMTEC RPLIDAR S3 (model S3M1-R2). 
 
 ## What changes when the BOM changes
 
-The table follows BOM Issue 7.7. When a later BOM issue or P-03 revision changes a value, this page is updated in the same pull request as the other pages that state it. A page carrying an older BOM issue than the register is out of date; report it through the feedback link rather than editing values by hand.
+The table follows BOM Issue 7.14. When a later BOM issue or P-03 revision changes a value, this page is updated in the same pull request as the other pages that state it. A page carrying an older BOM issue than the register is out of date; report it through the feedback link rather than editing values by hand.
 
 ## Next
 
