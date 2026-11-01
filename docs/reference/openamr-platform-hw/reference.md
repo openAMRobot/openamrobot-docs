@@ -8,7 +8,7 @@ description: Reference the validated mobile-base components, drivetrain dimensio
 # Hardware specification
 
 **Canonical source:** [`openamr-platform-hw/manufacturing/bom/components-bom.md`](https://github.com/openAMRobot/openamr-platform-hw/blob/main/manufacturing/bom/components-bom.md)
-**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
+**Applies to:** the existing robot (release 001, Gate A, legacy reference build); for OpenAMRobot 2.0 see the [2.0 hardware architecture](../openamrobot-2/hardware-architecture.md). Verify repository revision before changing hardware or firmware.
 
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
@@ -29,8 +29,8 @@ datasheets. Status: ✅ = confirmed (label + datasheet), ⏳ = to read the exact
 | 4 | Encoders ×2 | **AMS AS5040** (magnetic, quadrature A/B, marking "AS5040 AB 2.2") | ✅ | [AS5040 datasheet (ams, PDF)](https://www.mouser.com/datasheet/2/588/AS5040_DS000374_4_00-2066720.pdf) |
 | 5 | IMU | **TDK InvenSense MPU-6500** (board silk says "MPU-6050"/GY-521, but the chip is a 6500) | ✅ | MPU-6500 datasheet (TDK/InvenSense) |
 | 6 | LiDAR | **Slamtec RPLIDAR A1** (A1M8, by shape), legacy (existing robot); the OpenAMRobot 2.0 LiDAR is the RPLIDAR S3 | ⏳ confirm sticker | [slamtec.com RPLIDAR A1](https://www.slamtec.com/en/Lidar/A1) |
-| 7 | Camera | **Sony IMX708** = Raspberry Pi **Camera Module 3 NoIR** | ✅ | [raspberrypi.com camera-3](https://www.raspberrypi.com/products/camera-module-3/) |
-| 8 | SBC | **Raspberry Pi 5** (Model B Rev 1.1, **8 GB** RAM — confirmed 2026-07-06 on the current board) | ✅ | [raspberrypi.com Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/) |
+| 7 | Camera | **Sony IMX708** = Raspberry Pi **Camera Module 3 NoIR** (legacy, existing robot; the 2.0 base camera is the Orbbec Gemini 336L) | ✅ | [raspberrypi.com camera-3](https://www.raspberrypi.com/products/camera-module-3/) |
+| 8 | SBC | **Raspberry Pi 5** (legacy, existing robot; Model B Rev 1.1, **8 GB** RAM — confirmed 2026-07-06 on the current board) | ✅ | [raspberrypi.com Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/) |
 | 9 | DC-DC 24 V→5 V | generic **~300 W 20 A CC/CV buck** (toroid + 2 trimpots) | ⏳ no clear model | (generic) |
 | 10 | Battery | **any 24 V pack** (chemistry up to you). Reference build: 4× **DM12-7S** 12 V **7 Ah** lead-acid (AGM), 2 in series → 24 V | ✅ | DM12-7S SLA datasheet (reference; any 24 V source works) |
 | 11 | AC/DC 230→24 V | unknown | ⏳ read label | — |
@@ -101,7 +101,7 @@ datasheets. Status: ✅ = confirmed (label + datasheet), ⏳ = to read the exact
   motor draws well above 3.8 A) — confirm the stall current before finalising.
 
 ## Still to read off the robot
-- **LiDAR**: confirm the model sticker (A1M8 vs other).
+- **LiDAR** (legacy, existing robot): confirm the model sticker (A1M8 vs other).
 - **DC-DC buck**: any printed model / the regulator IC.
 - **AC/DC 230→24 V converter**: brand + model + rating.
 - **Gearbox**: ~~confirm the ratio~~ — **done: `4GN 25K` = 1:25** (matches the OpenAMRobot sizing calcs).

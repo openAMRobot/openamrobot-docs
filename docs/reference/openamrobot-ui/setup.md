@@ -142,8 +142,8 @@ ros2 launch openamr_ui_package physnode_launch.py
     Step 5 is the one people skip. A stale pose means the robot on screen is not the robot in the
     room, and every command you send is aimed somewhere else.
 
-    Step 7 matters because the dashboard's E-STOP is software only. See
-    [Overview](overview.md#the-e-stop-is-software-only).
+    Step 7 matters because the dashboard's Stop (software) is a functional stop, not the E-stop. See
+    [Overview](overview.md#stop-software-is-not-an-emergency-stop).
 
 ## Verify it worked
 

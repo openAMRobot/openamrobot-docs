@@ -13,7 +13,7 @@ description: Build the pinned Teensy 4.0 firmware overlay and flash it with a re
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware: Gate A (existing robot, legacy test configuration and release fallback); the OpenAMRobot 2.0 base controller is the STM32H723ZG with micro-ROS over Ethernet UDP.*
 
 The overlay is built on top of a linorobot2 firmware checkout with PlatformIO and flashed to the
 Teensy 4.0 with `teensy_loader_cli`. See the [overlay README](https://github.com/openAMRobot/openamr-platform-fw/blob/main/boards/teensy_4_0/linorobot2_overlay/README.md)

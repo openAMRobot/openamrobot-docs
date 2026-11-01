@@ -8,7 +8,7 @@ description: Understand the validated OpenAMRobot base platform, its subsystem b
 # Hardware architecture
 
 **Canonical source:** [`openamr-platform-hw/product-architecture.md`](https://github.com/openAMRobot/openamr-platform-hw/blob/main/product-architecture.md)
-**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
+**Applies to:** the existing robot (release 001, Gate A, legacy reference build); for OpenAMRobot 2.0 see the [2.0 hardware architecture](../openamrobot-2/hardware-architecture.md). Verify repository revision before changing hardware or firmware.
 
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
@@ -23,7 +23,7 @@ a wireless charger — it does not.
 
 ## The full product architecture (superset)
 
-![Full OpenAMRobot product architecture — cloud/fleet server, the AMR general node (navigation sensors, Raspberry Pi 5 + Nav2, options), the Teensy MC node (BLDC diff-drive with ZBLD.C20-120L2 drivers and AS5040 encoders, plus optional tilt/conveyor/lift), and the power node (BMS + battery, charging, e-stop)](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/assets/images/HW_schema_article.jpg)
+![Full OpenAMRobot product architecture — cloud/fleet server, the AMR general node (navigation sensors, Raspberry Pi 5 (legacy, existing robot) + Nav2, options), the Teensy MC node (BLDC diff-drive with ZBLD.C20-120L2 drivers and AS5040 encoders, plus optional tilt/conveyor/lift), and the power node (BMS + battery, charging, e-stop)](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/assets/images/HW_schema_article.jpg)
 
 ## What the base build actually is
 
@@ -32,7 +32,7 @@ The **✅ base** (this repo's electrical / firmware / software) is the core of t
 - **Drive:** 2× BLDC wheels, **ZBLD.C20-120L2R** drivers, **AS5040** magnetic encoders, Teensy 4.0
   running micro-ROS motor control (electronics derived from the Linorobot project, motor + controller
   upgraded to the ZD/ZBLD industrial parts).
-- **Compute:** Raspberry Pi 5 + ROS 2 Jazzy + Nav2.
+- **Compute:** Raspberry Pi 5 (legacy, existing robot) + ROS 2 Jazzy + Nav2.
 - **Sensing:** RPLIDAR A1 (2D), legacy (existing robot); the OpenAMRobot 2.0 LiDAR is the RPLIDAR S3. Pi Camera Module 3, MPU6500 IMU.
 - **Power:** 24 V bus (any chemistry; reference build 2× 12 V; the product targets a LiFePO4 + BMS pack).
 
@@ -47,7 +47,7 @@ Shown in the architecture diagram but **not part of the base**:
 
 - **Extra safety pack** — ultrasonic (JSN-SR04) + IR (E18-D80NK) proximity rings.
 - **Attachments** — tilt sorting, conveyor, **lift** (BLDC lift/rotate), end-effectors.
-- **Charging** — **wireless charging** (WCM-300) with auto-docking.
+- **Charging**: **wireless charging** with the TZBOT WCM-500-24 (the WCM-300 is only the existing unit on the release 001 robot today), docking positioning only.
 - **Battery/BMS** — 24 V smart battery pack + BMS (serial), vs. the base's plain 24 V pack.
 - **Higher-power drives** — ZLTech ZLAC8015D/8030L drivers, hub-motor wheels.
 - **Tracking / AI** — QR + line tracking, on-board NVIDIA (Jetson) for heavier perception.

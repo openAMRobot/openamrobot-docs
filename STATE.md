@@ -10,6 +10,7 @@ As of 1 November 2026: P-03 rev20.2, E-01 rev1.6, M-01 rev19.7, BOM Issue 7.14.
 - Item-specific citations of earlier revisions (for example "P-03 rev19.7 item 23", "rev20.0 item 24") are kept as the record of where a decision was taken.
 - Shared model (`docs/assets/roadmap/model/`): Getac ZX80 drawn landscape (default position of a rotatable mount, portrait second position not drawn); second E-stop on the rear face of the static lift column. `scripts/sync_audit.json` regenerated on 1 November 2026: 63 parts, 0 mismatches.
 - `docs/assets/hardware/openamrobot2-hardware-architecture-bom7.html` is the BOM Issue 7 record; superseded notes at the top carry the later values.
+- 1 November 2026 register alignment (openAMRobot/.github#79): 2.0 reference pages, Stop (software) wording, legacy labels and the superseded GA record follow the register; `scripts/check_docs.sh` fails on the retired 2.0 values. The roadmap pages `index.html` and `progress.html` were edited in place (LEV100H superseded); the next regeneration must keep that wording. Safety-path pages are left for the platform lead.
 
 ## Open follow-ups
 

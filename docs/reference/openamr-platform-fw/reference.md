@@ -13,7 +13,7 @@ description: Reference the micro-ROS transport, topic contract, startup state ma
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware: Gate A (existing robot, legacy test configuration and release fallback); the OpenAMRobot 2.0 base controller is the STM32H723ZG with micro-ROS over Ethernet UDP.*
 
 The firmware is a **micro-ROS** application. It connects to a **micro-ROS agent** on the host over
 USB serial and exposes the robot's topics. This page covers the connection, the topic contract, and
@@ -23,7 +23,7 @@ the LED status codes.
 
 The micro-ROS transport topology is shown below.
 
-![The Teensy 4.0 runs a micro-ROS client over USB serial 115200; the micro-ROS agent on the Pi 5 bridges it into the CycloneDDS ROS 2 graph. Teensy publishes /odom/unfiltered, /imu/data_raw, /imu/mag, /debug/left|right|pwm and subscribes /cmd_vel, /debug/openloop|tune|enc_cal; the host EKF/Madgwick produces filtered /imu/data + /odom for Nav2. The control loop runs only while the agent is connected; on disconnect the firmware fullStop()s](https://raw.githubusercontent.com/openAMRobot/openamr-platform-fw/main/docs/bringup/diagrams/micro-ros-node-topology.svg)
+![The Teensy 4.0 runs a micro-ROS client over USB serial 115200; the micro-ROS agent on the Pi 5 (legacy, Gate A; on OpenAMRobot 2.0 the agent runs on the Jetson over Ethernet UDP) bridges it into the CycloneDDS ROS 2 graph. Teensy publishes /odom/unfiltered, /imu/data_raw, /imu/mag, /debug/left|right|pwm and subscribes /cmd_vel, /debug/openloop|tune|enc_cal; the host EKF/Madgwick produces filtered /imu/data + /odom for Nav2. The control loop runs only while the agent is connected; on disconnect the firmware fullStop()s](https://raw.githubusercontent.com/openAMRobot/openamr-platform-fw/main/docs/bringup/diagrams/micro-ros-node-topology.svg)
 
 
 - **USB serial** at **`BAUDRATE = 115200`** — this must match the agent exactly.

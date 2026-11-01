@@ -13,7 +13,7 @@ description: Measure, generate, apply, and verify the OpenAMRobot encoder ripple
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware: Gate A (existing robot, legacy test configuration and release fallback); the OpenAMRobot 2.0 base controller is the STM32H723ZG with micro-ROS over Ethernet UDP.*
 
 The left wheel showed a slow low-speed "oscillation" (a ~1 s, ±6 rpm limit cycle) that barely
 responded to PID gains. It was **not** a control-loop problem: the left AS5040 magnet is

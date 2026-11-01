@@ -13,7 +13,7 @@ description: Understand the Teensy 4.0 control loop, differential-drive kinemati
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware: Gate A (existing robot, legacy test configuration and release fallback); the OpenAMRobot 2.0 base controller is the STM32H723ZG with micro-ROS over Ethernet UDP.*
 
 The firmware runs a fixed-rate control loop that turns `/cmd_vel` into per-wheel PWM,
 publishes wheel odometry, and streams debug telemetry. This document describes the loop,

@@ -124,7 +124,7 @@ Check it is not committed anywhere, and that it is being passed rather than bake
 
 | Behaviour | Reality |
 |:--|:--|
-| Dashboard E-STOP does not always stop the robot | It is a software stop: one zero-velocity command plus a Nav2 goal cancel. Not latched, not safety-rated, depends on browser, network, rosbridge and controller. **Keep a tested physical E-stop within reach.** |
+| Stop (software) does not always stop the robot | It is a software stop: one zero-velocity command plus a Nav2 goal cancel. Not latched, not safety-rated, depends on browser, network, rosbridge and controller. **Keep a tested physical E-stop within reach.** |
 | Anyone on the network can drive the robot | Only `AUTH_MODE=open` is implemented. Keep it on a trusted network behind a firewall or authenticated proxy. |
 | Missions stop when the tab closes | They are browser-side by design. |
 

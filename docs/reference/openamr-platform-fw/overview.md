@@ -9,7 +9,7 @@ description: Understand the OpenAMRobot embedded firmware repository, supported 
 
 | Area | Current implementation |
 | --- | --- |
-| Target | Teensy 4.0 |
+| Target | Teensy 4.0 (Gate A: existing robot, legacy test configuration and release fallback; the OpenAMRobot 2.0 base controller is the STM32H723ZG with micro-ROS over Ethernet UDP) |
 | Transport | micro-ROS serial agent |
 | Motion | Low-level motor control from `/cmd_vel` |
 | State | Encoder odometry and raw IMU publication |

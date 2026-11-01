@@ -8,7 +8,7 @@ description: Configure and commission the OpenAMRobot BLDC motors and ZBLD motor
 # Commission the drivetrain
 
 **Canonical source:** [`openamr-platform-hw/electrical/motor_control/motors-drivers.md`](https://github.com/openAMRobot/openamr-platform-hw/blob/main/electrical/motor_control/motors-drivers.md)
-**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
+**Applies to:** the existing robot (release 001, Gate A, legacy reference build); for OpenAMRobot 2.0 see the [2.0 hardware architecture](../openamrobot-2/hardware-architecture.md). Verify repository revision before changing hardware or firmware.
 
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
@@ -32,7 +32,7 @@ sends low-current logic signals to the drivers; the drivers deliver the 24 V pow
 
 The driver's full terminal layout, DIP-switch table, and LED status codes, from the manufacturer:
 
-![ZBLD.C20-120L2R driver setup: 24 V DC+/DC- (fused), motor phases U/V/W + Hall sensors, control inputs FWD/DI1, REV/DI2, JOG/DI3, CLR/DI4, BRK/DI5, COM, VAR/AI2, +5V, ERR/DO1, SPD/DO2, RS485 A/B, the SW1-SW6 DIP-switch configuration table, and the LED status/fault codes](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/electrical/motor_control/diagrams/zbld-driver-setup-reference.jpg)
+![ZBLD.C20-120L2R driver setup: 24 V DC+/DC- (fused), motor phases U/V/W + Hall sensors, control inputs FWD/DI1, REV/DI2, JOG/DI3, CLR/DI4, BRK/DI5, COM, VAR/AI2, +5V, ERR/DO1, SPD/DO2, RS485 A/B (not used; legacy, existing robot), the SW1-SW6 DIP-switch configuration table, and the LED status/fault codes](https://raw.githubusercontent.com/openAMRobot/openamr-platform-hw/main/electrical/motor_control/diagrams/zbld-driver-setup-reference.jpg)
 
 *Source: ZD **ZBLD.C20-120L2R** product manual (manufacturer reference figure). This robot wires only a
 subset of these terminals and uses a specific DIP configuration — both are detailed below.*

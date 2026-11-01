@@ -22,7 +22,7 @@ not a BOM part. E-stops and sensors are drawn geometry only; no safety logic is 
   BEF-WN-M12 (5308447), LFT-004 MISUMI 5 series 20 x 20 profile L 430 tapped M5, LFT-005 MISUMI 5 series corner
   bracket 20 square, LFT-006 SS400 plate 45 x 20 x 2 with 2 x 4.5 mm holes, LFT-007 fasteners (not drawn); SAF-001.
 - Pending with their owners (not changed here): BOM Issue 7.14 UI-001 and UI-002 still name the previous tablet;
-  the register CONFIG-IDS entry gives hp25; the platform-sw URDF still has the lens 22 mm ahead and hp25.
+  the register CONFIG-IDS entry gives hp25; the platform-sw URDF still has the lens 22 mm ahead and hp25 (decision-allow: HEAD-CAMERA-IDENTITY dated evidence record of 28 Oct 2026).
 
 ## What is drawn (both pages, one model)
 
