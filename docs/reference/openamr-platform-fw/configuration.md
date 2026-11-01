@@ -13,7 +13,7 @@ description: Configure and tune the OpenAMRobot firmware through its compiled se
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
 
-*Applies to the Teensy 4.0 `linorobot2_overlay` firmware.*
+*Applies to the Teensy 4.0 `linorobot2_overlay` firmware: Gate A (existing robot, legacy test configuration and release fallback); the OpenAMRobot 2.0 base controller is the STM32H723ZG with micro-ROS over Ethernet UDP.*
 
 These topics are **additions to upstream linorobot2**, added for this robot. They were essential
 to diagnose the drivetrain and remain the live-tuning and commissioning interface. This page is

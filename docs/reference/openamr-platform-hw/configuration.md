@@ -8,7 +8,7 @@ description: Use the verified Teensy, motor-driver, encoder, IMU, and power wiri
 # Wiring and pin configuration
 
 **Canonical source:** [`openamr-platform-hw/electrical/wiring/wiring-pinout.md`](https://github.com/openAMRobot/openamr-platform-hw/blob/main/electrical/wiring/wiring-pinout.md)
-**Applies to:** the documented OpenAMRobot reference mobile base; verify repository revision before changing hardware or firmware.
+**Applies to:** the existing robot (release 001, Gate A, legacy reference build); for OpenAMRobot 2.0 see the [2.0 hardware architecture](../openamrobot-2/hardware-architecture.md). Verify repository revision before changing hardware or firmware.
 
 !!! warning "Experimental project documentation"
     These instructions describe the current reference build and its measured behavior. Use physical safeguards, test with wheels clear of the floor, and revalidate after changing parts, wiring, firmware, battery chemistry, or geometry.
