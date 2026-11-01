@@ -47,7 +47,7 @@ The rerun covers:
 | Lift column, base plate and arm profile geometry and masses | Supplier CAD and data for the DOLD Hexalift V4, option B layout | Supplier CAD pending |
 | Chassis mass | CAD volumes at steel density, top cover included | To be weighed |
 | Arm and gripper masses | Official OpenArm 2.0 description and CAD | Official |
-| Battery mass and position | Selected pack and the 25 percent placement decision | Decided, pack not yet built |
+| Battery mass and position | Selected pack, placed as close to the rear edge as practical while preserving enclosure, service and safety clearances (P-03 revision 18.7 item 9) | Decided, pack not yet built |
 | Castor offset and height | Supplier data, Blickle LPA-VSTH 35K | Official |
 | Wheel friction coefficient | Supplier data, ZLTECH | Official |
 | Radial load limit per motor | ZLTECH | Requested |
