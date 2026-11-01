@@ -31,10 +31,11 @@ the interface before you are responsible for a machine that moves.
 
 See [Set up](setup.md).
 
-## The E-STOP is software only
+## Stop (software) is not an emergency stop
 
 !!! danger "Read this before operating real hardware"
-    The red **E-STOP** button in the dashboard is a **software stop**. It sends one zero-velocity
+    The red **Stop (software)** button in the dashboard is a functional stop for base motion only, not
+    the E-stop; "E-stop" means only the hardwired buttons. It sends one zero-velocity
     command and asks Nav2 to cancel the active goal.
 
     It is **not latched**. It is **not safety-rated**. It depends on the browser, the network,

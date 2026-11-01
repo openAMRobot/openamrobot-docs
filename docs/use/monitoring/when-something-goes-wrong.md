@@ -13,7 +13,7 @@ description: What to do first when the robot stops, drifts or behaves oddly.
 
 ## Stop first, diagnose second
 
-!!! danger "The dashboard E-STOP is not a safety device"
+!!! danger "The dashboard Stop (software) is not a safety device"
     The red button on screen sends one stop command over the network. It is not latched, not
     safety-rated, and it depends on the browser, the network and the robot all still working.
 
