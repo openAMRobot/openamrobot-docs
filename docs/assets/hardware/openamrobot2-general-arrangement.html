@@ -50,7 +50,8 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <div role="note" id="superseded-banner" style="position:sticky;top:0;z-index:1000;margin:0;padding:12px 16px;background:#b3261e;color:#ffffff;font:600 16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center">Superseded by the option B upper-body mounting, P-03 rev18.9 item 18; regenerated drawing to follow</div><div class="wrap">
 <header><div><h1>OpenAMRobot 2.0 general arrangement</h1>
 <p class="sub">Mobile platform with the own COTS mast and two OpenArm 2.0 arms. All views to scale from the MMP STEP, the official OpenArm 2.0 CAD and the F2S model. Dimensions in millimetres.</p></div>
-<table class="tb" aria-label="Title block"><tr><td>Status</td><td>Design proposal, pending measured inputs</td></tr><tr><td>Date</td><td>28 September 2026</td></tr><tr><td>Owner</td><td>Botshare Ltd, OpenAMRobot</td></tr><tr><td>Baseline</td><td>mast_1350 installation height, mast top 1500 mm, command ceiling 1.5 m/s (analytical)</td></tr></table></header>
+<!-- decision-allow: MAST-INSTALL-HEIGHT superseded GA record of 28 Sep 2026 -->
+<table class="tb" aria-label="Title block"><tr><td>Status</td><td>Design proposal, pending measured inputs</td></tr><tr><td>Date</td><td>28 September 2026</td></tr><tr><td>Owner</td><td>Botshare Ltd, OpenAMRobot</td></tr><tr><td>Baseline</td><td><!-- decision-allow: MAST-TOP-HEIGHT superseded GA record of 28 Sep 2026 -->mast_1350 installation height, mast top 1500 mm, command ceiling 1.5 m/s (analytical)</td></tr></table></header>
 
 <h2>Elevations</h2>
 <p class="lede">Arms stowed at the 1350 mm installation height. The ghost plates on the side view mark the other three mounting positions (1300, 1400, 1450 mm). Balloon numbers refer to the parts list.</p>
@@ -450,7 +451,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <tr><td class="n"><span class="bal">9</span></td><td>Base E-stop and start button</td><td>Front panel, dual-channel E-stop</td><td class="src">P-00, MMP STEP</td></tr>
 <tr><td class="n"><span class="bal">10</span></td><td>Near-field sensors</td><td>4 x MaxBotix MB7060 ultrasonic in the front and rear edge holes (27.5 mm, y &#177;0.130 m, 91.4 mm above the floor); 2 x TF-Luna ToF cliff sensors in the front and rear centre holes (22.0 mm; new rear hole); frames us_front_left, us_front_right, us_rear_left, us_rear_right, tof_front, tof_rear</td><td class="src">P-03 rev19.0</td></tr>
 <tr><td class="n"><span class="bal">11</span></td><td>Mast base plate and brackets</td><td>Aluminium 10 mm on 8 x M8 rivet nuts, HBLFSDW6 brackets, rear brace</td><td class="src">MMP STEP, OpenArm CAD</td></tr>
-<tr><td class="n"><span class="bal">12</span></td><td>Mast MISUMI HFS6-60120</td><td>60 x 120 mm, 1196 mm long, mast top 1500 mm above the floor, 5.4 kg</td><td class="src">MISUMI</td></tr>
+<tr><td class="n"><span class="bal">12</span></td><td>Mast MISUMI HFS6-60120 (superseded)</td><td>60 x 120 mm, 1196 mm long, mast top 1500 mm above the floor, 5.4 kg</td><td class="src">MISUMI</td></tr>
 <tr><td class="n"><span class="bal">13</span></td><td>Index cross holes</td><td>Diameter 6.6 mm at 50 mm pitch over the full length</td><td class="src">Decision 28 Sep</td></tr>
 <tr><td class="n"><span class="bal">14</span></td><td>Cable duct</td><td>Rear slot zone, service loop to the shoulders</td><td class="src">Decision 27 Sep</td></tr>
 <tr><td class="n"><span class="bal">15</span></td><td>J1_A arm plates</td><td>OpenArm 2.0 part, 12 mm, bolted to the mast side slots</td><td class="src">OpenArm 2.0 STEP</td></tr>
@@ -618,12 +619,12 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <span><i class="sw" style="background:#1b8a6b33;border:2px dashed #1b8a6b"></i>Tipping boundary</span>
 <span><i class="sw" style="background:#c4501f44;border:2px solid #c4501f;border-radius:50%"></i>CoG envelope, travel and arm poses</span>
 <span><i class="sw" style="background:#c4501f;border-radius:50%;width:12px"></i>P4, drawer pull 150 N, 86 mm from the edge</span>
-<span><i class="sw" style="background:#e39a2a33;border:2px dashed #c07a12"></i>LiDAR field as drawn (270 degrees, Hokuyo layout; S3 field to be set from the Slamtec datasheet)</span>
+<span><i class="sw" style="background:#e39a2a33;border:2px dashed #c07a12"></i>LiDAR field as drawn (270 degrees, Hokuyo layout, superseded; S3 field to be set from the Slamtec datasheet)</span>
 <span><i class="sw" style="background:#f4dca8;border:2px dashed #a4680f"></i>Battery under the deck</span>
 </div>
 
 <h2>Mast and shoulder mounting</h2>
-<p class="lede">The OpenArm J1_A plates bolt straight onto the side T-slots of the MISUMI profile, so the official arm kinematics stay exact and the shoulder moves between four indexed positions in 50 mm steps. Installation height 1350 mm; mast top 1500 mm.</p>
+<p class="lede">Superseded fixed-mast arrangement (28 Sep 2026): the OpenArm J1_A plates bolt straight onto the side T-slots of the MISUMI profile, so the official arm kinematics stay exact and the shoulder moves between four indexed positions in 50 mm steps. Installation height 1350 mm; mast top 1500 mm.</p>
 <div class="cols">
 <figure><svg viewBox="0 0 1240 840" xmlns="http://www.w3.org/2000/svg" role="img"><title>Mast and shoulder detail</title><desc>Shoulder mounting elevation and section A-A</desc><defs>
 <marker id="ahd" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 Z" fill="#2d4a66"/></marker>
@@ -651,12 +652,15 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <circle cx="456.0" cy="528.0" r="7" fill="#d8322d" stroke="#111" stroke-width="1.2"/>
 <line x1="264.0" y1="528.0" x2="568.0" y2="528.0" stroke="#d8322d" stroke-width="1.4" stroke-dasharray="14 5 3 5"/>
 <line x1="208.0" y1="608.0" x2="302.4" y2="608.0" stroke="#2d4a66" stroke-width="1.4"/>
+<!-- decision-allow: MAST-POSITIONS superseded GA record of 28 Sep 2026 -->
 <text x="196.8" y="608.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1300</text>
 <line x1="208.0" y1="528.0" x2="302.4" y2="528.0" stroke="#d8322d" stroke-width="2.4"/>
 <text x="196.8" y="528.0" font-size="27" text-anchor="end" dominant-baseline="central" fill="#d8322d" font-weight="700" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1350</text>
 <line x1="208.0" y1="448.0" x2="302.4" y2="448.0" stroke="#2d4a66" stroke-width="1.4"/>
+<!-- decision-allow: MAST-POSITIONS superseded GA record of 28 Sep 2026 -->
 <text x="196.8" y="448.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1400</text>
 <line x1="208.0" y1="368.0" x2="302.4" y2="368.0" stroke="#2d4a66" stroke-width="1.4"/>
+<!-- decision-allow: MAST-POSITIONS superseded GA record of 28 Sep 2026 -->
 <text x="196.8" y="368.0" font-size="25" text-anchor="end" dominant-baseline="central" fill="#2d4a66" font-weight="500" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif">mast_1450</text>
 <line x1="576.0" y1="448.0" x2="576.0" y2="368.0" stroke="#2d4a66" stroke-width="1.3" marker-start="url(#ahd)" marker-end="url(#ahd)"/>
 <text x="598.0" y="408.0" font-size="24" text-anchor="middle" dominant-baseline="central" fill="#2d4a66" font-weight="600" style="font-family:'Barlow Condensed',Arial Narrow,sans-serif" transform="rotate(-90 598.0 408.0)">50</text>
@@ -708,14 +712,15 @@ footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:12px;font-si
 <div class="notes">
 <p><span class="key" style="background:#d8322d"></span>One M6 through-bolt in the index cross hole locates both J1_A plates at the selected height.</p>
 <p><span class="key" style="background:#c3c9cf;border:1px solid #111"></span>M5 bolts into 6-series T-nuts carry the arm loads, four per plate.</p>
-<p><span class="key" style="border:2px dashed #8a9098"></span>Dashed outlines show the plate at mast_1300, mast_1350 and mast_1450.</p>
+<p><span class="key" style="border:2px dashed #8a9098"></span>Dashed outlines show the plate at mast_1300, mast_1350 and mast_1450 (superseded mast positions).</p>
 <p><span class="key" style="background:#6a5acd66"></span>Arm and camera cables run in the rear slot zone and loop to each shoulder, long enough for one 50 mm step.</p>
+<!-- decision-allow: MAST-POSITIONS superseded GA record of 28 Sep 2026 -->
 <p>Cross holes: diameter 6.6 mm at 50 mm pitch, ordered as a MISUMI alteration. Every height is a configuration ID propagated to URDF, MoveIt, calibration and dataset metadata. At mast_1450 the plate overhangs the mast top by 11 mm; its upper bolts stay inside the profile.</p>
 </div></div>
 
 <h2>Mast positions compared</h2>
-<p class="lede">Height changes reach, not stability. Theoretical horizontal reach at the A4 test heights uses the official 633 mm arm reach. Installation height is 1350 mm; the other positions are available for tests.</p>
-<div class="tablewrap"><table class="list num"><thead><tr><th></th><th>mast_1300</th><th>mast_1350</th><th>mast_1400</th><th>mast_1450</th></tr></thead><tbody>
+<p class="lede">Height changes reach, not stability. Theoretical horizontal reach at the A4 test heights uses the official 633 mm arm reach. Installation height was 1350 mm (superseded by the lift); the other positions were available for tests.</p>
+<div class="tablewrap"><table class="list num"><thead><tr><th><!-- decision-allow: MAST-POSITIONS superseded GA record of 28 Sep 2026 --></th><th>mast_1300</th><th>mast_1350</th><th>mast_1400</th><th>mast_1450</th></tr></thead><tbody>
 <tr><th scope="row">Shoulder axis above floor, mm</th><td>1300</td><td class="hl">1350</td><td>1400</td><td>1450</td></tr>
 <tr><th scope="row">Arm plate top, mm</th><td>1361</td><td class="hl">1411</td><td>1461</td><td>1511</td></tr>
 <tr><th scope="row">Reach at 820 mm height, mm</th><td>413</td><td class="hl">346</td><td>254</td><td>62</td></tr>
