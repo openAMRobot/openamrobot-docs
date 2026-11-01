@@ -435,9 +435,10 @@ checked rather than remembered.
 
 Both layers are complete for their audience. The split is about depth
 and form, not about withholding. The readiness column is the target for
-13 November, from 07.
+v2.0.0-rc.1 on 20 November 2026, the end of development cycle 2 (the earlier
+13 November date from 07 is superseded).
 
-| **Repository**           | **Layer 1 — in the repo**                                                                       | **Layer 2 — on this site**                                                                                      | **v0.2** |
+| **Repository**           | **Layer 1 — in the repo**                                                                       | **Layer 2 — on this site**                                                                                      | **rc.1** |
 |--------------------------|-------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|----------|
 | openamr-platform-sw      | README, package list, launch args, parameter tables, node and topic reference, build, CHANGELOG | How navigation, docking and TF work here, illustrated; tuning walkthroughs with screenshots; simulation lessons | R2       |
 | openamr-platform-fw      | Board support, flashing commands, pin maps, protocol reference, tests                           | Illustrated flashing guide; what the firmware does and why; a board that will not enumerate                     | R1       |
@@ -568,7 +569,7 @@ repository is one of the four H3 pilots.
 | D7 operator pages published   | 23 Oct  | Understand and Operate complete, plus one Train page                        |
 | D8 integrator track           | 30 Oct  | Configure and Maintain; ROS introduced, never assumed                       |
 | D9 assembly docs              | 6 Nov   | Section 7; blocked on BOM                                                   |
-| D10 llms.txt and mirror       | 6 Nov   | Section 9 plus the completeness sweep against the v0.2 list                 |
+| D10 llms.txt and mirror       | 6 Nov   | Section 9 plus the completeness sweep against the v2.0.0-rc.1 list          |
 
 **Order of work.** Build the shell first: nav, tags plugin, page
 template, track chips, tabs, next-links. Two days, and every page after

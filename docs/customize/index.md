@@ -20,6 +20,6 @@ description: Extend OpenAMRobot software, firmware, hardware, simulation, AI wor
 
 <div class="oamr-path"><span>Choose contract</span><b>→</b><span>Check maturity</span><b>→</b><span>Implement</span><b>→</b><span>Test</span><b>→</b><span>Document</span><b>→</b><span>Contribute</span></div>
 
-The mobile simulation, navigation and docking stack is active but experimental. The shared manipulation framework and upper-body repositories are planned for the v0.2 cycle and simulation-first; their current contracts are design direction, not released implementation.
+The mobile simulation, navigation and docking stack is active but experimental. The shared manipulation framework and upper-body repositories are planned for development cycle 2 (v2.0.0-rc.1 on 20 November 2026, v2.0.0 on 18 December 2026) and simulation-first; their current contracts are design direction, not released implementation.
 
 Use the [repository map](../reference/repositories.md) before changing a contract and follow the [contribution workflow](../community/contributing.md) for DCO, contributor agreement, review and testing requirements.

@@ -10,7 +10,7 @@ Program 3 is the technical extension path for software, firmware, hardware, inte
 
 <div class="oamr-path"><span>Select a contract</span><b>→</b><span>Set up</span><b>→</b><span>Implement</span><b>→</b><span>Test</span><b>→</b><span>Document</span><b>→</b><span>Contribute</span></div>
 
-The active mobile stack uses ROS 2 Jazzy, Gazebo Harmonic, Nav2 and AprilTag-bundle docking. The manipulation framework and upper-body repositories are planned for the v0.2 cycle and are simulation-first; their present pages describe interfaces and intended ownership, not released functionality.
+The active mobile stack uses ROS 2 Jazzy, Gazebo Harmonic, Nav2 and AprilTag-bundle docking. The manipulation framework and upper-body repositories are planned for development cycle 2 (v2.0.0-rc.1 on 20 November 2026, v2.0.0 on 18 December 2026) and are simulation-first; their present pages describe interfaces and intended ownership, not released functionality.
 
 ## Continue
 
