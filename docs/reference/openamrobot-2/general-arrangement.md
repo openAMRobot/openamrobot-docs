@@ -27,7 +27,7 @@ description: Upper-body arrangement of OpenAMRobot 2.0, option B, lift column on
 | Maximum height | At most 1700 mm for the complete assembled robot at full lift extension, including the head camera; the robot may be lower | Door and rack envelope of the target sites |
 | Battery | Centred 25 percent of the robot length from the rear | Balances the forward mass of the arms and keeps the centre of gravity near the drive axle |
 | Electronics | All inside the mobile platform; the lift carriage carries the arms and the head camera | Shorter harnesses, protected enclosure, no control electronics on the lift |
-| Chest equipment | On the moving part, from the bottom up: Falcon FLDL-i150x15-W head light (158 x 17 x 20 mm, 0.32 A at 24 V), a 30 mm gap, Getac ZX80 tablet (8 inch, 234 x 149.8 x 17.6 mm, 590 g, IP67, USB-C PD) mounted landscape; positions are placeholders until M-09 (P-03 revision 20.0, 28 October 2026) | The ZX80 replaces the wider ZX10, which blocked both arms during picking |
+| Chest equipment | On the moving part, from the bottom up: Falcon FLDL-i150x15-W head light (158 x 17 x 20 mm, 0.32 A at 24 V), a 30 mm gap, Getac ZX80 tablet (8 inch, 234 x 149.8 x 17.6 mm, 590 g, IP67, USB-C PD) on a rotatable mount, landscape by default and portrait as the second position (P-03 revision 20.2 item 26); positions are placeholders until M-09 (P-03 revision 20.0, 28 October 2026) | The ZX80 replaces the wider ZX10, which blocked both arms during picking |
 | Second E-stop | Schneider XB4BS8445 with ZBE-102, the same as the base button, on the rear face of the static lift column close to its upper edge, wired on the static part outside the lift cable chain; it replaces the OpenArm kit button (P-03 revision 20.0, 28 October 2026) | Same height at every lift position; no E-stop wiring through the lift cable chain |
 | Drive and castors | Hub motors on the centre axle, four swivel castors, 52 mm total castor height | Existing platform geometry, no change to track or wheelbase |
 
@@ -50,7 +50,7 @@ Every configuration ID propagates to the robot description, TF, MoveIt, camera c
 |---|---|
 | Column | `dold_v4_350`, `tl3_400` (fallback; lengths pending supplier data) |
 | Base plate | `bp000` (centre), `bp050` (+50 mm) |
-| Head-camera pitch | `hp15`, `hp20`, `hp25`, `hp30` (baseline since 28 October 2026, was `hp25`), `hp35` |
+| Head-camera pitch | `hp15`, `hp20`, `hp25`, `hp30` (baseline since 28 October 2026, was `hp25`; recorded in the register, CONFIG-IDS and HEAD-CAMERA-IDENTITY), `hp35` |
 | Base-camera tilt | `bt05`, `bt10`, `bt15` |
 
 The lift stops `L1000`, `L1175` and `L1350` are calibration IDs; the current lift height is joint state, not a configuration ID.

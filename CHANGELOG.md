@@ -2,6 +2,13 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-01
+
+### Changed
+
+- OpenAMRobot 2.0 roadmap pages, reference pages and the shared roadmap model aligned with the plan set of 1 November 2026 (P-03 rev20.2, E-01 rev1.6, M-01 rev19.7, BOM Issue 7.14): K1/K2 Gigavac GX11CAC recorded with the decision under the availability rule due 2 November 2026 (LEV100H withdrawn); no click shield (CTL-002 removed), IMU board TDK EV_ICM-42688-P on SPI4; second E-stop on the rear face of the static lift column, the OpenArm kit button ESTOP-KIT withdrawn; Gate A full run 6 November (30 October was Gate A partial, A1 control only); head camera baseline `hp30` recorded in the register; Getac ZX80 on a rotatable mount, landscape default and portrait second position (item 26); precharge fitted; SAFE 24 V converter MEAN WELL DDR-240B-24; DOLD written holding confirmation received, holding test still open; components follow the availability rule. Delivery status, evidence and repository heads stay at the 24 October snapshot. The BOM Issue 7 diagram carries a further superseded note. No part of the model moved; `scripts/sync_audit.json` regenerated.
+- `scripts/check_roadmap.py`: the retired-chest-layout rule allows the phrase "portrait second position" and rejects "chest E-stop" in the model and the 3D pages.
+
 ## 2026-10-28
 
 ### Changed

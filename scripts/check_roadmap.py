@@ -546,7 +546,8 @@ LIGHT_TABLET_GAP = 0.03
 # y across 234, z height 149.8); Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
 CHEST_SIZES = {"getac_tablet": [0.0176, 0.234, 0.1498], "head_light": [0.02, 0.158, 0.017]}
 # the replaced Getac ZX10 (275 x 192 x 17.9 mm) must not come back in the model or the robot and exploded pages
-CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)portrait", r"chest_estop"]
+CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)portrait(?! second position)", r"chest_estop",
+                 r"(?i)chest E-stop"]
 # head camera (P-03 rev20.0 items 15, 17 and 18, 28 Oct 2026): lens 42 mm ahead of the shoulder, baseline hp30
 HEAD_PITCH_BASELINE = 30
 LIFT_PARTS = {"lift_stop_sensors": "LFT-001", "lift_sensor_brackets": "LFT-003", "flag_rod": "LFT-004",
