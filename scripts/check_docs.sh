@@ -35,6 +35,16 @@ while IFS= read -r -d '' image; do
   (( bytes <= 1048576 )) || fail "$image exceeds 1 MB"
 done < <(find . -path './.git' -prune -o -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.webp' \) -print0)
 
+# The OpenAMRobot 2.0 reference pages must not state values the decisions register has retired
+# (BOM-ISSUE-IN-FORCE, FRAMES-REP105, CAMERAS, NAV-LIDAR, BATTERY-PLACEMENT).
+retired_2_0='BOM Issue 7\.7([^0-9]|$)|Issue 7\.7 \||x =? ?0\.195 m|142\.5 mm|\(0\.376, 0, 0\.0445\)|0\.376, 0, 0\.0445|7\.1 mm|10 mm standoffs|222\.0 mm|25 percent'
+for page in docs/reference/openamrobot-2/*.md; do
+  [[ -f "$page" ]] || continue
+  while IFS= read -r hit; do
+    fail "$page:${hit%%:*} states a retired 2.0 value: ${hit#*:}"
+  done < <(grep -nEo "$retired_2_0" "$page")
+done
+
 if (( failures > 0 )); then
   printf '\nDocumentation check failed: %d error(s), %d warning(s).\n' "$failures" "$warnings"
   exit 1
