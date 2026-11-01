@@ -15,12 +15,13 @@ twenty, and what makes docking reliable or not.
 ## Why docking is its own problem
 
 Navigation gets the robot to within a few centimetres of a goal. That is excellent for a delivery
-point and useless for a charging contact, which needs millimetres and a specific heading.
+point and useless for a charging contact (not used on OpenAMRobot 2.0), which needs millimetres and a
+specific heading.
 
 Two reasons ordinary navigation cannot close that gap:
 
-**Precision.** Map-frame localization has error on the order of centimetres. Charging contacts have
-tolerances on the order of millimetres.
+**Precision.** Map-frame localization has error on the order of centimetres. Charging contacts (not on
+OpenAMRobot 2.0) have tolerances on the order of millimetres.
 
 **Reference.** Navigation positions the robot relative to the *map*. Docking must position it
 relative to the *dock*, which is a physical object that may have been nudged since the map was made.
@@ -103,6 +104,9 @@ battery management system that decides when to stop.
 
 The dock should not be live until the robot reports engagement. Exposed live contacts in a space
 where people walk are a hazard, and a shorting risk from dropped metal objects.
+
+OpenAMRobot 2.0 docking is positioning only: no dock contacts or pilot. Charging is the TZBOT
+WCM-500-24 wireless path, and a docking pose never establishes charging.
 
 ## Further reading
 
