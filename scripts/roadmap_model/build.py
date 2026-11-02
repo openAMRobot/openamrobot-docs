@@ -568,7 +568,7 @@ def main():
 
     # ---------------- packed parts (rear zone) and the front bay of both options
     stage_of = {"front_bay": 4, "rear_plate": 3, "rear_corner_l": 3, "rear_corner_r": 3, "rear_l2": 3, "rear_panel_face": 3, "tray_wall": 3}
-    ZONE_TXT = {"rear_plate": "rear power-electronics plate above the reserved receiver zone (A1)", "rear_l2": "second level above the rear power plate (GI-080 option 1)",
+    ZONE_TXT = {"rear_plate": "rear power-electronics plate above the prepared receiver zone (A1)", "rear_l2": "second level above the rear power plate (GI-080 option 1)",
                 "rear_panel_face": "rear panel inner face above the receiver, outside its 20 mm metal-free margin (GI-080 option 3)",
                 "tray_wall": "upright against the receiver-side wall of a battery tray, outside the 20 mm metal-free margin (GI-080 option 5)", "rear_corner_l": "left pocket rear corner behind the cells (A1)",
                 "rear_corner_r": "right pocket rear corner behind the cells (A1)", "rear_behind": "rear zone behind the cells (B5)", "rear_side_l": "rear zone, left side pocket (B5, real section)",
@@ -672,8 +672,8 @@ def main():
                  part_number=it.get("part", bomrow.get("Model / order code", "")), hq=it["id"] in ("shims", "us_locknut"),
                  off=[0, 0, -.25] if it["id"] == "tz_receiver" else None)
         if it["id"] == "tz_receiver":
-            c["class"] = "reserved, not installed in 2.0"
-            c["provisional_label"] = "Reserved, not installed in 2.0 (wireless charging is a release 3.0 item)"
+            c["class"] = "prepared, installed later"
+            c["provisional_label"] = "Prepared in 2.0, installed later (wireless charging prepared; manual charging through SB50 at any time)"
         for k, rp in zip(parts, reps):
             p = np.add(it["pos"], rp)
             if grp in ("col", "mov"):
@@ -684,20 +684,20 @@ def main():
                 geo[k]["prims"].append(cyl(it["cyl"]["r"], it["cyl"]["h"], p, it["cyl"]["axis"], "#b0b4b8", hq=True))
             else:
                 geo[k]["prims"].append(box(np.array(it["dims"]) * MM, p, col, o=o, hq=it["id"] == "shims"))
-    # ---------------- rear section, owner correction A1 (owner, 2 Nov 2026; to be entered in P-03 and M-01): TZBOT receiver zone reserved in the
-    # middle (not installed in 2.0, wireless charging is a release 3.0 item), 8 x LF105 in the two side pockets, power electronics above
+    # ---------------- rear section, owner correction A1 (owner, 2 Nov 2026; to be entered in P-03 and M-01): TZBOT receiver zone prepared at the
+    # rear panel (receiver installed later, wireless charging prepared in 2.0), 8 x LF105 in the two side pockets, power electronics above
     TZ = FACTS["tzbot_receiver"]
     mz = RL["margin"]
     geo["tz_metal_free_zone"] = {"group": "base", "prims": [box(np.subtract(mz[1], mz[0]), np.add(mz[0], mz[1]) / 2, "#e74c3c", o=.10, name="metal_free_zone")]}
     comp("tz_metal_free_zone", "TZBOT receiver 20 mm metal-free margin (ghost, at the rear panel)", "", 1, "proposed",
-         "The receiver outline plus 20 mm on every side: no metal inside it (TZBOT WCM-500-24 manual V2.5). Reserved for release 3.0.", "receiver outline + 20 mm",
+         "The receiver outline plus 20 mm on every side: no metal inside it (TZBOT WCM-500-24 manual V2.5). Prepared in 2.0; keep it free for the receiver installed later.", "receiver outline + 20 mm",
          "receiver at the rear panel on the centre line (owner, 2 Nov 2026)", 0, "no mass", 3, ["tz_metal_free_zone"], label="Keep-out ghost, not a part", off=[0, 0, -.25], opn=[0, 0, -.12])
     cz = RL["cutout"]
     geo["base_cutout"] = {"group": "base", "prims": [box([cz[1][0] - cz[0][0], cz[1][1] - cz[0][1], 0.0022], [(cz[0][0] + cz[1][0]) / 2, 0, 0.053], "#e67e22", o=.35, name="base_sheet_cutout")]}
-    comp("base_cutout", "Base-sheet cut-out reserved for the receiver (at the rear panel)", "MEC-001", 1, "proposed",
-         "Base sheet MMP.02.00.00.001 cut-out under the reserved receiver zone: receiver outline plus the 20 mm metal-free margin (%.0f x %.0f mm). Reserved for release 3.0; 2.0 may keep the sheet closed." % ((cz[1][0] - cz[0][0]) * 1000, (cz[1][1] - cz[0][1]) * 1000),
+    comp("base_cutout", "Base-sheet cut-out prepared for the receiver (at the rear panel)", "MEC-001", 1, "proposed",
+         "Base sheet MMP.02.00.00.001 cut-out under the prepared receiver zone: receiver outline plus the 20 mm metal-free margin (%.0f x %.0f mm). Prepared in 2.0 for the receiver installed later." % ((cz[1][0] - cz[0][0]) * 1000, (cz[1][1] - cz[0][1]) * 1000),
          "proposed cut-out %.0f x %.0f mm" % ((cz[1][0] - cz[0][0]) * 1000, (cz[1][1] - cz[0][1]) * 1000), "receiver at the rear panel (owner, 2 Nov 2026)", 0, "material removed (not counted)", 1, ["base_cutout"],
-         label="Cut-out ghost (reserved for 3.0)", off=[0, 0, -.2], opn=[0, 0, -.1])
+         label="Cut-out, prepared", off=[0, 0, -.2], opn=[0, 0, -.1])
     # cells (PWR-001 / PWR-023) and the two pocket trays (MEC-007); the GLB battery node (single row across) is hidden by model.js
     cell_parts = []
     for side in ("left", "right"):
@@ -710,7 +710,7 @@ def main():
                 geo[k]["prims"].append(box([.014, .014, .004], [c_["hi"][0] - .025, (c_["lo"][1] + c_["hi"][1]) / 2, c_["hi"][2] + .002], "#2c3e50", name="terminal_neg"))
     Cc = FACTS["cells"]
     comp("battery_cells", "Battery: 8 x EVE LF105 upright, 4 per side pocket (8S)", "PWR-001, PWR-023", 8, "provisional",
-         "Eight EVE LF105 cells upright, four in each side pocket beside the reserved charger zone, in series (8S); replaces the single row across the robot (B-02 rev18.10).",
+         "Eight EVE LF105 cells upright, four in each side pocket beside the prepared charger zone, in series (8S); replaces the single row across the robot (B-02 rev18.10).",
          "cell 200 h x 130 x 38 mm (B5); pocket arrangement %s chosen by rear_layout.py" % RL["pockets"].get("arrangement", ""),
          "A1 side pockets (owner, 2 Nov 2026)%s" % ("" if RL["pockets"].get("clears_flanges") else "; needs the side-panel return flanges notched along the pockets (GI-025)"),
          8 * Cc["mass"], "8 x 1.98 kg (cells only)", 3, cell_parts, label="Provisional: A1 side pockets, to be entered in P-03 and M-01", off=[0, 0, .3], opn=[0, 0, .14])
@@ -739,7 +739,7 @@ def main():
     zt = cl[0]["hi"][2] + 0.004
     geo["battery_series_link"] = {"group": "base", "prims": [tube([[xa, ya, zt], [xa, ya, RL["link_z"]], [xa, yb, RL["link_z"]], [xa, yb, zt]], 0.00525, "#c0392b")]}
     comp("battery_series_link", "Battery series link between the two trays (25 mm²), across the centre zone over the receiver, through the keyed connector PWR-018", "PWR-024", 1, "proposed",
-         "Insulated 25 mm² link from the left tray to the right tray, over the reserved charger zone at z %.3f, above the 20 mm metal-free margin (top %.3f); disconnect point: the keyed main connector PWR-018 at the centre (A9)." % (RL["link_z"], RL["margin"][1][2]),
+         "Insulated 25 mm² link from the left tray to the right tray, over the prepared charger zone at z %.3f, above the 20 mm metal-free margin (top %.3f); disconnect point: the keyed main connector PWR-018 at the centre (A9)." % (RL["link_z"], RL["margin"][1][2]),
          "tube 10.5 mm", "A1, A9", 0.1, "estimate", 3, ["battery_series_link"], off=[0, 0, .3], opn=[0, 0, .14])
     it_bc = [it for it in T["packed"] if it["id"] == "rz_batcon"][0]
     geo["rz_batcon"] = {"group": "base", "prims": [box(bc_s, bc_c, BODY_COL["BAT"], name="rz_batcon"), box([bc_s[0] * .9, bc_s[1] * .9, .0015], [bc_c[0], bc_c[1], bc_c[2] + bc_s[2] / 2 + .00075], DOMAIN_COL["BAT"])]}
@@ -761,7 +761,7 @@ def main():
     BM["MEC-007"] = {"by": "battery_tray", "cls": "provisional", "mqty": 1}
     # MEC-006: power-electronics mounting plate above the receiver zone (A1)
     pl_ = RL["plate"]
-    comp("rear_plate", "Rear power-electronics plate above the reserved receiver zone", "MEC-006", 1, "proposed",
+    comp("rear_plate", "Rear power-electronics plate above the prepared receiver zone", "MEC-006", 1, "proposed",
          "3 mm aluminium plate over the charger zone, underside %.0f mm above the floor (20 mm above the receiver top): BMS, F0, K1/K2, precharge, FB-A, FB-B, PWR-017, KCHG, F-CHG." % (pl_[0][2] * 1000),
          "proposed outline (3 mm 5052 sheet)", "A1 rear layout (owner, 2 Nov 2026)", (pl_[1][0] - pl_[0][0]) * (pl_[1][1] - pl_[0][1]) * 0.003 * 2680,
          "outline x 3 mm x 2680 kg/m3", 3, ["rear_plate"], off=[-.25, 0, .25], opn=[-.12, 0, .1], part_number="MEC-006 (drawing revision TBD)")
@@ -1407,9 +1407,9 @@ def sensor_bodies(G, SF, frame_nodes):
 
 def assembly(fasteners):
     steps = [
-        (1, "Base sheet (receiver cut-out at the rear reserved for release 3.0), panels, supports, centre bracket (MEC-001)", "MEC-001 sheet-metal joints (CAD v0.2)", "hex key 4 / 5 mm", "ISO 898-1 M5 8.8: 6 Nm", "open frame, all faces reachable"),
+        (1, "Base sheet (receiver cut-out at the rear, prepared), panels, supports, centre bracket (MEC-001)", "MEC-001 sheet-metal joints (CAD v0.2)", "hex key 4 / 5 mm", "ISO 898-1 M5 8.8: 6 Nm", "open frame, all faces reachable"),
         (2, "Hub motors with MEC-015 brackets, castors with MEC-016 shims", "M8 x 20 bracket bolts; castor M6", "13 mm socket, torque wrench", "M8 8.8: 25 Nm", "from below with the base on its side; brake side inboard"),
-        (3, "TZBOT receiver zone at the rear panel: reserved, not installed in 2.0 (release 3.0)", "none in 2.0", "", "", "keep the 20 mm metal-free margin and the plate underside 122 mm above the floor free"),
+        (3, "TZBOT receiver zone at the rear panel: prepared, receiver installed later (cut-out, F-CHG, KCHG and the start and fault lines CBL-P31 are in place)", "receiver and WCH-007 bracket when installed", "", "", "keep the 20 mm metal-free margin and the plate underside 122 mm above the floor free"),
         (4, "Motor driver on MMP.02.00.00.002, electronics bracket MMP.04.00.00.002 (shortened to x 0.100) with the IMU board", "M3/M4", "hex key 2.5 / 3 mm", "M3: 1.2 Nm, M4: 2.8 Nm", "from above, cover off; nothing heavy or vibrating on the IMU bracket"),
         (5, "Front bay (one layout): lower plate on the base sheet (top z " + "%.3f" % FB.FLOOR + "), DIN carrier with PNOZ s3 and DDR-240B-24 on the arch front legs, RSD-100B-24 and small power parts, shelf on standoffs with compute (J401), NUCLEO, FB-C and terminal blocks; no receiver in the bay (A1)", "M4 standoffs, M5 carrier screws", "hex key 2.5 / 3 mm, nut driver 7 mm", "M4: 2.8 Nm", "strip boards first, then the lower plate, the DIN carrier, the shelf; every fuse (FB-C on the shelf) and the PNOZ terminals reachable from above with the cover off"),
         (6, "Battery: two removable pocket trays MEC-007 with 4 + 4 LF105 upright, straps; the 8S series link across the centre joins them through the keyed main connector PWR-018 (A9)", "M6 x 12 tray screws into rivet nuts", "hex key 5 mm, 13 mm socket for the M8 terminals", "M6 8.8: 10 Nm; cell terminals per EVE", "cells go in from above with the cover off (each tray with its 4 cells lowered or lifted on its own after PWR-018 is unplugged); side-panel return flanges notched at x -0.275 to -0.133 (GI-025, decided)"),

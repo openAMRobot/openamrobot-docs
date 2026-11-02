@@ -471,7 +471,7 @@ def main():
         sev = "major" if (k == "overlap" and val > .002) else "minor"
         if k == "overlap" and any(x.startswith(("lift_", "flag", "adapter", "arm_", "getac", "head_", "second")) for x in (a, b)):
             sev = "major"
-        issue(sev, "%s / %s" % (a, b), "L1000, bp000, hp30, landscape", ("overlap %.1f mm" if k == "overlap" else "clearance %.1f mm") % (val * 1000),
+        issue(sev, "%s / %s" % (a, b), "L1000, bp000, hp30, portrait", ("overlap %.1f mm" if k == "overlap" else "clearance %.1f mm") % (val * 1000),
               "overlap <= 0.5 mm, clearance >= 5 mm", "roadmap model scene (placement.json, GLB, datums.yaml)",
               "move or resize one part; check against CAD", OWN["mech"], "interference")
     # lift positions and bp050: pairs with moving / lift parts
@@ -845,7 +845,7 @@ def main():
     TZ = FACTS["tzbot_receiver"]
     tzout = {}
     if "tz_receiver" in geos:
-        # owner correction of 2 Nov 2026: receiver reserved (not installed in 2.0, release 3.0) at the rear panel on the centre line
+        # owner decision of 2 Nov 2026: wireless charging prepared in 2.0, receiver at the rear panel on the centre line, installed later
         import rear_layout
         RLa = rear_layout.layout()
         g = geos["tz_receiver"]
@@ -856,17 +856,17 @@ def main():
         tzout["position"] = {"lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "x_m": RLa["receiver_x"], "status": TZ["status"],
                              "clearance_to_rear_bodies_mm": RLa["receiver_clearance_mm"], "inside_metal_free_margin_mm": RLa["metal_in_margin_mm"]}
         tzout["floor_gap"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "transmitter_height_mm": round(tx_h * 1000, 1), "gap_mm": round(gap * 1000, 1),
-                              "manual_air_gap_mm": [g0 * 1000, g1 * 1000], "source": TZ["source"], "status": "reserved for release 3.0"}
+                              "manual_air_gap_mm": [g0 * 1000, g1 * 1000], "source": TZ["source"], "status": "prepared, installed later"}
         tzout["rear_layout"] = {k: RLa[k] for k in ("measured", "pocket_free", "pockets", "plate", "margin", "cutout")}
-        issue("minor", "TZBOT receiver / floor transmitter WCM-500-24 (charging gap)", "reserved, not installed in 2.0",
+        issue("minor", "TZBOT receiver / floor transmitter WCM-500-24 (charging gap)", "prepared, installed later",
               "gap %.0f mm: receiver bottom %.0f mm, %.0f mm floor transmitter" % (gap * 1000, lo[2] * 1000, tx_h * 1000), "gap %.0f to %.0f mm (20 +-10 mm)" % (g0 * 1000, g1 * 1000),
-              TZ["source"] + "; owner correction of 2 Nov 2026 (bottom 2 mm below the base sheet)", "to be solved in release 3.0 (receiver higher, recessed transmitter or a low ramp)",
-              OWN["mech"], "reserved for 3.0")
+              TZ["source"] + "; owner correction of 2 Nov 2026 (bottom 2 mm below the base sheet)", "to solve before the receiver is installed (receiver higher, recessed transmitter or a low ramp)",
+              OWN["mech"], "to solve before receiver installation")
         for k, v in sorted(RLa["metal_in_margin_mm"].items()):
-            issue("minor", "TZBOT receiver / %s (inside the 20 mm metal-free margin)" % k, "reserved, not installed in 2.0",
+            issue("minor", "TZBOT receiver / %s (inside the 20 mm metal-free margin)" % k, "prepared, installed later",
                   "%.1f mm from the receiver" % v, ">= 20 mm metal-free around the receiver", "TZBOT WCM-500-24 manual V2.5; receiver at the rear panel (owner, 2 Nov 2026)",
-                  "to be solved in release 3.0 (non-metal panel insert or a receiver further forward); TF-Luna and its PETG mount are mostly non-metal: ask TZBOT",
-                  OWN["mech"], "reserved for 3.0")
+                  "to solve before the receiver is installed (non-metal panel insert or a receiver further forward); TF-Luna and its PETG mount are mostly non-metal: ask TZBOT",
+                  OWN["mech"], "to solve before receiver installation")
 
     # ---- services and fits from the build summary
     nof = summ["nofit"]
@@ -880,13 +880,13 @@ def main():
         pz = RLb["plate"]
         g80 = summ.get("gi080", {})
         tried = "; ".join("option %d (%s): %s" % (st["option"], st["what"], RLb_step(st)) for st in g80.get("steps", []))
-        issue("blocker", "Rear layout (A1) / %s" % ", ".join(nof + nof_fb), "power-electronics plate above the receiver and the pocket rear corners",
-              "no space for %s: plate %.0f x %.0f mm, underside %.0f mm, height %.0f mm to the cover (rear flange slope from x -0.315); disconnect and SB50 on the rear panel; nothing above FB-A, FB-B, F0, F-CHG and the precharge kit (fuse access). Tried in order (A9 options 1 to 3, independent review options 4 and 5, all proposed): %s" % (
-                  ", ".join(nof + nof_fb), (pz[1][0] - pz[0][0]) * 1000, (pz[1][1] - pz[0][1]) * 1000, pz[0][2] * 1000, (FACTS["cover_underside"] - pz[1][2]) * 1000, tried),
+        issue("major", "Rear layout (A1) / %s" % ", ".join(nof + nof_fb), "power-electronics plate above the receiver and the pocket rear corners",
+              "the automatic packer could not place %s under its rules (single layer plus shelf, 5 mm gaps, nothing above a fuse block, estimated outlines); the free space above the receiver is about %.0f x %.0f x %.0f mm (plate width x plate length x height to the cover; plate underside %.0f mm above the floor, rear flange slope from x -0.315); disconnect and SB50 on the rear panel. Packer attempts (A9 options 1 to 3, independent review options 4 and 5): %s" % (
+                  ", ".join(nof + nof_fb), (pz[1][1] - pz[0][1]) * 1000, (pz[1][0] - pz[0][0]) * 1000, (FACTS["cover_underside"] - pz[1][2]) * 1000, pz[0][2] * 1000, tried),
               "every onboard part placed with >= 5 mm clearance and fuse access; nothing on the cells; F0 within about 150 mm of the battery positive; BMS close to the cells",
-              "parts.yaml catalogue outlines (verify); owner corrections A1 and A9 of 2 Nov 2026; build_summary.json gi080",
-              "none of the five options fits with catalogue outlines: a lower-profile SAFE-bus fuse block, a BMS order code with a smaller outline, or a deeper rear section; hardware owner layout due",
-              OWN["elec"], "layout")
+              "parts.yaml estimated outlines (verify); owner corrections A1 and A9 of 2 Nov 2026; build_summary.json gi080",
+              "a manual two-level layout with datasheet outlines follows in the next PR",
+              OWN["elec"], "manual layout pending")
     # A9 cable rules on the 25 mm² runs (build_summary.json cables_25mm2)
     c25 = summ.get("cables_25mm2", {})
     if c25:

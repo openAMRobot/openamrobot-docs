@@ -48,8 +48,8 @@ EDIT = {
                 "Selection status": "Selected (P-03 rev20.0 item 24)"},
     "MEC-018": {"Model / order code": "DOLD Hexalift V4 350, BS-HM240G350530-MFF24; 350 mm stroke; 530 mm retracted; 880 mm extended; 24 V; 800 N push; 400 N pull; 18 mm/s; 11.7 kg catalogue; 240 mm side fore-aft; written 800 N power-off holding confirmation received, delivered-unit holding test open"},
     "MEC-019": {"Qty": "1", "Model / order code": "6082-T6 plate 360 x 230 x 10 mm, positions bp000 and bp050; column to plate 4 x M8 DIN 7500 countersunk from below, at least 20 mm engagement; plate to deck 4 x M8 class 8.8 on a 190 x 300 mm pattern through the deck into the frame; plate not tapped"},
-    "UI-002": {"Component / assembly": "Tablet mount, rotatable, two locked positions",
-               "Model / order code": "Rotatable 2-position ZX80 mount: landscape default (234 wide x 149.8 tall), portrait (149.8 x 234); position from datums.yaml"},
+    "UI-002": {"Component / assembly": "Tablet mount, fixed portrait mount",
+               "Model / order code": "Fixed portrait mount for the ZX80 (149.8 wide x 234 tall), owner decision of 2 Nov 2026"},
 }
 BLOCK_ADD = {"LFT-001": "upper", "LFT-002": "upper", "LFT-003": "upper", "LFT-004": "upper", "LFT-005": "upper",
              "LFT-006": "upper", "LFT-007": "upper", "AUX-002": "upper", "AUX-003": "upper", "PWR-032": "sensors"}

@@ -119,7 +119,7 @@ class SensorPose(unittest.TestCase):
 
 
 class ChestRetired(unittest.TestCase):
-    """A3 (2 Nov 2026): portrait is the decided default; a landscape default, the portrait ghost and the E-stop ghosts fail."""
+    """A3 (2 Nov 2026): portrait only on a fixed mount; a landscape default, a rotatable mount, the portrait ghost and the E-stop ghosts fail."""
     def test_portrait_default_allowed(self):
         for text in ("Getac ZX80 in portrait, the decided default", "Getac drawn portrait by default", "149.8 wide x 234 tall"):
             self.assertEqual(C.retired_chest_hits(text), [], text)
@@ -127,7 +127,7 @@ class ChestRetired(unittest.TestCase):
 
     def test_landscape_default_rejected(self):
         for text in ("mounted on a rotatable mount, landscape default", "landscape position (default)", "getac_second_position_ghost",
-                     "Getac ZX80 pocket, portrait second position (ghost)", "estop_p1_ghost"):
+                     "Getac ZX80 pocket, portrait second position (ghost)", "estop_p1_ghost", "Getac ZX80 on a rotatable 2-position mount"):
             self.assertTrue(C.retired_chest_hits(text), text)
         self.assertTrue(C.getac_default_errors([0.0176, 0.234, 0.1498]))
 

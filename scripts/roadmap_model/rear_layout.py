@@ -1,6 +1,6 @@
 """Rear section layout, owner correction A1 (owner, 2 Nov 2026; to be entered in P-03 and M-01).
 
-TZBOT WCM-500-24 receiver reserved (not installed in 2.0) on the centre line, 170 mm along x and 150 mm across y, as close to the
+TZBOT WCM-500-24 receiver prepared (installed later) on the centre line, 170 mm along x and 150 mm across y, as close to the
 rear panel inner face as possible without touching the rear TF-Luna, the rear MB7060s, their mounts or the rear panel flange
 (owner correction of 2 Nov 2026; the 240 x 210 mm zone is withdrawn), bottom 2 mm below the base-sheet underside; 20 mm
 metal-free margin around the receiver. Two side pockets beside the zone, each with 4 EVE LF105 cells upright (8S). Power electronics on a

@@ -625,7 +625,7 @@
    190
   ],
   "gap_m": -0.002,
-  "status": "reserved, not installed in 2.0 (release 3.0)"
+  "status": "prepared, installed later"
  },
  "rear_layout": {
   "measured": {
@@ -999,10 +999,10 @@
   "envelope": 13,
   "not drawn": 33,
   "placeholder": 10,
+  "prepared, installed later": 1,
   "primitive": 6,
   "proposed": 61,
   "provisional": 14,
-  "reserved, not installed in 2.0": 1,
   "unmapped": 1
  },
  "onboard": 121,

@@ -529,10 +529,10 @@
  },
  "mass": {
   "L1000": {
-   "mass": 94.8567994494356,
+   "mass": 94.85879944943558,
    "com": [
     0.0201,
-    0.0,
+    -0.0001,
     0.3379
    ],
    "unplaced": [
@@ -542,10 +542,10 @@
    ]
   },
   "L1350": {
-   "mass": 94.8567994494356,
+   "mass": 94.85879944943558,
    "com": [
     0.0201,
-    0.0,
+    -0.0001,
     0.4141
    ],
    "unplaced": [
@@ -559,7 +559,7 @@
   "L1000": {
    "margin_fore_m": 0.255,
    "margin_aft_m": 0.2951,
-   "margin_lat_m": 0.215,
+   "margin_lat_m": 0.2149,
    "a_max_fore": 7.4,
    "a_max_lat": 6.24,
    "com_z": 0.3379
@@ -567,7 +567,7 @@
   "L1350": {
    "margin_fore_m": 0.255,
    "margin_aft_m": 0.2951,
-   "margin_lat_m": 0.215,
+   "margin_lat_m": 0.2149,
    "a_max_fore": 6.04,
    "a_max_lat": 5.09,
    "com_z": 0.4141
@@ -748,7 +748,7 @@
     -0.369,
     -0.199
    ],
-   "status": "reserved, not installed in 2.0 (release 3.0)",
+   "status": "prepared, installed later",
    "clearance_to_rear_bodies_mm": {
     "rear_panel": 1.0,
     "tof_rear": 13.7,
@@ -775,7 +775,7 @@
     30.0
    ],
    "source": "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)",
-   "status": "reserved for release 3.0"
+   "status": "prepared, installed later"
   },
   "rear_layout": {
    "measured": {
@@ -864,7 +864,7 @@
     "moment_at_column_axis_Nm": 43.3,
     "column_screw_rows_N": {
      "rear": 82.9,
-     "front": -372.8
+     "front": -372.9
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 102.6,
@@ -897,7 +897,7 @@
     "moment_at_column_axis_Nm": 158.1,
     "column_screw_rows_N": {
      "rear": 687.1,
-     "front": -977.0
+     "front": -977.1
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 388.0,
@@ -927,7 +927,7 @@
      1.1157
     ],
     "decel_m_s2": 6.04,
-    "moment_at_column_axis_Nm": 313.6,
+    "moment_at_column_axis_Nm": 313.7,
     "column_screw_rows_N": {
      "rear": 1465.6,
      "front": -1836.0
@@ -963,7 +963,7 @@
     "moment_at_column_axis_Nm": 43.3,
     "column_screw_rows_N": {
      "rear": 82.9,
-     "front": -372.8
+     "front": -372.9
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 68.4,
@@ -996,7 +996,7 @@
     "moment_at_column_axis_Nm": 158.1,
     "column_screw_rows_N": {
      "rear": 687.1,
-     "front": -977.0
+     "front": -977.1
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 361.9,
@@ -1026,7 +1026,7 @@
      1.1157
     ],
     "decel_m_s2": 6.04,
-    "moment_at_column_axis_Nm": 313.6,
+    "moment_at_column_axis_Nm": 313.7,
     "column_screw_rows_N": {
      "rear": 1465.6,
      "front": -1836.0
@@ -1059,7 +1059,7 @@
    "arch_sheet_utilisation": 1.44
   },
   "max_column_tilt_deg": 0.362,
-  "shoulder_height_ref_m": 0.9470432234097623,
+  "shoulder_height_ref_m": 0.9469997479608512,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -1077,15 +1077,15 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.0009,
-     0.7027
+     0.0007,
+     0.7026
     ]
    },
    "L1350": {
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.0009,
+     0.0007,
      0.947
     ]
    }
@@ -1094,7 +1094,7 @@
    "mass_kg": 37.76,
    "com_m": [
     0.407,
-    0.0007,
+    0.0006,
     1.1157
    ],
    "arm_mass_kg_both": 12.26,
@@ -1821,11 +1821,11 @@
    ],
    [
     "MEC-012",
-    0.46,
+    0.461,
     [
-     0.3045,
-     0.0066,
-     1.0148
+     0.3042,
+     -0.0007,
+     1.0125
     ],
     "getac_pocket"
    ],
@@ -2171,11 +2171,11 @@
    ],
    [
     "UI-002",
-    0.46,
+    0.461,
     [
-     0.3045,
-     0.0066,
-     1.0148
+     0.3042,
+     -0.0007,
+     1.0125
     ],
     "getac_pocket"
    ],
@@ -2803,11 +2803,11 @@
    ],
    [
     "MEC-012",
-    0.46,
+    0.461,
     [
-     0.3045,
-     0.0066,
-     1.3648
+     0.3042,
+     -0.0007,
+     1.3625
     ],
     "getac_pocket"
    ],
@@ -3153,11 +3153,11 @@
    ],
    [
     "UI-002",
-    0.46,
+    0.461,
     [
-     0.3045,
-     0.0066,
-     1.3648
+     0.3042,
+     -0.0007,
+     1.3625
     ],
     "getac_pocket"
    ],
@@ -3227,8 +3227,8 @@
  "sweep_stops": {},
  "sweep_valid_poses": 488,
  "counts": {
-  "blocker": 1,
-  "major": 3,
+  "blocker": 0,
+  "major": 4,
   "minor": 47
  },
  "steel_chassis_kg": 15.77

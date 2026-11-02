@@ -1286,11 +1286,11 @@ groups:
         items:
         - bom: MEC-012
           component: getac_pocket
-          mass_kg: 0.46
+          mass_kg: 0.461
           com_m:
-          - 0.3045
-          - 0.0066
-          - 1.0148
+          - 0.3042
+          - -0.0007
+          - 1.0125
           size_m:
           - 0.031
           - 0.18
@@ -1298,24 +1298,24 @@ groups:
           source: design-intent volume x density
         - bom: UI-002
           component: getac_pocket
-          mass_kg: 0.46
+          mass_kg: 0.461
           com_m:
-          - 0.3045
-          - 0.0066
-          - 1.0148
+          - 0.3042
+          - -0.0007
+          - 1.0125
           size_m:
           - 0.031
           - 0.18
           - 0.269
           source: design-intent volume x density
-        mass_kg: 0.92
+        mass_kg: 0.922
         com_m:
-        - 0.2445
-        - 0.0066
-        - 0.1808
+        - 0.2442
+        - -0.0007
+        - 0.1785
         inertia_kgm2:
-          ixx: 0.00803
-          iyy: 0.00562
+          ixx: 0.00805
+          iyy: 0.00563
           izz: 0.00256
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
@@ -1327,14 +1327,14 @@ totals:
     mass_kg: 94.86
     com_m:
     - 0.0201
-    - -0.0
+    - -0.0001
     - 0.3379
     frame: base_footprint, bp000
   L1350:
     mass_kg: 94.86
     com_m:
     - 0.0201
-    - -0.0
+    - -0.0001
     - 0.4141
     frame: base_footprint, bp000
 comparison:

@@ -12,7 +12,7 @@ documents:
   B-02: rev18.10 (25 Oct 2026)
   S-01: rev18.3
   UC1: Use Case 1 Requirements Baseline rev18.5
-  decisions: .github decisions.yaml a9e229e (in_force P-03-rev20.2)
+  decisions: .github decisions.yaml 5ed600e (main after openAMRobot/.github#84; in_force P-03-rev20.2)
   datums: openamr-upperbody-sw datums.yaml 2026-11-01.d (a8c304d; .c to .d adds the lift velocity and effort limits only, no geometry)
   sensor_frames: openamr-platform-sw sensor_frames.yaml (4926f40)
 base_link_z: 0.098          # B7, datums base_link_height_above_floor
@@ -46,12 +46,12 @@ rear_zones:   # B5 / platform-sw #95: free zones next to the cells (x, y, z exte
   side_r: {x: [-0.277, -0.137], y: [-0.248, -0.157], z: [0.054, 0.264]}
 front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0.003}
 # TZBOT WCM-500-24 receiver (manual V2.5: 170 x 150 x 52 mm, about 1.5 kg). Owner correction A1 as corrected on 2 Nov 2026 (owner; to be
-# entered in P-03 and M-01): reserved, not installed in 2.0 (wireless charging is a release 3.0 item, 2.0 charges by cable); 170 mm along the
+# entered in P-03 and M-01; register CHARGING): wireless charging prepared in 2.0, the receiver unit is installed later (manual charging through SB50 at any time); 170 mm along the
 # robot (x) x 150 mm across (y), centred on the long axis, as close to the rear panel inner face as possible without touching the rear
 # TF-Luna, the rear MB7060s, their mounts or the rear panel flange (rear_layout.py measures them); bottom 2 mm below the base-sheet
 # underside (50 mm above the floor). No 240 x 210 mm zone (withdrawn). No transmitter is drawn.
 tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5, touch_clear: 0.001,
-                 status: "reserved, not installed in 2.0 (release 3.0)", below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
+                 status: "prepared, installed later", below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
                  align: [0.020, 0.020], metal_clear: 0.020,
                  freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
                  signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",
@@ -62,7 +62,7 @@ rear_section: {rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_
                power_plate: {t: 0.003, min_above_receiver: 0.020}}
 # 8 x EVE LF105 (200 h x 130 x 38 mm, 1.98 kg) upright, 4 per side pocket, 8S (replaces the single row across the robot, B-02 rev18.10)
 cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002}
-tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station of release 3.0, same outer size (manual V2.5); not drawn
+tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (installed with the receiver), same outer size (manual V2.5); not drawn
 emc_flag_distance: 0.050      # roadmap screening value until TZBOT gives a minimum distance
 front_bay_layout: single   # owner correction A2 (2 Nov 2026): one layout, one plate on the base sheet; second tier only if one plate does not fit
 second_estop: {position: adapter_top, housing: [0.064, 0.050, 0.050], button_up: true}   # owner correction A5 (2 Nov 2026): on top of the adapter plate behind the post, centred in y, button up

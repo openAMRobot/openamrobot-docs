@@ -5,7 +5,7 @@ ids:
   "fit|K1/K2 option B Schneider TeSys D LC1D80BD fit": GI-008
   "fit|K1/K2 option B Siemens 3RT2 size S3 fit": GI-009
   "decided fix, CAD pending|Rear side pockets / side panel return flanges": GI-025
-  "reserved for 3.0|TZBOT receiver / floor transmitter WCM-500-24 (charging gap)": GI-036
+  "to solve before receiver installation|TZBOT receiver / floor transmitter WCM-500-24 (charging gap)": GI-036
   "fit|K1/K2 option A GX11CAC fit": GI-037
   "harness|Upper-body service loop length": GI-039
   "interference|Left tote wall / sensors S1, S2": GI-040
@@ -24,7 +24,7 @@ ids:
   "stability|Static stability": GI-077
   "stability|Static stability|L1350": GI-078
   "stability|Stopping from 1.5 m/s": GI-079
-  "layout|Rear layout (A1) / rz_fbb, rz_bms": GI-080
+  "manual layout pending|Rear layout (A1) / rz_fbb, rz_bms": GI-080
   "decided fix, CAD pending|Lift base plate MEC-019 on the centre-frame arch: load path": GI-082
   "sensor view|LiDAR scan plane +-5 mm / support_front_left": GI-089
   "sensor view|LiDAR scan plane +-5 mm / support_front_right": GI-090
@@ -45,9 +45,9 @@ ids:
   "interference|bay_usbcan_1 / bay_usbhub": GI-116
   "interference|bay_usbcan_2 / bay_usbhub": GI-117
   "layout|Jetson Orin NX on J401 position (A2)": GI-119
-  "reserved for 3.0|TZBOT receiver / rear_panel (inside the 20 mm metal-free margin)": GI-121
-  "reserved for 3.0|TZBOT receiver / tof_mount_rear (inside the 20 mm metal-free margin)": GI-122
-  "reserved for 3.0|TZBOT receiver / tof_rear (inside the 20 mm metal-free margin)": GI-123
+  "to solve before receiver installation|TZBOT receiver / rear_panel (inside the 20 mm metal-free margin)": GI-121
+  "to solve before receiver installation|TZBOT receiver / tof_mount_rear (inside the 20 mm metal-free margin)": GI-122
+  "to solve before receiver installation|TZBOT receiver / tof_rear (inside the 20 mm metal-free margin)": GI-123
   "services|Disconnect handle and SB50 access": GI-124
   "layout|Rear layout (A9) / 25 mm\u00b2 cable rules": GI-126
   "interference|rz_brake / rz_fba": GI-127

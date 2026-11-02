@@ -187,7 +187,7 @@
     0.075,
     0.102
    ],
-   "status": "reserved, not installed in 2.0 (release 3.0)"
+   "status": "prepared, installed later"
   },
   "lift_rear": {
    "sensor_axis_x": -0.148,

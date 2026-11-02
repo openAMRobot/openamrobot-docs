@@ -85,7 +85,7 @@ _TZ = None
 
 
 def tzbot_layout():
-    """TZBOT WCM-500-24 receiver box (base_footprint, m), owner correction A1 (2 Nov 2026): reserved, not installed in 2.0, in the
+    """TZBOT WCM-500-24 receiver box (base_footprint, m), owner correction A1 (2 Nov 2026): prepared, installed later, in the
     middle of the rear section, centred in the charger zone (rear_layout.layout()), 170 mm across (y) x 150 mm along (x), bottom
     2 mm below the base-sheet underside. Also writes tzbot_receiver.centre / lo / hi / orientation into FACTS."""
     global _TZ

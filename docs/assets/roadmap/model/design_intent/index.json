@@ -425,9 +425,9 @@
    "bom": "UI-002, MEC-012 (pocket and back plate); AUX-001 plate",
    "status": "design intent",
    "existing_cad": null,
-   "method": "laser-cut 5754 aluminium plates, machined 6082-T6 hub, PETG pocket",
+   "method": "laser-cut 5754 aluminium plates, machined 6082-T6 spacer hub, PETG pocket",
    "thickness_mm": 3.0,
-   "mass_kg": 0.46,
+   "mass_kg": 0.461,
    "mass_basis": "per set as exported, volume x density",
    "placement": [
     {
@@ -445,8 +445,8 @@
     }
    ],
    "placement_note": "arm-post front face x 0.060 + 0.180 + 0.060 = 0.300 (bp000); tablet centre 0.246 above the column top at L1000 (datums.yaml getac_tablet_z_above_column_top), 0.834 + 0.246 - 0.040 (A3: 40 mm lower)",
-   "configuration": "L1000, portrait (decided default, A3); no second position",
-   "adjustment": "none (fixed portrait pocket); the tablet lifts out of the pocket",
+   "configuration": "L1000, portrait on a fixed mount (A3)",
+   "adjustment": "none (fixed portrait mount); the tablet lifts out of the pocket",
    "fasteners": [
     {
      "joint": "back plate to arm post",
@@ -466,18 +466,10 @@
     },
     {
      "joint": "pocket on hub",
-     "part": "ISO 4762 screw + ISO 7089 washer (axial retention, PTFE washer)",
+     "part": "ISO 4762 screw + ISO 7089 washer",
      "size": "M4 x 8",
      "qty": 3,
      "standard": "ISO 4762",
-     "class": "proposed"
-    },
-    {
-     "joint": "position lock",
-     "part": "spring plunger with pull ring",
-     "size": "M8",
-     "qty": 1,
-     "standard": "DIN 617 type",
      "class": "proposed"
     },
     {
@@ -504,19 +496,19 @@
      "stl": "design_intent/getac_pocket.stl",
      "solids": [
       "MEC-012_back_plate",
-      "UI-002_pivot_hub",
+      "UI-002_spacer_hub",
       "AUX-001_light_plate",
       "AUX-001_head_light_envelope",
       "UI-002_pocket_portrait"
      ],
-     "step_bytes": 180355,
-     "stl_bytes": 90784,
+     "step_bytes": 166043,
+     "stl_bytes": 70984,
      "reimport_valid": true,
-     "mass_kg": 0.46
+     "mass_kg": 0.461
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/getac_pocket.py",
-   "next_step": "Owner: enter the portrait default and the 10 mm light gap in P-03 and M-01; confirm the ZX80 USB-C port position, then CAD (M-09).",
+   "next_step": "Owner: enter the fixed portrait mount and the 10 mm light gap in P-03 and M-01; confirm the ZX80 USB-C port position, then CAD (M-09).",
    "owner": "fridayali"
   },
   {

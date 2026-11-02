@@ -553,13 +553,13 @@ def check_no_duplicate_fittings(root, html, err):
 CHEST_ORDER = ["head_light", "getac_tablet"]
 CHEST_IDS = ["second_estop"] + CHEST_ORDER
 LIGHT_TABLET_GAP = 0.01
-# A3 (2 Nov 2026): Getac ZX80 portrait is the decided default (x depth 17.6, y across 149.8, z height 234); the landscape
+# A3 (2 Nov 2026): Getac ZX80 portrait only on a fixed mount (x depth 17.6, y across 149.8, z height 234; register TABLET-MOUNT); the landscape
 # default (y 234, z 149.8) fails. Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
 CHEST_SIZES = {"getac_tablet": [0.0176, 0.1498, 0.234], "head_light": [0.02, 0.158, 0.017]}
 GETAC_LANDSCAPE = [0.0176, 0.234, 0.1498]
 # the replaced Getac ZX10 (275 x 192 x 17.9 mm) must not come back in the model or the robot and exploded pages
 CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)landscape (?:default|position)", r"getac_second_position_ghost",
-                 r"(?i)portrait second position", r"chest_estop", r"(?i)chest E-stop", r"estop_p[1-4]_ghost"]
+                 r"(?i)portrait second position", r"(?i)rotatable (?:2-position )?(?:ZX80 |tablet )?mount", r"chest_estop", r"(?i)chest E-stop", r"estop_p[1-4]_ghost"]
 # head camera (P-03 rev20.0 items 15, 17 and 18, 28 Oct 2026): lens 42 mm ahead of the shoulder, baseline hp30
 HEAD_PITCH_BASELINE = 30
 LIFT_PARTS = {"lift_stop_sensors": "LFT-001", "lift_sensor_brackets": "LFT-003", "flag_rod": "LFT-004",
@@ -773,9 +773,9 @@ def check_sync_audit(root, err, comps):
 # and the issue row are updated.
 KNOWN_CONTACTS = [
     {"a": "tz_receiver", "b": "floor transmitter (52 mm, not drawn)", "transmitter_h_mm": 52.0, "overlap_mm": 2.0,
-     "issue": "TZBOT receiver / floor transmitter WCM-500-24 (charging gap)", "kind": "reserved for 3.0", "severity": "minor",
+     "issue": "TZBOT receiver / floor transmitter WCM-500-24 (charging gap)", "kind": "to solve before receiver installation", "severity": "minor",
      "owner": "fridayali", "limit": "gap 10 to 30 mm",
-     "note": "receiver reserved at the rear, not installed in 2.0; charging gap to be solved in release 3.0 (TZBOT WCM-500-24 manual V2.5: air gap 20 +-10 mm)"},
+     "note": "receiver prepared at the rear panel, installed later; charging gap to solve before the receiver is installed (TZBOT WCM-500-24 manual V2.5: air gap 20 +-10 mm)"},
 ]
 
 
@@ -805,8 +805,8 @@ def check_known_contacts(root, err):
         for key in ("kind", "severity", "owner"):
             if r[key] != kc[key]:
                 err("known contacts", "%s: %s is %r, declared %r" % (kc["issue"], key, r[key], kc[key]))
-        if ("gap -%g mm" % kc["overlap_mm"]) not in r["measured"] or kc["limit"] not in r["limit"] or "release 3.0" not in r["suggested_fix"]:
-            err("known contacts", "%s: the row does not state gap -%g mm, the limit %r and the release 3.0 note" % (kc["issue"], kc["overlap_mm"], kc["limit"]))
+        if ("gap -%g mm" % kc["overlap_mm"]) not in r["measured"] or kc["limit"] not in r["limit"] or "before the receiver is installed" not in r["suggested_fix"]:
+            err("known contacts", "%s: the row does not state gap -%g mm, the limit %r and the note to solve it before the receiver is installed" % (kc["issue"], kc["overlap_mm"], kc["limit"]))
 
 
 # STATE.md (repository state record): every figure it states about the roadmap model is read from the generated files,

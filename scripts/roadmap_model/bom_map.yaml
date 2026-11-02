@@ -136,11 +136,11 @@ TST-003: {by: none, cls: not drawn, reason: offboard}
 TST-004: {by: none, cls: not drawn, reason: offboard}
 TST-005: {by: none, cls: not drawn, reason: offboard}
 TST-006: {by: none, cls: not drawn, reason: offboard}
-UI-001: {by: getac_tablet, cls: placeholder, geo: "datums getac_tablet_size 17.6 x 234 x 149.8", pos: "datums.yaml getac_tablet_z_above_column_top (landscape)", mass: 0.59, msrc: "datums getac_tablet_mass"}
+UI-001: {by: getac_tablet, cls: placeholder, geo: "datums getac_tablet_size 17.6 x 234 x 149.8", pos: "datums.yaml getac_tablet_z_above_column_top, centre 40 mm lower (A3, portrait on a fixed mount)", mass: 0.59, msrc: "datums getac_tablet_mass"}
 UI-002: {by: tablet_mount}
 UI-003: {by: inside:getac_tablet, cls: not drawn, reason: "tablet speaker, part of UI-001"}
 WCH-001: {by: none, cls: not drawn, reason: "set row: the onboard part is WCH-002, the transmitter WCH-003 is offboard"}
-WCH-002: {by: tz_receiver, cls: "reserved, not installed in 2.0", mass: 0.0, msrc: "not installed in 2.0 (1.5 kg in 3.0)", pos: "A1 rear charger zone (owner, 2 Nov 2026)"}
+WCH-002: {by: tz_receiver, cls: "prepared, installed later", mass: 0.0, msrc: "installed later (about 1.5 kg when installed)", pos: "A1 rear charger zone (owner, 2 Nov 2026)"}
 WCH-003: {by: tz_transmitter, reason: "offboard: floor station, drawn on the floor under the docked robot (not in the robot mass)"}
 WCH-004: {by: rz_kchg}
 WCH-005: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.02, msrc: "estimate"}

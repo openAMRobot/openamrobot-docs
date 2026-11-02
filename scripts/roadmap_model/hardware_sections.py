@@ -70,7 +70,7 @@ def model_section():
         "<p><b>Front electronics bay</b> (one layout, owner correction A2): %s, %d parts placed, not placed: %s; see the front bay section below.</p>" % (
             E(bs["front_bay"]["single"]["fit"].get("layout", "")), bs["front_bay"]["single"]["fit"]["placed"], E(", ".join(bs["front_bay"]["single"]["fit"]["not_placed"])) or "none") +
         "<p><b>Rear section</b> (owner correction A1 and the receiver position of 2 Nov 2026): 8 x LF105 upright, 4 per side pocket (8S); power electronics on "
-        "the MEC-006 plate above the reserved TZBOT receiver, underside 122 mm above the floor, with a second level allowed for the BMS and PWR-017 and nothing "
+        "the MEC-006 plate above the prepared TZBOT receiver, underside 122 mm above the floor, with a second level allowed for the BMS and PWR-017 and nothing "
         "above a fuse. Not placed: %s (geometry issue %s). K1/K2 option A GX11CAC fits: %s. Option B TeSys D LC1D80BD fits: %s (labelled ghost). "
         "Siemens 3RT2 S3 fits: %s.</p>" % (E(", ".join(nofit)) or "none", gi("Rear layout"), "yes" if k["A"]["fits"] else "no", "yes" if k["B_tesys"]["fits"] else "no", "yes" if k["B_siemens"]["fits"] else "no") +
         "<p><b>Harness:</b> %d cables (%d routed, %.1f m with the 10 %% service margin), coloured by domain (BAT red, SAFE orange, regulated 24 V yellow, "
@@ -105,7 +105,7 @@ def mech_section():
     body = ("<p>Parametric design-intent parts (CadQuery, one script per item in <code>scripts/roadmap_model/design_intent/</code>, change a value and "
             "rerun <code>run_all.py</code>), exported as STEP and STL. They are proposals from B7 and the datasheets, class provisional, not CAD. "
             "Work packages M-02, M-03, M-04, M-05, M-07 and M-09.</p>" + table(["Item", "BOM ID", "Status", "Source", "Next step", "Owner"], rows))
-    return section("mechparts", "Mechanical parts", body, "M-01 rev19.7, P-03 rev20.2, decisions.yaml a9e229e, design_intent/index.json")
+    return section("mechparts", "Mechanical parts", body, "M-01 rev19.7, P-03 rev20.2, decisions.yaml 5ed600e, design_intent/index.json")
 
 
 def issues_section():
@@ -129,7 +129,7 @@ def conflicts_section():
     rows = [[E(c["item"]), E(c["a"]), E(c["b"]), E(c["status"])] for c in C["conflicts"]]
     body = ("<p>Where a repository disagrees with the documents in force, the document wins unless the repository change is later. "
             "Proposed register changes are in the pull request of this update.</p>" + table(["Item", "One source says", "The other says", "State"], rows))
-    return section("conflicts", "Conflicts between sources", body, "P-03 rev20.2, E-01 rev1.6, M-01 rev19.7, BOM Issue 7.14, decisions.yaml a9e229e, repository main at the snapshot")
+    return section("conflicts", "Conflicts between sources", body, "P-03 rev20.2, E-01 rev1.6, M-01 rev19.7, BOM Issue 7.14, decisions.yaml 5ed600e, repository main at the snapshot")
 
 
 def decisions_section():
@@ -154,7 +154,7 @@ def decisions_section():
     ab = pl["above_plate"]
     mu = pl["max_utilisation"]
     ok = max(mu.values()) <= 0.67
-    # A1 rear section and the reserved receiver
+    # A1 rear section and the prepared receiver
     rl = tz["rear_layout"]
     me = rl["measured"]
     t_dim = table(["Dimension", "CAD v0.2 (base GLB), the reference (A9)"], [
@@ -190,11 +190,13 @@ def decisions_section():
             pl["arms_forward"]["com_m"][2], pl["cases"][0]["bolt_Ft_Rd_kN"], pl["cases"][0]["bolt_Fv_Rd_kN"], pl["cases"][0]["Bp_Rd_kN"], mu["bolt_utilisation"],
             mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], mu["arch_sheet_utilisation"], pl["max_column_tilt_deg"],
             "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case. Decided fix (A7): a doubler under the arch top sheet, or through-bolts with a backing plate; CAD pending (%s)." % gi("Lift base plate MEC-019")) + t_plate + lift_rear_html(an) +
-        "<h3>TZBOT WCM-500-24 receiver, reserved for release 3.0 (A1)</h3><p class=\"note\">Wireless charging is a release 3.0 item. The TZBOT WCM-500-24 receiver (170 x 150 x 52 mm) is reserved at the rear panel on the centre line, with the batteries in the side pockets and the power electronics above it. Docking for wireless charging will approach the station, turn 180 degrees and reverse onto the transmitter. 2.0 charges by cable.</p>"
-        "<p>Receiver (manual V2.5, 170 x 150 x 52 mm, about 1.5 kg; not installed in 2.0) 170 mm along x and 150 mm across y, centred on the long axis, "
+        "<h3>TZBOT WCM-500-24 receiver, prepared in 2.0, installed later (A1)</h3><p class=\"note\">Wireless charging with the TZBOT WCM-500-24 is prepared in OpenAMRobot 2.0: the receiver position at the rear panel on the centre line, the base-sheet cut-out and the charge wiring are in the design; the receiver unit is installed later. Manual charging through the SB50 connector works at any time. Docking for wireless charging will approach the station, turn 180 degrees and reverse onto the transmitter.</p>"
+        "<p>Prepared in 2.0 (class \"prepared, installed later\"): the base-sheet cut-out, the F-CHG 30 A charge branch, the KCHG charge relay and the start and fault lines to the controller (CBL-P31). "
+        "Manual charging through SB50 with the Daly 28.4 V / 20 A charger (PWR-005) stays available.</p>"
+        "<p>Receiver (manual V2.5, 170 x 150 x 52 mm, about 1.5 kg; installed later) 170 mm along x and 150 mm across y, centred on the long axis, "
         "x %.3f to %.3f, as close to the rear panel inner face as possible without touching the rear TF-Luna, the rear MB7060s, their mounts or the rear "
         "panel flange; bottom 50 mm above the floor (2 mm below the base sheet). The 20 mm metal-free margin and the base-sheet cut-out are drawn; no transmitter "
-        "is drawn. Charging gap with a 52 mm floor transmitter: %.0f mm (to be solved in release 3.0, %s).</p>" % (
+        "is drawn. Charging gap with a 52 mm floor transmitter: %.0f mm (to solve before the receiver is installed, %s).</p>" % (
             tz["position"]["x_m"][0], tz["position"]["x_m"][1], tz["floor_gap"]["gap_mm"], gi("TZBOT receiver / floor transmitter")) + t_rx + t_dim +
         "<p>Cells: 4 + 4 LF105 upright (%s, tray %s mm); clear of the side-panel return flanges: %s (%s).</p>" % (
             E(rl["pockets"].get("arrangement", "")), " x ".join("%.0f" % v for v in rl["pockets"].get("tray_mm", [])), "yes" if rl["pockets"].get("clears_flanges") else "no", gi("Rear side pockets")) +

@@ -48,9 +48,9 @@ mapped:
   - {urdf: [head_camera_link], roadmap: [head_camera], mode: aabb, rot: true, note: "ZED Mini at hp30",
      pending: "A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"}
   - {urdf: [getac_tablet_link], roadmap: [getac_tablet], mode: aabb,
-     pending: "A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower (combined model landscape until the P-03 entry)"}
+     pending: "A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower, fixed mount (combined model has the superseded landscape tablet until the P-03 entry)"}
   - {urdf: [head_light_link], roadmap: [head_light], mode: aabb,
-     pending: "A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the landscape Getac)"}
+     pending: "A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the superseded landscape tablet)"}
   - {urdf: [second_estop_link], roadmap: [second_estop], mode: aabb,
      pending: "A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry"}
   - {urdf: [lift_stop_sensor_l1000_link, lift_stop_sensor_l1175_link, lift_stop_sensor_l1350_link],
@@ -90,13 +90,13 @@ urdf_only:
 # pending roadmap-only parts of the owner decisions (listed in the parity report with their reason)
 pending_roadmap_only:
   lift_base_plate: "B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)"
-  tz_receiver: "A1 (owner, 2 Nov 2026): TZBOT WCM-500-24 receiver reserved at the rear panel on the centre line, not installed in 2.0 (release 3.0); not in the base URDF"
+  tz_receiver: "A1 (owner, 2 Nov 2026): TZBOT WCM-500-24 receiver prepared at the rear panel on the centre line, installed later (wireless charging prepared in 2.0); not in the base URDF"
   rear_estop_housing: "A5 (owner, 2 Nov 2026): housing of the second E-stop on the adapter plate, button up"
-  tz_metal_free_zone: "A1: 20 mm metal-free margin around the reserved receiver (keep-out ghost)"
+  tz_metal_free_zone: "A1: 20 mm metal-free margin around the prepared receiver (keep-out ghost)"
   battery_cells: "A1: 8 x LF105 in the two side pockets (the base URDF battery is the single row)"
   battery_tray: "A1: two pocket trays"
   battery_series_link: "A1: series link across the centre"
-  base_cutout: "A1: base-sheet cut-out reserved for the receiver at the rear (ghost; base_chassis.stl has the CAD v0.2 sheet)"
+  base_cutout: "A1: base-sheet cut-out prepared for the receiver at the rear (ghost; base_chassis.stl has the CAD v0.2 sheet)"
 
 roadmap_only:
   base_cutout: {attach: base_link, offset_m: [-0.2745, 0, -0.045]}
