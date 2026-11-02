@@ -553,7 +553,7 @@ def main():
              off=[0, 0, .25] if group == "base" else [0, 0, .1], opn=[0, 0, .12] if group == "base" else [0, 0, 0],
              link="https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md")
         for k, pl in zip(parts, pls):
-            geo[k]["prims"].append(di_mesh(item, variant, pl, colour, .3 if ghost else None, group))
+            geo[k]["prims"].append(di_mesh(item, variant, pl, colour, .14 if ghost else None, group))
         if ghost:
             comps[-1]["hq"] = False
     # the getac pocket replaces the placeholder mount envelope of parts.yaml

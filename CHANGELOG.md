@@ -2,6 +2,15 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-02
+
+### Changed
+
+- OpenAMRobot 2.0 roadmap snapshot moved to 2 November 2026 (window 24 October to 1 November): the combined robot model merged (openamr-upperbody-sw #14, 41ff4ea) first in a new "This week" block, the P-03 rev19.8 to rev20.2 and battery decisions, the Gate A partial result of 30 October, real PR states and repository heads at 1 November 23:59 CET, decisions.yaml a9e229e.
+- Hardware page PARTS re-imported from BOM Issue 7.14 (146 records) by `scripts/roadmap_model/bom714.py`; new sections: 3D model coverage, mechanical parts, geometry and hardware issues, conflicts between sources.
+- Shared roadmap model: placement data generated from datums.yaml, sensor_frames.yaml and the facts of record by `scripts/roadmap_model/build.py` (`model/placement.json`): front electronics bay, rear power zone, harness by domain, fittings, fasteners, design-intent parts; stage 9 Harness; lift base plate drawn 360 x 230 x 10 mm; small parts only with High quality. New model files: `bom_coverage.csv`, `fastener_schedule.csv`, `cable_list.csv`, `assembly_sequence.csv`, `geometry_issues.csv`, `source_snapshot.json`, `design_intent/`, `export/openamrobot2_layout.step`.
+- `scripts/check_roadmap.py`: BOM coverage and model quantities, one model source for the robot and exploded pages, sensors and upper-body items within 1 mm of their sources, design heights, cable endpoints, partner terms; payload budget 15 MB for the default view.
+
 ## 2026-11-01
 
 ### Changed
