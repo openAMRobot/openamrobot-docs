@@ -1,0 +1,151 @@
+# BOM Issue 7.14 line -> model coverage. by: component id(s) of the model (registry or placement), or
+# harness / inside:<id> / none. cls: CAD-derived | envelope | primitive | provisional | placeholder | proposed | not drawn.
+# mass: kg for the whole line (qty included); msrc: mass source. reason: why not drawn.
+# Lines not listed here are taken from parts.yaml (packed/fixed) or reported as unmapped by build.py.
+DRV-001: {by: hub_motor_wheel, cls: envelope, geo: "ZLLG80ASM250-L-B2 V1.01 double-shaft STEP (revolved profile, platform-sw converter)", pos: "track 0.400 placeholder; axle at base_link (P-03 item 8)", mass: 10.0, msrc: "estimate 5.0 kg per motor, catalogue figure not in repo"}
+DRV-002: {by: motor_driver, cls: envelope, geo: "PROVENANCE.yaml motor_driver (as in the CAD)", pos: "CAD v0.2 driver mount MMP.02.00.00.002", mass: 0.9, msrc: "estimate, manual figure not in repo"}
+DRV-003: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route (cable_list.csv)", mass: 0.15, msrc: "estimate"}
+IMU-001: {by: imu, cls: envelope, geo: "EV_ICM-42688-P board outline (GLB envelope)", pos: "sensor_frames.yaml imu_link (0.0544, 0, 0.1210) on MMP.04.00.00.002", mass: 0.005, msrc: "estimate"}
+CTL-001: {by: base_controller, cls: envelope, geo: "NUCLEO-144 133.34 x 70 mm (UM2407)", pos: "CAD v0.2 controller plate MMP.04.00.00.003", mass: 0.08, msrc: "estimate"}
+CTL-002: {by: none, cls: not drawn, reason: "qty 0 (removed, P-03 rev20.2)"}
+CTL-008: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.03, msrc: "estimate"}
+CTL-009: {by: can_terms, cls: proposed, geo: "120 ohm termination plug", pos: "CAN1 bus ends (cable_list.csv)", mass: 0.004, msrc: "estimate"}
+CTL-010: {by: can_terms, cls: proposed, geo: "120 ohm termination plug", pos: "CAN2 bus ends (cable_list.csv)", mass: 0.004, msrc: "estimate"}
+CTL-011: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.03, msrc: "estimate"}
+CTL-012: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route (SPI4 pin map, B4)", mass: 0.01, msrc: "estimate"}
+CTL-016: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the service loop", mass: 0.08, msrc: "estimate"}
+CTL-017: {by: lift_node}
+DOC-001: {by: none, cls: not drawn, reason: offboard}
+DOC-002: {by: none, cls: not drawn, reason: offboard}
+DOC-004: {by: none, cls: not drawn, reason: offboard}
+NAV-001: {by: lidar, cls: envelope, geo: "PROVENANCE.yaml lidar (S3 outline)", pos: "sensor_frames.yaml lidar_link (0.330, 0, 0.124) yaw pi; MMP.07 + 17.5 mm spacer", mass: 0.18, msrc: "estimate"}
+NAV-003: {by: bay_lidar_uart}
+CAM-001: {by: base_camera, cls: envelope, geo: "PROVENANCE.yaml base_camera (Gemini 336L outline)", pos: "sensor_frames.yaml base_camera_link (0.387, 0, 0.046), bt10", mass: 0.29, msrc: "estimate"}
+CAM-002: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.04, msrc: "estimate"}
+SNS-001: {by: tof, cls: envelope, geo: "TF-Luna 35 x 21.25 x 13.5 mm (datasheet)", pos: "sensor_frames.yaml tof_front/tof_rear", mass: 0.01, msrc: "datasheet 5 g each"}
+SNS-002: {by: ultrasonic, cls: envelope, geo: "MB7060 -2XX housing (datasheet 11838)", pos: "sensor_frames.yaml us_*", mass: 0.236, msrc: "datasheet 59 g each"}
+SNS-003: {by: harness, cls: proposed, geo: "cable tubes and panel mounts", pos: "harness route", mass: 0.1, msrc: "estimate"}
+ARM-001: {by: openarm, cls: CAD-derived, geo: "openarm_description 14ff67b meshes", pos: "datums.yaml: J1_A at y +-0.031, 0.166 above the carriage", mass: 12.26, msrc: "upstream URDF nominal link masses (2 x 6.13 kg incl. gripper)"}
+ARM-002: {by: none, cls: not drawn, reason: offboard}
+ARM-003: {by: head_camera, cls: primitive, geo: "datums head_camera_size 26.5 x 124.5 x 30.5", pos: "datums.yaml (lens 0.042 ahead, 0.223 above J1_A), hp30", mass: 0.0629, msrc: "datums head_camera_mass"}
+ARM-004: {by: inside:openarm, cls: placeholder, geo: "18 x 18 x 12 mm box (robot page fitting)", pos: "datums left/right_wrist_camera_pose (placeholder)", mass: 0.02, msrc: "estimate", note: "drawn on the robot page only (fitting), not in the exploded registry"}
+ARM-005: {by: inside:openarm, cls: CAD-derived, geo: "openarm_description gripper meshes", pos: "upstream kinematics", mass: 0.0, msrc: "included in ARM-001"}
+ARM-006: {by: bay_usbcan}
+ARM-007: {by: none, cls: not drawn, reason: offboard}
+ARM-008: {by: none, cls: not drawn, reason: "qty 0 (withdrawn)"}
+ARM-009: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the service loop", mass: 0.05, msrc: "estimate"}
+ARM-010: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route along the arms (placeholder)", mass: 0.06, msrc: "estimate"}
+ARM-011: {by: head_camera_bracket, cls: primitive, geo: "datums head_camera_bracket_*", pos: "datums.yaml (post top)", mass: 0.05, msrc: "estimate"}
+AUX-001: {by: head_light, cls: placeholder, geo: "datums head_light_size 20 x 158 x 17", pos: "datums.yaml head_light_gap_below_tablet", mass: 0.11, msrc: "datums head_light_mass (upper bound)"}
+AUX-002: {by: none, cls: not drawn, reason: "function on CTL-017, no separate part"}
+AUX-003: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the service loop", mass: 0.08, msrc: "estimate"}
+CAP-001: {by: none, cls: not drawn, reason: offboard}
+CAP-002: {by: none, cls: not drawn, reason: offboard}
+CAP-003: {by: none, cls: not drawn, reason: offboard}
+CAP-004: {by: none, cls: not drawn, reason: offboard}
+CAP-005: {by: none, cls: not drawn, reason: offboard}
+CMP-001: {by: compute, cls: envelope, geo: "PROVENANCE.yaml compute (Orin NX on J401 outline)", pos: "CAD v0.2 electronics bracket MMP.04.00.00.002 top", mass: 0.25, msrc: "estimate"}
+CMP-002: {by: compute, cls: envelope, geo: "J401 carrier outline", pos: "CAD v0.2", mass: 0.2, msrc: "estimate"}
+CMP-003: {by: inside:compute, cls: envelope, geo: "inside the compute envelope", pos: "J401 M.2 slot", mass: 0.008, msrc: "estimate"}
+CMP-005: {by: inside:compute, cls: envelope, geo: "inside the compute envelope", pos: "on the module", mass: 0.15, msrc: "estimate"}
+CMP-006: {by: fan}
+CMP-007: {by: inside:compute, cls: not drawn, reason: "J401 M.2 Wi-Fi inside the compute envelope; antenna position not decided", mass: 0.02, msrc: "estimate"}
+CMP-009: {by: bay_usbhub}
+CTL-003: {by: bay_can1}
+CTL-004: {by: bay_iso1212}
+CTL-014: {by: bay_can2}
+CTL-015: {by: bay_can3}
+CTL-018: {by: bay_tpl7407}
+FIX-001: {by: none, cls: not drawn, reason: offboard}
+FIX-002: {by: none, cls: not drawn, reason: offboard}
+FIX-003: {by: none, cls: not drawn, reason: offboard}
+F-FAN: {by: inside:bay_fbc, cls: proposed, geo: "ATO fuse in FB-C", pos: "FB-C", mass: 0.002, msrc: "estimate"}
+F-HUB: {by: inside:bay_fbc, cls: proposed, geo: "ATO fuse in FB-C", pos: "FB-C", mass: 0.002, msrc: "estimate"}
+F-PANEL: {by: inside:bay_fbc, cls: proposed, geo: "ATO fuse in FB-C", pos: "FB-C", mass: 0.002, msrc: "estimate"}
+F-SAFE: {by: inside:bay_fbc, cls: proposed, geo: "ATO fuse in FB-C", pos: "FB-C", mass: 0.002, msrc: "estimate"}
+FB-A: {by: rz_fba}
+FB-B: {by: rz_fbb}
+FB-C: {by: bay_fbc}
+MEC-001: {by: "base_plate, front_panel, rear_panel, side_panel, support, centre_bracket, cover, cover_flange", cls: CAD-derived, geo: "CAD v0.2 MMP.00 to MMP.05 STEP", pos: "CAD v0.2 assembly", mass: 0.0, msrc: "CAD volume x 7850 kg/m3 (steel assumed), computed"}
+MEC-002: {by: castor, cls: envelope, geo: "PROVENANCE.yaml castor (LPA-VSTH 35K)", pos: "CAD v0.2 corners", mass: 0.8, msrc: "estimate 0.2 kg each"}
+MEC-003: {by: arm_profile, cls: primitive, geo: "HFS6-60120 60 x 120 x 340", pos: "B7: centred 0.180 ahead of the column axis", mass: 1.5, msrc: "estimate 4.4 kg/m"}
+MEC-004: {by: adapter_plate, cls: primitive, geo: "360 x 100 x 10 6082-T6", pos: "B7: rear edge flush with the column rear face", mass: 0.97, msrc: "volume x 2700 kg/m3"}
+MEC-005: {by: bay_plate, cls: proposed, geo: "3 mm 5052 aluminium sheet, proposed outline", pos: "front bay floor (E1)", mass: 0.0, msrc: "computed from outline x 3 mm x 2680 kg/m3"}
+MEC-006: {by: rear_plate, cls: proposed, geo: "3 mm aluminium cable-routing plate, proposed outline", pos: "rear zone floor behind the cells", mass: 0.0, msrc: "computed"}
+MEC-007: {by: battery_tray, cls: provisional, geo: "design intent battery_tray (D k)", pos: "B5 envelope position", mass: 1.6, msrc: "design-intent volume estimate"}
+MEC-008: {by: "lidar_support, lidar_spacer", cls: CAD-derived, geo: "MMP.07.00.00.001 and .002 STEP", pos: "CAD v0.2", mass: 0.6, msrc: "estimate"}
+MEC-009: {by: camera_mount, cls: CAD-derived, geo: "MMP.01.00.00.003 STEP", pos: "CAD v0.2", mass: 0.04, msrc: "estimate"}
+MEC-010: {by: tof_mount, cls: CAD-derived, geo: "MMP.00.00.00.005 STEP", pos: "CAD v0.2", mass: 0.02, msrc: "estimate"}
+MEC-011: {by: ultrasonic_mount, cls: CAD-derived, geo: "MMP.00.00.00.006 STEP", pos: "CAD v0.2", mass: 0.06, msrc: "estimate"}
+MEC-012: {by: tablet_mount}
+MEC-013: {by: harness_fittings, cls: proposed, geo: "P-clips, grommets, edge guards", pos: "harness route", mass: 0.15, msrc: "estimate"}
+MEC-014: {by: fasteners, cls: proposed, geo: "fastener_schedule.csv", pos: "joints of the model", mass: 0.6, msrc: "estimate"}
+MEC-015: {by: motor_brackets, cls: provisional, geo: "design intent motor_bracket (D i)", pos: "both shaft ends of each wheel", mass: 1.2, msrc: "design-intent estimate"}
+MEC-016: {by: shims}
+MEC-017: {by: none, cls: not drawn, reason: "branding decals are robot page fittings, geometry not defined"}
+MEC-018: {by: lift_column, cls: primitive, geo: "DOLD 240 x 60, 530 retracted, inner stage placeholder", pos: "B7 column axis x 0.060 (bp000)", mass: 11.7, msrc: "datums lift_mass_dold_v4_350 (catalogue)"}
+MEC-019: {by: lift_base_plate, cls: primitive, geo: "360 x 230 x 10 6082-T6 (B7)", pos: "B7 bp000 / bp050", mass: 2.1, msrc: "volume x 2700 kg/m3 less holes"}
+MEC-020: {by: none, cls: not drawn, reason: "fallback lift, not fitted"}
+MEC-021: {by: us_locknut}
+LFT-001: {by: lift_stop_sensors, cls: placeholder, geo: "M12 x 48 mm cylinder", pos: "datums.yaml lift_stop_sensor_z_*", mass: 0.09, msrc: "estimate 30 g each"}
+LFT-002: {by: harness, cls: proposed, geo: "cable tube", pos: "down the static column", mass: 0.15, msrc: "estimate"}
+LFT-003: {by: lift_sensor_brackets, cls: placeholder, geo: "datums lift_sensor_bracket_*", pos: "datums.yaml", mass: 0.06, msrc: "estimate"}
+LFT-004: {by: flag_rod, cls: placeholder, geo: "20 x 20 x 430", pos: "datums.yaml lift_flag_rod_*", mass: 0.22, msrc: "estimate 0.5 kg/m"}
+LFT-005: {by: rod_corner_bracket, cls: placeholder, geo: "20 corner bracket", pos: "datums.yaml", mass: 0.02, msrc: "estimate"}
+LFT-006: {by: lift_flag, cls: placeholder, geo: "45 x 20 x 2 SS400", pos: "datums.yaml lift_flag_*", mass: 0.014, msrc: "volume x 7850"}
+LFT-007: {by: fasteners, cls: proposed, geo: "fastener_schedule.csv", pos: "LIFT-SNS-01 joints", mass: 0.03, msrc: "estimate"}
+PWR-001: {by: battery, cls: provisional, geo: "B5 cell-group envelope 314 x 140 x 210", pos: "B5 rear deck, 2 mm behind the centre bracket", mass: 21.5, msrc: "B5 assembly 20 to 23 kg provisional (midpoint)"}
+PWR-002: {by: rz_bms}
+PWR-003: {by: rz_f0}
+PWR-004: {by: rz_disc}
+PWR-005: {by: none, cls: not drawn, reason: offboard}
+PWR-006: {by: inside:bay_fbc, cls: proposed, geo: "superseded by FB-A / FB-B / FB-C (E-01 rev1.6)", pos: "FB-C", mass: 0.0, msrc: "included in FB-C"}
+PWR-007: {by: bay_rsd60}
+PWR-008: {by: bay_usbpd}
+PWR-009: {by: bay_pwr009}
+PWR-010: {by: none, cls: not drawn, reason: "conditional, not decided"}
+PWR-012: {by: bay_rsd100}
+PWR-013: {by: none, cls: not drawn, reason: "ARM-VOLT gate open (PWR-013 not selected)"}
+PWR-014: {by: inside:rz_pre, cls: proposed, geo: "in the precharge kit", pos: "rear zone", mass: 0.0, msrc: "included in SAF-004"}
+PWR-015: {by: inside:rz_pre, cls: proposed, geo: "in the precharge kit", pos: "rear zone", mass: 0.0, msrc: "included in SAF-004"}
+PWR-016: {by: bay_ina228}
+PWR-017: {by: rz_pwr017}
+PWR-018: {by: rz_batcon}
+PWR-019: {by: rz_sb50}
+PWR-022: {by: rz_fchg}
+PWR-023: {by: inside:battery, cls: provisional, geo: "8 cell boxes inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001 (8 x 1.98 kg)"}
+PWR-024: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-025: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-026: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-027: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-028: {by: battery, cls: provisional, geo: "the envelope shell", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-029: {by: bay_pwr029}
+PWR-030: {by: bay_ddr240}
+PWR-031: {by: none, cls: not drawn, reason: "reserved branch, parts to be confirmed"}
+PWR-032: {by: bay_pwr032}
+SAF-001: {by: "estop, second_estop", cls: placeholder, geo: "XB4BS8445 + ZBE-102 datasheet dimensions (GLB estop node)", pos: "B4: base front old red-button hole; static column rear face (M-09 pending)", mass: 0.3, msrc: "estimate 0.15 kg each"}
+SAF-002: {by: bay_din}
+SAF-003: {by: rz_k1k2}
+SAF-004: {by: rz_pre}
+SAF-005: {by: reset_button, cls: placeholder, geo: "XB4BW36B5 datasheet dimensions", pos: "B4: old green-button hole", mass: 0.12, msrc: "estimate"}
+SAF-006: {by: inside:rz_k1k2, cls: proposed, geo: "integrated in GX11CAC", pos: "K1/K2", mass: 0.0, msrc: "included"}
+SAF-007: {by: rz_brake}
+TST-001: {by: none, cls: not drawn, reason: offboard}
+TST-002: {by: none, cls: not drawn, reason: offboard}
+TST-003: {by: none, cls: not drawn, reason: offboard}
+TST-004: {by: none, cls: not drawn, reason: offboard}
+TST-005: {by: none, cls: not drawn, reason: offboard}
+TST-006: {by: none, cls: not drawn, reason: offboard}
+UI-001: {by: getac_tablet, cls: placeholder, geo: "datums getac_tablet_size 17.6 x 234 x 149.8", pos: "datums.yaml getac_tablet_z_above_column_top (landscape)", mass: 0.59, msrc: "datums getac_tablet_mass"}
+UI-002: {by: tablet_mount}
+UI-003: {by: inside:getac_tablet, cls: not drawn, reason: "tablet speaker, part of UI-001"}
+WCH-001: {by: none, cls: not drawn, reason: "set row: the onboard part is WCH-002, the transmitter WCH-003 is offboard"}
+WCH-002: {by: tz_receiver}
+WCH-003: {by: none, cls: not drawn, reason: offboard}
+WCH-004: {by: rz_kchg}
+WCH-005: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.02, msrc: "estimate"}
+WCH-006: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.1, msrc: "estimate"}
+WCH-007: {by: inside:tz_receiver, cls: provisional, geo: "drawn with the receiver", pos: "with WCH-002", mass: 0.0, msrc: "included in WCH-002"}
+WIR-001: {by: harness, cls: proposed, geo: "cable tubes", pos: "harness route", mass: 2.2, msrc: "computed from route lengths (cable_list.csv)"}
+WIR-002: {by: harness, cls: proposed, geo: "cable tubes", pos: "harness route", mass: 0.15, msrc: "computed from route lengths"}
+ARM-011b: {skip: true}

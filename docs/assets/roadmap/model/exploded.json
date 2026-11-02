@@ -62,6 +62,12 @@
     "head_camera_bracket",
     "head_camera"
    ]
+  },
+  {
+   "n": 9,
+   "title": "Harness",
+   "text": "Every cable of the harness on its routed path, coloured by domain, with the P-clips, grommets, CAN terminations, the upper-body service loop and the drawn fasteners. Proposed by the roadmap model; cable_list.csv gives each route.",
+   "frame": "base"
   }
  ],
  "components": {
@@ -795,6 +801,1069 @@
      0.92
     ]
    }
+  },
+  "bay_can1": {
+   "stage": 4,
+   "offsets": {
+    "bay_can1": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can1": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_can2": {
+   "stage": 4,
+   "offsets": {
+    "bay_can2": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can2": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_can3": {
+   "stage": 3,
+   "offsets": {
+    "bay_can3": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "bay_can3": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "bay_iso1212": {
+   "stage": 4,
+   "offsets": {
+    "bay_iso1212": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_iso1212": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_tpl7407": {
+   "stage": 4,
+   "offsets": {
+    "bay_tpl7407": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_tpl7407": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_ina228": {
+   "stage": 4,
+   "offsets": {
+    "bay_ina228": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_ina228": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_rsd100": {
+   "stage": 4,
+   "offsets": {
+    "bay_rsd100": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_rsd100": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_ddr240": {
+   "stage": 3,
+   "offsets": {
+    "bay_ddr240": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "bay_ddr240": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "bay_pwr032": {
+   "stage": 3,
+   "offsets": {
+    "bay_pwr032": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "bay_pwr032": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "bay_usbpd": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbpd": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbpd": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_pwr009": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr009": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr009": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_pwr029": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr029": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr029": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_fbc": {
+   "stage": 4,
+   "offsets": {
+    "bay_fbc": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_fbc": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_usbhub": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbhub": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbhub": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_usbcan": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbcan_1": [
+     0,
+     0,
+     0.32
+    ],
+    "bay_usbcan_2": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbcan_1": [
+     0,
+     0,
+     0.16
+    ],
+    "bay_usbcan_2": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_lidar_uart": {
+   "stage": 4,
+   "offsets": {
+    "bay_lidar_uart": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_lidar_uart": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "rz_fba": {
+   "stage": 3,
+   "offsets": {
+    "rz_fba": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_fba": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_fbb": {
+   "stage": 3,
+   "offsets": {
+    "rz_fbb": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_fbb": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_pwr017": {
+   "stage": 3,
+   "offsets": {
+    "rz_pwr017_1": [
+     -0.25,
+     0,
+     0.3
+    ],
+    "rz_pwr017_2": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_pwr017_1": [
+     -0.12,
+     0,
+     0.14
+    ],
+    "rz_pwr017_2": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_f0": {
+   "stage": 3,
+   "offsets": {
+    "rz_f0": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_f0": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_k1k2": {
+   "stage": 3,
+   "offsets": {
+    "rz_k1k2_1": [
+     -0.25,
+     0,
+     0.3
+    ],
+    "rz_k1k2_2": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_k1k2_1": [
+     -0.12,
+     0,
+     0.14
+    ],
+    "rz_k1k2_2": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_pre": {
+   "stage": 3,
+   "offsets": {
+    "rz_pre": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_pre": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_bms": {
+   "stage": 3,
+   "offsets": {
+    "rz_bms": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_bms": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_kchg": {
+   "stage": 3,
+   "offsets": {
+    "rz_kchg": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_kchg": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_fchg": {
+   "stage": 3,
+   "offsets": {
+    "rz_fchg": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_fchg": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_brake": {
+   "stage": 3,
+   "offsets": {
+    "rz_brake": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_brake": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_disc": {
+   "stage": 3,
+   "offsets": {
+    "rz_disc": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "rz_disc": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "rz_sb50": {
+   "stage": 3,
+   "offsets": {
+    "rz_sb50": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "rz_sb50": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "rz_batcon": {
+   "stage": 3,
+   "offsets": {
+    "rz_batcon": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "rz_batcon": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "tz_receiver": {
+   "stage": 3,
+   "offsets": {
+    "tz_receiver": [
+     0,
+     0,
+     -0.25
+    ]
+   },
+   "open": {
+    "tz_receiver": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "fan": {
+   "stage": 4,
+   "offsets": {
+    "fan": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "fan": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "feedthru": {
+   "stage": 4,
+   "offsets": {
+    "feedthru_1": [
+     0,
+     0,
+     0.2
+    ],
+    "feedthru_2": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "feedthru_1": [
+     0,
+     0,
+     0.12
+    ],
+    "feedthru_2": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "lift_node": {
+   "stage": 7,
+   "offsets": {
+    "lift_node": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "lift_node": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "shims": {
+   "stage": 3,
+   "offsets": {
+    "shims_1": [
+     0,
+     0,
+     0.2
+    ],
+    "shims_2": [
+     0,
+     0,
+     0.2
+    ],
+    "shims_3": [
+     0,
+     0,
+     0.2
+    ],
+    "shims_4": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "shims_1": [
+     0,
+     0,
+     0.12
+    ],
+    "shims_2": [
+     0,
+     0,
+     0.12
+    ],
+    "shims_3": [
+     0,
+     0,
+     0.12
+    ],
+    "shims_4": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "us_locknut": {
+   "stage": 3,
+   "offsets": {
+    "us_locknut_1": [
+     0,
+     0,
+     0.2
+    ],
+    "us_locknut_2": [
+     0,
+     0,
+     0.2
+    ],
+    "us_locknut_3": [
+     0,
+     0,
+     0.2
+    ],
+    "us_locknut_4": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "us_locknut_1": [
+     0,
+     0,
+     0.12
+    ],
+    "us_locknut_2": [
+     0,
+     0,
+     0.12
+    ],
+    "us_locknut_3": [
+     0,
+     0,
+     0.12
+    ],
+    "us_locknut_4": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "tablet_mount": {
+   "stage": 8,
+   "offsets": {
+    "tablet_mount": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "tablet_mount": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "bay_plate": {
+   "stage": 4,
+   "offsets": {
+    "bay_plate": [
+     0,
+     0,
+     0.28
+    ]
+   },
+   "open": {
+    "bay_plate": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "lift_bolt_keepout": {
+   "stage": 4,
+   "offsets": {
+    "keepout_bp000": [
+     0,
+     0,
+     0
+    ],
+    "keepout_bp050": [
+     0,
+     0,
+     0
+    ]
+   },
+   "open": {
+    "keepout_bp000": [
+     0,
+     0,
+     0
+    ],
+    "keepout_bp050": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "rear_plate": {
+   "stage": 3,
+   "offsets": {
+    "rear_plate": [
+     -0.25,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "rear_plate": [
+     -0.12,
+     0,
+     0.1
+    ]
+   }
+  },
+  "k1k2_option_b": {
+   "stage": 3,
+   "offsets": {
+    "k1k2_option_b_1": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "k1k2_option_b_1": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "harness_bat": {
+   "stage": 9,
+   "offsets": {
+    "harness_bat_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_bat_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_safe": {
+   "stage": 9,
+   "offsets": {
+    "harness_safe_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_safe_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_r24": {
+   "stage": 9,
+   "offsets": {
+    "harness_r24_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_r24_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_sig": {
+   "stage": 9,
+   "offsets": {
+    "harness_sig_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_sig_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_fittings": {
+   "stage": 9,
+   "offsets": {
+    "harness_fittings_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_fittings_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "can_terms": {
+   "stage": 9,
+   "offsets": {
+    "can_term_1": [
+     0,
+     0,
+     0.45
+    ],
+    "can_term_2": [
+     0,
+     0,
+     0.45
+    ],
+    "can_term_3": [
+     0,
+     0,
+     0.45
+    ],
+    "can_term_4": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "can_term_1": [
+     0,
+     0,
+     0.2
+    ],
+    "can_term_2": [
+     0,
+     0,
+     0.2
+    ],
+    "can_term_3": [
+     0,
+     0,
+     0.2
+    ],
+    "can_term_4": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "fasteners": {
+   "stage": 9,
+   "offsets": {
+    "fasteners_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "fasteners_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_upper": {
+   "stage": 8,
+   "offsets": {
+    "harness_safe_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_safe_mov": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_r24_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_r24_mov": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_sig_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_sig_mov": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_fittings_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_fittings_mov": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "service_loop": [
+     0,
+     -0.25,
+     0.1
+    ]
+   },
+   "open": {
+    "harness_safe_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_safe_mov": [
+     0,
+     0,
+     0
+    ],
+    "harness_r24_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_r24_mov": [
+     0,
+     0,
+     0
+    ],
+    "harness_sig_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_sig_mov": [
+     0,
+     0,
+     0
+    ],
+    "harness_fittings_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_fittings_mov": [
+     0,
+     0,
+     0
+    ],
+    "service_loop": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "fasteners_upper": {
+   "stage": 8,
+   "offsets": {
+    "fasteners_col": [
+     0,
+     0,
+     0.1
+    ],
+    "fasteners_mov": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "fasteners_col": [
+     0,
+     0,
+     0
+    ],
+    "fasteners_mov": [
+     0,
+     0,
+     0
+    ]
+   }
   }
  },
  "labels": {
@@ -1188,5 +2257,56 @@
     "caption": "OpenAMRobot 2.0 roadmap model. Not an assembly instruction"
    }
   ]
- }
+ },
+ "generated": [
+  "bay_can1",
+  "bay_can2",
+  "bay_can3",
+  "bay_ddr240",
+  "bay_fbc",
+  "bay_ina228",
+  "bay_iso1212",
+  "bay_lidar_uart",
+  "bay_plate",
+  "bay_pwr009",
+  "bay_pwr029",
+  "bay_pwr032",
+  "bay_rsd100",
+  "bay_tpl7407",
+  "bay_usbcan",
+  "bay_usbhub",
+  "bay_usbpd",
+  "can_terms",
+  "fan",
+  "fasteners",
+  "fasteners_upper",
+  "feedthru",
+  "harness_bat",
+  "harness_fittings",
+  "harness_r24",
+  "harness_safe",
+  "harness_sig",
+  "harness_upper",
+  "k1k2_option_b",
+  "lift_bolt_keepout",
+  "lift_node",
+  "rear_plate",
+  "rz_batcon",
+  "rz_bms",
+  "rz_brake",
+  "rz_disc",
+  "rz_f0",
+  "rz_fba",
+  "rz_fbb",
+  "rz_fchg",
+  "rz_k1k2",
+  "rz_kchg",
+  "rz_pre",
+  "rz_pwr017",
+  "rz_sb50",
+  "shims",
+  "tablet_mount",
+  "tz_receiver",
+  "us_locknut"
+ ]
 }

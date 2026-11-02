@@ -1,0 +1,16 @@
+step,parts,fasteners,tool,standard_torque_reference,access_check
+1,"Base sheet, panels, supports, centre bracket (MEC-001)",MEC-001 sheet-metal joints (CAD v0.2),hex key 4 / 5 mm,ISO 898-1 M5 8.8: 6 Nm,"open frame, all faces reachable"
+2,"Hub motors with MEC-015 brackets, castors with MEC-016 shims",M8 x 20 bracket bolts; castor M8,"13 mm socket, torque wrench",M8 8.8: 25 Nm,from below with the base on its side; brake side inboard
+3,"Motor driver on MMP.02.00.00.002, electronics bracket MMP.04.00.00.002 with IMU board",M3/M4,hex key 2.5 / 3 mm,"M3: 1.2 Nm, M4: 2.8 Nm","from above, cover off; nothing heavy on the IMU bracket"
+4,"Front bay plate MEC-005 with converters, DIN rail (PNOZ), fuse block FB-C, boards on standoffs",M4 x 8 rivet nuts; M3 standoffs,"hex key 2.5 mm, nut driver 5.5 mm",M4: 2.8 Nm,"plate pre-assembled on the bench, dropped in with the cover off; check keep-outs around the lift bolts"
+5,"Rear zone: MEC-006 plate with FB-A, FB-B, PWR-017; side pockets: F0 holder, K1/K2, precharge kit, BMS, KCHG, F-CHG",M5 x 12,"hex key 4 mm, 13 mm socket for M8 lugs",M5: 5.5 Nm; M8 lugs per maker,"before the battery tray, side panels detached"
+6,"Battery tray MEC-007 with the cell assembly, restraint, side panels","M6 x 16, quarter-turn panels",hex key 5 mm,M6 8.8: 10 Nm,lowered from above with the cover off; removable without removing the arms
+7,"Sensors: LiDAR on MMP.07 + spacer, Gemini on MEC-009, MB7060 with lock nuts, TF-Luna, E-stop, RESET","M4 inserts, 3/4 in NPS nuts","hex key 3 mm, 32 mm spanner",M4: 1.5 Nm into PETG inserts,panel nuts reached from inside before the bay plate is full: do this before step 4 for the front pair
+8,"Harness: trunks, grommets, P-clips, connectors; CAN terminations",M4 P-clip screws,"crimp tools (TST-004), hex key 2.5 mm",M4: 2 Nm,cover off; every fuse and connector reachable
+9,Cover and flanges,MEC-001 cover screws,hex key 3 mm,M4: 2.8 Nm,from above
+10,Lift base plate MEC-019 at bp000 through the deck,4 x M8 x 35 ISO 4762 + washers + nuts,"6 mm hex key, 13 mm spanner below",M8 8.8: 25 Nm,nut side needs the front bay keep-out (step 4) and access through the bay; see geometry issue on the missing frame below
+11,DOLD column on MEC-019 from below,4 x M8 DIN 7500 countersunk,5 mm hex key,M8 thread-forming: per DOLD,"plate off the deck: fit the column first, then step 10 with the column on (order swap)"
+12,"Adapter plate, HFS6 post, rear upright, stiffener, rod mount","M8 x 25, M6 T-nuts",6 / 5 mm hex key,"M8: 25 Nm, M6: 10 Nm",post bolts from below the adapter plate before it goes on the carriage
+13,"Arms on the post (1 mm spacers), ZED bracket and camera, Getac pocket and light plate",M6 T-nuts,5 mm hex key,M6: 10 Nm,arms at home pose; Getac pocket last
+14,"Lift stop sensors, flag rod and flag, second E-stop housing","LFT-007 set, M5 T-nuts",hex key 2.5 / 3 / 4 mm,"M4: 2 Nm, M5: 4 Nm",lift at L1000; set the 2 mm flag gap
+15,"Service loop and upper-body cables, function test",,,,check the loop at L1350 and L1000
