@@ -94,50 +94,50 @@ pending_roadmap_only:
   estop_p4_ghost: "B2: position P4, ghost"
 
 roadmap_only:
-  base_cutout: {attach: base_link, offset_m: [0.2365, 0, -0.045]}
+  base_cutout: {attach: base_link, offset_m: [0.2715, 0, -0.045]}
   battery_tray: {attach: base_link, offset_m: [-0.216, 0, 0.0622]}
-  bay_can1: {attach: base_link, offset_m: [0.3105, -0.082, 0.1038]}
-  bay_can1_optb: {attach: base_link, offset_m: [0.276, -0.083, 0.0513]}
-  bay_can2: {attach: base_link, offset_m: [0.2427, 0.037, 0.1273]}
-  bay_can2_optb: {attach: base_link, offset_m: [0.2427, 0.0056, 0.0458]}
-  bay_can3: {attach: base_link, offset_m: [0.121, 0.047, 0.1093]}
-  bay_can3_optb: {attach: base_link, offset_m: [0.306, 0.087, 0.0513]}
+  bay_can1: {attach: base_link, offset_m: [0.121, 0.047, 0.0963]}
+  bay_can1_optb: {attach: base_link, offset_m: [0.276, -0.083, 0.0383]}
+  bay_can2: {attach: base_link, offset_m: [0.2427, 0.017, 0.1143]}
+  bay_can2_optb: {attach: base_link, offset_m: [0.2427, 0.0056, 0.0328]}
+  bay_can3: {attach: base_link, offset_m: [0.325, -0.147, 0.0963]}
+  bay_can3_optb: {attach: base_link, offset_m: [0.306, 0.087, 0.0383]}
   bay_ddr240: {attach: base_link, offset_m: [0.19, 0.093, 0.1077]}
   bay_din_pnoz: {attach: base_link, offset_m: [0.2002, 0.1487, 0.1077]}
-  bay_din_tb: {attach: base_link, offset_m: [0.1606, -0.1393, 0.1199]}
-  bay_fbc: {attach: base_link, offset_m: [0.236, -0.126, 0.1192]}
-  bay_fbc_optb: {attach: base_link, offset_m: [0.196, 0.129, 0.0612]}
-  bay_ina228: {attach: base_link, offset_m: [0.1177, 0.0709, 0.0438]}
-  bay_ina228_optb: {attach: base_link, offset_m: [0.2227, -0.14, 0.0496]}
-  bay_iso1212: {attach: base_link, offset_m: [0.262, -0.077, 0.1242]}
-  bay_iso1212_optb: {attach: base_link, offset_m: [0.137, 0.048, 0.0663]}
-  bay_lidar_uart: {attach: base_link, offset_m: [0.25, 0.017, 0.1038]}
-  bay_lidar_uart_optb: {attach: base_link, offset_m: [0.265, 0.082, 0.0508]}
-  bay_plate: {attach: base_link, offset_m: [0.2175, 0, 0.1005]}
-  bay_plate_optb: {attach: base_link, offset_m: [0.2175, 0, 0.0385]}
-  bay_pwr009: {attach: base_link, offset_m: [0.135, 0.022, 0.0533]}
-  bay_pwr009_optb: {attach: base_link, offset_m: [0.175, -0.1505, 0.0607]}
-  bay_pwr029: {attach: base_link, offset_m: [0.195, 0.027, 0.0508]}
-  bay_pwr029_optb: {attach: base_link, offset_m: [0.28, 0.152, 0.0508]}
-  bay_pwr032: {attach: base_link, offset_m: [0.1175, -0.073, 0.0458]}
-  bay_pwr032_optb: {attach: base_link, offset_m: [0.32, 0.1545, 0.0458]}
-  bay_rsd100: {attach: base_link, offset_m: [0.1985, -0.0835, 0.0597]}
-  bay_rsd100_optb: {attach: base_link, offset_m: [0.2295, -0.114, 0.0892]}
-  bay_rsd60: {attach: base_link, offset_m: [0.2, -0.1465, -0.0152]}
-  bay_rsd60_optb: {attach: base_link, offset_m: [0.285, 0.1135, 0.1007]}
-  bay_tpl7407: {attach: base_link, offset_m: [0.249, -0.0375, 0.1048]}
-  bay_tpl7407_optb: {attach: base_link, offset_m: [0.2005, 0.048, 0.0597]}
-  bay_usbcan_1: {attach: base_link, offset_m: [0.3075, -0.133, 0.1063]}
-  bay_usbcan_1_optb: {attach: base_link, offset_m: [0.295, -0.1505, 0.0483]}
-  bay_usbcan_2: {attach: base_link, offset_m: [0.1575, -0.1005, 0.1287]}
-  bay_usbcan_2_optb: {attach: base_link, offset_m: [0.2425, -0.058, 0.0483]}
-  bay_usbhub: {attach: base_link, offset_m: [0.2875, 0.127, 0.1082]}
-  bay_usbhub_optb: {attach: base_link, offset_m: [0.1725, 0.0695, 0.0808]}
-  bay_usbpd: {attach: base_link, offset_m: [0.28, -0.148, 0.0483]}
-  bay_usbpd_optb: {attach: base_link, offset_m: [0.235, -0.1555, 0.0558]}
+  bay_din_tb: {attach: base_link, offset_m: [0.2706, -0.1393, 0.1069]}
+  bay_fbc: {attach: base_link, offset_m: [0.196, -0.126, 0.1062]}
+  bay_fbc_optb: {attach: base_link, offset_m: [0.196, 0.129, 0.0482]}
+  bay_ina228: {attach: base_link, offset_m: [0.1177, 0.0709, 0.0308]}
+  bay_ina228_optb: {attach: base_link, offset_m: [0.2227, -0.14, 0.0366]}
+  bay_iso1212: {attach: base_link, offset_m: [0.287, -0.0825, 0.0918]}
+  bay_iso1212_optb: {attach: base_link, offset_m: [0.137, 0.048, 0.0532]}
+  bay_lidar_uart: {attach: base_link, offset_m: [0.305, -0.143, 0.0908]}
+  bay_lidar_uart_optb: {attach: base_link, offset_m: [0.265, 0.082, 0.0378]}
+  bay_plate: {attach: base_link, offset_m: [0.2175, 0, 0.094]}
+  bay_plate_optb: {attach: base_link, offset_m: [0.2175, 0, 0.0255]}
+  bay_pwr009: {attach: base_link, offset_m: [0.135, 0.022, 0.0403]}
+  bay_pwr009_optb: {attach: base_link, offset_m: [0.175, -0.1505, 0.0477]}
+  bay_pwr029: {attach: base_link, offset_m: [0.195, 0.027, 0.0378]}
+  bay_pwr029_optb: {attach: base_link, offset_m: [0.28, 0.152, 0.0378]}
+  bay_pwr032: {attach: base_link, offset_m: [0.1175, -0.073, 0.0328]}
+  bay_pwr032_optb: {attach: base_link, offset_m: [0.32, 0.1545, 0.0328]}
+  bay_rsd100: {attach: base_link, offset_m: [0.1985, -0.0835, 0.0467]}
+  bay_rsd100_optb: {attach: base_link, offset_m: [0.2295, -0.114, 0.0762]}
+  bay_rsd60: {attach: base_link, offset_m: [0.2, -0.14, -0.0237]}
+  bay_rsd60_optb: {attach: base_link, offset_m: [0.285, 0.1135, 0.0877]}
+  bay_tpl7407: {attach: base_link, offset_m: [0.249, -0.0225, 0.0918]}
+  bay_tpl7407_optb: {attach: base_link, offset_m: [0.2005, 0.048, 0.0467]}
+  bay_usbcan_1: {attach: base_link, offset_m: [0.2425, 0.0345, 0.1157]}
+  bay_usbcan_1_optb: {attach: base_link, offset_m: [0.295, -0.1505, 0.0353]}
+  bay_usbcan_2: {attach: base_link, offset_m: [0.2375, -0.0705, 0.1157]}
+  bay_usbcan_2_optb: {attach: base_link, offset_m: [0.2425, -0.058, 0.0353]}
+  bay_usbhub: {attach: base_link, offset_m: [0.2875, 0.127, 0.0952]}
+  bay_usbhub_optb: {attach: base_link, offset_m: [0.1725, 0.0695, 0.0678]}
+  bay_usbpd: {attach: base_link, offset_m: [0.28, -0.148, 0.0353]}
+  bay_usbpd_optb: {attach: base_link, offset_m: [0.235, -0.1555, 0.0428]}
   can_term_1: {attach: base_link, offset_m: [-0.0693, -0.0018, 0.0734]}
   can_term_2: {attach: base_link, offset_m: [0.0271, -0.014, 0.1165]}
-  can_term_3: {attach: base_link, offset_m: [0.2427, 0.037, 0.1611]}
+  can_term_3: {attach: base_link, offset_m: [0.2427, 0.017, 0.1481]}
   estop_p1_ghost: {attach: lift_column_base_link, offset_m: [-0.152, 0, 0.472]}
   estop_p3_ghost: {attach: lift_carriage_link, offset_m: [0.14, 0, 0.388]}
   estop_p4_ghost: {attach: lift_column_base_link, offset_m: [-0.152, 0, 0.232]}
@@ -149,12 +149,12 @@ roadmap_only:
   feedthru_2: {attach: base_link, offset_m: [0.245, 0.272, 0.102]}
   getac_pocket: {attach: lift_carriage_link, offset_m: [0.2553, 0, 0.2188]}
   getac_second_position_ghost: {attach: lift_carriage_link, offset_m: [0.2583, -0.005, 0.281]}
-  harness_bat_base: {attach: base_link, offset_m: [-0.0781, -0.0066, 0.0887]}
+  harness_bat_base: {attach: base_link, offset_m: [-0.0477, -0.0066, 0.0887]}
   harness_fittings_base: {attach: base_link, offset_m: [0.0365, 0, 0.15]}
   harness_fittings_col: {attach: lift_column_base_link, offset_m: [-0.1075, 0, 0.261]}
   harness_fittings_mov: {attach: lift_carriage_link, offset_m: [0.0675, -0.0035, 0.166]}
-  harness_lv_base: {attach: base_link, offset_m: [0.1499, -0.075, 0.0947]}
-  harness_r24_base: {attach: base_link, offset_m: [0.086, -0.0009, 0.1261]}
+  harness_lv_base: {attach: base_link, offset_m: [0.1499, -0.075, 0.0863]}
+  harness_r24_base: {attach: base_link, offset_m: [0.0859, -0.0007, 0.1197]}
   harness_r24_col: {attach: lift_column_base_link, offset_m: [-0.161, -0.0475, 0.2401]}
   harness_r24_mov: {attach: lift_carriage_link, offset_m: [0.0502, 0.0169, -0.0488]}
   harness_safe_base: {attach: base_link, offset_m: [-0.07, -0.0258, 0.0983]}
@@ -189,10 +189,11 @@ roadmap_only:
   shims_3: {attach: base_link, offset_m: [-0.275, 0.215, -0.0465]}
   shims_4: {attach: base_link, offset_m: [-0.275, -0.215, -0.0465]}
   slot_cover_strips: {attach: lift_carriage_link, offset_m: [0.21, 0, 0.29]}
-  tz_ferrite: {attach: base_link, offset_m: [0.243, 0, 0.0175]}
-  tz_metal_free_zone: {attach: base_link, offset_m: [0.243, 0, -0.0155]}
-  tz_receiver: {attach: base_link, offset_m: [0.243, 0, -0.0155]}
-  tz_transmitter: {attach: base_link, offset_m: [0.243, 0, -0.083]}
+  tz_ferrite: {attach: base_link, offset_m: [0.278, 0, 0.0045]}
+  tz_gap_overlap: {attach: base_link, offset_m: [0.278, 0, -0.047]}
+  tz_metal_free_zone: {attach: base_link, offset_m: [0.278, 0, -0.022]}
+  tz_receiver: {attach: base_link, offset_m: [0.278, 0, -0.022]}
+  tz_transmitter: {attach: base_link, offset_m: [0.278, 0, -0.072]}
   us_locknut_1: {attach: base_link, offset_m: [0.3615, 0.13, -0.0066]}
   us_locknut_2: {attach: base_link, offset_m: [0.3615, -0.13, -0.0066]}
   us_locknut_3: {attach: base_link, offset_m: [-0.3615, 0.13, -0.0066]}

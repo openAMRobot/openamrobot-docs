@@ -39,7 +39,7 @@ def main():
     asm = cq.Assembly(name="OpenAMRobot2_layout_base_footprint")
     n = 0
     for p in scene:
-        if p.id in di_parts or p.id.startswith(("motor_brackets", "keepout", "harness", "service_loop", "fasteners", "k1k2_option")):
+        if p.id in di_parts or p.id.startswith(("motor_brackets", "keepout", "harness", "service_loop", "fasteners", "k1k2_option", "tz_gap_overlap")):
             continue
         v = p.world(cfg) * 1000
         lo, hi = v.min(0), v.max(0)

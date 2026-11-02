@@ -22,10 +22,19 @@ import re
 import numpy as np
 from scipy.spatial import cKDTree
 
-from frames import FACTS, HERE, MODEL, REPO, datums, glb_nodes, load_yaml, sensor_frames
+from frames import FACTS, HERE, MODEL, REPO, datums, glb_nodes, load_yaml, sensor_frames, tzbot_layout
 
 OWN = {"mech": "fridayali", "elec": "evans-kwashie", "lead": "BotshareAI", "nav": "skunal3318", "manip": "Brinex45",
        "perc": "vineethmanthena", "tech": "panthera-momagdii"}
+
+
+def issue_key(r):
+    """Registry key of an issue: kind|parts, with the part lists that change from run to run stripped."""
+    p = re.sub(r" \(nearest [^)]*\)", "", r["parts"])
+    for pre in ("Front bay and rear zone layout /", "Front bay overflow /", "Rear zone layout (B5) /"):
+        if p.startswith(pre):
+            p = pre[:-2]
+    return "%s|%s" % (r["kind"], p)
 
 
 # ---------------------------------------------------------------- primitives
@@ -790,38 +799,44 @@ def main():
         g = geos["tz_receiver"]
         lo, hi = g.lo, g.hi
         lowc = FACTS["cad_lowest"]
-        tzout["position"] = {"lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "orientation": "240 mm along x, 210 mm along y",
+        TZL = tzbot_layout()
+        tzout["position"] = {"lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "orientation": TZL["orientation"], "orientation_candidates": TZL["candidates"],
                              "front_edge_to_front_panel_inner_mm": round((TZ["front_panel_inner_x"] - hi[0]) * 1000, 1),
                              "occupies_z_mm": [round(lo[2] * 1000, 1), round(hi[2] * 1000, 1)]}
         tzout["lowest_point"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "cad": {k: v for k, v in lowc.items()},
                                  "lowest_non_wheel_mm": round(min(lowc["castor_bolt_tips_m6x20"], lowc["m5x20_bolt_tips"], lowc["m4x16_bolt_tips"]) * 1000, 1),
                                  "ground_clearance_changes": bool(lo[2] < min(lowc["castor_bolt_tips_m6x20"], lowc["m5x20_bolt_tips"]))}
-        tzout["floor_gap"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "transmitter_height": "not in openamr-platform-hw datasheets/TZBot (folder holds a README only)",
-                              "gap_mm": "50.0 - transmitter height", "owner_window_mm": [0, 50], "wcm500_window_mm": [10, 30],
-                              "wcm500_window_source": "openamr-platform-sw docking research 14_docking_research.md section 3.2 (public extract)",
-                              "transmitter_height_for_wcm500_window_mm": [20, 40], "owner_rule": "a transmitter under 45 mm gives at least 5 mm"}
+        tx_h = FACTS["tzbot_transmitter"]["size"][2]
+        g0, g1 = TZ["air_gap"]
+        gap = lo[2] - tx_h
+        fo = {"raise_receiver_bottom_mm": [round((tx_h + g0) * 1000), round((tx_h + g1) * 1000)],
+              "more_bay_height_mm": [round((tx_h + g0 - lo[2]) * 1000), round((tx_h + g1 - lo[2]) * 1000)],
+              "transmitter_top_mm": [round((lo[2] - g1) * 1000), round((lo[2] - g0) * 1000)]}
+        tzout["floor_gap"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "transmitter_height_mm": round(tx_h * 1000, 1), "gap_mm": round(gap * 1000, 1),
+                              "manual_air_gap_mm": [g0 * 1000, g1 * 1000], "source": TZ["source"], "fix_options": fo,
+                              "status": "known interference, warn only; fix scheduled later by the owner" if gap < g0 else "within the manual air gap"}
         bc = summ.get("receiver", {}).get("cutout")
-        tzout["cutout"] = {"xy_m": bc, "size_mm": [round((bc[1] - bc[0]) * 1000), round((bc[3] - bc[2]) * 1000)],
+        tzout["cutout"] = {"xy_m": bc, "size_mm": [round((bc[1] - bc[0]) * 1000), round((bc[3] - bc[2]) * 1000)], "receiver_plus_20_mm": TZL["cutout_full_mm"],
                            "existing_contact_charger_cutout_m": TZ["cutout_existing"],
                            "removes": ["the existing contact-charger cut-out under the LiDAR (46 x 222 mm), absorbed",
                                        "the base-sheet footprint of the LiDAR support MMP.07 feet and their 4 x ISO 7045 M4 x 16 screws (x 0.245 to 0.319, y +/-0.078)",
-                                       "the base-sheet footprint of the electronics bracket MMP.04.00.00.002 walls forward of x 0.103 (bracket to be shortened)",
-                                       "the old MEC-005 bay plate rivet nuts in the bay centre (the plate moves up to z 0.135 on standoffs outside |y| 0.125)",
+                                       "the base-sheet footprint of the electronics bracket MMP.04.00.00.002 walls forward of x %.3f (bracket to be shortened)" % (lo[0] - TZ["metal_clear"]),
+                                       "the old MEC-005 bay plate rivet nuts in the bay centre (the plate moves up to z %.3f on standoffs outside |y| %.3f)" % (hi[2] + TZ["metal_clear"], hi[1] + TZ["metal_clear"]),
                                        "base-sheet area %.0f cm2 (2 mm steel, %.2f kg)" % ((bc[1] - bc[0]) * (bc[3] - bc[2]) * 1e4, (bc[1] - bc[0]) * (bc[3] - bc[2]) * 0.002 * 7850)],
                            "stops_at": "x 0.370, the front panel bottom flange line (a cut to x 0.383 would leave a 3.4 mm strip)"}
         # metal within 20 mm of the receiver (default front bay option)
         NONMETAL = ("camera_mount", "ultrasonic_mount", "tof_mount", "lidar_spacer", "ultrasonic_front", "ultrasonic_rear", "tof_front", "tof_rear",
                     "tz_", "base_cutout", "estop_p", "keepout", "harness_fittings")
         FIX = {"base_plate": "cut-out to the receiver outline plus 20 mm (B4)",
-               "lidar_support": "MMP.07 walls stand on the base sheet at y +/-0.069, inside the receiver: shorten MMP.07 by 84 mm and stand it on the raised bay plate (z 0.135); keep the 17.5 mm spacer, scan plane 222.05 mm",
+               "lidar_support": "MMP.07 walls stand on the base sheet at y +/-0.069, inside the receiver: shorten MMP.07 by %.0f mm and stand it on the raised bay plate (z %.3f); keep the 17.5 mm spacer, scan plane 222.05 mm" % ((hi[2] + TZ["metal_clear"] + 0.003 - 0.054) * 1000, hi[2] + TZ["metal_clear"]),
                "electronics_bracket": "shorten MMP.04.00.00.002 to end at x 0.100 (IMU board at x 0.018 to 0.061 stays at imu_link)",
-               "front_panel": "notch the front panel bottom flange (x 0.370 to 0.388) over y +/-0.125, or accept 7 mm and ask TZBOT",
-               "bay_plate": "plate at z 0.135 (20 mm above the receiver top), aluminium; standoffs outside |y| 0.125",
+               "front_panel": "notch the front panel bottom flange (x 0.370 to 0.388) over y +/-%.3f, or accept 7 mm and ask TZBOT" % (hi[1] + TZ["metal_clear"]),
+               "bay_plate": "plate at z %.3f (20 mm above the receiver top), aluminium; standoffs outside |y| %.3f" % (hi[2] + TZ["metal_clear"], hi[1] + TZ["metal_clear"]),
                "castor_front_left": "outside (clearance shown)", "castor_front_right": "outside (clearance shown)",
                "hub_motor_wheel_left": "outside", "hub_motor_wheel_right": "outside", "base_camera": "Gemini 336L housing above the zone; keep 20 mm",
                "estop": "XB4 body and ZBE contact block above the receiver front edge: ask TZBOT whether small switch metal at 10 mm is acceptable",
                "reset_button": "as the E-stop: ask TZBOT", "centre_bracket": "the arch front feet (x 0.117 to 0.135) and their inner M5 bolts (y +/-0.105) clash with the receiver rear corners: trim the feet at |y| < 0.125 and move the inner foot bolts to y +/-0.130",
-               "fasteners_base": "the M4 brass heat-set inserts and screws of the Gemini mount MEC-009 (x 0.372, z 0.123) sit 8 mm above the receiver front: use PEEK or nylon M4 screws, keep the small brass inserts and ask TZBOT",
+               "fasteners_base": "the M4 brass heat-set inserts and screws of the Gemini mount MEC-009 (x 0.372, z 0.123) sit just above the receiver front: use PEEK or nylon M4 screws, keep the small brass inserts and ask TZBOT",
                "us_locknut_1": "use nylon 3/4 in NPS lock nuts on the front MB7060 (MEC-021 allows nylon)", "us_locknut_2": "use nylon 3/4 in NPS lock nuts on the front MB7060 (MEC-021 allows nylon)"}
         metal = []
         for k, gg in geos.items():
@@ -875,7 +890,8 @@ def main():
             d, _ = cKDTree(coil.samples).query(geos[k].samples)
             return round(float(d.min()) * 1000, 1)
         emc = {"IMU (EV_ICM-42688-P)": dist_to("imu"), "Jetson Orin NX on J401": dist_to("compute"), "NUCLEO-H723ZG": dist_to("base_controller"),
-               "Gemini 336L": dist_to("base_camera")}
+               "Gemini 336L": dist_to("base_camera"),
+               "Wi-Fi antenna (CMP-007 card in the J401; antenna position not decided, measured to the compute envelope)": dist_to("compute")}
         # cables by function: CAN and USB (harness tubes carry their cable id)
         cab = {r["id"]: r for r in csv.DictReader(open(os.path.join(MODEL, "cable_list.csv")))}
         for label, pred in (("CAN cables", lambda r: "CAN" in r["function"] or "CAN" in r["gauge_or_type"]), ("USB cables", lambda r: "USB" in r["function"] or "USB" in r["gauge_or_type"])):
@@ -899,9 +915,16 @@ def main():
                 issue("major", "TZBOT receiver coil / %s (EMC distance)" % k, "charging, front bay option %s" % P["front_bay"]["default"], "%.1f mm from the coil" % v,
                       ">= 50 mm until TZBOT gives a minimum distance and the field at 50 / 100 mm", "owner request B4 (2 Nov 2026); ferrite sheet on the receiver top",
                       "route or move the item above the bay plate, keep the ferrite sheet, and ask TZBOT for the minimum distance to electronics", OWN["elec"], "tzbot")
-        issue("major", "TZBOT floor transmitter height / air gap", "charging position", "gap = 50.0 mm - transmitter height; the height is not in openamr-platform-hw datasheets/TZBot",
-              "0 to 50 mm (owner); WCM-500: 10 to 30 mm, no contact (platform-sw docking research, public extract)", "B4; receiver bottom 50.0 mm above the floor",
-              "ask TZBOT for the transmitter height: 20 to 40 mm gives 10 to 30 mm; under 45 mm gives at least 5 mm", OWN["lead"], "tzbot")
+        issue("minor", "TZBOT 2.4 GHz data link / J401 Wi-Fi (CMP-007) coexistence", "charging", "data link %.3f to %.3f GHz, %d dBm; Wi-Fi card inside the J401 envelope, antenna position not decided" % (
+                  TZ["data_link_ghz"][0], TZ["data_link_ghz"][1], TZ["data_link_dbm"]), "no Wi-Fi loss while docked", TZ["source"],
+              "place the Wi-Fi antennas away from the receiver (top of the base or the column), test while charging, ask TZBOT for the channel plan", OWN["elec"], "tzbot")
+        if gap < g0:
+            issue("major", "TZBOT receiver / floor transmitter WCM-500-24", "docked; receiver bottom %.0f mm above the floor, %.0f mm transmitter on the floor" % (lo[2] * 1000, tx_h * 1000),
+                  "overlap %.0f mm (receiver bottom %.0f mm, transmitter top %.0f mm)" % (gap * 1000, lo[2] * 1000, tx_h * 1000),
+                  "gap %.0f to %.0f mm (20 +-10 mm)" % (g0 * 1000, g1 * 1000), TZ["source"] + "; owner placement B4 (bottom 2 mm below the base sheet)",
+                  "known, fix scheduled later by the owner. Options (not chosen): 1) raise the receiver into the bay (bottom at %d to %d mm, which needs %d to %d mm more bay height above the receiver); "
+                  "2) recess the transmitter into the floor or a low ramp (top at %d to %d mm); 3) a combination of both" % tuple(fo["raise_receiver_bottom_mm"] + fo["more_bay_height_mm"] + fo["transmitter_top_mm"]),
+                  OWN["mech"], "charging gap")
 
     # ---- services and fits from the build summary
     nof = summ["nofit"]
@@ -961,8 +984,37 @@ def main():
     # ---- write
     order = {"blocker": 0, "major": 1, "minor": 2}
     issues.sort(key=lambda r: (order[r["severity"]], r["kind"], r["parts"]))
-    for i, r in enumerate(issues):
-        r["id"] = "GI-%03d" % (i + 1)
+    # stable issue IDs (issue_ids.yaml, seeded from the IDs published in PR #68): an issue keeps its ID across reruns; new
+    # issues get the next free ID; IDs no longer reported are closed with a reason (hardware page)
+    reg_path = os.path.join(HERE, "issue_ids.yaml")
+    REG = load_yaml(reg_path) if os.path.exists(reg_path) else {}
+    ids_reg, closed_reg = dict(REG.get("ids") or {}), dict(REG.get("closed") or {})
+    nxt = max([int(v[3:]) for v in list(ids_reg.values()) + list(closed_reg)] + [0]) + 1
+    seen, used = set(), set()
+    for r in issues:
+        k = issue_key(r)
+        if k in used:  # same parts in another configuration (for example L1000 and L1350)
+            k = "%s|%s" % (k, r["configuration"])
+        used.add(k)
+        if k not in ids_reg:
+            ids_reg[k] = "GI-%03d" % nxt
+            nxt += 1
+        r["id"] = ids_reg[k]
+        assert r["id"] not in seen, "two issues share the ID %s (%s)" % (r["id"], k)
+        seen.add(r["id"])
+    for k, v in list(ids_reg.items()):
+        if v not in seen:
+            closed_reg.setdefault(v, {"key": k, "reason": "no longer reported by the analysis"})
+            del ids_reg[k]
+    for v in list(closed_reg):
+        if v in seen:
+            del closed_reg[v]
+    with open(reg_path, "w") as f:
+        f.write("# Stable IDs of geometry_issues.csv (written by analyse.py). key: kind|parts (dynamic part lists stripped).\n")
+        f.write("# closed: IDs no longer reported, with the reason. Edit a reason by hand; analyse.py keeps it.\n")
+        f.write("ids:\n" + "".join("  %s: %s\n" % (json.dumps(k), v) for k, v in sorted(ids_reg.items(), key=lambda x: x[1])))
+        f.write("closed:\n" + "".join("  %s: {key: %s, reason: %s}\n" % (v, json.dumps(c["key"]), json.dumps(c["reason"])) for v, c in sorted(closed_reg.items())))
+    closed_out = [{"id": v, "key": c["key"], "reason": c["reason"]} for v, c in sorted(closed_reg.items())]
     keys = ["id", "severity", "kind", "parts", "configuration", "measured", "limit", "source", "suggested_fix", "owner"]
     with open(os.path.join(MODEL, "geometry_issues.csv"), "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=keys)
@@ -980,7 +1032,7 @@ def main():
         for other in ("head_light", "arm_profile", "head_camera", "head_camera_bracket"):
             r = pair(gp, geos[other], .05)
             gpo[other] = None if r is None else {"clearance_mm": round(r[0] * 1000, 1), "overlap_mm": round(r[1] * 1000, 1)}
-    out = {"self_check": check, "frames": frames, "heights": heights, "mass": res, "stability": stab, "loads": loads, "views": views,
+    out = {"self_check": check, "closed_issues": closed_out, "frames": frames, "heights": heights, "mass": res, "stability": stab, "loads": loads, "views": views,
            "intended_contacts": intended, "tzbot": tzout, "lift_base_plate": plate, "estop_positions": ep, "front_bay": {k: v.get("fit") for k, v in fbs.items()},
            "front_bay_default": fbd, "getac_portrait": gpo, "mass_items": placed_mass,
            "sweep": {"%s|%s|%s" % k: v[:20] for k, v in sweep.items()}, "sweep_steps_per_arm": nsteps,

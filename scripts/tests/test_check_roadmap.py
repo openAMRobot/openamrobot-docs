@@ -4,14 +4,17 @@
 Sensor pose check (review of ef90d7f, 2 Nov 2026): the committed model passes; a drawn sensor moved by +20 mm in x,
 +2 mm in y or +2 mm in z, or pitched by +1 deg about its own frame, fails. Chest retired-term check (review of
 419e1c6): the labelled portrait second-position ghost passes, a portrait default fails. STATE.md figures: a stale
-figure fails.
+figure fails. Known contacts (TZBOT charging gap, 2 Nov 2026): the committed model passes; a receiver raised by 1 mm
+(overlap 1 mm instead of the declared 2 mm) fails, and so does a missing issue row.
 """
 import copy
 import json
 import math
 import os
 import subprocess
+import shutil
 import sys
+import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -153,3 +156,35 @@ class WholeCheck(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class KnownContacts(unittest.TestCase):
+    def run_check(self, edit_place=None, edit_rows=None):
+        d = tempfile.mkdtemp()
+        try:
+            os.makedirs(os.path.join(d, "model"))
+            P = json.load(open(os.path.join(MODEL, "placement.json"), encoding="utf-8"))
+            rows = open(os.path.join(MODEL, "geometry_issues.csv"), encoding="utf-8").read()
+            if edit_place:
+                edit_place(P)
+            if edit_rows:
+                rows = edit_rows(rows)
+            json.dump(P, open(os.path.join(d, "model", "placement.json"), "w", encoding="utf-8"))
+            open(os.path.join(d, "model", "geometry_issues.csv"), "w", encoding="utf-8").write(rows)
+            out = []
+            C.check_known_contacts(d, lambda page, msg: out.append(msg))
+            return out
+        finally:
+            shutil.rmtree(d)
+
+    def test_committed_model_passes(self):
+        self.assertEqual(self.run_check(), [])
+
+    def test_changed_overlap_fails(self):
+        def raise_rx(P):
+            P["geometry"]["tz_receiver"]["prims"][0]["p"][2] += 0.001
+        self.assertTrue(any("overlap 1.0 mm" in e for e in self.run_check(raise_rx)))
+
+    def test_missing_issue_row_fails(self):
+        drop = lambda rows = "": "\n".join(l for l in rows.splitlines() if "TZBOT receiver / floor transmitter WCM-500-24" not in l) + "\n"
+        self.assertTrue(any("row missing" in e for e in self.run_check(edit_rows=drop)))

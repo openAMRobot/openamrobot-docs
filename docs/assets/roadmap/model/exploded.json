@@ -1874,6 +1874,23 @@
     ]
    }
   },
+  "tz_gap_overlap": {
+   "stage": 1,
+   "offsets": {
+    "tz_gap_overlap": [
+     0,
+     0,
+     -0.3
+    ]
+   },
+   "open": {
+    "tz_gap_overlap": [
+     0,
+     0,
+     -0.15
+    ]
+   }
+  },
   "rear_plate": {
    "stage": 3,
    "offsets": {
@@ -2792,6 +2809,7 @@
   "rz_sb50",
   "shims",
   "tz_ferrite",
+  "tz_gap_overlap",
   "tz_metal_free_zone",
   "tz_receiver",
   "tz_transmitter",

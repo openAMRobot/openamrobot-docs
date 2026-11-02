@@ -141,7 +141,7 @@ UI-002: {by: tablet_mount}
 UI-003: {by: inside:getac_tablet, cls: not drawn, reason: "tablet speaker, part of UI-001"}
 WCH-001: {by: none, cls: not drawn, reason: "set row: the onboard part is WCH-002, the transmitter WCH-003 is offboard"}
 WCH-002: {by: tz_receiver}
-WCH-003: {by: none, cls: not drawn, reason: offboard}
+WCH-003: {by: tz_transmitter, reason: "offboard: floor station, drawn on the floor under the docked robot (not in the robot mass)"}
 WCH-004: {by: rz_kchg}
 WCH-005: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.02, msrc: "estimate"}
 WCH-006: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.1, msrc: "estimate"}

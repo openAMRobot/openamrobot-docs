@@ -1,0 +1,97 @@
+# Stable IDs of geometry_issues.csv (written by analyse.py). key: kind|parts (dynamic part lists stripped).
+# closed: IDs no longer reported, with the reason. Edit a reason by hand; analyse.py keeps it.
+ids:
+  "arm reach|Getac ZX80 at shoulder height / arms": GI-002
+  "arm reach|OpenArm left / getac_pocket": GI-003
+  "arm reach|OpenArm left / getac_pocket|L1350, single-joint sweep from the upstream home pose (all joints 0), 10 deg steps": GI-004
+  "arm reach|OpenArm right / getac_pocket": GI-005
+  "arm reach|OpenArm right / getac_pocket|L1350, single-joint sweep from the upstream home pose (all joints 0), 10 deg steps": GI-006
+  "fit|K1/K2 option B Schneider TeSys D LC1D80BD fit": GI-008
+  "fit|K1/K2 option B Siemens 3RT2 size S3 fit": GI-009
+  "interference|Flag rod LFT-004 / adapter plate MEC-004 footprint": GI-010
+  "layout|Jetson Orin NX with fan on the IMU bracket MMP.04.00.00.002": GI-023
+  "layout|Rear side pockets / side panel return flanges": GI-025
+  "sensor view|zed view / getac_pocket": GI-030
+  "sensor view|zed view / getac_second_position_ghost": GI-031
+  "tzbot|TZBOT receiver / base_plate (metal within 20 mm)": GI-032
+  "tzbot|TZBOT receiver / front_panel (metal within 20 mm)": GI-034
+  "tzbot|TZBOT receiver / lidar_support (metal within 20 mm)": GI-035
+  "charging gap|TZBOT receiver / floor transmitter WCM-500-24": GI-036
+  "fit|K1/K2 option A GX11CAC fit": GI-037
+  "harness|Upper-body service loop length": GI-039
+  "interference|Left tote wall / sensors S1, S2": GI-040
+  "interference|camera_mount / lidar_support": GI-056
+  "interference|electronics_bracket / motor_brackets_1": GI-057
+  "interference|electronics_bracket / motor_brackets_3": GI-058
+  "interference|estop / ultrasonic_mount_front_left": GI-059
+  "interference|lift_column / lift_flag": GI-060
+  "interference|lift_flag / lift_sensor_bracket_1": GI-061
+  "interference|lift_flag / lift_sensor_bracket_2": GI-062
+  "interference|lift_flag / lift_sensor_bracket_3": GI-063
+  "interference|lift_flag / lift_stop_sensor_1": GI-064
+  "interference|lift_flag / lift_stop_sensor_2": GI-065
+  "interference|lift_flag / lift_stop_sensor_3": GI-066
+  "interference|rz_f0 / rz_pre": GI-069
+  "mass|Drive wheel load": GI-070
+  "mass|Drive wheel load|L1350": GI-071
+  "mass|Total mass": GI-072
+  "sensor view|LiDAR closed rear sector (inside the cover)": GI-073
+  "services|Battery assembly removal path": GI-074
+  "services|Disconnect handle access": GI-075
+  "stability|Static stability": GI-077
+  "stability|Static stability|L1350": GI-078
+  "stability|Stopping from 1.5 m/s": GI-079
+  "layout|Rear zone layout (B5)": GI-080
+  "arm reach|Second E-stop P2 (proposed) / arm reach envelope": GI-081
+  "load path|Lift base plate MEC-019 on the centre-frame arch: load path": GI-082
+  "tzbot|TZBOT receiver / electronics_bracket (metal within 20 mm)": GI-083
+  "tzbot|TZBOT receiver / fasteners_base (metal within 20 mm)": GI-084
+  "interference|base_controller / rz_k1k2_1": GI-085
+  "interference|base_controller / rz_k1k2_2": GI-086
+  "interference|bay_plate / lidar_spacer": GI-087
+  "interference|rz_batcon / rz_f0": GI-088
+  "sensor view|LiDAR scan plane +-5 mm / support_front_left": GI-089
+  "sensor view|LiDAR scan plane +-5 mm / support_front_right": GI-090
+  "services|Front bay plates removal with the cover off": GI-091
+  "services|Lift base plate removal and cover opening": GI-092
+  "tzbot|TZBOT 2.4 GHz data link / J401 Wi-Fi (CMP-007) coexistence": GI-093
+closed:
+  GI-001: {key: "layout|Front bay and rear zone layout", reason: "closed: front bay option A places the PNOZ DIN assembly, DDR-240B-24 and RSD-60G-5 with the receiver in place; the parts still without space are in the rear zone (GI-080)"}
+  GI-007: {key: "arm reach|Second E-stop at 40 mm below the column top / right gripper", reason: "no longer reported by the analysis"}
+  GI-011: {key: "interference|MEC-019 bp050 front bolts / LiDAR support MMP.07", reason: "no longer reported by the analysis"}
+  GI-012: {key: "interference|battery_tray / bay_can3", reason: "no longer reported by the analysis"}
+  GI-013: {key: "interference|battery_tray / bay_usbcan_2", reason: "no longer reported by the analysis"}
+  GI-014: {key: "interference|battery_tray / rear_plate", reason: "no longer reported by the analysis"}
+  GI-015: {key: "interference|battery_tray / rz_batcon", reason: "no longer reported by the analysis"}
+  GI-016: {key: "interference|battery_tray / rz_disc", reason: "no longer reported by the analysis"}
+  GI-017: {key: "interference|battery_tray / rz_fba", reason: "no longer reported by the analysis"}
+  GI-018: {key: "interference|battery_tray / rz_fbb", reason: "no longer reported by the analysis"}
+  GI-019: {key: "interference|battery_tray / rz_pwr017_2", reason: "no longer reported by the analysis"}
+  GI-020: {key: "interference|getac pocket portrait / arm_profile", reason: "no longer reported by the analysis"}
+  GI-021: {key: "interference|getac pocket portrait / head_light", reason: "no longer reported by the analysis"}
+  GI-022: {key: "layout|Front bay overflow", reason: "no longer reported by the analysis"}
+  GI-024: {key: "layout|MEC-005 single removable plate / LiDAR support MMP.07 and electronics bracket MMP.04.00.00.002", reason: "no longer reported by the analysis"}
+  GI-026: {key: "load path|MEC-019 front deck bolts / frame", reason: "no longer reported by the analysis"}
+  GI-027: {key: "load path|MEC-019 front deck bolts / frame|bp050", reason: "no longer reported by the analysis"}
+  GI-028: {key: "sensor view|LiDAR scan plane +-5 mm / harness_bat_base", reason: "no longer reported by the analysis"}
+  GI-029: {key: "sensor view|LiDAR scan plane +-5 mm / harness_sig_base", reason: "no longer reported by the analysis"}
+  GI-033: {key: "tzbot|TZBOT receiver / bay_plate (metal within 20 mm)", reason: "closed: the MEC-005 plate is raised to z 0.122 (receiver top + 20 mm), outside the 20 mm zone of the 170 x 150 x 52 mm receiver (WCM-500-24 manual V2.5)"}
+  GI-038: {key: "geometry|Hub motor wheel radius 0.100 vs base_link 0.098", reason: "no longer reported by the analysis"}
+  GI-041: {key: "interference|battery / bay_can3", reason: "no longer reported by the analysis"}
+  GI-042: {key: "interference|battery / bay_usbcan_2", reason: "no longer reported by the analysis"}
+  GI-043: {key: "interference|battery / rear_plate", reason: "no longer reported by the analysis"}
+  GI-044: {key: "interference|battery / rz_batcon", reason: "no longer reported by the analysis"}
+  GI-045: {key: "interference|battery / rz_fba", reason: "no longer reported by the analysis"}
+  GI-046: {key: "interference|battery / rz_fbb", reason: "no longer reported by the analysis"}
+  GI-047: {key: "interference|battery / rz_pre", reason: "no longer reported by the analysis"}
+  GI-048: {key: "interference|battery / rz_pwr017_2", reason: "no longer reported by the analysis"}
+  GI-049: {key: "interference|battery_tray / rz_pre", reason: "no longer reported by the analysis"}
+  GI-050: {key: "interference|bay_can3 / rear_plate", reason: "no longer reported by the analysis"}
+  GI-051: {key: "interference|bay_fbc / bay_usbpd", reason: "no longer reported by the analysis"}
+  GI-052: {key: "interference|bay_ina228 / bay_pwr009", reason: "no longer reported by the analysis"}
+  GI-053: {key: "interference|bay_plate / electronics_bracket", reason: "no longer reported by the analysis"}
+  GI-054: {key: "interference|bay_tpl7407 / bay_usbhub", reason: "no longer reported by the analysis"}
+  GI-055: {key: "interference|bay_usbcan_2 / rz_f0", reason: "no longer reported by the analysis"}
+  GI-067: {key: "interference|rz_f0 / rz_k1k2_1", reason: "no longer reported by the analysis"}
+  GI-068: {key: "interference|rz_f0 / rz_k1k2_2", reason: "no longer reported by the analysis"}
+  GI-076: {key: "services|Front bay plate removal with the cover off", reason: "no longer reported by the analysis"}

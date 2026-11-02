@@ -26,7 +26,7 @@ import re
 import numpy as np
 
 import front_bay as FB
-from frames import FACTS, HERE, MODEL, REPO, SENSOR_FRAMES, aabb, bl_to_bf, datums, glb_nodes, load_yaml, sensor_frames
+from frames import FACTS, HERE, MODEL, REPO, SENSOR_FRAMES, aabb, bl_to_bf, datums, glb_nodes, load_yaml, sensor_frames, tzbot_layout
 
 R = lambda v, n=4: round(float(v), n)
 MM = 0.001
@@ -298,6 +298,11 @@ def main():
     SF = sensor_frames()
     G = glb_nodes()
     T = load_yaml(os.path.join(HERE, "parts.yaml"))
+    TZL = tzbot_layout()   # receiver box from facts.yaml (WCM-500-24 manual V2.5, B4 position); the parts table follows it
+    for it in T["fixed"]:
+        if it["id"] == "tz_receiver":
+            it["dims"] = [round(v * 1000, 1) for v in TZL["size"]]
+            it["pos"] = [R(v) for v in TZL["centre"]]
     BM = load_yaml(os.path.join(HERE, "bom_map.yaml"))
     BOM = bom_parts()
     U = upper_body(D, rev)
@@ -477,7 +482,7 @@ def main():
         geo[k]["option"] = opt
         area = sum((q["hi"][0] - q["lo"][0]) * (q["hi"][1] - q["lo"][1]) * (q["hi"][2] - q["lo"][2]) for q in pl)
         c = comp(k, "Front bay plates, option %s: %s" % (opt, "; ".join(q["name"] for q in pl)), "MEC-005", 1, "proposed",
-                 "Bay plates of option %s, raised to z 0.135 over the TZBOT receiver (B4); %s." % (opt, "lower plate, upper shelf on standoffs and DIN carrier" if opt == "A" else "single plate"),
+                 "Bay plates of option %s, raised to z %.3f over the TZBOT receiver (B4); %s." % (opt, FB.PLATE_Z, "lower plate, upper shelf on standoffs and DIN carrier" if opt == "A" else "single plate"),
                  "proposed outlines (3 mm 5052 sheet; DIN carrier 23 mm)", "front bay over the receiver (front_bay.py)", 0 if suffix else area * 2680,
                  "outline x thickness x 2680 kg/m3", 4, [k], off=[0, 0, .28], opn=[0, 0, .14], part_number="MEC-005 (drawing revision TBD)",
                  label=None if not suffix else "Front bay option %s (alternative, hidden by default)" % opt)
@@ -510,34 +515,46 @@ def main():
                 geo[k]["prims"].append(cyl(it["cyl"]["r"], it["cyl"]["h"], p, it["cyl"]["axis"], "#b0b4b8", hq=True))
             else:
                 geo[k]["prims"].append(box(np.array(it["dims"]) * MM, p, col, o=o, hq=it["id"] == "shims"))
-    # ---------------- TZBOT WCM-500-24 receiver set (B4): ferrite sheet, 20 mm metal-free zone, base-sheet cut-out, floor transmitter
+    # ---------------- TZBOT WCM-500-24 receiver set (B4; sizes from the WCM-500-24 manual V2.5): ferrite sheet, 20 mm metal-free zone,
+    # base-sheet cut-out, floor transmitter and the receiver / transmitter overlap (known charging-gap interference, warn only)
     TZ = FACTS["tzbot_receiver"]
-    rc = np.array(TZ["centre"])
-    rs = np.array(TZ["size"])
-    rlo, rhi = rc - rs / 2, rc + rs / 2
+    TXF = FACTS["tzbot_transmitter"]
+    rlo, rhi = np.array(TZL["lo"]), np.array(TZL["hi"])
+    rc, rs = (rlo + rhi) / 2, rhi - rlo
     mc = TZ["metal_clear"]
-    cut = [rlo[0] - mc, 0.370, -(rs[1] / 2 + mc), rs[1] / 2 + mc]   # to the front panel bottom flange line (x 0.370)
+    cut = TZL["cutout"]   # receiver outline + 20 mm, to the front panel bottom flange line (x 0.370)
     geo["tz_ferrite"] = {"group": "base", "prims": [box([rs[0], rs[1], TZ["ferrite_t"]], [rc[0], rc[1], rhi[2] + TZ["ferrite_t"] / 2], "#3d3d3d", name="ferrite_sheet")]}
-    comp("tz_ferrite", "Ferrite shielding sheet on the receiver top (EMC, proposed)", "WCH-002", 1, "proposed",
+    comp("tz_ferrite", "Ferrite shielding sheet on the receiver top (EMC, proposed, not metal)", "WCH-002", 1, "proposed",
          "Thin flexible ferrite sheet on the receiver top face: shields the electronics above from the coil field without the eddy-current losses a metal foil would cause inside the 20 mm zone.",
-         "proposed: 240 x 210 x 1 mm polymer-bonded ferrite sheet (material and thickness to TZBOT)", "receiver top face (B4)", 0.16, "estimate (polymer-bonded ferrite, about 3.2 g/cm3)",
+         "proposed: %.0f x %.0f x %g mm polymer-bonded ferrite sheet (material and thickness to TZBOT)" % (rs[0] * 1000, rs[1] * 1000, TZ["ferrite_t"] * 1000), "receiver top face (B4)",
+         R(rs[0] * rs[1] * TZ["ferrite_t"] * 3200, 3), "estimate (polymer-bonded ferrite, about 3.2 g/cm3)",
          3, ["tz_ferrite"], off=[0, 0, -.25], opn=[0, 0, -.12])
     zlo, zhi = rlo - mc, rhi + mc
     geo["tz_metal_free_zone"] = {"group": "base", "prims": [box(zhi - zlo, (zlo + zhi) / 2, "#e74c3c", o=.10, name="metal_free_zone")]}
     comp("tz_metal_free_zone", "TZBOT receiver 20 mm metal-free zone (ghost)", "", 1, "proposed",
-         "The receiver outline plus 20 mm on every side: no metal inside it (B5, TZBOT installation rule).", "receiver outline + 20 mm", "B4 receiver position", 0, "no mass",
+         "The receiver outline plus 20 mm on every side: no metal inside it (TZBOT WCM-500-24 manual V2.5).", "receiver outline + 20 mm", "B4 receiver position", 0, "no mass",
          3, ["tz_metal_free_zone"], label="Keep-out ghost, not a part", off=[0, 0, -.25], opn=[0, 0, -.12])
     geo["base_cutout"] = {"group": "base", "prims": [box([cut[1] - cut[0], cut[3] - cut[2], 0.0022], [(cut[0] + cut[1]) / 2, 0, 0.053], "#e67e22", o=.35, name="base_sheet_cutout")]}
     comp("base_cutout", "Base-sheet cut-out for the receiver (extends the contact-charger cut-out)", "MEC-001", 1, "proposed",
-         "Base sheet MMP.02.00.00.001 cut-out: the existing contact-charger cut-out under the LiDAR (46 x 222 mm) extended to the receiver outline plus the 20 mm metal-free margin, to the front panel bottom flange.",
+         "Base sheet MMP.02.00.00.001 cut-out: the existing contact-charger cut-out under the LiDAR (46 x 222 mm) extended to the receiver outline plus the 20 mm metal-free margin (%d x %d mm), to the front panel bottom flange." % tuple(TZL["cutout_full_mm"]),
          "proposed cut-out %.0f x %.0f mm" % ((cut[1] - cut[0]) * 1000, (cut[3] - cut[2]) * 1000), "B4", 0, "material removed (not counted)", 1, ["base_cutout"],
          label="Cut-out ghost", off=[0, 0, -.2], opn=[0, 0, -.1])
-    tx_h = 0.030   # transmitter height: not in openamr-platform-hw datasheets/TZBot; drawn 30 mm (placeholder)
-    geo["tz_transmitter"] = {"group": "base", "prims": [box([rs[0], rs[1], tx_h], [rc[0], rc[1], tx_h / 2], "#7f8c8d", o=.45, name="floor_transmitter")]}
-    comp("tz_transmitter", "TZBOT floor transmitter (placeholder height 30 mm, not on the robot)", "WCH-003", 1, "placeholder",
-         "Floor transmitter of the charging station, drawn under the receiver at its charging position for the air-gap check; its height is not in the datasheet folder.",
-         "placeholder: receiver footprint, 30 mm tall (WCM-500 air gap 10 to 30 mm implies 20 to 40 mm)", "on the floor under the receiver", 0, "offboard (not counted)", 1, ["tz_transmitter"],
-         label="Placeholder: transmitter height to TZBOT", off=[0, 0, -.3], opn=[0, 0, -.15])
+    tx_h = TXF["size"][2]
+    tlo = np.array([rlo[0], rlo[1], 0.0])
+    thi = np.array([rhi[0], rhi[1], tx_h])
+    geo["tz_transmitter"] = {"group": "base", "prims": [box(thi - tlo, (tlo + thi) / 2, "#7f8c8d", o=.55, name="floor_transmitter")]}
+    comp("tz_transmitter", "TZBOT floor transmitter WCM-500-24 (charging station, not on the robot)", "WCH-003", 1, "provisional",
+         "Floor transmitter of the charging station, lying on the floor under the docked robot, aligned with the receiver (allowed misalignment X and Y +-20 mm).",
+         "TZBOT WCM-500-24 manual V2.5: %.0f x %.0f x %.0f mm, about %g kg" % (rs[0] * 1000, rs[1] * 1000, tx_h * 1000, TXF["mass"]), "on the floor under the receiver (docked)", 0,
+         "offboard (not counted)", 1, ["tz_transmitter"], label="Charging station on the floor (offboard)", off=[0, 0, -.3], opn=[0, 0, -.15])
+    gap = float(rlo[2] - tx_h)
+    if gap < 0:   # known charging-gap interference (GI-036, warn only; declared in check_roadmap.py KNOWN_CONTACTS)
+        geo["tz_gap_overlap"] = {"group": "base", "prims": [box([rs[0] + .004, rs[1] + .004, -gap], [rc[0], rc[1], (rlo[2] + tx_h) / 2], "#ff1a1a", name="overlap_band")]}
+        comp("tz_gap_overlap", "Charging-gap interference: receiver bottom below the transmitter top (known, warn only)", "", 1, "proposed",
+             "Red band: the receiver bottom at %.0f mm and the %.0f mm transmitter overlap by %.0f mm; the manual gives an air gap of %.0f to %.0f mm. Fix scheduled later by the owner." % (
+                 rlo[2] * 1000, tx_h * 1000, -gap * 1000, TZ["air_gap"][0] * 1000, TZ["air_gap"][1] * 1000),
+             "receiver outline x overlap height", "between the receiver bottom and the transmitter top", 0, "no mass", 1, ["tz_gap_overlap"],
+             label="Known interference, fix scheduled later by the owner", off=[0, 0, -.3], opn=[0, 0, -.15])
 
     # MEC-006 rear routing plate behind the cells
     rb = {k: list(v) for k, v in FACTS["rear_zones"]["behind"].items()}
@@ -673,7 +690,7 @@ def main():
         "lidar": [0.300, 0.0, 0.200], "gemini": [0.372, 0.0, 0.160], "estop": [0.345, 0.130, 0.145], "reset": [0.340, -0.130, 0.145],
         "us_fl": [0.355, 0.130, 0.0914], "us_fr": [0.355, -0.130, 0.0914], "us_rl": [-0.355, 0.130, 0.0914], "us_rr": [-0.355, -0.130, 0.0914],
         "tof_f": [0.385, 0.0, 0.107], "tof_r": [-0.374, 0.0, 0.092],
-        "disc": fixed_pos("rz_disc"), "sb50": fixed_pos("rz_sb50"), "rx": [FACTS["tzbot_receiver"]["centre"][0] - 0.105, 0.0, 0.110],
+        "disc": fixed_pos("rz_disc"), "sb50": fixed_pos("rz_sb50"), "rx": [FACTS["tzbot_receiver"]["lo"][0] + 0.015, 0.0, FACTS["tzbot_receiver"]["hi"][2] - 0.005],  # cable exit, receiver rear top
         "lift_node": fixed_pos("lift_node"), "lift_motor": [ax - 0.060, 0.0, 0.330],
         "estop2": [ax + 0.120 - 0.030, 0.0, U["col_top"] + 0.350 - FACTS["second_estop"]["post_below_top"]],
         "arm_l": [U["shoulder"][0] - 0.03, 0.045, U["shoulder"][2]], "arm_r": [U["shoulder"][0] - 0.03, -0.045, U["shoulder"][2]],
@@ -929,9 +946,9 @@ def main():
     for z in lz:
         fx["col"].append(cyl(.003, .004, [-0.095 + .045 - .028, .03 + .004, z - .008], "y", "#2d2d2d", hq=True))
     F("MB7060 in the 27.5 mm panel hole", "3/4 in NPS lock nut", "3/4 in NPS", 4, "MEC-021", "nylon / steel", "named")
-    F("MEC-005 lower plate on 6 standoffs from the base sheet, outside the receiver zone (|y| >= 0.125)", "hex standoff M4 x 78 + ISO 7380", "M4", 6, "hex standoff / ISO 7380", "A2", "proposed")
+    F("MEC-005 lower plate on 6 standoffs from the base sheet, outside the receiver zone (|y| >= %.3f)" % FB.STRIP_Y, "hex standoff M4 x %d + ISO 7380" % round((FB.PLATE_Z - 0.054) * 1000), "M4", 6, "hex standoff / ISO 7380", "A2", "proposed")
     for (x, y) in [(0.150, 0.150), (0.240, 0.150), (0.325, 0.150), (0.150, -0.150), (0.240, -0.150), (0.325, -0.150)]:
-        fx["base"].append(cyl(.004, .0025, [x, y, 0.138 + .00125], "z", "#9a9a9a", hq=True))
+        fx["base"].append(cyl(.004, .0025, [x, y, FB.FLOOR + .00125], "z", "#9a9a9a", hq=True))
     F("DIN rail to MEC-005", "pan head screw", "M4 x 8", 2, "ISO 7045", "A2", "proposed")
     F("RSD-60G-5, RSD-100B-24 to MEC-005", "socket head cap screw + washer", "M4 x 8", 8, "ISO 4762 / ISO 7089", "A2", "proposed", "n")
     F("FB-A, FB-B, PWR-017 to MEC-006", "socket head cap screw + washer", "M5 x 12", 10, "ISO 4762 / ISO 7089", "A2", "proposed", "n")
@@ -1109,7 +1126,7 @@ def main():
     summary = {"packed": {k: [[R(x) for x in v[0]], [R(x * 1000, 1) for x in v[1]]] for k, v in placed.items()}, "nofit": nofit,
                "front_bay": {o: {"fit": fb_fit[o], "placed": {k: [v[0], [R(x) for x in v[1]], [R(x * 1000, 1) for x in v[2]]] for k, v in FBR[o]["placed"].items()},
                                  "plates": FBR[o]["plates"], "shelf": FBR[o].get("shelf"), "shelf_order": FBR[o].get("shelf_order")} for o in FBR},
-               "front_bay_default": fb_default, "relocate": fb_relocate, "receiver": {"centre": FACTS["tzbot_receiver"]["centre"], "cutout": cut},
+               "front_bay_default": fb_default, "relocate": fb_relocate, "receiver": {"centre": FACTS["tzbot_receiver"]["centre"], "lo": TZL["lo"].round(4).tolist(), "hi": TZL["hi"].round(4).tolist(), "cutout": cut, "orientation": TZL["orientation"], "candidates": TZL["candidates"], "cutout_mm": TZL["cutout_mm"], "cutout_full_mm": TZL["cutout_full_mm"], "gap_m": R(gap)},
                "k1k2_options": opt, "bolts": bolts, "bay_plate_area_m2": R(area, 4), "seed": issues_seed,
                "coverage": {c: sum(1 for r in rows if r["class"] == c) for c in sorted({r["class"] for r in rows})},
                "onboard": sum(1 for r in rows if r["onboard"] == "y"), "records": len(rows)}
@@ -1158,7 +1175,7 @@ def assembly(fasteners):
         (2, "Hub motors with MEC-015 brackets, castors with MEC-016 shims", "M8 x 20 bracket bolts; castor M6", "13 mm socket, torque wrench", "M8 8.8: 25 Nm", "from below with the base on its side; brake side inboard"),
         (3, "TZBOT receiver WCM-500-24 with bracket WCH-007 from below into the cut-out, ferrite sheet on its top", "4 x M5 A4 into rivet nuts outside the 20 mm zone", "hex key 3 mm", "M5: 4 Nm", "from below with the base on its side, before the bay plate; bottom face 50 mm above the floor"),
         (4, "Motor driver on MMP.02.00.00.002, electronics bracket MMP.04.00.00.002 (shortened to x 0.100) with the IMU board", "M3/M4", "hex key 2.5 / 3 mm", "M3: 1.2 Nm, M4: 2.8 Nm", "from above, cover off; nothing heavy or vibrating on the IMU bracket"),
-        (5, "Front bay option A: lower plate on standoffs (z 0.135), DIN carrier with PNOZ s3 and DDR-240B-24 on the arch front legs, RSD-100B-24 and small power parts, shelf on standoffs with compute (J401), NUCLEO, FB-C and terminal blocks; strip boards beside the receiver", "M4 standoffs, M5 carrier screws", "hex key 2.5 / 3 mm, nut driver 7 mm", "M4: 2.8 Nm", "strip boards first, then the lower plate, the DIN carrier, the shelf; every fuse (FB-C on the shelf) and the PNOZ terminals reachable from above with the cover off"),
+        (5, "Front bay option A: lower plate on standoffs (z " + "%.3f" % FB.PLATE_Z + "), DIN carrier with PNOZ s3 and DDR-240B-24 on the arch front legs, RSD-100B-24 and small power parts, shelf on standoffs with compute (J401), NUCLEO, FB-C and terminal blocks; strip boards beside the receiver", "M4 standoffs, M5 carrier screws", "hex key 2.5 / 3 mm, nut driver 7 mm", "M4: 2.8 Nm", "strip boards first, then the lower plate, the DIN carrier, the shelf; every fuse (FB-C on the shelf) and the PNOZ terminals reachable from above with the cover off"),
         (6, "Rear zone: MEC-006 plate with FB-A, FB-B, PWR-017; side pockets: F0 holder, K1/K2, precharge kit, BMS, KCHG, F-CHG", "M5 x 12", "hex key 4 mm, 13 mm socket for M8 lugs", "M5: 5.5 Nm; M8 lugs per maker", "before the battery tray, side panels detached"),
         (7, "Battery tray MEC-007 with the cell assembly, restraint, side panels", "M6 x 16, quarter-turn panels", "hex key 5 mm", "M6 8.8: 10 Nm", "lowered from above with the cover off; removable without removing the arms"),
         (8, "Sensors: LiDAR on the shortened MMP.07 on the lower plate + 17.5 mm spacer, Gemini on MEC-009, MB7060 with lock nuts, TF-Luna, E-stop, RESET", "M4 inserts, 3/4 in NPS nuts", "hex key 3 mm, 32 mm spanner", "M4: 1.5 Nm into PETG inserts", "front MB7060 nuts reached from inside before the bay plate goes in"),

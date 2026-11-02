@@ -1,7 +1,7 @@
 """Front bay options A and B with the TZBOT WCM-500-24 receiver in place (owner decisions of 2 Nov 2026, B4 and C1).
 
-Both options respect the receiver (x 0.123 to 0.363, y +/-0.105, z 0.050 to 0.115): metal parts start no lower than
-20 mm above its top (z 0.135), the bay plate MEC-005 moves up to z 0.135 over it, the cover underside (0.290), the
+Both options respect the receiver (frames.tzbot_layout(), WCM-500-24 manual V2.5: x 0.193 to 0.363, y +/-0.075, z 0.050 to
+0.102): metal parts start no lower than 20 mm above its top (z 0.122), the bay plate MEC-005 moves up to z 0.122 over it, the cover underside (0.290), the
 LiDAR scan plane 222.05 mm +/-5 mm in the open sector (bearing +/-95 deg from lidar_link), air gaps of at least 10 mm
 around converters and top access to every fuse and connector block.
 
@@ -20,12 +20,17 @@ import math
 
 import numpy as np
 
+from frames import tzbot_layout
+
 MM = 0.001
-RX = {"lo": [0.123, -0.105, 0.050], "hi": [0.363, 0.105, 0.115]}   # receiver, 240 along x (B4)
-METAL_CLEAR = 0.020
-PLATE_Z = 0.135              # top of the receiver + 20 mm: bay plate underside
+_T = tzbot_layout()
+RX = {"lo": [float(v) for v in _T["lo"]], "hi": [float(v) for v in _T["hi"]]}   # receiver (B4 position, WCM-500-24 manual V2.5 size)
+METAL_CLEAR = _T["metal_clear"]
+PLATE_Z = round(RX["hi"][2] + METAL_CLEAR, 4)   # top of the receiver + 20 mm: bay plate underside (0.122)
+STRIP_Y = round(RX["hi"][1] + METAL_CLEAR, 4)   # strips beside the receiver start outside its 20 mm zone (0.095)
+STRIP_W = 0.070   # strip width, a whole number of 5 mm grid cells so the grid cannot reach into the zone (outer edge 0.165)
 PLATE_T = 0.003
-FLOOR = PLATE_Z + PLATE_T    # 0.138
+FLOOR = PLATE_Z + PLATE_T    # 0.125
 COVER = 0.290
 LIDAR = (0.330, 0.0)
 SCAN = (0.22205 - 0.005, 0.22205 + 0.005)
@@ -160,7 +165,7 @@ def arch_obstacles():
 
 
 def lidar_support_short():
-    """MMP.07 shortened to stand on the raised bay plate (both options): walls from z 0.138 to 0.174, the 17.5 mm spacer
+    """MMP.07 shortened to stand on the raised bay plate (both options): walls from the plate top (z 0.125) to 0.174, the 17.5 mm spacer
     and the S3 unchanged, so the scan plane stays at 222.05 mm."""
     return [([0.262, -0.071, FLOOR], [0.366, 0.071, 0.174]), ([0.2824, -0.0351, 0.174], [0.3623, 0.0349, 0.1915]),
             ([0.3022, -0.0278, 0.1915], [0.3578, 0.0277, 0.2327])]
@@ -222,7 +227,7 @@ def _option_a(items):
     lower = make_zone([X0, -0.163, FLOOR], [0.330, 0.163, COVER], obst,
                       lambda x, y: (shelf_z - 0.005) if under_shelf(x, y) else ceiling_bay(x, y))
     upper = make_zone([shelf["x"][0], shelf["y"][0], shelf_z + PLATE_T], [shelf["x"][1], shelf["y"][1], COVER], obst, ceiling_bay)
-    strips = {s: make_zone([0.140, min(s * 0.125, s * 0.163), 0.057], [0.355, max(s * 0.125, s * 0.163), 0.132], [], None, scan_band=False) for s in (1, -1)}
+    strips = {s: make_zone([0.140, min(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), 0.057], [0.355, max(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), PLATE_Z - PLATE_T], [], None, scan_band=False) for s in (1, -1)}
     zones = {"A_lower": (lower, {"roof": lambda lo, hi: under_shelf((lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2)}), "A_upper": (upper, {}),
              "strip_l": (strips[1], {}), "strip_r": (strips[-1], {})}
     its = [dict(id="bay_din_tb", name="DIN terminal blocks on a short rail", dims=[31.2, 47.5, 42.5], din=True, domain="SIG",
@@ -274,7 +279,7 @@ def option_b(items):
     """Single-tier front bay above the receiver; DIN parts in the rear side pockets, rail fore-aft."""
     obst = lidar_support_short() + arch_obstacles()
     bay = make_zone([X0, -0.163, FLOOR], [0.330, 0.163, COVER], obst, ceiling_bay)
-    strips = {s: make_zone([0.140, min(s * 0.125, s * 0.163), 0.057], [0.355, max(s * 0.125, s * 0.163), 0.132], [], None, scan_band=False) for s in (1, -1)}
+    strips = {s: make_zone([0.140, min(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), 0.057], [0.355, max(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), PLATE_Z - PLATE_T], [], None, scan_band=False) for s in (1, -1)}
     zones = {"B_bay": (bay, {}), "strip_l": (strips[1], {}), "strip_r": (strips[-1], {})}
     for s, nm in ((1, "pocket_l"), (-1, "pocket_r")):
         lo, hi, ob = rear_pocket_zone(s)

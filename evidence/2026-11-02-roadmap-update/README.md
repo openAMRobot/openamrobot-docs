@@ -25,3 +25,17 @@ Kept from the first pass of this snapshot (unchanged parts): `robot_front.jpg`, 
 `rear_k1k2_option_b_ghost.jpg`, `issue_flag_rod_outside_plate.jpg`, `hardware_model_coverage.jpg`, `hardware_mechanical_parts.jpg`,
 `hardware_geometry_issues.jpg`, `index_this_week.jpg`. Superseded and removed: the deck-bolt, old receiver, old front bay, old rear zone,
 old portrait and old harness images.
+
+## TZBOT correction (WCM-500-24 manual V2.5)
+
+Retaken after the TZBOT values were corrected to the WCM-500-24 Wireless Charger Instruction Manual V2.5 (170 x 150 x 52 mm,
+about 1.5 kg, air gap 20 +-10 mm, X and Y +-20 mm, no metal within 20 mm). Orthographic views of the shared model (`model.js`
+with `placement.json`) in Playwright Chromium (swiftshader); the six pages load with no console errors.
+
+- `tzbot_side_section.jpg`: receiver (blue, 50 to 102 mm) and floor transmitter (0 to 52 mm) from the side, other parts ghosted;
+  red band: the 2 mm overlap (GI-036, known, warn only); ferrite sheet on the receiver top; metal-free zone in pink.
+- `tzbot_cutout_below.jpg`: from below, the base-sheet cut-out (197 x 190 mm to the front panel flange line; receiver + 20 mm is
+  210 x 190 mm) around the 170 x 150 mm receiver.
+- `tzbot_front_bay_options_A_B.jpg`: front bay option A (left) and option B (right) with the new receiver, top view with the cover
+  off and left side elevation; bay plate at 122 mm (receiver top + 20 mm).
+- `tzbot_receiver_zone.jpg` and `tzbot_receiver_below.jpg` show the earlier 240 x 210 x 65 mm receiver (kept as the record).

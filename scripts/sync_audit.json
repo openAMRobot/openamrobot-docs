@@ -1,7 +1,7 @@
 {
  "fingerprint": {
   "model/model.js": "0a17b40a574fe870ab6395749db9a9689ae30fbb2ce999328652be87bf3d0814",
-  "model/exploded.json": "8db7af6b5e3666ed8ab62c6b6b2fad46817dbfc343ca9909f45ac604e73cafb4",
+  "model/exploded.json": "96243171a58a3d9c73a7de63ebdf763c2e9f410f1f0e7922046b9eba3ef55a2c",
   "robot.html": "e3cf05395157db046959359929a5aed07f1be68c6e9bef72d2c667adb26960d3",
   "exploded.html": "7fa65aec9d23acbbb137c28f22b2bcdd8fd160a2383b58126e0e80a319aed3b8"
  },
@@ -31,7 +31,7 @@
   ]
  },
  "exploded_home_offset_m": 0,
- "parts": 163,
+ "parts": 164,
  "mismatches": [],
  "errors": [],
  "rows": [
@@ -1219,8 +1219,8 @@
     0,
     0.32
    ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2263,6 +2263,23 @@
    "mismatch": []
   },
   {
+   "comp": "tz_gap_overlap",
+   "part": "tz_gap_overlap",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 1,
+   "offset": [
+    0,
+    0,
+    -0.3
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
    "comp": "rear_plate",
    "part": "rear_plate",
    "robot_drawn": true,
@@ -2477,8 +2494,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 32,
-   "exploded_meshes": 32,
+   "robot_meshes": 33,
+   "exploded_meshes": 33,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2511,8 +2528,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 23,
-   "exploded_meshes": 23,
+   "robot_meshes": 25,
+   "exploded_meshes": 25,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2545,8 +2562,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 156,
-   "exploded_meshes": 156,
+   "robot_meshes": 161,
+   "exploded_meshes": 161,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2562,8 +2579,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 28,
-   "exploded_meshes": 28,
+   "robot_meshes": 29,
+   "exploded_meshes": 29,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []

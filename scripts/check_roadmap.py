@@ -745,6 +745,52 @@ def check_sync_audit(root, err, comps):
         err("sync_audit.json", "page errors during the audit: %s" % a["errors"])
 
 
+# Known contacts: overlaps in the model that are recorded as issues and accepted for now (warn only). Each entry
+# names the two parts, the overlap the model must show (mm, within 0.1 mm), the geometry_issues.csv row that records
+# it (by its parts text; IDs are assigned by analyse.py) and the marker drawn in the model. When the overlap changes (fixed or worse) the check fails until the entry
+# and the issue row are updated.
+KNOWN_CONTACTS = [
+    {"a": "tz_receiver", "b": "tz_transmitter", "overlap_mm": 2.0, "issue": "TZBOT receiver / floor transmitter WCM-500-24", "kind": "charging gap", "severity": "major",
+     "owner": "fridayali", "marker": "tz_gap_overlap", "limit": "gap 10 to 30 mm",
+     "note": "known, fix scheduled later by the owner (TZBOT WCM-500-24 manual V2.5: air gap 20 +-10 mm)"},
+]
+
+
+def check_known_contacts(root, err):
+    """Each declared known contact: the overlap of the two parts' main bodies (first primitive) equals the declared
+    value, the marker part exists, and its geometry_issues.csv row is present with the declared kind, severity and owner."""
+    try:
+        P = json.load(open(os.path.join(root, "model", "placement.json"), encoding="utf-8"))
+        rows = {r["parts"]: r for r in csv.DictReader(open(os.path.join(root, "model", "geometry_issues.csv"), encoding="utf-8"))}
+    except OSError as e:
+        err("known contacts", "cannot read the model files: %s" % e)
+        return
+    G = P.get("geometry", {})
+    for kc in KNOWN_CONTACTS:
+        if kc["a"] not in G or kc["b"] not in G:
+            err("known contacts", "%s / %s: part missing in placement.json" % (kc["a"], kc["b"]))
+            continue
+        bx = []
+        for k in (kc["a"], kc["b"]):
+            q = G[k]["prims"][0]
+            c, h = [float(v) for v in q["p"]], [float(v) / 2 for v in q["s"]]
+            bx.append(([c[i] - h[i] for i in range(3)], [c[i] + h[i] for i in range(3)]))
+        ov = min(min(bx[0][1][i], bx[1][1][i]) - max(bx[0][0][i], bx[1][0][i]) for i in range(3)) * 1000
+        if abs(ov - kc["overlap_mm"]) > 0.1:
+            err("known contacts", "%s / %s overlap %.1f mm, declared %.1f mm: update KNOWN_CONTACTS and %s" % (kc["a"], kc["b"], ov, kc["overlap_mm"], kc["issue"]))
+        if kc["marker"] not in G:
+            err("known contacts", "%s: marker %s is not drawn" % (kc["issue"], kc["marker"]))
+        r = rows.get(kc["issue"])
+        if not r:
+            err("known contacts", "%s: row missing in geometry_issues.csv" % kc["issue"])
+            continue
+        for key in ("kind", "severity", "owner"):
+            if r[key] != kc[key]:
+                err("known contacts", "%s: %s is %r, declared %r" % (kc["issue"], key, r[key], kc[key]))
+        if ("overlap -%g mm" % kc["overlap_mm"]) not in r["measured"] or kc["limit"] not in r["limit"] or "known, fix scheduled later by the owner" not in r["suggested_fix"]:
+            err("known contacts", "%s: the row does not state overlap -%g mm, the limit %r and the owner note" % (kc["issue"], kc["overlap_mm"], kc["limit"]))
+
+
 # STATE.md (repository state record): every figure it states about the roadmap model is read from the generated files,
 # so that it cannot go stale. Each pattern must be present once; its numbers must equal the generated ones.
 STATE_FIGURES = [
@@ -1547,7 +1593,10 @@ def main():
                 err(p, "external link without target=\"_blank\" rel=\"noopener\": %s" % a_[:120])
                 break
 
-    # 6. STATE.md figures (read from the generated files)
+    # 6. known contacts (declared overlaps, warn only in the model, recorded as issues)
+    check_known_contacts(args.dir, err)
+
+    # 7. STATE.md figures (read from the generated files)
     try:
         with open(os.path.join(args.dir, "..", "..", "..", "STATE.md"), encoding="utf-8") as f:
             for e in state_errors(f.read(), state_figures(args.dir), next(iter(alld)) if len(alld) == 1 else None):
