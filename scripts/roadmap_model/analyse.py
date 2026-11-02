@@ -7,7 +7,7 @@ scene (scene_dump.js, same part boxes within 0.5 mm), then analyses:
   interference (all part pairs, lift L1000 / L1175 / L1350, bp000 / bp050, hp15 to hp35, both Getac positions,
   arms in the upstream home pose), arm reach (joint by joint through the URDF limits, 10 deg steps, L1000 and
   L1350), sensor views (Gemini 336L and ZED Mini frustums, LiDAR scan plane +-5 mm), mass and stability, the
-  the reserved TZBOT receiver position, service access and the K1/K2 fit.
+  TZBOT receiver, service access and the K1/K2 fit.
 Writes model/geometry_issues.csv and scripts/roadmap_model/analysis_summary.json.
 Usage: python3 scripts/roadmap_model/analyse.py [--dump scene_dump.json]
 """
@@ -141,6 +141,8 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
     parts = []
     opt = option or (P.get("front_bay") or {}).get("default")
     for k, n in G.items():
+        if k in (P.get("hide_glb") or []):
+            continue   # replaced GLB nodes (A1: the single-row battery envelope), hidden on both pages
         env = n["extras"].get("class") == "envelope"  # envelopes are boxes by definition: exact tests on their bounds
         v = relocated(n["v"], k, P, opt)
         parts.append(Part(k, v, n["f"], "base", boxes=[(v.min(0), v.max(0))] if env else None))
@@ -160,7 +162,7 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
     add("arm_profile", box_mesh([PX, PY, PL], [MOUNT_X, 0, f + PL / 2]), "mov")
     m = c + .166 + .223
     y = f + PL
-    ZED_X = .222
+    ZED_X = .237  # A4: lens 57 mm ahead of J1_A
     add("head_camera_bracket", box_mesh([.03, .03, m - y], [ZED_X - .03, 0, (y + m) / 2]), "mov")
     Rz = rpy_matrix([0, math.radians(head_pitch), 0])
     v, ff = box_mesh([.0265, .1245, .0305], np.array([0, 0, 0]))
@@ -170,13 +172,10 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
     e = chest["second_estop"]
     ev = G["estop"]["v"] - [0, 0, FACTS["base_link_z"]]
     ax = e["glb_axis"]
-    ev = ev + [e["panel_ahead"] - ax[0], -ax[1], -ax[2]]
-    if e.get("position") == "P2":  # arm-post rear face, moving group (proposed, 2 Nov 2026)
-        ev = ev @ rpy_matrix([0, 0, math.pi]).T + [MOUNT_X - PX / 2, 0, c + .01 + PL - e["post_below_top"]]
-        add("second_estop", (ev, G["estop"]["f"]), "mov", exact=False)
-    else:
-        ev = ev @ rpy_matrix([0, 0, math.pi]).T + [-L / 2, 0, c - HEAD - .006 - e["below_top"]]
-        add("second_estop", (ev, G["estop"]["f"]), "col", exact=False)
+    ev = ev - [ax[0], ax[1], ax[2]]   # panel face at the origin, button axis +x
+    # A5 (2 Nov 2026): on the adapter plate top behind the post, above the column axis, button up (pitch -pi/2), moving group
+    ev = ev @ rpy_matrix([0, -math.pi / 2, 0]).T + [0, 0, c + .01 + e["panel_above_plate"]]
+    add("second_estop", (ev, G["estop"]["f"]), "mov", exact=False)
     C = chest["drawn"]
     fr = MOUNT_X + PX / 2
     ts = C["getac_tablet"]["size"]
@@ -437,9 +436,10 @@ def main():
                 ("lift_sensor_bracket", "lift_sensor_bracket"), ("flag_rod", "lift_flag"), ("rear_estop_housing", "second_estop"),
                 ("bay_plate", "lidar_support"), ("lift_base_plate", "lift_node"), ("lift_column_stage", "lift_column"), ("lift_column_head", "lift_column"),
                 ("lift_column_head", "arm_profile"), ("rear_estop", "lift_column"),
-                # 2 Nov 2026: plate on the arch, E-stop P2 on the post, reserved receiver (its warning is an issue below), ghosts, bay plate
+                # 2 Nov 2026: plate on the arch, E-stop P2 on the post, receiver set, ghosts, raised bay plate (its CAD conflicts are issues below)
                 ("lift_base_plate", "centre_bracket"), ("second_estop", "arm_profile"), ("rear_estop_housing", "arm_profile"), ("rear_estop_housing", "second_estop"),
-                ("estop_p", "*"), ("tz_", "*"), ("base_cutout", "*"), ("bay_plate", "lidar_support"), ("bay_plate", "electronics_bracket"),
+                ("estop_p", "*"), ("tz_", "*"), ("base_cutout", "*"), ("rear_estop_housing", "second_estop"), ("rear_estop_housing", "adapter_plate"),
+                ("second_estop", "adapter_plate"), ("battery_cells", "battery_tray"), ("battery_series_link", "battery_"), ("rear_plate", "rz_"), ("battery_cells", "harness"), ("bay_plate", "lidar_support"), ("bay_plate", "electronics_bracket"),
                 ("bay_plate", "compute"), ("bay_plate", "base_controller"), ("lift_node", "lift_column"),
                 ("bay_", "electronics_bracket"), ("compute", "electronics_bracket"), ("base_controller", "controller_plate")]  # bracket shortening: own issue
 
@@ -520,16 +520,26 @@ def main():
                 r = pair(gc, geos[other])
                 if r and r[1] > .0005 and other != "head_camera_bracket":
                     issue("major", "head_camera / %s" % other, "hp%02d" % hp, "overlap %.1f mm" % (r[1] * 1000), "overlap <= 0.5 mm", "datums.yaml head camera", "check the pitch bracket", OWN["mech"], "interference")
-    gp = geos.get("getac_second_position_ghost")
-    if gp:
-        for other in ("head_light", "arm_profile", "head_camera", "head_camera_bracket"):
-            r = pair(gp, geos[other])
-            if r and r[1] > .0005:
-                issue("major", "getac pocket portrait / %s" % other, "portrait, L1000", "overlap %.1f mm" % (r[1] * 1000), "overlap <= 0.5 mm",
-                      "design_intent/getac_pocket_portrait.step; datums head_light_gap_below_tablet", "move the pivot hub further above the tablet centre", OWN["mech"], "interference")
-            elif r and r[0] < .005:
-                issue("major", "getac pocket portrait / %s" % other, "portrait, L1000", "clearance %.1f mm" % (r[0] * 1000), "clearance >= 5 mm",
-                      "design_intent/getac_pocket_portrait.step", "move the pivot hub further above the tablet centre", OWN["mech"], "interference")
+    # Getac portrait (A3, decided default) against the post, the light bar, the ZED and the arms in the page pose
+    getac_check = {}
+    pose = {"left": [.25, -.12, 0, 1.9, 0, -.78, 0]}
+    pose["right"] = [-q if i not in (3,) else q for i, q in enumerate(pose["left"])]
+    armp = []
+    for side in ("left", "right"):
+        armp += arm_parts(side, pose[side], .6, up["col_top"] + .166, .06)[0]
+    for gid in ("getac_tablet", "getac_pocket"):
+        if gid not in geos:
+            continue
+        for other in ["head_light", "head_camera", "head_camera_bracket", "arm_profile"] + [p_.id for p_ in armp]:
+            go = geos.get(other) or Geo([p_ for p_ in armp if p_.id == other][0], {"bp": "bp000", "travel": 0}, .003)
+            if (gid, other) in (("getac_pocket", "arm_profile"), ("getac_pocket", "head_light"), ("getac_tablet", "arm_profile")):
+                continue   # declared mounting contacts (pocket back plate on the post, light plate under the pocket)
+            r = pair(geos[gid], go)
+            getac_check["%s / %s" % (gid, other)] = None if r is None else [round(r[0] * 1000, 1), round(r[1] * 1000, 1)]
+            if r and (r[1] > .0005 or r[0] < .005):
+                issue("major" if r[1] > .0005 else "minor", "Getac ZX80 portrait / %s" % other, "portrait (A3), L1000, arms in the page pose",
+                      ("overlap %.1f mm" % (r[1] * 1000)) if r[1] > .0005 else ("clearance %.1f mm" % (r[0] * 1000)), "overlap <= 0.5 mm, clearance >= 5 mm",
+                      "owner correction A3 (2 Nov 2026), design_intent/getac_pocket.step", "check at M-09", OWN["mech"], "interference")
 
     # ---- arm reach sweep
     sweep = {}
@@ -792,52 +802,32 @@ def main():
           "add a doubler under the arch top between the rear rivet nuts and the rear wall, or use the outer 190 x 300 rivet-nut pattern as well (wider plate)",
           OWN["mech"], "load path")
 
-    # ---- TZBOT WCM-500-24 receiver: reserved position at the rear under the battery (release 3.0, Alex, 2 Nov 2026). One warning:
-    # receiver top vs the cells and the tray, metal within 20 mm, charging gap with a 52 mm floor transmitter. Recorded, not fixed.
+    # ---- TZBOT WCM-500-24 receiver (B4): position, lowest point, floor gap, cut-out, metal-free zone, EMC distances
     TZ = FACTS["tzbot_receiver"]
-    TZL = tzbot_layout()
     tzout = {}
     if "tz_receiver" in geos:
-        lo, hi = TZL["lo"], TZL["hi"]
-        rv, rf = box_mesh(hi - lo, (lo + hi) / 2)
-        RXG = Geo(Part("tz_receiver_body", rv, rf, "base", boxes=[(lo, hi)]), base_cfg, .002)
-        def sd(k):
-            r = pair(RXG, geos[k], 0.5)
-            return None if r is None else round((-r[1] if r[1] > 0 else r[0]) * 1000, 1)
-        named = [("battery cells", "battery"), ("battery tray MEC-007", "battery_tray"), ("base sheet MEC-001", "base_plate"),
-                 ("castor rear left", "castor_rear_left"), ("castor rear right", "castor_rear_right")]
-        meas = [{"part": n, "id": k, "distance_mm": sd(k)} for n, k in named if k in geos]
-        if "base_plate" in geos:  # the receiver passes through the 2 mm sheet (no cut-out drawn): overlap = sheet thickness inside the receiver height
-            bs = FACTS["base_sheet"]
-            for m_ in meas:
-                if m_["id"] == "base_plate":
-                    m_["distance_mm"] = round(-(min(hi[2], bs["top"]) - max(lo[2], bs["bottom"])) * 1000, 1)
-        others = []
-        skip = ("tz_", "battery", "battery_tray", "base_plate", "castor_rear", "keepout", "lift_bolt", "harness", "service_loop", "estop_p", "getac_second", "k1k2_option", "can_term")
-        for k, gg in geos.items():
-            if k.startswith(skip) or k.endswith("_optb"):
-                continue
-            r = pair(RXG, gg, TZ["metal_clear"])
-            if r:
-                others.append({"part": k, "id": k, "distance_mm": round((-r[1] if r[1] > 0 else r[0]) * 1000, 1)})
-        top_cells = next((m_["distance_mm"] for m_ in meas if m_["id"] == "battery"), None)
-        top_tray = next((m_["distance_mm"] for m_ in meas if m_["id"] == "battery_tray"), None)
+        # owner correction of 2 Nov 2026: receiver reserved (not installed in 2.0, release 3.0) at the rear panel on the centre line
+        import rear_layout
+        RLa = rear_layout.layout()
+        g = geos["tz_receiver"]
+        lo, hi = g.lo, g.hi
         tx_h = FACTS["tzbot_transmitter"]["size"][2]
+        g0, g1 = TZ["air_gap"]
         gap = lo[2] - tx_h
-        tzout = {"status": TZ["status"], "decided": TZ["decided"], "lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "battery": TZL["battery"],
-                 "receiver_top_mm": round(hi[2] * 1000, 1), "receiver_bottom_mm": round(lo[2] * 1000, 1), "vs_cells_mm": top_cells, "vs_tray_mm": top_tray,
-                 "metal": meas + others, "gap_mm": round(gap * 1000, 1), "air_gap_mm": [TZ["air_gap"][0] * 1000, TZ["air_gap"][1] * 1000],
-                 "transmitter_height_mm": round(tx_h * 1000, 1)}
-        within = [m_ for m_ in meas + others if m_["distance_mm"] is not None and m_["distance_mm"] < TZ["metal_clear"] * 1000]
-        fmt = lambda v: "overlap %.1f mm" % -v if v < 0 else "clearance %.1f mm" % v
-        issue("minor", "TZBOT WCM-500-24 receiver (reserved, rear under the battery)", "reserved position, release 3.0, not installed in 2.0 (owner decision, 2 Nov 2026)",
-              "receiver top %.0f mm vs battery cells: %s, vs battery tray: %s; metal within 20 mm: %s; rear castors: %s (outside 20 mm); charging gap with a %.0f mm floor transmitter: %.0f mm (receiver bottom %.0f mm)" % (
-                  hi[2] * 1000, fmt(top_cells), fmt(top_tray) if top_tray is not None else "n/a",
-                  "; ".join("%s %s" % (m_["part"], fmt(m_["distance_mm"])) for m_ in within) or "none",
-                  fmt(min(m_["distance_mm"] for m_ in meas if m_["id"].startswith("castor_rear"))),
-                  tx_h * 1000, gap * 1000, lo[2] * 1000),
-              "no overlap with the cells or the tray, no metal within 20 mm, air gap %.0f to %.0f mm (TZBOT WCM-500-24 manual V2.5)" % (TZ["air_gap"][0] * 1000, TZ["air_gap"][1] * 1000),
-              TZ["source"] + "; reserved position, owner decision of 2 Nov 2026", "known, to be solved in release 3.0", OWN["mech"], "reserved for 3.0")
+        tzout["position"] = {"lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "x_m": RLa["receiver_x"], "status": TZ["status"],
+                             "clearance_to_rear_bodies_mm": RLa["receiver_clearance_mm"], "inside_metal_free_margin_mm": RLa["metal_in_margin_mm"]}
+        tzout["floor_gap"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "transmitter_height_mm": round(tx_h * 1000, 1), "gap_mm": round(gap * 1000, 1),
+                              "manual_air_gap_mm": [g0 * 1000, g1 * 1000], "source": TZ["source"], "status": "reserved for release 3.0"}
+        tzout["rear_layout"] = {k: RLa[k] for k in ("measured", "pocket_free", "pockets", "plate", "margin", "cutout")}
+        issue("minor", "TZBOT receiver / floor transmitter WCM-500-24 (charging gap)", "reserved, not installed in 2.0",
+              "gap %.0f mm: receiver bottom %.0f mm, %.0f mm floor transmitter" % (gap * 1000, lo[2] * 1000, tx_h * 1000), "gap %.0f to %.0f mm (20 +-10 mm)" % (g0 * 1000, g1 * 1000),
+              TZ["source"] + "; owner correction of 2 Nov 2026 (bottom 2 mm below the base sheet)", "to be solved in release 3.0 (receiver higher, recessed transmitter or a low ramp)",
+              OWN["mech"], "reserved for 3.0")
+        for k, v in sorted(RLa["metal_in_margin_mm"].items()):
+            issue("minor", "TZBOT receiver / %s (inside the 20 mm metal-free margin)" % k, "reserved, not installed in 2.0",
+                  "%.1f mm from the receiver" % v, ">= 20 mm metal-free around the receiver", "TZBOT WCM-500-24 manual V2.5; receiver at the rear panel (owner, 2 Nov 2026)",
+                  "to be solved in release 3.0 (non-metal panel insert or a receiver further forward); TF-Luna and its PETG mount are mostly non-metal: ask TZBOT",
+                  OWN["mech"], "reserved for 3.0")
 
     # ---- services and fits from the build summary
     nof = summ["nofit"]
@@ -846,11 +836,13 @@ def main():
     nof_fb = (fbs.get(fbd) or {}).get("fit", {}).get("not_placed", [])
     if nof or nof_fb:
         dims = {it["id"]: it["dims"] for it in load_yaml(os.path.join(HERE, "parts.yaml"))["packed"]}
-        issue("blocker", "Rear zone layout (B5) / %s" % ", ".join(nof + nof_fb), "B5 rear zone with the design-intent battery tray MEC-007 and the real side-pocket section; overflow under the arch tried",
-              "no space for %s: behind the cells 66 mm deep with the tray rear wall (70 mm without it) for the 70 mm deep FB-A / FB-B; side pockets 71 mm wide (with the tray wall) and 117 mm tall only between z 74 and 191 mm, 140 mm long, for the BMS %s mm" % (
-                  ", ".join(nof + nof_fb), "x".join("%g" % d for d in dims.get("rz_bms", []))),
-              "every onboard part placed with >= 5 mm clearance", "parts.yaml catalogue outlines (verify), B5, CAD v0.2 side panel flanges, design_intent/battery_tray.py",
-              "FB-A and FB-B on the rear panel inner face above the disconnect (vertical, 70 mm deep into the zone is then not needed) or a lower-profile fuse block; a BMS no larger than 140 x 70 x 115 mm for the pocket, or fix the Daly order code and its outline; then update B5",
+        RLb = __import__("rear_layout").layout()
+        pz = RLb["plate"]
+        issue("blocker", "Rear layout (A1) / %s" % ", ".join(nof + nof_fb), "power-electronics plate above the receiver and the pocket rear corners",
+              "no space for %s: plate %.0f x %.0f mm, underside %.0f mm, height %.0f mm to the cover (rear flange slope from x -0.315); disconnect and SB50 on the rear panel; nothing above FB-A, FB-B, F0, F-CHG and the precharge kit (fuse access)" % (
+                  ", ".join(nof + nof_fb), (pz[1][0] - pz[0][0]) * 1000, (pz[1][1] - pz[0][1]) * 1000, pz[0][2] * 1000, (FACTS["cover_underside"] - pz[1][2]) * 1000),
+              "every onboard part placed with >= 5 mm clearance and fuse access", "parts.yaml catalogue outlines (verify); owner correction A1 and the receiver position of 2 Nov 2026",
+              "BMS on a second level over K1/K2 needs about 200 x 110 mm free; or a lower-profile fuse block, a BMS order code with a smaller outline, or FB-B on the arch rear wall; hardware owner layout due",
               OWN["elec"], "layout")
     for k, o in summ["k1k2_options"].items():
         if k == "A":
@@ -859,18 +851,26 @@ def main():
             issue("major" if not o["fits"] else "minor", "K1/K2 option B %s fit" % o["part"], "rear zone (with the rest of the layout)",
                   "fits: %s (%s)" % (o["fits"], ", ".join(o.get("nofit", [])) or "all placed"), "fits the rear zone", "packer with catalogue outline %s mm" % "x".join(map(str, o["dims"])),
                   "if option B is chosen, mount K1/K2 on the rear panel or the centre-bracket rear wall", OWN["elec"], "fit")
-    # side pockets vs the side panel return flanges
-    issue("major", "Rear side pockets / side panel return flanges", "rear zone", "pocket 91 mm wide only between z 74 and 191 mm; 36 mm at the flange heights (inner flange at y 0.193)",
-          "B5 / platform-sw #95: 140 x 91 x 210 mm free each side", "CAD v0.2 side panel MMP.00.00.00.003 (GLB)", "keep tall parts (BMS, K1/K2) inside y 0.193 or between the flanges; update B5", OWN["mech"], "layout")
-    jet_fixed = fbd == "A"
-    issue("major", "Jetson Orin NX with fan on the IMU bracket MMP.04.00.00.002", "CAD v0.2", "compute (with fan) shares the electronics bracket with the EV_ICM-42688-P",
-          "nothing heavy or vibrating on the IMU bracket (E2)", "CAD v0.2 compute node on the bracket top",
-          "front bay option A (proposed) moves the Jetson to the upper shelf; owner to adopt the option in CAD" if jet_fixed else "move the IMU to its own sub-plate or move the Jetson", OWN["mech"], "layout")
-    issue("minor", "Battery assembly removal path", "cover off", "cells lift out vertically through the cover opening; 26 mm above the cells, nothing on top (B5)",
-          "removable without removing the arms", "B5; lift base plate at x -0.12 to 0.24 (rear edge 17 mm ahead of the cells)", "keep the cover split behind the lift plate", OWN["mech"], "services")
-    issue("minor", "Disconnect handle access", "rear panel", "BS-6004B drawn at the rear panel centre above the rear TF-Luna", "reachable from outside", "proposed position", "confirm the panel cut-out", OWN["elec"], "services")
-    issue("minor", "Front bay plates removal with the cover off", "cover off, option A", "shelf lifts off its 4 standoffs, then the lower plate off its rivet nuts",
-          "removable with the cover off; every fuse and connector reachable", "front_bay.py", "keep the connectors facing up", OWN["mech"], "services")
+    # side pockets (A1) vs the side panel return flanges
+    RLc = __import__("rear_layout").layout()
+    if not RLc["pockets"].get("clears_flanges"):
+        tr = RLc["trays"][0]
+        issue("major", "Rear side pockets / side panel return flanges", "4 + 4 LF105 upright in the side pockets (A1)",
+              "pocket %.0f mm across (CAD, owner estimate %.0f) x %.0f mm along; 4 cells %s need y %.3f to %.3f, the flanges at y >= 0.193 (z 51 to 74 and 191 to 214 mm) cross them; %.0f mm free inside the flange line" % (
+                  RLc["pocket_free"]["y_mm"], RLc["pocket_free"]["y_owner_formula_mm"], RLc["pocket_free"]["x_beside_support_mm"], RLc["pockets"]["arrangement"], tr["lo"][1], tr["hi"][1], RLc["pocket_free"]["y_inside_flanges_mm"]),
+              "cells clear the side-panel flanges", "CAD v0.2 side panel MMP.00.00.00.003 (GLB); rear_layout.py",
+              "notch the return flanges along the pockets (x %.3f to %.3f) or a rear side panel without return flanges; then the drawn trays fit" % (tr["lo"][0] - 0.003, tr["hi"][0] + 0.003), OWN["mech"], "layout")
+    # the Jetson on the front-bay plate (A2), not on the IMU bracket
+    fbfit = (fbs.get(fbd) or {}).get("fit", {})
+    jz = ((fbs.get(fbd) or {}).get("placed") or {}).get("compute")
+    issue("minor", "Jetson Orin NX on J401 position (A2)", "front bay, %s" % fbfit.get("layout", ""), "Jetson on the %s, not on bracket MMP.04.00.00.002; nothing heavy or vibrating on the IMU bracket" % (
+              {"A_lower": "lower plate under the shelf (check the fan inlet and outlet)", "A_upper": "upper shelf", "bay": "single plate"}.get(jz[0] if jz else "", "front bay")),
+          "nothing heavy or vibrating on the IMU bracket", "front_bay.py", "check the fan airflow at M-09", OWN["mech"], "layout")
+    issue("minor", "Battery assembly removal path", "cover off", "each pocket tray lifts out vertically with its 4 cells; the series link over the centre unbolts first",
+          "removable without removing the arms", "A1 side pockets; lift base plate at x -0.080 to 0.250", "keep the cover split behind the lift plate", OWN["mech"], "services")
+    issue("minor", "Disconnect handle and SB50 access", "rear panel", "BS-6004B and SB50 on the rear panel above the power plate, left and right of the rear TF-Luna", "reachable from outside", "proposed position (A1)", "confirm the panel cut-outs", OWN["elec"], "services")
+    issue("minor", "Front bay plates removal with the cover off", "cover off, one layout (A2)", "shelf lifts off its 4 standoffs, then the lower plate off the base sheet",
+          "removable with the cover off; every fuse and connector reachable", "front_bay.py", "keep connectors facing up", OWN["mech"], "services")
     issue("minor", "Lift base plate removal and cover opening", "cover off", "the cover opening (x -0.146 to 0.156, y -0.113 to 0.107) must be extended forward to x 0.260 for the plate front (0.250) and the column at bp050 (front 0.230)",
           "cover clears the plate and the column", "CAD v0.2 cover MMP.01.00.00.001; B3", "extend the cover opening to x 0.260 (owner to confirm in CAD)", OWN["mech"], "services")
     # service loop
@@ -882,15 +882,18 @@ def main():
     rodv = names["flag_rod"].world(base_cfg)
     issue("major", "Flag rod LFT-004 / adapter plate MEC-004 footprint", "all lift positions", "rod y %.0f to %.0f mm vs plate edge 50 mm: %.0f to %.0f mm outside" % (rodv[:, 1].min() * 1000, rodv[:, 1].max() * 1000, rodv[:, 1].min() * 1000 - 50, rodv[:, 1].max() * 1000 - 50),
           "inside the plate footprint", "datums.yaml lift_flag_rod_offset_from_face; B8", "rod mount bracket of design_intent/adapter_post (keeps the rod inside) or a 130 mm wide plate", OWN["mech"], "interference")
-    ep = json.load(open(os.path.join(HERE, "estop_positions.json")))
-    p2 = ep["positions"]["P2"]
-    hits = {k: sum(v["reach_study_hits"].values()) for k, v in p2["stops"].items()}
-    issue("major", "Second E-stop P2 (proposed) / arm reach envelope", "L1000 / L1175 / L1350, arm-post rear face, 55 mm below the post top",
-          "actuator centre %s m; single-joint sweep clear; reach study %s of about %d valid random poses per arm and stop come within 5 mm" % (
-              " / ".join("%.3f" % v["actuator_centre_m"] for v in p2["stops"].values()), " / ".join(str(v) for v in hits.values()), ep["n_per_arm"] * 0.92),
-          "0.90 to 1.50 m at every stop, no arm contact (owner, 2 Nov 2026)", "estop_positions.py; design_intent/rear_estop_housing.py",
-          "P-03 entry for P2 (then datums second_estop_below_profile_top and its parent link change); add the housing as a MoveIt collision object on arm_profile_link", OWN["manip"], "arm reach")
-    issue("major", "Getac ZX80 at shoulder height / arms", "arm workspace", "hit in 23 of 154 simulation frames (29 Oct)", "no arm contact", "B8", "M-09 position; MoveIt collision object", OWN["mech"], "arm reach")
+    eact = up.get("estop2_actuator_z_stops") or {}
+    ep = {"position": "adapter plate top behind the post, centred in y, above the column axis, button up (A5)", "actuator_centre_m": eact,
+          "reach_band_m": [0.90, 1.50], "cable": "through the adapter plate into the lift cable chain with the arm cables"}
+    hit_e = sorted({k[1] for k in sweep if k[2] == "second_estop"})
+    issue("minor" if not hit_e and all(0.90 <= v <= 1.50 for v in eact.values()) else "major", "Second E-stop on the adapter plate (A5)", "L1000 / L1175 / L1350",
+          "actuator centre %s m; single-joint arm sweep: %s" % (" / ".join("%.3f" % v for v in eact.values()), "clear" if not hit_e else "hit by the %s arm" % " and ".join(hit_e)),
+          "0.90 to 1.50 m at every stop, no arm contact (owner, 2 Nov 2026)", "owner correction A5; design_intent/rear_estop_housing.py",
+          "enter the position in P-03 and M-01; tapped holes and a cable hole in MEC-004 (M-09)", OWN["mech"], "arm reach")
+    g_hit = sorted({k[1] for k in sweep if k[2] in ("getac_tablet", "getac_pocket")})
+    issue("major" if g_hit else "minor", "Getac ZX80 at shoulder height / arms", "portrait (A3), L1000 and L1350",
+          "29 Oct simulation (landscape at shoulder height): hit in 23 of 154 frames; rerun with the portrait Getac 40 mm lower: page pose clear, single-joint sweep %s" % ("hit by the %s arm" % " and ".join(g_hit) if g_hit else "clear"),
+          "no arm contact", "B8; owner correction A3", "rerun the Gazebo pick cycle with the portrait Getac; MoveIt collision object", OWN["mech"], "arm reach")
     issue("minor", "Left tote wall / sensors S1, S2", "visualization", "3.2 mm overlap", "none", "B8 (visualization only)", "fix the tote model", OWN["tech"], "interference")
 
     # ---- write
@@ -939,13 +942,9 @@ def main():
                  "within_limit": -wl <= FACTS["wheel_compression"] + 1e-6}]
     if not intended[0]["within_limit"]:
         issue("major", "Hub motor wheels / floor", "all", "overlap %.1f mm" % (-wl * 1000), "intended contact <= 2 mm (B1)", "base GLB", "check the wheel model", OWN["mech"], "geometry")
-    gpo = {}
-    if gp:
-        for other in ("head_light", "arm_profile", "head_camera", "head_camera_bracket"):
-            r = pair(gp, geos[other], .05)
-            gpo[other] = None if r is None else {"clearance_mm": round(r[0] * 1000, 1), "overlap_mm": round(r[1] * 1000, 1)}
+    gpo = getac_check
     out = {"self_check": check, "closed_issues": closed_out, "frames": frames, "heights": heights, "mass": res, "stability": stab, "loads": loads, "views": views,
-           "intended_contacts": intended, "tzbot": tzout, "lift_base_plate": plate, "estop_positions": ep, "front_bay": {k: v.get("fit") for k, v in fbs.items()},
+           "intended_contacts": intended, "tzbot": tzout, "lift_base_plate": plate, "estop": ep, "getac_check": getac_check, "front_bay": {k: v.get("fit") for k, v in fbs.items()},
            "front_bay_default": fbd, "getac_portrait": gpo, "mass_items": placed_mass,
            "sweep": {"%s|%s|%s" % k: v[:20] for k, v in sweep.items()}, "sweep_steps_per_arm": nsteps,
            "counts": {s: sum(1 for r in issues if r["severity"] == s) for s in order}, "steel_chassis_kg": round(steel, 2)}

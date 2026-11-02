@@ -84,18 +84,23 @@ _TZ = None
 
 
 def tzbot_layout():
-    """Reserved TZBOT WCM-500-24 receiver box (base_footprint, m) from facts.yaml: under the battery cell group (base GLB node
-    battery), centred on the long axis and on the cell-group centre, across_y wide, fore_aft_x long, bottom below_base_sheet
-    under the base-sheet underside. Also writes tzbot_receiver.centre / lo / hi into FACTS."""
+    """TZBOT WCM-500-24 receiver box (base_footprint, m), owner correction A1 (2 Nov 2026): reserved, not installed in 2.0, in the
+    middle of the rear section, centred in the charger zone (rear_layout.layout()), 170 mm across (y) x 150 mm along (x), bottom
+    2 mm below the base-sheet underside. Also writes tzbot_receiver.centre / lo / hi / orientation into FACTS."""
     global _TZ
     if _TZ is not None:
         return _TZ
+    import rear_layout
+    L = rear_layout.layout()
     f = FACTS["tzbot_receiver"]
-    lo_b, hi_b = aabb(glb_nodes()["battery"]["v"])
-    cx = float(lo_b[0] + hi_b[0]) / 2
-    z0 = FACTS["base_sheet"]["bottom"] - f["below_base_sheet"]
-    lo = np.array([cx - f["fore_aft_x"] / 2, -f["across_y"] / 2, z0])
-    hi = np.array([cx + f["fore_aft_x"] / 2, f["across_y"] / 2, z0 + f["size"][2]])
-    f.update({"centre": ((lo + hi) / 2).round(4).tolist(), "lo": lo.round(4).tolist(), "hi": hi.round(4).tolist()})
-    _TZ = {"lo": lo, "hi": hi, "centre": (lo + hi) / 2, "size": hi - lo, "battery": [lo_b.round(4).tolist(), hi_b.round(4).tolist()]}
+    lo, hi = np.array(L["receiver"][0]), np.array(L["receiver"][1])
+    mc = f["metal_clear"]
+    cut = L["cutout"]
+    f.update({"centre": ((lo + hi) / 2).round(4).tolist(), "lo": lo.tolist(), "hi": hi.tolist(),
+              "orientation": "150 mm along x, 170 mm across y (rear charger zone)", "dims_xyz": (hi - lo).round(4).tolist()})
+    _TZ = {"orientation": f["orientation"], "lo": lo, "hi": hi, "centre": (lo + hi) / 2, "size": hi - lo,
+           "cutout": [cut[0][0], cut[1][0], cut[0][1], cut[1][1]],
+           "cutout_mm": [round((cut[1][0] - cut[0][0]) * 1000), round((cut[1][1] - cut[0][1]) * 1000)],
+           "cutout_full_mm": [round((cut[1][0] - cut[0][0]) * 1000), round((cut[1][1] - cut[0][1]) * 1000)],
+           "metal_clear": mc, "electronics_min_z": hi[2] + mc, "location": "rear"}
     return _TZ

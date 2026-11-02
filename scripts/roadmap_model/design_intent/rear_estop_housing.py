@@ -1,23 +1,15 @@
 # SPDX-License-Identifier: MIT
-"""h. Second E-stop housing (SAF-001, second unit), design intent, four candidate positions (owner request of 2 Nov 2026).
+"""h. Second E-stop housing (SAF-001, second unit), design intent, one position (owner correction A5, owner, 2 Nov 2026;
+to be entered in P-03 and M-01).
 
-Reach requirement (owner, 2 Nov 2026): a standing adult close to the robot presses it by hand without bending or
-sitting down. Criterion: actuator centre 0.90 to 1.50 m above the floor at L1000, L1175 and L1350, facing outward
-and visible, no contact in the arm sweep, not in the ZED Mini view, cable routed.
-  P1 rear face of the static column, 40 mm below the static profile top (the current datum; right gripper contact
-     in the 29 Oct simulation), fixed height 0.776 m;
-  P2 rear face of the vertical arm post (MISUMI HFS6-60120, moves with the lift), centre 55 mm below the post top,
-     facing rearward, on two M6 T-nuts per flange in the post rear slots; above the 150 mm rear upright and the
-     stiffener, below the ZED bracket foot; 1.129 / 1.304 / 1.479 m (recommended, proposed);
-  P3 post top beside the ZED pitch bracket, button up: the bracket foot covers the whole 120 x 60 mm post top, so
-     the housing can only sit on the foot; 1.245 / 1.420 / 1.595 m (over 1.50 at L1350);
-  P4 static column rear face at the highest arm-clear position (280 mm below the static profile top, random-pose
-     reach study), fixed height 0.536 m (fixed-height reference).
+On top of the adapter plate MEC-004 (the moving plate on the lift carriage that carries the post and the arms), centred
+in y, in the free part of the plate behind the post, above the column axis; button facing up. The housing stands on
+the plate so the ZBE-102 contact blocks sit inside it, above the plate. The cable leaves through an M16 gland in the
+housing side into a hole in the plate and runs with the arm cables through the lift cable chain (service loop).
 Schneider XB4BS8445 (40 mm mushroom, turn to release) + ZBE-102 contact blocks (2NC + 1NO) in a 22.5 mm hole.
-Folded aluminium box open toward the mounting face, M16 gland in the bottom face; P2 and P3 cables run with the arm
-cables through the lift cable chain (service loop), P1 and P4 down the static column.
 Manufacturing: laser-cut and bent 5754-H22 aluminium, 2.0 mm sheet, bend radius 2 mm.
-Local frame: origin on the mounting face at the button axis, x out of the face (toward the operator), z up.
+Local frame: origin on the mounting face (the adapter plate top) at the button axis, x out of the face (up after the
+pitch of -pi/2), z along the robot x.
 """
 import math
 import os
@@ -36,35 +28,33 @@ HEAD = (14.0, 40.0)          # mushroom head depth, diameter (datums.yaml second
 COLLAR = 22.0
 BLOCK = (46.0, 30.0, 47.0)   # contact block depth x width x height
 GLAND = 16.5                 # M16 cable gland hole, bottom face
-STATIC_TOP_Z = 0.816         # static profile top: column top 0.834 minus 0.018 (datums.yaml lift_static_profile_top_below_column_top)
+STATIC_TOP_Z_UNUSED = 0.816         # static profile top: column top 0.834 minus 0.018 (datums.yaml lift_static_profile_top_below_column_top)
 COL_REAR_X = 0.060 - 0.120   # column rear face at bp000
 POST_REAR_X = 0.060 + 0.180 - 0.060   # arm-post rear face at bp000 (post centre 180 mm ahead of the column axis, 120 deep)
 POST_TOP_Z = 1.184           # post top at L1000: 0.304 + 0.530 + 0.010 + 0.340
 FOOT_T = 6.0                 # ZED bracket foot (zed_bracket.py)
-POS = {  # name: (xyz at bp000 and L1000, rpy, group, actuator-centre offset from the floor at L1000 [m], moves with the lift)
-    "P1": ([COL_REAR_X, 0.0, STATIC_TOP_Z - 0.040], [0, 0, math.pi], "col"),
-    "P2": ([POST_REAR_X, 0.0, POST_TOP_Z - 0.055], [0, 0, math.pi], "mov"),
-    "P3": ([POST_REAR_X + 0.020, 0.0, POST_TOP_Z + FOOT_T / 1000], [0, -math.pi / 2, 0], "mov"),
-    "P4": ([COL_REAR_X, 0.0, STATIC_TOP_Z - 0.280], [0, 0, math.pi], "col"),
-}
-VARIANT = {"P2": "rear_estop_housing", "P1": "rear_estop_housing_p1_ghost", "P3": "rear_estop_housing_p3_ghost", "P4": "rear_estop_housing_p4_ghost"}
+ADAPTER_TOP_Z = 0.844        # adapter plate top at L1000: 0.304 + 0.530 + 0.010
+COL_AXIS_X = 0.060           # column axis at bp000; the post spans x 0.180 to 0.300, so the plate is free from -0.060 to 0.180
+POS = {"adapter_top": ([COL_AXIS_X, 0.0, ADAPTER_TOP_Z], [0, -math.pi / 2, 0], "mov")}
+VARIANT = {"adapter_top": "rear_estop_housing"}
+ACTUATOR_Z = {k: round(ADAPTER_TOP_Z + DEPTH / 1000 + HEAD[0] / 2000 + tr, 4) for k, tr in (("L1000", 0.0), ("L1175", 0.175), ("L1350", 0.350))}
 
 META = {
     "materials": {"rear_housing": "5754-H22"},
     "item": "rear_estop_housing", "bom": "SAF-001 (second unit), housing to MEC-014/MEC-013", "method": "laser-cut and bent 5754 aluminium sheet",
     "material": "5754-H22", "thickness_mm": SHEET,
     "existing_cad": None,
-    "configuration": "P2 (recommended, proposed): arm-post rear face, moves with the lift; P1, P3, P4 exported as labelled ghosts",
-    "adjustment": "height along the HFS6 rear slots (40 to 60 mm below the post top)",
+    "configuration": "one position (A5): adapter plate top behind the post, centred in y, above the column, button up; moves with the lift",
+    "adjustment": "fore-aft on the plate between the column axis and the rear upright (slotted flange holes, +/-10 mm)",
+    "actuator_height_m": ACTUATOR_Z,
     "placement": [{"name": k, "xyz": v[0], "rpy": v[1], "group": v[2], "variant": VARIANT[k]} for k, v in POS.items()],
-    "placement_note": "xyz at bp000 and L1000; P2 and P3 move with the lift (+0.175 / +0.350); yaw pi: local +x points rearward; P3 pitch -pi/2: button up",
-    "variants_note": {k: VARIANT[k] for k in POS},
+    "placement_note": "xyz at bp000 and L1000, on the adapter plate top; moves with the lift (+0.175 / +0.350); pitch -pi/2: button up",
     "fasteners": [
-        {"joint": "P2 housing to the HFS6 post rear slots", "part": "ISO 4762 screw + ISO 7089 washer + M6 T-slot nut (HFS6)", "size": "M6 x 10", "qty": 4, "standard": "ISO 4762", "class": "proposed"},
+        {"joint": "housing flanges to the adapter plate", "part": "ISO 4762 screw + ISO 7089 washer into tapped holes", "size": "M6 x 10", "qty": 4, "standard": "ISO 4762", "class": "proposed"},
         {"joint": "E-stop in housing", "part": "XB4 mounting nut (supplied)", "size": "22.5 mm", "qty": 1, "standard": "Schneider XB4", "class": "named"},
         {"joint": "cable exit", "part": "cable gland IP67", "size": "M16 x 1.5", "qty": 1, "standard": "EN 62444", "class": "proposed"},
     ],
-    "next_step": "Owner: take P2 into P-03 (datums second_estop_below_profile_top and its parent link change then), CAD (M-09).",
+    "next_step": "Owner: enter the adapter-plate position in P-03 and M-01; CAD owner: tapped holes and the cable hole in MEC-004 (M-09).",
 }
 
 
@@ -93,10 +83,7 @@ def button():
 
 
 def build():
-    out = {}
-    for name, key in VARIANT.items():
-        out[key] = [("SAF-001_rear_housing_%s" % name, housing()), ("SAF-001_XB4BS8445_ZBE-102_envelope", button())]
-    return {k: out[k] for k in ("rear_estop_housing", "rear_estop_housing_p1_ghost", "rear_estop_housing_p3_ghost", "rear_estop_housing_p4_ghost")}
+    return {"rear_estop_housing": [("SAF-001_housing_adapter_top", housing()), ("SAF-001_XB4BS8445_ZBE-102_envelope", button())]}
 
 
 if __name__ == "__main__":

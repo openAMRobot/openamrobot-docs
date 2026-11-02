@@ -165,6 +165,31 @@
    0.03
   ]
  },
+ "owner_corrections": {
+  "source": "owner, 2 Nov 2026 (to be entered in P-03 and M-01)",
+  "getac_size": [
+   0.0176,
+   0.1498,
+   0.234
+  ],
+  "getac_lower_by": 0.04,
+  "light_gap": 0.01,
+  "zed_ahead_of_j1a": 0.057,
+  "second_estop": "adapter_top",
+  "receiver": {
+   "lo": [
+    -0.369,
+    -0.075,
+    0.05
+   ],
+   "hi": [
+    -0.199,
+    0.075,
+    0.102
+   ],
+   "status": "reserved, not installed in 2.0 (release 3.0)"
+  }
+ },
  "sensor_frames_rpy": {
   "base_camera_link": [
    0.0,

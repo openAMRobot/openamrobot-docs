@@ -2,7 +2,7 @@
 """d. ZED Mini pitch bracket on the arm-post top (ARM-011 adapter), design intent.
 
 The supplied ZED mount (1/4-20 UNC) screws to a pivoting cradle. The pivot axis runs along y through the
-lens line, so the lens stays 42 mm ahead of and 223 mm above J1_A (1223 mm above the floor at L1000) in
+lens line, so the lens stays 57 mm (A4, was 42) ahead of and 223 mm above J1_A (1223 mm above the floor at L1000) in
 every position. Locked positions hp15 to hp35 in 5 deg steps (hp30 default): one M4 screw per side into
 a tapped hole in the cradle arm on a 40 mm radius; the left cheek carries hp15 / hp25 / hp35, the right
 cheek hp20 / hp30 (holes 7 mm apart). Manufacturing: machined 6082-T6, foot 6 mm, cheeks and cradle 5 mm.
@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _common import CLEAR, run_single  # noqa: E402
 
 ZED = (26.5, 124.5, 30.5)      # ZED Mini depth x width x height (datums.yaml head_camera_size)
-LENS_AHEAD = 42.0              # lens ahead of J1_A / the post centre (P-03 rev20.0, upperbody-sw #22)
+LENS_AHEAD = 57.0              # lens ahead of J1_A / the post centre (owner correction A4, 2 Nov 2026; was 42, P-03 rev20.0)
 LENS_ABOVE_POST_TOP = 39.0     # 1223 - 1184 (post top at L1000: 304 + 530 + 10 + 340)
 POST = (120.0, 60.0)           # HFS6-60120 section, x x y; post centre 180 mm ahead of the column axis
 LENS_FROM_POST_FRONT = POST[0] / 2 - LENS_AHEAD   # 18 mm behind the post front face
@@ -33,8 +33,8 @@ META = {
     "existing_cad": None,
     "configuration": "L1000, hp30",
     "adjustment": "pitch hp15 to hp35 in 5 deg steps about the lens line, M4 lock screw (staggered holes, left 15/25/35, right 20/30)",
-    "placement": [{"name": "lens_line", "xyz": [0.282, 0.0, 1.223], "rpy": [0.0, math.radians(DEFAULT), 0.0]}],
-    "placement_note": "column axis x 0.060 (bp000) + 0.180 + 0.042; z 0.304 + 0.530 + 0.166 + 0.223 at L1000",
+    "placement": [{"name": "lens_line", "xyz": [0.297, 0.0, 1.223], "rpy": [0.0, math.radians(DEFAULT), 0.0]}],
+    "placement_note": "column axis x 0.060 (bp000) + 0.180 + 0.057; z 0.304 + 0.530 + 0.166 + 0.223 at L1000",
     "fasteners": [
         {"joint": "foot to post top", "part": "ISO 4762 screw + ISO 7089 washer into the post end tap", "size": "M8 x 16", "qty": 2, "standard": "ISO 4762", "class": "proposed"},
         {"joint": "cradle pivot", "part": "ISO 4762 screw + ISO 7089 washers + ISO 10511 nyloc nut", "size": "M5 x 16", "qty": 2, "standard": "ISO 4762", "class": "proposed"},

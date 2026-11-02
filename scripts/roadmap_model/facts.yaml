@@ -45,17 +45,31 @@ rear_zones:   # B5 / platform-sw #95: free zones next to the cells (x, y, z exte
   side_l: {x: [-0.277, -0.137], y: [0.157, 0.248], z: [0.054, 0.264]}
   side_r: {x: [-0.277, -0.137], y: [-0.248, -0.157], z: [0.054, 0.264]}
 front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0.003}
-# TZBOT WCM-500-24 wireless charging: release 3.0 item, not installed in OpenAMRobot 2.0 (2.0 charges by cable). Values: TZBOT
-# "WCM-500-24 Wireless Charger Instruction Manual" V2.5, 2021-09-23. Receiver (robot) and floor transmitter have the same outer size.
-# Reserved receiver position, decided by Alex on 2 Nov 2026: rear of the base, under the battery cell group, centred on the long
-# axis and on the cell-group centre, 170 mm across (y), 150 mm fore-aft (x), bottom 2 mm below the base-sheet underside (50 mm
-# above the floor). The floor transmitter is not drawn. frames.tzbot_layout() gives the receiver box.
-tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5,
-                 across_y: 0.170, fore_aft_x: 0.150, below_base_sheet: 0.002, air_gap: [0.010, 0.030], align: [0.020, 0.020], metal_clear: 0.020,
-                 status: "reserved, not installed in 2.0 (release 3.0)", decided: "Alex, 2 Nov 2026"}
-tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (not drawn); same outer size (manual V2.5)
-front_bay_option_default: A   # proposed (2 Nov 2026): two-tier bay, see front_bay.py
-second_estop: {position: P2, post_below_top: 0.055, panel_behind_face: 0.048}   # proposed (B2); datums keep P1 until the P-03 entry
+# TZBOT WCM-500-24 receiver (manual V2.5: 170 x 150 x 52 mm, about 1.5 kg). Owner correction A1 as corrected on 2 Nov 2026 (owner; to be
+# entered in P-03 and M-01): reserved, not installed in 2.0 (wireless charging is a release 3.0 item, 2.0 charges by cable); 170 mm along the
+# robot (x) x 150 mm across (y), centred on the long axis, as close to the rear panel inner face as possible without touching the rear
+# TF-Luna, the rear MB7060s, their mounts or the rear panel flange (rear_layout.py measures them); bottom 2 mm below the base-sheet
+# underside (50 mm above the floor). No 240 x 210 mm zone (withdrawn). No transmitter is drawn.
+tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5, touch_clear: 0.001,
+                 status: "reserved, not installed in 2.0 (release 3.0)", below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
+                 align: [0.020, 0.020], metal_clear: 0.020,
+                 freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
+                 signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",
+                           red: "receiver output to battery +", black: "receiver output to battery -"}}
+# rear section, owner values A1 (confirmed against the CAD by build.py, differences reported): ~360 mm between the top-cover supports,
+# ~578 mm between the side walls, ~240 mm rear panel to the arch edge minus the internal supports; side pockets about
+# (side-wall inner width - 150) / 2 across by about 190 mm along, minus the 20 mm metal-free margin next to the receiver
+rear_section: {owner_between_supports: 0.360, owner_between_walls: 0.578, owner_panel_to_arch: 0.240,
+               rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_y: 0.288,
+               power_plate: {t: 0.003, min_above_receiver: 0.020}}
+# 8 x EVE LF105 (200 h x 130 x 38 mm, 1.98 kg) upright, 4 per side pocket, 8S (replaces the single row across the robot, B-02 rev18.10)
+cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002}
+tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station of release 3.0, same outer size (manual V2.5); not drawn
+emc_flag_distance: 0.050      # roadmap screening value until TZBOT gives a minimum distance
+front_bay_layout: single   # owner correction A2 (2 Nov 2026): one layout, one plate on the base sheet; second tier only if one plate does not fit
+second_estop: {position: adapter_top, housing: [0.064, 0.050, 0.050], button_up: true}   # owner correction A5 (2 Nov 2026): on top of the adapter plate behind the post, centred in y, button up
+getac: {orientation: portrait, size: [0.0176, 0.1498, 0.234], lower_by: 0.040, light_gap: 0.010}   # owner correction A3 (2 Nov 2026)
+zed_ahead_of_j1a: 0.057   # owner correction A4 (2 Nov 2026), was 0.042
 # lowest points of the robot below the base sheet (full assembly STEP MMP.00.00.00.000_full_assembly, openamr-platform-hw main,
 # exact OCC bounding boxes of every solid, floor at the castor wheel bottom; base sheet at 52.0 / 54.0 mm as corrected in base_mesh_map.yaml)
 cad_lowest: {drive_tyre: -0.0020, castor_wheels: 0.0, castor_bolt_tips_m6x20: 0.0410, m5x20_bolt_tips: 0.0448, m4x16_bolt_tips: 0.0460,

@@ -1,17 +1,14 @@
 # SPDX-License-Identifier: MIT
-"""e. Getac ZX80 rotatable pocket and head-light plate (UI-002, MEC-012, AUX-001 plate), design intent.
+"""e. Getac ZX80 pocket and head-light plate (UI-002, MEC-012, AUX-001 plate), design intent.
 
-Fixed aluminium back plate on the arm-post front face (two M6 T-nuts per row in the HFS6 front slots), a
-hollow pivot hub, a PETG pocket that holds the 234 x 149.8 x 17.6 mm tablet and turns 90 deg between two
-locked positions (landscape default, portrait), held by an M8 spring plunger in the back plate engaging
-one of two holes in the pocket back. The hub axis is eccentric (20 mm right of, 15 mm above the landscape
-tablet centre) so that the portrait pocket bottom clears the light plate (2 Nov 2026). The USB-C PD cable runs through the hollow hub (14 mm bore) and a
-groove in the pocket back to a right-angle plug, so rotation twists the cable by 90 deg along about
-200 mm instead of bending it at the plug. Below it: a 3 mm aluminium plate (heat spreader) carrying the
-Falcon FLDL-i150x15-W flat, its top edge 30 mm below the Getac bottom edge in landscape.
-Manufacturing: back plate and light plate laser-cut 5754-H22 aluminium (4 mm and 3 mm); hub machined
-6082-T6; pocket PETG print, 3 mm walls.
-Local frame: origin on the arm-post front face at the tablet centre height (landscape), x forward, z up.
+Owner correction A3 (owner, 2 Nov 2026; to be entered in P-03 and M-01): the Getac ZX80 is portrait (149.8 wide x 234 tall
+x 17.6 deep), the decided default; no landscape position. Fixed aluminium back plate on the arm-post front face (two
+M6 T-nuts per row in the HFS6 front slots), a short hub and a PETG pocket for the tablet; the USB-C PD cable runs
+through the hub bore and a groove in the pocket back. The Falcon FLDL-i150x15-W lies flat on a 3 mm aluminium plate
+(heat spreader) directly under the Getac, its top edge 10 mm below the Getac bottom edge.
+Manufacturing: back plate and light plate laser-cut 5754-H22 aluminium (4 mm and 3 mm); hub machined 6082-T6; pocket
+PETG print, 3 mm walls.
+Local frame: origin on the arm-post front face at the tablet centre height, x forward, z up.
 """
 import os
 import sys
@@ -21,18 +18,18 @@ import cadquery as cq
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _common import CLEAR, run_single  # noqa: E402
 
-TAB = (17.6, 234.0, 149.8)        # Getac ZX80 depth x width x height, landscape (datums.yaml getac_tablet_size, P-03 rev20.2)
+TAB = (17.6, 149.8, 234.0)        # Getac ZX80 depth x width x height, portrait (owner correction A3, 2 Nov 2026: decided default)
 CLR = 1.0                         # clearance per side in the pocket
 WALL = 3.0                        # PETG pocket wall
 LIP = 5.0                         # retaining lip over the screen edge (bottom and the two sides; top edge has a latch)
-BACK = (4.0, 160.0, 120.0)        # back plate x thickness, y width, z height
+BACK = (4.0, 120.0, 160.0)        # back plate x thickness, y width, z height
 HUB = (30.0, 14.0, 2.0)           # hub flange OD, bore, gap between back plate and pocket
 DETENT_R = 50.0                   # plunger radius
-HUB_YZ = (-20.0, 15.0)            # pivot hub axis from the landscape tablet centre (y, z), 2 Nov 2026: eccentric so that the portrait
+HUB_YZ = (0.0, 0.0)              # pivot hub axis from the landscape tablet centre (y, z), 2 Nov 2026: eccentric so that the portrait
                                   # pocket bottom clears the light plate (portrait centre rises by z - y = 35 mm; >= 32.6 mm needed)
 LIGHT = (20.0, 158.0, 17.0)       # FLDL-i150x15-W depth x width x height (datums.yaml head_light_size)
-LIGHT_PLATE = (3.0, 180.0, 40.0)  # aluminium plate under the light
-GAP_LIGHT = 30.0                  # light top edge below the Getac bottom edge (P-03 rev20.0 item 24)
+LIGHT_PLATE = (3.0, 180.0, 24.0)  # aluminium plate under the light (24 mm tall: clears the pocket bottom with the 10 mm gap)
+GAP_LIGHT = 10.0                  # light top edge 10 mm below the Getac bottom edge (owner correction A3, 2 Nov 2026)
 T_SLOT_Y = 15.0                   # HFS6 front-face slots at y +/-15 (60 mm face, 30 mm slot pitch)
 
 POCKET = (TAB[0] + CLR + WALL, TAB[1] + 2 * (CLR + WALL), TAB[2] + 2 * (CLR + WALL))
@@ -44,10 +41,10 @@ META = {
     "item": "getac_pocket", "bom": "UI-002, MEC-012 (pocket and back plate); AUX-001 plate", "method": "laser-cut 5754 aluminium plates, machined 6082-T6 hub, PETG pocket",
     "material": "PETG", "thickness_mm": WALL,
     "existing_cad": None,
-    "configuration": "L1000, landscape (default); portrait variant exported as getac_pocket_portrait",
-    "adjustment": "90 deg rotation about the screen normal, two locked positions (M8 spring plunger)",
-    "placement": [{"name": "pocket_origin", "xyz": [0.300, 0.0, 1.080], "rpy": [0.0, 0.0, 0.0]}],
-    "placement_note": "arm-post front face x 0.060 + 0.180 + 0.060 = 0.300 (bp000); tablet centre 0.246 above the column top at L1000 (datums.yaml getac_tablet_z_above_column_top), 0.834 + 0.246",
+    "configuration": "L1000, portrait (decided default, A3); no second position",
+    "adjustment": "none (fixed portrait pocket); the tablet lifts out of the pocket",
+    "placement": [{"name": "pocket_origin", "xyz": [0.300, 0.0, 1.040], "rpy": [0.0, 0.0, 0.0]}],
+    "placement_note": "arm-post front face x 0.060 + 0.180 + 0.060 = 0.300 (bp000); tablet centre 0.246 above the column top at L1000 (datums.yaml getac_tablet_z_above_column_top), 0.834 + 0.246 - 0.040 (A3: 40 mm lower)",
     "fasteners": [
         {"joint": "back plate to arm post", "part": "ISO 4762 screw + ISO 7089 washer + M6 T-slot nut (HFS6)", "size": "M6 x 12", "qty": 4, "standard": "ISO 4762", "class": "proposed"},
         {"joint": "hub to back plate", "part": "ISO 10642 countersunk screw", "size": "M4 x 10", "qty": 4, "standard": "ISO 10642", "class": "proposed"},
@@ -56,7 +53,7 @@ META = {
         {"joint": "light plate to arm post", "part": "ISO 4762 screw + ISO 7089 washer + M6 T-slot nut (HFS6)", "size": "M6 x 10", "qty": 2, "standard": "ISO 4762", "class": "proposed"},
         {"joint": "head light to plate", "part": "ISO 4762 screw (thermal pad between)", "size": "M3 x 8", "qty": 2, "standard": "ISO 4762", "class": "proposed"},
     ],
-    "next_step": "Pivot hub 20 mm right of and 15 mm above the tablet centre (2 Nov 2026): the portrait pocket clears the light plate by 7.4 mm; the portrait tablet still covers the lower ZED Mini view (its top is 13 mm above the lens line). Confirm the ZX80 USB-C port position, then CAD (M-09).",
+    "next_step": "Owner: enter the portrait default and the 10 mm light gap in P-03 and M-01; confirm the ZX80 USB-C port position, then CAD (M-09).",
 }
 
 
@@ -115,8 +112,7 @@ def build():
     pl, lt = light_set()
     base = [("MEC-012_back_plate", back_plate()), ("UI-002_pivot_hub", hub()), ("AUX-001_light_plate", pl),
             ("AUX-001_head_light_envelope", lt)]
-    return {"getac_pocket": base + [("UI-002_pocket_landscape", pocket(0.0))],
-            "getac_pocket_portrait": [("UI-002_pocket_portrait", pocket(90.0))]}
+    return {"getac_pocket": base + [("UI-002_pocket_portrait", pocket(0.0))]}
 
 
 if __name__ == "__main__":

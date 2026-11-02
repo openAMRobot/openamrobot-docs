@@ -44,11 +44,14 @@ mapped:
   - {urdf: [adapter_plate_link], roadmap: [adapter_plate], mode: aabb}
   - {urdf: [arm_profile_link], roadmap: [arm_profile], mode: aabb, note: "MISUMI HFS6-60120 arm post"}
   - {urdf: [head_camera_bracket_link], roadmap: [head_camera_bracket], mode: aabb}
-  - {urdf: [head_camera_link], roadmap: [head_camera], mode: aabb, rot: true, note: "ZED Mini at hp30"}
-  - {urdf: [getac_tablet_link], roadmap: [getac_tablet], mode: aabb}
-  - {urdf: [head_light_link], roadmap: [head_light], mode: aabb}
+  - {urdf: [head_camera_link], roadmap: [head_camera], mode: aabb, rot: true, note: "ZED Mini at hp30",
+     pending: "A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"}
+  - {urdf: [getac_tablet_link], roadmap: [getac_tablet], mode: aabb,
+     pending: "A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower (combined model landscape until the P-03 entry)"}
+  - {urdf: [head_light_link], roadmap: [head_light], mode: aabb,
+     pending: "A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the landscape Getac)"}
   - {urdf: [second_estop_link], roadmap: [second_estop], mode: aabb,
-     pending: "B2 (2 Nov 2026, proposed): the roadmap draws the recommended post-mount position P2; the combined model keeps P1 (datums second_estop_below_profile_top and its parent lift_column_base_link) until the P-03 entry"}
+     pending: "A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry"}
   - {urdf: [lift_stop_sensor_l1000_link, lift_stop_sensor_l1175_link, lift_stop_sensor_l1350_link],
      roadmap: [lift_stop_sensors, lift_sensor_brackets], mode: aabb, note: "three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"}
   - {urdf: [lift_flag_rod_link], roadmap: [flag_rod], mode: aabb}
@@ -83,105 +86,95 @@ urdf_only:
 # pending roadmap-only parts of the owner decisions (listed in the parity report with their reason)
 pending_roadmap_only:
   lift_base_plate: "B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)"
-  tz_receiver: "B4 (owner decision, 2 Nov 2026): reserved TZBOT WCM-500-24 receiver position at the rear under the battery (release 3.0, not installed in 2.0); not in the base URDF"
-  rear_estop_housing: "B2 (2 Nov 2026, proposed): post-mount housing of the second E-stop at P2"
-  estop_p1_ghost: "B2: position P1 (the combined model's current second_estop_link), ghost"
-  estop_p3_ghost: "B2: position P3, ghost"
-  estop_p4_ghost: "B2: position P4, ghost"
+  tz_receiver: "A1 (owner, 2 Nov 2026): TZBOT WCM-500-24 receiver reserved at the rear panel on the centre line, not installed in 2.0 (release 3.0); not in the base URDF"
+  rear_estop_housing: "A5 (owner, 2 Nov 2026): housing of the second E-stop on the adapter plate, button up"
+  tz_metal_free_zone: "A1: 20 mm metal-free margin around the reserved receiver (keep-out ghost)"
+  battery_cells: "A1: 8 x LF105 in the two side pockets (the base URDF battery is the single row)"
+  battery_tray: "A1: two pocket trays"
+  battery_series_link: "A1: series link across the centre"
+  base_cutout: "A1: base-sheet cut-out reserved for the receiver at the rear (ghost; base_chassis.stl has the CAD v0.2 sheet)"
 
 roadmap_only:
-  battery_tray: {attach: base_link, offset_m: [-0.216, 0, 0.0622]}
-  bay_can1: {attach: base_link, offset_m: [0.121, 0.047, 0.0963]}
-  bay_can2: {attach: base_link, offset_m: [0.2427, 0.017, 0.1143]}
-  bay_can2_optb: {attach: base_link, offset_m: [0.325, -0.1344, -0.0275]}
-  bay_can3: {attach: base_link, offset_m: [0.325, -0.147, 0.0963]}
+  base_cutout: {attach: base_link, offset_m: [-0.2745, 0, -0.045]}
+  battery_cells_left: {attach: base_link, offset_m: [-0.204, 0.179, 0.061]}
+  battery_cells_right: {attach: base_link, offset_m: [-0.204, -0.179, 0.061]}
+  battery_series_link: {attach: base_link, offset_m: [-0.164, 0, 0.1559]}
+  battery_tray_left: {attach: base_link, offset_m: [-0.204, 0.179, 0.059]}
+  battery_tray_right: {attach: base_link, offset_m: [-0.204, -0.179, 0.059]}
+  bay_can1: {attach: base_link, offset_m: [0.121, -0.078, 0.0283]}
+  bay_can2: {attach: base_link, offset_m: [0.3077, -0.1344, 0.0228]}
+  bay_can3: {attach: base_link, offset_m: [0.2205, -0.063, 0.0338]}
   bay_ddr240: {attach: base_link, offset_m: [0.19, 0.093, 0.1077]}
   bay_din_pnoz: {attach: base_link, offset_m: [0.2002, 0.1487, 0.1077]}
-  bay_din_tb: {attach: base_link, offset_m: [0.2706, -0.1393, 0.1069]}
-  bay_fbc: {attach: base_link, offset_m: [0.196, -0.126, 0.1062]}
-  bay_fbc_optb: {attach: base_link, offset_m: [0.196, -0.126, -0.0197]}
-  bay_ina228: {attach: base_link, offset_m: [0.2027, 0.0309, -0.0372]}
-  bay_ina228_optb: {attach: base_link, offset_m: [0.2427, -0.08, -0.0313]}
-  bay_iso1212: {attach: base_link, offset_m: [0.287, -0.0825, 0.0918]}
-  bay_iso1212_optb: {attach: base_link, offset_m: [0.177, 0.088, -0.0147]}
-  bay_lidar_uart: {attach: base_link, offset_m: [0.305, -0.143, 0.0908]}
-  bay_lidar_uart_optb: {attach: base_link, offset_m: [0.32, -0.093, -0.0202]}
+  bay_din_tb: {attach: base_link, offset_m: [0.2706, -0.1393, 0.039]}
+  bay_fbc: {attach: base_link, offset_m: [0.182, -0.0975, 0.0688]}
+  bay_ina228: {attach: base_link, offset_m: [0.1477, 0.04, -0.0313]}
+  bay_iso1212: {attach: base_link, offset_m: [0.137, 0.0175, 0.0238]}
+  bay_lidar_uart: {attach: base_link, offset_m: [0.245, -0.103, 0.0278]}
   bay_plate: {attach: base_link, offset_m: [0.2175, 0, 0.06]}
-  bay_plate_optb: {attach: base_link, offset_m: [0.2175, 0, -0.0425]}
-  bay_pwr009: {attach: base_link, offset_m: [0.25, -0.098, -0.0277]}
-  bay_pwr009_optb: {attach: base_link, offset_m: [0.285, -0.143, -0.0277]}
-  bay_pwr029: {attach: base_link, offset_m: [0.3, 0.112, -0.0303]}
-  bay_pwr029_optb: {attach: base_link, offset_m: [0.28, -0.103, -0.0303]}
-  bay_pwr032: {attach: base_link, offset_m: [0.1175, 0.072, -0.0352]}
-  bay_rsd100: {attach: base_link, offset_m: [0.2295, -0.144, 0.0083]}
-  bay_rsd100_optb: {attach: base_link, offset_m: [0.2295, 0.146, 0.0083]}
-  bay_rsd60: {attach: base_link, offset_m: [0.305, 0.1485, 0.0197]}
-  bay_rsd60_optb: {attach: base_link, offset_m: [0.165, 0.0585, -0.0152]}
-  bay_tpl7407: {attach: base_link, offset_m: [0.249, -0.0225, 0.0918]}
-  bay_tpl7407_optb: {attach: base_link, offset_m: [0.2405, 0.088, -0.0212]}
-  bay_usbcan_1: {attach: base_link, offset_m: [0.2425, 0.0345, 0.1157]}
-  bay_usbcan_1_optb: {attach: base_link, offset_m: [0.2975, 0.1145, -0.0103]}
-  bay_usbcan_2: {attach: base_link, offset_m: [0.2375, -0.0705, 0.1157]}
-  bay_usbcan_2_optb: {attach: base_link, offset_m: [0.3225, 0.137, -0.0277]}
-  bay_usbhub: {attach: base_link, offset_m: [0.1175, -0.0155, -0.0002]}
-  bay_usbhub_optb: {attach: base_link, offset_m: [0.2125, 0.1095, -0.0002]}
-  bay_usbpd: {attach: base_link, offset_m: [0.16, 0.0345, -0.0252]}
-  bay_usbpd_optb: {attach: base_link, offset_m: [0.3, 0.0845, -0.0252]}
+  bay_pwr009: {attach: base_link, offset_m: [0.305, -0.133, -0.0277]}
+  bay_pwr029: {attach: base_link, offset_m: [0.12, 0.072, -0.0152]}
+  bay_pwr032: {attach: base_link, offset_m: [0.1175, 0.047, -0.0352]}
+  bay_rsd100: {attach: base_link, offset_m: [0.1985, -0.144, 0.0972]}
+  bay_rsd60: {attach: base_link, offset_m: [0.305, 0.1335, 0.0197]}
+  bay_tpl7407: {attach: base_link, offset_m: [0.2005, 0.021, 0.0238]}
+  bay_usbcan_1: {attach: base_link, offset_m: [0.135, -0.0255, 0.0253]}
+  bay_usbcan_2: {attach: base_link, offset_m: [0.2, -0.0255, 0.0253]}
+  bay_usbhub: {attach: base_link, offset_m: [0.165, -0.0555, 0.0852]}
+  bay_usbpd: {attach: base_link, offset_m: [0.3, 0.1045, -0.0252]}
   can_term_1: {attach: base_link, offset_m: [-0.0693, -0.0018, 0.0734]}
-  can_term_2: {attach: base_link, offset_m: [0.18, -0.0513, -0.013]}
-  can_term_3: {attach: base_link, offset_m: [0.2427, 0.017, 0.1481]}
-  estop_p1_ghost: {attach: lift_column_base_link, offset_m: [-0.152, 0, 0.472]}
-  estop_p3_ghost: {attach: lift_carriage_link, offset_m: [0.14, 0, 0.388]}
-  estop_p4_ghost: {attach: lift_column_base_link, offset_m: [-0.152, 0, 0.232]}
+  can_term_2: {attach: base_link, offset_m: [0.2117, -0.128, -0.013]}
+  can_term_3: {attach: base_link, offset_m: [0.3077, -0.1344, 0.033]}
   fan: {attach: base_link, offset_m: [0.18, 0, 0.1755]}
   fasteners_base: {attach: base_link, offset_m: [0.1535, 0, 0.0865]}
   fasteners_col: {attach: lift_column_base_link, offset_m: [-0.078, 0.034, 0.287]}
   fasteners_mov: {attach: lift_carriage_link, offset_m: [0.1658, 0, 0.1285]}
   feedthru_1: {attach: base_link, offset_m: [0.2, 0.272, 0.102]}
   feedthru_2: {attach: base_link, offset_m: [0.245, 0.272, 0.102]}
-  getac_pocket: {attach: lift_carriage_link, offset_m: [0.2553, 0, 0.2188]}
-  getac_second_position_ghost: {attach: lift_carriage_link, offset_m: [0.2583, -0.005, 0.281]}
-  harness_bat_base: {attach: base_link, offset_m: [-0.0254, -0.0066, 0.0717]}
-  harness_fittings_base: {attach: base_link, offset_m: [0.0365, 0, 0.15]}
+  getac_pocket: {attach: lift_carriage_link, offset_m: [0.2553, 0, 0.1927]}
+  harness_bat_base: {attach: base_link, offset_m: [-0.0227, 0, 0.0845]}
+  harness_fittings_base: {attach: base_link, offset_m: [0.0375, 0, 0.15]}
   harness_fittings_col: {attach: lift_column_base_link, offset_m: [-0.1075, 0, 0.261]}
   harness_fittings_mov: {attach: lift_carriage_link, offset_m: [0.0675, -0.0035, 0.166]}
-  harness_lv_base: {attach: base_link, offset_m: [0.2425, 0, 0.0806]}
-  harness_r24_base: {attach: base_link, offset_m: [0.0857, -0.058, 0.0933]}
+  harness_lv_base: {attach: base_link, offset_m: [0.2585, 0, 0.0808]}
+  harness_r24_base: {attach: base_link, offset_m: [0.086, -0.0001, 0.0931]}
   harness_r24_col: {attach: lift_column_base_link, offset_m: [-0.161, -0.0475, 0.2401]}
-  harness_r24_mov: {attach: lift_carriage_link, offset_m: [0.0502, 0.0169, -0.0488]}
-  harness_safe_base: {attach: base_link, offset_m: [-0.07, -0.0258, 0.0983]}
+  harness_r24_mov: {attach: lift_carriage_link, offset_m: [0.0502, 0.0165, -0.0792]}
+  harness_safe_base: {attach: base_link, offset_m: [-0.0786, 0.0117, 0.1243]}
   harness_safe_col: {attach: lift_column_base_link, offset_m: [-0.1236, -0.0025, 0.009]}
-  harness_sig_base: {attach: base_link, offset_m: [0.0058, 0.0111, 0.0809]}
+  harness_sig_base: {attach: base_link, offset_m: [0.0058, -0.0001, 0.0831]}
   harness_sig_col: {attach: lift_column_base_link, offset_m: [-0.1212, -0.0027, 0.2432]}
-  harness_sig_mov: {attach: lift_carriage_link, offset_m: [0.0202, -0.0014, 0.0429]}
+  harness_sig_mov: {attach: lift_carriage_link, offset_m: [0.0276, -0.0014, 0.0429]}
   lift_base_plate: {attach: base_link, offset_m: [0.085, 0, 0.201]}
   lift_node: {attach: lift_column_base_link, offset_m: [-0.1325, 0, 0.116]}
   motor_brackets_1: {attach: base_link, offset_m: [0, 0.1066, -0.0095]}
   motor_brackets_2: {attach: base_link, offset_m: [0, 0.2496, -0.0095]}
   motor_brackets_3: {attach: base_link, offset_m: [0, -0.1066, -0.0095]}
   motor_brackets_4: {attach: base_link, offset_m: [0, -0.2496, -0.0095]}
-  rear_estop_housing: {attach: lift_carriage_link, offset_m: [0.088, 0, 0.295]}
-  rear_plate: {attach: base_link, offset_m: [-0.324, 0, -0.0425]}
+  rear_estop_housing: {attach: lift_carriage_link, offset_m: [0, 0, 0.042]}
+  rear_plate: {attach: base_link, offset_m: [-0.2515, 0, 0.0255]}
   rod_corner_bracket: {attach: lift_carriage_link, offset_m: [-0.109, 0.05, -0.0115]}
-  rz_batcon: {attach: base_link, offset_m: [-0.172, 0.217, 0.0618]}
-  rz_brake: {attach: base_link, offset_m: [-0.217, -0.178, -0.0357]}
-  rz_disc: {attach: base_link, offset_m: [-0.3372, 0.115, 0.092]}
-  rz_f0: {attach: base_link, offset_m: [-0.227, 0.2175, 0.0143]}
-  rz_fchg: {attach: base_link, offset_m: [-0.244, -0.233, 0.0028]}
-  rz_k1k2_1: {attach: base_link, offset_m: [-0.0735, -0.0475, 0.1407]}
-  rz_k1k2_2: {attach: base_link, offset_m: [-0.0735, 0.0475, 0.1407]}
-  rz_kchg: {attach: base_link, offset_m: [-0.2595, -0.198, 0.0018]}
-  rz_pre: {attach: base_link, offset_m: [-0.237, 0.222, 0.0643]}
-  rz_pwr017_1: {attach: base_link, offset_m: [-0.327, -0.107, -0.0232]}
-  rz_pwr017_2: {attach: base_link, offset_m: [-0.327, 0.103, -0.0232]}
-  rz_sb50: {attach: base_link, offset_m: [-0.35, 0.045, 0.037]}
+  rz_batcon: {attach: base_link, offset_m: [-0.326, -0.065, 0.1428]}
+  rz_brake: {attach: base_link, offset_m: [-0.276, -0.005, 0.0353]}
+  rz_disc: {attach: base_link, offset_m: [-0.3372, -0.05, 0.072]}
+  rz_f0: {attach: base_link, offset_m: [-0.241, -0.0545, 0.0552]}
+  rz_fba: {attach: base_link, offset_m: [-0.2385, 0.05, 0.0777]}
+  rz_fchg: {attach: base_link, offset_m: [-0.258, -0.005, 0.1038]}
+  rz_k1k2_1: {attach: base_link, offset_m: [-0.1635, -0.0485, 0.0658]}
+  rz_k1k2_2: {attach: base_link, offset_m: [-0.3295, 0.1395, 0.0678]}
+  rz_kchg: {attach: base_link, offset_m: [-0.3485, 0.01, 0.0428]}
+  rz_pre: {attach: base_link, offset_m: [-0.326, -0.1408, 0.0873]}
+  rz_pwr017_1: {attach: base_link, offset_m: [-0.346, 0.045, 0.1078]}
+  rz_pwr017_2: {attach: base_link, offset_m: [-0.326, -0.1458, 0.0098]}
+  rz_sb50: {attach: base_link, offset_m: [-0.35, 0.06, 0.052]}
   service_loop: {attach: lift_column_base_link, offset_m: [-0.1325, -0.045, 0.3764]}
   shims_1: {attach: base_link, offset_m: [0.2751, 0.215, -0.0465]}
   shims_2: {attach: base_link, offset_m: [0.2751, -0.215, -0.0465]}
   shims_3: {attach: base_link, offset_m: [-0.275, 0.215, -0.0465]}
   shims_4: {attach: base_link, offset_m: [-0.275, -0.215, -0.0465]}
   slot_cover_strips: {attach: lift_carriage_link, offset_m: [0.21, 0, 0.29]}
-  tz_receiver: {attach: base_link, offset_m: [-0.207, 0, -0.022]}
+  tz_metal_free_zone: {attach: base_link, offset_m: [-0.284, 0, -0.022]}
+  tz_receiver: {attach: base_link, offset_m: [-0.284, 0, -0.022]}
   us_locknut_1: {attach: base_link, offset_m: [0.3615, 0.13, -0.0066]}
   us_locknut_2: {attach: base_link, offset_m: [0.3615, -0.13, -0.0066]}
   us_locknut_3: {attach: base_link, offset_m: [-0.3615, 0.13, -0.0066]}

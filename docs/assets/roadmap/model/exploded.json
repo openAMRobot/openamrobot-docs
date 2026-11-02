@@ -18,13 +18,13 @@
   {
    "n": 3,
    "title": "Power and safety",
-   "text": "The battery cell-group envelope on the rear deck behind the centre bracket (provisional), drawn as eight LF105 cell boxes inside the envelope; the BMS, power distribution board, fuse and wiring go behind and beside it and are not drawn. The base E-stop (robot left) and the RESET button (robot right) sit in the front-panel holes of the release 001 buttons (P-03 rev20.0 item 24), drawn as placeholders from datasheet dimensions. The safety relay set and the charging receiver have no position in the 2.0 documentation and are listed only.",
+   "text": "Power and safety in the rear section (owner correction A1, 2 Nov 2026): the TZBOT WCM-500-24 receiver reserved at the rear panel on the centre line (not installed in 2.0) with its 20 mm metal-free margin, 4 + 4 EVE LF105 cells upright in the two side pocket trays with the series link across the centre, and the power electronics on the MEC-006 plate above the receiver. The base E-stop (robot left) and the RESET button (robot right) on the front panel.",
    "frame": "base"
   },
   {
    "n": 4,
    "title": "Compute and base controller",
-   "text": "The electronics bracket with the Jetson Orin NX on its J401 carrier, the NUCLEO-H723ZG base controller on its plate and the IMU board.",
+   "text": "Front electronics bay, one layout (owner correction A2, 2 Nov 2026): the MEC-005 plate on the base sheet with a second tier, the Jetson Orin NX on its J401 carrier, the NUCLEO-H723ZG, the CAN and I/O modules, the converters, FB-C and the PNOZ s3 on a DIN carrier; the IMU board stays on the electronics bracket at imu_link.",
    "frame": "base"
   },
   {
@@ -42,7 +42,7 @@
   {
    "n": 7,
    "title": "Lift column and adapter plate",
-   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top. On the rear face of the static column profile, close to its upper edge: the second E-stop. On its left side face: the three lift stop sensors on their brackets, and the flag rod with its corner bracket and steel flag hanging from the adapter plate. Placeholders until work package M-09.",
+   "text": "The lift base plate on the centre-frame arch, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top with the second E-stop on it behind the post, button up (owner correction A5, 2 Nov 2026). On the left side face of the static profile: the three lift stop sensors.",
    "frame": [
     "lift_base_plate",
     "lift_column",
@@ -55,7 +55,7 @@
   {
    "n": 8,
    "title": "Arm profile and arms",
-   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket (lens 42 mm ahead of the shoulder, 30 degrees down). On the front of the profile, bottom up: the head light and the Getac ZX80 tablet (drawn landscape; rotatable mount with a portrait second position), placeholders until work package M-09.",
+   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket (lens 57 mm ahead of the shoulder, 30 degrees down; A4). On the front of the profile, bottom up: the head light and the Getac ZX80 tablet in portrait (A3), the light top edge 10 mm below the Getac.",
    "frame": [
     "arm_profile",
     "openarm",
@@ -836,23 +836,6 @@
     ]
    }
   },
-  "bay_can2_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_can2_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_can2_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_can3": {
    "stage": 4,
    "offsets": {
@@ -887,23 +870,6 @@
     ]
    }
   },
-  "bay_iso1212_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_iso1212_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_iso1212_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_tpl7407": {
    "stage": 4,
    "offsets": {
@@ -915,23 +881,6 @@
    },
    "open": {
     "bay_tpl7407": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
-  "bay_tpl7407_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_tpl7407_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_tpl7407_optb": [
      0,
      0,
      0.16
@@ -955,23 +904,6 @@
     ]
    }
   },
-  "bay_ina228_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_ina228_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_ina228_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_rsd60": {
    "stage": 4,
    "offsets": {
@@ -989,23 +921,6 @@
     ]
    }
   },
-  "bay_rsd60_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_rsd60_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_rsd60_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_rsd100": {
    "stage": 4,
    "offsets": {
@@ -1017,23 +932,6 @@
    },
    "open": {
     "bay_rsd100": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
-  "bay_rsd100_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_rsd100_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_rsd100_optb": [
      0,
      0,
      0.16
@@ -1091,23 +989,6 @@
     ]
    }
   },
-  "bay_usbpd_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_usbpd_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_usbpd_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_pwr009": {
    "stage": 4,
    "offsets": {
@@ -1119,23 +1000,6 @@
    },
    "open": {
     "bay_pwr009": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
-  "bay_pwr009_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_pwr009_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_pwr009_optb": [
      0,
      0,
      0.16
@@ -1159,23 +1023,6 @@
     ]
    }
   },
-  "bay_pwr029_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_pwr029_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_pwr029_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_fbc": {
    "stage": 4,
    "offsets": {
@@ -1187,23 +1034,6 @@
    },
    "open": {
     "bay_fbc": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
-  "bay_fbc_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_fbc_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_fbc_optb": [
      0,
      0,
      0.16
@@ -1254,23 +1084,6 @@
     ]
    }
   },
-  "bay_usbhub_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_usbhub_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_usbhub_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_usbcan": {
    "stage": 4,
    "offsets": {
@@ -1298,33 +1111,6 @@
     ]
    }
   },
-  "bay_usbcan_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_usbcan_1_optb": [
-     0,
-     0,
-     0.32
-    ],
-    "bay_usbcan_2_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_usbcan_1_optb": [
-     0,
-     0,
-     0.16
-    ],
-    "bay_usbcan_2_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_lidar_uart": {
    "stage": 4,
    "offsets": {
@@ -1342,20 +1128,20 @@
     ]
    }
   },
-  "bay_lidar_uart_optb": {
-   "stage": 4,
+  "rz_fba": {
+   "stage": 3,
    "offsets": {
-    "bay_lidar_uart_optb": [
+    "rz_fba": [
+     -0.25,
      0,
-     0,
-     0.32
+     0.3
     ]
    },
    "open": {
-    "bay_lidar_uart_optb": [
+    "rz_fba": [
+     -0.12,
      0,
-     0,
-     0.16
+     0.14
     ]
    }
   },
@@ -1526,23 +1312,6 @@
    },
    "open": {
     "bay_plate": [
-     0,
-     0,
-     0.14
-    ]
-   }
-  },
-  "bay_plate_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_plate_optb": [
-     0,
-     0,
-     0.28
-    ]
-   },
-   "open": {
-    "bay_plate_optb": [
      0,
      0,
      0.14
@@ -1755,6 +1524,111 @@
     ]
    }
   },
+  "tz_metal_free_zone": {
+   "stage": 3,
+   "offsets": {
+    "tz_metal_free_zone": [
+     0,
+     0,
+     -0.25
+    ]
+   },
+   "open": {
+    "tz_metal_free_zone": [
+     0,
+     0,
+     -0.12
+    ]
+   }
+  },
+  "base_cutout": {
+   "stage": 1,
+   "offsets": {
+    "base_cutout": [
+     0,
+     0,
+     -0.2
+    ]
+   },
+   "open": {
+    "base_cutout": [
+     0,
+     0,
+     -0.1
+    ]
+   }
+  },
+  "battery_cells": {
+   "stage": 3,
+   "offsets": {
+    "battery_cells_left": [
+     0,
+     0,
+     0.3
+    ],
+    "battery_cells_right": [
+     0,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "battery_cells_left": [
+     0,
+     0,
+     0.14
+    ],
+    "battery_cells_right": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "battery_tray": {
+   "stage": 3,
+   "offsets": {
+    "battery_tray_left": [
+     0,
+     0,
+     0.25
+    ],
+    "battery_tray_right": [
+     0,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "battery_tray_left": [
+     0,
+     0,
+     0.12
+    ],
+    "battery_tray_right": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "battery_series_link": {
+   "stage": 3,
+   "offsets": {
+    "battery_series_link": [
+     0,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "battery_series_link": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
   "rear_plate": {
    "stage": 3,
    "offsets": {
@@ -1819,23 +1693,6 @@
     ]
    }
   },
-  "battery_tray": {
-   "stage": 3,
-   "offsets": {
-    "battery_tray": [
-     0,
-     0,
-     0.25
-    ]
-   },
-   "open": {
-    "battery_tray": [
-     0,
-     0,
-     0.12
-    ]
-   }
-  },
   "rear_estop_housing": {
    "stage": 8,
    "offsets": {
@@ -1853,57 +1710,6 @@
     ]
    }
   },
-  "estop_p1_ghost": {
-   "stage": 7,
-   "offsets": {
-    "estop_p1_ghost": [
-     0,
-     0,
-     0.1
-    ]
-   },
-   "open": {
-    "estop_p1_ghost": [
-     0,
-     0,
-     0
-    ]
-   }
-  },
-  "estop_p3_ghost": {
-   "stage": 8,
-   "offsets": {
-    "estop_p3_ghost": [
-     0,
-     0,
-     0.1
-    ]
-   },
-   "open": {
-    "estop_p3_ghost": [
-     0,
-     0,
-     0
-    ]
-   }
-  },
-  "estop_p4_ghost": {
-   "stage": 7,
-   "offsets": {
-    "estop_p4_ghost": [
-     0,
-     0,
-     0.1
-    ]
-   },
-   "open": {
-    "estop_p4_ghost": [
-     0,
-     0,
-     0
-    ]
-   }
-  },
   "getac_pocket": {
    "stage": 8,
    "offsets": {
@@ -1915,23 +1721,6 @@
    },
    "open": {
     "getac_pocket": [
-     0,
-     0,
-     0
-    ]
-   }
-  },
-  "getac_second_position_ghost": {
-   "stage": 8,
-   "offsets": {
-    "getac_second_position_ghost": [
-     0,
-     0,
-     0.1
-    ]
-   },
-   "open": {
-    "getac_second_position_ghost": [
      0,
      0,
      0
@@ -2602,50 +2391,35 @@
   ]
  },
  "generated": [
+  "base_cutout",
+  "battery_cells",
+  "battery_series_link",
   "battery_tray",
   "bay_can1",
   "bay_can2",
-  "bay_can2_optb",
   "bay_can3",
   "bay_ddr240",
   "bay_din",
   "bay_fbc",
-  "bay_fbc_optb",
   "bay_ina228",
-  "bay_ina228_optb",
   "bay_iso1212",
-  "bay_iso1212_optb",
   "bay_lidar_uart",
-  "bay_lidar_uart_optb",
   "bay_plate",
-  "bay_plate_optb",
   "bay_pwr009",
-  "bay_pwr009_optb",
   "bay_pwr029",
-  "bay_pwr029_optb",
   "bay_pwr032",
   "bay_rsd100",
-  "bay_rsd100_optb",
   "bay_rsd60",
-  "bay_rsd60_optb",
   "bay_tpl7407",
-  "bay_tpl7407_optb",
   "bay_usbcan",
-  "bay_usbcan_optb",
   "bay_usbhub",
-  "bay_usbhub_optb",
   "bay_usbpd",
-  "bay_usbpd_optb",
   "can_terms",
-  "estop_p1_ghost",
-  "estop_p3_ghost",
-  "estop_p4_ghost",
   "fan",
   "fasteners",
   "fasteners_upper",
   "feedthru",
   "getac_pocket",
-  "getac_second_position_ghost",
   "harness_bat",
   "harness_fittings",
   "harness_lv",
@@ -2661,6 +2435,7 @@
   "rz_brake",
   "rz_disc",
   "rz_f0",
+  "rz_fba",
   "rz_fchg",
   "rz_k1k2",
   "rz_kchg",
@@ -2668,6 +2443,7 @@
   "rz_pwr017",
   "rz_sb50",
   "shims",
+  "tz_metal_free_zone",
   "tz_receiver",
   "us_locknut"
  ]

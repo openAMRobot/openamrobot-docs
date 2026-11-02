@@ -346,13 +346,13 @@
    "existing_cad": null,
    "method": "machined 6082-T6",
    "thickness_mm": 5.0,
-   "mass_kg": 0.436,
+   "mass_kg": 0.437,
    "mass_basis": "per set as exported, volume x density",
    "placement": [
     {
      "name": "lens_line",
      "xyz": [
-      0.282,
+      0.297,
       0.0,
       1.223
      ],
@@ -363,7 +363,7 @@
      ]
     }
    ],
-   "placement_note": "column axis x 0.060 (bp000) + 0.180 + 0.042; z 0.304 + 0.530 + 0.166 + 0.223 at L1000",
+   "placement_note": "column axis x 0.060 (bp000) + 0.180 + 0.057; z 0.304 + 0.530 + 0.166 + 0.223 at L1000",
    "configuration": "L1000, hp30",
    "adjustment": "pitch hp15 to hp35 in 5 deg steps about the lens line, M4 lock screw (staggered holes, left 15/25/35, right 20/30)",
    "fasteners": [
@@ -409,10 +409,10 @@
       "ARM-011_foot_and_cheeks",
       "ARM-011_cradle_hp30"
      ],
-     "step_bytes": 184108,
+     "step_bytes": 184110,
      "stl_bytes": 72684,
      "reimport_valid": true,
-     "mass_kg": 0.436
+     "mass_kg": 0.437
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/zed_bracket.py",
@@ -427,7 +427,7 @@
    "existing_cad": null,
    "method": "laser-cut 5754 aluminium plates, machined 6082-T6 hub, PETG pocket",
    "thickness_mm": 3.0,
-   "mass_kg": 0.48,
+   "mass_kg": 0.46,
    "mass_basis": "per set as exported, volume x density",
    "placement": [
     {
@@ -435,7 +435,7 @@
      "xyz": [
       0.3,
       0.0,
-      1.08
+      1.04
      ],
      "rpy": [
       0.0,
@@ -444,9 +444,9 @@
      ]
     }
    ],
-   "placement_note": "arm-post front face x 0.060 + 0.180 + 0.060 = 0.300 (bp000); tablet centre 0.246 above the column top at L1000 (datums.yaml getac_tablet_z_above_column_top), 0.834 + 0.246",
-   "configuration": "L1000, landscape (default); portrait variant exported as getac_pocket_portrait",
-   "adjustment": "90 deg rotation about the screen normal, two locked positions (M8 spring plunger)",
+   "placement_note": "arm-post front face x 0.060 + 0.180 + 0.060 = 0.300 (bp000); tablet centre 0.246 above the column top at L1000 (datums.yaml getac_tablet_z_above_column_top), 0.834 + 0.246 - 0.040 (A3: 40 mm lower)",
+   "configuration": "L1000, portrait (decided default, A3); no second position",
+   "adjustment": "none (fixed portrait pocket); the tablet lifts out of the pocket",
    "fasteners": [
     {
      "joint": "back plate to arm post",
@@ -507,28 +507,16 @@
       "UI-002_pivot_hub",
       "AUX-001_light_plate",
       "AUX-001_head_light_envelope",
-      "UI-002_pocket_landscape"
-     ],
-     "step_bytes": 187200,
-     "stl_bytes": 91184,
-     "reimport_valid": true,
-     "mass_kg": 0.48
-    },
-    {
-     "variant": "getac_pocket_portrait",
-     "step": "design_intent/getac_pocket_portrait.step",
-     "stl": "design_intent/getac_pocket_portrait.stl",
-     "solids": [
       "UI-002_pocket_portrait"
      ],
-     "step_bytes": 92012,
-     "stl_bytes": 23784,
+     "step_bytes": 180355,
+     "stl_bytes": 90784,
      "reimport_valid": true,
-     "mass_kg": 0.215
+     "mass_kg": 0.46
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/getac_pocket.py",
-   "next_step": "Pivot hub 20 mm right of and 15 mm above the tablet centre (2 Nov 2026): the portrait pocket clears the light plate by 7.4 mm; the portrait tablet still covers the lower ZED Mini view (its top is 13 mm above the lens line). Confirm the ZX80 USB-C port position, then CAD (M-09).",
+   "next_step": "Owner: enter the portrait default and the 10 mm light gap in P-03 and M-01; confirm the ZX80 USB-C port position, then CAD (M-09).",
    "owner": "fridayali"
   },
   {
@@ -750,41 +738,11 @@
    "mass_basis": "per set as exported, volume x density",
    "placement": [
     {
-     "name": "P1",
+     "name": "adapter_top",
      "xyz": [
-      -0.06,
+      0.06,
       0.0,
-      0.7759999999999999
-     ],
-     "rpy": [
-      0,
-      0,
-      3.141592653589793
-     ],
-     "group": "col",
-     "variant": "rear_estop_housing_p1_ghost"
-    },
-    {
-     "name": "P2",
-     "xyz": [
-      0.18,
-      0.0,
-      1.129
-     ],
-     "rpy": [
-      0,
-      0,
-      3.141592653589793
-     ],
-     "group": "mov",
-     "variant": "rear_estop_housing"
-    },
-    {
-     "name": "P3",
-     "xyz": [
-      0.19999999999999998,
-      0.0,
-      1.19
+      0.844
      ],
      "rpy": [
       0,
@@ -792,31 +750,16 @@
       0
      ],
      "group": "mov",
-     "variant": "rear_estop_housing_p3_ghost"
-    },
-    {
-     "name": "P4",
-     "xyz": [
-      -0.06,
-      0.0,
-      0.5359999999999999
-     ],
-     "rpy": [
-      0,
-      0,
-      3.141592653589793
-     ],
-     "group": "col",
-     "variant": "rear_estop_housing_p4_ghost"
+     "variant": "rear_estop_housing"
     }
    ],
-   "placement_note": "xyz at bp000 and L1000; P2 and P3 move with the lift (+0.175 / +0.350); yaw pi: local +x points rearward; P3 pitch -pi/2: button up",
-   "configuration": "P2 (recommended, proposed): arm-post rear face, moves with the lift; P1, P3, P4 exported as labelled ghosts",
-   "adjustment": "height along the HFS6 rear slots (40 to 60 mm below the post top)",
+   "placement_note": "xyz at bp000 and L1000, on the adapter plate top; moves with the lift (+0.175 / +0.350); pitch -pi/2: button up",
+   "configuration": "one position (A5): adapter plate top behind the post, centred in y, above the column, button up; moves with the lift",
+   "adjustment": "fore-aft on the plate between the column axis and the rear upright (slotted flange holes, +/-10 mm)",
    "fasteners": [
     {
-     "joint": "P2 housing to the HFS6 post rear slots",
-     "part": "ISO 4762 screw + ISO 7089 washer + M6 T-slot nut (HFS6)",
+     "joint": "housing flanges to the adapter plate",
+     "part": "ISO 4762 screw + ISO 7089 washer into tapped holes",
      "size": "M6 x 10",
      "qty": 4,
      "standard": "ISO 4762",
@@ -845,63 +788,18 @@
      "step": "design_intent/rear_estop_housing.step",
      "stl": "design_intent/rear_estop_housing.stl",
      "solids": [
-      "SAF-001_rear_housing_P2",
+      "SAF-001_housing_adapter_top",
       "SAF-001_XB4BS8445_ZBE-102_envelope"
      ],
-     "step_bytes": 95330,
-     "stl_bytes": 55284,
-     "reimport_valid": true,
-     "mass_kg": 0.08
-    },
-    {
-     "variant": "rear_estop_housing_p1_ghost",
-     "step": "design_intent/rear_estop_housing_p1_ghost.step",
-     "stl": "design_intent/rear_estop_housing_p1_ghost.stl",
-     "solids": [
-      "SAF-001_rear_housing_P1",
-      "SAF-001_XB4BS8445_ZBE-102_envelope"
-     ],
-     "step_bytes": 95351,
-     "stl_bytes": 55284,
-     "reimport_valid": true,
-     "mass_kg": 0.08
-    },
-    {
-     "variant": "rear_estop_housing_p3_ghost",
-     "step": "design_intent/rear_estop_housing_p3_ghost.step",
-     "stl": "design_intent/rear_estop_housing_p3_ghost.stl",
-     "solids": [
-      "SAF-001_rear_housing_P3",
-      "SAF-001_XB4BS8445_ZBE-102_envelope"
-     ],
-     "step_bytes": 95351,
-     "stl_bytes": 55284,
-     "reimport_valid": true,
-     "mass_kg": 0.08
-    },
-    {
-     "variant": "rear_estop_housing_p4_ghost",
-     "step": "design_intent/rear_estop_housing_p4_ghost.step",
-     "stl": "design_intent/rear_estop_housing_p4_ghost.stl",
-     "solids": [
-      "SAF-001_rear_housing_P4",
-      "SAF-001_XB4BS8445_ZBE-102_envelope"
-     ],
-     "step_bytes": 95351,
+     "step_bytes": 95340,
      "stl_bytes": 55284,
      "reimport_valid": true,
      "mass_kg": 0.08
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/rear_estop_housing.py",
-   "next_step": "Owner: take P2 into P-03 (datums second_estop_below_profile_top and its parent link change then), CAD (M-09).",
-   "owner": "fridayali",
-   "variants_note": {
-    "P1": "rear_estop_housing_p1_ghost",
-    "P2": "rear_estop_housing",
-    "P3": "rear_estop_housing_p3_ghost",
-    "P4": "rear_estop_housing_p4_ghost"
-   }
+   "next_step": "Owner: enter the adapter-plate position in P-03 and M-01; CAD owner: tapped holes and the cable hole in MEC-004 (M-09).",
+   "owner": "fridayali"
   },
   {
    "letter": "i",
@@ -1123,20 +1021,20 @@
   {
    "letter": "k",
    "item": "battery_tray",
-   "bom": "MEC-007 (with PWR-027 restraint, PWR-028 enclosure interface)",
+   "bom": "MEC-007 (with PWR-027 restraint)",
    "status": "design intent",
    "existing_cad": null,
-   "method": "laser-cut and bent 5754 aluminium tray, machined 6082-T6 end panels",
-   "thickness_mm": 2.5,
-   "mass_kg": 1.795,
+   "method": "laser-cut and bent 5754 aluminium trays",
+   "thickness_mm": 3.0,
+   "mass_kg": 1.479,
    "mass_basis": "per set as exported, volume x density",
    "placement": [
     {
-     "name": "envelope_bottom_centre",
+     "name": "in_place",
      "xyz": [
-      -0.20850000000000002,
       0.0,
-      0.0565
+      0.0,
+      0.0
      ],
      "rpy": [
       0,
@@ -1145,32 +1043,24 @@
      ]
     }
    ],
-   "placement_note": "the tray floor raises the provisional envelope by 2.5 mm against the GLB battery node",
-   "configuration": "rear deck, behind the centre bracket",
-   "adjustment": "tie-rod nuts set the cell compression; end panels detachable",
+   "placement_note": "parts exported in base_footprint; trays left x -0.272..-0.136 y 0.097..0.261; right x -0.272..-0.136 y -0.261..-0.097",
+   "configuration": "two side pockets of the rear section (A1), arrangement 4 across (y), 130 along x",
+   "adjustment": "strap tension; trays lift out vertically with the cover off",
    "fasteners": [
     {
-     "joint": "tray to deck",
-     "part": "ISO 4762 screw + ISO 7089 washer + ISO 7040 nyloc nut",
-     "size": "M6 x 16",
-     "qty": 4,
+     "joint": "tray to base sheet",
+     "part": "ISO 4762 screw + ISO 7089 washer + rivet nut",
+     "size": "M6 x 12",
+     "qty": 8,
      "standard": "ISO 4762",
      "class": "proposed"
     },
     {
-     "joint": "cell restraint tie rods",
-     "part": "threaded rod + ISO 4032 nuts + ISO 7089 washers (insulated sleeve)",
-     "size": "M6 x 340",
+     "joint": "cell strap",
+     "part": "strap with buckle",
+     "size": "20 mm",
      "qty": 2,
-     "standard": "DIN 976",
-     "class": "proposed"
-    },
-    {
-     "joint": "end panel to tray walls",
-     "part": "ISO 7380 screw + ISO 7089 washer into rivet nut",
-     "size": "M5 x 10",
-     "qty": 8,
-     "standard": "ISO 7380",
+     "standard": "proposed",
      "class": "proposed"
     }
    ],
@@ -1180,21 +1070,19 @@
      "step": "design_intent/battery_tray.step",
      "stl": "design_intent/battery_tray.stl",
      "solids": [
-      "MEC-007_tray",
-      "MEC-007_end_panel_left",
-      "MEC-007_end_panel_right",
-      "MEC-007_tie_rod_1",
-      "MEC-007_tie_rod_2",
-      "PWR-001_cell_group_envelope"
+      "MEC-007_pocket_tray_left",
+      "PWR-027_strap_left",
+      "MEC-007_pocket_tray_right",
+      "PWR-027_strap_right"
      ],
-     "step_bytes": 146683,
-     "stl_bytes": 88084,
+     "step_bytes": 136305,
+     "stl_bytes": 56884,
      "reimport_valid": true,
-     "mass_kg": 1.795
+     "mass_kg": 1.479
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/battery_tray.py",
-   "next_step": "Hardware owner: BMS/PDB layout with real part sizes; CAD owner: MEC-007 work package, removal path with the cover off.",
+   "next_step": "Hardware owner: BMS and busbar layout with real parts; CAD owner: MEC-007 pocket trays and the side-panel flange notches (GI-025).",
    "owner": "fridayali"
   }
  ]

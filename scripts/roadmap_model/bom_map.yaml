@@ -113,12 +113,12 @@ PWR-017: {by: rz_pwr017}
 PWR-018: {by: rz_batcon}
 PWR-019: {by: rz_sb50}
 PWR-022: {by: rz_fchg}
-PWR-023: {by: inside:battery, cls: provisional, geo: "8 cell boxes inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001 (8 x 1.98 kg)"}
-PWR-024: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
-PWR-025: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
-PWR-026: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
-PWR-027: {by: inside:battery, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
-PWR-028: {by: battery, cls: provisional, geo: "the envelope shell", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-023: {by: inside:battery_cells, cls: provisional, geo: "8 cell boxes inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001 (8 x 1.98 kg)"}
+PWR-024: {by: inside:battery_cells, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-025: {by: inside:battery_cells, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-026: {by: inside:battery_cells, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-027: {by: inside:battery_cells, cls: provisional, geo: "inside the envelope", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
+PWR-028: {by: battery_tray, cls: provisional, geo: "the envelope shell", pos: "B5", mass: 0.0, msrc: "included in PWR-001"}
 PWR-029: {by: bay_pwr029}
 PWR-030: {by: bay_ddr240}
 PWR-031: {by: none, cls: not drawn, reason: "reserved branch, parts to be confirmed"}
@@ -140,8 +140,8 @@ UI-001: {by: getac_tablet, cls: placeholder, geo: "datums getac_tablet_size 17.6
 UI-002: {by: tablet_mount}
 UI-003: {by: inside:getac_tablet, cls: not drawn, reason: "tablet speaker, part of UI-001"}
 WCH-001: {by: none, cls: not drawn, reason: "set row: the onboard part is WCH-002, the transmitter WCH-003 is offboard"}
-WCH-002: {by: tz_receiver, mass: 0.0, msrc: "reserved position, not installed in 2.0 (about 1.5 kg when fitted in release 3.0)"}
-WCH-003: {by: none, cls: not drawn, reason: offboard}
+WCH-002: {by: tz_receiver, cls: "reserved, not installed in 2.0", mass: 0.0, msrc: "not installed in 2.0 (1.5 kg in 3.0)", pos: "A1 rear charger zone (owner, 2 Nov 2026)"}
+WCH-003: {by: tz_transmitter, reason: "offboard: floor station, drawn on the floor under the docked robot (not in the robot mass)"}
 WCH-004: {by: rz_kchg}
 WCH-005: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.02, msrc: "estimate"}
 WCH-006: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.1, msrc: "estimate"}

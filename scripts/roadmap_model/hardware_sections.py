@@ -12,7 +12,7 @@ import json
 import os
 import re
 
-from frames import HERE, MODEL, REPO, load_yaml
+from frames import HERE, MODEL, REPO, load_yaml, tzbot_layout
 
 PAGE = os.path.join(REPO, "docs", "assets", "roadmap", "hardware.html")
 E = html.escape
@@ -67,17 +67,15 @@ def model_section():
             an["steel_chassis_kg"], m["L1000"]["mass"], m["L1000"]["com"][0] * 1000, m["L1000"]["com"][1] * 1000, m["L1000"]["com"][2] * 1000,
             m["L1350"]["com"][2] * 1000, st["L1000"]["margin_fore_m"] * 1000, st["L1000"]["margin_aft_m"] * 1000, st["L1000"]["margin_lat_m"] * 1000,
             st["L1000"]["a_max_fore"], st["L1350"]["a_max_fore"], st["L1350"]["a_max_lat"], ld["L1350"]["drive_pair_kg"]) +
-        "<p><b>Front electronics bay</b>: two layouts, option A (two-tier, proposed default) and option B "
-        "(28 Oct alternative), switched on the exploded view; see the front bay section below. Front bay parts placed in option A: %d; in option B: %d "
-        "(not placed: %s).</p>" % (bs["front_bay"]["A"]["fit"]["placed"], bs["front_bay"]["B"]["fit"]["placed"], E(", ".join(bs["front_bay"]["B"]["fit"]["not_placed"])) or "none") +
-        "<p><b>Rear power zone</b> (B5 accepted layout), packed around the design-intent battery tray MEC-007 and the real side-pocket section with 5 mm "
-        "clearances (10 mm around converters); what B5 cannot hold goes under the arch top above the hub motors (overflow proposal, not B5). "
-        "Not placed anywhere: %s (geometry issue %s). "
-        "K1/K2 option A GX11CAC fits: %s. Option B TeSys D LC1D80BD fits: %s (drawn as a labelled ghost where the packer puts it). "
-        "Siemens 3RT2 S3 fits: %s.</p>" % (E(", ".join(nofit)) or "none", gi("Rear zone layout"), "yes" if k["A"]["fits"] else "no", "yes" if k["B_tesys"]["fits"] else "no", "yes" if k["B_siemens"]["fits"] else "no") +
+        "<p><b>Front electronics bay</b> (one layout, owner correction A2): %s, %d parts placed, not placed: %s; see the front bay section below.</p>" % (
+            E(bs["front_bay"]["single"]["fit"].get("layout", "")), bs["front_bay"]["single"]["fit"]["placed"], E(", ".join(bs["front_bay"]["single"]["fit"]["not_placed"])) or "none") +
+        "<p><b>Rear section</b> (owner correction A1 and the receiver position of 2 Nov 2026): 8 x LF105 upright, 4 per side pocket (8S); power electronics on "
+        "the MEC-006 plate above the reserved TZBOT receiver, underside 122 mm above the floor, with a second level allowed for the BMS and PWR-017 and nothing "
+        "above a fuse. Not placed: %s (geometry issue %s). K1/K2 option A GX11CAC fits: %s. Option B TeSys D LC1D80BD fits: %s (labelled ghost). "
+        "Siemens 3RT2 S3 fits: %s.</p>" % (E(", ".join(nofit)) or "none", gi("Rear layout"), "yes" if k["A"]["fits"] else "no", "yes" if k["B_tesys"]["fits"] else "no", "yes" if k["B_siemens"]["fits"] else "no") +
         "<p><b>Harness:</b> %d cables (%d routed, %.1f m with the 10 %% service margin), coloured by domain (BAT red, SAFE orange, regulated 24 V yellow, "
         "5 V / 3.3 V green, signal blue), with P-clips, grommets at the centre-bracket walls and the deck crossing, CAN terminations and one "
-        "service loop for all upper-body cables sized for the 350 mm stroke; the front trunk drops below the LiDAR scan plane (222.05 mm, +/-5 mm) behind the open sector. <b>Fasteners:</b> %d schedule rows (named and proposed), the start of MEC-014; "
+        "service loop for all upper-body cables sized for the 350 mm stroke; the front trunk drops below the LiDAR scan plane (222.05 mm, +/-5 mm) behind the open sector; the rear trunk runs over the series-link strip at the arch edge. <b>Fasteners:</b> %d schedule rows (named and proposed), the start of MEC-014; "
         "small parts load with High quality only.</p>" % (len(cab), len(routed), total_len, len(fas)) +
         "<p>Files: %s, %s, %s, %s, %s; layout STEP for SolidWorks: %s.</p>" % (
             A("model/bom_coverage.csv", "bom_coverage.csv"), A("model/fastener_schedule.csv", "fastener_schedule.csv"),
@@ -93,7 +91,7 @@ def mech_section():
     names = {"tof_mount": "a. TF-Luna mounts, front and rear", "ultrasonic_mount": "b. MB7060 mounts (4)", "gemini_mount": "c. Gemini 336L mount",
              "zed_bracket": "d. ZED Mini bracket on the post top", "getac_pocket": "e. Getac ZX80 pocket and light-bar plate",
              "lift_base_plate": "f. Lift base plate on the centre-frame arch", "adapter_post": "g. Adapter plate, HFS6-60120 post, upright, stiffener, rod mount",
-             "rear_estop_housing": "h. Second E-stop housing, post mount P2 (P1, P3, P4 ghosts)", "motor_bracket": "i. Hub motor shaft-flat brackets", "lift_sensor_set": "j. Lift stop sensor set",
+             "rear_estop_housing": "h. Second E-stop housing on the adapter plate, button up (A5)", "motor_bracket": "i. Hub motor shaft-flat brackets", "lift_sensor_set": "j. Lift stop sensor set",
              "battery_tray": "k. Battery tray"}
     rows = []
     for d in di:
@@ -120,7 +118,7 @@ def issues_section():
     c = collections.Counter(r["severity"] for r in rows)
     body = ("<p>Generated from %s by <code>scripts/roadmap_model/analyse.py</code> on the shared model: interference of all part pairs at L1000, L1175 and "
             "L1350, bp000 and bp050, hp15 to hp35 and both Getac positions; a single-joint arm sweep through the URDF limits at 10 deg steps at L1000 and "
-            "L1350; the Gemini 336L and ZED Mini views and the LiDAR plane; mass, stability, the reserved TZBOT receiver position, service access and the K1/K2 fit. "
+            "L1350; the Gemini 336L and ZED Mini views and the LiDAR plane; mass, stability, the TZBOT receiver, service access and the K1/K2 fit. "
             "Box parts are tested exactly, meshes on 0.75 mm surface samples. %d blocker, %d major, %d minor.</p>" % (A("model/geometry_issues.csv", "geometry_issues.csv"), c["blocker"], c["major"], c["minor"]) +
             table(head, mk(big)) + "<details><summary>%d minor issues</summary>%s</details>" % (len(small), table(head, mk(small))) + closed_html())
     return section("geoissues", "Geometry and hardware issues", body, "roadmap model analysis of %s; B8 simulation findings of 29 Oct 2026" % SNAP)
@@ -136,20 +134,16 @@ def conflicts_section():
 
 def decisions_section():
     an = json.load(open(os.path.join(HERE, "analysis_summary.json")))
-    ep = an["estop_positions"]
+    ep = an["estop"]
     pl = an["lift_base_plate"]
     tz = an["tzbot"]
     ic = an["intended_contacts"][0]
     lp = load_yaml(os.path.join(HERE, "facts.yaml"))["lift_plate"]
-    # B2 table
-    rows = []
-    for n in ("P1", "P2", "P3", "P4"):
-        p = ep["positions"][n]
-        h = " / ".join("%.3f" % v["actuator_centre_m"] for v in p["stops"].values())
-        hits = " / ".join(str(sum(v["reach_study_hits"].values())) for v in p["stops"].values())
-        rows.append([E(n + (" (recommended, proposed)" if n == ep["recommended"] else "")), E(p["mount"]), E(h), E("yes" if p["meets_height"] else "no"),
-                     E("sweep clear; reach study %s" % hits), E("no" if p["out_of_zed_view"] else "yes"), E(p["cable"])])
-    t_estop = table(["Position", "Mount", "Actuator centre at L1000 / L1175 / L1350 (m)", "0.90 to 1.50 m at every stop", "Arms (single-joint sweep; reach-study poses within 5 mm, both arms)", "In the ZED Mini view", "Cable"], rows)
+    # A5 second E-stop
+    ep = an["estop"]
+    t_estop = table(["Position", "Actuator centre at L1000 / L1175 / L1350 (m)", "0.90 to 1.50 m at every stop", "Arms (single-joint sweep)", "Cable"],
+                    [[E(ep["position"]), E(" / ".join("%.3f" % v for v in ep["actuator_centre_m"].values())), E("yes" if all(0.90 <= v <= 1.50 for v in ep["actuator_centre_m"].values()) else "no"),
+                      E("clear" if not any("second_estop" in k for k in an["sweep"]) else "hit"), E(ep["cable"])]])
     # B3 load check
     rows = []
     for c in pl["cases"]:
@@ -160,21 +154,26 @@ def decisions_section():
     ab = pl["above_plate"]
     mu = pl["max_utilisation"]
     ok = max(mu.values()) <= 0.67
-    # B4: reserved TZBOT receiver position (release 3.0)
-    TZF = load_yaml(os.path.join(HERE, "facts.yaml"))["tzbot_receiver"]
-    fmt = lambda v: "-" if v is None else ("overlap %.1f mm" % -v if v < 0 else "clearance %.1f mm" % v)
-    tzm = [[E(m["part"]), E(fmt(m["distance_mm"]))] for m in tz.get("metal", [])]
+    # A1 rear section and the reserved receiver
+    rl = tz["rear_layout"]
+    me = rl["measured"]
+    t_dim = table(["Dimension", "CAD v0.2 (base GLB)", "Owner value"], [
+        [E("between the two side walls (inner faces)"), "%.0f mm" % me["between_side_walls_mm"], "%.0f mm" % me["owner_between_walls_mm"]],
+        [E("between the rear top-cover supports (inner faces)"), "%.0f mm" % me["between_supports_mm"], "%.0f mm" % me["owner_between_supports_mm"]],
+        [E("rear panel inner face to the edge of the central arch"), "%.0f mm (supports %.0f mm deep)" % (me["rear_panel_to_arch_mm"], me["support_depth_from_rear_panel_mm"]), "%.0f mm" % me["owner_panel_to_arch_mm"]],
+        [E("side pocket across (side-wall width - 150) / 2, minus the 20 mm margin"), "%.0f mm (%.0f mm before the margin)" % (rl["pocket_free"]["y_mm"], rl["pocket_free"]["y_owner_formula_mm"]), "214 mm before the margin"]])
+    t_rx = table(["Rear body", "Clearance to the receiver (mm)", "Inside the 20 mm metal-free margin"],
+                 [[E(k), "%.1f" % v, "yes" if v < 20 else "no"] for k, v in tz["position"]["clearance_to_rear_bodies_mm"].items()])
     body = (
         "<p>Decisions of 2 Nov 2026 by the robot owner, to be entered in P-03 and M-01. Values below are generated by "
-        "<code>scripts/roadmap_model/analyse.py</code>, <code>estop_positions.py</code> and <code>lift_plate_check.py</code>.</p>"
+        "<code>scripts/roadmap_model/analyse.py</code>, <code>rear_layout.py</code>, <code>front_bay.py</code> and <code>lift_plate_check.py</code>.</p>"
         "<h3>Wheel and axle (B1)</h3><p>The drive wheels are rubber, radius 0.100 m, with the axle (base_link) at 0.098 m: the 2 mm is intended tyre "
         "compression under load and levels the rigid chassis, which has no suspension. The model shows it as an intended contact (wheel-to-floor overlap "
         "%.1f mm, limit 2 mm), not as a conflict.</p>" % ic["overlap_mm"] +
-        "<h3>Second E-stop, reach requirement (B2)</h3><p>A standing adult close to the robot presses it by hand without bending or sitting down: actuator "
-        "centre 0.90 to 1.50 m above the floor at L1000, L1175 and L1350, facing outward and visible, no contact in the arm sweep, out of the ZED Mini view, "
-        "cable routed. The reach study (%d random poses per arm and stop within the joint limits, poses through the post, the column, the adapter plate or "
-        "the Getac discarded) counts the poses with an arm link within 5 mm of the housing. Recommended (proposed): <b>%s</b>. %s The combined model keeps "
-        "P1 (datums second_estop_below_profile_top, parent lift_column_base_link) until the P-03 entry.</p>" % (ep["n_per_arm"], E(ep["recommended"]), E(ep["recommendation"])) + t_estop +
+        "<h3>Second E-stop (A5)</h3><p>One position: on top of the adapter plate (the moving plate on the lift carriage that carries the post and the arms), "
+        "centred in y, in the free part of the plate behind the post, above the column; button facing up in a small housing on the plate, so the contact "
+        "blocks sit above the plate (design_intent/rear_estop_housing). The cable runs through the plate into the lift cable chain with the arm cables. "
+        "Positions P1, P3 and P4, their ghosts, the static-column position and the random-pose arm reach study are removed.</p>" + t_estop +
         "<h3>Lift base plate (B3)</h3><p>One 10 mm 6082-T6 plate, %.0f x %.0f mm, on the top of the centre-frame arch (top 304 mm). The arch top (2 mm "
         "S235JR, CAD MMP.04.00.00.000) carries 8 x M8 blind rivet nuts in two patterns: 120 x 100 mm (x +/-0.060, y +/-0.050) and 190 x 300 mm "
         "(x +/-0.095, y +/-0.150); the plate uses the inner one and is bolted from above with 4 x ISO 4762 M8 x 20 class 8.8. The DOLD column stands forward "
@@ -191,20 +190,14 @@ def decisions_section():
             pl["arms_forward"]["com_m"][2], pl["cases"][0]["bolt_Ft_Rd_kN"], pl["cases"][0]["bolt_Fv_Rd_kN"], pl["cases"][0]["Bp_Rd_kN"], mu["bolt_utilisation"],
             mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], mu["arch_sheet_utilisation"], pl["max_column_tilt_deg"],
             "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case, so the load path needs a doubler under the arch top between the rear rivet nuts and the rear wall (or the outer rivet-nut pattern as well) before the arms carry a payload at full reach.") + t_plate +
-        "<h3>TZBOT WCM-500-24 wireless charging (B4)</h3><p>Wireless charging is a release 3.0 item. The TZBOT WCM-500-24 receiver position is reserved "
-        "at the rear under the battery. Docking for wireless charging will approach the station, turn 180 degrees and reverse onto the transmitter. 2.0 "
-        "charges by cable.</p>"
-        "<p>Datasheet (TZBOT <i>WCM-500-24 Wireless Charger Instruction Manual</i> V2.5, 2021-09-23): receiver and floor transmitter %s x %s x %s mm, about %g kg "
-        "each; air gap 20 +-10 mm; misalignment +-%g mm in X and Y; no metal within %g mm. Reserved position (owner decision, 2 Nov 2026): under the battery cell group, "
-        "centred on the long axis and on the cell-group centre, 170 mm across, 150 mm fore-aft (x %.3f to %.3f), bottom %.0f mm above the floor (2 mm below the "
-        "base-sheet underside), top %.0f mm; drawn translucent, class reserved, not installed in 2.0. The floor transmitter is not drawn.</p>" % (
-            "%g" % (TZF["size"][0] * 1000), "%g" % (TZF["size"][1] * 1000), "%g" % (TZF["size"][2] * 1000), TZF["mass"], TZF["align"][0] * 1000, TZF["metal_clear"] * 1000,
-            tz["lo"][0], tz["hi"][0], tz["receiver_bottom_mm"], tz["receiver_top_mm"]) +
-        "<p><b>Warning, reserved for 3.0</b> (%s, minor, known, to be solved in release 3.0): receiver top %.0f mm vs the battery cells: %s; vs the battery tray: "
-        "%s; charging gap with a %.0f mm floor transmitter: %.0f mm (receiver bottom %.0f mm) against the required %.0f to %.0f mm. Parts within 20 mm "
-        "(negative: overlap):</p>" % (gi("TZBOT WCM-500-24 receiver (reserved"), tz["receiver_top_mm"], E(fmt(tz["vs_cells_mm"])), E(fmt(tz["vs_tray_mm"])),
-                                       tz["transmitter_height_mm"], tz["gap_mm"], tz["receiver_bottom_mm"], tz["air_gap_mm"][0], tz["air_gap_mm"][1]) +
-        table(["Part", "Distance"], tzm))
+        "<h3>TZBOT WCM-500-24 receiver, reserved for release 3.0 (A1)</h3><p class=\"note\">Wireless charging is a release 3.0 item. The TZBOT WCM-500-24 receiver (170 x 150 x 52 mm) is reserved at the rear panel on the centre line, with the batteries in the side pockets and the power electronics above it. Docking for wireless charging will approach the station, turn 180 degrees and reverse onto the transmitter. 2.0 charges by cable.</p>"
+        "<p>Receiver (manual V2.5, 170 x 150 x 52 mm, about 1.5 kg; not installed in 2.0) 170 mm along x and 150 mm across y, centred on the long axis, "
+        "x %.3f to %.3f, as close to the rear panel inner face as possible without touching the rear TF-Luna, the rear MB7060s, their mounts or the rear "
+        "panel flange; bottom 50 mm above the floor (2 mm below the base sheet). The 20 mm metal-free margin and the base-sheet cut-out are drawn; no transmitter "
+        "is drawn. Charging gap with a 52 mm floor transmitter: %.0f mm (to be solved in release 3.0, %s).</p>" % (
+            tz["position"]["x_m"][0], tz["position"]["x_m"][1], tz["floor_gap"]["gap_mm"], gi("TZBOT receiver / floor transmitter")) + t_rx + t_dim +
+        "<p>Cells: 4 + 4 LF105 upright (%s, tray %s mm); clear of the side-panel return flanges: %s (%s).</p>" % (
+            E(rl["pockets"].get("arrangement", "")), " x ".join("%.0f" % v for v in rl["pockets"].get("tray_mm", [])), "yes" if rl["pockets"].get("clears_flanges") else "no", gi("Rear side pockets")))
     return section("decisions", "Owner decisions of 2 Nov 2026: wheels, second E-stop, lift base plate, wireless charging", body,
                    "owner decisions of 2 Nov 2026; roadmap model analysis; CAD MMP.04.00.00.000 and the full assembly STEP (openamr-platform-hw main)")
 
@@ -213,7 +206,7 @@ def closed_html():
     """Closed issue IDs (scripts/roadmap_model/issue_ids.yaml; IDs are stable and never renumbered)."""
     c = json.load(open(os.path.join(HERE, "analysis_summary.json"))).get("closed_issues", [])
     return ("<p><b>Closed issue IDs</b> (IDs are stable across reruns and never renumbered; new issues get new IDs): %s.</p>" %
-            "; ".join("%s %s (%s)" % (E(x["id"]), E(x["key"].split("|", 1)[1]), E(x["reason"].replace("Alex, ", "owner decision, "))) for x in c)) if c else ""
+            "; ".join("%s %s (%s)" % (E(x["id"]), E(x["key"].split("|", 1)[1]), E(x["reason"])) for x in c)) if c else ""
 
 
 def gi(prefix):
@@ -226,32 +219,18 @@ def gi(prefix):
 
 def frontbay_section():
     bs = json.load(open(os.path.join(HERE, "build_summary.json")))
-    fb = bs["front_bay"]
-    rows = []
-    for o, title in (("A", "A: two-tier bay (proposed default)"), ("B", "B: DIN parts in the rear side pockets (28 Oct alternative)")):
-        f = fb[o]["fit"]
-        rows.append([E(title), str(f["placed"]), E(", ".join(f["not_placed"]) or "none"), E("; ".join("%s %s" % (k, v) for k, v in f.get("stays_in_place", {}).items()) or "none"),
-                     "%.1f" % f["cover_margin_mm"], E(", ".join(f["scan_band_parts"]) or "none"), "%.1f" % f["min_gap_mm"]])
-    t = table(["Option", "Parts placed", "Not placed", "Stays in place", "Margin to the cover (mm)", "Parts in the scan band", "Smallest gap (mm)"], rows)
-    zones = lambda o: "; ".join("%s: %s" % (k, ", ".join(v)) for k, v in fb[o]["fit"]["by_zone"].items())
-    rec = max(("A", "B"), key=lambda o: (fb[o]["fit"]["placed"], -len(fb[o]["fit"]["not_placed"]), o == "A"))
-    rtxt = ("option %s, the only one that places every front-bay part" % rec) if not fb[rec]["fit"]["not_placed"] and fb["B" if rec == "A" else "A"]["fit"]["not_placed"] else (
-        "option %s: it places the most front-bay parts (%d against %d)" % (rec, fb[rec]["fit"]["placed"], fb["B" if rec == "A" else "A"]["fit"]["placed"]))
-    body = (("<p>The bay plate MEC-005 rests on the base sheet; the LiDAR support MMP.07 stays at its CAD position (the TZBOT receiver is reserved at the rear, "
-            "release 3.0). Both options stay under the cover (0.290 m), out of the LiDAR scan plane band in the open sector, with 10 mm air gaps "
-            "around converters and top access to every fuse (the fuse block and the PNOZ are not under the shelf or the lift base plate overhang). "
-            "Catalogue outlines and their sources are in <code>scripts/roadmap_model/parts.yaml</code> and <code>front_bay.py</code> (PNOZ s3 750103 "
-            "22.5 x 98 x 120.3 mm, MEAN WELL DDR-240B-24 63 x 125.2 x 100 mm, RSD-100B-24 159 x 97 x 38 mm, RSD-60G-5 120 x 50 x 33 mm, Blue Sea 5046 "
-            "102 x 74 x 41 mm, reComputer J401 with the Orin NX and fan 118 x 115 x 45 mm, NUCLEO-144 133.34 x 70 mm). The exploded view has a "
-            "switch, Front bay: option A / option B.</p>") + t + (
-            "<p><b>Option A</b> zones: %s. The DIN carrier sits on the centre-bracket front legs with the rail along y; the Jetson moves off bracket "
-            "MMP.04.00.00.002, the EV_ICM-42688-P stays at imu_link with nothing heavy or vibrating on its bracket.</p>"
-            "<p><b>Option B</b> zones: %s. The rear side pockets are 91 mm wide only between z 74 and 191 mm (36 mm at the flanges, %s), 71 mm with the "
-            "battery tray wall: with the rail fore-aft, the DDR-240B-24 needs 125.2 mm across (rail on the floor) or 100 mm (rail on the side wall), the "
-            "PNOZ s3 98 or 120 mm, so neither fits.</p>"
-            "<p><b>Recommendation (proposed):</b> %s. %s stays open for "
-            "the rear zone (FB-A, FB-B and the BMS).</p>" % (E(zones("A")), E(zones("B")), gi("Rear side pockets"), E(rtxt), gi("Rear zone layout"))))
-    return section("frontbay", "Front bay: option A vs option B", body, "front_bay.py; owner decision of 2 Nov 2026 (C1); P-03 rev20.2, E-01 rev1.6")
+    f = bs["front_bay"]["single"]["fit"]
+    t = table(["Layout", "Parts placed", "Not placed", "Margin to the cover (mm)", "Parts in the scan band", "Smallest gap (mm)"],
+              [[E(f.get("layout", "")), str(f["placed"]), E(", ".join(f["not_placed"]) or "none"), "%.1f" % f["cover_margin_mm"], E(", ".join(f["scan_band_parts"]) or "none"), "%.1f" % f["min_gap_mm"]]])
+    zones = "; ".join("%s: %s" % ({"A_lower": "lower plate", "A_upper": "upper shelf", "A_din": "DIN carrier", "bay": "plate"}.get(k, k), ", ".join(v)) for k, v in f["by_zone"].items())
+    body = ("<p>One layout, no options (owner correction A2, 2 Nov 2026; to be entered in P-03 and M-01). The receiver is no longer at the front, so the "
+            "MEC-005 plate lies on the base sheet and every front-bay part uses the full height up to the cover underside (0.290 m), clear of the LiDAR, its "
+            "scan plane 222.05 mm +/-5 mm in the open sector, the Gemini 336L, the MB7060 and TF-Luna bodies, the E-stop and RESET bodies and the lift-plate "
+            "top-access rule, with 10 mm air gaps around converters and top access to every fuse and terminal block. One plate is tried first; a second tier "
+            "is used only because one plate does not take every part. The Jetson does not sit on bracket MMP.04.00.00.002; the EV_ICM-42688-P stays at "
+            "imu_link with nothing heavy or vibrating on its bracket. Catalogue outlines and their sources are in <code>scripts/roadmap_model/parts.yaml</code> "
+            "and <code>front_bay.py</code>.</p>" + t + "<p>Zones: %s.</p>" % E(zones))
+    return section("frontbay", "Front bay: one layout", body, "front_bay.py; owner correction A2 (2 Nov 2026); P-03 rev20.2, E-01 rev1.6")
 
 
 def parity_section():

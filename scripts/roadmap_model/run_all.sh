@@ -9,7 +9,6 @@ python3 build.py
 sleep 1
 trap 'kill $(cat /tmp/oamr_http.pid) 2>/dev/null || true' EXIT
 node scene_dump.js http://localhost:8765/ /tmp/oamr_scene_dump.json
-python3 estop_positions.py
 python3 analyse.py --dump /tmp/oamr_scene_dump.json
 python3 mass_export.py
 node parity_dump.js http://localhost:8765/ /tmp/oamr_parity_dump.json

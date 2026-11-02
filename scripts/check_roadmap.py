@@ -547,29 +547,39 @@ def check_no_duplicate_fittings(root, html, err):
             err("robot.html", "buildTotes adds geometry outside the totes (tote rails on the cover); not in the BOM or the CAD")
 
 
-# P-03 rev20.0 item 24, layout update of 28 Oct 2026: the second E-stop (formerly the chest E-stop) on the rear
-# face of the static DOLD lift profile, close to its upper edge; the moving chest bottom up: head light, then
-# the Getac, the head light top edge 30 mm below the Getac bottom edge.
+# Owner corrections of 2 Nov 2026 (Alex; to be entered in P-03 and M-01): the second E-stop (formerly the chest E-stop)
+# on top of the adapter plate behind the post, button up (A5); the moving chest bottom up: head light, then the Getac,
+# the head light top edge 10 mm below the Getac bottom edge (A3).
 CHEST_ORDER = ["head_light", "getac_tablet"]
 CHEST_IDS = ["second_estop"] + CHEST_ORDER
-LIGHT_TABLET_GAP = 0.03
-# P-03 rev20.0 item 24, 28 Oct 2026 correction: Getac ZX80 234 x 149.8 x 17.6 mm mounted landscape (x depth 17.6,
-# y across 234, z height 149.8); Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
-CHEST_SIZES = {"getac_tablet": [0.0176, 0.234, 0.1498], "head_light": [0.02, 0.158, 0.017]}
+LIGHT_TABLET_GAP = 0.01
+# A3 (2 Nov 2026): Getac ZX80 portrait is the decided default (x depth 17.6, y across 149.8, z height 234); the landscape
+# default (y 234, z 149.8) fails. Falcon FLDL-i150x15-W housing 158 x 17 x 20 mm
+CHEST_SIZES = {"getac_tablet": [0.0176, 0.1498, 0.234], "head_light": [0.02, 0.158, 0.017]}
+GETAC_LANDSCAPE = [0.0176, 0.234, 0.1498]
 # the replaced Getac ZX10 (275 x 192 x 17.9 mm) must not come back in the model or the robot and exploded pages
-CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)portrait(?! second position)", r"chest_estop",
-                 r"(?i)chest E-stop"]
+CHEST_RETIRED = [r"ZX10", r"275 x 192", r"0\.275, 0\.192", r"17\.9 mm", r"(?i)landscape (?:default|position)", r"getac_second_position_ghost",
+                 r"(?i)portrait second position", r"chest_estop", r"(?i)chest E-stop", r"estop_p[1-4]_ghost"]
 # head camera (P-03 rev20.0 items 15, 17 and 18, 28 Oct 2026): lens 42 mm ahead of the shoulder, baseline hp30
 HEAD_PITCH_BASELINE = 30
 LIFT_PARTS = {"lift_stop_sensors": "LFT-001", "lift_sensor_brackets": "LFT-003", "flag_rod": "LFT-004",
               "rod_corner_bracket": "LFT-005", "lift_flag": "LFT-006"}
 LIFT_SENSOR_Z = [0.12, 0.295, 0.47]  # above the column base, P-03 rev20.0 item 24
-ZED_X = 0.222
+ZED_X = 0.237   # A4 (2 Nov 2026): lens 57 mm ahead of the shoulder
+
+
+def getac_default_errors(size):
+    """A3 (2 Nov 2026): the drawn Getac must be portrait (149.8 across, 234 tall); a landscape default fails."""
+    if size == GETAC_LANDSCAPE:
+        return ["the Getac is drawn landscape; portrait is the decided default (A3, 2 Nov 2026)"]
+    if size != CHEST_SIZES["getac_tablet"]:
+        return ["the Getac size %s is not the portrait %s (A3)" % (size, CHEST_SIZES["getac_tablet"])]
+    return []
 
 
 def retired_chest_hits(text):
-    """Patterns of CHEST_RETIRED found in a text: the labelled portrait second-position ghost (component
-    getac_second_position_ghost, "portrait second position") is allowed, a portrait default is not."""
+    """Patterns of CHEST_RETIRED found in a text: a landscape default, the portrait ghost and the old E-stop ghosts are
+    retired (A3, A5, 2 Nov 2026); the portrait default is decided."""
     return [pat for pat in CHEST_RETIRED if re.search(pat, text)]
 
 
@@ -603,8 +613,8 @@ def check_chest_and_riser(root, html, err, comps):
                        ("exploded.html", html["exploded.html"])):
         for pat in retired_chest_hits(text):
             if pat:
-                err(name, "names a replaced chest layout item (%s): the tablet is the Getac ZX80 mounted landscape and "
-                    "the second E-stop (second_estop) is on the static lift profile (P-03 rev20.0 item 24)" % pat)
+                err(name, "names a replaced chest layout item (%s): the tablet is the Getac ZX80 in portrait (A3) and "
+                    "the second E-stop (second_estop) is on the adapter plate (A5, 2 Nov 2026)" % pat)
     m = re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js, flags=re.S)
     chest = json.loads(m.group(1)) if m else {}
     if chest.get("order") != CHEST_ORDER:
@@ -626,18 +636,18 @@ def check_chest_and_riser(root, html, err, comps):
     for cid, bottom, top in stack:
         if bottom < 0.01 or top > 0.35:  # arm profile from 10 to 350 mm above the column top
             err("model.js", "chest item %s leaves the arm-profile height (%.4f to %.4f m)" % (cid, bottom, top))
+    for e_ in getac_default_errors((drawn.get("getac_tablet") or {}).get("size")):
+        err("model.js", e_)
     se = chest.get("second_estop") or {}
-    if not 0.02 <= se.get("below_top", -1) <= 0.06:  # centre 20 to 60 mm below the static profile top
-        err("model.js", "M.CHEST second_estop below_top %s: the second E-stop sits close to the static profile upper edge" % se.get("below_top"))
-    # built exactly once: P1 (datum) in the static lift group, P2 (proposed 2 Nov 2026) on the arm post in the moving group
-    if len(re.findall(r"part\('second_estop'", js)) != 1 or not re.search(r"part\('second_estop', p2 \? mov : R\.col\)", js):
-        err("model.js", "the second E-stop must be built exactly once, at P2 on the arm post (moving group) or P1 on the static profile (part('second_estop', p2 ? mov : R.col))")
-    if se.get("position") not in ("P1", "P2"):
-        err("model.js", "M.CHEST second_estop position %s, expected P1 (datum) or P2 (proposed)" % se.get("position"))
+    # A5 (2 Nov 2026): built exactly once, on the adapter plate top in the moving group, button up
+    if se.get("position") != "adapter_top" or not 0.03 <= se.get("panel_above_plate", -1) <= 0.07:
+        err("model.js", "M.CHEST second_estop must be position adapter_top with the panel 30 to 70 mm above the plate (A5)")
+    if len(re.findall(r"part\('second_estop'", js)) != 1 or not re.search(r"part\('second_estop', mov\)", js):
+        err("model.js", "the second E-stop must be built exactly once, on the adapter plate in the moving group (part('second_estop', mov))")
     fm = re.search(r"function chestItems\s*\(", js)
     body = function_body(js, fm.end()) if fm else ""
-    if fm and not ("-D.COL.L / 2" in body and "rotation.z = Math.PI" in body):
-        err("model.js", "chestItems must put the second E-stop on the rear face of the static profile (x -COL.L/2), facing rearward")
+    if fm and "rotation.y = -Math.PI / 2" not in body:
+        err("model.js", "chestItems must turn the second E-stop button up (rotation.y = -Math.PI / 2)")
     for fn in ("columnFittings", "chassisFittings"):
         fm2 = re.search(r"function %s\s*\(" % fn, js)
         if fm2 and re.search(r"\bmats\.(red|yellow)\b", function_body(js, fm2.end())):
@@ -692,7 +702,7 @@ def check_chest_and_riser(root, html, err, comps):
         err("model.js", "M.build default head pitch is not the hp30 baseline")
     zm = re.search(r"ZED_X:\s*([\d.]+)", js)
     if not zm or abs(float(zm.group(1)) - ZED_X) > 1e-6:
-        err("model.js", "M.DIMS.ZED_X %s, expected %.3f (lens 42 mm ahead of the shoulder)" % (zm and zm.group(1), ZED_X))
+        err("model.js", "M.DIMS.ZED_X %s, expected %.3f (lens 57 mm ahead of the shoulder, A4)" % (zm and zm.group(1), ZED_X))
     h = html["robot.html"]
     for need, what in (('this.hp=%d,' % HEAD_PITCH_BASELINE, "initial head pitch state"),
                        ('id="hp" min="15" max="35" step="5" value="%d"' % HEAD_PITCH_BASELINE, "head pitch slider value"),
@@ -745,20 +755,21 @@ def check_sync_audit(root, err, comps):
         err("sync_audit.json", "page errors during the audit: %s" % a["errors"])
 
 
-# Known contacts: parts the model draws in contact with others on purpose, recorded as an issue and accepted for now (warn
-# only). Each entry names the part, the box it must keep (mm, within 0.1 mm; a move means the entry and the issue need a
-# review), its class, and the geometry_issues.csv row (by its parts text; IDs are assigned by analyse.py) with kind, severity,
-# owner and note. The reserved TZBOT receiver under the battery overlaps the cells, the tray and the base sheet (release 3.0).
+# Known contacts: overlaps in the model that are recorded as issues and accepted for now (warn only). Each entry
+# names the two parts, the overlap the model must show (mm, within 0.1 mm), the geometry_issues.csv row that records
+# it (by its parts text; IDs are assigned by analyse.py) and the marker drawn in the model. When the overlap changes (fixed or worse) the check fails until the entry
+# and the issue row are updated.
 KNOWN_CONTACTS = [
-    {"part": "tz_receiver", "box_mm": [[-282.0, -85.0, 50.0], [-132.0, 85.0, 102.0]], "class": "reserved",
-     "issue": "TZBOT WCM-500-24 receiver (reserved, rear under the battery)", "kind": "reserved for 3.0", "severity": "minor",
-     "owner": "fridayali", "note": "known, to be solved in release 3.0"},
+    {"a": "tz_receiver", "b": "floor transmitter (52 mm, not drawn)", "transmitter_h_mm": 52.0, "overlap_mm": 2.0,
+     "issue": "TZBOT receiver / floor transmitter WCM-500-24 (charging gap)", "kind": "reserved for 3.0", "severity": "minor",
+     "owner": "fridayali", "limit": "gap 10 to 30 mm",
+     "note": "receiver reserved at the rear, not installed in 2.0; charging gap to be solved in release 3.0 (TZBOT WCM-500-24 manual V2.5: air gap 20 +-10 mm)"},
 ]
 
 
 def check_known_contacts(root, err):
-    """Each declared known contact: the part is drawn with its class and box, and its geometry_issues.csv row is present with
-    the declared kind, severity, owner and note."""
+    """Each declared known contact: the receiver bottom (first primitive of tz_receiver) against the 52 mm floor transmitter
+    gives the declared overlap, and its geometry_issues.csv row is present with the declared kind, severity, owner and limit."""
     try:
         P = json.load(open(os.path.join(root, "model", "placement.json"), encoding="utf-8"))
         rows = {r["parts"]: r for r in csv.DictReader(open(os.path.join(root, "model", "geometry_issues.csv"), encoding="utf-8"))}
@@ -766,18 +777,15 @@ def check_known_contacts(root, err):
         err("known contacts", "cannot read the model files: %s" % e)
         return
     G = P.get("geometry", {})
-    cls = {pp: c.get("class") for c in P.get("components", []) for pp in c.get("parts", [])}
     for kc in KNOWN_CONTACTS:
-        if kc["part"] not in G:
-            err("known contacts", "%s: part missing in placement.json" % kc["part"])
+        if kc["a"] not in G:
+            err("known contacts", "%s: part missing in placement.json" % kc["a"])
             continue
-        q = G[kc["part"]]["prims"][0]
-        lo = [(float(q["p"][i]) - float(q["s"][i]) / 2) * 1000 for i in range(3)]
-        hi = [(float(q["p"][i]) + float(q["s"][i]) / 2) * 1000 for i in range(3)]
-        if max(abs(a - b) for a, b in zip(lo + hi, kc["box_mm"][0] + kc["box_mm"][1])) > 0.1:
-            err("known contacts", "%s box %s / %s mm, declared %s: update KNOWN_CONTACTS and the issue" % (kc["part"], [round(v, 1) for v in lo], [round(v, 1) for v in hi], kc["box_mm"]))
-        if cls.get(kc["part"]) != kc["class"]:
-            err("known contacts", "%s: class %r, declared %r" % (kc["part"], cls.get(kc["part"]), kc["class"]))
+        q = G[kc["a"]]["prims"][0]
+        bottom = (float(q["p"][2]) - float(q["s"][2]) / 2) * 1000
+        ov = kc["transmitter_h_mm"] - bottom
+        if abs(ov - kc["overlap_mm"]) > 0.1:
+            err("known contacts", "%s / %s overlap %.1f mm, declared %.1f mm: update KNOWN_CONTACTS and %s" % (kc["a"], kc["b"], ov, kc["overlap_mm"], kc["issue"]))
         r = rows.get(kc["issue"])
         if not r:
             err("known contacts", "%s: row missing in geometry_issues.csv" % kc["issue"])
@@ -785,8 +793,8 @@ def check_known_contacts(root, err):
         for key in ("kind", "severity", "owner"):
             if r[key] != kc[key]:
                 err("known contacts", "%s: %s is %r, declared %r" % (kc["issue"], key, r[key], kc[key]))
-        if kc["note"] not in r["suggested_fix"]:
-            err("known contacts", "%s: the row does not carry the note %r" % (kc["issue"], kc["note"]))
+        if ("gap -%g mm" % kc["overlap_mm"]) not in r["measured"] or kc["limit"] not in r["limit"] or "release 3.0" not in r["suggested_fix"]:
+            err("known contacts", "%s: the row does not state gap -%g mm, the limit %r and the release 3.0 note" % (kc["issue"], kc["overlap_mm"], kc["limit"]))
 
 
 # STATE.md (repository state record): every figure it states about the roadmap model is read from the generated files,
@@ -1203,7 +1211,14 @@ def upper_body_sensor_poses(js, urdf_path):
     hp = math.radians(HEAD_PITCH_BASELINE)
     Rz = _rpy(0, hp, 0)
     lens = [bp + num("ZED_X"), 0.0, top + float(re.search(r"RETRACTED: ([\d.]+)", dims).group(1)) + num("MOUNT_ABOVE_COL") + num("ZED_ABOVE_SH")]
-    out["head_camera_link"] = {"drawn_body": [a + b for a, b in zip(lens, _mv(Rz, [-0.013, 0, 0]))], "drawn_R": Rz, "source": frames.get("head_camera_link")}
+    src = frames.get("head_camera_link")
+    if src:   # A4 (2 Nov 2026): lens 57 mm ahead of J1_A; the combined model keeps 42 mm until the P-03 entry (+15 mm along x)
+        src = dict(src) if isinstance(src, dict) else src
+        try:
+            src["t"] = [src["t"][0] + 0.015, src["t"][1], src["t"][2]]
+        except (TypeError, KeyError, IndexError):
+            src = (src[0], [src[1][0] + 0.015, src[1][1], src[1][2]]) if isinstance(src, tuple) else src
+    out["head_camera_link"] = {"drawn_body": [a + b for a, b in zip(lens, _mv(Rz, [-0.013, 0, 0]))], "drawn_R": Rz, "source": src}
     return out
 
 
@@ -1333,23 +1348,29 @@ def check_model_sources(root, html, err):
     chest = json.loads(re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js).group(1))
     lift = json.loads(re.search(r"/\*LIFT-JSON\*/(.*?)/\*LIFT-JSON-END\*/", js).group(1))
     dm = snap["datums"]
-    pairs = [("getac_tablet_z_above_column_top", chest["drawn"]["getac_tablet"]["z"]),
-             ("second_estop_below_profile_top", chest["second_estop"]["below_top"]),
-             ("second_estop_panel_behind_profile", chest["second_estop"]["panel_ahead"]),
-             ("head_light_gap_below_tablet", chest["gap_light_tablet"]),
-             ("lift_stop_sensor_z_l1000", lift["z"][0]), ("lift_stop_sensor_z_l1175", lift["z"][1]), ("lift_stop_sensor_z_l1350", lift["z"][2]),
+    oc = snap.get("owner_corrections") or {}   # A3 / A4 / A5 of 2 Nov 2026 (to be entered in P-03 and M-01) override these datums
+    pairs = [("lift_stop_sensor_z_l1000", lift["z"][0]), ("lift_stop_sensor_z_l1175", lift["z"][1]), ("lift_stop_sensor_z_l1350", lift["z"][2]),
              ("lift_stop_sensor_face_x", lift["face_x"]), ("lift_flag_below_plate", lift["flag_below_plate"]), ("lift_flag_gap", lift["gap"]),
              ("lift_flag_rod_length", lift["rod"]["len"]), ("lift_flag_rod_offset_from_face", lift["rod"]["off"])]
     for k, v in pairs:
         if k in dm and abs(float(dm[k]) - float(v)) > tol:
             err("model", "upper-body item %s: model %.4f, datums.yaml %.4f (more than 1 mm)" % (k, v, dm[k]))
     gs, hs = chest["drawn"]["getac_tablet"]["size"], chest["drawn"]["head_light"]["size"]
-    for k, v in (("getac_tablet_size", gs), ("head_light_size", hs)):
-        if k in dm and any(abs(a - b) > tol for a, b in zip(dm[k], v)):
-            err("model", "upper-body item %s: model %s, datums.yaml %s" % (k, v, dm[k]))
+    if oc:
+        want_z = float(dm["getac_tablet_z_above_column_top"]) - oc["getac_lower_by"]
+        if abs(chest["drawn"]["getac_tablet"]["z"] - want_z) > tol:
+            err("model", "Getac centre %.4f above the column top, A3 gives %.4f (datum minus 40 mm)" % (chest["drawn"]["getac_tablet"]["z"], want_z))
+        if any(abs(a - b) > tol for a, b in zip(oc["getac_size"], gs)):
+            err("model", "Getac size %s, A3 gives the portrait %s" % (gs, oc["getac_size"]))
+        if abs(chest["gap_light_tablet"] - oc["light_gap"]) > tol:
+            err("model", "head light gap %.3f, A3 gives %.3f" % (chest["gap_light_tablet"], oc["light_gap"]))
+    else:
+        err("model", "source_snapshot.json has no owner_corrections (rerun build.py)")
+    if "head_light_size" in dm and any(abs(a - b) > tol for a, b in zip(dm["head_light_size"], hs)):
+        err("model", "upper-body item head_light_size: model %s, datums.yaml %s" % (hs, dm["head_light_size"]))
     light_z = chest["drawn"]["getac_tablet"]["z"] - gs[2] / 2 - chest["gap_light_tablet"] - hs[2] / 2
     if abs(light_z - chest["drawn"]["head_light"]["z"]) > tol:
-        err("model", "head light height %.4f is not 30 mm below the Getac (%.4f)" % (chest["drawn"]["head_light"]["z"], light_z))
+        err("model", "head light height %.4f is not %.0f mm below the Getac (%.4f)" % (chest["drawn"]["head_light"]["z"], chest["gap_light_tablet"] * 1000, light_z))
     # design heights (section B)
     dims = re.search(r"M\.DIMS = \{(.*?)\};", js, re.S).group(1)
     num = lambda key: float(re.search(r"\b%s: ([-\d.]+)" % key, dims).group(1))
@@ -1357,7 +1378,7 @@ def check_model_sources(root, html, err):
     sh = top + num("MOUNT_ABOVE_COL")
     checks = [("us_* z", snap["sensor_frames"]["us_front_left"][2], .0914), ("imu_link z", snap["sensor_frames"]["imu_link"][2], .21904),
               ("LiDAR scan plane", num("LIDAR_Z"), .22205), ("shoulder L1000", sh, 1.0), ("shoulder L1175", sh + .175, 1.175),
-              ("shoulder L1350", sh + .35, 1.35), ("head lens L1000", sh + num("ZED_ABOVE_SH"), 1.223), ("head lens ahead of J1_A", num("ZED_X") - num("MOUNT_X"), .042)]
+              ("shoulder L1350", sh + .35, 1.35), ("head lens L1000", sh + num("ZED_ABOVE_SH"), 1.223), ("head lens ahead of J1_A", num("ZED_X") - num("MOUNT_X"), (snap.get("owner_corrections") or {}).get("zed_ahead_of_j1a", .057))]
     for name, got, want in checks:
         if abs(got - want) > 0.0005:
             err("model", "%s is %.5f m, design value %.5f m" % (name, got, want))

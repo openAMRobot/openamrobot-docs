@@ -4,7 +4,7 @@
 // For every registry part (model.js M.COMPONENTS) it records (a) drawn on robot.html (page load, lift L1000,
 // bp000, hp30), (b) drawn on exploded.html (render mode, frame 0, explode factor 0), (c) stage and offsets in
 // exploded.json, (d) the mesh count and the transform relative to the robot root of the part groups and of
-// every mesh under them, on both pages (parts of the non-default front bay option must be hidden on both). Mismatches are listed; check_roadmap.py fails on a mismatch or when
+// every mesh under them, on both pages (GLB nodes replaced by placement.json hide_glb must be hidden on both). Mismatches are listed; check_roadmap.py fails on a mismatch or when
 // the audit is older than the files it read (sha256 fingerprint).
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
@@ -57,7 +57,8 @@ const dump = (root, parts, comps) => {
   const rstate = await rp.evaluate(() => ({lift: window.__sim.robot.sh, bp: window.__sim.robot.bpKey, hp: window.__sim.robot.hp}));
   // option: a component of the front bay option that is not the default (2 Nov 2026, C1): hidden by design on both pages
   const comps = await rp.evaluate(() => window.OAMR_MODEL.COMPONENTS.map(c => ({id: c.id, pids: c.nodes || c.parts || [],
-    hiddenOption: !!(c.option && c.option !== ((window.OAMR_MODEL.PLACE || {}).front_bay || {})['default'])})));
+    hiddenOption: !!(c.option && c.option !== ((window.OAMR_MODEL.PLACE || {}).front_bay || {})['default']) ||
+      (c.nodes || []).some(n => ((window.OAMR_MODEL.PLACE || {}).hide_glb || []).includes(n))})));
   const xp = await open('exploded.html?render=1&frame=0&w=640&h=360');
   await xp.waitForFunction(() => window.__frameReady === true && window.__model);
   const expl = await xp.evaluate(`(${dump})(window.__model.root, window.__model.parts, window.OAMR_MODEL.COMPONENTS)`);
@@ -78,8 +79,8 @@ const dump = (root, parts, comps) => {
         same_transform: !!(r.groupT && x.groupT && same(r.groupT, x.groupT) && same(r.meshT, x.meshT))};
       const bad = [];
       row.hidden_option = c.hiddenOption;
-      if (c.hiddenOption) {  // must be hidden on both pages (shown by the exploded-view front bay switch only)
-        if (row.robot_drawn || row.exploded_drawn) bad.push('alternative front bay option drawn by default');
+      if (c.hiddenOption) {  // replaced GLB nodes (placement.json hide_glb): must be hidden on both pages
+        if (row.robot_drawn || row.exploded_drawn) bad.push('replaced GLB node drawn');
       } else {
         if (!row.robot_drawn) bad.push('not drawn on robot.html');
         if (!row.exploded_drawn) bad.push('not drawn on exploded.html');

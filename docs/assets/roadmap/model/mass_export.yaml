@@ -48,7 +48,7 @@ groups:
           component: head_camera
           mass_kg: 0.063
           com_m:
-          - 0.2614
+          - 0.2764
           - 0.0
           - 1.2165
           size_m:
@@ -72,13 +72,13 @@ groups:
           component: bay_usbcan
           mass_kg: 0.06
           com_m:
-          - 0.24
-          - -0.018
-          - 0.2284
+          - 0.1675
+          - -0.0255
+          - 0.1267
           size_m:
+          - 0.06
           - 0.025
-          - 0.015
-          - 0.061
+          - 0.017
           source: estimate
         - bom: ARM-009
           component: harness
@@ -146,7 +146,7 @@ groups:
           com_m:
           - 0.1644
           - -0.0267
-          - 0.2159
+          - 0.0899
           size_m:
           - 0.118
           - 0.115
@@ -158,7 +158,7 @@ groups:
           com_m:
           - 0.1644
           - -0.0267
-          - 0.2159
+          - 0.0899
           size_m:
           - 0.118
           - 0.115
@@ -170,7 +170,7 @@ groups:
           com_m:
           - 0.1644
           - -0.0267
-          - 0.2159
+          - 0.0899
           size_m:
           - 0.118
           - 0.115
@@ -182,7 +182,7 @@ groups:
           com_m:
           - 0.1644
           - -0.0267
-          - 0.2159
+          - 0.0899
           size_m:
           - 0.118
           - 0.115
@@ -206,7 +206,7 @@ groups:
           com_m:
           - 0.1644
           - -0.0267
-          - 0.2159
+          - 0.0899
           size_m:
           - 0.118
           - 0.115
@@ -216,20 +216,20 @@ groups:
           component: bay_usbhub
           mass_kg: 0.35
           com_m:
-          - 0.1175
-          - -0.0155
-          - 0.1174
+          - 0.165
+          - -0.0555
+          - 0.2166
           size_m:
+          - 0.08
           - 0.025
-          - 0.135
-          - 0.082
+          - 0.136
           source: estimate from the catalogue class
         - bom: CTL-001
           component: base_controller
           mass_kg: 0.08
           com_m:
-          - 0.18
-          - -0.0549
+          - 0.2081
+          - -0.128
           - 0.0666
           size_m:
           - 0.133
@@ -241,8 +241,8 @@ groups:
           mass_kg: 0.006
           com_m:
           - 0.121
-          - 0.047
-          - 0.1874
+          - -0.078
+          - 0.1194
           size_m:
           - 0.032
           - 0.01
@@ -252,9 +252,9 @@ groups:
           component: bay_iso1212
           mass_kg: 0.02
           com_m:
-          - 0.287
-          - -0.0825
-          - 0.1867
+          - 0.137
+          - 0.0175
+          - 0.1187
           size_m:
           - 0.064
           - 0.051
@@ -276,9 +276,9 @@ groups:
           component: can_terms
           mass_kg: 0.004
           com_m:
-          - 0.1178
-          - -0.012
-          - 0.1675
+          - 0.15
+          - -0.0881
+          - 0.1291
           size_m:
           - 0.016
           - 0.01
@@ -288,9 +288,9 @@ groups:
           component: can_terms
           mass_kg: 0.004
           com_m:
-          - 0.1178
-          - -0.012
-          - 0.1675
+          - 0.15
+          - -0.0881
+          - 0.1291
           size_m:
           - 0.016
           - 0.01
@@ -324,25 +324,25 @@ groups:
           component: bay_can2
           mass_kg: 0.008
           com_m:
-          - 0.2427
-          - 0.017
-          - 0.2262
+          - 0.3077
+          - -0.1344
+          - 0.1185
           size_m:
           - 0.025
-          - 0.01
-          - 0.059
+          - 0.057
+          - 0.012
           source: estimate from the catalogue class
         - bom: CTL-015
           component: bay_can3
           mass_kg: 0.006
           com_m:
-          - 0.325
-          - -0.147
-          - 0.1874
+          - 0.2205
+          - -0.063
+          - 0.1394
           size_m:
+          - 0.021
           - 0.01
-          - 0.032
-          - 0.023
+          - 0.034
           source: estimate
         - bom: CTL-016
           component: harness
@@ -360,12 +360,12 @@ groups:
           component: bay_tpl7407
           mass_kg: 0.015
           com_m:
-          - 0.249
-          - -0.0225
-          - 0.1867
+          - 0.2005
+          - 0.021
+          - 0.1187
           size_m:
-          - 0.038
           - 0.051
+          - 0.038
           - 0.014
           source: estimate from the catalogue class
         - bom: DRV-001
@@ -408,61 +408,73 @@ groups:
           component: bay_fbc
           mass_kg: 0.002
           com_m:
-          - 0.196
-          - -0.126
-          - 0.2141
+          - 0.182
+          - -0.0975
+          - 0.1919
           size_m:
-          - 0.102
           - 0.074
-          - 0.042
+          - 0.041
+          - 0.104
           source: estimate
         - bom: F-HUB
           component: bay_fbc
           mass_kg: 0.002
           com_m:
-          - 0.196
-          - -0.126
-          - 0.2141
+          - 0.182
+          - -0.0975
+          - 0.1919
           size_m:
-          - 0.102
           - 0.074
-          - 0.042
+          - 0.041
+          - 0.104
           source: estimate
         - bom: F-PANEL
           component: bay_fbc
           mass_kg: 0.002
           com_m:
-          - 0.196
-          - -0.126
-          - 0.2141
+          - 0.182
+          - -0.0975
+          - 0.1919
           size_m:
-          - 0.102
           - 0.074
-          - 0.042
+          - 0.041
+          - 0.104
           source: estimate
         - bom: F-SAFE
           component: bay_fbc
           mass_kg: 0.002
           com_m:
-          - 0.196
-          - -0.126
-          - 0.2141
+          - 0.182
+          - -0.0975
+          - 0.1919
           size_m:
-          - 0.102
           - 0.074
-          - 0.042
+          - 0.041
+          - 0.104
           source: estimate
+        - bom: FB-A
+          component: rz_fba
+          mass_kg: 0.45
+          com_m:
+          - -0.2385
+          - 0.05
+          - 0.2004
+          size_m:
+          - 0.165
+          - 0.07
+          - 0.101
+          source: estimate from the catalogue class
         - bom: FB-C
           component: bay_fbc
           mass_kg: 0.12
           com_m:
-          - 0.196
-          - -0.126
-          - 0.2141
+          - 0.182
+          - -0.0975
+          - 0.1919
           size_m:
-          - 0.102
           - 0.074
-          - 0.042
+          - 0.041
+          - 0.104
           source: estimate from the catalogue class
         - bom: IMU-001
           component: imu
@@ -598,16 +610,16 @@ groups:
           source: volume x 2700 kg/m3
         - bom: MEC-007
           component: battery_tray
-          mass_kg: 1.795
+          mass_kg: 1.6
           com_m:
-          - -0.2609
-          - 0.0
-          - 0.1265
+          - -0.204
+          - -0.0
+          - 0.1282
           size_m:
-          - 0.16
-          - 0.354
-          - 0.213
-          source: design-intent volume x density
+          - 0.136
+          - 0.164
+          - 0.206
+          source: design-intent estimate
         - bom: MEC-008
           component: lidar_support, lidar_spacer
           mass_kg: 0.6
@@ -660,12 +672,12 @@ groups:
           component: harness_fittings
           mass_kg: 0.15
           com_m:
-          - 0.0437
-          - -0.0078
-          - 0.5882
+          - 0.036
+          - -0.0091
+          - 0.5763
           size_m:
-          - 0.709
-          - 0.416
+          - 0.707
+          - 0.316
           - 0.089
           source: estimate
         - bom: MEC-014
@@ -744,45 +756,45 @@ groups:
           component: bay_lidar_uart
           mass_kg: 0.01
           com_m:
-          - 0.305
-          - -0.143
-          - 0.1909
+          - 0.245
+          - -0.103
+          - 0.1304
           size_m:
-          - 0.02
           - 0.04
-          - 0.012
+          - 0.01
+          - 0.022
           source: estimate
         - bom: PWR-001
-          component: battery
+          component: battery_cells
           mass_kg: 21.5
           com_m:
-          - -0.234
-          - -0.0
-          - 0.1891
+          - -0.204
+          - 0.0
+          - 0.225
           size_m:
-          - 0.14
-          - 0.314
-          - 0.21
+          - 0.13
+          - 0.158
+          - 0.204
           source: B5 assembly 20 to 23 kg provisional (midpoint)
         - bom: PWR-003
           component: rz_f0
           mass_kg: 0.3
           com_m:
-          - -0.227
-          - 0.2175
-          - 0.1256
+          - -0.241
+          - -0.0545
+          - 0.1666
           size_m:
           - 0.1
           - 0.061
-          - 0.057
+          - 0.056
           source: estimate from the catalogue class
         - bom: PWR-004
           component: rz_disc
           mass_kg: 0.35
           com_m:
           - -0.3372
-          - 0.115
-          - 0.19
+          - -0.05
+          - 0.17
           size_m:
           - 0.07
           - 0.07
@@ -793,7 +805,7 @@ groups:
           mass_kg: 0.32
           com_m:
           - 0.305
-          - 0.1485
+          - 0.1335
           - 0.1473
           size_m:
           - 0.05
@@ -804,8 +816,8 @@ groups:
           component: bay_usbpd
           mass_kg: 0.03
           com_m:
-          - 0.16
-          - 0.0345
+          - 0.3
+          - 0.1045
           - 0.0799
           size_m:
           - 0.05
@@ -816,45 +828,45 @@ groups:
           component: bay_pwr009
           mass_kg: 0.06
           com_m:
-          - 0.25
-          - -0.098
+          - 0.305
+          - -0.133
           - 0.0617
           size_m:
-          - 0.06
           - 0.04
+          - 0.06
           - 0.027
           source: estimate
         - bom: PWR-012
           component: bay_rsd100
           mass_kg: 0.6
           com_m:
-          - 0.2295
+          - 0.1985
           - -0.144
-          - 0.1302
+          - 0.2346
           size_m:
-          - 0.159
+          - 0.097
           - 0.038
-          - 0.099
+          - 0.16
           source: estimate from the catalogue class
         - bom: PWR-016
           component: bay_ina228
           mass_kg: 0.003
           com_m:
-          - 0.2027
-          - 0.0309
-          - 0.0602
+          - 0.1477
+          - 0.04
+          - 0.0611
           size_m:
           - 0.025
-          - 0.018
-          - 0.008
+          - 0.006
+          - 0.019
           source: estimate from the catalogue class
         - bom: PWR-017
           component: rz_pwr017
           mass_kg: 0.4
           com_m:
-          - -0.327
-          - -0.002
-          - 0.0844
+          - -0.336
+          - -0.0504
+          - 0.1739
           size_m:
           - 0.04
           - 0.1
@@ -864,9 +876,9 @@ groups:
           component: rz_batcon
           mass_kg: 0.08
           com_m:
-          - -0.172
-          - 0.217
-          - 0.1669
+          - -0.326
+          - -0.065
+          - 0.2479
           size_m:
           - 0.04
           - 0.06
@@ -877,8 +889,8 @@ groups:
           mass_kg: 0.06
           com_m:
           - -0.35
-          - 0.045
-          - 0.135
+          - 0.06
+          - 0.15
           size_m:
           - 0.04
           - 0.05
@@ -888,9 +900,9 @@ groups:
           component: rz_fchg
           mass_kg: 0.05
           com_m:
-          - -0.244
-          - -0.233
-          - 0.1084
+          - -0.258
+          - -0.005
+          - 0.2094
           size_m:
           - 0.066
           - 0.03
@@ -900,13 +912,13 @@ groups:
           component: bay_pwr029
           mass_kg: 0.04
           com_m:
-          - 0.3
-          - 0.112
-          - 0.0613
+          - 0.12
+          - 0.072
+          - 0.0949
           size_m:
-          - 0.05
           - 0.03
-          - 0.021
+          - 0.02
+          - 0.052
           source: estimate
         - bom: PWR-030
           component: bay_ddr240
@@ -925,7 +937,7 @@ groups:
           mass_kg: 0.005
           com_m:
           - 0.1175
-          - 0.072
+          - 0.047
           - 0.0605
           size_m:
           - 0.025
@@ -936,9 +948,9 @@ groups:
           component: estop, second_estop
           mass_kg: 0.3
           com_m:
-          - 0.1121
-          - 0.026
-          - 0.7576
+          - 0.2328
+          - 0.065
+          - 0.525
           size_m:
           - 0.082
           - 0.04
@@ -950,7 +962,7 @@ groups:
           com_m:
           - 0.2354
           - 0.0047
-          - 0.2225
+          - 0.1886
           size_m:
           - 0.12
           - 0.023
@@ -960,21 +972,21 @@ groups:
           component: rz_k1k2
           mass_kg: 0.9
           com_m:
-          - -0.0735
-          - -0.0
-          - 0.2573
+          - -0.2465
+          - 0.0455
+          - 0.1834
           size_m:
-          - 0.073
           - 0.045
-          - 0.077
+          - 0.073
+          - 0.078
           source: estimate from the catalogue class
         - bom: SAF-004
           component: rz_pre
           mass_kg: 0.12
           com_m:
-          - -0.237
-          - 0.222
-          - 0.1707
+          - -0.326
+          - -0.1408
+          - 0.1936
           size_m:
           - 0.08
           - 0.05
@@ -996,9 +1008,9 @@ groups:
           component: rz_brake
           mass_kg: 0.01
           com_m:
-          - -0.217
-          - -0.178
-          - 0.0656
+          - -0.276
+          - -0.005
+          - 0.1367
           size_m:
           - 0.03
           - 0.02
@@ -1044,9 +1056,9 @@ groups:
           component: rz_kchg
           mass_kg: 0.05
           com_m:
-          - -0.2595
-          - -0.198
-          - 0.1069
+          - -0.3485
+          - 0.01
+          - 0.1479
           size_m:
           - 0.035
           - 0.03
@@ -1112,15 +1124,15 @@ groups:
           - 0
           - 0
           source: CAD volume x 7850 kg/m3 (steel assumed), computed
-        mass_kg: 68.912
+        mass_kg: 69.167
         com_m:
-        - -0.0606
-        - 0.0018
-        - 0.1009
+        - -0.053
+        - -0.0003
+        - 0.1111
         inertia_kgm2:
-          ixx: 2.33372
-          iyy: 3.73489
-          izz: 1.95054
+          ixx: 2.09257
+          iyy: 3.48219
+          izz: 1.59609
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.0
@@ -1137,7 +1149,7 @@ groups:
           component: head_camera_bracket
           mass_kg: 0.05
           com_m:
-          - 0.252
+          - 0.267
           - 0.0
           - 1.2035
           size_m:
@@ -1147,7 +1159,7 @@ groups:
           source: estimate
         mass_kg: 0.05
         com_m:
-        - -0.03
+        - -0.015
         - 0.0
         - -0.0195
         inertia_kgm2:
@@ -1172,7 +1184,7 @@ groups:
           com_m:
           - 0.31
           - 0.0
-          - 0.9666
+          - 0.9045
           size_m:
           - 0
           - 0
@@ -1182,7 +1194,7 @@ groups:
         com_m:
         - 0.0
         - 0.0
-        - 0.0
+        - -0.0621
         inertia_kgm2:
           ixx: 0.0
           iyy: 0.0
@@ -1200,7 +1212,7 @@ groups:
           com_m:
           - 0.3088
           - 0.0
-          - 1.08
+          - 1.04
           size_m:
           - 0
           - 0
@@ -1210,7 +1222,7 @@ groups:
         com_m:
         - 0.0
         - 0.0
-        - 0.0
+        - -0.04
         inertia_kgm2:
           ixx: 0.0
           iyy: 0.0
@@ -1274,37 +1286,37 @@ groups:
         items:
         - bom: MEC-012
           component: getac_pocket
-          mass_kg: 0.48
+          mass_kg: 0.46
           com_m:
           - 0.3045
-          - -0.0037
-          - 1.0659
+          - 0.0066
+          - 1.0148
           size_m:
           - 0.031
-          - 0.242
-          - 0.212
+          - 0.18
+          - 0.269
           source: design-intent volume x density
         - bom: UI-002
           component: getac_pocket
-          mass_kg: 0.48
+          mass_kg: 0.46
           com_m:
           - 0.3045
-          - -0.0037
-          - 1.0659
+          - 0.0066
+          - 1.0148
           size_m:
           - 0.031
-          - 0.242
-          - 0.212
+          - 0.18
+          - 0.269
           source: design-intent volume x density
-        mass_kg: 0.96
+        mass_kg: 0.92
         com_m:
         - 0.2445
-        - -0.0037
-        - 0.2319
+        - 0.0066
+        - 0.1808
         inertia_kgm2:
-          ixx: 0.00828
-          iyy: 0.00367
-          izz: 0.00476
+          ixx: 0.00803
+          iyy: 0.00562
+          izz: 0.00256
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.06
@@ -1312,18 +1324,18 @@ groups:
         - 0.834
 totals:
   L1000:
-    mass_kg: 94.64
+    mass_kg: 94.86
     com_m:
-    - 0.0154
-    - 0.0013
-    - 0.3319
+    - 0.0206
+    - -0.0002
+    - 0.3378
     frame: base_footprint, bp000
   L1350:
-    mass_kg: 94.64
+    mass_kg: 94.86
     com_m:
-    - 0.0154
-    - 0.0013
-    - 0.4082
+    - 0.0206
+    - -0.0002
+    - 0.4139
     frame: base_footprint, bp000
 comparison:
   combined_model_urdf_kg:
@@ -1335,12 +1347,12 @@ comparison:
   combined_model_total_kg: 31.43
   roadmap_kg:
     openarm: 12.26
-    base: 68.91
+    base: 69.17
     sensors: 0.05
     equipment: 0.7
     lift: 11.76
-    lift_carriage: 0.96
-  roadmap_total_kg: 94.64
+    lift_carriage: 0.92
+  roadmap_total_kg: 94.86
   base_urdf_kg: 6.7
-  note: 'The base URDF at the PLATFORM-PIN carries 6.7 kg in total; the roadmap base group from BOM Issue 7.14 is 68.9 kg. Upper-body groups: see mass_provenance.yaml
+  note: 'The base URDF at the PLATFORM-PIN carries 6.7 kg in total; the roadmap base group from BOM Issue 7.14 is 69.2 kg. Upper-body groups: see mass_provenance.yaml
     (lift 11.7 kg, equipment 0.70 kg, sensors 0.063 kg, OpenArm upstream nominals).'
