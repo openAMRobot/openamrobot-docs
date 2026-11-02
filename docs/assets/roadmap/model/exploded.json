@@ -819,23 +819,6 @@
     ]
    }
   },
-  "bay_can1_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_can1_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_can1_optb": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
   "bay_can2": {
    "stage": 4,
    "offsets": {
@@ -881,23 +864,6 @@
    },
    "open": {
     "bay_can3": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
-  "bay_can3_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_can3_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_can3_optb": [
      0,
      0,
      0.16
@@ -1102,23 +1068,6 @@
    },
    "open": {
     "bay_pwr032": [
-     0,
-     0,
-     0.16
-    ]
-   }
-  },
-  "bay_pwr032_optb": {
-   "stage": 4,
-   "offsets": {
-    "bay_pwr032_optb": [
-     0,
-     0,
-     0.32
-    ]
-   },
-   "open": {
-    "bay_pwr032_optb": [
      0,
      0,
      0.16
@@ -1803,91 +1752,6 @@
      0,
      0,
      0.12
-    ]
-   }
-  },
-  "tz_ferrite": {
-   "stage": 3,
-   "offsets": {
-    "tz_ferrite": [
-     0,
-     0,
-     -0.25
-    ]
-   },
-   "open": {
-    "tz_ferrite": [
-     0,
-     0,
-     -0.12
-    ]
-   }
-  },
-  "tz_metal_free_zone": {
-   "stage": 3,
-   "offsets": {
-    "tz_metal_free_zone": [
-     0,
-     0,
-     -0.25
-    ]
-   },
-   "open": {
-    "tz_metal_free_zone": [
-     0,
-     0,
-     -0.12
-    ]
-   }
-  },
-  "base_cutout": {
-   "stage": 1,
-   "offsets": {
-    "base_cutout": [
-     0,
-     0,
-     -0.2
-    ]
-   },
-   "open": {
-    "base_cutout": [
-     0,
-     0,
-     -0.1
-    ]
-   }
-  },
-  "tz_transmitter": {
-   "stage": 1,
-   "offsets": {
-    "tz_transmitter": [
-     0,
-     0,
-     -0.3
-    ]
-   },
-   "open": {
-    "tz_transmitter": [
-     0,
-     0,
-     -0.15
-    ]
-   }
-  },
-  "tz_gap_overlap": {
-   "stage": 1,
-   "offsets": {
-    "tz_gap_overlap": [
-     0,
-     0,
-     -0.3
-    ]
-   },
-   "open": {
-    "tz_gap_overlap": [
-     0,
-     0,
-     -0.15
     ]
    }
   },
@@ -2738,14 +2602,11 @@
   ]
  },
  "generated": [
-  "base_cutout",
   "battery_tray",
   "bay_can1",
-  "bay_can1_optb",
   "bay_can2",
   "bay_can2_optb",
   "bay_can3",
-  "bay_can3_optb",
   "bay_ddr240",
   "bay_din",
   "bay_fbc",
@@ -2763,7 +2624,6 @@
   "bay_pwr029",
   "bay_pwr029_optb",
   "bay_pwr032",
-  "bay_pwr032_optb",
   "bay_rsd100",
   "bay_rsd100_optb",
   "bay_rsd60",
@@ -2808,11 +2668,7 @@
   "rz_pwr017",
   "rz_sb50",
   "shims",
-  "tz_ferrite",
-  "tz_gap_overlap",
-  "tz_metal_free_zone",
   "tz_receiver",
-  "tz_transmitter",
   "us_locknut"
  ]
 }

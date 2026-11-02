@@ -7,7 +7,7 @@ scene (scene_dump.js, same part boxes within 0.5 mm), then analyses:
   interference (all part pairs, lift L1000 / L1175 / L1350, bp000 / bp050, hp15 to hp35, both Getac positions,
   arms in the upstream home pose), arm reach (joint by joint through the URDF limits, 10 deg steps, L1000 and
   L1350), sensor views (Gemini 336L and ZED Mini frustums, LiDAR scan plane +-5 mm), mass and stability, the
-  TZBOT receiver, service access and the K1/K2 fit.
+  the reserved TZBOT receiver position, service access and the K1/K2 fit.
 Writes model/geometry_issues.csv and scripts/roadmap_model/analysis_summary.json.
 Usage: python3 scripts/roadmap_model/analyse.py [--dump scene_dump.json]
 """
@@ -437,7 +437,7 @@ def main():
                 ("lift_sensor_bracket", "lift_sensor_bracket"), ("flag_rod", "lift_flag"), ("rear_estop_housing", "second_estop"),
                 ("bay_plate", "lidar_support"), ("lift_base_plate", "lift_node"), ("lift_column_stage", "lift_column"), ("lift_column_head", "lift_column"),
                 ("lift_column_head", "arm_profile"), ("rear_estop", "lift_column"),
-                # 2 Nov 2026: plate on the arch, E-stop P2 on the post, receiver set, ghosts, raised bay plate (its CAD conflicts are issues below)
+                # 2 Nov 2026: plate on the arch, E-stop P2 on the post, reserved receiver (its warning is an issue below), ghosts, bay plate
                 ("lift_base_plate", "centre_bracket"), ("second_estop", "arm_profile"), ("rear_estop_housing", "arm_profile"), ("rear_estop_housing", "second_estop"),
                 ("estop_p", "*"), ("tz_", "*"), ("base_cutout", "*"), ("bay_plate", "lidar_support"), ("bay_plate", "electronics_bracket"),
                 ("bay_plate", "compute"), ("bay_plate", "base_controller"), ("lift_node", "lift_column"),
@@ -792,139 +792,52 @@ def main():
           "add a doubler under the arch top between the rear rivet nuts and the rear wall, or use the outer 190 x 300 rivet-nut pattern as well (wider plate)",
           OWN["mech"], "load path")
 
-    # ---- TZBOT WCM-500-24 receiver (B4): position, lowest point, floor gap, cut-out, metal-free zone, EMC distances
+    # ---- TZBOT WCM-500-24 receiver: reserved position at the rear under the battery (release 3.0, Alex, 2 Nov 2026). One warning:
+    # receiver top vs the cells and the tray, metal within 20 mm, charging gap with a 52 mm floor transmitter. Recorded, not fixed.
     TZ = FACTS["tzbot_receiver"]
+    TZL = tzbot_layout()
     tzout = {}
     if "tz_receiver" in geos:
-        g = geos["tz_receiver"]
-        lo, hi = g.lo, g.hi
-        lowc = FACTS["cad_lowest"]
-        TZL = tzbot_layout()
-        tzout["position"] = {"lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "orientation": TZL["orientation"], "orientation_candidates": TZL["candidates"],
-                             "front_edge_to_front_panel_inner_mm": round((TZ["front_panel_inner_x"] - hi[0]) * 1000, 1),
-                             "occupies_z_mm": [round(lo[2] * 1000, 1), round(hi[2] * 1000, 1)]}
-        tzout["lowest_point"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "cad": {k: v for k, v in lowc.items()},
-                                 "lowest_non_wheel_mm": round(min(lowc["castor_bolt_tips_m6x20"], lowc["m5x20_bolt_tips"], lowc["m4x16_bolt_tips"]) * 1000, 1),
-                                 "ground_clearance_changes": bool(lo[2] < min(lowc["castor_bolt_tips_m6x20"], lowc["m5x20_bolt_tips"]))}
-        tx_h = FACTS["tzbot_transmitter"]["size"][2]
-        g0, g1 = TZ["air_gap"]
-        gap = lo[2] - tx_h
-        fo = {"raise_receiver_bottom_mm": [round((tx_h + g0) * 1000), round((tx_h + g1) * 1000)],
-              "more_bay_height_mm": [round((tx_h + g0 - lo[2]) * 1000), round((tx_h + g1 - lo[2]) * 1000)],
-              "transmitter_top_mm": [round((lo[2] - g1) * 1000), round((lo[2] - g0) * 1000)]}
-        tzout["floor_gap"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "transmitter_height_mm": round(tx_h * 1000, 1), "gap_mm": round(gap * 1000, 1),
-                              "manual_air_gap_mm": [g0 * 1000, g1 * 1000], "source": TZ["source"], "fix_options": fo,
-                              "status": "known interference, warn only; fix scheduled later by the owner" if gap < g0 else "within the manual air gap"}
-        bc = summ.get("receiver", {}).get("cutout")
-        tzout["cutout"] = {"xy_m": bc, "size_mm": [round((bc[1] - bc[0]) * 1000), round((bc[3] - bc[2]) * 1000)], "receiver_plus_20_mm": TZL["cutout_full_mm"],
-                           "existing_contact_charger_cutout_m": TZ["cutout_existing"],
-                           "removes": ["the existing contact-charger cut-out under the LiDAR (46 x 222 mm), absorbed",
-                                       "the base-sheet footprint of the LiDAR support MMP.07 feet and their 4 x ISO 7045 M4 x 16 screws (x 0.245 to 0.319, y +/-0.078)",
-                                       "the base-sheet footprint of the electronics bracket MMP.04.00.00.002 walls forward of x %.3f (bracket to be shortened)" % (lo[0] - TZ["metal_clear"]),
-                                       "the old MEC-005 bay plate rivet nuts in the bay centre (the plate moves up to z %.3f on standoffs outside |y| %.3f)" % (hi[2] + TZ["metal_clear"], hi[1] + TZ["metal_clear"]),
-                                       "base-sheet area %.0f cm2 (2 mm steel, %.2f kg)" % ((bc[1] - bc[0]) * (bc[3] - bc[2]) * 1e4, (bc[1] - bc[0]) * (bc[3] - bc[2]) * 0.002 * 7850)],
-                           "stops_at": "x 0.370, the front panel bottom flange line (a cut to x 0.383 would leave a 3.4 mm strip)"}
-        # metal within 20 mm of the receiver (default front bay option)
-        NONMETAL = ("camera_mount", "ultrasonic_mount", "tof_mount", "lidar_spacer", "ultrasonic_front", "ultrasonic_rear", "tof_front", "tof_rear",
-                    "tz_", "base_cutout", "estop_p", "keepout", "harness_fittings")
-        FIX = {"base_plate": "cut-out to the receiver outline plus 20 mm (B4)",
-               "lidar_support": "MMP.07 walls stand on the base sheet at y +/-0.069, inside the receiver: shorten MMP.07 by %.0f mm and stand it on the raised bay plate (z %.3f); keep the 17.5 mm spacer, scan plane 222.05 mm" % ((hi[2] + TZ["metal_clear"] + 0.003 - 0.054) * 1000, hi[2] + TZ["metal_clear"]),
-               "electronics_bracket": "shorten MMP.04.00.00.002 to end at x 0.100 (IMU board at x 0.018 to 0.061 stays at imu_link)",
-               "front_panel": "notch the front panel bottom flange (x 0.370 to 0.388) over y +/-%.3f, or accept 7 mm and ask TZBOT" % (hi[1] + TZ["metal_clear"]),
-               "bay_plate": "plate at z %.3f (20 mm above the receiver top), aluminium; standoffs outside |y| %.3f" % (hi[2] + TZ["metal_clear"], hi[1] + TZ["metal_clear"]),
-               "castor_front_left": "outside (clearance shown)", "castor_front_right": "outside (clearance shown)",
-               "hub_motor_wheel_left": "outside", "hub_motor_wheel_right": "outside", "base_camera": "Gemini 336L housing above the zone; keep 20 mm",
-               "estop": "XB4 body and ZBE contact block above the receiver front edge: ask TZBOT whether small switch metal at 10 mm is acceptable",
-               "reset_button": "as the E-stop: ask TZBOT", "centre_bracket": "the arch front feet (x 0.117 to 0.135) and their inner M5 bolts (y +/-0.105) clash with the receiver rear corners: trim the feet at |y| < 0.125 and move the inner foot bolts to y +/-0.130",
-               "fasteners_base": "the M4 brass heat-set inserts and screws of the Gemini mount MEC-009 (x 0.372, z 0.123) sit just above the receiver front: use PEEK or nylon M4 screws, keep the small brass inserts and ask TZBOT",
-               "us_locknut_1": "use nylon 3/4 in NPS lock nuts on the front MB7060 (MEC-021 allows nylon)", "us_locknut_2": "use nylon 3/4 in NPS lock nuts on the front MB7060 (MEC-021 allows nylon)"}
-        metal = []
+        lo, hi = TZL["lo"], TZL["hi"]
+        rv, rf = box_mesh(hi - lo, (lo + hi) / 2)
+        RXG = Geo(Part("tz_receiver_body", rv, rf, "base", boxes=[(lo, hi)]), base_cfg, .002)
+        def sd(k):
+            r = pair(RXG, geos[k], 0.5)
+            return None if r is None else round((-r[1] if r[1] > 0 else r[0]) * 1000, 1)
+        named = [("battery cells", "battery"), ("battery tray MEC-007", "battery_tray"), ("base sheet MEC-001", "base_plate"),
+                 ("castor rear left", "castor_rear_left"), ("castor rear right", "castor_rear_right")]
+        meas = [{"part": n, "id": k, "distance_mm": sd(k)} for n, k in named if k in geos]
+        if "base_plate" in geos:  # the receiver passes through the 2 mm sheet (no cut-out drawn): overlap = sheet thickness inside the receiver height
+            bs = FACTS["base_sheet"]
+            for m_ in meas:
+                if m_["id"] == "base_plate":
+                    m_["distance_mm"] = round(-(min(hi[2], bs["top"]) - max(lo[2], bs["bottom"])) * 1000, 1)
+        others = []
+        skip = ("tz_", "battery", "battery_tray", "base_plate", "castor_rear", "keepout", "lift_bolt", "harness", "service_loop", "estop_p", "getac_second", "k1k2_option", "can_term")
         for k, gg in geos.items():
-            if k == "tz_receiver" or k.startswith(NONMETAL):
+            if k.startswith(skip) or k.endswith("_optb"):
                 continue
-            if k.startswith("harness_"):  # the receiver's own output and signal cables (WCH-005, WCH-006 to the receiver) start at it
-                keep = [q for q in P["geometry"].get(k, {}).get("prims", []) if q.get("cid") not in ("CBL-P30", "CBL-P31")]
-                pts = []
-                for q in keep:
-                    A_ = np.array(q["pts"])
-                    for i in range(len(A_) - 1):
-                        pts += list(A_[i] + np.linspace(0, 1, 40)[:, None] * (A_[i + 1] - A_[i]))
-                if not pts:
-                    continue
-                pts = np.array(pts)
-                inside_ = ((pts >= lo - TZ["metal_clear"]) & (pts <= hi + TZ["metal_clear"])).all(1)
-                if not inside_.any():
-                    continue
-                dd = np.max(np.maximum(lo - pts[inside_], pts[inside_] - hi), axis=1)
-                r = (max(0.0, float(dd.min())), max(0.0, float(-dd.min())))
-            else:
-                r = pair(g, gg, TZ["metal_clear"])
+            r = pair(RXG, gg, TZ["metal_clear"])
             if r:
-                metal.append({"part": k, "clearance_mm": round(r[0] * 1000, 1), "overlap_mm": round(r[1] * 1000, 1),
-                              "fix": FIX.get(k, "cable or part: keep it 20 mm from the receiver (route over the bay plate or outboard of |y| 0.125)" if k.startswith(("harness", "service")) else "move it 20 mm away or make it non-metallic")})
-        metal.sort(key=lambda m: m["clearance_mm"] - m["overlap_mm"])
-        tzout["metal_within_20mm"] = metal
-        for m_ in metal:
-            issue("major", "TZBOT receiver / %s (metal within 20 mm)" % m_["part"], "receiver at the B4 position, front bay option %s" % P["front_bay"]["default"],
-                  "clearance %.1f mm, overlap %.1f mm" % (m_["clearance_mm"], m_["overlap_mm"]), ">= 20 mm metal-free around the receiver",
-                  "B5 TZBOT installation rule; owner decision B4 (2 Nov 2026)", m_["fix"], OWN["mech"] if not m_["part"].startswith(("harness", "bay_")) else OWN["elec"], "tzbot")
-        # non-metal parts the receiver physically clashes with (overlap > 0.5 mm)
-        clash = []
-        for k, gg in geos.items():
-            if k == "tz_receiver" or not k.startswith(("camera_mount", "ultrasonic_mount", "tof_mount", "lidar_spacer", "ultrasonic_front", "tof_front")):
-                continue
-            r = pair(g, gg, 0.001)
-            if r and r[1] > .0005:
-                clash.append({"part": k, "overlap_mm": round(r[1] * 1000, 1)})
-                issue("major", "TZBOT receiver / %s (physical clash)" % k, "receiver at the B4 position", "overlap %.1f mm" % (r[1] * 1000), "overlap <= 0.5 mm",
-                      "B4; CAD v0.2 printed mounts", "trim the inner flank of the printed mount by 5 mm (PETG; the sensor is held by its panel nut)", OWN["mech"], "tzbot")
-        tzout["nonmetal_clashes"] = clash
-        # EMC distances from the receiver coil (assumed in the bottom 15 mm of the receiver, facing the transmitter)
-        coil_lo, coil_hi = lo.copy(), hi.copy()
-        coil_hi[2] = lo[2] + 0.015
-        cv, cf = box_mesh(coil_hi - coil_lo, (coil_lo + coil_hi) / 2)
-        coil = Geo(Part("coil", cv, cf, "base"), base_cfg, .004)
-        def dist_to(k):
-            if k not in geos:
-                return None
-            d, _ = cKDTree(coil.samples).query(geos[k].samples)
-            return round(float(d.min()) * 1000, 1)
-        emc = {"IMU (EV_ICM-42688-P)": dist_to("imu"), "Jetson Orin NX on J401": dist_to("compute"), "NUCLEO-H723ZG": dist_to("base_controller"),
-               "Gemini 336L": dist_to("base_camera"),
-               "Wi-Fi antenna (CMP-007 card in the J401; antenna position not decided, measured to the compute envelope)": dist_to("compute")}
-        # cables by function: CAN and USB (harness tubes carry their cable id)
-        cab = {r["id"]: r for r in csv.DictReader(open(os.path.join(MODEL, "cable_list.csv")))}
-        for label, pred in (("CAN cables", lambda r: "CAN" in r["function"] or "CAN" in r["gauge_or_type"]), ("USB cables", lambda r: "USB" in r["function"] or "USB" in r["gauge_or_type"])):
-            ids = {k for k, r in cab.items() if pred(r)}
-            pts = []
-            for pid, e in P["geometry"].items():
-                if not pid.startswith("harness_") or e.get("group") != "base":
-                    continue
-                for q in e["prims"]:
-                    if q["t"] == "tube" and q.get("cid") in ids:
-                        A_ = np.array(q["pts"])
-                        for i in range(len(A_) - 1):
-                            pts += list(A_[i] + np.linspace(0, 1, 30)[:, None] * (A_[i + 1] - A_[i]))
-            if pts:
-                d, _ = cKDTree(coil.samples).query(np.array(pts))
-                emc[label] = round(float(d.min()) * 1000 - 3, 1)  # minus a typical cable radius
-        tzout["emc_distances_mm"] = emc
-        tzout["emc_note"] = "distances from the receiver coil (assumed in the bottom 15 mm of the receiver, facing the floor transmitter) to the nearest point of each item; under 50 mm flagged"
-        for k, v in emc.items():
-            if v is not None and v < 50:
-                issue("major", "TZBOT receiver coil / %s (EMC distance)" % k, "charging, front bay option %s" % P["front_bay"]["default"], "%.1f mm from the coil" % v,
-                      ">= 50 mm until TZBOT gives a minimum distance and the field at 50 / 100 mm", "owner request B4 (2 Nov 2026); ferrite sheet on the receiver top",
-                      "route or move the item above the bay plate, keep the ferrite sheet, and ask TZBOT for the minimum distance to electronics", OWN["elec"], "tzbot")
-        issue("minor", "TZBOT 2.4 GHz data link / J401 Wi-Fi (CMP-007) coexistence", "charging", "data link %.3f to %.3f GHz, %d dBm; Wi-Fi card inside the J401 envelope, antenna position not decided" % (
-                  TZ["data_link_ghz"][0], TZ["data_link_ghz"][1], TZ["data_link_dbm"]), "no Wi-Fi loss while docked", TZ["source"],
-              "place the Wi-Fi antennas away from the receiver (top of the base or the column), test while charging, ask TZBOT for the channel plan", OWN["elec"], "tzbot")
-        if gap < g0:
-            issue("major", "TZBOT receiver / floor transmitter WCM-500-24", "docked; receiver bottom %.0f mm above the floor, %.0f mm transmitter on the floor" % (lo[2] * 1000, tx_h * 1000),
-                  "overlap %.0f mm (receiver bottom %.0f mm, transmitter top %.0f mm)" % (gap * 1000, lo[2] * 1000, tx_h * 1000),
-                  "gap %.0f to %.0f mm (20 +-10 mm)" % (g0 * 1000, g1 * 1000), TZ["source"] + "; owner placement B4 (bottom 2 mm below the base sheet)",
-                  "known, fix scheduled later by the owner. Options (not chosen): 1) raise the receiver into the bay (bottom at %d to %d mm, which needs %d to %d mm more bay height above the receiver); "
-                  "2) recess the transmitter into the floor or a low ramp (top at %d to %d mm); 3) a combination of both" % tuple(fo["raise_receiver_bottom_mm"] + fo["more_bay_height_mm"] + fo["transmitter_top_mm"]),
-                  OWN["mech"], "charging gap")
+                others.append({"part": k, "id": k, "distance_mm": round((-r[1] if r[1] > 0 else r[0]) * 1000, 1)})
+        top_cells = next((m_["distance_mm"] for m_ in meas if m_["id"] == "battery"), None)
+        top_tray = next((m_["distance_mm"] for m_ in meas if m_["id"] == "battery_tray"), None)
+        tx_h = FACTS["tzbot_transmitter"]["size"][2]
+        gap = lo[2] - tx_h
+        tzout = {"status": TZ["status"], "decided": TZ["decided"], "lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "battery": TZL["battery"],
+                 "receiver_top_mm": round(hi[2] * 1000, 1), "receiver_bottom_mm": round(lo[2] * 1000, 1), "vs_cells_mm": top_cells, "vs_tray_mm": top_tray,
+                 "metal": meas + others, "gap_mm": round(gap * 1000, 1), "air_gap_mm": [TZ["air_gap"][0] * 1000, TZ["air_gap"][1] * 1000],
+                 "transmitter_height_mm": round(tx_h * 1000, 1)}
+        within = [m_ for m_ in meas + others if m_["distance_mm"] is not None and m_["distance_mm"] < TZ["metal_clear"] * 1000]
+        fmt = lambda v: "overlap %.1f mm" % -v if v < 0 else "clearance %.1f mm" % v
+        issue("minor", "TZBOT WCM-500-24 receiver (reserved, rear under the battery)", "reserved position, release 3.0, not installed in 2.0 (owner decision, 2 Nov 2026)",
+              "receiver top %.0f mm vs battery cells: %s, vs battery tray: %s; metal within 20 mm: %s; rear castors: %s (outside 20 mm); charging gap with a %.0f mm floor transmitter: %.0f mm (receiver bottom %.0f mm)" % (
+                  hi[2] * 1000, fmt(top_cells), fmt(top_tray) if top_tray is not None else "n/a",
+                  "; ".join("%s %s" % (m_["part"], fmt(m_["distance_mm"])) for m_ in within) or "none",
+                  fmt(min(m_["distance_mm"] for m_ in meas if m_["id"].startswith("castor_rear"))),
+                  tx_h * 1000, gap * 1000, lo[2] * 1000),
+              "no overlap with the cells or the tray, no metal within 20 mm, air gap %.0f to %.0f mm (TZBOT WCM-500-24 manual V2.5)" % (TZ["air_gap"][0] * 1000, TZ["air_gap"][1] * 1000),
+              TZ["source"] + "; reserved position, owner decision of 2 Nov 2026", "known, to be solved in release 3.0", OWN["mech"], "reserved for 3.0")
 
     # ---- services and fits from the build summary
     nof = summ["nofit"]
@@ -949,7 +862,6 @@ def main():
     # side pockets vs the side panel return flanges
     issue("major", "Rear side pockets / side panel return flanges", "rear zone", "pocket 91 mm wide only between z 74 and 191 mm; 36 mm at the flange heights (inner flange at y 0.193)",
           "B5 / platform-sw #95: 140 x 91 x 210 mm free each side", "CAD v0.2 side panel MMP.00.00.00.003 (GLB)", "keep tall parts (BMS, K1/K2) inside y 0.193 or between the flanges; update B5", OWN["mech"], "layout")
-    # the raised bay plate over the receiver (front bay options A and B) needs two CAD changes
     jet_fixed = fbd == "A"
     issue("major", "Jetson Orin NX with fan on the IMU bracket MMP.04.00.00.002", "CAD v0.2", "compute (with fan) shares the electronics bracket with the EV_ICM-42688-P",
           "nothing heavy or vibrating on the IMU bracket (E2)", "CAD v0.2 compute node on the bracket top",
@@ -957,8 +869,8 @@ def main():
     issue("minor", "Battery assembly removal path", "cover off", "cells lift out vertically through the cover opening; 26 mm above the cells, nothing on top (B5)",
           "removable without removing the arms", "B5; lift base plate at x -0.12 to 0.24 (rear edge 17 mm ahead of the cells)", "keep the cover split behind the lift plate", OWN["mech"], "services")
     issue("minor", "Disconnect handle access", "rear panel", "BS-6004B drawn at the rear panel centre above the rear TF-Luna", "reachable from outside", "proposed position", "confirm the panel cut-out", OWN["elec"], "services")
-    issue("minor", "Front bay plates removal with the cover off", "cover off, option A", "shelf lifts off its 4 standoffs, then the lower plate off its 6 standoffs; the strip boards beside the receiver are reached after the lower plate",
-          "removable with the cover off; every fuse and connector reachable", "front_bay.py", "keep the strip boards' connectors facing up", OWN["mech"], "services")
+    issue("minor", "Front bay plates removal with the cover off", "cover off, option A", "shelf lifts off its 4 standoffs, then the lower plate off its rivet nuts",
+          "removable with the cover off; every fuse and connector reachable", "front_bay.py", "keep the connectors facing up", OWN["mech"], "services")
     issue("minor", "Lift base plate removal and cover opening", "cover off", "the cover opening (x -0.146 to 0.156, y -0.113 to 0.107) must be extended forward to x 0.260 for the plate front (0.250) and the column at bp050 (front 0.230)",
           "cover clears the plate and the column", "CAD v0.2 cover MMP.01.00.00.001; B3", "extend the cover opening to x 0.260 (owner to confirm in CAD)", OWN["mech"], "services")
     # service loop

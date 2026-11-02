@@ -45,19 +45,15 @@ rear_zones:   # B5 / platform-sw #95: free zones next to the cells (x, y, z exte
   side_l: {x: [-0.277, -0.137], y: [0.157, 0.248], z: [0.054, 0.264]}
   side_r: {x: [-0.277, -0.137], y: [-0.248, -0.157], z: [0.054, 0.264]}
 front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0.003}
-# TZBOT WCM-500-24 (500 W; the WCM-200 has the same outer size). Values: TZBOT "WCM-500-24 Wireless Charger Instruction Manual",
-# WCM-500-24 V2.5, 2021-09-23, Zhejiang Tongzhu Technology Co., Ltd. Receiver (robot) and transmitter (floor station) have the same
-# outer size. Placement, owner decision 2 Nov 2026 (B4, unchanged): front of the base, centred, front edge 25 mm from the front panel
-# inner face (x 0.388), bottom 2 mm below the base sheet underside (50 mm above the floor). frames.tzbot_layout() picks the orientation
-# (170 mm along x or along y) by the clearance to the LiDAR support MMP.07 and the cut-out size, and gives the receiver box.
+# TZBOT WCM-500-24 wireless charging: release 3.0 item, not installed in OpenAMRobot 2.0 (2.0 charges by cable). Values: TZBOT
+# "WCM-500-24 Wireless Charger Instruction Manual" V2.5, 2021-09-23. Receiver (robot) and floor transmitter have the same outer size.
+# Reserved receiver position, decided by Alex on 2 Nov 2026: rear of the base, under the battery cell group, centred on the long
+# axis and on the cell-group centre, 170 mm across (y), 150 mm fore-aft (x), bottom 2 mm below the base-sheet underside (50 mm
+# above the floor). The floor transmitter is not drawn. frames.tzbot_layout() gives the receiver box.
 tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5,
-                 front_panel_inner_x: 0.388, front_gap: 0.025, below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
-                 align: [0.020, 0.020], metal_clear: 0.020, ferrite_t: 0.001, cutout_existing: [0.313, 0.359, -0.111, 0.111],
-                 freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
-                 signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",
-                           red: "receiver output to battery +", black: "receiver output to battery -"}}
-tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station, same outer size (manual V2.5), lying on the floor
-emc_flag_distance: 0.050      # roadmap screening value until TZBOT gives a minimum distance
+                 across_y: 0.170, fore_aft_x: 0.150, below_base_sheet: 0.002, air_gap: [0.010, 0.030], align: [0.020, 0.020], metal_clear: 0.020,
+                 status: "reserved, not installed in 2.0 (release 3.0)", decided: "Alex, 2 Nov 2026"}
+tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (not drawn); same outer size (manual V2.5)
 front_bay_option_default: A   # proposed (2 Nov 2026): two-tier bay, see front_bay.py
 second_estop: {position: P2, post_below_top: 0.055, panel_behind_face: 0.048}   # proposed (B2); datums keep P1 until the P-03 entry
 # lowest points of the robot below the base sheet (full assembly STEP MMP.00.00.00.000_full_assembly, openamr-platform-hw main,

@@ -13,10 +13,6 @@ ids:
   "layout|Rear side pockets / side panel return flanges": GI-025
   "sensor view|zed view / getac_pocket": GI-030
   "sensor view|zed view / getac_second_position_ghost": GI-031
-  "tzbot|TZBOT receiver / base_plate (metal within 20 mm)": GI-032
-  "tzbot|TZBOT receiver / front_panel (metal within 20 mm)": GI-034
-  "tzbot|TZBOT receiver / lidar_support (metal within 20 mm)": GI-035
-  "charging gap|TZBOT receiver / floor transmitter WCM-500-24": GI-036
   "fit|K1/K2 option A GX11CAC fit": GI-037
   "harness|Upper-body service loop length": GI-039
   "interference|Left tote wall / sensors S1, S2": GI-040
@@ -44,17 +40,15 @@ ids:
   "layout|Rear zone layout (B5)": GI-080
   "arm reach|Second E-stop P2 (proposed) / arm reach envelope": GI-081
   "load path|Lift base plate MEC-019 on the centre-frame arch: load path": GI-082
-  "tzbot|TZBOT receiver / electronics_bracket (metal within 20 mm)": GI-083
-  "tzbot|TZBOT receiver / fasteners_base (metal within 20 mm)": GI-084
-  "interference|base_controller / rz_k1k2_1": GI-085
-  "interference|base_controller / rz_k1k2_2": GI-086
-  "interference|bay_plate / lidar_spacer": GI-087
   "interference|rz_batcon / rz_f0": GI-088
   "sensor view|LiDAR scan plane +-5 mm / support_front_left": GI-089
   "sensor view|LiDAR scan plane +-5 mm / support_front_right": GI-090
   "services|Front bay plates removal with the cover off": GI-091
   "services|Lift base plate removal and cover opening": GI-092
-  "tzbot|TZBOT 2.4 GHz data link / J401 Wi-Fi (CMP-007) coexistence": GI-093
+  "reserved for 3.0|TZBOT WCM-500-24 receiver (reserved, rear under the battery)": GI-099
+  "interference|base_controller / electronics_bracket": GI-100
+  "interference|bay_plate / lidar_spacer": GI-101
+  "interference|bay_pwr009 / lidar_support": GI-102
 closed:
   GI-001: {key: "layout|Front bay and rear zone layout", reason: "closed: front bay option A places the PNOZ DIN assembly, DDR-240B-24 and RSD-60G-5 with the receiver in place; the parts still without space are in the rear zone (GI-080)"}
   GI-007: {key: "arm reach|Second E-stop at 40 mm below the column top / right gripper", reason: "no longer reported by the analysis"}
@@ -75,7 +69,11 @@ closed:
   GI-027: {key: "load path|MEC-019 front deck bolts / frame|bp050", reason: "no longer reported by the analysis"}
   GI-028: {key: "sensor view|LiDAR scan plane +-5 mm / harness_bat_base", reason: "no longer reported by the analysis"}
   GI-029: {key: "sensor view|LiDAR scan plane +-5 mm / harness_sig_base", reason: "no longer reported by the analysis"}
-  GI-033: {key: "tzbot|TZBOT receiver / bay_plate (metal within 20 mm)", reason: "closed: the MEC-005 plate is raised to z 0.122 (receiver top + 20 mm), outside the 20 mm zone of the 170 x 150 x 52 mm receiver (WCM-500-24 manual V2.5)"}
+  GI-032: {key: "tzbot|TZBOT receiver / base_plate (metal within 20 mm)", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
+  GI-033: {key: "tzbot|TZBOT receiver / bay_plate (metal within 20 mm)", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
+  GI-034: {key: "tzbot|TZBOT receiver / front_panel (metal within 20 mm)", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
+  GI-035: {key: "tzbot|TZBOT receiver / lidar_support (metal within 20 mm)", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
+  GI-036: {key: "charging gap|TZBOT receiver / floor transmitter WCM-500-24", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
   GI-038: {key: "geometry|Hub motor wheel radius 0.100 vs base_link 0.098", reason: "no longer reported by the analysis"}
   GI-041: {key: "interference|battery / bay_can3", reason: "no longer reported by the analysis"}
   GI-042: {key: "interference|battery / bay_usbcan_2", reason: "no longer reported by the analysis"}
@@ -95,3 +93,14 @@ closed:
   GI-067: {key: "interference|rz_f0 / rz_k1k2_1", reason: "no longer reported by the analysis"}
   GI-068: {key: "interference|rz_f0 / rz_k1k2_2", reason: "no longer reported by the analysis"}
   GI-076: {key: "services|Front bay plate removal with the cover off", reason: "no longer reported by the analysis"}
+  GI-083: {key: "tzbot|TZBOT receiver / electronics_bracket (metal within 20 mm)", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
+  GI-084: {key: "tzbot|TZBOT receiver / fasteners_base (metal within 20 mm)", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
+  GI-085: {key: "interference|base_controller / rz_k1k2_1", reason: "no longer reported by the analysis"}
+  GI-086: {key: "interference|base_controller / rz_k1k2_2", reason: "no longer reported by the analysis"}
+  GI-087: {key: "interference|bay_plate / lidar_spacer", reason: "no longer reported by the analysis"}
+  GI-093: {key: "tzbot|TZBOT 2.4 GHz data link / J401 Wi-Fi (CMP-007) coexistence", reason: "receiver moved to the rear (Alex, 2 Nov 2026)"}
+  GI-094: {key: "interference|bay_can3 / bay_pwr032", reason: "no longer reported by the analysis"}
+  GI-095: {key: "interference|bay_lidar_uart / bay_pwr009", reason: "no longer reported by the analysis"}
+  GI-096: {key: "interference|bay_lidar_uart / bay_rsd60", reason: "no longer reported by the analysis"}
+  GI-097: {key: "interference|bay_rsd60 / bay_usbpd", reason: "no longer reported by the analysis"}
+  GI-098: {key: "interference|bay_usbhub / compute", reason: "no longer reported by the analysis"}

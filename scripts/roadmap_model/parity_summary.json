@@ -10,11 +10,10 @@
  "mapped_items": 50,
  "matched": 42,
  "out_of_tolerance": 6,
- "pending": 12,
+ "pending": 8,
  "pending_mapped": 2,
- "pending_roadmap_only": 10,
+ "pending_roadmap_only": 6,
  "pending_list": [
-  "base_cutout: B4 (2 Nov 2026): base-sheet cut-out for the receiver (ghost; base_chassis.stl has the CAD v0.2 sheet)",
   "base_link#2: C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX on J401 off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position",
   "estop_p1_ghost: B2: position P1 (the combined model's current second_estop_link), ghost",
   "estop_p3_ghost: B2: position P3, ghost",
@@ -22,10 +21,7 @@
   "lift_base_plate: B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)",
   "rear_estop_housing: B2 (2 Nov 2026, proposed): post-mount housing of the second E-stop at P2",
   "second_estop_link: B2 (2 Nov 2026, proposed): the roadmap draws the recommended post-mount position P2; the combined model keeps P1 (datums second_estop_below_profile_top and its parent lift_column_base_link) until the P-03 entry",
-  "tz_ferrite: B4 (2 Nov 2026): ferrite shielding sheet on the receiver top (proposed)",
-  "tz_metal_free_zone: B4 (2 Nov 2026): 20 mm metal-free zone around the receiver (keep-out ghost)",
-  "tz_receiver: B4 (2 Nov 2026, decided): TZBOT WCM-500-24 receiver at the front of the base; not in the base URDF yet",
-  "tz_transmitter: B4 (2 Nov 2026): floor transmitter, offboard, placeholder height"
+  "tz_receiver: B4 (owner decision, 2 Nov 2026): reserved TZBOT WCM-500-24 receiver position at the rear under the battery (release 3.0, not installed in 2.0); not in the base URDF"
  ],
  "out_list": [
   "arm_profile_link / arm_profile",
@@ -37,7 +33,7 @@
  ],
  "not_compared": 0,
  "unmapped_urdf": 3,
- "roadmap_only": 104,
+ "roadmap_only": 96,
  "unmapped_roadmap": 0,
  "comparisons": 200,
  "comparisons_out": 24,

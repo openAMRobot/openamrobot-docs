@@ -4,8 +4,8 @@
 Sensor pose check (review of ef90d7f, 2 Nov 2026): the committed model passes; a drawn sensor moved by +20 mm in x,
 +2 mm in y or +2 mm in z, or pitched by +1 deg about its own frame, fails. Chest retired-term check (review of
 419e1c6): the labelled portrait second-position ghost passes, a portrait default fails. STATE.md figures: a stale
-figure fails. Known contacts (TZBOT charging gap, 2 Nov 2026): the committed model passes; a receiver raised by 1 mm
-(overlap 1 mm instead of the declared 2 mm) fails, and so does a missing issue row.
+figure fails. Known contacts (reserved TZBOT receiver under the battery, 2 Nov 2026): the committed model passes; a receiver moved by 1 mm
+fails, and so does a missing issue row.
 """
 import copy
 import json
@@ -180,11 +180,11 @@ class KnownContacts(unittest.TestCase):
     def test_committed_model_passes(self):
         self.assertEqual(self.run_check(), [])
 
-    def test_changed_overlap_fails(self):
+    def test_moved_receiver_fails(self):
         def raise_rx(P):
             P["geometry"]["tz_receiver"]["prims"][0]["p"][2] += 0.001
-        self.assertTrue(any("overlap 1.0 mm" in e for e in self.run_check(raise_rx)))
+        self.assertTrue(any("tz_receiver box" in e for e in self.run_check(raise_rx)))
 
     def test_missing_issue_row_fails(self):
-        drop = lambda rows = "": "\n".join(l for l in rows.splitlines() if "TZBOT receiver / floor transmitter WCM-500-24" not in l) + "\n"
+        drop = lambda rows = "": "\n".join(l for l in rows.splitlines() if "TZBOT WCM-500-24 receiver (reserved, rear under the battery)" not in l) + "\n"
         self.assertTrue(any("row missing" in e for e in self.run_check(edit_rows=drop)))

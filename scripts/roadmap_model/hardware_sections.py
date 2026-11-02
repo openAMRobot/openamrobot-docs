@@ -12,7 +12,7 @@ import json
 import os
 import re
 
-from frames import HERE, MODEL, REPO, load_yaml, tzbot_layout
+from frames import HERE, MODEL, REPO, load_yaml
 
 PAGE = os.path.join(REPO, "docs", "assets", "roadmap", "hardware.html")
 E = html.escape
@@ -67,7 +67,7 @@ def model_section():
             an["steel_chassis_kg"], m["L1000"]["mass"], m["L1000"]["com"][0] * 1000, m["L1000"]["com"][1] * 1000, m["L1000"]["com"][2] * 1000,
             m["L1350"]["com"][2] * 1000, st["L1000"]["margin_fore_m"] * 1000, st["L1000"]["margin_aft_m"] * 1000, st["L1000"]["margin_lat_m"] * 1000,
             st["L1000"]["a_max_fore"], st["L1350"]["a_max_fore"], st["L1350"]["a_max_lat"], ld["L1350"]["drive_pair_kg"]) +
-        "<p><b>Front electronics bay</b>: two layouts with the TZBOT receiver in place, option A (two-tier, proposed default) and option B "
+        "<p><b>Front electronics bay</b>: two layouts, option A (two-tier, proposed default) and option B "
         "(28 Oct alternative), switched on the exploded view; see the front bay section below. Front bay parts placed in option A: %d; in option B: %d "
         "(not placed: %s).</p>" % (bs["front_bay"]["A"]["fit"]["placed"], bs["front_bay"]["B"]["fit"]["placed"], E(", ".join(bs["front_bay"]["B"]["fit"]["not_placed"])) or "none") +
         "<p><b>Rear power zone</b> (B5 accepted layout), packed around the design-intent battery tray MEC-007 and the real side-pocket section with 5 mm "
@@ -77,7 +77,7 @@ def model_section():
         "Siemens 3RT2 S3 fits: %s.</p>" % (E(", ".join(nofit)) or "none", gi("Rear zone layout"), "yes" if k["A"]["fits"] else "no", "yes" if k["B_tesys"]["fits"] else "no", "yes" if k["B_siemens"]["fits"] else "no") +
         "<p><b>Harness:</b> %d cables (%d routed, %.1f m with the 10 %% service margin), coloured by domain (BAT red, SAFE orange, regulated 24 V yellow, "
         "5 V / 3.3 V green, signal blue), with P-clips, grommets at the centre-bracket walls and the deck crossing, CAN terminations and one "
-        "service loop for all upper-body cables sized for the 350 mm stroke; the front trunk drops below the LiDAR scan plane (222.05 mm, +/-5 mm) behind the open sector and stays 20 mm outside the receiver zone. <b>Fasteners:</b> %d schedule rows (named and proposed), the start of MEC-014; "
+        "service loop for all upper-body cables sized for the 350 mm stroke; the front trunk drops below the LiDAR scan plane (222.05 mm, +/-5 mm) behind the open sector. <b>Fasteners:</b> %d schedule rows (named and proposed), the start of MEC-014; "
         "small parts load with High quality only.</p>" % (len(cab), len(routed), total_len, len(fas)) +
         "<p>Files: %s, %s, %s, %s, %s; layout STEP for SolidWorks: %s.</p>" % (
             A("model/bom_coverage.csv", "bom_coverage.csv"), A("model/fastener_schedule.csv", "fastener_schedule.csv"),
@@ -120,7 +120,7 @@ def issues_section():
     c = collections.Counter(r["severity"] for r in rows)
     body = ("<p>Generated from %s by <code>scripts/roadmap_model/analyse.py</code> on the shared model: interference of all part pairs at L1000, L1175 and "
             "L1350, bp000 and bp050, hp15 to hp35 and both Getac positions; a single-joint arm sweep through the URDF limits at 10 deg steps at L1000 and "
-            "L1350; the Gemini 336L and ZED Mini views and the LiDAR plane; mass, stability, the TZBOT receiver, service access and the K1/K2 fit. "
+            "L1350; the Gemini 336L and ZED Mini views and the LiDAR plane; mass, stability, the reserved TZBOT receiver position, service access and the K1/K2 fit. "
             "Box parts are tested exactly, meshes on 0.75 mm surface samples. %d blocker, %d major, %d minor.</p>" % (A("model/geometry_issues.csv", "geometry_issues.csv"), c["blocker"], c["major"], c["minor"]) +
             table(head, mk(big)) + "<details><summary>%d minor issues</summary>%s</details>" % (len(small), table(head, mk(small))) + closed_html())
     return section("geoissues", "Geometry and hardware issues", body, "roadmap model analysis of %s; B8 simulation findings of 29 Oct 2026" % SNAP)
@@ -160,13 +160,10 @@ def decisions_section():
     ab = pl["above_plate"]
     mu = pl["max_utilisation"]
     ok = max(mu.values()) <= 0.67
-    # B4
-    metal = [[E(m["part"]), "%.1f" % m["clearance_mm"], "%.1f" % m["overlap_mm"], E(m["fix"])] for m in tz["metal_within_20mm"]]
-    emc = [[E(k), "-" if v is None else "%.1f" % v, "under 50 mm" if (v is not None and v < 50) else "ok"] for k, v in tz["emc_distances_mm"].items()]
-    cut = tz["cutout"]
-    low = tz["lowest_point"]
-    fg = tz["floor_gap"]
+    # B4: reserved TZBOT receiver position (release 3.0)
     TZF = load_yaml(os.path.join(HERE, "facts.yaml"))["tzbot_receiver"]
+    fmt = lambda v: "-" if v is None else ("overlap %.1f mm" % -v if v < 0 else "clearance %.1f mm" % v)
+    tzm = [[E(m["part"]), E(fmt(m["distance_mm"]))] for m in tz.get("metal", [])]
     body = (
         "<p>Decisions of 2 Nov 2026 by the robot owner, to be entered in P-03 and M-01. Values below are generated by "
         "<code>scripts/roadmap_model/analyse.py</code>, <code>estop_positions.py</code> and <code>lift_plate_check.py</code>.</p>"
@@ -194,41 +191,20 @@ def decisions_section():
             pl["arms_forward"]["com_m"][2], pl["cases"][0]["bolt_Ft_Rd_kN"], pl["cases"][0]["bolt_Fv_Rd_kN"], pl["cases"][0]["Bp_Rd_kN"], mu["bolt_utilisation"],
             mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], mu["arch_sheet_utilisation"], pl["max_column_tilt_deg"],
             "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case, so the load path needs a doubler under the arch top between the rear rivet nuts and the rear wall (or the outer rivet-nut pattern as well) before the arms carry a payload at full reach.") + t_plate +
-        "<h3>TZBOT WCM-500-24 wireless charging (B4)</h3><p>Values from the TZBOT <i>WCM-500-24 Wireless Charger Instruction Manual</i>, WCM-500-24 V2.5, "
-        "2021-09-23 (Zhejiang Tongzhu Technology Co., Ltd): WCM-500-24 (500 W; the WCM-200 has the same outer size); receiver and floor transmitter both "
-        "%s x %s x %s mm (L x W x thickness), about %g kg each; air gap 20 +-10 mm (%g to %g mm); misalignment X +-%g mm, Y +-%g mm; no metal within %g mm "
-        "around the receiver and the transmitter; charging %d to %d kHz (self-tuning), data link %.3f to %.3f GHz at %d dBm; output %d to %d V and %d to %d A "
-        "adjustable, efficiency at least %d %%; signals %s. They replace the plan-document values (240 x 210 x 65 mm, about 5 kg, 0 to 50 mm, +-30 mm; see the conflicts).</p>" % (
-            "%g" % (TZF["size"][0] * 1000), "%g" % (TZF["size"][1] * 1000), "%g" % (TZF["size"][2] * 1000), TZF["mass"], TZF["air_gap"][0] * 1000, TZF["air_gap"][1] * 1000,
-            TZF["align"][0] * 1000, TZF["align"][1] * 1000, TZF["metal_clear"] * 1000, TZF["freq_khz"][0], TZF["freq_khz"][1], TZF["data_link_ghz"][0], TZF["data_link_ghz"][1],
-            TZF["data_link_dbm"], TZF["output_v"][0], TZF["output_v"][1], TZF["output_a"][0], TZF["output_a"][1], round(TZF["efficiency_min"] * 100),
-            E("; ".join("%s = %s" % (k, v) for k, v in TZF["signals"].items()))) +
-        "<p>Receiver at the front of the base, centred, <b>%s</b> (chosen by the clearance to the LiDAR support MMP.07 in the CAD: %s), front edge %.1f mm from "
-        "the front panel inner face, occupying %.0f to %.0f mm above the floor under the bay plate and the LiDAR (printed non-metallic parts touching it: %s). Bottom %.1f mm above the floor, 2 mm below the base "
-        "sheet; the lowest points of the robot apart from the wheels are the castor M6 bolt tips at %.1f mm and the M5 bolt tips at %.1f mm (full assembly STEP), "
-        "so the ground clearance does not change. Base-sheet cut-out: receiver outline plus 20 mm on each side, <b>%d x %d mm</b>; cut to the front panel bottom "
-        "flange line it is %d x %d mm (x %.3f to %.3f, y +/-%.3f), extending the contact-charger cut-out under the LiDAR; it removes: %s. A thin ferrite sheet "
-        "on the receiver top (not metal) shields the electronics above. The floor transmitter is drawn on the floor under the docked robot, aligned with the receiver.</p>" % (
-            E(tz["position"]["orientation"]), E("; ".join("%s: %.1f mm (negative: overlap), cut-out %d x %d mm" % (k, v["lidar_support_mm"], v["cutout_mm"][0], v["cutout_mm"][1])
-                                                        for k, v in tz["position"]["orientation_candidates"].items())),
-            tz["position"]["front_edge_to_front_panel_inner_mm"], tz["position"]["occupies_z_mm"][0], tz["position"]["occupies_z_mm"][1],
-            E(", ".join("%s %.1f mm" % (c["part"], c["overlap_mm"]) for c in tz.get("nonmetal_clashes", [])) or "none"), tz["floor_gap"]["receiver_bottom_mm"],
-            low["cad"]["castor_bolt_tips_m6x20"] * 1000, low["cad"]["m5x20_bolt_tips"] * 1000, cut["receiver_plus_20_mm"][0], cut["receiver_plus_20_mm"][1],
-            cut["size_mm"][0], cut["size_mm"][1], cut["xy_m"][0], cut["xy_m"][1], cut["xy_m"][3], E("; ".join(cut["removes"]))) +
-        ("<p><b>Known interference (warn only, fix scheduled later by the owner):</b> with the receiver bottom at %.0f mm and the %.0f mm transmitter on the floor "
-         "they overlap by %.0f mm (drawn as a red band); the manual air gap of %.0f to %.0f mm is not met (%s). Fix options, not chosen: 1) raise the receiver "
-         "into the bay (bottom at %d to %d mm, which needs %d to %d mm more bay height above the receiver); 2) recess the transmitter into the floor or a low "
-         "ramp (top at %d to %d mm); 3) a combination of both.</p>" % (
-             fg["receiver_bottom_mm"], fg["transmitter_height_mm"], -fg["gap_mm"], fg["manual_air_gap_mm"][0], fg["manual_air_gap_mm"][1], gi("TZBOT receiver / floor transmitter"),
-             fg["fix_options"]["raise_receiver_bottom_mm"][0], fg["fix_options"]["raise_receiver_bottom_mm"][1], fg["fix_options"]["more_bay_height_mm"][0],
-             fg["fix_options"]["more_bay_height_mm"][1], fg["fix_options"]["transmitter_top_mm"][0], fg["fix_options"]["transmitter_top_mm"][1])
-         if fg["gap_mm"] < fg["manual_air_gap_mm"][0] else "<p>Air gap %.1f mm (manual %.0f to %.0f mm).</p>" % (fg["gap_mm"], fg["manual_air_gap_mm"][0], fg["manual_air_gap_mm"][1])) +
-        "<p><b>Metal within 20 mm of the receiver</b> (front bay option %s):</p>" % E(an.get("front_bay_default", "A")) +
-        table(["Part", "Clearance (mm)", "Overlap (mm)", "Proposed fix"], metal) +
-        "<p><b>Distances from the receiver coil</b> (%s):</p>" % E(tz["emc_note"]) + table(["Item", "Distance (mm)", "Flag"], emc) +
-        "<p>Questions to TZBOT: the permitted shielding material and thickness on the receiver top; the minimum distance from the receiver to electronics; "
-        "the magnetic field at 50 mm and 100 mm from the receiver during charging; 2.4 GHz coexistence of the charger data link with Wi-Fi; whether a "
-        "lower-profile transmitter exists.</p>")
+        "<h3>TZBOT WCM-500-24 wireless charging (B4)</h3><p>Wireless charging is a release 3.0 item. The TZBOT WCM-500-24 receiver position is reserved "
+        "at the rear under the battery. Docking for wireless charging will approach the station, turn 180 degrees and reverse onto the transmitter. 2.0 "
+        "charges by cable.</p>"
+        "<p>Datasheet (TZBOT <i>WCM-500-24 Wireless Charger Instruction Manual</i> V2.5, 2021-09-23): receiver and floor transmitter %s x %s x %s mm, about %g kg "
+        "each; air gap 20 +-10 mm; misalignment +-%g mm in X and Y; no metal within %g mm. Reserved position (owner decision, 2 Nov 2026): under the battery cell group, "
+        "centred on the long axis and on the cell-group centre, 170 mm across, 150 mm fore-aft (x %.3f to %.3f), bottom %.0f mm above the floor (2 mm below the "
+        "base-sheet underside), top %.0f mm; drawn translucent, class reserved, not installed in 2.0. The floor transmitter is not drawn.</p>" % (
+            "%g" % (TZF["size"][0] * 1000), "%g" % (TZF["size"][1] * 1000), "%g" % (TZF["size"][2] * 1000), TZF["mass"], TZF["align"][0] * 1000, TZF["metal_clear"] * 1000,
+            tz["lo"][0], tz["hi"][0], tz["receiver_bottom_mm"], tz["receiver_top_mm"]) +
+        "<p><b>Warning, reserved for 3.0</b> (%s, minor, known, to be solved in release 3.0): receiver top %.0f mm vs the battery cells: %s; vs the battery tray: "
+        "%s; charging gap with a %.0f mm floor transmitter: %.0f mm (receiver bottom %.0f mm) against the required %.0f to %.0f mm. Parts within 20 mm "
+        "(negative: overlap):</p>" % (gi("TZBOT WCM-500-24 receiver (reserved"), tz["receiver_top_mm"], E(fmt(tz["vs_cells_mm"])), E(fmt(tz["vs_tray_mm"])),
+                                       tz["transmitter_height_mm"], tz["gap_mm"], tz["receiver_bottom_mm"], tz["air_gap_mm"][0], tz["air_gap_mm"][1]) +
+        table(["Part", "Distance"], tzm))
     return section("decisions", "Owner decisions of 2 Nov 2026: wheels, second E-stop, lift base plate, wireless charging", body,
                    "owner decisions of 2 Nov 2026; roadmap model analysis; CAD MMP.04.00.00.000 and the full assembly STEP (openamr-platform-hw main)")
 
@@ -237,7 +213,7 @@ def closed_html():
     """Closed issue IDs (scripts/roadmap_model/issue_ids.yaml; IDs are stable and never renumbered)."""
     c = json.load(open(os.path.join(HERE, "analysis_summary.json"))).get("closed_issues", [])
     return ("<p><b>Closed issue IDs</b> (IDs are stable across reruns and never renumbered; new issues get new IDs): %s.</p>" %
-            "; ".join("%s %s (%s)" % (E(x["id"]), E(x["key"].split("|", 1)[1]), E(x["reason"])) for x in c)) if c else ""
+            "; ".join("%s %s (%s)" % (E(x["id"]), E(x["key"].split("|", 1)[1]), E(x["reason"].replace("Alex, ", "owner decision, "))) for x in c)) if c else ""
 
 
 def gi(prefix):
@@ -255,23 +231,19 @@ def frontbay_section():
     for o, title in (("A", "A: two-tier bay (proposed default)"), ("B", "B: DIN parts in the rear side pockets (28 Oct alternative)")):
         f = fb[o]["fit"]
         rows.append([E(title), str(f["placed"]), E(", ".join(f["not_placed"]) or "none"), E("; ".join("%s %s" % (k, v) for k, v in f.get("stays_in_place", {}).items()) or "none"),
-                     "%.1f" % f["lowest_metal_above_receiver_mm"] if f["lowest_metal_above_receiver_mm"] is not None else "-",
                      "%.1f" % f["cover_margin_mm"], E(", ".join(f["scan_band_parts"]) or "none"), "%.1f" % f["min_gap_mm"]])
-    t = table(["Option", "Parts placed", "Not placed", "Stays in place", "Lowest metal above the receiver (mm, >= 20)", "Margin to the cover (mm)", "Parts in the scan band", "Smallest gap (mm)"], rows)
+    t = table(["Option", "Parts placed", "Not placed", "Stays in place", "Margin to the cover (mm)", "Parts in the scan band", "Smallest gap (mm)"], rows)
     zones = lambda o: "; ".join("%s: %s" % (k, ", ".join(v)) for k, v in fb[o]["fit"]["by_zone"].items())
-    tzbot_layout()
-    from frames import FACTS
-    rx = FACTS["tzbot_receiver"]
     rec = max(("A", "B"), key=lambda o: (fb[o]["fit"]["placed"], -len(fb[o]["fit"]["not_placed"]), o == "A"))
-    rtxt = ("option %s, the only one that places every front-bay part with the receiver in place" % rec) if not fb[rec]["fit"]["not_placed"] and fb["B" if rec == "A" else "A"]["fit"]["not_placed"] else (
+    rtxt = ("option %s, the only one that places every front-bay part" % rec) if not fb[rec]["fit"]["not_placed"] and fb["B" if rec == "A" else "A"]["fit"]["not_placed"] else (
         "option %s: it places the most front-bay parts (%d against %d)" % (rec, fb[rec]["fit"]["placed"], fb["B" if rec == "A" else "A"]["fit"]["placed"]))
-    body = (("<p>Both options keep the TZBOT receiver of B4 in place (WCM-500-24 manual V2.5, 170 x 150 x 52 mm, top %.0f mm above the floor): electronics start "
-            "at least 20 mm above its top (bay plate MEC-005 at z %.3f on standoffs outside |y| %.3f) unless a part is non-metallic, stay under the cover (0.290 m), out of the LiDAR scan plane band in the open sector, with 10 mm air gaps "
+    body = (("<p>The bay plate MEC-005 rests on the base sheet; the LiDAR support MMP.07 stays at its CAD position (the TZBOT receiver is reserved at the rear, "
+            "release 3.0). Both options stay under the cover (0.290 m), out of the LiDAR scan plane band in the open sector, with 10 mm air gaps "
             "around converters and top access to every fuse (the fuse block and the PNOZ are not under the shelf or the lift base plate overhang). "
             "Catalogue outlines and their sources are in <code>scripts/roadmap_model/parts.yaml</code> and <code>front_bay.py</code> (PNOZ s3 750103 "
             "22.5 x 98 x 120.3 mm, MEAN WELL DDR-240B-24 63 x 125.2 x 100 mm, RSD-100B-24 159 x 97 x 38 mm, RSD-60G-5 120 x 50 x 33 mm, Blue Sea 5046 "
             "102 x 74 x 41 mm, reComputer J401 with the Orin NX and fan 118 x 115 x 45 mm, NUCLEO-144 133.34 x 70 mm). The exploded view has a "
-            "switch, Front bay: option A / option B.</p>") % (rx["hi"][2] * 1000, rx["hi"][2] + rx["metal_clear"], rx["hi"][1] + rx["metal_clear"]) + t + (
+            "switch, Front bay: option A / option B.</p>") + t + (
             "<p><b>Option A</b> zones: %s. The DIN carrier sits on the centre-bracket front legs with the rail along y; the Jetson moves off bracket "
             "MMP.04.00.00.002, the EV_ICM-42688-P stays at imu_link with nothing heavy or vibrating on its bracket.</p>"
             "<p><b>Option B</b> zones: %s. The rear side pockets are 91 mm wide only between z 74 and 191 mm (36 mm at the flanges, %s), 71 mm with the "
@@ -279,7 +251,7 @@ def frontbay_section():
             "PNOZ s3 98 or 120 mm, so neither fits.</p>"
             "<p><b>Recommendation (proposed):</b> %s. %s stays open for "
             "the rear zone (FB-A, FB-B and the BMS).</p>" % (E(zones("A")), E(zones("B")), gi("Rear side pockets"), E(rtxt), gi("Rear zone layout"))))
-    return section("frontbay", "Front bay with the TZBOT receiver: option A vs option B", body, "front_bay.py; owner decision of 2 Nov 2026 (B4); P-03 rev20.2, E-01 rev1.6")
+    return section("frontbay", "Front bay: option A vs option B", body, "front_bay.py; owner decision of 2 Nov 2026 (C1); P-03 rev20.2, E-01 rev1.6")
 
 
 def parity_section():

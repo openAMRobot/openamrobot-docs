@@ -745,20 +745,20 @@ def check_sync_audit(root, err, comps):
         err("sync_audit.json", "page errors during the audit: %s" % a["errors"])
 
 
-# Known contacts: overlaps in the model that are recorded as issues and accepted for now (warn only). Each entry
-# names the two parts, the overlap the model must show (mm, within 0.1 mm), the geometry_issues.csv row that records
-# it (by its parts text; IDs are assigned by analyse.py) and the marker drawn in the model. When the overlap changes (fixed or worse) the check fails until the entry
-# and the issue row are updated.
+# Known contacts: parts the model draws in contact with others on purpose, recorded as an issue and accepted for now (warn
+# only). Each entry names the part, the box it must keep (mm, within 0.1 mm; a move means the entry and the issue need a
+# review), its class, and the geometry_issues.csv row (by its parts text; IDs are assigned by analyse.py) with kind, severity,
+# owner and note. The reserved TZBOT receiver under the battery overlaps the cells, the tray and the base sheet (release 3.0).
 KNOWN_CONTACTS = [
-    {"a": "tz_receiver", "b": "tz_transmitter", "overlap_mm": 2.0, "issue": "TZBOT receiver / floor transmitter WCM-500-24", "kind": "charging gap", "severity": "major",
-     "owner": "fridayali", "marker": "tz_gap_overlap", "limit": "gap 10 to 30 mm",
-     "note": "known, fix scheduled later by the owner (TZBOT WCM-500-24 manual V2.5: air gap 20 +-10 mm)"},
+    {"part": "tz_receiver", "box_mm": [[-282.0, -85.0, 50.0], [-132.0, 85.0, 102.0]], "class": "reserved",
+     "issue": "TZBOT WCM-500-24 receiver (reserved, rear under the battery)", "kind": "reserved for 3.0", "severity": "minor",
+     "owner": "fridayali", "note": "known, to be solved in release 3.0"},
 ]
 
 
 def check_known_contacts(root, err):
-    """Each declared known contact: the overlap of the two parts' main bodies (first primitive) equals the declared
-    value, the marker part exists, and its geometry_issues.csv row is present with the declared kind, severity and owner."""
+    """Each declared known contact: the part is drawn with its class and box, and its geometry_issues.csv row is present with
+    the declared kind, severity, owner and note."""
     try:
         P = json.load(open(os.path.join(root, "model", "placement.json"), encoding="utf-8"))
         rows = {r["parts"]: r for r in csv.DictReader(open(os.path.join(root, "model", "geometry_issues.csv"), encoding="utf-8"))}
@@ -766,20 +766,18 @@ def check_known_contacts(root, err):
         err("known contacts", "cannot read the model files: %s" % e)
         return
     G = P.get("geometry", {})
+    cls = {pp: c.get("class") for c in P.get("components", []) for pp in c.get("parts", [])}
     for kc in KNOWN_CONTACTS:
-        if kc["a"] not in G or kc["b"] not in G:
-            err("known contacts", "%s / %s: part missing in placement.json" % (kc["a"], kc["b"]))
+        if kc["part"] not in G:
+            err("known contacts", "%s: part missing in placement.json" % kc["part"])
             continue
-        bx = []
-        for k in (kc["a"], kc["b"]):
-            q = G[k]["prims"][0]
-            c, h = [float(v) for v in q["p"]], [float(v) / 2 for v in q["s"]]
-            bx.append(([c[i] - h[i] for i in range(3)], [c[i] + h[i] for i in range(3)]))
-        ov = min(min(bx[0][1][i], bx[1][1][i]) - max(bx[0][0][i], bx[1][0][i]) for i in range(3)) * 1000
-        if abs(ov - kc["overlap_mm"]) > 0.1:
-            err("known contacts", "%s / %s overlap %.1f mm, declared %.1f mm: update KNOWN_CONTACTS and %s" % (kc["a"], kc["b"], ov, kc["overlap_mm"], kc["issue"]))
-        if kc["marker"] not in G:
-            err("known contacts", "%s: marker %s is not drawn" % (kc["issue"], kc["marker"]))
+        q = G[kc["part"]]["prims"][0]
+        lo = [(float(q["p"][i]) - float(q["s"][i]) / 2) * 1000 for i in range(3)]
+        hi = [(float(q["p"][i]) + float(q["s"][i]) / 2) * 1000 for i in range(3)]
+        if max(abs(a - b) for a, b in zip(lo + hi, kc["box_mm"][0] + kc["box_mm"][1])) > 0.1:
+            err("known contacts", "%s box %s / %s mm, declared %s: update KNOWN_CONTACTS and the issue" % (kc["part"], [round(v, 1) for v in lo], [round(v, 1) for v in hi], kc["box_mm"]))
+        if cls.get(kc["part"]) != kc["class"]:
+            err("known contacts", "%s: class %r, declared %r" % (kc["part"], cls.get(kc["part"]), kc["class"]))
         r = rows.get(kc["issue"])
         if not r:
             err("known contacts", "%s: row missing in geometry_issues.csv" % kc["issue"])
@@ -787,8 +785,8 @@ def check_known_contacts(root, err):
         for key in ("kind", "severity", "owner"):
             if r[key] != kc[key]:
                 err("known contacts", "%s: %s is %r, declared %r" % (kc["issue"], key, r[key], kc[key]))
-        if ("overlap -%g mm" % kc["overlap_mm"]) not in r["measured"] or kc["limit"] not in r["limit"] or "known, fix scheduled later by the owner" not in r["suggested_fix"]:
-            err("known contacts", "%s: the row does not state overlap -%g mm, the limit %r and the owner note" % (kc["issue"], kc["overlap_mm"], kc["limit"]))
+        if kc["note"] not in r["suggested_fix"]:
+            err("known contacts", "%s: the row does not carry the note %r" % (kc["issue"], kc["note"]))
 
 
 # STATE.md (repository state record): every figure it states about the roadmap model is read from the generated files,

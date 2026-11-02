@@ -1,6 +1,6 @@
 {
  "self_check": {
-  "compared": 138,
+  "compared": 133,
   "max_dev_mm": 1.474,
   "worst": [
    [
@@ -20,8 +20,8 @@
     0.000703369617462174
    ],
    [
-    "harness_bat_base",
-    0.00042145142628774446
+    "harness_safe_col",
+    0.00039946489253747663
    ]
   ]
  },
@@ -122,9 +122,29 @@
    "reason": "no longer reported by the analysis"
   },
   {
+   "id": "GI-032",
+   "key": "tzbot|TZBOT receiver / base_plate (metal within 20 mm)",
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
+  },
+  {
    "id": "GI-033",
    "key": "tzbot|TZBOT receiver / bay_plate (metal within 20 mm)",
-   "reason": "closed: the MEC-005 plate is raised to z 0.122 (receiver top + 20 mm), outside the 20 mm zone of the 170 x 150 x 52 mm receiver (WCM-500-24 manual V2.5)"
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
+  },
+  {
+   "id": "GI-034",
+   "key": "tzbot|TZBOT receiver / front_panel (metal within 20 mm)",
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
+  },
+  {
+   "id": "GI-035",
+   "key": "tzbot|TZBOT receiver / lidar_support (metal within 20 mm)",
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
+  },
+  {
+   "id": "GI-036",
+   "key": "charging gap|TZBOT receiver / floor transmitter WCM-500-24",
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
   },
   {
    "id": "GI-038",
@@ -220,6 +240,61 @@
    "id": "GI-076",
    "key": "services|Front bay plate removal with the cover off",
    "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-083",
+   "key": "tzbot|TZBOT receiver / electronics_bracket (metal within 20 mm)",
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
+  },
+  {
+   "id": "GI-084",
+   "key": "tzbot|TZBOT receiver / fasteners_base (metal within 20 mm)",
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
+  },
+  {
+   "id": "GI-085",
+   "key": "interference|base_controller / rz_k1k2_1",
+   "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-086",
+   "key": "interference|base_controller / rz_k1k2_2",
+   "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-087",
+   "key": "interference|bay_plate / lidar_spacer",
+   "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-093",
+   "key": "tzbot|TZBOT 2.4 GHz data link / J401 Wi-Fi (CMP-007) coexistence",
+   "reason": "receiver moved to the rear (Alex, 2 Nov 2026)"
+  },
+  {
+   "id": "GI-094",
+   "key": "interference|bay_can3 / bay_pwr032",
+   "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-095",
+   "key": "interference|bay_lidar_uart / bay_pwr009",
+   "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-096",
+   "key": "interference|bay_lidar_uart / bay_rsd60",
+   "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-097",
+   "key": "interference|bay_rsd60 / bay_usbpd",
+   "reason": "no longer reported by the analysis"
+  },
+  {
+   "id": "GI-098",
+   "key": "interference|bay_usbhub / compute",
+   "reason": "no longer reported by the analysis"
   }
  ],
  "frames": {
@@ -295,11 +370,11 @@
  },
  "mass": {
   "L1000": {
-   "mass": 96.1417994494356,
+   "mass": 94.6417994494356,
    "com": [
-    0.0193,
-    0.0012,
-    0.3285
+    0.0154,
+    0.0013,
+    0.3319
    ],
    "unplaced": [
     "ARM-004",
@@ -309,11 +384,11 @@
    ]
   },
   "L1350": {
-   "mass": 96.1417994494356,
+   "mass": 94.6417994494356,
    "com": [
-    0.0193,
-    0.0012,
-    0.4035
+    0.0154,
+    0.0013,
+    0.4082
    ],
    "unplaced": [
     "ARM-004",
@@ -325,34 +400,34 @@
  },
  "stability": {
   "L1000": {
-   "margin_fore_m": 0.2558,
-   "margin_aft_m": 0.2943,
-   "margin_lat_m": 0.2138,
-   "a_max_fore": 7.64,
-   "a_max_lat": 6.38,
-   "com_z": 0.3285
+   "margin_fore_m": 0.2596,
+   "margin_aft_m": 0.2904,
+   "margin_lat_m": 0.2137,
+   "a_max_fore": 7.67,
+   "a_max_lat": 6.32,
+   "com_z": 0.3319
   },
   "L1350": {
-   "margin_fore_m": 0.2558,
-   "margin_aft_m": 0.2943,
-   "margin_lat_m": 0.2138,
-   "a_max_fore": 6.22,
-   "a_max_lat": 5.2,
-   "com_z": 0.4035
+   "margin_fore_m": 0.2596,
+   "margin_aft_m": 0.2904,
+   "margin_lat_m": 0.2137,
+   "a_max_fore": 6.24,
+   "a_max_lat": 5.14,
+   "com_z": 0.4082
   }
  },
  "loads": {
   "L1000": {
-   "drive_pair_kg": 92.8,
-   "per_drive_wheel_kg": 46.4,
-   "per_castor_front_kg": 1.7,
+   "drive_pair_kg": 92.0,
+   "per_drive_wheel_kg": 46.0,
+   "per_castor_front_kg": 1.3,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
   },
   "L1350": {
-   "drive_pair_kg": 92.8,
-   "per_drive_wheel_kg": 46.4,
-   "per_castor_front_kg": 1.7,
+   "drive_pair_kg": 92.0,
+   "per_drive_wheel_kg": 46.0,
+   "per_castor_front_kg": 1.3,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
   }
@@ -386,10 +461,10 @@
   "lidar_plane": [
    [
     "compute",
-    25,
-    "-177",
-    "177",
-    0.14123067297523803
+    31,
+    "-180",
+    "180",
+    0.14096556645046845
    ],
    [
     "bay_ddr240",
@@ -397,13 +472,6 @@
     "125",
     "150",
     0.109005733794145
-   ],
-   [
-    "bay_usbhub",
-    22,
-    "101",
-    "123",
-    0.0920271699010678
    ],
    [
     "bay_din_tb",
@@ -434,18 +502,18 @@
     0.07971198153351855
    ],
    [
+    "bay_din_pnoz",
+    12,
+    "113",
+    "125",
+    0.15408966545489028
+   ],
+   [
     "bay_can2",
     11,
     "163",
     "174",
     0.0755589835823643
-   ],
-   [
-    "harness_bat_base",
-    8,
-    "-180",
-    "181",
-    0.0851709897192913
    ],
    [
     "support_front_left",
@@ -463,17 +531,24 @@
    ],
    [
     "harness_sig_base",
-    4,
+    6,
     "-103",
-    "101",
+    "103",
     0.15002999700059985
    ],
    [
-    "bay_din_pnoz",
-    2,
-    "123",
-    "125",
-    0.1641298038139326
+    "rz_k1k2_2",
+    1,
+    "174",
+    "175",
+    0.36848066435024784
+   ],
+   [
+    "imu",
+    1,
+    "180",
+    "181",
+    0.2743500004708767
    ]
   ],
   "lidar_plane_open_sector": [
@@ -503,196 +578,77 @@
   }
  ],
  "tzbot": {
-  "position": {
-   "lo": [
-    0.193,
-    -0.075,
-    0.05
+  "status": "reserved, not installed in 2.0 (release 3.0)",
+  "decided": "Alex, 2 Nov 2026",
+  "lo": [
+   -0.282,
+   -0.085,
+   0.05
+  ],
+  "hi": [
+   -0.132,
+   0.085,
+   0.102
+  ],
+  "battery": [
+   [
+    -0.277,
+    -0.157,
+    0.054
    ],
-   "hi": [
-    0.363,
-    0.075,
-    0.102
-   ],
-   "orientation": "170 mm along x, 150 mm along y",
-   "orientation_candidates": {
-    "170 mm along x, 150 mm along y": {
-     "lo": [
-      0.193,
-      -0.075,
-      0.05
-     ],
-     "hi": [
-      0.363,
-      0.075,
-      0.102
-     ],
-     "lidar_support_mm": -6.2,
-     "cutout_full_mm": [
-      210,
-      190
-     ],
-     "cutout_mm": [
-      197,
-      190
-     ],
-     "cutout": [
-      0.173,
-      0.37,
-      -0.095,
-      0.095
-     ]
-    },
-    "150 mm along x, 170 mm along y": {
-     "lo": [
-      0.213,
-      -0.085,
-      0.05
-     ],
-     "hi": [
-      0.363,
-      0.085,
-      0.102
-     ],
-     "lidar_support_mm": -16.2,
-     "cutout_full_mm": [
-      190,
-      210
-     ],
-     "cutout_mm": [
-      177,
-      210
-     ],
-     "cutout": [
-      0.193,
-      0.37,
-      -0.105,
-      0.105
-     ]
-    }
-   },
-   "front_edge_to_front_panel_inner_mm": 25.0,
-   "occupies_z_mm": [
-    50.0,
-    102.0
+   [
+    -0.137,
+    0.157,
+    0.264
    ]
-  },
-  "lowest_point": {
-   "receiver_bottom_mm": 50.0,
-   "cad": {
-    "drive_tyre": -0.002,
-    "castor_wheels": 0.0,
-    "castor_bolt_tips_m6x20": 0.041,
-    "m5x20_bolt_tips": 0.0448,
-    "m4x16_bolt_tips": 0.046,
-    "lidar_support_m4_bolt_tips": 0.0472,
-    "nuts_and_washers": [
-     0.047,
-     0.051
-    ],
-    "base_sheet_bottom": 0.052
-   },
-   "lowest_non_wheel_mm": 41.0,
-   "ground_clearance_changes": false
-  },
-  "floor_gap": {
-   "receiver_bottom_mm": 50.0,
-   "transmitter_height_mm": 52.0,
-   "gap_mm": -2.0,
-   "manual_air_gap_mm": [
-    10.0,
-    30.0
-   ],
-   "source": "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)",
-   "fix_options": {
-    "raise_receiver_bottom_mm": [
-     62,
-     82
-    ],
-    "more_bay_height_mm": [
-     12,
-     32
-    ],
-    "transmitter_top_mm": [
-     20,
-     40
-    ]
-   },
-   "status": "known interference, warn only; fix scheduled later by the owner"
-  },
-  "cutout": {
-   "xy_m": [
-    0.173,
-    0.37,
-    -0.095,
-    0.095
-   ],
-   "size_mm": [
-    197,
-    190
-   ],
-   "receiver_plus_20_mm": [
-    210,
-    190
-   ],
-   "existing_contact_charger_cutout_m": [
-    0.313,
-    0.359,
-    -0.111,
-    0.111
-   ],
-   "removes": [
-    "the existing contact-charger cut-out under the LiDAR (46 x 222 mm), absorbed",
-    "the base-sheet footprint of the LiDAR support MMP.07 feet and their 4 x ISO 7045 M4 x 16 screws (x 0.245 to 0.319, y +/-0.078)",
-    "the base-sheet footprint of the electronics bracket MMP.04.00.00.002 walls forward of x 0.173 (bracket to be shortened)",
-    "the old MEC-005 bay plate rivet nuts in the bay centre (the plate moves up to z 0.122 on standoffs outside |y| 0.095)",
-    "base-sheet area 374 cm2 (2 mm steel, 0.59 kg)"
-   ],
-   "stops_at": "x 0.370, the front panel bottom flange line (a cut to x 0.383 would leave a 3.4 mm strip)"
-  },
-  "metal_within_20mm": [
+  ],
+  "receiver_top_mm": 102.0,
+  "receiver_bottom_mm": 50.0,
+  "vs_cells_mm": -48.0,
+  "vs_tray_mm": -44.9,
+  "metal": [
    {
-    "part": "lidar_support",
-    "clearance_mm": 0.0,
-    "overlap_mm": 5.7,
-    "fix": "MMP.07 walls stand on the base sheet at y +/-0.069, inside the receiver: shorten MMP.07 by 71 mm and stand it on the raised bay plate (z 0.122); keep the 17.5 mm spacer, scan plane 222.05 mm"
+    "part": "battery cells",
+    "id": "battery",
+    "distance_mm": -48.0
    },
    {
-    "part": "base_plate",
-    "clearance_mm": 0.1,
-    "overlap_mm": 1.2,
-    "fix": "cut-out to the receiver outline plus 20 mm (B4)"
+    "part": "battery tray MEC-007",
+    "id": "battery_tray",
+    "distance_mm": -44.9
    },
    {
-    "part": "electronics_bracket",
-    "clearance_mm": 1.0,
-    "overlap_mm": 0.0,
-    "fix": "shorten MMP.04.00.00.002 to end at x 0.100 (IMU board at x 0.018 to 0.061 stays at imu_link)"
+    "part": "base sheet MEC-001",
+    "id": "base_plate",
+    "distance_mm": -2.0
    },
    {
-    "part": "front_panel",
-    "clearance_mm": 7.0,
-    "overlap_mm": 0.0,
-    "fix": "notch the front panel bottom flange (x 0.370 to 0.388) over y +/-0.095, or accept 7 mm and ask TZBOT"
+    "part": "castor rear left",
+    "id": "castor_rear_left",
+    "distance_mm": 100.0
    },
    {
-    "part": "fasteners_base",
-    "clearance_mm": 19.0,
-    "overlap_mm": 0.0,
-    "fix": "the M4 brass heat-set inserts and screws of the Gemini mount MEC-009 (x 0.372, z 0.123) sit just above the receiver front: use PEEK or nylon M4 screws, keep the small brass inserts and ask TZBOT"
+    "part": "castor rear right",
+    "id": "castor_rear_right",
+    "distance_mm": 100.0
+   },
+   {
+    "part": "centre_bracket",
+    "id": "centre_bracket",
+    "distance_mm": 10.1
+   },
+   {
+    "part": "rear_plate",
+    "id": "rear_plate",
+    "distance_mm": 19.0
    }
   ],
-  "nonmetal_clashes": [],
-  "emc_distances_mm": {
-   "IMU (EV_ICM-42688-P)": 201.4,
-   "Jetson Orin NX on J401": 118.0,
-   "NUCLEO-H723ZG": 166.3,
-   "Gemini 336L": 60.0,
-   "Wi-Fi antenna (CMP-007 card in the J401; antenna position not decided, measured to the compute envelope)": 118.0,
-   "CAN cables": 153.5,
-   "USB cables": 92.4
-  },
-  "emc_note": "distances from the receiver coil (assumed in the bottom 15 mm of the receiver, facing the floor transmitter) to the nearest point of each item; under 50 mm flagged"
+  "gap_mm": -2.0,
+  "air_gap_mm": [
+   10.0,
+   30.0
+  ],
+  "transmitter_height_mm": 52.0
  },
  "lift_base_plate": {
   "cases": [
@@ -702,7 +658,7 @@
     "mass_kg": 29.58,
     "com_m": [
      0.2603,
-     0.9525
+     0.9523
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 43.6,
@@ -730,70 +686,70 @@
     "column_tilt_deg": 0.048
    },
    {
-    "case": "braking from 1.5 m/s at 6.22 m/s2, L1350",
+    "case": "braking from 1.5 m/s at 6.24 m/s2, L1350",
     "bp": "bp050",
     "mass_kg": 29.58,
     "com_m": [
      0.2603,
-     0.9525
+     0.9523
     ],
-    "decel_m_s2": 6.22,
-    "moment_at_column_axis_Nm": 162.9,
+    "decel_m_s2": 6.24,
+    "moment_at_column_axis_Nm": 163.3,
     "column_screw_rows_N": {
-     "rear": 712.4,
-     "front": -1002.5
+     "rear": 714.3,
+     "front": -1004.4
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 400.0,
-     "x +0.060": 169.1
+     "x -0.060": 400.9,
+     "x +0.060": 169.5
     },
-    "bolt_shear_per_bolt_N": 46.0,
+    "bolt_shear_per_bolt_N": 46.1,
     "bolt_utilisation": 0.017,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.033,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 60.0,
-    "plate_stress_MPa": 25.7,
+    "plate_max_moment_Nm": 60.1,
+    "plate_stress_MPa": 25.8,
     "plate_utilisation": 0.101,
-    "arch_sheet_stress_MPa": 175.0,
-    "arch_sheet_utilisation": 0.745,
-    "arch_sheet_uplift_mm": 0.5,
+    "arch_sheet_stress_MPa": 175.4,
+    "arch_sheet_utilisation": 0.746,
+    "arch_sheet_uplift_mm": 0.501,
     "plate_deflection_at_column_front_mm": -0.288,
-    "column_tilt_deg": 0.187
+    "column_tilt_deg": 0.188
    },
    {
-    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.22 m/s2, L1350",
+    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.24 m/s2, L1350",
     "bp": "bp050",
     "mass_kg": 37.78,
     "com_m": [
      0.4577,
-     1.1199
+     1.1198
     ],
-    "decel_m_s2": 6.22,
-    "moment_at_column_axis_Nm": 320.6,
+    "decel_m_s2": 6.24,
+    "moment_at_column_axis_Nm": 321.2,
     "column_screw_rows_N": {
-     "rear": 1501.9,
-     "front": -1872.5
+     "rear": 1505.0,
+     "front": -1875.6
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 790.6,
-     "x +0.060": 334.2
+     "x -0.060": 792.1,
+     "x +0.060": 334.8
     },
-    "bolt_shear_per_bolt_N": 58.7,
+    "bolt_shear_per_bolt_N": 58.9,
     "bolt_utilisation": 0.031,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.064,
+    "rivet_nut_pull_through_utilisation": 0.065,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 118.6,
-    "plate_stress_MPa": 50.8,
-    "plate_utilisation": 0.199,
-    "arch_sheet_stress_MPa": 345.9,
-    "arch_sheet_utilisation": 1.472,
-    "arch_sheet_uplift_mm": 0.988,
-    "plate_deflection_at_column_front_mm": -0.569,
-    "column_tilt_deg": 0.37
+    "plate_max_moment_Nm": 118.8,
+    "plate_stress_MPa": 50.9,
+    "plate_utilisation": 0.2,
+    "arch_sheet_stress_MPa": 346.5,
+    "arch_sheet_utilisation": 1.475,
+    "arch_sheet_uplift_mm": 0.99,
+    "plate_deflection_at_column_front_mm": -0.57,
+    "column_tilt_deg": 0.371
    },
    {
     "case": "static, L1350",
@@ -801,7 +757,7 @@
     "mass_kg": 29.58,
     "com_m": [
      0.2103,
-     0.9525
+     0.9523
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 43.6,
@@ -829,81 +785,81 @@
     "column_tilt_deg": 0.025
    },
    {
-    "case": "braking from 1.5 m/s at 6.22 m/s2, L1350",
+    "case": "braking from 1.5 m/s at 6.24 m/s2, L1350",
     "bp": "bp000",
     "mass_kg": 29.58,
     "com_m": [
      0.2103,
-     0.9525
+     0.9523
     ],
-    "decel_m_s2": 6.22,
-    "moment_at_column_axis_Nm": 162.9,
+    "decel_m_s2": 6.24,
+    "moment_at_column_axis_Nm": 163.3,
     "column_screw_rows_N": {
-     "rear": 712.4,
-     "front": -1002.5
+     "rear": 714.3,
+     "front": -1004.4
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 374.2,
-     "x +0.060": 121.9
+     "x -0.060": 375.2,
+     "x +0.060": 122.2
     },
-    "bolt_shear_per_bolt_N": 46.0,
+    "bolt_shear_per_bolt_N": 46.1,
     "bolt_utilisation": 0.016,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.031,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 18.7,
+    "plate_max_moment_Nm": 18.8,
     "plate_stress_MPa": 8.0,
-    "plate_utilisation": 0.031,
-    "arch_sheet_stress_MPa": 162.8,
-    "arch_sheet_utilisation": 0.693,
-    "arch_sheet_uplift_mm": 0.456,
+    "plate_utilisation": 0.032,
+    "arch_sheet_stress_MPa": 163.2,
+    "arch_sheet_utilisation": 0.695,
+    "arch_sheet_uplift_mm": 0.457,
     "plate_deflection_at_column_front_mm": -0.09,
     "column_tilt_deg": 0.135
    },
    {
-    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.22 m/s2, L1350",
+    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.24 m/s2, L1350",
     "bp": "bp000",
     "mass_kg": 37.78,
     "com_m": [
      0.4077,
-     1.1199
+     1.1198
     ],
-    "decel_m_s2": 6.22,
-    "moment_at_column_axis_Nm": 320.6,
+    "decel_m_s2": 6.24,
+    "moment_at_column_axis_Nm": 321.2,
     "column_screw_rows_N": {
-     "rear": 1501.9,
-     "front": -1872.5
+     "rear": 1505.0,
+     "front": -1875.6
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 765.6,
-     "x +0.060": 249.4
+     "x -0.060": 767.1,
+     "x +0.060": 249.9
     },
-    "bolt_shear_per_bolt_N": 58.7,
+    "bolt_shear_per_bolt_N": 58.9,
     "bolt_utilisation": 0.03,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.062,
+    "rivet_nut_pull_through_utilisation": 0.063,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 38.3,
+    "plate_max_moment_Nm": 38.4,
     "plate_stress_MPa": 16.4,
     "plate_utilisation": 0.064,
-    "arch_sheet_stress_MPa": 333.1,
-    "arch_sheet_utilisation": 1.417,
-    "arch_sheet_uplift_mm": 0.933,
-    "plate_deflection_at_column_front_mm": -0.183,
-    "column_tilt_deg": 0.276
+    "arch_sheet_stress_MPa": 333.7,
+    "arch_sheet_utilisation": 1.42,
+    "arch_sheet_uplift_mm": 0.935,
+    "plate_deflection_at_column_front_mm": -0.184,
+    "column_tilt_deg": 0.277
    }
   ],
-  "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.22 m/s2, L1350 (bp050)",
+  "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.24 m/s2, L1350 (bp050)",
   "max_utilisation": {
    "bolt_utilisation": 0.031,
-   "rivet_nut_pull_through_utilisation": 0.064,
-   "plate_utilisation": 0.199,
-   "arch_sheet_utilisation": 1.472
+   "rivet_nut_pull_through_utilisation": 0.065,
+   "plate_utilisation": 0.2,
+   "arch_sheet_utilisation": 1.475
   },
-  "max_column_tilt_deg": 0.37,
-  "shoulder_height_ref_m": 0.9524595833234721,
+  "max_column_tilt_deg": 0.371,
+  "shoulder_height_ref_m": 0.952338171005075,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -922,7 +878,7 @@
     "com_m": [
      0.2103,
      0.0009,
-     0.7084
+     0.7082
     ]
    },
    "L1350": {
@@ -930,7 +886,7 @@
     "com_m": [
      0.2103,
      0.0009,
-     0.9525
+     0.9523
     ]
    }
   },
@@ -939,14 +895,14 @@
    "com_m": [
     0.4077,
     0.0007,
-    1.1199
+    1.1198
    ],
    "arm_mass_kg_both": 12.26,
    "payload_kg_each": 4.1,
    "reach_m": 0.606,
    "source": "OpenArm 2.0 figures used by the robot page (payload 4.1 kg nominal, 6 kg peak, reach 0.606 m)"
   },
-  "decel_m_s2": 6.22
+  "decel_m_s2": 6.24
  },
  "estop_positions": {
   "criterion": {
@@ -1184,22 +1140,20 @@
  },
  "front_bay": {
   "A": {
-   "placed": 21,
+   "placed": 22,
    "not_placed": [],
-   "stays_in_place": {
-    "base_controller": "stays on its controller plate MMP.04.00.00.003 on the IMU bracket (today's position; not heavy or vibrating, inside the shortened bracket at x <= 0.094)"
-   },
-   "lowest_metal_above_receiver_mm": 23.0,
-   "lowest_part_beside_receiver_lateral_mm": 40.0,
+   "stays_in_place": {},
    "top_mm": 267.6,
    "cover_margin_mm": 22.4,
    "scan_band_parts": [],
    "min_gap_mm": 5.0,
-   "plate_area_used_pct": 38.4,
+   "plate_area_used_pct": 57.3,
    "by_zone": {
     "A_lower": [
      "bay_rsd100",
+     "base_controller",
      "bay_usbhub",
+     "bay_rsd60",
      "bay_pwr009",
      "bay_pwr029",
      "bay_usbpd",
@@ -1219,9 +1173,6 @@
      "bay_can1",
      "bay_can3"
     ],
-    "strip_r": [
-     "bay_rsd60"
-    ],
     "A_din": [
      "bay_din_pnoz",
      "bay_ddr240"
@@ -1229,20 +1180,23 @@
    }
   },
   "B": {
-   "placed": 19,
+   "placed": 15,
    "not_placed": [
     "bay_ddr240",
     "bay_din_pnoz",
-    "bay_din_tb"
+    "bay_din_tb",
+    "bay_can1",
+    "bay_can3",
+    "bay_pwr032"
    ],
-   "stays_in_place": {},
-   "lowest_metal_above_receiver_mm": 23.0,
-   "lowest_part_beside_receiver_lateral_mm": 20.0,
-   "top_mm": 245.0,
-   "cover_margin_mm": 45.0,
+   "stays_in_place": {
+    "base_controller": "stays on its controller plate MMP.04.00.00.003 on the IMU bracket (today's position; not heavy or vibrating, inside the shortened bracket at x <= 0.094)"
+   },
+   "top_mm": 154.0,
+   "cover_margin_mm": 136.0,
    "scan_band_parts": [],
    "min_gap_mm": 3.0,
-   "plate_area_used_pct": 70.2,
+   "plate_area_used_pct": 94.2,
    "by_zone": {
     "B_bay": [
      "compute",
@@ -1259,13 +1213,7 @@
      "bay_usbcan_2",
      "bay_can2",
      "bay_lidar_uart",
-     "bay_can1",
-     "bay_can3",
-     "bay_pwr032",
      "bay_ina228"
-    ],
-    "strip_r": [
-     "base_controller"
     ]
    }
   }
@@ -1465,9 +1413,9 @@
     "CMP-009",
     0.35,
     [
-     0.2875,
-     0.127,
-     0.2266
+     0.1175,
+     -0.0155,
+     0.1174
     ],
     "bay_usbhub"
    ],
@@ -1475,9 +1423,9 @@
     "CTL-001",
     0.08,
     [
-     0.0235,
-     -0.014,
-     0.2021
+     0.18,
+     -0.0549,
+     0.0666
     ],
     "base_controller"
    ],
@@ -1515,9 +1463,9 @@
     "CTL-009",
     0.004,
     [
-     0.0668,
-     0.0004,
-     0.2107
+     0.1178,
+     -0.012,
+     0.1675
     ],
     "can_terms"
    ],
@@ -1525,9 +1473,9 @@
     "CTL-010",
     0.004,
     [
-     0.0668,
-     0.0004,
-     0.2107
+     0.1178,
+     -0.012,
+     0.1675
     ],
     "can_terms"
    ],
@@ -1757,7 +1705,7 @@
     [
      0.1062,
      0.0113,
-     0.5999
+     0.5942
     ],
     "fasteners"
    ],
@@ -1867,7 +1815,7 @@
     [
      0.1062,
      0.0113,
-     0.5999
+     0.5942
     ],
     "fasteners"
    ],
@@ -1975,9 +1923,9 @@
     "PWR-007",
     0.32,
     [
-     0.2,
-     -0.14,
-     0.0822
+     0.305,
+     0.1485,
+     0.1473
     ],
     "bay_rsd60"
    ],
@@ -1985,9 +1933,9 @@
     "PWR-008",
     0.03,
     [
-     0.28,
-     -0.148,
-     0.1289
+     0.16,
+     0.0345,
+     0.0799
     ],
     "bay_usbpd"
    ],
@@ -1995,9 +1943,9 @@
     "PWR-009",
     0.06,
     [
-     0.135,
-     0.022,
-     0.1297
+     0.25,
+     -0.098,
+     0.0617
     ],
     "bay_pwr009"
    ],
@@ -2005,9 +1953,9 @@
     "PWR-012",
     0.6,
     [
-     0.1985,
-     -0.0835,
-     0.1538
+     0.2295,
+     -0.144,
+     0.1302
     ],
     "bay_rsd100"
    ],
@@ -2015,9 +1963,9 @@
     "PWR-016",
     0.003,
     [
-     0.1177,
-     0.0709,
-     0.1282
+     0.2027,
+     0.0309,
+     0.0602
     ],
     "bay_ina228"
    ],
@@ -2065,9 +2013,9 @@
     "PWR-029",
     0.04,
     [
-     0.195,
-     0.027,
-     0.1293
+     0.3,
+     0.112,
+     0.0613
     ],
     "bay_pwr029"
    ],
@@ -2086,8 +2034,8 @@
     0.005,
     [
      0.1175,
-     -0.073,
-     0.1285
+     0.072,
+     0.0605
     ],
     "bay_pwr032"
    ],
@@ -2200,16 +2148,6 @@
      1.0659
     ],
     "getac_pocket"
-   ],
-   [
-    "WCH-002",
-    1.5,
-    [
-     0.278,
-     0.0,
-     0.076
-    ],
-    "tz_receiver"
    ],
    [
     "WCH-004",
@@ -2447,9 +2385,9 @@
     "CMP-009",
     0.35,
     [
-     0.2875,
-     0.127,
-     0.2266
+     0.1175,
+     -0.0155,
+     0.1174
     ],
     "bay_usbhub"
    ],
@@ -2457,9 +2395,9 @@
     "CTL-001",
     0.08,
     [
-     0.0235,
-     -0.014,
-     0.2021
+     0.18,
+     -0.0549,
+     0.0666
     ],
     "base_controller"
    ],
@@ -2497,9 +2435,9 @@
     "CTL-009",
     0.004,
     [
-     0.0668,
-     0.0004,
-     0.2107
+     0.1178,
+     -0.012,
+     0.1675
     ],
     "can_terms"
    ],
@@ -2507,9 +2445,9 @@
     "CTL-010",
     0.004,
     [
-     0.0668,
-     0.0004,
-     0.2107
+     0.1178,
+     -0.012,
+     0.1675
     ],
     "can_terms"
    ],
@@ -2739,7 +2677,7 @@
     [
      0.1062,
      0.0113,
-     0.7166
+     0.7109
     ],
     "fasteners"
    ],
@@ -2849,7 +2787,7 @@
     [
      0.1062,
      0.0113,
-     0.7166
+     0.7109
     ],
     "fasteners"
    ],
@@ -2957,9 +2895,9 @@
     "PWR-007",
     0.32,
     [
-     0.2,
-     -0.14,
-     0.0822
+     0.305,
+     0.1485,
+     0.1473
     ],
     "bay_rsd60"
    ],
@@ -2967,9 +2905,9 @@
     "PWR-008",
     0.03,
     [
-     0.28,
-     -0.148,
-     0.1289
+     0.16,
+     0.0345,
+     0.0799
     ],
     "bay_usbpd"
    ],
@@ -2977,9 +2915,9 @@
     "PWR-009",
     0.06,
     [
-     0.135,
-     0.022,
-     0.1297
+     0.25,
+     -0.098,
+     0.0617
     ],
     "bay_pwr009"
    ],
@@ -2987,9 +2925,9 @@
     "PWR-012",
     0.6,
     [
-     0.1985,
-     -0.0835,
-     0.1538
+     0.2295,
+     -0.144,
+     0.1302
     ],
     "bay_rsd100"
    ],
@@ -2997,9 +2935,9 @@
     "PWR-016",
     0.003,
     [
-     0.1177,
-     0.0709,
-     0.1282
+     0.2027,
+     0.0309,
+     0.0602
     ],
     "bay_ina228"
    ],
@@ -3047,9 +2985,9 @@
     "PWR-029",
     0.04,
     [
-     0.195,
-     0.027,
-     0.1293
+     0.3,
+     0.112,
+     0.0613
     ],
     "bay_pwr029"
    ],
@@ -3068,8 +3006,8 @@
     0.005,
     [
      0.1175,
-     -0.073,
-     0.1285
+     0.072,
+     0.0605
     ],
     "bay_pwr032"
    ],
@@ -3182,16 +3120,6 @@
      1.4159
     ],
     "getac_pocket"
-   ],
-   [
-    "WCH-002",
-    1.5,
-    [
-     0.278,
-     0.0,
-     0.076
-    ],
-    "tz_receiver"
    ],
    [
     "WCH-004",
@@ -3508,7 +3436,7 @@
  "sweep_steps_per_arm": 131,
  "counts": {
   "blocker": 1,
-  "major": 20,
+  "major": 14,
   "minor": 33
  },
  "steel_chassis_kg": 15.77

@@ -1,18 +1,17 @@
-"""Front bay options A and B with the TZBOT WCM-500-24 receiver in place (owner decisions of 2 Nov 2026, B4 and C1).
+"""Front bay options A and B (owner decision of 2 Nov 2026, C1). The TZBOT receiver is not in the front bay: its position is
+reserved at the rear under the battery (release 3.0, owner decision of 2 Nov 2026), so the bay plate MEC-005 rests on the base sheet (z 0.054)
+and the LiDAR support MMP.07 stays at its CAD position. Both options respect the cover underside (0.290), the LiDAR scan plane
+222.05 mm +/-5 mm in the open sector (bearing +/-95 deg from lidar_link), air gaps of at least 10 mm around converters and top
+access to every fuse and connector block.
 
-Both options respect the receiver (frames.tzbot_layout(), WCM-500-24 manual V2.5: x 0.193 to 0.363, y +/-0.075, z 0.050 to
-0.102): metal parts start no lower than 20 mm above its top (z 0.122), the bay plate MEC-005 moves up to z 0.122 over it, the cover underside (0.290), the
-LiDAR scan plane 222.05 mm +/-5 mm in the open sector (bearing +/-95 deg from lidar_link), air gaps of at least 10 mm
-around converters and top access to every fuse and connector block.
-
-Option A, two-tier bay: lower plate for power conversion and safety (DIN rail with PNOZ s3, DDR-240B-24 and terminal
-  blocks on a carrier on the centre-bracket front wall, rail along y; RSD-60G-5, RSD-100B-24, FB-C and the small
-  power parts on the lower plate), upper shelf on standoffs for compute and control (Jetson Orin NX on J401 with
-  fan, NUCLEO-H723ZG, CAN and I/O modules, USB hub; Wi-Fi inside the J401). The Jetson moves off bracket
-  MMP.04.00.00.002; the EV_ICM-42688-P stays at imu_link with nothing heavy or vibrating on the bracket.
-Option B, the 28 Oct alternative: DIN parts (PNOZ s3, DDR-240B-24, terminal blocks) in the rear side pockets with the
-  rail fore-aft, against the real pocket section (91 mm only between z 0.074 and 0.191, 36 mm at the flanges,
-  GI-025); compute, control and the RSD converters on a single-tier plate in the front bay above the receiver.
+Option A, two-tier bay: lower plate for power conversion and safety (DIN rail with PNOZ s3, DDR-240B-24 and terminal blocks on a
+  carrier on the centre-bracket front wall, rail along y; RSD-60G-5, RSD-100B-24 and the small power parts on the lower plate),
+  upper shelf on standoffs for compute and control (Jetson Orin NX on J401 with fan, CAN and I/O modules, FB-C, USB hub; Wi-Fi
+  inside the J401). The Jetson moves off bracket MMP.04.00.00.002 (shortened to x 0.100 by this layout); the EV_ICM-42688-P
+  stays at imu_link with nothing heavy or vibrating on the bracket.
+Option B, the 28 Oct alternative: DIN parts (PNOZ s3, DDR-240B-24, terminal blocks) in the rear side pockets with the rail
+  fore-aft, against the real pocket section (91 mm only between z 0.074 and 0.191, 36 mm at the flanges, GI-025); compute,
+  control and the RSD converters on a single-tier plate in the front bay.
 Catalogue outlines and their sources are in parts.yaml (geom) and CATALOGUE below.
 """
 import itertools
@@ -20,17 +19,11 @@ import math
 
 import numpy as np
 
-from frames import tzbot_layout
 
 MM = 0.001
-_T = tzbot_layout()
-RX = {"lo": [float(v) for v in _T["lo"]], "hi": [float(v) for v in _T["hi"]]}   # receiver (B4 position, WCM-500-24 manual V2.5 size)
-METAL_CLEAR = _T["metal_clear"]
-PLATE_Z = round(RX["hi"][2] + METAL_CLEAR, 4)   # top of the receiver + 20 mm: bay plate underside (0.122)
-STRIP_Y = round(RX["hi"][1] + METAL_CLEAR, 4)   # strips beside the receiver start outside its 20 mm zone (0.095)
-STRIP_W = 0.070   # strip width, a whole number of 5 mm grid cells so the grid cannot reach into the zone (outer edge 0.165)
+PLATE_Z = 0.054              # bay plate underside on the base-sheet top
 PLATE_T = 0.003
-FLOOR = PLATE_Z + PLATE_T    # 0.125
+FLOOR = PLATE_Z + PLATE_T    # 0.057
 COVER = 0.290
 LIDAR = (0.330, 0.0)
 SCAN = (0.22205 - 0.005, 0.22205 + 0.005)
@@ -155,7 +148,7 @@ def place(items, zones, order=None):
     return placed, nofit
 
 
-X0 = 0.105   # bay rear limit between the arch legs (electronics bracket MMP.04.00.00.002 shortened to x 0.100 for the receiver zone)
+X0 = 0.105   # bay rear limit between the arch legs (electronics bracket MMP.04.00.00.002 shortened to x 0.100 by this layout)
 
 
 def arch_obstacles():
@@ -165,9 +158,10 @@ def arch_obstacles():
 
 
 def lidar_support_short():
-    """MMP.07 shortened to stand on the raised bay plate (both options): walls from the plate top (z 0.125) to 0.174, the 17.5 mm spacer
-    and the S3 unchanged, so the scan plane stays at 222.05 mm."""
-    return [([0.262, -0.071, FLOOR], [0.366, 0.071, 0.174]), ([0.2824, -0.0351, 0.174], [0.3623, 0.0349, 0.1915]),
+    """MMP.07 at its CAD position on the base sheet: walls at |y| up to 0.072 and the top plate to z 0.174 above the bay plate (the
+    feet, |y| 0.070 to 0.085 at the sheet, sit in the plate notch), the 17.5 mm spacer and the S3 unchanged: scan plane 222.05 mm.
+    (Name kept for the callers.)"""
+    return [([0.242, -0.072, FLOOR], [0.366, 0.072, 0.177]), ([0.2824, -0.0351, 0.174], [0.3623, 0.0349, 0.1915]),
             ([0.3022, -0.0278, 0.1915], [0.3578, 0.0277, 0.2327])]
 
 
@@ -221,15 +215,13 @@ def _option_a(items):
     obst += arch_obstacles()
     # the DIN carrier region is not available to the shelf or the lower plate
     obst.append(([0.140, din_lo, FLOOR], [0.270, 0.166, COVER]))
-    shelf_z = FLOOR + 0.055           # lower parts at most 38 mm (RSD-100 lying) + 10 mm converter air gap + 5 mm grid and standoff margin
+    shelf_z = 0.180                   # shelf height as drawn before (2 Nov 2026); lower parts at most 38 mm (RSD-100 lying) + 10 mm converter air gap + 5 mm grid and standoff margin
     shelf = {"x": [X0, 0.330], "y": [-0.163, din_lo - 0.003]}
     under_shelf = lambda x, y: shelf["x"][0] <= x <= shelf["x"][1] and shelf["y"][0] <= y <= shelf["y"][1]
     lower = make_zone([X0, -0.163, FLOOR], [0.330, 0.163, COVER], obst,
                       lambda x, y: (shelf_z - 0.005) if under_shelf(x, y) else ceiling_bay(x, y))
     upper = make_zone([shelf["x"][0], shelf["y"][0], shelf_z + PLATE_T], [shelf["x"][1], shelf["y"][1], COVER], obst, ceiling_bay)
-    strips = {s: make_zone([0.140, min(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), 0.057], [0.355, max(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), PLATE_Z - PLATE_T], [], None, scan_band=False) for s in (1, -1)}
-    zones = {"A_lower": (lower, {"roof": lambda lo, hi: under_shelf((lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2)}), "A_upper": (upper, {}),
-             "strip_l": (strips[1], {}), "strip_r": (strips[-1], {})}
+    zones = {"A_lower": (lower, {"roof": lambda lo, hi: under_shelf((lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2)}), "A_upper": (upper, {})}
     its = [dict(id="bay_din_tb", name="DIN terminal blocks on a short rail", dims=[31.2, 47.5, 42.5], din=True, domain="SIG",
                 converter=False, zones=["A_upper"], top_access=True, priority=SHELF_FIRST.index("bay_din_tb") if "bay_din_tb" in SHELF_FIRST else 3)]
     for it in items:
@@ -237,13 +229,13 @@ def _option_a(items):
         if t in (None, "din"):
             continue
         if t == "lower":
-            it = dict(it, zones=["A_lower", "strip_r", "strip_l"], priority=-1 if it["id"] == "bay_rsd100" else 9)
+            it = dict(it, zones=["A_lower"], priority=-1 if it["id"] == "bay_rsd100" else 9)
         elif it["id"] in SHELF_FIRST:
             it = dict(it, zones=["A_upper"] if it["id"] == "compute" else ["A_upper", "A_lower"], priority=SHELF_FIRST.index(it["id"]))
         elif it["id"] == "bay_usbhub":
             it = dict(it, zones=["A_lower", "A_upper"], priority=8)   # the shelf is kept for compute, NUCLEO, FB-C and the terminal blocks
-        else:  # small boards: on the plates (>= 50 mm from the receiver coil); the strips beside the receiver only as a last resort
-            it = dict(it, zones=["A_upper", "A_lower", "strip_l", "strip_r"])
+        else:  # small boards: on the plates
+            it = dict(it, zones=["A_upper", "A_lower"])
         its.append(it)
     placed, nofit = place(its, zones)
     for k, c, d in din:
@@ -254,7 +246,9 @@ def _option_a(items):
 
 def plates_a(shelf, shelf_z):
     y1 = shelf["y"][1]
-    return [{"name": "MEC-005 lower plate (raised over the receiver)", "lo": [0.140, -0.163, PLATE_Z], "hi": [0.330, 0.163, FLOOR]},
+    return [{"name": "MEC-005 lower plate on the base sheet (rear part)", "lo": [0.140, -0.163, PLATE_Z], "hi": [0.239, 0.163, FLOOR]},
+            {"name": "MEC-005 lower plate, left arm beside MMP.07", "lo": [0.239, 0.091, PLATE_Z], "hi": [0.330, 0.163, FLOOR]},
+            {"name": "MEC-005 lower plate, right arm beside MMP.07", "lo": [0.239, -0.163, PLATE_Z], "hi": [0.330, -0.091, FLOOR]},
             {"name": "MEC-005 lower plate tongue between the arch legs", "lo": [X0, -0.086, PLATE_Z], "hi": [0.140, 0.086, FLOOR]},
             {"name": "MEC-005 upper shelf on 4 standoffs (rear part)", "lo": [0.140, shelf["y"][0], shelf_z], "hi": [0.276, y1, shelf_z + PLATE_T]},
             {"name": "MEC-005 upper shelf tongue between the arch legs", "lo": [X0, -0.086, shelf_z], "hi": [0.140, min(y1, 0.086), shelf_z + PLATE_T]},
@@ -276,11 +270,10 @@ def rear_pocket_zone(side, tray=True):
 
 
 def option_b(items):
-    """Single-tier front bay above the receiver; DIN parts in the rear side pockets, rail fore-aft."""
+    """Single-tier front bay; DIN parts in the rear side pockets, rail fore-aft."""
     obst = lidar_support_short() + arch_obstacles()
     bay = make_zone([X0, -0.163, FLOOR], [0.330, 0.163, COVER], obst, ceiling_bay)
-    strips = {s: make_zone([0.140, min(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), 0.057], [0.355, max(s * STRIP_Y, s * (STRIP_Y + STRIP_W)), PLATE_Z - PLATE_T], [], None, scan_band=False) for s in (1, -1)}
-    zones = {"B_bay": (bay, {}), "strip_l": (strips[1], {}), "strip_r": (strips[-1], {})}
+    zones = {"B_bay": (bay, {})}
     for s, nm in ((1, "pocket_l"), (-1, "pocket_r")):
         lo, hi, ob = rear_pocket_zone(s)
         zones[nm] = (make_zone(lo, hi, ob, None, scan_band=False), {})
@@ -294,37 +287,32 @@ def option_b(items):
         if t == "din":
             its.append(dict(it, zones=["pocket_l", "pocket_r"], din=True))
         else:
-            its.append(dict(it, zones=["B_bay", "strip_r", "strip_l"]))
+            its.append(dict(it, zones=["B_bay"]))
     for d in din_items:
         its.append(dict(d, zones=["pocket_l", "pocket_r"]))
     placed, nofit = place(its, zones)
-    return stays({"placed": placed, "nofit": nofit, "plates": [{"name": "MEC-005 plate (raised over the receiver, single tier)", "lo": [0.140, -0.163, PLATE_Z], "hi": [0.330, 0.163, FLOOR]},
+    return stays({"placed": placed, "nofit": nofit, "plates": [{"name": "MEC-005 plate on the base sheet, single tier (rear part)", "lo": [0.140, -0.163, PLATE_Z], "hi": [0.239, 0.163, FLOOR]},
+                                                        {"name": "MEC-005 plate, left arm beside MMP.07", "lo": [0.239, 0.091, PLATE_Z], "hi": [0.330, 0.163, FLOOR]},
+                                                        {"name": "MEC-005 plate, right arm beside MMP.07", "lo": [0.239, -0.163, PLATE_Z], "hi": [0.330, -0.091, FLOOR]},
                                                         {"name": "MEC-005 plate tongue between the arch legs", "lo": [X0, -0.086, PLATE_Z], "hi": [0.140, 0.086, FLOOR]}]})
 
 
 def fit_numbers(res, items):
-    """Fit numbers of an option: parts placed, plate area used, lowest metal part above the receiver, height margin to the
-    cover, scan-band intrusions in the open sector, smallest gap between parts."""
+    """Fit numbers of an option: parts placed, plate area used, height margin to the cover, scan-band intrusions in the open
+    sector, smallest gap between parts."""
     P = res["placed"]
     boxes = [(k, np.array(c) - np.array(d) / 2, np.array(c) + np.array(d) / 2) for k, (_, c, d) in P.items()]
-    e = 1e-6
-    over_rx = [b for b in boxes if b[1][0] < RX["hi"][0] + METAL_CLEAR - e and b[2][0] > RX["lo"][0] - METAL_CLEAR + e
-               and b[1][1] < RX["hi"][1] + METAL_CLEAR - e and b[2][1] > RX["lo"][1] - METAL_CLEAR + e]
-    lateral = min((min(abs(b[1][1]), abs(b[2][1])) - RX["hi"][1] for b in boxes if b not in over_rx and b[2][2] < PLATE_Z), default=None)
-    low = min((b[1][2] for b in over_rx), default=None)
     top = max(b[2][2] for b in boxes)
     scan = [b[0] for b in boxes if b[2][2] > SCAN[0] and b[1][2] < SCAN[1] and any(bearing_in_sector(x, y) for x in (b[1][0], b[2][0]) for y in (b[1][1], b[2][1]))]
     gap = 9.0
     for (ka, alo, ahi), (kb, blo, bhi) in itertools.combinations(boxes, 2):
         g = np.maximum(0, np.maximum(alo, blo) - np.minimum(ahi, bhi))
         gap = min(gap, float(np.linalg.norm(g)))
-    plate = res["plates"][0]
-    area = (plate["hi"][0] - plate["lo"][0]) * (plate["hi"][1] - plate["lo"][1])
+    area = sum((q["hi"][0] - q["lo"][0]) * (q["hi"][1] - q["lo"][1]) for q in res["plates"] if "shelf" not in q["name"] and "DIN" not in q["name"] and "tongue" not in q["name"])
     used = sum((b[2][0] - b[1][0]) * (b[2][1] - b[1][1]) for b in boxes if res["placed"][b[0]][0] in ("A_lower", "B_bay"))
     by_zone = {}
     for k, (zn, c, d) in P.items():
         by_zone.setdefault(zn, []).append(k)
-    return {"placed": len(P), "not_placed": list(res["nofit"]), "stays_in_place": res.get("stays", {}), "lowest_metal_above_receiver_mm": None if low is None else round((low - RX["hi"][2]) * 1000, 1),
-            "lowest_part_beside_receiver_lateral_mm": None if lateral is None else round(lateral * 1000, 1),
+    return {"placed": len(P), "not_placed": list(res["nofit"]), "stays_in_place": res.get("stays", {}),
             "top_mm": round(top * 1000, 1), "cover_margin_mm": round((COVER - top) * 1000, 1), "scan_band_parts": scan,
             "min_gap_mm": round(gap * 1000, 1), "plate_area_used_pct": round(100 * used / area, 1), "by_zone": by_zone}

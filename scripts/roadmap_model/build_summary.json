@@ -129,22 +129,20 @@
  "front_bay": {
   "A": {
    "fit": {
-    "placed": 21,
+    "placed": 22,
     "not_placed": [],
-    "stays_in_place": {
-     "base_controller": "stays on its controller plate MMP.04.00.00.003 on the IMU bracket (today's position; not heavy or vibrating, inside the shortened bracket at x <= 0.094)"
-    },
-    "lowest_metal_above_receiver_mm": 23.0,
-    "lowest_part_beside_receiver_lateral_mm": 40.0,
+    "stays_in_place": {},
     "top_mm": 267.6,
     "cover_margin_mm": 22.4,
     "scan_band_parts": [],
     "min_gap_mm": 5.0,
-    "plate_area_used_pct": 38.4,
+    "plate_area_used_pct": 57.3,
     "by_zone": {
      "A_lower": [
       "bay_rsd100",
+      "base_controller",
       "bay_usbhub",
+      "bay_rsd60",
       "bay_pwr009",
       "bay_pwr029",
       "bay_usbpd",
@@ -164,9 +162,6 @@
       "bay_can1",
       "bay_can3"
      ],
-     "strip_r": [
-      "bay_rsd60"
-     ],
      "A_din": [
       "bay_din_pnoz",
       "bay_ddr240"
@@ -177,14 +172,14 @@
     "bay_rsd100": [
      "A_lower",
      [
-      0.1985,
-      -0.0835,
-      0.144
+      0.2295,
+      -0.144,
+      0.1055
      ],
      [
-      97.0,
       159.0,
-      38.0
+      38.0,
+      97.0
      ]
     ],
     "compute": [
@@ -226,38 +221,51 @@
       42.5
      ]
     ],
+    "base_controller": [
+     "A_lower",
+     [
+      0.18,
+      -0.0513,
+      0.068
+     ],
+     [
+      70.0,
+      133.3,
+      22.0
+     ]
+    ],
     "bay_usbhub": [
      "A_lower",
      [
-      0.2875,
-      0.127,
-      0.1925
+      0.1175,
+      -0.0155,
+      0.097
      ],
      [
       25.0,
-      80.0,
-      135.0
+      135.0,
+      80.0
      ]
     ],
     "bay_rsd60": [
-     "strip_r",
+     "A_lower",
      [
-      0.2,
-      -0.14,
-      0.0735
+      0.305,
+      0.1485,
+      0.117
      ],
      [
-      120.0,
       50.0,
-      33.0
+      33.0,
+      120.0
      ]
     ],
     "bay_pwr009": [
      "A_lower",
      [
-      0.135,
-      0.022,
-      0.1375
+      0.25,
+      -0.098,
+      0.0695
      ],
      [
       60.0,
@@ -281,9 +289,9 @@
     "bay_pwr029": [
      "A_lower",
      [
-      0.195,
-      0.027,
-      0.135
+      0.3,
+      0.112,
+      0.067
      ],
      [
       50.0,
@@ -307,14 +315,14 @@
     "bay_usbpd": [
      "A_lower",
      [
-      0.28,
-      -0.148,
-      0.1325
+      0.16,
+      0.0345,
+      0.072
      ],
      [
       50.0,
-      30.0,
-      15.0
+      15.0,
+      30.0
      ]
     ],
     "bay_usbcan_1": [
@@ -399,8 +407,8 @@
      "A_lower",
      [
       0.1175,
-      -0.073,
-      0.13
+      0.072,
+      0.062
      ],
      [
       25.0,
@@ -411,9 +419,9 @@
     "bay_ina228": [
      "A_lower",
      [
-      0.1177,
-      0.0709,
-      0.128
+      0.2027,
+      0.0309,
+      0.06
      ],
      [
       25.4,
@@ -450,16 +458,42 @@
    },
    "plates": [
     {
-     "name": "MEC-005 lower plate (raised over the receiver)",
+     "name": "MEC-005 lower plate on the base sheet (rear part)",
      "lo": [
       0.14,
       -0.163,
-      0.122
+      0.054
+     ],
+     "hi": [
+      0.239,
+      0.163,
+      0.057
+     ]
+    },
+    {
+     "name": "MEC-005 lower plate, left arm beside MMP.07",
+     "lo": [
+      0.239,
+      0.091,
+      0.054
      ],
      "hi": [
       0.33,
       0.163,
-      0.125
+      0.057
+     ]
+    },
+    {
+     "name": "MEC-005 lower plate, right arm beside MMP.07",
+     "lo": [
+      0.239,
+      -0.163,
+      0.054
+     ],
+     "hi": [
+      0.33,
+      -0.091,
+      0.057
      ]
     },
     {
@@ -467,12 +501,12 @@
      "lo": [
       0.105,
       -0.086,
-      0.122
+      0.054
      ],
      "hi": [
       0.14,
       0.086,
-      0.125
+      0.057
      ]
     },
     {
@@ -561,20 +595,23 @@
   },
   "B": {
    "fit": {
-    "placed": 19,
+    "placed": 15,
     "not_placed": [
      "bay_ddr240",
      "bay_din_pnoz",
-     "bay_din_tb"
+     "bay_din_tb",
+     "bay_can1",
+     "bay_can3",
+     "bay_pwr032"
     ],
-    "stays_in_place": {},
-    "lowest_metal_above_receiver_mm": 23.0,
-    "lowest_part_beside_receiver_lateral_mm": 20.0,
-    "top_mm": 245.0,
-    "cover_margin_mm": 45.0,
+    "stays_in_place": {
+     "base_controller": "stays on its controller plate MMP.04.00.00.003 on the IMU bracket (today's position; not heavy or vibrating, inside the shortened bracket at x <= 0.094)"
+    },
+    "top_mm": 154.0,
+    "cover_margin_mm": 136.0,
     "scan_band_parts": [],
     "min_gap_mm": 3.0,
-    "plate_area_used_pct": 70.2,
+    "plate_area_used_pct": 94.2,
     "by_zone": {
      "B_bay": [
       "compute",
@@ -591,13 +628,7 @@
       "bay_usbcan_2",
       "bay_can2",
       "bay_lidar_uart",
-      "bay_can1",
-      "bay_can3",
-      "bay_pwr032",
       "bay_ina228"
-     ],
-     "strip_r": [
-      "base_controller"
      ]
     }
    },
@@ -607,7 +638,7 @@
      [
       0.1641,
       -0.0255,
-      0.1475
+      0.0795
      ],
      [
       118.1,
@@ -619,8 +650,8 @@
      "B_bay",
      [
       0.2295,
-      -0.114,
-      0.1735
+      0.146,
+      0.1055
      ],
      [
       159.0,
@@ -632,8 +663,8 @@
      "B_bay",
      [
       0.196,
-      0.129,
-      0.1455
+      -0.126,
+      0.0775
      ],
      [
       102.0,
@@ -644,9 +675,9 @@
     "bay_usbhub": [
      "B_bay",
      [
-      0.1725,
-      0.0695,
-      0.165
+      0.2125,
+      0.1095,
+      0.097
      ],
      [
       135.0,
@@ -654,51 +685,38 @@
       80.0
      ]
     ],
-    "base_controller": [
-     "strip_r",
-     [
-      0.2067,
-      -0.13,
-      0.068
-     ],
-     [
-      133.3,
-      70.0,
-      22.0
-     ]
-    ],
     "bay_rsd60": [
      "B_bay",
      [
-      0.285,
-      0.1135,
-      0.185
+      0.165,
+      0.0585,
+      0.082
      ],
      [
-      50.0,
+      120.0,
       33.0,
-      120.0
+      50.0
      ]
     ],
     "bay_pwr009": [
      "B_bay",
      [
-      0.175,
-      -0.1505,
-      0.145
+      0.285,
+      -0.143,
+      0.0695
      ],
      [
       60.0,
-      25.0,
-      40.0
+      40.0,
+      25.0
      ]
     ],
     "bay_iso1212": [
      "B_bay",
      [
-      0.137,
-      0.048,
-      0.1505
+      0.177,
+      0.088,
+      0.0825
      ],
      [
       64.0,
@@ -710,8 +728,8 @@
      "B_bay",
      [
       0.28,
-      0.152,
-      0.135
+      -0.103,
+      0.067
      ],
      [
       50.0,
@@ -722,9 +740,9 @@
     "bay_tpl7407": [
      "B_bay",
      [
-      0.2005,
-      0.048,
-      0.144
+      0.2405,
+      0.088,
+      0.076
      ],
      [
       51.0,
@@ -735,9 +753,9 @@
     "bay_usbpd": [
      "B_bay",
      [
-      0.235,
-      -0.1555,
-      0.14
+      0.3,
+      0.0845,
+      0.072
      ],
      [
       50.0,
@@ -748,100 +766,61 @@
     "bay_usbcan_1": [
      "B_bay",
      [
-      0.295,
-      -0.1505,
-      0.1325
+      0.2975,
+      0.1145,
+      0.087
      ],
      [
-      60.0,
       25.0,
-      15.0
+      15.0,
+      60.0
      ]
     ],
     "bay_usbcan_2": [
      "B_bay",
      [
-      0.2425,
-      -0.058,
-      0.1325
+      0.3225,
+      0.137,
+      0.0695
      ],
      [
-      25.0,
+      15.0,
       60.0,
-      15.0
+      25.0
      ]
     ],
     "bay_can2": [
      "B_bay",
      [
-      0.2427,
-      0.0056,
-      0.13
+      0.325,
+      -0.1344,
+      0.0697
      ],
      [
-      25.4,
+      10.0,
       57.1,
-      10.0
+      25.4
      ]
     ],
     "bay_lidar_uart": [
      "B_bay",
      [
-      0.265,
-      0.082,
-      0.135
-     ],
-     [
-      40.0,
-      10.0,
-      20.0
-     ]
-    ],
-    "bay_can1": [
-     "B_bay",
-     [
-      0.276,
-      -0.083,
-      0.1355
-     ],
-     [
-      32.0,
-      10.0,
-      21.0
-     ]
-    ],
-    "bay_can3": [
-     "B_bay",
-     [
-      0.306,
-      0.087,
-      0.1355
-     ],
-     [
-      32.0,
-      10.0,
-      21.0
-     ]
-    ],
-    "bay_pwr032": [
-     "B_bay",
-     [
       0.32,
-      0.1545,
-      0.13
+      -0.093,
+      0.077
      ],
      [
       20.0,
-      25.0,
-      10.0
+      10.0,
+      40.0
      ]
     ],
     "bay_ina228": [
      "B_bay",
      [
-      0.2227,
-      -0.14,
-      0.1339
+      0.2427,
+      -0.08,
+      0.0659
      ],
      [
       25.4,
@@ -852,16 +831,42 @@
    },
    "plates": [
     {
-     "name": "MEC-005 plate (raised over the receiver, single tier)",
+     "name": "MEC-005 plate on the base sheet, single tier (rear part)",
      "lo": [
       0.14,
       -0.163,
-      0.122
+      0.054
+     ],
+     "hi": [
+      0.239,
+      0.163,
+      0.057
+     ]
+    },
+    {
+     "name": "MEC-005 plate, left arm beside MMP.07",
+     "lo": [
+      0.239,
+      0.091,
+      0.054
      ],
      "hi": [
       0.33,
       0.163,
-      0.125
+      0.057
+     ]
+    },
+    {
+     "name": "MEC-005 plate, right arm beside MMP.07",
+     "lo": [
+      0.239,
+      -0.163,
+      0.054
+     ],
+     "hi": [
+      0.33,
+      -0.091,
+      0.057
      ]
     },
     {
@@ -869,12 +874,12 @@
      "lo": [
       0.105,
       -0.086,
-      0.122
+      0.054
      ],
      "hi": [
       0.14,
       0.086,
-      0.125
+      0.057
      ]
     }
    ],
@@ -893,6 +898,15 @@
     ],
     "yaw": 0.0,
     "zone": "A_upper"
+   },
+   "base_controller": {
+    "p": [
+     0.18,
+     -0.0513,
+     -0.03
+    ],
+    "yaw": 1.5708,
+    "zone": "A_lower"
    }
   },
   "B": {
@@ -900,110 +914,42 @@
     "p": [
      0.1641,
      -0.0255,
-     0.0495
+     -0.0185
     ],
     "yaw": 0.0,
     "zone": "B_bay"
-   },
-   "base_controller": {
-    "p": [
-     0.2067,
-     -0.13,
-     -0.03
-    ],
-    "yaw": 0.0,
-    "zone": "strip_r"
    }
   }
  },
  "receiver": {
   "centre": [
-   0.278,
+   -0.207,
    0.0,
    0.076
   ],
   "lo": [
-   0.193,
-   -0.075,
+   -0.282,
+   -0.085,
    0.05
   ],
   "hi": [
-   0.363,
-   0.075,
+   -0.132,
+   0.085,
    0.102
   ],
-  "cutout": [
-   0.173,
-   0.37,
-   -0.095,
-   0.095
+  "battery": [
+   [
+    -0.277,
+    -0.157,
+    0.054
+   ],
+   [
+    -0.137,
+    0.157,
+    0.264
+   ]
   ],
-  "orientation": "170 mm along x, 150 mm along y",
-  "candidates": {
-   "170 mm along x, 150 mm along y": {
-    "lo": [
-     0.193,
-     -0.075,
-     0.05
-    ],
-    "hi": [
-     0.363,
-     0.075,
-     0.102
-    ],
-    "lidar_support_mm": -6.2,
-    "cutout_full_mm": [
-     210,
-     190
-    ],
-    "cutout_mm": [
-     197,
-     190
-    ],
-    "cutout": [
-     0.173,
-     0.37,
-     -0.095,
-     0.095
-    ]
-   },
-   "150 mm along x, 170 mm along y": {
-    "lo": [
-     0.213,
-     -0.085,
-     0.05
-    ],
-    "hi": [
-     0.363,
-     0.085,
-     0.102
-    ],
-    "lidar_support_mm": -16.2,
-    "cutout_full_mm": [
-     190,
-     210
-    ],
-    "cutout_mm": [
-     177,
-     210
-    ],
-    "cutout": [
-     0.193,
-     0.37,
-     -0.105,
-     0.105
-    ]
-   }
-  },
-  "cutout_mm": [
-   197,
-   190
-  ],
-  "cutout_full_mm": [
-   210,
-   190
-  ],
-  "gap_m": -0.002
+  "status": "reserved, not installed in 2.0 (release 3.0)"
  },
  "k1k2_options": {
   "A": {
@@ -1096,11 +1042,12 @@
  "coverage": {
   "CAD-derived": 7,
   "envelope": 13,
-  "not drawn": 34,
+  "not drawn": 35,
   "placeholder": 10,
   "primitive": 6,
-  "proposed": 61,
-  "provisional": 15
+  "proposed": 60,
+  "provisional": 14,
+  "reserved": 1
  },
  "onboard": 121,
  "records": 146

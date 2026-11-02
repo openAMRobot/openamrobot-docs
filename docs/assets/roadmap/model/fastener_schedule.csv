@@ -5,7 +5,6 @@ Isolated input module ISO1212 (PNOZ Y32) to the MEC-005 plate,M3 hex standoff + 
 Low-side driver TPL7407L to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 Actuator-bus voltage module INA228 to the MEC-005 plate,M2.5 hex standoff + ISO 7380 screw,M2.5 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 3.3 V regulator for the MB7060s to the MEC-005 plate,M2.5 hex standoff + ISO 7380 screw,M2.5 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
-USB-PD module (Getac charging) to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 Compute branch TVS and EMI filter to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 Compute inrush limiter to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 Lift base plate MEC-019 to the centre-frame arch (from above),"socket head cap screw, class 8.8",M8 x 20,4,ISO 4762,"steel 8.8, zinc flake",proposed,y
@@ -24,7 +23,7 @@ LIFT-SNS-01 rod corner bracket,button head screw,M4 x 8,2,ISO 7380,steel,named,y
 LIFT-SNS-01 rod to adapter plate,socket head cap screw,M5 x 20,1,ISO 4762,steel,named,y
 LIFT-SNS-01 sensor brackets to the DOLD T-slot,bracket screw + T-nut,per BEF-WN-M12,3,LFT-007,steel,named,y
 MB7060 in the 27.5 mm panel hole,3/4 in NPS lock nut,3/4 in NPS,4,MEC-021,nylon / steel,named,y
-"MEC-005 lower plate on 6 standoffs from the base sheet, outside the receiver zone (|y| >= 0.095)",hex standoff M4 x 68 + ISO 7380,M4,6,hex standoff / ISO 7380,A2,proposed,y
+MEC-005 lower plate to the base sheet,rivet nut + ISO 7380,M4 x 8,6,ISO 7380 + rivet nut,A2,proposed,y
 DIN rail to MEC-005,pan head screw,M4 x 8,2,ISO 7045,A2,proposed,y
 "RSD-60G-5, RSD-100B-24 to MEC-005",socket head cap screw + washer,M4 x 8,8,ISO 4762 / ISO 7089,A2,proposed,n
 "FB-A, FB-B, PWR-017 to MEC-006",socket head cap screw + washer,M5 x 12,10,ISO 4762 / ISO 7089,A2,proposed,n
@@ -33,8 +32,6 @@ Battery tray MEC-007 to the deck,socket head cap screw + washer,M6 x 16,6,ISO 47
 Detachable battery side panels,quarter-turn fastener,M5,8,DIN 7500-compatible quarter-turn,steel,proposed,n
 "PETG sensor mounts (MEC-010, MEC-011) to the panels",heat-set insert + ISO 7380,M3 x 6,12,brass insert / ISO 7380,A2,proposed,n
 Second E-stop housing P2 to the arm-post rear slots (HFS6),ISO 4762 + ISO 7089 + M6 T-slot nut,M6 x 10,4,ISO 4762,steel,proposed,n
-TZBOT receiver bracket WCH-007 to the base sheet (outside the 20 mm zone),"ISO 7380 + rivet nut, stainless (non-magnetic A4)",M5 x 10,4,ISO 7380,A4,proposed,n
-Ferrite sheet on the receiver top,adhesive backing (no metal fasteners in the 20 mm zone),-,1,-,-,proposed,n
 MEC-005 upper shelf on the lower plate (option A),hex standoff M4 x 50 + ISO 7380,M4,4,hex standoff / ISO 7380,A2,proposed,n
 DIN carrier to the centre-bracket front legs (option A),ISO 4762 + rivet nut,M5 x 12,4,ISO 4762,A2,proposed,n
 Getac pocket and light-bar plate to the post front face,T-slot nut + ISO 4762,M6 x 12,4,ISO 4762,steel,proposed,n
