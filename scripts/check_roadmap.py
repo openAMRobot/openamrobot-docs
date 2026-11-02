@@ -1539,6 +1539,14 @@ def main():
                 err(p, "%s: ...%s..." % (label, ctx if label != "private term" else hashlib.sha256(m.group(0).encode()).hexdigest()[:12]))
                 break
 
+    # 5b. every external link of the six pages (outside scripts) opens in a new tab: target="_blank" rel="noopener"
+    for p in PAGES:
+        t = re.sub(r"<script\b.*?</script>", "", html[p], flags=re.S)
+        for a_ in re.findall(r"<a\s[^>]*>", t):
+            if 'href="http' in a_ and ('target="_blank"' not in a_ or 'rel="noopener"' not in a_):
+                err(p, "external link without target=\"_blank\" rel=\"noopener\": %s" % a_[:120])
+                break
+
     # 6. STATE.md figures (read from the generated files)
     try:
         with open(os.path.join(args.dir, "..", "..", "..", "STATE.md"), encoding="utf-8") as f:

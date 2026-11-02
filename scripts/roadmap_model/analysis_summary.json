@@ -483,6 +483,16 @@
     "fix": "as the E-stop: ask TZBOT"
    }
   ],
+  "nonmetal_clashes": [
+   {
+    "part": "ultrasonic_mount_front_left",
+    "overlap_mm": 2.4
+   },
+   {
+    "part": "ultrasonic_mount_front_right",
+    "overlap_mm": 2.1
+   }
+  ],
   "emc_distances_mm": {
    "IMU (EV_ICM-42688-P)": 164.2,
    "Jetson Orin NX on J401": 131.0,
@@ -3306,7 +3316,7 @@
  "sweep_steps_per_arm": 131,
  "counts": {
   "blocker": 1,
-  "major": 26,
+  "major": 28,
   "minor": 32
  },
  "steel_chassis_kg": 15.77

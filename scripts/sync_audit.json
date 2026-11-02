@@ -1,9 +1,9 @@
 {
  "fingerprint": {
-  "model/model.js": "c93503b75d690ab467f865afadb52719f13c2fd865abadef96380b78a08276f9",
-  "model/exploded.json": "a02b0caf49fa69827e80ad2d4415d2057570b86c1e4616d2cf8d04e3edfa5600",
-  "robot.html": "e6aee43ba1fbded5fa3c54ddb4bb78091a761b036ccbd7ac68ebe4280cdaac8c",
-  "exploded.html": "d90e0b3bba706160b748f243b34e96c49f0e2902a1a81c6bb970b3915b84c963"
+  "model/model.js": "0a17b40a574fe870ab6395749db9a9689ae30fbb2ce999328652be87bf3d0814",
+  "model/exploded.json": "8db7af6b5e3666ed8ab62c6b6b2fad46817dbfc343ca9909f45ac604e73cafb4",
+  "robot.html": "e3cf05395157db046959359929a5aed07f1be68c6e9bef72d2c667adb26960d3",
+  "exploded.html": "7fa65aec9d23acbbb137c28f22b2bcdd8fd160a2383b58126e0e80a319aed3b8"
  },
  "robot_state": {
   "lift": 1,
@@ -31,7 +31,7 @@
   ]
  },
  "exploded_home_offset_m": 0,
- "parts": 142,
+ "parts": 163,
  "mismatches": [],
  "errors": [],
  "rows": [
@@ -49,6 +49,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -65,6 +66,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -81,6 +83,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -97,6 +100,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -113,6 +117,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -129,6 +134,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -145,6 +151,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -161,6 +168,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -177,6 +185,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -193,6 +202,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -209,6 +219,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -225,6 +236,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -241,6 +253,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -257,6 +270,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -273,6 +287,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -289,6 +304,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -305,6 +321,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -321,6 +338,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -337,6 +355,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -353,6 +372,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -369,6 +389,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -385,6 +406,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -401,6 +423,7 @@
    "robot_meshes": 4,
    "exploded_meshes": 4,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -417,6 +440,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -433,6 +457,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -449,6 +474,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -465,6 +491,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -481,6 +508,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -497,6 +525,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -513,6 +542,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -529,6 +559,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -545,6 +576,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -561,6 +593,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -577,6 +610,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -593,6 +627,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -609,6 +644,7 @@
    "robot_meshes": 4,
    "exploded_meshes": 4,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -625,6 +661,7 @@
    "robot_meshes": 4,
    "exploded_meshes": 4,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -641,6 +678,7 @@
    "robot_meshes": 4,
    "exploded_meshes": 4,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -657,6 +695,7 @@
    "robot_meshes": 4,
    "exploded_meshes": 4,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -673,6 +712,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -689,6 +729,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -705,6 +746,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -721,6 +763,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -737,6 +780,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -753,6 +797,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -769,6 +814,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -785,6 +831,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -801,6 +848,7 @@
    "robot_meshes": 18,
    "exploded_meshes": 18,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -817,6 +865,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -833,6 +882,7 @@
    "robot_meshes": 11,
    "exploded_meshes": 11,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -849,6 +899,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -865,6 +916,7 @@
    "robot_meshes": 10,
    "exploded_meshes": 10,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -881,6 +933,7 @@
    "robot_meshes": 10,
    "exploded_meshes": 10,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -897,6 +950,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -913,6 +967,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -929,6 +984,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -945,6 +1001,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -961,6 +1018,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -977,6 +1035,7 @@
    "robot_meshes": 12,
    "exploded_meshes": 12,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -993,6 +1052,7 @@
    "robot_meshes": 6,
    "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1009,6 +1069,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1025,6 +1086,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1041,6 +1103,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1054,9 +1117,27 @@
     0,
     0.32
    ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_can1_optb",
+   "part": "bay_can1_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1073,6 +1154,24 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_can2_optb",
+   "part": "bay_can2_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1080,15 +1179,33 @@
    "part": "bay_can3",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 3,
+   "stage": 4,
    "offset": [
-    -0.25,
     0,
-    0.3
+    0,
+    0.32
    ],
    "robot_meshes": 6,
    "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_can3_optb",
+   "part": "bay_can3_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1105,6 +1222,24 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_iso1212_optb",
+   "part": "bay_iso1212_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1118,9 +1253,27 @@
     0,
     0.32
    ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_tpl7407_optb",
+   "part": "bay_tpl7407_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1137,6 +1290,58 @@
    "robot_meshes": 6,
    "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_ina228_optb",
+   "part": "bay_ina228_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": true,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_rsd60",
+   "part": "bay_rsd60",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_rsd60_optb",
+   "part": "bay_rsd60_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1153,6 +1358,41 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_rsd100_optb",
+   "part": "bay_rsd100_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_ddr240",
+   "part": "bay_ddr240",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1160,15 +1400,33 @@
    "part": "bay_pwr032",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 3,
+   "stage": 4,
    "offset": [
-    -0.25,
     0,
-    0.3
+    0,
+    0.32
    ],
    "robot_meshes": 6,
    "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_pwr032_optb",
+   "part": "bay_pwr032_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1182,9 +1440,27 @@
     0,
     0.32
    ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_usbpd_optb",
+   "part": "bay_usbpd_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1201,6 +1477,24 @@
    "robot_meshes": 6,
    "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_pwr009_optb",
+   "part": "bay_pwr009_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1214,9 +1508,27 @@
     0,
     0.32
    ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_pwr029_optb",
+   "part": "bay_pwr029_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1233,6 +1545,58 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_fbc_optb",
+   "part": "bay_fbc_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_din",
+   "part": "bay_din_pnoz",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_din",
+   "part": "bay_din_tb",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1249,6 +1613,24 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_usbhub_optb",
+   "part": "bay_usbhub_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1265,6 +1647,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1281,6 +1664,41 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_usbcan_optb",
+   "part": "bay_usbcan_1_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_usbcan_optb",
+   "part": "bay_usbcan_2_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.32
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1297,38 +1715,24 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
-   "comp": "rz_fba",
-   "part": "rz_fba",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 3,
+   "comp": "bay_lidar_uart_optb",
+   "part": "bay_lidar_uart_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
    "offset": [
-    -0.25,
     0,
-    0.3
+    0,
+    0.32
    ],
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "rz_fbb",
-   "part": "rz_fbb",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 3,
-   "offset": [
-    -0.25,
-    0,
-    0.3
-   ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
-   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1345,6 +1749,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1361,6 +1766,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1377,6 +1783,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1393,6 +1800,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1409,6 +1817,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1425,11 +1834,12 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
-   "comp": "rz_bms",
-   "part": "rz_bms",
+   "comp": "rz_batcon",
+   "part": "rz_batcon",
    "robot_drawn": true,
    "exploded_drawn": true,
    "stage": 3,
@@ -1441,6 +1851,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1457,6 +1868,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1473,6 +1885,7 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1489,6 +1902,41 @@
    "robot_meshes": 2,
    "exploded_meshes": 2,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_plate",
+   "part": "bay_plate",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.28
+   ],
+   "robot_meshes": 7,
+   "exploded_meshes": 7,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "bay_plate_optb",
+   "part": "bay_plate_optb",
+   "robot_drawn": false,
+   "exploded_drawn": false,
+   "stage": 4,
+   "offset": [
+    0,
+    0,
+    0.28
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": true,
    "mismatch": []
   },
   {
@@ -1505,6 +1953,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1521,22 +1970,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "rz_batcon",
-   "part": "rz_batcon",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 3,
-   "offset": [
-    0,
-    0,
-    0.2
-   ],
-   "robot_meshes": 1,
-   "exploded_meshes": 1,
-   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1550,9 +1984,10 @@
     0,
     -0.25
    ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1569,6 +2004,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1585,6 +2021,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1601,6 +2038,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1617,6 +2055,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1633,6 +2072,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1649,6 +2089,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1665,6 +2106,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1681,6 +2123,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1697,6 +2140,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1713,6 +2157,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1729,6 +2174,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1745,54 +2191,75 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
-   "comp": "bay_plate",
-   "part": "bay_plate",
+   "comp": "tz_ferrite",
+   "part": "tz_ferrite",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 4,
+   "stage": 3,
    "offset": [
     0,
     0,
-    0.28
+    -0.25
    ],
-   "robot_meshes": 3,
-   "exploded_meshes": 3,
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
-   "comp": "lift_bolt_keepout",
-   "part": "keepout_bp000",
+   "comp": "tz_metal_free_zone",
+   "part": "tz_metal_free_zone",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 4,
+   "stage": 3,
    "offset": [
     0,
     0,
-    0
+    -0.25
    ],
-   "robot_meshes": 4,
-   "exploded_meshes": 4,
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
-   "comp": "lift_bolt_keepout",
-   "part": "keepout_bp050",
+   "comp": "base_cutout",
+   "part": "base_cutout",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 4,
+   "stage": 1,
    "offset": [
     0,
     0,
-    0
+    -0.2
    ],
-   "robot_meshes": 4,
-   "exploded_meshes": 4,
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "tz_transmitter",
+   "part": "tz_transmitter",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 1,
+   "offset": [
+    0,
+    0,
+    -0.3
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1809,22 +2276,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "k1k2_option_b",
-   "part": "k1k2_option_b_1",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 3,
-   "offset": [
-    -0.25,
-    0,
-    0.3
-   ],
-   "robot_meshes": 1,
-   "exploded_meshes": 1,
-   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1841,6 +2293,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1857,6 +2310,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1873,6 +2327,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1889,6 +2344,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1905,6 +2361,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1912,7 +2369,7 @@
    "part": "rear_estop_housing",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 7,
+   "stage": 8,
    "offset": [
     0,
     0,
@@ -1921,11 +2378,12 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
-   "comp": "rear_estop_clear_ghost",
-   "part": "rear_estop_clear_ghost",
+   "comp": "estop_p1_ghost",
+   "part": "estop_p1_ghost",
    "robot_drawn": true,
    "exploded_drawn": true,
    "stage": 7,
@@ -1937,6 +2395,41 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "estop_p3_ghost",
+   "part": "estop_p3_ghost",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    0,
+    0.1
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "estop_p4_ghost",
+   "part": "estop_p4_ghost",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 7,
+   "offset": [
+    0,
+    0,
+    0.1
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1953,6 +2446,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1969,6 +2463,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1982,9 +2477,10 @@
     0,
     0.45
    ],
-   "robot_meshes": 64,
-   "exploded_meshes": 64,
+   "robot_meshes": 32,
+   "exploded_meshes": 32,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -1998,9 +2494,10 @@
     0,
     0.45
    ],
-   "robot_meshes": 41,
-   "exploded_meshes": 41,
+   "robot_meshes": 34,
+   "exploded_meshes": 34,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2014,9 +2511,27 @@
     0,
     0.45
    ],
-   "robot_meshes": 21,
-   "exploded_meshes": 21,
+   "robot_meshes": 23,
+   "exploded_meshes": 23,
    "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_lv",
+   "part": "harness_lv_base",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 9,
+   "offset": [
+    0,
+    0,
+    0.45
+   ],
+   "robot_meshes": 7,
+   "exploded_meshes": 7,
+   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2030,9 +2545,10 @@
     0,
     0.45
    ],
-   "robot_meshes": 115,
-   "exploded_meshes": 115,
+   "robot_meshes": 156,
+   "exploded_meshes": 156,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2046,9 +2562,10 @@
     0,
     0.45
    ],
-   "robot_meshes": 22,
-   "exploded_meshes": 22,
+   "robot_meshes": 28,
+   "exploded_meshes": 28,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2065,6 +2582,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2081,6 +2599,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2097,22 +2616,7 @@
    "robot_meshes": 1,
    "exploded_meshes": 1,
    "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "can_terms",
-   "part": "can_term_4",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 1,
-   "exploded_meshes": 1,
-   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2126,9 +2630,10 @@
     0,
     0.45
    ],
-   "robot_meshes": 26,
-   "exploded_meshes": 26,
+   "robot_meshes": 24,
+   "exploded_meshes": 24,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2142,25 +2647,10 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 6,
-   "exploded_meshes": 6,
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
    "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_upper",
-   "part": "harness_safe_mov",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 8,
-   "offset": [
-    0,
-    -0.25,
-    0.1
-   ],
-   "robot_meshes": 12,
-   "exploded_meshes": 12,
-   "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2177,6 +2667,7 @@
    "robot_meshes": 6,
    "exploded_meshes": 6,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2193,6 +2684,7 @@
    "robot_meshes": 12,
    "exploded_meshes": 12,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2206,9 +2698,10 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 32,
-   "exploded_meshes": 32,
+   "robot_meshes": 33,
+   "exploded_meshes": 33,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2222,9 +2715,10 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 30,
-   "exploded_meshes": 30,
+   "robot_meshes": 37,
+   "exploded_meshes": 37,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2238,9 +2732,10 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 6,
-   "exploded_meshes": 6,
+   "robot_meshes": 5,
+   "exploded_meshes": 5,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2254,9 +2749,10 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 8,
-   "exploded_meshes": 8,
+   "robot_meshes": 10,
+   "exploded_meshes": 10,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2273,6 +2769,7 @@
    "robot_meshes": 4,
    "exploded_meshes": 4,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2289,6 +2786,7 @@
    "robot_meshes": 3,
    "exploded_meshes": 3,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   },
   {
@@ -2305,6 +2803,7 @@
    "robot_meshes": 13,
    "exploded_meshes": 13,
    "same_transform": true,
+   "hidden_option": false,
    "mismatch": []
   }
  ]

@@ -36,6 +36,9 @@ jobs:
       - name: Check the roadmap pages
         run: python3 scripts/check_roadmap.py
 
+      - name: Roadmap checker regression tests
+        run: python3 -m unittest discover -s scripts/tests
+
       - name: Roadmap vs combined model parity (warn only, convergence phase 1)
         continue-on-error: true
         run: cd scripts/roadmap_model && python3 parity.py --ci

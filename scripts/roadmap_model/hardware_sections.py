@@ -193,12 +193,13 @@ def decisions_section():
             mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], mu["arch_sheet_utilisation"], pl["max_column_tilt_deg"],
             "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case, so the load path needs a doubler under the arch top between the rear rivet nuts and the rear wall (or the outer rivet-nut pattern as well) before the arms carry a payload at full reach.") + t_plate +
         "<h3>TZBOT WCM-500-24 wireless charging (B4)</h3><p>Receiver 240 x 210 x 65 mm, about 5 kg, at the front of the base, centred, 240 mm along x "
-        "(the narrower 210 mm across keeps it between the ultrasonic mounts), front edge %.1f mm from the front panel inner face, occupying %.0f to %.0f mm "
+        "(240 mm across would hit the front ultrasonic sensors; with 210 mm across the front corners still touch the printed ultrasonic mounts: %s), front edge %.1f mm from the front panel inner face, occupying %.0f to %.0f mm "
         "above the floor under the bay plate and the LiDAR. Bottom 50.0 mm above the floor, 2 mm below the base sheet; the lowest points of the robot "
         "apart from the wheels are the castor M6 bolt tips at %.1f mm and the M5 bolt tips at %.1f mm (full assembly STEP), so the ground clearance does not "
         "change. Floor gap = 50.0 mm minus the transmitter height, which is not in the datasheet folder: for the WCM-500 air gap of 10 to 30 mm the "
         "transmitter must be 20 to 40 mm tall; under 45 mm gives at least 5 mm. Base-sheet cut-out %d x %d mm (x %.3f to %.3f, y +/-%.3f), extending the "
         "contact-charger cut-out under the LiDAR; it removes: %s. A thin ferrite sheet on the receiver top (not metal foil) shields the electronics above.</p>" % (
+            E(", ".join("%s %.1f mm" % (c["part"], c["overlap_mm"]) for c in tz.get("nonmetal_clashes", [])) or "none"),
             tz["position"]["front_edge_to_front_panel_inner_mm"], tz["position"]["occupies_z_mm"][0], tz["position"]["occupies_z_mm"][1],
             low["cad"]["castor_bolt_tips_m6x20"] * 1000, low["cad"]["m5x20_bolt_tips"] * 1000, cut["size_mm"][0], cut["size_mm"][1], cut["xy_m"][0], cut["xy_m"][1],
             cut["xy_m"][3], E("; ".join(cut["removes"]))) +

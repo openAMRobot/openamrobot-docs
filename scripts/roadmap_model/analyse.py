@@ -853,6 +853,17 @@ def main():
             issue("major", "TZBOT receiver / %s (metal within 20 mm)" % m_["part"], "receiver at the B4 position, front bay option %s" % P["front_bay"]["default"],
                   "clearance %.1f mm, overlap %.1f mm" % (m_["clearance_mm"], m_["overlap_mm"]), ">= 20 mm metal-free around the receiver",
                   "B5 TZBOT installation rule; owner decision B4 (2 Nov 2026)", m_["fix"], OWN["mech"] if not m_["part"].startswith(("harness", "bay_")) else OWN["elec"], "tzbot")
+        # non-metal parts the receiver physically clashes with (overlap > 0.5 mm)
+        clash = []
+        for k, gg in geos.items():
+            if k == "tz_receiver" or not k.startswith(("camera_mount", "ultrasonic_mount", "tof_mount", "lidar_spacer", "ultrasonic_front", "tof_front")):
+                continue
+            r = pair(g, gg, 0.001)
+            if r and r[1] > .0005:
+                clash.append({"part": k, "overlap_mm": round(r[1] * 1000, 1)})
+                issue("major", "TZBOT receiver / %s (physical clash)" % k, "receiver at the B4 position", "overlap %.1f mm" % (r[1] * 1000), "overlap <= 0.5 mm",
+                      "B4; CAD v0.2 printed mounts", "trim the inner flank of the printed mount by 5 mm (PETG; the sensor is held by its panel nut)", OWN["mech"], "tzbot")
+        tzout["nonmetal_clashes"] = clash
         # EMC distances from the receiver coil (assumed in the bottom 15 mm of the receiver, facing the transmitter)
         coil_lo, coil_hi = lo.copy(), hi.copy()
         coil_hi[2] = lo[2] + 0.015

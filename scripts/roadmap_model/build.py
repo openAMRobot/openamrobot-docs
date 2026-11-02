@@ -446,11 +446,11 @@ def main():
                      "estimate" if "proposed" in it.get("geom", "proposed") else "estimate from the catalogue class",
                      stage_of[it["zone"]], parts_, part_number=pn, label=label,
                      off=[0, 0, .32] if it["zone"] == "front_bay" else [-.25, 0, .3], opn=[0, 0, .16] if it["zone"] == "front_bay" else [-.12, 0, .14])
-            if suffix:
-                c["option"] = opt
+            if it["zone"] == "front_bay":
+                c["option"] = opt   # both options are tagged: the exploded-view switch shows one at a time
             for k in got:
                 zn_k, cc, p = where[k]
-                draw_box_part(k + suffix, item_by_id.get(k, it), cc, p, opt if suffix else None)
+                draw_box_part(k + suffix, item_by_id.get(k, it), cc, p, opt if it["zone"] == "front_bay" else None)
                 if not suffix and it["zone"] == "front_bay" and item_by_id.get(k, it).get("standoff") and p[2] < 0.03:
                     fasteners.append({"joint": "%s to the MEC-005 plate" % it["name"], "part": "%s hex standoff + ISO 7380 screw" % it["standoff"],
                                       "size": "%s x 6" % it["standoff"], "qty": 4, "standard": "DIN 7380 / hex standoff", "material": "A2 / brass",
@@ -474,16 +474,14 @@ def main():
         pl = FBR[opt]["plates"]
         k = "bay_plate" + suffix
         geo[k] = {"group": "base", "prims": [box(np.subtract(q["hi"], q["lo"]), np.add(q["hi"], q["lo"]) / 2, "#b9c2c9" if "DIN" not in q["name"] else "#8e9aa3", name=q["name"]) for q in pl]}
-        if suffix:
-            geo[k]["option"] = opt
+        geo[k]["option"] = opt
         area = sum((q["hi"][0] - q["lo"][0]) * (q["hi"][1] - q["lo"][1]) * (q["hi"][2] - q["lo"][2]) for q in pl)
         c = comp(k, "Front bay plates, option %s: %s" % (opt, "; ".join(q["name"] for q in pl)), "MEC-005", 1, "proposed",
                  "Bay plates of option %s, raised to z 0.135 over the TZBOT receiver (B4); %s." % (opt, "lower plate, upper shelf on standoffs and DIN carrier" if opt == "A" else "single plate"),
                  "proposed outlines (3 mm 5052 sheet; DIN carrier 23 mm)", "front bay over the receiver (front_bay.py)", 0 if suffix else area * 2680,
                  "outline x thickness x 2680 kg/m3", 4, [k], off=[0, 0, .28], opn=[0, 0, .14], part_number="MEC-005 (drawing revision TBD)",
                  label=None if not suffix else "Front bay option %s (alternative, hidden by default)" % opt)
-        if suffix:
-            c["option"] = opt
+        c["option"] = opt
     geo_lookup = {}
 
     # ---------------- fixed parts
