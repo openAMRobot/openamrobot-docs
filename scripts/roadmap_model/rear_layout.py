@@ -8,7 +8,7 @@ mounting plate above the receiver, underside at least 20 mm above the receiver t
 
 The space is measured from the CAD (base GLB): rear panel, arch, top-cover supports, side panels and their return flanges
 (GI-025), rear sensor mounts and the rear cover flange slope. layout() returns every box (base_footprint, m) and a report
-with the owner values against the CAD, and the cell arrangement chosen for each pocket.
+with the CAD v0.2 dimensions as the reference (A9), and the cell arrangement chosen for each pocket.
 """
 import itertools
 
@@ -66,13 +66,13 @@ def layout():
     metal_in_margin = {k: clear_to[k] for k in clear_to if clear_to[k] < mc * 1000}
     plate_z = round(float(rx[1][2] + RS["power_plate"]["min_above_receiver"]), 4)
     plate = _box([x_rear + 0.004, margin[0][1], plate_z], [x_arch - 0.002, margin[1][1], plate_z + RS["power_plate"]["t"]])
-    # measured space, CAD against the owner values
+    # measured space: the CAD v0.2 dimensions are the reference (A9)
     sup_l, sup_r = bb["support_rear_left"], bb["support_rear_right"]
     v = G["side_panel_left"]["v"]
     wall_in = float(v[(np.abs(v[:, 0]) < 0.3) & (v[:, 1] > 0.25), 1].min())
-    measured = {"between_supports_mm": round((sup_l[0][1] - sup_r[1][1]) * 1000, 1), "owner_between_supports_mm": RS["owner_between_supports"] * 1000,
-                "between_side_walls_mm": round(2 * wall_in * 1000, 1), "owner_between_walls_mm": RS["owner_between_walls"] * 1000,
-                "rear_panel_to_arch_mm": round((x_arch - x_rear) * 1000, 1), "owner_panel_to_arch_mm": RS["owner_panel_to_arch"] * 1000,
+    measured = {"between_supports_mm": round((sup_l[0][1] - sup_r[1][1]) * 1000, 1),
+                "between_side_walls_mm": round(2 * wall_in * 1000, 1),
+                "rear_panel_to_arch_mm": round((x_arch - x_rear) * 1000, 1),
                 "support_depth_from_rear_panel_mm": round((sup_l[1][0] - x_rear) * 1000, 1),
                 "flange_line_y": 0.193, "flanges_z": [[0.051, 0.074], [0.191, 0.214]], "side_wall_inner_y": round(wall_in, 4)}
     # obstacles of one pocket (left side; the right side mirrors it)
@@ -129,8 +129,8 @@ def layout():
                 cells.append({"side": "left" if s > 0 else "right", "lo": [round(x, 4), round(y, 4), round(z_cell, 4)],
                               "hi": [round(x + cxl, 4), round(y + cyl, 4), round(z_cell + h, 4)]})
         pockets = {"arrangement": name, "clears_flanges": flange_ok, "tray_mm": [round((tb[1][i] - tb[0][i]) * 1000, 1) for i in range(3)]}
-    # pocket free size (owner: about 180 y x 190 x)
-    pocket_free = {"y_mm": round((wall_in - margin[1][1]) * 1000, 1), "y_owner_formula_mm": round((2 * wall_in - sy) / 2 * 1000, 1), "x_mm": round((x_arch - x_rear) * 1000, 1),
+    # pocket free size
+    pocket_free = {"y_mm": round((wall_in - margin[1][1]) * 1000, 1), "y_formula_mm": round((2 * wall_in - sy) / 2 * 1000, 1), "x_mm": round((x_arch - x_rear) * 1000, 1),
                    "x_beside_support_mm": round((x_arch - sup_l[1][0]) * 1000, 1), "y_inside_flanges_mm": round((0.193 - margin[1][1]) * 1000, 1)}
     # series link between the groups across the charger zone, above the metal-free margin, under the cover
     link_z = round(min(float(margin[1][2]) + 0.130, FACTS["cover_underside"] - 0.010), 4)

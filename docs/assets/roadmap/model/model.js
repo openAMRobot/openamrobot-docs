@@ -207,16 +207,13 @@
   // (lift stage at L1000 = 0), x: from the arm-profile front face. size: [x depth, y across, z height] in metres.
   M.CHEST = /*CHEST-JSON*/{"second_estop": {"position": "adapter_top", "panel_above_plate": 0.048, "glb_node": "estop", "glb_axis": [0.39, 0.13, 0.0445]}, "order": ["head_light", "getac_tablet"], "drawn": {"head_light": {"z": 0.0705, "size": [0.02, 0.158, 0.017], "window": [0.148, 0.013]}, "getac_tablet": {"z": 0.206, "size": [0.0176, 0.1498, 0.234], "orientation": "portrait"}}, "gap_light_tablet": 0.01}/*CHEST-JSON-END*/;
 
-  // Lift stop sensor set (P-03 rev20.0 item 24; drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-001 to LFT-006),
-  // placeholders until work package M-09. LIFT-SNS-01 shows the set on a narrow end face of the static profile
-  // without naming the end; the rear face carries the second E-stop at the S3 height and the front face the
-  // lift cable, so the set is drawn on the left side face (+y). Static group: three SICK IME12-04BNSZC0S on
-  // SICK BEF-WN-M12 brackets, z above the column base (base-plate top), sensor axis along x, 15 mm from the face
-  // (View 2). Moving group: MISUMI 5 series 20 x 20 rod, 430 mm, hanging from the adapter plate underside with
-  // the corner bracket; SS400 flag 45 x 20 x 2 mm, centre 410 mm below the plate underside, 2 mm air gap to
-  // the sensor faces; the rod 9 mm beside the sensors (30 to 50 mm from the face). x values: from the column
-  // axis; face_x: the sensor faces. bracket_h: height of the bracket, not given in LIFT-SNS-01 (drawn 25 mm).
-  M.LIFT_SENSE = /*LIFT-JSON*/{"face": "left", "z": [0.12, 0.295, 0.47], "stops": ["L1000", "L1175", "L1350"], "axis_off": 0.015, "sensor": {"d": 0.012, "len": 0.048}, "face_x": -0.095, "gap": 0.002, "flag": [0.002, 0.045, 0.02], "flag_off": 0.005, "flag_below_plate": 0.41, "rod": {"w": 0.02, "len": 0.43, "off": 0.03}, "bracket": {"leg": 0.04, "t": 0.004, "at": 0.028}, "bracket_h": 0.025}/*LIFT-JSON-END*/;
+  // Lift stop sensor set (P-03 rev20.0 item 24; BOM Issue 7.14 LFT-001 to LFT-006), placeholders until work package M-09.
+  // A6 (owner correction, 2 Nov 2026; to be entered in P-03 and M-01): three SICK IME12-04BNSZC0S on SICK BEF-WN-M12
+  // brackets on the rear face of the static column, centred in y, sensing faces toward +y; cables down the static column.
+  // Moving group: MISUMI 5 series 20 x 20 rod, 430 mm, bolted with M5 under the rear extension of the one-piece adapter
+  // plate plus the corner bracket; SS400 flag 45 x 20 x 2 mm, 2 mm air gap to the sensor faces. Values are written by
+  // build.py from frames.lift_rear_layout() (LIFT-JSON block).
+  M.LIFT_SENSE = /*LIFT-JSON*/{"face": "rear", "z": [0.12, 0.295, 0.47], "stops": ["L1000", "L1175", "L1350"], "sensor": {"d": 0.012, "len": 0.048}, "rear_x": -0.12, "axis_x": -0.148, "face_y": 0.024, "gap": 0.002, "flag": [0.045, 0.002, 0.02], "flag_x": [-0.183, -0.138], "flag_y": [0.026, 0.028], "flag_below_plate": 0.41, "rod": {"w": 0.02, "len": 0.43}, "rod_x": [-0.183, -0.163], "rod_y": [0.028, 0.048], "corner_x": [-0.163, -0.143], "rod_clear": 0.009, "bracket": {"leg": 0.04, "t": 0.004, "at": 0.028}, "bracket_h": 0.025, "plate_rear_x": -0.185}/*LIFT-JSON-END*/;
 
   // Arm pose of the assembled view (joint angles, rad); the right arm mirrors the left.
   var mirror = function (q) { return [-q[0], -q[1], -q[2], q[3], -q[4], -q[5], -q[6]]; };
@@ -266,7 +263,7 @@
 {"id": "cover_flange", "name": "Cover flange", "qty": 2, "geometry": "cad", "bom": "MEC-001", "purpose": "Front and rear sloped ends of the cover.", "source": "CAD v0.2 part MMP.01.00.00.002", "link": "https://github.com/openAMRobot/openamr-platform-hw/blob/main/mechanical/cad/production_files/MMP.01.00.00.002%20Cover%20flange.STEP", "nodes": ["cover_flange_front", "cover_flange_rear"]},
 {"id": "lift_base_plate", "name": "Lift base plate", "qty": 1, "geometry": "primitive", "bom": "MEC-019", "purpose": "10 mm aluminium plate on the centre-frame arch; the DOLD column stands on it, forward of the arch centre, with hole sets for bp000 and bp050.", "source": "Owner decision of 2 Nov 2026 (B3): 330 x 140 x 10 mm 6082-T6 on the arch top (304 mm), 4 x M8 from above into the arch rivet nuts (inner pattern 120 x 100 mm, CAD MMP.04.00.00.000), column screwed from below; design intent scripts/roadmap_model/design_intent/lift_base_plate.py, not CAD", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_base_plate"]},
 {"id": "lift_column", "name": "Lift column", "qty": 1, "geometry": "primitive", "bom": "MEC-018", "purpose": "DOLD Hexalift V4, 350 mm stroke, 530 mm retracted, 240 mm side fore-aft.", "source": "openamr-upperbody-hw option B; lift column CAD not yet available, lateral width drawn 60 mm", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_column"]},
-{"id": "adapter_plate", "name": "Adapter plate", "qty": 1, "geometry": "primitive", "bom": "MEC-004", "purpose": "10 mm plate on the column top that carries the arm profile.", "source": "openamr-upperbody-hw option B; drawing pending", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["adapter_plate"]},
+{"id": "adapter_plate", "name": "Adapter plate", "qty": 1, "geometry": "primitive", "bom": "MEC-004", "purpose": "10 mm plate on the column top that carries the arm profile and, on its rear extension (A6), the flag rod.", "source": "openamr-upperbody-hw option B; drawing pending", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["adapter_plate"]},
 {"id": "arm_profile", "name": "Arm profile HFS6-60120", "qty": 1, "geometry": "primitive", "bom": "MEC-003", "purpose": "MISUMI HFS6-60120, 340 mm, carries the two arm mounts (J1_A plate outline pending).", "source": "openamr-upperbody-hw option B", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["arm_profile"]},
 {"id": "slot_cover_strips", "name": "Slot cover strips", "qty": 2, "geometry": "primitive", "bom": "no BOM line (proposed for MEC-004 profile accessories)", "purpose": "Two thin cosmetic strips in the front-most slot of each side face of the arm profile, above the arm mounts, about 85 mm long; colour from model/finish.json.", "source": "Primitive drawn on the arm profile of option B; colour RAL 5018 (cyan reference) from model/finish.json", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["slot_cover_strips"]},
 {"id": "openarm", "name": "OpenArm 2.0 arm", "qty": 2, "geometry": "cad", "bom": "ARM-001", "purpose": "Two 7-axis arms with grippers, mounted 180 mm ahead of the column axis.", "source": "OpenArm 2.0 meshes and kinematics from the upstream openarm_description URDF; mount point per option B", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["openarm_left", "openarm_right"]},
@@ -275,11 +272,11 @@
 {"id": "second_estop", "name": "Second E-stop", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: the base E-stop placeholder geometry of openamr-platform-sw PR #100 (Schneider XB4BS8445 with ZBE-102, datasheet dimensions)", "placeholder_note": "position of the owner correction A5 (2 Nov 2026, to be entered in P-03 and M-01): on top of the adapter plate behind the post, centred in y, above the column, button up in a housing on the plate; actuator centre 0.901 / 1.076 / 1.251 m at L1000 / L1175 / L1350; the combined model keeps the static-column datum until the P-03 entry", "bom": "SAF-001", "purpose": "The second of the two E-stop buttons of the robot (SAF-001, quantity 2 in BOM Issue 7.14; signal ESTOP_CHEST), on the adapter plate so a standing adult reaches it at every lift stop; cable through the lift cable chain with the arm cables.", "source": "P-03 rev20.0 item 24 (second E-stop on the static profile, position P1); owner reach requirement of 2 Nov 2026 and positions P1 to P4 (B2); BOM Issue 7.14 SAF-001; geometry from the GLB node estop", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["second_estop"]},
 {"id": "getac_tablet", "name": "Operator tablet Getac ZX80", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: Getac ZX80 outer dimensions 149.8 x 234 x 17.6 mm, 590 g, portrait (149.8 mm wide, 234 mm tall), the decided default (owner correction A3, 2 Nov 2026), screen forward; the dock is not drawn", "placeholder_note": "placeholder position until work package M-09: centred on the front of the arm profile, above the head light, centre 40 mm lower than the 28 Oct placeholder (A3)", "bom": "UI-001", "purpose": "Detachable operator tablet on the moving chest, above the head light, in a fixed portrait pocket (A3).", "source": "Owner correction A3 (2 Nov 2026, to be entered in P-03 and M-01); P-03 rev20.0 item 24; BOM Issue 7.14 UI-001", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["getac_tablet"]},
 {"id": "head_light", "name": "Head light", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: Falcon Illumination FLDL-i150x15-W LED bar light, white, diffuse (housing 158 x 17 x 20 mm, lit area 148 x 13 mm, metal housing with acrylic cover); no light source is drawn", "placeholder_note": "placeholder position until work package M-09: across the arm-profile front directly under the tablet, its top edge 10 mm below the tablet bottom edge (A3, 2 Nov 2026)", "bom": "AUX-001", "purpose": "Head light on the moving chest, switched and optionally PWM-dimmed by the lift node.", "source": "P-03 rev20.0 item 24 (correction of 28 Oct 2026: Falcon FLDL-i150x15-W replaces the Banner WLS28; layout update of 28 Oct 2026: under the tablet); BOM Issue 7.14 AUX-001; Falcon FLDL-i150x15-W technical data", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["head_light"]},
-{"id": "lift_stop_sensors", "name": "Lift stop sensors", "qty": 3, "geometry": "envelope", "placeholder": true, "label": "Placeholder: SICK IME12-04BNSZC0S inductive sensor, M12 flush, 4 mm, NPN NO, drawn as an M12 x 48 mm cylinder", "placeholder_note": "placeholder position until work package M-09: left side face (+y) of the static profile; LIFT-SNS-01 names no end face; z 120, 295 and 470 mm above the column base (L1000, L1175, L1350)", "bom": "LFT-001", "purpose": "Three fixed stop sensors on the static lift profile, one per calibrated lift stop; the lift node reads them (functional sensing, not a safety function).", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-001", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_stop_sensors"]},
-{"id": "lift_sensor_brackets", "name": "Stop sensor brackets", "qty": 3, "geometry": "envelope", "placeholder": true, "label": "Placeholder: SICK BEF-WN-M12 angle bracket, legs 40 mm and 4 mm thick from LIFT-SNS-01 View 2; height not given (drawn 25 mm)", "placeholder_note": "placeholder position until work package M-09: left side face (+y) of the static profile; LIFT-SNS-01 names no end face", "bom": "LFT-003", "purpose": "Holds each stop sensor in a T-slot of the static lift profile (slot size TBC from the DOLD STEP).", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-003", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_sensor_brackets"]},
-{"id": "flag_rod", "name": "Flag rod", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: MISUMI 5 series 20 x 20 profile, 430 mm, one end tapped M5", "placeholder_note": "placeholder position until work package M-09: hangs from the adapter plate underside, 30 to 50 mm from the left side face, 9 mm beside the sensors; it moves with the lift", "bom": "LFT-004", "purpose": "Carries the steel flag along the lift travel.", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-004", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["flag_rod"]},
-{"id": "rod_corner_bracket", "name": "Rod corner bracket", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: MISUMI 5 series corner bracket, 20 square", "placeholder_note": "placeholder position until work package M-09: under the adapter plate at the top of the flag rod", "bom": "LFT-005", "purpose": "Stops the flag rod rotating under the adapter plate.", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-005", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["rod_corner_bracket"]},
-{"id": "lift_flag", "name": "Steel flag", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: SS400 plate 45 x 20 x 2 mm with 2 x 4.5 mm holes", "placeholder_note": "placeholder position until work package M-09: centre 410 mm below the adapter plate underside, 2 mm in front of the sensor faces; faces S1, S2 and S3 at L1000, L1175 and L1350", "bom": "LFT-006", "purpose": "The only ferrous part near the sensors; it switches the sensor it faces.", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-006", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_flag"]}]/*COMPONENTS-JSON-END*/;
+{"id": "lift_stop_sensors", "name": "Lift stop sensors", "qty": 3, "geometry": "envelope", "placeholder": true, "label": "Placeholder: SICK IME12-04BNSZC0S inductive sensor, M12 flush, 4 mm, NPN NO, drawn as an M12 x 48 mm cylinder", "placeholder_note": "A6 (owner correction, 2 Nov 2026; to be entered in P-03 and M-01): rear face of the static profile, centred in y, sensor axes along y; z 120, 295 and 470 mm above the column base (L1000, L1175, L1350)", "bom": "LFT-001", "purpose": "Three fixed stop sensors on the static lift profile, one per calibrated lift stop; the lift node reads them (functional sensing, not a safety function).", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-001", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_stop_sensors"]},
+{"id": "lift_sensor_brackets", "name": "Stop sensor brackets", "qty": 3, "geometry": "envelope", "placeholder": true, "label": "Placeholder: SICK BEF-WN-M12 angle bracket, legs 40 mm and 4 mm thick from LIFT-SNS-01 View 2; height not given (drawn 25 mm)", "placeholder_note": "A6 (owner correction, 2 Nov 2026): one leg on the rear face of the static profile, the sensor through the other leg", "bom": "LFT-003", "purpose": "Holds each stop sensor in a T-slot of the static lift profile (slot size TBC from the DOLD STEP).", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-003", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_sensor_brackets"]},
+{"id": "flag_rod", "name": "Flag rod", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: MISUMI 5 series 20 x 20 profile, 430 mm, one end tapped M5", "placeholder_note": "A6 (owner correction, 2 Nov 2026): bolted with M5 into its tapped end under the rear extension of the adapter plate, behind the column, 9 mm clear of the sensor faces; it moves with the lift", "bom": "LFT-004", "purpose": "Carries the steel flag along the lift travel.", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-004", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["flag_rod"]},
+{"id": "rod_corner_bracket", "name": "Rod corner bracket", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: MISUMI 5 series corner bracket, 20 square", "placeholder_note": "A6 (owner correction, 2 Nov 2026): under the adapter-plate rear extension, on the column side of the rod", "bom": "LFT-005", "purpose": "Stops the flag rod rotating under the adapter plate.", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-005", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["rod_corner_bracket"]},
+{"id": "lift_flag", "name": "Steel flag", "qty": 1, "geometry": "envelope", "placeholder": true, "label": "Placeholder: SS400 plate 45 x 20 x 2 mm with 2 x 4.5 mm holes", "placeholder_note": "A6 (owner correction, 2 Nov 2026): on the rod, centre 410 mm below the adapter plate underside, 2 mm off the sensor faces; faces S1, S2 and S3 at L1000, L1175 and L1350", "bom": "LFT-006", "purpose": "The only ferrous part near the sensors; it switches the sensor it faces.", "source": "P-03 rev20.0 item 24 (lift stop sensors); drawing LIFT-SNS-01 rev 1; BOM Issue 7.14 LFT-006", "link": "https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md", "parts": ["lift_flag"]}]/*COMPONENTS-JSON-END*/;
   if (M.PLACE && M.PLACE.meta) M.COMPONENTS.forEach(function (c) {  // class, part number, position source, mass
     var m = M.PLACE.meta[c.id];
     if (m) for (var k in m) if (c[k] === undefined) c[k] = m[k];
@@ -486,7 +483,7 @@
     slots(stage, e.L - .016, e.W - .012, l, c - e.HEAD - l / 2);
     box(stage, .25, .072, e.HEAD, mats.aluDark, 0, 0, c - e.HEAD / 2, 'head_plate');
     for (var s = -1; s <= 1; s += 2) box(stage, .03, .012, .05, mats.aluDark, s * .11, 0, c + .025);
-    var u = D.MOUNT_X, f = c + h.ADAPTER, d = -e.L / 2, p = u + h.X / 2;
+    var u = D.MOUNT_X, f = c + h.ADAPTER, d = M.LIFT_SENSE.plate_rear_x, p = u + h.X / 2;  // A6: one-piece plate with the rear extension that carries the flag rod
     box(part(mov, 'adapter_plate'), p - d, h.ADAPTER_W, h.ADAPTER, finishMat(THREE, 'adapter_plate', mats.aluDark), (d + p) / 2, 0, c + h.ADAPTER / 2, 'adapter_plate');
     var prof = part(mov, 'arm_profile');
     rbox(prof, h.X, h.Y, h.L, .004, finishMat(THREE, 'arm_profile', mats.alu), u, 0, f + h.L / 2);
@@ -568,7 +565,7 @@
   function cyl(THREE, g, r, len, m, px, py, pz, axis, seg) {
     var c = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, seg), m);
     c.castShadow = true;
-    if (axis === 'x') c.rotation.z = Math.PI / 2; else c.rotation.x = Math.PI / 2;
+    if (axis === 'x') c.rotation.z = Math.PI / 2; else if (axis !== 'y') c.rotation.x = Math.PI / 2;
     c.position.set(px, py, pz);
     g.add(c);
     return c;
@@ -671,11 +668,15 @@
     return out;
   }
 
-  // Lift stop sensor set (M.LIFT_SENSE) on the left side face (+y) of the static profile: sensors and brackets
+  // Lift stop sensor set (M.LIFT_SENSE) on the rear face of the static profile (A6): sensors and brackets
   // in the static group col, rod, corner bracket and flag in the moving group mov (z at L1000). Returns the part
   // groups.
   function liftSensors(THREE, R, mov, mats) {
-    var D = M.DIMS, L = M.LIFT_SENSE, t = D.PLATE_TOP, y0 = D.COL.W / 2, c = D.PLATE_TOP + D.COL.RETRACTED, out = [];
+    // A6 (owner correction, 2 Nov 2026): three SICK IME12 on SICK BEF-WN-M12 angle brackets on the rear face of the static column,
+    // centred in y, sensor axes along y (sensing faces toward +y); the SS400 flag 2 mm off the faces on the MISUMI 20 x 20 rod,
+    // which is bolted to the underside of the adapter-plate rear extension with the corner bracket on the column side of the rod.
+    // All values come from M.LIFT_SENSE (written by scripts/roadmap_model/build.py from frames.lift_rear_layout()).
+    var D = M.DIMS, L = M.LIFT_SENSE, t = D.PLATE_TOP, c = D.PLATE_TOP + D.COL.RETRACTED, out = [];
     var part = function (id, parent) {
       var g = new THREE.Group();
       g.name = id;
@@ -692,26 +693,26 @@
       return k;
     };
     var sensors = part('lift_stop_sensors', R.col), brackets = part('lift_sensor_brackets', R.col);
-    var s = L.sensor, ys = y0 + L.axis_off, back = L.face_x + s.len, b = L.bracket, bx = back - b.at;
+    var s = L.sensor, b = L.bracket;
     L.z.forEach(function (dz) {
       var z = t + dz;
-      cyl(THREE, sensors, s.d / 2, s.len - .003, mats.steel, L.face_x + .003 + (s.len - .003) / 2, ys, z, 'x', 20);
-      cyl(THREE, sensors, s.d / 2 - .0005, .003, mats.black, L.face_x + .0015, ys, z, 'x', 20);  // sensing face
-      for (var k = 0; k < 2; k++) cyl(THREE, sensors, .0095, .004, mats.steel, bx + (k ? -b.t - .002 : .002), ys, z, 'x', 6);
-      box(brackets, b.leg, b.t, L.bracket_h, mats.steel, bx - b.t - b.leg / 2 + b.t, y0 + b.t / 2, z);  // leg on the face
-      box(brackets, b.t, b.leg, L.bracket_h, mats.steel, bx - b.t / 2, y0 + b.leg / 2, z);  // leg carrying the sensor
+      cyl(THREE, sensors, s.d / 2, s.len - .003, mats.steel, L.axis_x, L.face_y - .003 - (s.len - .003) / 2, z, 'y', 20);
+      cyl(THREE, sensors, s.d / 2 - .0005, .003, mats.black, L.axis_x, L.face_y - .0015, z, 'y', 20);  // sensing face
+      for (var k = 0; k < 2; k++) cyl(THREE, sensors, .0095, .004, mats.steel, L.axis_x, k ? -b.t - .002 : .002, z, 'y', 6);
+      box(brackets, b.t, b.leg, L.bracket_h, mats.steel, L.rear_x - b.t / 2, -b.leg / 2, z);    // leg on the rear face
+      box(brackets, b.leg, b.t, L.bracket_h, mats.steel, L.rear_x - b.leg / 2, -b.t / 2, z);    // leg carrying the sensor
     });
-    var r = L.rod, rx = L.face_x - L.gap - L.flag[0] - r.w / 2, ry = y0 + r.off + r.w / 2;
+    var r = L.rod, rx = (L.rod_x[0] + L.rod_x[1]) / 2, ry = (L.rod_y[0] + L.rod_y[1]) / 2;
     var rod = part('flag_rod', mov), alu = mats.alu;
     box(rod, r.w, r.w, r.len, alu, rx, ry, c - r.len / 2);
     for (var q = -1; q <= 1; q += 2) {  // slot lines on the two faces seen from the side
-      box(rod, .006, .002, r.len - .004, mats.slot, rx, ry + q * (r.w / 2 + 2e-4), c - r.len / 2);
+      box(rod, r.w - .014, .002, r.len - .004, mats.slot, rx, ry + q * (r.w / 2 + 2e-4), c - r.len / 2);
     }
-    var cb = part('rod_corner_bracket', mov);  // 20 square corner bracket: one leg under the plate, one on the rod
-    box(cb, r.w, r.w, .003, alu, rx, ry - r.w / 2 - r.w / 2, c - .0015);
-    box(cb, r.w, .003, r.w, alu, rx, ry - r.w / 2 - .0015, c - .003 - r.w / 2);
+    var cb = part('rod_corner_bracket', mov), cl = L.corner_x[1] - L.corner_x[0];  // corner bracket: one leg under the plate, one on the rod
+    box(cb, cl, r.w, .003, alu, (L.corner_x[0] + L.corner_x[1]) / 2, ry, c - .0015);
+    box(cb, .003, r.w, cl, alu, L.corner_x[0] + .0015, ry, c - .003 - cl / 2);
     var fl = part('lift_flag', mov), f = L.flag;
-    box(fl, f[0], f[1], f[2], mats.steel, L.face_x - L.gap - f[0] / 2, y0 + L.flag_off + f[1] / 2, c - L.flag_below_plate);
+    box(fl, f[0], f[1], f[2], mats.steel, (L.flag_x[0] + L.flag_x[1]) / 2, (L.flag_y[0] + L.flag_y[1]) / 2, c - L.flag_below_plate);
     return out;
   }
 

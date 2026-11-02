@@ -188,6 +188,52 @@
     0.102
    ],
    "status": "reserved, not installed in 2.0 (release 3.0)"
+  },
+  "lift_rear": {
+   "sensor_axis_x": -0.148,
+   "sensor_y": [
+    -0.024,
+    0.024
+   ],
+   "face_y": 0.024,
+   "flag_x": [
+    -0.183,
+    -0.138
+   ],
+   "flag_y": [
+    0.026,
+    0.028
+   ],
+   "rod_x": [
+    -0.183,
+    -0.163
+   ],
+   "rod_y": [
+    0.028,
+    0.048
+   ],
+   "corner_x": [
+    -0.163,
+    -0.143
+   ],
+   "rod_centre": [
+    -0.173,
+    0.038
+   ],
+   "plate_rear_x": -0.185,
+   "plate_front_x": 0.24,
+   "plate_len": 0.425,
+   "plate_width": 0.1,
+   "plate_t": 0.01,
+   "extension": 0.065,
+   "rod_inside_plate": true,
+   "rod_clear_mm": 9.8,
+   "column_rear_x": -0.12,
+   "sensor_z": [
+    0.12,
+    0.295,
+    0.47
+   ]
   }
  },
  "sensor_frames_rpy": {

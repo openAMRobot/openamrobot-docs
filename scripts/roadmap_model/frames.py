@@ -6,6 +6,7 @@ The three.js scene uses the same axes (model.js root group, camera.up = +z), so 
 """
 import base64
 import json
+import math
 import os
 import struct
 
@@ -104,3 +105,32 @@ def tzbot_layout():
            "cutout_full_mm": [round((cut[1][0] - cut[0][0]) * 1000), round((cut[1][1] - cut[0][1]) * 1000)],
            "metal_clear": mc, "electronics_min_z": hi[2] + mc, "location": "rear"}
     return _TZ
+
+
+def lift_rear_layout():
+    """A6 (2 Nov 2026): lift stop sensors on the rear face of the static column, centred in y, sensor axes along y (SICK
+    BEF-WN-M12 angle bracket: one leg on the rear face, the sensor through the other leg, parallel to the face), sensing faces
+    toward +y. Flag 2 mm off the faces, rod 9 mm clear of the face discs, rod bolted to the underside of the adapter-plate
+    extension (M5 into the tapped rod end) with the corner bracket on the column side of the rod. The plate rear edge is the
+    rod's rear face or its M5 edge distance, whichever reaches further back. Column frame, metres."""
+    f = FACTS["lift_rear"]
+    s, b, r = f["sensor"], f["bracket"], f["rod"]
+    ax_x = f["column_rear_x"] - b["axis_from_face"]          # sensor axis x
+    face_y = s["len"] / 2                                     # sensor centred in y, sensing face toward +y
+    flag_y = [face_y + f["gap"], face_y + f["gap"] + f["flag"][1]]
+    rod_x1 = ax_x - s["d"] / 2 - f["rod_clear"]               # rod face toward the column
+    rod_x = [rod_x1 - r["w"], rod_x1]
+    rod_y = [flag_y[1], flag_y[1] + r["w"]]                   # flag bolted to the rod side face facing the sensors
+    flag_x = [rod_x[0], rod_x[0] + f["flag"][0]]
+    corner_x = [rod_x[1], rod_x[1] + f["corner"]["leg"]]      # corner bracket on the column side of the rod
+    rod_c = [(rod_x[0] + rod_x[1]) / 2, (rod_y[0] + rod_y[1]) / 2]
+    rear = min(rod_x[0], rod_c[0] - f["bolt_edge"])
+    rear = math.floor(rear * 200 + 1e-9) / 200.0             # 5 mm drawing grid, never shorter than the geometry needs
+    p = f["plate"]
+    half_w = p["width"] / 2
+    return {"sensor_axis_x": round(ax_x, 4), "sensor_y": [round(-face_y, 4), round(face_y, 4)], "face_y": round(face_y, 4),
+            "flag_x": [round(v, 4) for v in flag_x], "flag_y": [round(v, 4) for v in flag_y], "rod_x": [round(v, 4) for v in rod_x],
+            "rod_y": [round(v, 4) for v in rod_y], "corner_x": [round(v, 4) for v in corner_x], "rod_centre": [round(v, 4) for v in rod_c],
+            "plate_rear_x": round(rear, 4), "plate_front_x": p["front_x"], "plate_len": round(p["front_x"] - rear, 4), "plate_width": p["width"],
+            "plate_t": p["t"], "extension": round(f["column_rear_x"] - rear, 4), "rod_inside_plate": rod_y[1] <= half_w + 1e-9 and rod_x[0] >= rear - 1e-9,
+            "rod_clear_mm": round(math.hypot(rod_x1 - (ax_x - s["d"] / 2), rod_y[0] - face_y) * 1000, 1)}

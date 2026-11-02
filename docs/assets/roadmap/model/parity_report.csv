@@ -19,16 +19,16 @@ bp000 L1000,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24
 bp000 L1000,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
 bp000 L1000,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
 bp000 L1000,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
-bp000 L1000,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp000 L1000,adapter_plate_link,adapter_plate,aabb,pending (intended),-32.5,0.0,0.0,32.5,65.0,,360.0x100.0x10.0,425.0x100.0x10.0,"A6 (owner, 2 Nov 2026): one-piece adapter plate with a 65 mm rear extension behind the column rear face (425 x 100 x 10 mm) that carries the flag rod; the combined model keeps the plate flush with the column rear face (P-03 rev20.1 item 25 D2) until the P-03 and M-01 entry"
 bp000 L1000,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
 bp000 L1000,head_camera_bracket_link,head_camera_bracket,aabb,out of tolerance,15.0,0.0,-0.0,15.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
 bp000 L1000,head_camera_link,head_camera,aabb,pending (intended),15.0,0.0,0.0,15.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,"A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"
 bp000 L1000,getac_tablet_link,getac_tablet,aabb,pending (intended),0.0,0.0,-40.0,40.0,84.2,,17.6x234.0x149.8,17.6x149.8x234.0,"A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower (combined model landscape until the P-03 entry)"
 bp000 L1000,head_light_link,head_light,aabb,pending (intended),0.5,0.0,-62.1,62.1,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,"A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the landscape Getac)"
 bp000 L1000,second_estop_link,second_estop,aabb,pending (intended),161.0,0.0,109.0,194.43,35.0,,82.0x40.0x47.0,47.0x40.0x82.0,"A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry"
-bp000 L1000,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
-bp000 L1000,lift_flag_rod_link,flag_rod,aabb,out of tolerance,-0.0,0.0,0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
-bp000 L1000,lift_flag_link,lift_flag,aabb,matched,-0.0,0.0,0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp000 L1000,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,pending (intended),-59.0,-58.0,0.0,82.73,28.0,,68.0x40.0x375.0,40.0x64.0x375.0,"A6 (owner, 2 Nov 2026): sensors on the rear face of the static column, centred in y, sensing faces toward +y; the combined model keeps the side face until the P-03 and M-01 entry"
+bp000 L1000,lift_flag_rod_link,flag_rod,aabb,pending (intended),-64.0,-32.0,0.0,71.55,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,"A6 (owner, 2 Nov 2026): rod behind the column under the adapter-plate rear extension; the combined model keeps the side-face position until the P-03 and M-01 entry"
+bp000 L1000,lift_flag_link,lift_flag,aabb,pending (intended),-62.5,-30.5,0.0,69.54,43.0,,2.0x45.0x20.0,45.0x2.0x20.0,"A6 (owner, 2 Nov 2026): flag on the rod behind the column, 2 mm off the rear-face sensors (part of the rod position)"
 bp000 L1000,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp000 L1000,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp000 L1000,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
@@ -69,16 +69,16 @@ bp000 L1175,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24
 bp000 L1175,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
 bp000 L1175,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
 bp000 L1175,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
-bp000 L1175,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp000 L1175,adapter_plate_link,adapter_plate,aabb,pending (intended),-32.5,0.0,0.0,32.5,65.0,,360.0x100.0x10.0,425.0x100.0x10.0,"A6 (owner, 2 Nov 2026): one-piece adapter plate with a 65 mm rear extension behind the column rear face (425 x 100 x 10 mm) that carries the flag rod; the combined model keeps the plate flush with the column rear face (P-03 rev20.1 item 25 D2) until the P-03 and M-01 entry"
 bp000 L1175,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
 bp000 L1175,head_camera_bracket_link,head_camera_bracket,aabb,out of tolerance,15.0,0.0,-0.0,15.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
 bp000 L1175,head_camera_link,head_camera,aabb,pending (intended),15.0,0.0,0.0,15.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,"A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"
 bp000 L1175,getac_tablet_link,getac_tablet,aabb,pending (intended),0.0,0.0,-40.0,40.0,84.2,,17.6x234.0x149.8,17.6x149.8x234.0,"A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower (combined model landscape until the P-03 entry)"
 bp000 L1175,head_light_link,head_light,aabb,pending (intended),0.5,0.0,-62.1,62.1,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,"A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the landscape Getac)"
 bp000 L1175,second_estop_link,second_estop,aabb,pending (intended),161.0,0.0,284.0,326.46,35.0,,82.0x40.0x47.0,47.0x40.0x82.0,"A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry"
-bp000 L1175,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
-bp000 L1175,lift_flag_rod_link,flag_rod,aabb,out of tolerance,-0.0,0.0,-0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
-bp000 L1175,lift_flag_link,lift_flag,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp000 L1175,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,pending (intended),-59.0,-58.0,0.0,82.73,28.0,,68.0x40.0x375.0,40.0x64.0x375.0,"A6 (owner, 2 Nov 2026): sensors on the rear face of the static column, centred in y, sensing faces toward +y; the combined model keeps the side face until the P-03 and M-01 entry"
+bp000 L1175,lift_flag_rod_link,flag_rod,aabb,pending (intended),-64.0,-32.0,-0.0,71.55,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,"A6 (owner, 2 Nov 2026): rod behind the column under the adapter-plate rear extension; the combined model keeps the side-face position until the P-03 and M-01 entry"
+bp000 L1175,lift_flag_link,lift_flag,aabb,pending (intended),-62.5,-30.5,-0.0,69.54,43.0,,2.0x45.0x20.0,45.0x2.0x20.0,"A6 (owner, 2 Nov 2026): flag on the rod behind the column, 2 mm off the rear-face sensors (part of the rod position)"
 bp000 L1175,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp000 L1175,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp000 L1175,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
@@ -119,16 +119,16 @@ bp000 L1350,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24
 bp000 L1350,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
 bp000 L1350,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
 bp000 L1350,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
-bp000 L1350,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp000 L1350,adapter_plate_link,adapter_plate,aabb,pending (intended),-32.5,0.0,0.0,32.5,65.0,,360.0x100.0x10.0,425.0x100.0x10.0,"A6 (owner, 2 Nov 2026): one-piece adapter plate with a 65 mm rear extension behind the column rear face (425 x 100 x 10 mm) that carries the flag rod; the combined model keeps the plate flush with the column rear face (P-03 rev20.1 item 25 D2) until the P-03 and M-01 entry"
 bp000 L1350,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,-0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
 bp000 L1350,head_camera_bracket_link,head_camera_bracket,aabb,out of tolerance,15.0,0.0,-0.0,15.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
 bp000 L1350,head_camera_link,head_camera,aabb,pending (intended),15.0,0.0,-0.0,15.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,"A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"
 bp000 L1350,getac_tablet_link,getac_tablet,aabb,pending (intended),0.0,0.0,-40.0,40.0,84.2,,17.6x234.0x149.8,17.6x149.8x234.0,"A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower (combined model landscape until the P-03 entry)"
 bp000 L1350,head_light_link,head_light,aabb,pending (intended),0.5,0.0,-62.1,62.1,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,"A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the landscape Getac)"
 bp000 L1350,second_estop_link,second_estop,aabb,pending (intended),161.0,0.0,459.0,486.42,35.0,,82.0x40.0x47.0,47.0x40.0x82.0,"A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry"
-bp000 L1350,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
-bp000 L1350,lift_flag_rod_link,flag_rod,aabb,out of tolerance,-0.0,0.0,-0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
-bp000 L1350,lift_flag_link,lift_flag,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp000 L1350,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,pending (intended),-59.0,-58.0,0.0,82.73,28.0,,68.0x40.0x375.0,40.0x64.0x375.0,"A6 (owner, 2 Nov 2026): sensors on the rear face of the static column, centred in y, sensing faces toward +y; the combined model keeps the side face until the P-03 and M-01 entry"
+bp000 L1350,lift_flag_rod_link,flag_rod,aabb,pending (intended),-64.0,-32.0,-0.0,71.55,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,"A6 (owner, 2 Nov 2026): rod behind the column under the adapter-plate rear extension; the combined model keeps the side-face position until the P-03 and M-01 entry"
+bp000 L1350,lift_flag_link,lift_flag,aabb,pending (intended),-62.5,-30.5,-0.0,69.54,43.0,,2.0x45.0x20.0,45.0x2.0x20.0,"A6 (owner, 2 Nov 2026): flag on the rod behind the column, 2 mm off the rear-face sensors (part of the rod position)"
 bp000 L1350,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp000 L1350,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp000 L1350,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
@@ -169,16 +169,16 @@ bp050 L1000,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24
 bp050 L1000,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
 bp050 L1000,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
 bp050 L1000,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
-bp050 L1000,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp050 L1000,adapter_plate_link,adapter_plate,aabb,pending (intended),-32.5,0.0,0.0,32.5,65.0,,360.0x100.0x10.0,425.0x100.0x10.0,"A6 (owner, 2 Nov 2026): one-piece adapter plate with a 65 mm rear extension behind the column rear face (425 x 100 x 10 mm) that carries the flag rod; the combined model keeps the plate flush with the column rear face (P-03 rev20.1 item 25 D2) until the P-03 and M-01 entry"
 bp050 L1000,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
 bp050 L1000,head_camera_bracket_link,head_camera_bracket,aabb,out of tolerance,15.0,0.0,-0.0,15.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
 bp050 L1000,head_camera_link,head_camera,aabb,pending (intended),15.0,0.0,0.0,15.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,"A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"
 bp050 L1000,getac_tablet_link,getac_tablet,aabb,pending (intended),0.0,0.0,-40.0,40.0,84.2,,17.6x234.0x149.8,17.6x149.8x234.0,"A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower (combined model landscape until the P-03 entry)"
 bp050 L1000,head_light_link,head_light,aabb,pending (intended),0.5,0.0,-62.1,62.1,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,"A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the landscape Getac)"
 bp050 L1000,second_estop_link,second_estop,aabb,pending (intended),161.0,0.0,109.0,194.43,35.0,,82.0x40.0x47.0,47.0x40.0x82.0,"A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry"
-bp050 L1000,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
-bp050 L1000,lift_flag_rod_link,flag_rod,aabb,out of tolerance,0.0,0.0,0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
-bp050 L1000,lift_flag_link,lift_flag,aabb,matched,0.0,0.0,0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp050 L1000,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,pending (intended),-59.0,-58.0,0.0,82.73,28.0,,68.0x40.0x375.0,40.0x64.0x375.0,"A6 (owner, 2 Nov 2026): sensors on the rear face of the static column, centred in y, sensing faces toward +y; the combined model keeps the side face until the P-03 and M-01 entry"
+bp050 L1000,lift_flag_rod_link,flag_rod,aabb,pending (intended),-64.0,-32.0,0.0,71.55,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,"A6 (owner, 2 Nov 2026): rod behind the column under the adapter-plate rear extension; the combined model keeps the side-face position until the P-03 and M-01 entry"
+bp050 L1000,lift_flag_link,lift_flag,aabb,pending (intended),-62.5,-30.5,0.0,69.54,43.0,,2.0x45.0x20.0,45.0x2.0x20.0,"A6 (owner, 2 Nov 2026): flag on the rod behind the column, 2 mm off the rear-face sensors (part of the rod position)"
 bp050 L1000,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp050 L1000,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
 bp050 L1000,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
@@ -234,40 +234,40 @@ all,base_link,can_term_2,roadmap only,roadmap only,,,,,,,,,"offset [0.2117, -0.1
 all,base_link,can_term_3,roadmap only,roadmap only,,,,,,,,,"offset [0.3077, -0.1344, 0.033] m in base_link"
 all,base_link,fan,roadmap only,roadmap only,,,,,,,,,"offset [0.18, 0, 0.1755] m in base_link"
 all,base_link,fasteners_base,roadmap only,roadmap only,,,,,,,,,"offset [0.1535, 0, 0.0865] m in base_link"
-all,lift_column_base_link,fasteners_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.078, 0.034, 0.287] m in lift_column_base_link"
+all,lift_column_base_link,fasteners_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.122, -0.02, 0.287] m in lift_column_base_link"
 all,lift_carriage_link,fasteners_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.1658, 0, 0.1285] m in lift_carriage_link"
 all,base_link,feedthru_1,roadmap only,roadmap only,,,,,,,,,"offset [0.2, 0.272, 0.102] m in base_link"
 all,base_link,feedthru_2,roadmap only,roadmap only,,,,,,,,,"offset [0.245, 0.272, 0.102] m in base_link"
 all,lift_carriage_link,getac_pocket,roadmap only,roadmap only,,,,,,,,,"offset [0.2553, 0, 0.1927] m in lift_carriage_link"
-all,base_link,harness_bat_base,roadmap only,roadmap only,,,,,,,,,"offset [-0.0227, 0, 0.0845] m in base_link"
+all,base_link,harness_bat_base,roadmap only,roadmap only,,,,,,,,,"offset [-0.0227, 0, 0.0835] m in base_link"
 all,base_link,harness_fittings_base,roadmap only,roadmap only,,,,,,,,,"offset [0.0375, 0, 0.15] m in base_link"
-all,lift_column_base_link,harness_fittings_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1075, 0, 0.261] m in lift_column_base_link"
+all,lift_column_base_link,harness_fittings_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.141, -0.0375, 0.261] m in lift_column_base_link"
 all,lift_carriage_link,harness_fittings_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.0675, -0.0035, 0.166] m in lift_carriage_link"
 all,base_link,harness_lv_base,roadmap only,roadmap only,,,,,,,,,"offset [0.2585, 0, 0.0808] m in base_link"
 all,base_link,harness_r24_base,roadmap only,roadmap only,,,,,,,,,"offset [0.086, -0.0001, 0.0931] m in base_link"
 all,lift_column_base_link,harness_r24_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.161, -0.0475, 0.2401] m in lift_column_base_link"
 all,lift_carriage_link,harness_r24_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.0502, 0.0165, -0.0792] m in lift_carriage_link"
-all,base_link,harness_safe_base,roadmap only,roadmap only,,,,,,,,,"offset [-0.0786, 0.0117, 0.1243] m in base_link"
-all,lift_column_base_link,harness_safe_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1236, -0.0025, 0.009] m in lift_column_base_link"
+all,base_link,harness_safe_base,roadmap only,roadmap only,,,,,,,,,"offset [-0.0771, 0.0122, 0.1243] m in base_link"
+all,lift_column_base_link,harness_safe_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1244, -0.0252, 0.0093] m in lift_column_base_link"
 all,base_link,harness_sig_base,roadmap only,roadmap only,,,,,,,,,"offset [0.0058, -0.0001, 0.0831] m in base_link"
-all,lift_column_base_link,harness_sig_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1212, -0.0027, 0.2432] m in lift_column_base_link"
+all,lift_column_base_link,harness_sig_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1594, -0.0256, 0.2434] m in lift_column_base_link"
 all,lift_carriage_link,harness_sig_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.0276, -0.0014, 0.0429] m in lift_carriage_link"
 all,base_link,lift_base_plate,roadmap only,pending (intended),,,,,,,,,"B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)"
-all,lift_column_base_link,lift_node,roadmap only,roadmap only,,,,,,,,,"offset [-0.1325, 0, 0.116] m in lift_column_base_link"
+all,lift_column_base_link,lift_node,roadmap only,roadmap only,,,,,,,,,"offset [-0.1325, 0, 0.051] m in lift_column_base_link"
 all,base_link,motor_brackets_1,roadmap only,roadmap only,,,,,,,,,"offset [0, 0.1066, -0.0095] m in base_link"
 all,base_link,motor_brackets_2,roadmap only,roadmap only,,,,,,,,,"offset [0, 0.2496, -0.0095] m in base_link"
 all,base_link,motor_brackets_3,roadmap only,roadmap only,,,,,,,,,"offset [0, -0.1066, -0.0095] m in base_link"
 all,base_link,motor_brackets_4,roadmap only,roadmap only,,,,,,,,,"offset [0, -0.2496, -0.0095] m in base_link"
 all,lift_carriage_link,rear_estop_housing,roadmap only,pending (intended),,,,,,,,,"A5 (owner, 2 Nov 2026): housing of the second E-stop on the adapter plate, button up"
 all,base_link,rear_plate,roadmap only,roadmap only,,,,,,,,,"offset [-0.2515, 0, 0.0255] m in base_link"
-all,lift_carriage_link,rod_corner_bracket,roadmap only,roadmap only,,,,,,,,,"offset [-0.109, 0.05, -0.0115] m in lift_carriage_link"
-all,base_link,rz_batcon,roadmap only,roadmap only,,,,,,,,,"offset [-0.326, -0.065, 0.1428] m in base_link"
-all,base_link,rz_brake,roadmap only,roadmap only,,,,,,,,,"offset [-0.276, -0.005, 0.0353] m in base_link"
+all,lift_carriage_link,rod_corner_bracket,roadmap only,roadmap only,,,,,,,,,"offset [-0.153, 0.038, -0.0115] m in lift_carriage_link"
+all,base_link,rz_batcon,roadmap only,roadmap only,,,,,,,,,"offset [-0.164, 0, 0.1547] m in base_link"
+all,base_link,rz_brake,roadmap only,roadmap only,,,,,,,,,"offset [-0.311, 0.015, 0.0353] m in base_link"
 all,base_link,rz_disc,roadmap only,roadmap only,,,,,,,,,"offset [-0.3372, -0.05, 0.072] m in base_link"
-all,base_link,rz_f0,roadmap only,roadmap only,,,,,,,,,"offset [-0.241, -0.0545, 0.0552] m in base_link"
-all,base_link,rz_fba,roadmap only,roadmap only,,,,,,,,,"offset [-0.2385, 0.05, 0.0777] m in base_link"
-all,base_link,rz_fchg,roadmap only,roadmap only,,,,,,,,,"offset [-0.258, -0.005, 0.1038] m in base_link"
-all,base_link,rz_k1k2_1,roadmap only,roadmap only,,,,,,,,,"offset [-0.1635, -0.0485, 0.0658] m in base_link"
+all,base_link,rz_f0,roadmap only,roadmap only,,,,,,,,,"offset [-0.1855, -0.035, 0.0552] m in base_link"
+all,base_link,rz_fba,roadmap only,roadmap only,,,,,,,,,"offset [-0.256, -0.0025, 0.0777] m in base_link"
+all,base_link,rz_fchg,roadmap only,roadmap only,,,,,,,,,"offset [-0.321, -0.062, 0.1438] m in base_link"
+all,base_link,rz_k1k2_1,roadmap only,roadmap only,,,,,,,,,"offset [-0.1795, 0.0625, 0.0658] m in base_link"
 all,base_link,rz_k1k2_2,roadmap only,roadmap only,,,,,,,,,"offset [-0.3295, 0.1395, 0.0678] m in base_link"
 all,base_link,rz_kchg,roadmap only,roadmap only,,,,,,,,,"offset [-0.3485, 0.01, 0.0428] m in base_link"
 all,base_link,rz_pre,roadmap only,roadmap only,,,,,,,,,"offset [-0.326, -0.1408, 0.0873] m in base_link"

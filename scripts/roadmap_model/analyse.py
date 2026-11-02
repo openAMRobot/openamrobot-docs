@@ -22,7 +22,7 @@ import re
 import numpy as np
 from scipy.spatial import cKDTree
 
-from frames import FACTS, HERE, MODEL, REPO, datums, glb_nodes, load_yaml, sensor_frames, tzbot_layout
+from frames import FACTS, HERE, MODEL, REPO, datums, glb_nodes, lift_rear_layout, load_yaml, sensor_frames, tzbot_layout
 
 OWN = {"mech": "fridayali", "elec": "evans-kwashie", "lead": "BotshareAI", "nav": "skunal3318", "manip": "Brinex45",
        "perc": "vineethmanthena", "tech": "panthera-momagdii"}
@@ -156,7 +156,7 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
     add("lift_column", box_mesh([L, Wc, i + .012], [0, 0, t + (i + .012) / 2]), "col")
     add("lift_column_stage", box_mesh([L - .016, Wc - .012, .44], [0, 0, c - HEAD - .22]), "mov")
     add("lift_column_head", box_mesh([.25, .072, HEAD], [0, 0, c - HEAD / 2]), "mov")
-    d, p = -L / 2, MOUNT_X + PX / 2
+    d, p = lift["plate_rear_x"], MOUNT_X + PX / 2   # A6: one-piece plate with the rear extension
     add("adapter_plate", box_mesh([p - d, .1, .01], [(d + p) / 2, 0, c + .005]), "mov")
     f = c + .01
     add("arm_profile", box_mesh([PX, PY, PL], [MOUNT_X, 0, f + PL / 2]), "mov")
@@ -182,22 +182,20 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
     add("getac_tablet", box_mesh(ts, [fr + ts[0] / 2, 0, c + C["getac_tablet"]["z"]]), "mov")
     hs = C["head_light"]["size"]
     add("head_light", box_mesh(hs, [fr + hs[0] / 2, 0, c + C["head_light"]["z"]]), "mov")
-    # lift sensors
-    y0 = Wc / 2
+    # lift sensors (A6: rear face of the static column, axes along y; the same values as model.js liftSensors)
     s = lift["sensor"]
-    ys = y0 + lift["axis_off"]
+    b = lift["bracket"]
     for k, dz in enumerate(lift["z"]):
-        add("lift_stop_sensor_%d" % (k + 1), cyl_mesh(s["d"] / 2, s["len"], [lift["face_x"] + s["len"] / 2, ys, t + dz], "x"), "col")
-        b = lift["bracket"]
-        bx = lift["face_x"] + s["len"] - b["at"]
-        add("lift_sensor_bracket_%d" % (k + 1), box_mesh([b["leg"], b["t"], lift["bracket_h"]], [bx - b["leg"] / 2, y0 + b["t"] / 2, t + dz]), "col")
-        add("lift_sensor_bracket_leg_%d" % (k + 1), box_mesh([b["t"], b["leg"], lift["bracket_h"]], [bx - b["t"] / 2, y0 + b["leg"] / 2, t + dz]), "col")
+        add("lift_stop_sensor_%d" % (k + 1), cyl_mesh(s["d"] / 2, s["len"], [lift["axis_x"], lift["face_y"] - s["len"] / 2, t + dz], "y"), "col")
+        add("lift_sensor_bracket_%d" % (k + 1), box_mesh([b["t"], b["leg"], lift["bracket_h"]], [lift["rear_x"] - b["t"] / 2, -b["leg"] / 2, t + dz]), "col")
+        add("lift_sensor_bracket_leg_%d" % (k + 1), box_mesh([b["leg"], b["t"], lift["bracket_h"]], [lift["rear_x"] - b["leg"] / 2, -b["t"] / 2, t + dz]), "col")
     r = lift["rod"]
-    rx = lift["face_x"] - lift["gap"] - lift["flag"][0] - r["w"] / 2
-    ry = y0 + r["off"] + r["w"] / 2
+    rx, ry = sum(lift["rod_x"]) / 2, sum(lift["rod_y"]) / 2
     add("flag_rod", box_mesh([r["w"], r["w"], r["len"]], [rx, ry, c - r["len"] / 2]), "mov")
+    cl = lift["corner_x"][1] - lift["corner_x"][0]
+    add("rod_corner_bracket", box_mesh([cl, r["w"], cl], [sum(lift["corner_x"]) / 2, ry, c - cl / 2]), "mov")
     fl = lift["flag"]
-    add("lift_flag", box_mesh(fl, [lift["face_x"] - lift["gap"] - fl[0] / 2, y0 + lift["flag_off"] + fl[1] / 2, c - lift["flag_below_plate"]]), "mov")
+    add("lift_flag", box_mesh(fl, [sum(lift["flag_x"]) / 2, sum(lift["flag_y"]) / 2, c - lift["flag_below_plate"]]), "mov")
     # placement parts
     info = {}
     for cc in P["components"]:
@@ -423,7 +421,7 @@ def main():
     declared = [("base_plate", "*"), ("support_", "*"), ("side_panel", "*"), ("front_panel", "*"), ("rear_panel", "*"), ("cover", "*"),
                 ("centre_bracket", "*"), ("bay_plate", "bay_"), ("bay_plate", "fasteners"), ("rear_plate", "rz_"), ("lift_base_plate", "lift_column"),
                 ("lift_base_plate", "fasteners"), ("lift_column", "lift_column"), ("lift_column", "second_estop"), ("lift_column", "lift_sensor"),
-                ("lift_column", "rear_estop"), ("lift_column_head", "adapter_plate"), ("adapter_plate", "arm_profile"), ("adapter_plate", "flag_rod"),
+                ("lift_column", "rear_estop"), ("lift_column_head", "adapter_plate"), ("adapter_plate", "arm_profile"), ("adapter_plate", "flag_rod"), ("rod_corner_bracket", "adapter_plate"), ("rod_corner_bracket", "flag_rod"), ("rod_corner_bracket", "fasteners"), ("battery_series_link", "rz_batcon"),
                 ("arm_profile", "head_camera_bracket"), ("head_camera_bracket", "head_camera"), ("arm_profile", "getac"), ("arm_profile", "head_light"),
                 ("arm_profile", "fasteners"), ("adapter_plate", "fasteners"), ("lift_sensor", "lift_stop"), ("lift_sensor", "fasteners"),
                 ("lift_stop", "lift_sensor"), ("harness", "*"), ("service_loop", "*"), ("keepout", "*"), ("can_term", "*"), ("lidar", "lidar_"),
@@ -541,40 +539,82 @@ def main():
                       ("overlap %.1f mm" % (r[1] * 1000)) if r[1] > .0005 else ("clearance %.1f mm" % (r[0] * 1000)), "overlap <= 0.5 mm, clearance >= 5 mm",
                       "owner correction A3 (2 Nov 2026), design_intent/getac_pocket.step", "check at M-09", OWN["mech"], "interference")
 
-    # ---- arm reach sweep
-    sweep = {}
-    targets = {k: geos[k] for k in ("getac_tablet", "head_light", "head_camera", "head_camera_bracket", "second_estop", "flag_rod", "arm_profile", "getac_pocket", "lift_flag") if k in geos}
+    # ---- arm reach sweep (owner correction A5): only physically valid poses. Each joint moves out from the upstream home
+    # pose (all joints 0) in 10 deg steps in both directions, inside the URDF joint limits; the motion stops at the first
+    # pose with a self-collision (non-adjacent links of the same arm, or the other arm at home) or a contact with the robot
+    # body. Only the contacts of that first contact pose are reported: poses beyond it cannot be reached and are not counted.
+    sweep, stops = {}, {}
+    targets = {k: geos[k] for k in ("getac_tablet", "head_light", "head_camera", "head_camera_bracket", "second_estop", "flag_rod", "arm_profile",
+                                    "getac_pocket", "lift_flag", "adapter_plate", "lift_column", "rear_estop_housing", "cover") if k in geos}
+    def link_geos(side, q, tr):
+        ps, a_ = arm_parts(side, q, .6, up["col_top"] + .166 + tr, .06)
+        return [(lp.id, Geo(lp, {"bp": "bp000", "travel": 0}, .006)) for lp in ps if not lp.id.endswith("_base")], a_
+    def adjacent(a_, b_):
+        ia, ib = a_[1], b_[1]
+        return abs(ia - ib) <= 1 or (ia >= 7 and ib >= 7)
+    nposes = 0
     for tr, nm in ((0.0, "L1000"), (.35, "L1350")):
         cfg = {"bp": "bp000", "travel": tr}
         tg = {k: Geo(names[k], cfg, .004) for k in targets}
         for side in ("left", "right"):
+            other = "right" if side == "left" else "left"
+            og, _ = link_geos(other, [0.0] * 7, tr)
             home = [0.0] * 7
-            parts0, a = arm_parts(side, home, .6, up["col_top"] + .166 + tr, .06)
+            hg, a = link_geos(side, home, tr)
+            idx = {lid: i_ for i_, (lid, _) in enumerate(hg)}
+            def self_pairs(lg):
+                out = set()
+                for x in range(len(lg)):
+                    for y in range(x + 1, len(lg)):
+                        if adjacent((lg[x][0], x), (lg[y][0], y)):
+                            continue
+                        r = pair(lg[x][1], lg[y][1], .001)
+                        if r and r[1] > .002:
+                            out.add((lg[x][0], lg[y][0]))
+                    for oid, o in og:
+                        r = pair(lg[x][1], o, .001)
+                        if r and r[1] > .002:
+                            out.add((lg[x][0], oid))
+                return out
+            def body_hits(lg):
+                out = []
+                for lid, g in lg:
+                    for k, gt in tg.items():
+                        if k == "arm_profile" and lid.endswith("link1"):
+                            continue   # the arm mount on the post
+                        r = pair(g, gt, .002)
+                        if r and (r[1] > .001 or r[0] < .0015):
+                            out.append((k, lid))
+                return out
+            base_self, base_body = self_pairs(hg), {k for k, _ in body_hits(hg)}   # contacts already at home: mounting contacts, not motion results
             for j in range(7):
                 lo, hi = a["joints"][j]["lo"], a["joints"][j]["hi"]
-                for q in np.arange(lo, hi + 1e-6, math.radians(10)):
-                    qq = list(home)
-                    qq[j] = q
-                    ps, _ = arm_parts(side, qq, .6, up["col_top"] + .166 + tr, .06)
-                    for lp in ps:
-                        if lp.id.endswith("_base"):
-                            continue
-                        lg = Geo(lp, {"bp": "bp000", "travel": 0}, .006)
-                        for k, g in tg.items():
-                            if k == "arm_profile" and lp.id.endswith(("link1",)):
-                                continue
-                            r = pair(lg, g, .002)
-                            if r and (r[1] > .001 or r[0] < .0015):
-                                key = (nm, side, k)
-                                sweep.setdefault(key, []).append((j + 1, round(math.degrees(q)), lp.id))
-    nsteps = sum(int((a["joints"][j]["hi"] - a["joints"][j]["lo"]) / math.radians(10)) + 1 for j in range(7))
+                for sgn in (1, -1):
+                    q = 0.0
+                    while True:
+                        q += sgn * math.radians(10)
+                        if q > hi + 1e-6 or q < lo - 1e-6:
+                            break
+                        qq = list(home)
+                        qq[j] = q
+                        lg, _ = link_geos(side, qq, tr)
+                        nposes += 1
+                        sp = self_pairs(lg) - base_self
+                        bh = [(k, lid) for k, lid in body_hits(lg) if k not in base_body]
+                        if bh:
+                            for k, lid in bh:
+                                sweep.setdefault((nm, side, k), []).append((j + 1, round(math.degrees(q)), lid))
+                        if sp or bh:
+                            stops[(nm, side, j + 1, sgn)] = {"deg": round(math.degrees(q)), "self": sorted(sp), "body": sorted({k for k, _ in bh})}
+                            break
+    nsteps = nposes
     for (nm, side, k), lst in sorted(sweep.items()):
         js = sorted({x[0] for x in lst})
         issue("major" if k in ("getac_tablet", "head_light", "head_camera", "second_estop", "getac_pocket") else "minor",
-              "OpenArm %s / %s" % (side, k), "%s, single-joint sweep from the upstream home pose (all joints 0), 10 deg steps" % nm,
-              "%d of %d sweep poses hit (joints %s)" % (len({(x[0], x[1]) for x in lst}), nsteps, ", ".join("J%d" % j for j in js)),
-              "no contact inside the joint limits, or a software keep-out", "openarm_description 14ff67b limits; datums.yaml positions; B8 (29 Oct simulation)",
-              "add a MoveIt collision object and joint-limit keep-out for this item; for the Getac and E-stop see M-09", OWN["manip"], "arm reach")
+              "OpenArm %s / %s" % (side, k), "%s, valid single-joint motion from the upstream home pose (all joints 0), 10 deg steps, stops at the first contact" % nm,
+              "first contact on %s (%s)" % (", ".join("J%d at %+d deg" % (x[0], x[1]) for x in sorted(set((x[0], x[1]) for x in lst))), ", ".join(sorted({x[2] for x in lst}))),
+              "no contact inside the joint limits, or a software keep-out", "openarm_description 14ff67b limits; datums.yaml positions; valid poses only (A5)",
+              "add a MoveIt collision object and joint-limit keep-out for this item", OWN["manip"], "arm reach")
 
     # ---- sensor views
     views = {}
@@ -793,14 +833,13 @@ def main():
     margin_ok = max(mu.values()) <= 0.67
     w = plate["worst"]
     wc = [c for c in plate["cases"] if c["case"] + " (" + c["bp"] + ")" == w][0]
-    issue("minor" if margin_ok else "major", "Lift base plate MEC-019 on the centre-frame arch: load path", w,
-          "worst case: bolt %.2f, rivet-nut pull-through %.2f, plate %.2f (%.0f MPa), arch top sheet %.2f (%.0f MPa) utilisation; per rear bolt %.0f N tension, %.0f N shear; column tilt %.2f deg" % (
+    issue("minor", "Lift base plate MEC-019 on the centre-frame arch: load path", w,
+          "worst case: bolt %.2f, rivet-nut pull-through %.2f, plate %.2f (%.0f MPa), arch top sheet %.2f (%.0f MPa) utilisation without the fix; per rear bolt %.0f N tension, %.0f N shear; column tilt %.2f deg" % (
               mu["bolt_utilisation"], mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], wc["plate_stress_MPa"], mu["arch_sheet_utilisation"],
               wc["arch_sheet_stress_MPa"], max(wc["bolt_tension_per_bolt_N"].values()), wc["bolt_shear_per_bolt_N"], plate["max_column_tilt_deg"]),
           "utilisation <= 0.67 (factor 1.5 on unfactored loads) for every element", "lift_plate_check.py; EN 485-2, EN 10025-2, EN 1993-1-8; CAD MMP.04.00.00.000",
-          "load path into the arch with margin: GI-026 / GI-027 (front deck bolts without a frame) closed" if margin_ok else
-          "add a doubler under the arch top between the rear rivet nuts and the rear wall, or use the outer 190 x 300 rivet-nut pattern as well (wider plate)",
-          OWN["mech"], "load path")
+          "decided (A7, owner, 2 Nov 2026; to be entered in P-03 and M-01): a doubler under the arch top sheet, or through-bolts with a backing plate; CAD pending",
+          OWN["mech"], "decided fix, CAD pending")
 
     # ---- TZBOT WCM-500-24 receiver (B4): position, lowest point, floor gap, cut-out, metal-free zone, EMC distances
     TZ = FACTS["tzbot_receiver"]
@@ -838,12 +877,34 @@ def main():
         dims = {it["id"]: it["dims"] for it in load_yaml(os.path.join(HERE, "parts.yaml"))["packed"]}
         RLb = __import__("rear_layout").layout()
         pz = RLb["plate"]
+        g80 = summ.get("gi080", {})
+        tried = "; ".join("option %d (%s): %s" % (st["option"], st["what"], "fits" if (st.get("fits") or (st.get("option") != 2 and not st.get("nofit"))) else
+                                                  "no fit (%s)" % ", ".join(st.get("nofit") or st.get("front_bay_nofit") or [])) for st in g80.get("steps", []))
         issue("blocker", "Rear layout (A1) / %s" % ", ".join(nof + nof_fb), "power-electronics plate above the receiver and the pocket rear corners",
-              "no space for %s: plate %.0f x %.0f mm, underside %.0f mm, height %.0f mm to the cover (rear flange slope from x -0.315); disconnect and SB50 on the rear panel; nothing above FB-A, FB-B, F0, F-CHG and the precharge kit (fuse access)" % (
-                  ", ".join(nof + nof_fb), (pz[1][0] - pz[0][0]) * 1000, (pz[1][1] - pz[0][1]) * 1000, pz[0][2] * 1000, (FACTS["cover_underside"] - pz[1][2]) * 1000),
-              "every onboard part placed with >= 5 mm clearance and fuse access", "parts.yaml catalogue outlines (verify); owner correction A1 and the receiver position of 2 Nov 2026",
-              "BMS on a second level over K1/K2 needs about 200 x 110 mm free; or a lower-profile fuse block, a BMS order code with a smaller outline, or FB-B on the arch rear wall; hardware owner layout due",
+              "no space for %s: plate %.0f x %.0f mm, underside %.0f mm, height %.0f mm to the cover (rear flange slope from x -0.315); disconnect and SB50 on the rear panel; nothing above FB-A, FB-B, F0, F-CHG and the precharge kit (fuse access). Tried in order (A9): %s" % (
+                  ", ".join(nof + nof_fb), (pz[1][0] - pz[0][0]) * 1000, (pz[1][1] - pz[0][1]) * 1000, pz[0][2] * 1000, (FACTS["cover_underside"] - pz[1][2]) * 1000, tried),
+              "every onboard part placed with >= 5 mm clearance and fuse access; nothing on the cells; F0 within about 150 mm of the battery positive; BMS close to the cells",
+              "parts.yaml catalogue outlines (verify); owner corrections A1 and A9 of 2 Nov 2026; build_summary.json gi080",
+              "none of the three options fits with catalogue outlines: a lower-profile SAFE-bus fuse block, a BMS order code with a smaller outline, or a deeper rear section; hardware owner layout due",
               OWN["elec"], "layout")
+    # A9 cable rules on the 25 mm² runs (build_summary.json cables_25mm2)
+    c25 = summ.get("cables_25mm2", {})
+    if c25:
+        f0 = c25.get("CBL-P01", {})
+        bad = sorted(k for k, v in c25.items() if not v.get("bend_ok"))
+        f0_bad = f0 and f0.get("route_m", 0) > 0.165
+        if f0_bad or bad:
+            meas = []
+            if f0:
+                meas.append("battery + to F0 (CBL-P01) %.0f mm routed, %.0f mm straight" % (f0["route_m"] * 1000, f0["direct_m"] * 1000))
+            for k in bad:
+                w = c25[k]["worst_corner"]
+                meas.append("%s 90 deg corner has %.0f mm straight cable, %.0f mm needed for R 60 mm" % (k, w["have_mm"], w["need_mm"]) if w else k)
+            issue("major", "Rear layout (A9) / 25 mm² cable rules", "rear power-electronics plate and the battery trays",
+                  "; ".join(meas), "F0 within about 150 mm cable length of battery +; bend radius >= 60 mm on 25 mm² cables (A9)",
+                  "cable_list.csv point-to-point routes in the rear bay (one horizontal leg, one vertical drop); build_summary.json cables_25mm2",
+                  "move F0 next to the battery + terminal and space the main-path parts (disconnect, PWR-017, K1/K2) for 60 mm bends, together with the GI-080 layout",
+                  OWN["elec"], "layout")
     for k, o in summ["k1k2_options"].items():
         if k == "A":
             issue("minor", "K1/K2 option A GX11CAC fit", "rear zone", "fits: %s" % o["fits"], "fits the rear zone", "packer", "decision 2 Nov", OWN["elec"], "fit")
@@ -855,11 +916,11 @@ def main():
     RLc = __import__("rear_layout").layout()
     if not RLc["pockets"].get("clears_flanges"):
         tr = RLc["trays"][0]
-        issue("major", "Rear side pockets / side panel return flanges", "4 + 4 LF105 upright in the side pockets (A1)",
-              "pocket %.0f mm across (CAD, owner estimate %.0f) x %.0f mm along; 4 cells %s need y %.3f to %.3f, the flanges at y >= 0.193 (z 51 to 74 and 191 to 214 mm) cross them; %.0f mm free inside the flange line" % (
-                  RLc["pocket_free"]["y_mm"], RLc["pocket_free"]["y_owner_formula_mm"], RLc["pocket_free"]["x_beside_support_mm"], RLc["pockets"]["arrangement"], tr["lo"][1], tr["hi"][1], RLc["pocket_free"]["y_inside_flanges_mm"]),
+        issue("minor", "Rear side pockets / side panel return flanges", "4 + 4 LF105 upright in the side pockets (A1)",
+              "pocket %.0f mm across (CAD) x %.0f mm along; 4 cells %s need y %.3f to %.3f, the flanges at y >= 0.193 (z 51 to 74 and 191 to 214 mm) cross them; %.0f mm free inside the flange line" % (
+                  RLc["pocket_free"]["y_mm"], RLc["pocket_free"]["x_beside_support_mm"], RLc["pockets"]["arrangement"], tr["lo"][1], tr["hi"][1], RLc["pocket_free"]["y_inside_flanges_mm"]),
               "cells clear the side-panel flanges", "CAD v0.2 side panel MMP.00.00.00.003 (GLB); rear_layout.py",
-              "notch the return flanges along the pockets (x %.3f to %.3f) or a rear side panel without return flanges; then the drawn trays fit" % (tr["lo"][0] - 0.003, tr["hi"][0] + 0.003), OWN["mech"], "layout")
+              "decided (A9, owner, 2 Nov 2026; to be entered in P-03 and M-01): notch the side-panel return flanges at x -0.275 to -0.133 m; CAD pending", OWN["mech"], "decided fix, CAD pending")
     # the Jetson on the front-bay plate (A2), not on the IMU bracket
     fbfit = (fbs.get(fbd) or {}).get("fit", {})
     jz = ((fbs.get(fbd) or {}).get("placed") or {}).get("compute")
@@ -878,16 +939,60 @@ def main():
     if sd:
         issue("minor" if sd["service_loop_length"] >= sd["service_loop_need"] else "major", "Upper-body service loop length", "L1000 to L1350",
               "loop %.0f mm vs %.0f mm needed at L1350" % (sd["service_loop_length"] * 1000, sd["service_loop_need"] * 1000), "covers the 350 mm stroke plus bend allowance", "harness route", "size the sleeve at build", OWN["elec"], "harness")
-    # rod outside the plate (B8) and second E-stop position (B8)
+    # A6: flag rod on the one-piece adapter plate (GI-010 closes when the rod is inside the plate footprint); stroke check of the
+    # rod and the flag against the column, the lift cable chain (service loop), the second E-stop housing, the rear power
+    # electronics and the top cover, at L1000, L1175 and L1350
     rodv = names["flag_rod"].world(base_cfg)
-    issue("major", "Flag rod LFT-004 / adapter plate MEC-004 footprint", "all lift positions", "rod y %.0f to %.0f mm vs plate edge 50 mm: %.0f to %.0f mm outside" % (rodv[:, 1].min() * 1000, rodv[:, 1].max() * 1000, rodv[:, 1].min() * 1000 - 50, rodv[:, 1].max() * 1000 - 50),
-          "inside the plate footprint", "datums.yaml lift_flag_rod_offset_from_face; B8", "rod mount bracket of design_intent/adapter_post (keeps the rod inside) or a 130 mm wide plate", OWN["mech"], "interference")
+    plv = names["adapter_plate"].world(base_cfg)
+    inside = rodv[:, 1].max() <= plv[:, 1].max() + 1e-6 and rodv[:, 1].min() >= plv[:, 1].min() - 1e-6 and rodv[:, 0].min() >= plv[:, 0].min() - 1e-6
+    if not inside:
+        issue("major", "Flag rod LFT-004 / adapter plate MEC-004 footprint", "all lift positions", "rod x %.0f to %.0f, y %.0f to %.0f mm vs plate x %.0f to %.0f, y +-%.0f mm" % (
+            rodv[:, 0].min() * 1000, rodv[:, 0].max() * 1000, rodv[:, 1].min() * 1000, rodv[:, 1].max() * 1000, plv[:, 0].min() * 1000, plv[:, 0].max() * 1000, plv[:, 1].max() * 1000),
+            "inside the plate footprint", "A6 (owner correction, 2 Nov 2026)", "extend the plate (frames.lift_rear_layout)", OWN["mech"], "interference")
+    LRt = lift_rear_layout()
+    stroke = {}
+    for tr, nm in ((0.0, "L1000"), (.175, "L1175"), (.35, "L1350")):
+        cfg = {"bp": "bp000", "travel": tr}
+        gr = {k: Geo(names[k], cfg, .003) for k in ("flag_rod", "lift_flag", "rod_corner_bracket") if k in names}
+        res_ = {}
+        for other in ("lift_column", "rear_estop_housing", "second_estop", "service_loop", "cover", "lift_stop_sensors", "lift_sensor_bracket_1", "lift_sensor_bracket_2",
+                      "lift_sensor_bracket_3", "lift_stop_sensor_1", "lift_stop_sensor_2", "lift_stop_sensor_3", "lift_node", "rear_plate", "harness_r24_col", "harness_sig_col"):
+            if other not in names:
+                continue
+            go = Geo(names[other], cfg, .003)
+            best = None
+            for k, g in gr.items():
+                r = pair(g, go, .05)
+                if r:
+                    d_ = -r[1] if r[1] > 0 else r[0]
+                    best = d_ if best is None else min(best, d_)
+            res_[other] = None if best is None else round(best * 1000, 1)
+        stroke[nm] = res_
+    cover_top = max(float(v[:, 2].max()) for k, v in ((k, names[k].world(base_cfg)) for k in ("cover",) if k in names))
+    rod_bottom = float(rodv[:, 2].min())
+    lift_rear_out = {"layout": LRt, "rod_inside_plate": bool(inside), "rod_bottom_L1000_mm": round(rod_bottom * 1000, 1),
+                     "rod_bottom_above_cover_L1000_mm": round((rod_bottom - cover_top) * 1000, 1), "clearances_mm": stroke}
+    # the E-stop housing and its fasteners stay out of the rod mount area (rod + corner bracket footprint on the plate underside)
+    if "rear_estop_housing" in names and "rod_corner_bracket" in names:
+        hv = names["rear_estop_housing"].world(base_cfg)
+        mv = np.vstack([rodv, names["rod_corner_bracket"].world(base_cfg)])
+        gx = max(float(hv[:, 0].min() - mv[:, 0].max()), float(mv[:, 0].min() - hv[:, 0].max()))
+        gy = max(float(hv[:, 1].min() - mv[:, 1].max()), float(mv[:, 1].min() - hv[:, 1].max()))
+        lift_rear_out["estop_to_rod_mount_mm"] = round(max(gx, gy) * 1000, 1)
+        if max(gx, gy) < 0.005:
+            issue("major", "Second E-stop housing / flag rod mount (A6)", "adapter plate", "%.1f mm between the housing footprint and the rod mount" % (max(gx, gy) * 1000),
+                  ">= 5 mm: the housing fasteners do not share the rod mount area", "A6 (owner correction, 2 Nov 2026)", "move the housing forward on the plate", OWN["mech"], "interference")
+    contacts = sorted({(nm, k, v) for nm, d_ in stroke.items() for k, v in d_.items() if v is not None and v < 1.95})
+    if contacts:
+        issue("major", "Flag rod and flag (A6) / %s" % ", ".join(sorted({k for _, k, _ in contacts})), "L1000 / L1175 / L1350, bp000",
+              "; ".join("%s %s %.1f mm" % (nm, k, v) for nm, k, v in contacts), "clearance >= 2 mm (the 2 mm flag gap is the design value)",
+              "A6 (owner correction, 2 Nov 2026); frames.lift_rear_layout", "move the part out of the rod and flag path", OWN["mech"], "interference")
     eact = up.get("estop2_actuator_z_stops") or {}
     ep = {"position": "adapter plate top behind the post, centred in y, above the column axis, button up (A5)", "actuator_centre_m": eact,
           "reach_band_m": [0.90, 1.50], "cable": "through the adapter plate into the lift cable chain with the arm cables"}
     hit_e = sorted({k[1] for k in sweep if k[2] == "second_estop"})
     issue("minor" if not hit_e and all(0.90 <= v <= 1.50 for v in eact.values()) else "major", "Second E-stop on the adapter plate (A5)", "L1000 / L1175 / L1350",
-          "actuator centre %s m; single-joint arm sweep: %s" % (" / ".join("%.3f" % v for v in eact.values()), "clear" if not hit_e else "hit by the %s arm" % " and ".join(hit_e)),
+          "actuator centre %s m; arm motion in valid poses: %s" % (" / ".join("%.3f" % v for v in eact.values()), "clear" if not hit_e else "hit by the %s arm" % " and ".join(hit_e)),
           "0.90 to 1.50 m at every stop, no arm contact (owner, 2 Nov 2026)", "owner correction A5; design_intent/rear_estop_housing.py",
           "enter the position in P-03 and M-01; tapped holes and a cable hole in MEC-004 (M-09)", OWN["mech"], "arm reach")
     g_hit = sorted({k[1] for k in sweep if k[2] in ("getac_tablet", "getac_pocket")})
@@ -943,10 +1048,10 @@ def main():
     if not intended[0]["within_limit"]:
         issue("major", "Hub motor wheels / floor", "all", "overlap %.1f mm" % (-wl * 1000), "intended contact <= 2 mm (B1)", "base GLB", "check the wheel model", OWN["mech"], "geometry")
     gpo = getac_check
-    out = {"self_check": check, "closed_issues": closed_out, "frames": frames, "heights": heights, "mass": res, "stability": stab, "loads": loads, "views": views,
+    out = {"self_check": check, "closed_issues": closed_out, "lift_rear": lift_rear_out, "frames": frames, "heights": heights, "mass": res, "stability": stab, "loads": loads, "views": views,
            "intended_contacts": intended, "tzbot": tzout, "lift_base_plate": plate, "estop": ep, "getac_check": getac_check, "front_bay": {k: v.get("fit") for k, v in fbs.items()},
            "front_bay_default": fbd, "getac_portrait": gpo, "mass_items": placed_mass,
-           "sweep": {"%s|%s|%s" % k: v[:20] for k, v in sweep.items()}, "sweep_steps_per_arm": nsteps,
+           "sweep": {"%s|%s|%s" % k: v[:20] for k, v in sweep.items()}, "sweep_stops": {"%s|%s|J%d|%+d" % k: v for k, v in stops.items()}, "sweep_valid_poses": nsteps,
            "counts": {s: sum(1 for r in issues if r["severity"] == s) for s in order}, "steel_chassis_kg": round(steel, 2)}
     json.dump(out, open(os.path.join(HERE, "analysis_summary.json"), "w"), indent=1, default=str)
     print(json.dumps(out["counts"]), json.dumps({k: (round(v["mass"], 1), v["com"]) for k, v in res.items()}), json.dumps(stab))

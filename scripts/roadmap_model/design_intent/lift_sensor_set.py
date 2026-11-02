@@ -1,16 +1,16 @@
 # SPDX-License-Identifier: MIT
-"""j. Lift stop sensor set (LFT-001 to LFT-007, drawing LIFT-SNS-01 rev1), design intent.
+"""j. Lift stop sensor set (LFT-001 to LFT-007, drawing LIFT-SNS-01 rev1), design intent; A6 (owner correction, 2 Nov 2026).
 
-Static (on the static DOLD profile, +y face, still to be confirmed): 3 x SICK IME12-04BNSZC0S (M12, NPN NO)
-on SICK BEF-WN-M12 angle brackets in a T-slot, sensor axes at 120 / 295 / 470 mm above the column base for
-L1000 / L1175 / L1350, sensing faces toward -x. Moving (hanging from the adapter-plate underside): MISUMI
-5-series 20 x 20 rod L430, M5 tapped, a 20 corner bracket against rotation, and an SS400 steel flag
-45 x 20 x 2 mm with its centre 410 mm below the plate underside, 2 mm air gap to the sensing faces; the rod
-runs 9 mm beside the sensor bodies. Values from datums.yaml (revision 2026-11-01.c), which carries the
-docs-model geometry; the BEF-WN-M12 outline is the docs envelope (issue #23: supplier drawing not matched).
-Manufacturing: flag laser-cut SS400 2 mm; rod cut from profile; brackets and sensors bought.
-Local frame: origin on the column axis at the column base (lift base-plate top), x forward, z up; moving
-parts at L1000.
+Static, on the REAR face of the static DOLD profile, centred in y: 3 x SICK IME12-04BNSZC0S (M12, NPN NO) on SICK
+BEF-WN-M12 angle brackets in the rear T-slot (one leg on the face, the sensor through the other leg, parallel to the
+face), sensor axes along y at 120 / 295 / 470 mm above the column base for L1000 / L1175 / L1350, sensing faces
+toward +y. Moving, hanging from the underside of the adapter-plate rear extension: MISUMI 5-series 20 x 20 rod L430
+bolted with M5 into its tapped end, a 20 corner bracket on the column side against rotation, and an SS400 steel flag
+45 x 20 x 2 mm with its centre 410 mm below the plate underside, 2 mm off the sensing faces; the rod is 9 mm clear of
+the sensor faces. All positions from frames.lift_rear_layout() (facts.yaml lift_rear). The BEF-WN-M12 outline is the
+docs envelope (issue #23: supplier drawing not matched). Manufacturing: flag laser-cut SS400 2 mm; rod cut from
+profile; brackets and sensors bought.
+Local frame: origin on the column axis at the column base (lift base-plate top), x forward, z up; moving parts at L1000.
 """
 import os
 import sys
@@ -18,17 +18,24 @@ import sys
 import cadquery as cq
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from frames import FACTS, lift_rear_layout  # noqa: E402
 from _common import run_single  # noqa: E402
 
-COL_HALF_Y = 30.0
-SENSOR_Z = (120.0, 295.0, 470.0)       # datums lift_stop_sensor_z_l1000 / l1175 / l1350
-FACE_X = -95.0                          # datums lift_stop_sensor_face_x
-AXIS_OFF = 15.0                         # datums lift_stop_sensor_axis_from_face
-SENSOR = (12.0, 48.0)                   # diameter, length
-BRACKET = (40.0, 4.0, 25.0, 28.0)       # leg, thickness, height, sensor-leg from sensor back (datums)
-FLAG = (2.0, 45.0, 20.0)                # x, y, z
-FLAG_GAP, FLAG_OFF, FLAG_BELOW = 2.0, 5.0, 410.0
-ROD = (20.0, 430.0, 30.0)               # width, length, inner face from the column face
+_F, _LR = FACTS["lift_rear"], lift_rear_layout()
+mm = lambda v: v * 1000.0
+SENSOR_Z = tuple(mm(z) for z in _F["sensor_z"])            # datums lift_stop_sensor_z_l1000 / l1175 / l1350 (unchanged)
+REAR_X = mm(_F["column_rear_x"])                            # rear face of the static column
+AXIS_X = mm(_LR["sensor_axis_x"])                           # sensor axis (along y), behind the rear face
+FACE_Y = mm(_LR["face_y"])                                  # sensing face, toward +y
+SENSOR = (mm(_F["sensor"]["d"]), mm(_F["sensor"]["len"]))   # diameter, length
+BRACKET = (mm(_F["bracket"]["leg"]), mm(_F["bracket"]["t"]), mm(_F["bracket"]["h"]))
+FLAG = tuple(mm(v) for v in _F["flag"])                     # x, y, z (A6: flat in the xz plane)
+FLAG_X, FLAG_Y = tuple(mm(v) for v in _LR["flag_x"]), tuple(mm(v) for v in _LR["flag_y"])
+FLAG_BELOW = mm(_F["flag_below_plate"])
+ROD = (mm(_F["rod"]["w"]), mm(_F["rod"]["len"]))
+ROD_X, ROD_Y = tuple(mm(v) for v in _LR["rod_x"]), tuple(mm(v) for v in _LR["rod_y"])
+CORNER_X = tuple(mm(v) for v in _LR["corner_x"])
 PLATE_UNDERSIDE_L1000 = 530.0           # retracted column length above the column base
 CORNER = (20.0, 3.0)                    # corner bracket leg and thickness
 
@@ -50,37 +57,33 @@ META = {
         {"joint": "corner bracket to plate", "part": "ISO 4762 screw (into tapped plate)", "size": "M4 x 10", "qty": 1, "standard": "ISO 4762", "class": "proposed"},
         {"joint": "flag to rod", "part": "ISO 7380 screw + short M4 T-nut", "size": "M4 x 8", "qty": 2, "standard": "ISO 7380", "class": "proposed"},
     ],
-    "next_step": "Confirm the column face (+y) and the BEF-WN-M12 outline (issue #23); increase the flag-to-bracket clearance (see note); M-09.",
+    "next_step": "Confirm the rear T-slot of the DOLD profile and the BEF-WN-M12 outline (issue #23); M-09.",
 }
 
 
 def sensors_and_brackets():
     d, l = SENSOR
-    leg, t, h, at = BRACKET
-    y0 = COL_HALF_Y
+    leg, t, h = BRACKET
     sens, brk = [], []
     for z in SENSOR_Z:
-        s = cq.Workplane("YZ").center(y0 + AXIS_OFF, z).circle(d / 2).extrude(l).translate((FACE_X, 0, 0))
+        s = cq.Workplane("XZ").center(AXIS_X, z).circle(d / 2).extrude(-l).translate((0, FACE_Y - l, 0))
         sens.append(s)
-        back = FACE_X + l
-        bx = back - at
-        b1 = cq.Workplane("XY").box(leg, t, h).translate((bx - leg / 2, y0 + t / 2, z))
-        b2 = cq.Workplane("XY").box(t, leg, h).translate((bx - t / 2, y0 + leg / 2, z))
-        b = b1.union(b2).cut(cq.Workplane("YZ").center(y0 + AXIS_OFF, z).circle(d / 2 + 0.3).extrude(200, both=True))
+        b1 = cq.Workplane("XY").box(t, leg, h).translate((REAR_X - t / 2, -leg / 2, z))      # leg on the rear face
+        b2 = cq.Workplane("XY").box(leg, t, h).translate((REAR_X - leg / 2, -t / 2, z))      # leg carrying the sensor
+        b = b1.union(b2).cut(cq.Workplane("XZ").center(AXIS_X, z).circle(d / 2 + 0.3).extrude(200, both=True))
         brk.append(b)
     return sens, brk
 
 
 def moving():
-    w, l, off = ROD
+    w, l = ROD
     zt = PLATE_UNDERSIDE_L1000
-    rx = FACE_X - FLAG_GAP - FLAG[0] - w / 2
-    ry = COL_HALF_Y + off + w / 2
+    rx, ry = sum(ROD_X) / 2, sum(ROD_Y) / 2
     rod = cq.Workplane("XY").box(w, w, l).translate((rx, ry, zt - l / 2))
     a, t = CORNER
-    cb = (cq.Workplane("XY").box(w, a, t).translate((rx, ry - w / 2 - a / 2, zt - t / 2))
-          .union(cq.Workplane("XY").box(w, t, a).translate((rx, ry - w / 2 - t / 2, zt - t - a / 2))))
-    flag = cq.Workplane("XY").box(*FLAG).translate((FACE_X - FLAG_GAP - FLAG[0] / 2, COL_HALF_Y + FLAG_OFF + FLAG[1] / 2, zt - FLAG_BELOW))
+    cb = (cq.Workplane("XY").box(a, w, t).translate((sum(CORNER_X) / 2, ry, zt - t / 2))
+          .union(cq.Workplane("XY").box(t, w, a).translate((CORNER_X[0] + t / 2, ry, zt - t - a / 2))))
+    flag = cq.Workplane("XY").box(*FLAG).translate((sum(FLAG_X) / 2, sum(FLAG_Y) / 2, zt - FLAG_BELOW))
     return rod, cb, flag
 
 
@@ -96,4 +99,4 @@ def build():
 
 if __name__ == "__main__":
     run_single(META, build)
-    print("flag inner edge to the bracket leg on the face: %.1f mm" % (FLAG_OFF - BRACKET[1]))
+    print("rod clearance to the sensor faces: %.1f mm" % _LR["rod_clear_mm"])

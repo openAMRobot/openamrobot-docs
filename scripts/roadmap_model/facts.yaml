@@ -56,11 +56,9 @@ tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger I
                  freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
                  signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",
                            red: "receiver output to battery +", black: "receiver output to battery -"}}
-# rear section, owner values A1 (confirmed against the CAD by build.py, differences reported): ~360 mm between the top-cover supports,
-# ~578 mm between the side walls, ~240 mm rear panel to the arch edge minus the internal supports; side pockets about
-# (side-wall inner width - 150) / 2 across by about 190 mm along, minus the 20 mm metal-free margin next to the receiver
-rear_section: {owner_between_supports: 0.360, owner_between_walls: 0.578, owner_panel_to_arch: 0.240,
-               rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_y: 0.288,
+# rear section (A1, A9): the CAD v0.2 dimensions measured by rear_layout.py are the reference (A9, 2 Nov 2026);
+# side pockets (side-wall inner width - 150) / 2 across, minus the 20 mm metal-free margin next to the receiver
+rear_section: {rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_y: 0.288,
                power_plate: {t: 0.003, min_above_receiver: 0.020}}
 # 8 x EVE LF105 (200 h x 130 x 38 mm, 1.98 kg) upright, 4 per side pocket, 8S (replaces the single row across the robot, B-02 rev18.10)
 cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002}
@@ -74,3 +72,10 @@ zed_ahead_of_j1a: 0.057   # owner correction A4 (2 Nov 2026), was 0.042
 # exact OCC bounding boxes of every solid, floor at the castor wheel bottom; base sheet at 52.0 / 54.0 mm as corrected in base_mesh_map.yaml)
 cad_lowest: {drive_tyre: -0.0020, castor_wheels: 0.0, castor_bolt_tips_m6x20: 0.0410, m5x20_bolt_tips: 0.0448, m4x16_bolt_tips: 0.0460,
              lidar_support_m4_bolt_tips: 0.0472, nuts_and_washers: [0.0470, 0.0510], base_sheet_bottom: 0.052}
+# A6 (owner correction, 2 Nov 2026; to be entered in P-03 and M-01): lift stop sensors and flag rod at the rear of the column.
+# Inputs only; frames.lift_rear_layout() derives the sensor, flag, rod, corner-bracket and adapter-plate geometry (column frame:
+# x from the column axis, y lateral, z above the column base = lift base-plate top). Sensor and bracket outlines as LIFT-SNS-01 rev 1.
+lift_rear: {column_rear_x: -0.120, sensor_z: [0.120, 0.295, 0.470], sensor: {d: 0.012, len: 0.048}, bracket: {leg: 0.040, t: 0.004, h: 0.025, axis_from_face: 0.028},
+            flag: [0.045, 0.002, 0.020], gap: 0.002, rod_clear: 0.009, rod: {w: 0.020, len: 0.430}, corner: {leg: 0.020, t: 0.003},
+            bolt_edge: 0.012, flag_below_plate: 0.410, plate: {front_x: 0.240, width: 0.100, t: 0.010, material: "6082-T6"},
+            lift_node_z: 0.355}

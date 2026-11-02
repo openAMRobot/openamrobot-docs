@@ -456,12 +456,12 @@ groups:
           component: rz_fba
           mass_kg: 0.45
           com_m:
-          - -0.2385
-          - 0.05
+          - -0.256
+          - -0.0025
           - 0.2004
           size_m:
-          - 0.165
           - 0.07
+          - 0.165
           - 0.101
           source: estimate from the catalogue class
         - bom: FB-C
@@ -528,8 +528,8 @@ groups:
           component: flag_rod
           mass_kg: 0.22
           com_m:
-          - -0.049
-          - 0.07
+          - -0.113
+          - 0.038
           - 0.619
           size_m:
           - 0
@@ -540,9 +540,9 @@ groups:
           component: rod_corner_bracket
           mass_kg: 0.02
           com_m:
-          - 0.0
-          - 0.0
-          - 0.2
+          - -0.093
+          - 0.038
+          - 0.824
           size_m:
           - 0
           - 0
@@ -552,8 +552,8 @@ groups:
           component: lift_flag
           mass_kg: 0.014
           com_m:
-          - -0.038
-          - 0.0575
+          - -0.1005
+          - 0.027
           - 0.424
           size_m:
           - 0
@@ -564,8 +564,8 @@ groups:
           component: fasteners
           mass_kg: 0.03
           com_m:
-          - 0.1062
-          - 0.0113
+          - 0.0915
+          - -0.0067
           - 0.5942
           size_m:
           - 0
@@ -600,7 +600,7 @@ groups:
           component: adapter_plate
           mass_kg: 0.97
           com_m:
-          - 0.12
+          - 0.0875
           - 0.0
           - 0.839
           size_m:
@@ -672,8 +672,8 @@ groups:
           component: harness_fittings
           mass_kg: 0.15
           com_m:
-          - 0.036
-          - -0.0091
+          - 0.0271
+          - -0.0191
           - 0.5763
           size_m:
           - 0.707
@@ -684,8 +684,8 @@ groups:
           component: fasteners
           mass_kg: 0.6
           com_m:
-          - 0.1062
-          - 0.0113
+          - 0.0915
+          - -0.0067
           - 0.5942
           size_m:
           - 0
@@ -780,12 +780,12 @@ groups:
           component: rz_f0
           mass_kg: 0.3
           com_m:
-          - -0.241
-          - -0.0545
+          - -0.1855
+          - -0.035
           - 0.1666
           size_m:
-          - 0.1
           - 0.061
+          - 0.1
           - 0.056
           source: estimate from the catalogue class
         - bom: PWR-004
@@ -876,13 +876,13 @@ groups:
           component: rz_batcon
           mass_kg: 0.08
           com_m:
-          - -0.326
-          - -0.065
-          - 0.2479
+          - -0.164
+          - 0.0
+          - 0.2623
           size_m:
-          - 0.04
+          - 0.03
           - 0.06
-          - 0.032
+          - 0.041
           source: estimate
         - bom: PWR-019
           component: rz_sb50
@@ -900,12 +900,12 @@ groups:
           component: rz_fchg
           mass_kg: 0.05
           com_m:
-          - -0.258
-          - -0.005
-          - 0.2094
+          - -0.321
+          - -0.062
+          - 0.2494
           size_m:
-          - 0.066
           - 0.03
+          - 0.066
           - 0.034
           source: estimate from the catalogue class
         - bom: PWR-029
@@ -972,12 +972,12 @@ groups:
           component: rz_k1k2
           mass_kg: 0.9
           com_m:
-          - -0.2465
-          - 0.0455
+          - -0.2545
+          - 0.101
           - 0.1834
           size_m:
-          - 0.045
           - 0.073
+          - 0.045
           - 0.078
           source: estimate from the catalogue class
         - bom: SAF-004
@@ -1008,8 +1008,8 @@ groups:
           component: rz_brake
           mass_kg: 0.01
           com_m:
-          - -0.276
-          - -0.005
+          - -0.311
+          - 0.015
           - 0.1367
           size_m:
           - 0.03
@@ -1126,13 +1126,13 @@ groups:
           source: CAD volume x 7850 kg/m3 (steel assumed), computed
         mass_kg: 69.167
         com_m:
-        - -0.053
-        - -0.0003
-        - 0.1111
+        - -0.0537
+        - -0.0001
+        - 0.1113
         inertia_kgm2:
-          ixx: 2.09257
-          iyy: 3.48219
-          izz: 1.59609
+          ixx: 2.10584
+          iyy: 3.47426
+          izz: 1.58593
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.0
@@ -1245,7 +1245,7 @@ groups:
           com_m:
           - -0.0725
           - 0.0
-          - 0.42
+          - 0.355
           size_m:
           - 0.025
           - 0.04
@@ -1267,10 +1267,10 @@ groups:
         com_m:
         - -0.0007
         - 0.0
-        - 0.2642
+        - 0.2639
         inertia_kgm2:
-          ixx: 0.00135
-          iyy: 0.00239
+          ixx: 0.00276
+          iyy: 0.0038
           izz: 0.00106
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
@@ -1326,16 +1326,16 @@ totals:
   L1000:
     mass_kg: 94.86
     com_m:
-    - 0.0206
-    - -0.0002
-    - 0.3378
+    - 0.0201
+    - -0.0
+    - 0.3379
     frame: base_footprint, bp000
   L1350:
     mass_kg: 94.86
     com_m:
-    - 0.0206
-    - -0.0002
-    - 0.4139
+    - 0.0201
+    - -0.0
+    - 0.4141
     frame: base_footprint, bp000
 comparison:
   combined_model_urdf_kg:

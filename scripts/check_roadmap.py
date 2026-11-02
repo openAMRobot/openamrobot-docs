@@ -668,8 +668,8 @@ def check_chest_and_riser(root, html, err, comps):
         if len(builds[page]) != 1 or not keys(builds[page][0]) <= allowed:
             err(page, "builds the shared model with options %s; only %s are allowed (one robot on both pages)"
                 % (builds[page], sorted(allowed)))
-    # Lift stop sensor set (P-03 rev20.0 item 24, LIFT-SNS-01 rev 1, BOM Issue 7.14 LFT-001 to LFT-006): the flag
-    # faces S1, S2 and S3 at L1000, L1175 and L1350, the 2 mm gap and the 9 mm rod offset.
+    # Lift stop sensor set (P-03 rev20.0 item 24, LIFT-SNS-01 rev 1, BOM Issue 7.14 LFT-001 to LFT-006; A6 of 2 Nov 2026: rear
+    # face of the static column): the flag faces S1, S2 and S3 at L1000, L1175 and L1350, the 2 mm gap and the 9 mm rod clearance.
     lm = re.search(r"/\*LIFT-JSON\*/(.*?)/\*LIFT-JSON-END\*/", js, flags=re.S)
     ls = json.loads(lm.group(1)) if lm else {}
     for cid, bom in LIFT_PARTS.items():
@@ -677,8 +677,8 @@ def check_chest_and_riser(root, html, err, comps):
         if not c or c.get("bom") != bom or not c.get("placeholder"):
             err("model.js", "lift sensor part %s (%s) missing, with another BOM ID or not a placeholder" % (cid, bom))
     if ls.get("z") != LIFT_SENSOR_Z or ls.get("flag_below_plate") != 0.41 or ls.get("gap") != 0.002 \
-            or ls.get("flag") != [0.002, 0.045, 0.02] or (ls.get("rod") or {}).get("len") != 0.43:
-        err("model.js", "M.LIFT_SENSE differs from LIFT-SNS-01 rev 1 (sensors z 120/295/470, flag 410 mm below the plate, 2 mm gap, 45 x 20 x 2 flag, 430 mm rod)")
+            or sorted(ls.get("flag") or []) != [0.002, 0.02, 0.045] or (ls.get("rod") or {}).get("len") != 0.43 or ls.get("face") != "rear":
+        err("model.js", "M.LIFT_SENSE differs from LIFT-SNS-01 rev 1 with A6 (rear face; sensors z 120/295/470, flag 410 mm below the plate, 2 mm gap, 45 x 20 x 2 flag, 430 mm rod)")
     else:
         dm = re.search(r"STOPS:\s*\{L1000:\s*([\d.]+),\s*L1175:\s*([\d.]+),\s*L1350:\s*([\d.]+)\}", js)
         stops = [float(v) for v in dm.groups()] if dm else []
@@ -687,9 +687,21 @@ def check_chest_and_riser(root, html, err, comps):
             flag = 0.53 + (stop - stops[0]) - ls["flag_below_plate"]
             if abs(flag - dz) > 1e-6:
                 err("model.js", "at %s the flag centre is %.3f m above the column base, the sensor S%d is at %.3f m" % (ls["stops"][k], flag, k + 1, dz))
-        s_out = ls["axis_off"] + ls["sensor"]["d"] / 2
-        if abs(ls["rod"]["off"] - s_out - 0.009) > 1e-6:
-            err("model.js", "the flag rod is %.4f m beside the sensors, LIFT-SNS-01 gives 9 mm" % (ls["rod"]["off"] - s_out))
+        # A6 geometry: flag 2 mm off the sensing faces and covering them, rod 9 mm clear of the face discs, rod and corner
+        # bracket under the adapter plate (rear extension, 100 mm wide), sensors behind the column rear face
+        r_face = ls["sensor"]["d"] / 2
+        if abs(ls["flag_y"][0] - ls["face_y"] - ls["gap"]) > 1e-6:
+            err("model.js", "A6: the flag is %.1f mm off the sensing faces, LIFT-SNS-01 gives 2 mm" % ((ls["flag_y"][0] - ls["face_y"]) * 1000))
+        if not (ls["flag_x"][0] <= ls["axis_x"] - r_face and ls["flag_x"][1] >= ls["axis_x"] + r_face):
+            err("model.js", "A6: the flag x %s does not cover the sensing face (axis %.3f, d 12 mm)" % (ls["flag_x"], ls["axis_x"]))
+        dx = (ls["axis_x"] - r_face) - ls["rod_x"][1]
+        dy = ls["rod_y"][0] - ls["face_y"]
+        if dx < ls["rod_clear"] - 1e-6 or (dx * dx + max(dy, 0) ** 2) ** 0.5 < 0.009 - 1e-6:
+            err("model.js", "A6: the flag rod is %.1f mm from the sensor faces, LIFT-SNS-01 gives 9 mm" % (dx * 1000))
+        if ls["rod_x"][0] < ls["plate_rear_x"] - 1e-6 or ls["corner_x"][0] < ls["plate_rear_x"] - 1e-6 or ls["rod_y"][1] > 0.05 + 1e-6:
+            err("model.js", "A6: the flag rod or its corner bracket is outside the adapter plate (rear edge %.3f, half width 0.050)" % ls["plate_rear_x"])
+        if ls["axis_x"] + r_face > ls["rear_x"] - 1e-6 or ls["plate_rear_x"] > ls["rear_x"] - 1e-6:
+            err("model.js", "A6: the sensors and the plate rear edge must be behind the column rear face (x %.3f)" % ls["rear_x"])
     if not re.search(r"part\('lift_stop_sensors', R\.col\)", js) or not re.search(r"part\('flag_rod', mov\)", js) \
             or not re.search(r"part\('lift_flag', mov\)", js):
         err("model.js", "the sensors must be in the static lift group and the rod and flag in the moving group")
@@ -1204,10 +1216,24 @@ def upper_body_sensor_poses(js, urdf_path):
     I = [[1.0, 0, 0], [0, 1.0, 0], [0, 0, 1.0]]
     out = {}
     s = lift["sensor"]
-    ys = num("W") / 2 + lift["axis_off"] if re.search(r"\bW: ", dims) else 0.03 + lift["axis_off"]
-    for k, dz in zip(("l1000", "l1175", "l1350"), lift["z"]):
-        body = [bp + lift["face_x"] + s["len"] / 2, ys, top + dz]
-        out["lift_stop_sensor_%s_link" % k] = {"drawn_body": body, "drawn_R": I, "source": frames.get("lift_stop_sensor_%s_link" % k)}
+    # A6 (owner correction, 2 Nov 2026; to be entered in P-03 and M-01): the sensors sit on the rear face of the static
+    # column, axes along y, sensing faces toward +y. The combined model keeps the side face until the P-03 entry, so the
+    # source frame is the A6 frame recorded in source_snapshot.json (owner_corrections.lift_rear), rotated -90 deg about z.
+    try:
+        oc = json.load(open(os.path.join(os.path.dirname(urdf_path), "source_snapshot.json"), encoding="utf-8")).get("owner_corrections", {})
+    except (OSError, ValueError):
+        oc = {}
+    a6 = oc.get("lift_rear")
+    Rz = [[0.0, 1.0, 0.0], [-1.0, 0.0, 0.0], [0.0, 0.0, 1.0]]   # frame x (into the body) along -y
+    for k, dz, zs in zip(("l1000", "l1175", "l1350"), lift["z"], (a6 or {}).get("sensor_z", lift["z"])):
+        if lift.get("face") == "rear":
+            body = [bp + lift["axis_x"], lift["face_y"] - s["len"] / 2, top + dz]
+            src = (Rz, [bp + a6["sensor_axis_x"], a6["face_y"], top + zs]) if a6 else None
+            out["lift_stop_sensor_%s_link" % k] = {"drawn_body": body, "drawn_R": Rz, "source": src}
+        else:
+            ys = num("W") / 2 + lift["axis_off"] if re.search(r"\bW: ", dims) else 0.03 + lift["axis_off"]
+            body = [bp + lift["face_x"] + s["len"] / 2, ys, top + dz]
+            out["lift_stop_sensor_%s_link" % k] = {"drawn_body": body, "drawn_R": I, "source": frames.get("lift_stop_sensor_%s_link" % k)}
     hp = math.radians(HEAD_PITCH_BASELINE)
     Rz = _rpy(0, hp, 0)
     lens = [bp + num("ZED_X"), 0.0, top + float(re.search(r"RETRACTED: ([\d.]+)", dims).group(1)) + num("MOUNT_ABOVE_COL") + num("ZED_ABOVE_SH")]
@@ -1350,8 +1376,20 @@ def check_model_sources(root, html, err):
     dm = snap["datums"]
     oc = snap.get("owner_corrections") or {}   # A3 / A4 / A5 of 2 Nov 2026 (to be entered in P-03 and M-01) override these datums
     pairs = [("lift_stop_sensor_z_l1000", lift["z"][0]), ("lift_stop_sensor_z_l1175", lift["z"][1]), ("lift_stop_sensor_z_l1350", lift["z"][2]),
-             ("lift_stop_sensor_face_x", lift["face_x"]), ("lift_flag_below_plate", lift["flag_below_plate"]), ("lift_flag_gap", lift["gap"]),
-             ("lift_flag_rod_length", lift["rod"]["len"]), ("lift_flag_rod_offset_from_face", lift["rod"]["off"])]
+             ("lift_flag_below_plate", lift["flag_below_plate"]), ("lift_flag_gap", lift["gap"]), ("lift_flag_rod_length", lift["rod"]["len"])]
+    a6 = oc.get("lift_rear")
+    if lift.get("face") == "rear":   # A6: the sensor face, the rod position and the plate rear edge come from the owner correction
+        if not a6:
+            err("model", "the lift sensors are on the rear face but source_snapshot.json has no owner_corrections.lift_rear (rerun build.py)")
+        else:
+            for key, v in (("sensor_axis_x", lift["axis_x"]), ("face_y", lift["face_y"]), ("plate_rear_x", lift["plate_rear_x"])):
+                if abs(float(a6[key]) - float(v)) > tol:
+                    err("model", "A6 %s: model %.4f, owner correction %.4f" % (key, v, a6[key]))
+            for key in ("rod_x", "rod_y", "flag_x", "flag_y", "corner_x"):
+                if any(abs(a - b) > tol for a, b in zip(a6[key], lift[key])):
+                    err("model", "A6 %s: model %s, owner correction %s" % (key, lift[key], a6[key]))
+    else:
+        pairs += [("lift_stop_sensor_face_x", lift["face_x"]), ("lift_flag_rod_offset_from_face", lift["rod"]["off"])]
     for k, v in pairs:
         if k in dm and abs(float(dm[k]) - float(v)) > tol:
             err("model", "upper-body item %s: model %.4f, datums.yaml %.4f (more than 1 mm)" % (k, v, dm[k]))

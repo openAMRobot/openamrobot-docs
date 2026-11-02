@@ -610,12 +610,12 @@
   {
    "letter": "g",
    "item": "adapter_post",
-   "bom": "MEC-004, MEC-003, LFT-004 mount",
+   "bom": "MEC-004, MEC-003",
    "status": "design intent",
    "existing_cad": null,
    "method": "machined 6082-T6 plates; MISUMI HFS6-60120 profile cut and end-tapped",
    "thickness_mm": 10.0,
-   "mass_kg": 1.408,
+   "mass_kg": 1.546,
    "mass_basis": "per set as exported, volume x density",
    "placement": [
     {
@@ -634,7 +634,7 @@
    ],
    "placement_note": "post spans z 0.844 to 1.184 at L1000; J1_A at z 1.000; L1175 / L1350 add 0.175 / 0.350",
    "configuration": "L1000, bp000",
-   "adjustment": "post and upright on T-nuts (height of the upright adjustable); rod clamped in the wing with one M5",
+   "adjustment": "post and upright on T-nuts (height of the upright adjustable); flag rod on the plate rear extension with one M5 and the corner bracket",
    "fasteners": [
     {
      "joint": "adapter plate to DOLD carriage",
@@ -693,12 +693,20 @@
      "class": "named"
     },
     {
-     "joint": "flag rod to wing",
+     "joint": "flag rod to the plate rear extension (from the top)",
      "part": "ISO 4762 screw into the M5 tapped rod end (LFT-007)",
      "size": "M5 x 20",
      "qty": 1,
      "standard": "ISO 4762",
      "class": "named"
+    },
+    {
+     "joint": "rod corner bracket to the plate rear extension",
+     "part": "ISO 4762 screw into a tapped hole",
+     "size": "M4 x 10",
+     "qty": 1,
+     "standard": "ISO 4762",
+     "class": "proposed"
     }
    ],
    "files": [
@@ -715,14 +723,14 @@
       "MEC-004_J1A_spacer_right",
       "LFT-004_flag_rod_ref"
      ],
-     "step_bytes": 191222,
-     "stl_bytes": 102684,
+     "step_bytes": 188631,
+     "stl_bytes": 108884,
      "reimport_valid": true,
-     "mass_kg": 1.408
+     "mass_kg": 1.546
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/adapter_post.py",
-   "next_step": "CAD owner: read the DOLD carriage screw pattern; check the wing against the second E-stop housing and the lift cable; M-09.",
+   "next_step": "CAD owner: model the one-piece plate with the rear extension (A6); read the DOLD carriage screw pattern; M-09.",
    "owner": "fridayali",
    "mass_note": "HFS6-60120 post drawn as a solid envelope and excluded from mass_kg: take the MISUMI catalogue mass per metre x 0.34 m"
   },
@@ -920,7 +928,7 @@
    "status": "design intent",
    "existing_cad": null,
    "method": "bought sensors, brackets and profile; laser-cut SS400 flag",
-   "thickness_mm": 2.0,
+   "thickness_mm": 45.0,
    "mass_kg": 0.652,
    "mass_basis": "per set as exported, volume x density",
    "placement": [
@@ -1007,14 +1015,14 @@
       "LFT-005_corner_bracket",
       "LFT-006_flag_SS400"
      ],
-     "step_bytes": 156045,
+     "step_bytes": 157877,
      "stl_bytes": 43684,
      "reimport_valid": true,
      "mass_kg": 0.652
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/lift_sensor_set.py",
-   "next_step": "Confirm the column face (+y) and the BEF-WN-M12 outline (issue #23); increase the flag-to-bracket clearance (see note); M-09.",
+   "next_step": "Confirm the rear T-slot of the DOLD profile and the BEF-WN-M12 outline (issue #23); M-09.",
    "owner": "fridayali",
    "mass_note": "rod mass from the solid 20 x 20 envelope (a slotted 5-series profile is lighter, about 0.4 of it)"
   },

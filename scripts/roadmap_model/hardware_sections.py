@@ -90,8 +90,8 @@ def mech_section():
     di = di if isinstance(di, list) else di["items"]
     names = {"tof_mount": "a. TF-Luna mounts, front and rear", "ultrasonic_mount": "b. MB7060 mounts (4)", "gemini_mount": "c. Gemini 336L mount",
              "zed_bracket": "d. ZED Mini bracket on the post top", "getac_pocket": "e. Getac ZX80 pocket and light-bar plate",
-             "lift_base_plate": "f. Lift base plate on the centre-frame arch", "adapter_post": "g. Adapter plate, HFS6-60120 post, upright, stiffener, rod mount",
-             "rear_estop_housing": "h. Second E-stop housing on the adapter plate, button up (A5)", "motor_bracket": "i. Hub motor shaft-flat brackets", "lift_sensor_set": "j. Lift stop sensor set",
+             "lift_base_plate": "f. Lift base plate on the centre-frame arch", "adapter_post": "g. One-piece adapter plate with the rear extension, HFS6-60120 post, upright, stiffener",
+             "rear_estop_housing": "h. Second E-stop housing on the adapter plate, button up (A5)", "motor_bracket": "i. Hub motor shaft-flat brackets", "lift_sensor_set": "j. Lift stop sensor set on the column rear face (A6)",
              "battery_tray": "k. Battery tray"}
     rows = []
     for d in di:
@@ -141,7 +141,7 @@ def decisions_section():
     lp = load_yaml(os.path.join(HERE, "facts.yaml"))["lift_plate"]
     # A5 second E-stop
     ep = an["estop"]
-    t_estop = table(["Position", "Actuator centre at L1000 / L1175 / L1350 (m)", "0.90 to 1.50 m at every stop", "Arms (single-joint sweep)", "Cable"],
+    t_estop = table(["Position", "Actuator centre at L1000 / L1175 / L1350 (m)", "0.90 to 1.50 m at every stop", "Arms (valid poses)", "Cable"],
                     [[E(ep["position"]), E(" / ".join("%.3f" % v for v in ep["actuator_centre_m"].values())), E("yes" if all(0.90 <= v <= 1.50 for v in ep["actuator_centre_m"].values()) else "no"),
                       E("clear" if not any("second_estop" in k for k in an["sweep"]) else "hit"), E(ep["cable"])]])
     # B3 load check
@@ -157,11 +157,11 @@ def decisions_section():
     # A1 rear section and the reserved receiver
     rl = tz["rear_layout"]
     me = rl["measured"]
-    t_dim = table(["Dimension", "CAD v0.2 (base GLB)", "Owner value"], [
-        [E("between the two side walls (inner faces)"), "%.0f mm" % me["between_side_walls_mm"], "%.0f mm" % me["owner_between_walls_mm"]],
-        [E("between the rear top-cover supports (inner faces)"), "%.0f mm" % me["between_supports_mm"], "%.0f mm" % me["owner_between_supports_mm"]],
-        [E("rear panel inner face to the edge of the central arch"), "%.0f mm (supports %.0f mm deep)" % (me["rear_panel_to_arch_mm"], me["support_depth_from_rear_panel_mm"]), "%.0f mm" % me["owner_panel_to_arch_mm"]],
-        [E("side pocket across (side-wall width - 150) / 2, minus the 20 mm margin"), "%.0f mm (%.0f mm before the margin)" % (rl["pocket_free"]["y_mm"], rl["pocket_free"]["y_owner_formula_mm"]), "214 mm before the margin"]])
+    t_dim = table(["Dimension", "CAD v0.2 (base GLB), the reference (A9)"], [
+        [E("between the two side walls (inner faces)"), "%.0f mm" % me["between_side_walls_mm"]],
+        [E("between the rear top-cover supports (inner faces)"), "%.1f mm" % me["between_supports_mm"]],
+        [E("rear panel inner face to the edge of the central arch"), "%.0f mm (supports %.0f mm deep)" % (me["rear_panel_to_arch_mm"], me["support_depth_from_rear_panel_mm"])],
+        [E("side pocket across (side-wall width - 150) / 2, minus the 20 mm margin"), "%.0f mm (%.0f mm before the margin)" % (rl["pocket_free"]["y_mm"], rl["pocket_free"]["y_formula_mm"])]])
     t_rx = table(["Rear body", "Clearance to the receiver (mm)", "Inside the 20 mm metal-free margin"],
                  [[E(k), "%.1f" % v, "yes" if v < 20 else "no"] for k, v in tz["position"]["clearance_to_rear_bodies_mm"].items()])
     body = (
@@ -173,7 +173,7 @@ def decisions_section():
         "<h3>Second E-stop (A5)</h3><p>One position: on top of the adapter plate (the moving plate on the lift carriage that carries the post and the arms), "
         "centred in y, in the free part of the plate behind the post, above the column; button facing up in a small housing on the plate, so the contact "
         "blocks sit above the plate (design_intent/rear_estop_housing). The cable runs through the plate into the lift cable chain with the arm cables. "
-        "Positions P1, P3 and P4, their ghosts, the static-column position and the random-pose arm reach study are removed.</p>" + t_estop +
+        "Arm reach checks use only physically valid poses: inside the joint limits, no self-collision, motion stopped at the first contact with the robot body; only contacts that a valid pose produces are reported.</p>" + t_estop +
         "<h3>Lift base plate (B3)</h3><p>One 10 mm 6082-T6 plate, %.0f x %.0f mm, on the top of the centre-frame arch (top 304 mm). The arch top (2 mm "
         "S235JR, CAD MMP.04.00.00.000) carries 8 x M8 blind rivet nuts in two patterns: 120 x 100 mm (x +/-0.060, y +/-0.050) and 190 x 300 mm "
         "(x +/-0.095, y +/-0.150); the plate uses the inner one and is bolted from above with 4 x ISO 4762 M8 x 20 class 8.8. The DOLD column stands forward "
@@ -189,7 +189,7 @@ def decisions_section():
             ab["L1350"]["mass_kg"], ab["L1350"]["com_m"][0], ab["L1350"]["com_m"][2], pl["decel_m_s2"], pl["arms_forward"]["mass_kg"], pl["arms_forward"]["com_m"][0],
             pl["arms_forward"]["com_m"][2], pl["cases"][0]["bolt_Ft_Rd_kN"], pl["cases"][0]["bolt_Fv_Rd_kN"], pl["cases"][0]["Bp_Rd_kN"], mu["bolt_utilisation"],
             mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], mu["arch_sheet_utilisation"], pl["max_column_tilt_deg"],
-            "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case, so the load path needs a doubler under the arch top between the rear rivet nuts and the rear wall (or the outer rivet-nut pattern as well) before the arms carry a payload at full reach.") + t_plate +
+            "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case. Decided fix (A7): a doubler under the arch top sheet, or through-bolts with a backing plate; CAD pending (%s)." % gi("Lift base plate MEC-019")) + t_plate + lift_rear_html(an) +
         "<h3>TZBOT WCM-500-24 receiver, reserved for release 3.0 (A1)</h3><p class=\"note\">Wireless charging is a release 3.0 item. The TZBOT WCM-500-24 receiver (170 x 150 x 52 mm) is reserved at the rear panel on the centre line, with the batteries in the side pockets and the power electronics above it. Docking for wireless charging will approach the station, turn 180 degrees and reverse onto the transmitter. 2.0 charges by cable.</p>"
         "<p>Receiver (manual V2.5, 170 x 150 x 52 mm, about 1.5 kg; not installed in 2.0) 170 mm along x and 150 mm across y, centred on the long axis, "
         "x %.3f to %.3f, as close to the rear panel inner face as possible without touching the rear TF-Luna, the rear MB7060s, their mounts or the rear "
@@ -197,9 +197,62 @@ def decisions_section():
         "is drawn. Charging gap with a 52 mm floor transmitter: %.0f mm (to be solved in release 3.0, %s).</p>" % (
             tz["position"]["x_m"][0], tz["position"]["x_m"][1], tz["floor_gap"]["gap_mm"], gi("TZBOT receiver / floor transmitter")) + t_rx + t_dim +
         "<p>Cells: 4 + 4 LF105 upright (%s, tray %s mm); clear of the side-panel return flanges: %s (%s).</p>" % (
-            E(rl["pockets"].get("arrangement", "")), " x ".join("%.0f" % v for v in rl["pockets"].get("tray_mm", [])), "yes" if rl["pockets"].get("clears_flanges") else "no", gi("Rear side pockets")))
-    return section("decisions", "Owner decisions of 2 Nov 2026: wheels, second E-stop, lift base plate, wireless charging", body,
+            E(rl["pockets"].get("arrangement", "")), " x ".join("%.0f" % v for v in rl["pockets"].get("tray_mm", [])), "yes" if rl["pockets"].get("clears_flanges") else "no", gi("Rear side pockets")) +
+        rear_a9_html())
+    return section("decisions", "Owner decisions of 2 Nov 2026: wheels, second E-stop, lift base plate, lift sensors, rear section, wireless charging", body,
                    "owner decisions of 2 Nov 2026; roadmap model analysis; CAD MMP.04.00.00.000 and the full assembly STEP (openamr-platform-hw main)")
+
+
+def lift_rear_html(an):
+    """A6: lift stop sensors on the rear face of the static column, the one-piece adapter plate with its rear extension, the flag rod."""
+    lr = an["lift_rear"]
+    L = lr["layout"]
+    f = load_yaml(os.path.join(HERE, "facts.yaml"))["lift_rear"]
+    cl = lr["clearances_mm"]
+    worst = {}
+    for nm, d in cl.items():
+        for k, v in d.items():
+            if v is None:
+                worst.setdefault(k, (None, "all stops"))
+            elif worst.get(k, (None,))[0] is None or v < worst[k][0]:
+                worst[k] = (v, nm)
+    t = table(["Part", "Smallest clearance to the rod, flag and corner bracket over L1000 to L1350 (mm)", "At"],
+              [[E(k), "more than 50" if v[0] is None else "%.1f" % v[0], E(v[1])] for k, v in sorted(worst.items())])
+    return ("<h3>Lift stop sensors and flag rod (A6)</h3><p>The three M12 inductive sensors sit on the rear face of the static DOLD column (x %.3f m), "
+            "centred in y, at z %s mm; their SICK DOL-1204-G02M cables run down the static column. The flag (%s mm) moves with the adapter plate, %.0f mm "
+            "off the sensor faces, on a 20 x 20 mm rod L%.0f bolted with M5 under the plate extension and a corner bracket. The adapter plate is one part, "
+            "6082-T6, %.0f x %.0f x %.0f mm (x %.3f to %.3f m on the carriage), %.0f mm behind the column rear face: the extension length is the sum of the "
+            "sensor face, the %.0f mm flag gap, the %.0f mm rod clearance, the rod and the %.0f mm bolt edge distance. No separate rod bracket. The plate is no "
+            "longer flush with the column rear face (P-03 rev20.1 item 25 D2: intended pending difference). Rod bottom at L1000: %.0f mm above the floor, "
+            "%.0f mm above the top cover. The E-stop housing is %.0f mm from the rod mount area.</p>" % (
+                f["column_rear_x"], " / ".join("%.0f" % (z * 1000) for z in f["sensor_z"]), " x ".join("%.0f" % (v * 1000) for v in f["flag"]), f["gap"] * 1000,
+                f["rod"]["len"] * 1000, L["plate_len"] * 1000, L["plate_width"] * 1000, L["plate_t"] * 1000, L["plate_rear_x"], L["plate_rear_x"] + L["plate_len"],
+                L["extension"] * 1000, f["gap"] * 1000, f["rod_clear"] * 1000, f["bolt_edge"] * 1000, lr["rod_bottom_L1000_mm"], lr["rod_bottom_above_cover_L1000_mm"],
+                lr.get("estop_to_rod_mount_mm", 0)) + t)
+
+
+def rear_a9_html():
+    """A9: the GI-080 attempts, the 25 mm² cable rules, the two battery trays and the decided GI-025 fix."""
+    bs = json.load(open(os.path.join(HERE, "build_summary.json")))
+    g = bs.get("gi080", {})
+    rows = [["%d" % st["option"], E(st["what"]), E("fits" if (st.get("fits") or (st["option"] != 2 and not st.get("nofit"))) else
+                                                    "no fit: " + ", ".join(st.get("nofit") or st.get("front_bay_nofit") or []))] for st in g.get("steps", [])]
+    t = table(["Option (A9, in order)", "What was tried", "Result"], rows)
+    c = bs.get("cables_25mm2", {})
+    t2 = table(["Cable (25 mm²)", "Route (mm)", "Straight (mm)", "Bend radius 60 mm"],
+               [[E(k), "%.0f" % (v["route_m"] * 1000), "%.0f" % (v["direct_m"] * 1000),
+                 "ok" if v["bend_ok"] else E("%.0f mm straight cable at a %d deg corner, %.0f mm needed" % (v["worst_corner"]["have_mm"], v["worst_corner"]["deg"], v["worst_corner"]["need_mm"]))]
+                for k, v in sorted(c.items())])
+    tc = bs.get("battery_trays", {})
+    return ("<h3>Rear power layout (A9)</h3><p>Rules: nothing on top of the cells; F0 within about 150 mm cable length of battery +; the BMS close to the "
+            "cells; bend radius at least 60 mm on 25 mm² cables. The options were tried in order and the first that fits is kept. Result: %s (%s).</p>" % (
+                "every part placed" if not g.get("final_nofit") else "no option fits, " + E(", ".join(g["final_nofit"])) + " not placed", gi("Rear layout (A1)")) + t +
+            "<p>25 mm² runs in the rear bay (%s):</p>" % gi("Rear layout (A9)") + t2 +
+            "<p>Battery: two removable trays (4 + 4 LF105), joined by the keyed, touch-protected main connector PWR-018 on the 8S series link; this "
+            "replaces the one removable battery assembly of B-02 rev18.10 (listed under conflicts for the battery owner). The cells go in from above with "
+            "the cover off (%s); the power plate comes out without removing the cells after PWR-018 is unplugged; nothing sits on the cells (%s).</p>"
+            "<p>Side-panel return flanges: decided fix (A9), notch the flanges at x -0.275 to -0.133 m; CAD pending (%s).</p>" % (
+                "yes" if tc.get("cells_from_above") else "no", "yes" if tc.get("nothing_on_cells") else "no", gi("Rear side pockets")))
 
 
 def closed_html():

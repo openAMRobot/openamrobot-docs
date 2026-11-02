@@ -1,8 +1,8 @@
 {
  "fingerprint": {
-  "model/model.js": "4beb27c2280693ae1a62fbf7c05c2097a2a6a61bfbfb6727411f36db2d702dcc",
-  "model/exploded.json": "cc9e89f9003190f75461529ef64e48a7f0b3024242dc25b9149287598ac7a910",
-  "robot.html": "be3be6408633b028b2d7398f728d321897d137ce9e0008d219e0ef8d4c958dd4",
+  "model/model.js": "009770125ca2d27312f9554eb3639c3b862f54d2cb8f68f503d763196af253d6",
+  "model/exploded.json": "63df1094944f7e583560b82263b0b336c56c62ca01d03aba5cebd119efaa3c5c",
+  "robot.html": "6468ad057b761e84ee49495d8686aea8f8d340dfa11adcfc77cde026efd89d63",
   "exploded.html": "972bbdd53fade0e3fcce638a1659ee750129cb9f743ec4280421134c6da0408a"
  },
  "robot_state": {
@@ -1566,23 +1566,6 @@
    "mismatch": []
   },
   {
-   "comp": "rz_batcon",
-   "part": "rz_batcon",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 3,
-   "offset": [
-    -0.25,
-    0,
-    0.3
-   ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
-   "same_transform": true,
-   "hidden_option": false,
-   "mismatch": []
-  },
-  {
    "comp": "rz_kchg",
    "part": "rz_kchg",
    "robot_drawn": true,
@@ -2025,6 +2008,23 @@
    "mismatch": []
   },
   {
+   "comp": "rz_batcon",
+   "part": "rz_batcon",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 3,
+   "offset": [
+    0,
+    0,
+    0.3
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
    "comp": "rear_plate",
    "part": "rear_plate",
    "robot_drawn": true,
@@ -2154,8 +2154,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 68,
-   "exploded_meshes": 68,
+   "robot_meshes": 60,
+   "exploded_meshes": 60,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2171,8 +2171,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 40,
-   "exploded_meshes": 40,
+   "robot_meshes": 26,
+   "exploded_meshes": 26,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2222,8 +2222,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 161,
-   "exploded_meshes": 161,
+   "robot_meshes": 162,
+   "exploded_meshes": 162,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2375,8 +2375,8 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 33,
-   "exploded_meshes": 33,
+   "robot_meshes": 31,
+   "exploded_meshes": 31,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []

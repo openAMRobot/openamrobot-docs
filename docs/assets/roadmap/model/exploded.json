@@ -1233,23 +1233,6 @@
     ]
    }
   },
-  "rz_batcon": {
-   "stage": 3,
-   "offsets": {
-    "rz_batcon": [
-     -0.25,
-     0,
-     0.3
-    ]
-   },
-   "open": {
-    "rz_batcon": [
-     -0.12,
-     0,
-     0.14
-    ]
-   }
-  },
   "rz_kchg": {
    "stage": 3,
    "offsets": {
@@ -1623,6 +1606,23 @@
    },
    "open": {
     "battery_series_link": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_batcon": {
+   "stage": 3,
+   "offsets": {
+    "rz_batcon": [
+     0,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_batcon": [
      0,
      0,
      0.14

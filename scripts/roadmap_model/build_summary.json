@@ -2,37 +2,37 @@
  "packed": {
   "rz_fba": [
    [
-    -0.2385,
-    0.05,
+    -0.256,
+    -0.0025,
     0.175
    ],
    [
-    165.0,
     70.0,
+    165.0,
     100.0
    ]
   ],
   "rz_f0": [
    [
-    -0.241,
-    -0.0545,
+    -0.1855,
+    -0.035,
     0.1525
    ],
    [
-    100.0,
     61.0,
+    100.0,
     55.0
    ]
   ],
   "rz_k1k2_1": [
    [
-    -0.1635,
-    -0.0485,
+    -0.1795,
+    0.0625,
     0.163
    ],
    [
-    45.0,
     73.0,
+    45.0,
     76.0
    ]
   ],
@@ -48,27 +48,15 @@
     40.0
    ]
   ],
-  "rz_batcon": [
-   [
-    -0.326,
-    -0.065,
-    0.24
-   ],
-   [
-    40.0,
-    60.0,
-    30.0
-   ]
-  ],
   "rz_fchg": [
    [
-    -0.258,
-    -0.005,
-    0.201
+    -0.321,
+    -0.062,
+    0.241
    ],
    [
-    66.0,
     30.0,
+    66.0,
     32.0
    ]
   ],
@@ -86,8 +74,8 @@
   ],
   "rz_brake": [
    [
-    -0.276,
-    -0.005,
+    -0.311,
+    0.015,
     0.1325
    ],
    [
@@ -642,11 +630,8 @@
  "rear_layout": {
   "measured": {
    "between_supports_mm": 337.6,
-   "owner_between_supports_mm": 360.0,
    "between_side_walls_mm": 552.0,
-   "owner_between_walls_mm": 578.0,
    "rear_panel_to_arch_mm": 235.0,
-   "owner_panel_to_arch_mm": 240.0,
    "support_depth_from_rear_panel_mm": 86.4,
    "flange_line_y": 0.193,
    "flanges_z": [
@@ -663,7 +648,7 @@
   },
   "pocket_free": {
    "y_mm": 181.0,
-   "y_owner_formula_mm": 201.0,
+   "y_formula_mm": 201.0,
    "x_mm": 235.0,
    "x_beside_support_mm": 148.6,
    "y_inside_flanges_mm": 98.0
@@ -765,7 +750,8 @@
     "rz_fbb",
     "opt_B_tesys_1",
     "opt_B_tesys_2",
-    "rz_bms"
+    "rz_bms",
+    "rz_pre"
    ]
   },
   "B_siemens": {
@@ -778,13 +764,138 @@
    "fits": false,
    "nofit": [
     "opt_B_siemens_2",
+    "rz_fba",
     "rz_fbb",
     "rz_bms",
-    "rz_pwr017_1",
-    "rz_pwr017_2",
-    "rz_pre",
-    "rz_fchg"
+    "rz_pre"
    ]
+  }
+ },
+ "gi080": {
+  "first_pass_nofit": [
+   "rz_fbb",
+   "rz_bms"
+  ],
+  "steps": [
+   {
+    "option": 1,
+    "what": "second level above the power plate: level 1 on the plate, shelf underside 209 mm above the floor (tallest non-fuse part + 8 mm), 78 mm to the cover underside; fuse columns kept open",
+    "level1_nofit": [
+     "rz_fbb",
+     "rz_bms",
+     "rz_pwr017_2"
+    ],
+    "placed": [],
+    "nofit": [
+     "rz_fbb",
+     "rz_bms",
+     "rz_pwr017_1",
+     "rz_pwr017_2"
+    ]
+   },
+   {
+    "option": 2,
+    "what": "FB-B (SAFE-bus fuse block, 70 x 165 x 100 mm, fuses reached from above) to the front bay near the motor driver",
+    "fits": false,
+    "front_bay_layout": "two-tier (one plate does not take every part)",
+    "front_bay_nofit": [
+     "rz_fbb"
+    ],
+    "rear_nofit_after": [
+     "rz_fbb",
+     "rz_bms"
+    ]
+   },
+   {
+    "option": 3,
+    "what": "BMS upright on the rear panel inner face above the receiver, outside the 20 mm metal-free margin",
+    "placed": [],
+    "nofit": [
+     "rz_bms"
+    ]
+   }
+  ],
+  "fbb_front": false,
+  "final_nofit": [
+   "rz_fbb",
+   "rz_bms"
+  ]
+ },
+ "battery_trays": {
+  "trays": 2,
+  "connector": "PWR-018 keyed, on the 8S link at x -0.164, z 0.252",
+  "plate_overlaps_trays_in_plan": false,
+  "plate_tray_gap_mm": 2.0,
+  "cells_from_above": true,
+  "link_over_plate": true,
+  "nothing_on_cells": true
+ },
+ "cables_25mm2": {
+  "CBL-P01": {
+   "route_m": 0.236,
+   "direct_m": 0.175,
+   "local": true,
+   "bend_ok": true,
+   "worst_corner": {
+    "deg": 90,
+    "need_mm": 60.0,
+    "have_mm": 81.0
+   }
+  },
+  "CBL-P02": {
+   "route_m": 0.162,
+   "direct_m": 0.153,
+   "local": true,
+   "bend_ok": false,
+   "worst_corner": {
+    "deg": 90,
+    "need_mm": 60.0,
+    "have_mm": 10.0
+   }
+  },
+  "CBL-P03": {
+   "route_m": 0.15,
+   "direct_m": 0.11,
+   "local": true,
+   "bend_ok": false,
+   "worst_corner": {
+    "deg": 90,
+    "need_mm": 60.0,
+    "have_mm": 55.0
+   }
+  },
+  "CBL-P04": {
+   "route_m": 0.191,
+   "direct_m": 0.169,
+   "local": true,
+   "bend_ok": false,
+   "worst_corner": {
+    "deg": 90,
+    "need_mm": 60.0,
+    "have_mm": 24.0
+   }
+  },
+  "CBL-P05": {
+   "route_m": 0.171,
+   "direct_m": 0.169,
+   "local": true,
+   "bend_ok": false,
+   "worst_corner": {
+    "deg": 90,
+    "need_mm": 60.0,
+    "have_mm": 2.0
+   }
+  },
+  "CBL-P59": {
+   "route_m": 0.276,
+   "direct_m": 0.201,
+   "local": true,
+   "bend_ok": true,
+   "worst_corner": {
+    "deg": 90,
+    "need_mm": 60.0,
+    "have_mm": 104.0
+   }
   }
  },
  "bolts": {
