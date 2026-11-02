@@ -162,5 +162,45 @@
    0.012,
    0.03
   ]
+ },
+ "combined_model": {
+  "xacro": "openamrobot_upperbody_description/urdf/combined_robot.xacro",
+  "sources": {
+   "openamrobot_description": {
+    "repository": "openAMRobot/openamr-platform-sw",
+    "commit": "131e500fc4e5afc9f648cbd7dbf5b416280761fb",
+    "role": "PLATFORM-PIN"
+   },
+   "openamrobot_upperbody_description": {
+    "repository": "openAMRobot/openamr-upperbody-sw",
+    "commit": "a8c304d8a6335c479e56f20e32675d2d87144a50",
+    "role": "main"
+   },
+   "openarm_description": {
+    "repository": "enactic/openarm_description",
+    "commit": "14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831",
+    "role": "upstream pin"
+   }
+  },
+  "outputs": {
+   "combined_robot.urdf": {
+    "xacro_args": [
+     "defaults: column dold_v4_350, base_plate bp000, head_pitch hp30, base_tilt bt10, arm_package openarm, hardware_profile mock"
+    ],
+    "sha256": "012ee29acf6590aa1efdb85745e31b910e6a599feaee549ce43245ab6d56e1b2"
+   },
+   "combined_robot_bp050.urdf": {
+    "xacro_args": [
+     "base_plate:=bp050"
+    ],
+    "sha256": "986a61600e98bcf9517271e84b90c76732790024f6253afdda4badcb1c6c5971"
+   }
+  },
+  "lift_joint": {
+   "L1000": 0.0,
+   "L1175": 0.175,
+   "L1350": 0.35
+  },
+  "how": "scripts/roadmap_model/urdf_expand.py (pip xacro, minimal ament index under ../ament)"
  }
 }

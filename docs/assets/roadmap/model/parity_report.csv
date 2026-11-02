@@ -1,0 +1,286 @@
+configuration,urdf,roadmap,mode,status,dx_mm,dy_mm,dz_mm,dpos_mm,dsize_mm,drot_deg,size_urdf_mm,size_roadmap_mm,note
+bp000 L1000,base_link#0,front_panel + rear_panel + side_panel_left + side_panel_right + base_plate + centre_bracket + electronics_bracket + support_front_left + support_front_right + support_rear_left + support_rear_right + lidar_support + lidar_spacer + camera_mount + ultrasonic_mount_front_left + ultrasonic_mount_front_right + ultrasonic_mount_rear_left + ultrasonic_mount_rear_right + tof_mount_front + tof_mount_rear + driver_mount + controller_plate,aabb,out of tolerance,-0.54,0.0,-0.31,0.62,1.11,,781.1x582.0x244.6,780.0x582.0x244.0,base_chassis.stl: CAD v0.2 sheet metal and printed mounts
+bp000 L1000,base_link#1,cover + cover_flange_front + cover_flange_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,771.6x575.6x63.0,771.6x575.6x63.0,base_covers.stl
+bp000 L1000,base_link#2,motor_driver + compute + base_controller + battery + estop + reset_button,aabb,out of tolerance,-2.5,0.0,-0.56,2.56,5.0,,696.0x311.0x208.9,701.0x314.0x210.0,base_equipment.stl: component envelopes
+bp000 L1000,fl_caster_link,castor_front_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1000,fr_caster_link,castor_front_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1000,bl_caster_link,castor_rear_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1000,br_caster_link,castor_rear_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1000,left_wheel_link,hub_motor_wheel_left,aabb,matched,0.0,0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp000 L1000,right_wheel_link,hub_motor_wheel_right,aabb,matched,0.0,-0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp000 L1000,lidar_link,lidar,aabb,matched,-0.0,-0.05,-0.0,0.05,0.06,,55.6x55.6x41.3,55.7x55.6x41.3,
+bp000 L1000,base_camera_link,base_camera,aabb,matched,0.0,0.0,0.0,0.0,0.0,,33.2x124.0x33.2,33.2x124.0x33.2,
+bp000 L1000,imu_link,imu,aabb,matched,0.0,0.0,0.0,0.0,0.0,,42.9x25.4x2.5,42.9x25.4x2.5,
+bp000 L1000,us_front_left,ultrasonic_front_left,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1000,us_front_right,ultrasonic_front_right,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1000,us_rear_left,ultrasonic_rear_left,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1000,us_rear_right,ultrasonic_rear_right,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1000,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp000 L1000,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp000 L1000,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
+bp000 L1000,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
+bp000 L1000,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp000 L1000,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
+bp000 L1000,head_camera_bracket_link,head_camera_bracket,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
+bp000 L1000,head_camera_link,head_camera,aabb,matched,0.0,0.0,0.0,0.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,ZED Mini at hp30
+bp000 L1000,getac_tablet_link,getac_tablet,aabb,matched,0.0,0.0,0.0,0.0,0.0,,17.6x234.0x149.8,17.6x234.0x149.8,
+bp000 L1000,head_light_link,head_light,aabb,out of tolerance,0.5,0.0,0.0,0.5,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,
+bp000 L1000,second_estop_link,second_estop,aabb,matched,-0.0,-0.0,0.0,0.0,0.0,,82.0x40.0x47.0,82.0x40.0x47.0,"B2 (2 Nov 2026, proposed): the roadmap draws the recommended post-mount position P2; the combined model keeps P1 (datums second_estop_below_profile_top and its parent lift_column_base_link) until the P-03 entry"
+bp000 L1000,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
+bp000 L1000,lift_flag_rod_link,flag_rod,aabb,out of tolerance,-0.0,0.0,0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
+bp000 L1000,lift_flag_link,lift_flag,aabb,matched,-0.0,0.0,0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp000 L1000,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_link3,openarm_left:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_link4,openarm_left:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_link5,openarm_left:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_link6,openarm_left:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_ee_base_link,openarm_left:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_ee_link1,openarm_left:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_left_ee_link2,openarm_left:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_base_link,openarm_right:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_link1,openarm_right:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_link2,openarm_right:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_link3,openarm_right:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_link4,openarm_right:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_link5,openarm_right:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_link6,openarm_right:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_ee_base_link,openarm_right:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_ee_link1,openarm_right:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1000,openarm_right_ee_link2,openarm_right:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,base_link#0,front_panel + rear_panel + side_panel_left + side_panel_right + base_plate + centre_bracket + electronics_bracket + support_front_left + support_front_right + support_rear_left + support_rear_right + lidar_support + lidar_spacer + camera_mount + ultrasonic_mount_front_left + ultrasonic_mount_front_right + ultrasonic_mount_rear_left + ultrasonic_mount_rear_right + tof_mount_front + tof_mount_rear + driver_mount + controller_plate,aabb,out of tolerance,-0.54,0.0,-0.31,0.62,1.11,,781.1x582.0x244.6,780.0x582.0x244.0,base_chassis.stl: CAD v0.2 sheet metal and printed mounts
+bp000 L1175,base_link#1,cover + cover_flange_front + cover_flange_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,771.6x575.6x63.0,771.6x575.6x63.0,base_covers.stl
+bp000 L1175,base_link#2,motor_driver + compute + base_controller + battery + estop + reset_button,aabb,out of tolerance,-2.5,0.0,-0.56,2.56,5.0,,696.0x311.0x208.9,701.0x314.0x210.0,base_equipment.stl: component envelopes
+bp000 L1175,fl_caster_link,castor_front_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1175,fr_caster_link,castor_front_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1175,bl_caster_link,castor_rear_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1175,br_caster_link,castor_rear_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1175,left_wheel_link,hub_motor_wheel_left,aabb,matched,0.0,0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp000 L1175,right_wheel_link,hub_motor_wheel_right,aabb,matched,0.0,-0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp000 L1175,lidar_link,lidar,aabb,matched,-0.0,-0.05,-0.0,0.05,0.06,,55.6x55.6x41.3,55.7x55.6x41.3,
+bp000 L1175,base_camera_link,base_camera,aabb,matched,0.0,0.0,0.0,0.0,0.0,,33.2x124.0x33.2,33.2x124.0x33.2,
+bp000 L1175,imu_link,imu,aabb,matched,0.0,0.0,0.0,0.0,0.0,,42.9x25.4x2.5,42.9x25.4x2.5,
+bp000 L1175,us_front_left,ultrasonic_front_left,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1175,us_front_right,ultrasonic_front_right,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1175,us_rear_left,ultrasonic_rear_left,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1175,us_rear_right,ultrasonic_rear_right,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1175,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp000 L1175,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp000 L1175,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
+bp000 L1175,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
+bp000 L1175,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp000 L1175,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
+bp000 L1175,head_camera_bracket_link,head_camera_bracket,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
+bp000 L1175,head_camera_link,head_camera,aabb,matched,0.0,0.0,0.0,0.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,ZED Mini at hp30
+bp000 L1175,getac_tablet_link,getac_tablet,aabb,matched,0.0,0.0,0.0,0.0,0.0,,17.6x234.0x149.8,17.6x234.0x149.8,
+bp000 L1175,head_light_link,head_light,aabb,out of tolerance,0.5,0.0,0.0,0.5,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,
+bp000 L1175,second_estop_link,second_estop,aabb,matched,-0.0,-0.0,0.0,0.0,0.0,,82.0x40.0x47.0,82.0x40.0x47.0,"B2 (2 Nov 2026, proposed): the roadmap draws the recommended post-mount position P2; the combined model keeps P1 (datums second_estop_below_profile_top and its parent lift_column_base_link) until the P-03 entry"
+bp000 L1175,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
+bp000 L1175,lift_flag_rod_link,flag_rod,aabb,out of tolerance,-0.0,0.0,-0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
+bp000 L1175,lift_flag_link,lift_flag,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp000 L1175,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_link3,openarm_left:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_link4,openarm_left:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_link5,openarm_left:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_link6,openarm_left:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_ee_base_link,openarm_left:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_ee_link1,openarm_left:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_left_ee_link2,openarm_left:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_base_link,openarm_right:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_link1,openarm_right:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_link2,openarm_right:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_link3,openarm_right:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_link4,openarm_right:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_link5,openarm_right:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_link6,openarm_right:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_ee_base_link,openarm_right:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_ee_link1,openarm_right:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1175,openarm_right_ee_link2,openarm_right:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,base_link#0,front_panel + rear_panel + side_panel_left + side_panel_right + base_plate + centre_bracket + electronics_bracket + support_front_left + support_front_right + support_rear_left + support_rear_right + lidar_support + lidar_spacer + camera_mount + ultrasonic_mount_front_left + ultrasonic_mount_front_right + ultrasonic_mount_rear_left + ultrasonic_mount_rear_right + tof_mount_front + tof_mount_rear + driver_mount + controller_plate,aabb,out of tolerance,-0.54,0.0,-0.31,0.62,1.11,,781.1x582.0x244.6,780.0x582.0x244.0,base_chassis.stl: CAD v0.2 sheet metal and printed mounts
+bp000 L1350,base_link#1,cover + cover_flange_front + cover_flange_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,771.6x575.6x63.0,771.6x575.6x63.0,base_covers.stl
+bp000 L1350,base_link#2,motor_driver + compute + base_controller + battery + estop + reset_button,aabb,out of tolerance,-2.5,0.0,-0.56,2.56,5.0,,696.0x311.0x208.9,701.0x314.0x210.0,base_equipment.stl: component envelopes
+bp000 L1350,fl_caster_link,castor_front_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1350,fr_caster_link,castor_front_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1350,bl_caster_link,castor_rear_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1350,br_caster_link,castor_rear_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp000 L1350,left_wheel_link,hub_motor_wheel_left,aabb,matched,0.0,0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp000 L1350,right_wheel_link,hub_motor_wheel_right,aabb,matched,0.0,-0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp000 L1350,lidar_link,lidar,aabb,matched,-0.0,-0.05,-0.0,0.05,0.06,,55.6x55.6x41.3,55.7x55.6x41.3,
+bp000 L1350,base_camera_link,base_camera,aabb,matched,0.0,0.0,0.0,0.0,0.0,,33.2x124.0x33.2,33.2x124.0x33.2,
+bp000 L1350,imu_link,imu,aabb,matched,0.0,0.0,0.0,0.0,0.0,,42.9x25.4x2.5,42.9x25.4x2.5,
+bp000 L1350,us_front_left,ultrasonic_front_left,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1350,us_front_right,ultrasonic_front_right,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1350,us_rear_left,ultrasonic_rear_left,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1350,us_rear_right,ultrasonic_rear_right,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp000 L1350,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp000 L1350,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp000 L1350,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
+bp000 L1350,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
+bp000 L1350,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp000 L1350,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,-0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
+bp000 L1350,head_camera_bracket_link,head_camera_bracket,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
+bp000 L1350,head_camera_link,head_camera,aabb,matched,0.0,0.0,-0.0,0.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,ZED Mini at hp30
+bp000 L1350,getac_tablet_link,getac_tablet,aabb,matched,0.0,0.0,0.0,0.0,0.0,,17.6x234.0x149.8,17.6x234.0x149.8,
+bp000 L1350,head_light_link,head_light,aabb,out of tolerance,0.5,0.0,0.0,0.5,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,
+bp000 L1350,second_estop_link,second_estop,aabb,matched,-0.0,-0.0,0.0,0.0,0.0,,82.0x40.0x47.0,82.0x40.0x47.0,"B2 (2 Nov 2026, proposed): the roadmap draws the recommended post-mount position P2; the combined model keeps P1 (datums second_estop_below_profile_top and its parent lift_column_base_link) until the P-03 entry"
+bp000 L1350,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
+bp000 L1350,lift_flag_rod_link,flag_rod,aabb,out of tolerance,-0.0,0.0,-0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
+bp000 L1350,lift_flag_link,lift_flag,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp000 L1350,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_link3,openarm_left:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_link4,openarm_left:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_link5,openarm_left:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_link6,openarm_left:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_ee_base_link,openarm_left:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_ee_link1,openarm_left:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_left_ee_link2,openarm_left:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_base_link,openarm_right:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_link1,openarm_right:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_link2,openarm_right:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_link3,openarm_right:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_link4,openarm_right:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_link5,openarm_right:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_link6,openarm_right:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_ee_base_link,openarm_right:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_ee_link1,openarm_right:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp000 L1350,openarm_right_ee_link2,openarm_right:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,base_link#0,front_panel + rear_panel + side_panel_left + side_panel_right + base_plate + centre_bracket + electronics_bracket + support_front_left + support_front_right + support_rear_left + support_rear_right + lidar_support + lidar_spacer + camera_mount + ultrasonic_mount_front_left + ultrasonic_mount_front_right + ultrasonic_mount_rear_left + ultrasonic_mount_rear_right + tof_mount_front + tof_mount_rear + driver_mount + controller_plate,aabb,out of tolerance,-0.54,0.0,-0.31,0.62,1.11,,781.1x582.0x244.6,780.0x582.0x244.0,base_chassis.stl: CAD v0.2 sheet metal and printed mounts
+bp050 L1000,base_link#1,cover + cover_flange_front + cover_flange_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,771.6x575.6x63.0,771.6x575.6x63.0,base_covers.stl
+bp050 L1000,base_link#2,motor_driver + compute + base_controller + battery + estop + reset_button,aabb,out of tolerance,-2.5,0.0,-0.56,2.56,5.0,,696.0x311.0x208.9,701.0x314.0x210.0,base_equipment.stl: component envelopes
+bp050 L1000,fl_caster_link,castor_front_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp050 L1000,fr_caster_link,castor_front_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp050 L1000,bl_caster_link,castor_rear_left,aabb,matched,-0.01,0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp050 L1000,br_caster_link,castor_rear_right,aabb,matched,-0.01,-0.0,-0.01,0.01,0.02,,62.5x60.0x52.0,62.5x60.0x52.0,
+bp050 L1000,left_wheel_link,hub_motor_wheel_left,aabb,matched,0.0,0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp050 L1000,right_wheel_link,hub_motor_wheel_right,aabb,matched,0.0,-0.0,0.04,0.04,0.06,,200.0x167.8x200.0,200.1x167.8x200.0,
+bp050 L1000,lidar_link,lidar,aabb,matched,-0.0,-0.05,-0.0,0.05,0.06,,55.6x55.6x41.3,55.7x55.6x41.3,
+bp050 L1000,base_camera_link,base_camera,aabb,matched,0.0,0.0,0.0,0.0,0.0,,33.2x124.0x33.2,33.2x124.0x33.2,
+bp050 L1000,imu_link,imu,aabb,matched,0.0,0.0,0.0,0.0,0.0,,42.9x25.4x2.5,42.9x25.4x2.5,
+bp050 L1000,us_front_left,ultrasonic_front_left,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp050 L1000,us_front_right,ultrasonic_front_right,aabb,matched,-0.0,0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp050 L1000,us_rear_left,ultrasonic_rear_left,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp050 L1000,us_rear_right,ultrasonic_rear_right,aabb,matched,-0.0,-0.03,0.0,0.03,0.02,,32.6x34.7x34.8,32.6x34.7x34.8,
+bp050 L1000,tof_front,tof_front,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp050 L1000,tof_rear,tof_rear,aabb,matched,0.0,0.0,-0.0,0.0,0.0,,19.0x35.0x24.2,19.0x35.0x24.2,
+bp050 L1000,lift_column_base_link,lift_column#0,aabb,out of tolerance,0.0,0.0,-12.0,12.0,24.0,,240.0x60.0x530.0,244.0x64.0x506.0,static DOLD profile
+bp050 L1000,lift_carriage_link,lift_column#1,aabb,out of tolerance,-0.0,0.0,-26.0,26.0,152.0,,209.5x51.0x350.0,250.0x72.0x502.0,moving inner stage and head plate
+bp050 L1000,adapter_plate_link,adapter_plate,aabb,matched,0.0,0.0,0.0,0.0,0.0,,360.0x100.0x10.0,360.0x100.0x10.0,
+bp050 L1000,arm_profile_link,arm_profile,aabb,out of tolerance,0.0,0.0,0.0,0.0,3.6,,120.0x60.0x340.0,122.4x63.6x340.0,MISUMI HFS6-60120 arm post
+bp050 L1000,head_camera_bracket_link,head_camera_bracket,aabb,matched,-0.0,0.0,-0.0,0.0,0.0,,30.0x30.0x39.0,30.0x30.0x39.0,
+bp050 L1000,head_camera_link,head_camera,aabb,matched,0.0,0.0,0.0,0.0,0.0,0.0,38.2x124.5x39.7,38.2x124.5x39.7,ZED Mini at hp30
+bp050 L1000,getac_tablet_link,getac_tablet,aabb,matched,0.0,0.0,0.0,0.0,0.0,,17.6x234.0x149.8,17.6x234.0x149.8,
+bp050 L1000,head_light_link,head_light,aabb,out of tolerance,0.5,0.0,0.0,0.5,1.0,,20.0x158.0x17.0,21.0x158.0x17.0,
+bp050 L1000,second_estop_link,second_estop,aabb,matched,-0.0,-0.0,0.0,0.0,0.0,,82.0x40.0x47.0,82.0x40.0x47.0,"B2 (2 Nov 2026, proposed): the roadmap draws the recommended post-mount position P2; the combined model keeps P1 (datums second_estop_below_profile_top and its parent lift_column_base_link) until the P-03 entry"
+bp050 L1000,lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link,lift_stop_sensors + lift_sensor_brackets,aabb,matched,0.0,-0.0,0.0,0.0,0.0,,68.0x40.0x375.0,68.0x40.0x375.0,"three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each"
+bp050 L1000,lift_flag_rod_link,flag_rod,aabb,out of tolerance,0.0,0.0,0.0,0.0,2.4,,20.0x20.0x430.0,20.0x22.4x430.0,
+bp050 L1000,lift_flag_link,lift_flag,aabb,matched,0.0,0.0,0.0,0.0,0.0,,2.0x45.0x20.0,2.0x45.0x20.0,
+bp050 L1000,openarm_left_base_link,openarm_left:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_link1,openarm_left:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_link2,openarm_left:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_link3,openarm_left:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_link4,openarm_left:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_link5,openarm_left:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_link6,openarm_left:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_ee_base_link,openarm_left:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_ee_link1,openarm_left:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_left_ee_link2,openarm_left:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_base_link,openarm_right:base,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_link1,openarm_right:link1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_link2,openarm_right:link2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_link3,openarm_right:link3,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_link4,openarm_right:link4,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_link5,openarm_right:link5,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_link6,openarm_right:link6,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_ee_base_link,openarm_right:link7,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_ee_link1,openarm_right:finger1,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+bp050 L1000,openarm_right_ee_link2,openarm_right:finger2,frame,matched,0.0,0.0,0.0,0.0,n/a (upstream mesh),0.0,,,
+all,camera_link,,unmapped,unmapped (URDF only),,,,,,,,,legacy 0.04 x 0.08 x 0.04 box at the PLATFORM-PIN 131e500 (removed on platform-sw main by #106); the 2.0 base camera is base_camera_link
+all,left_wrist_camera_link,,unmapped,unmapped (URDF only),,,,,,,,,"drawn on robot.html as a page fitting, not a registry part (conflicts: wrist cameras)"
+all,right_wrist_camera_link,,unmapped,unmapped (URDF only),,,,,,,,,"drawn on robot.html as a page fitting, not a registry part (conflicts: wrist cameras)"
+all,base_link,battery_tray,roadmap only,roadmap only,,,,,,,,,"offset [-0.216, 0, 0.0622] m in base_link"
+all,base_link,bay_can1,roadmap only,roadmap only,,,,,,,,,"offset [0.177, -0.1105, -0.0242] m in base_link"
+all,base_link,bay_can2,roadmap only,roadmap only,,,,,,,,,"offset [0.292, -0.1083, -0.0117] m in base_link"
+all,base_link,bay_can3,roadmap only,roadmap only,,,,,,,,,"offset [-0.261, 0.1675, -0.0412] m in base_link"
+all,base_link,bay_fbc,roadmap only,roadmap only,,,,,,,,,"offset [0.188, 0.1445, -0.0032] m in base_link"
+all,base_link,bay_ina228,roadmap only,roadmap only,,,,,,,,,"offset [0.3559, -0.1533, -0.0402] m in base_link"
+all,base_link,bay_iso1212,roadmap only,roadmap only,,,,,,,,,"offset [0.343, 0.126, -0.0147] m in base_link"
+all,base_link,bay_lidar_uart,roadmap only,roadmap only,,,,,,,,,"offset [0.297, 0.104, -0.0202] m in base_link"
+all,base_link,bay_plate,roadmap only,roadmap only,,,,,,,,,"offset [0.2515, 0, -0.0425] m in base_link"
+all,base_link,bay_pwr009,roadmap only,roadmap only,,,,,,,,,"offset [0.322, -0.136, -0.0307] m in base_link"
+all,base_link,bay_pwr029,roadmap only,roadmap only,,,,,,,,,"offset [0.152, -0.111, -0.0152] m in base_link"
+all,base_link,bay_pwr032,roadmap only,roadmap only,,,,,,,,,"offset [-0.1595, 0.237, -0.0412] m in base_link"
+all,base_link,bay_rsd100,roadmap only,roadmap only,,,,,,,,,"offset [0.2165, -0.147, 0.0083] m in base_link"
+all,base_link,bay_tpl7407,roadmap only,roadmap only,,,,,,,,,"offset [0.311, 0.125, -0.0147] m in base_link"
+all,base_link,bay_usbcan_1,roadmap only,roadmap only,,,,,,,,,"offset [0.3195, 0.1065, -0.0103] m in base_link"
+all,base_link,bay_usbcan_2,roadmap only,roadmap only,,,,,,,,,"offset [-0.202, 0.1695, -0.0357] m in base_link"
+all,base_link,bay_usbhub,roadmap only,roadmap only,,,,,,,,,"offset [0.292, 0.1465, 0.0273] m in base_link"
+all,base_link,bay_usbpd,roadmap only,roadmap only,,,,,,,,,"offset [0.152, 0.1115, -0.0152] m in base_link"
+all,base_link,can_term_1,roadmap only,roadmap only,,,,,,,,,"offset [-0.0693, -0.0018, 0.0734] m in base_link"
+all,base_link,can_term_2,roadmap only,roadmap only,,,,,,,,,"offset [0.0271, -0.014, 0.1165] m in base_link"
+all,base_link,can_term_3,roadmap only,roadmap only,,,,,,,,,"offset [0.292, -0.1083, 0.0222] m in base_link"
+all,base_link,can_term_4,roadmap only,roadmap only,,,,,,,,,"offset [-0.222, -0.228, 0.172] m in base_link"
+all,base_link,fan,roadmap only,roadmap only,,,,,,,,,"offset [0.18, 0, 0.1755] m in base_link"
+all,base_link,fasteners_base,roadmap only,roadmap only,,,,,,,,,"offset [0.1385, 0, 0.0865] m in base_link"
+all,lift_column_base_link,fasteners_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.078, 0.034, 0.287] m in lift_column_base_link"
+all,lift_carriage_link,fasteners_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.1658, 0, 0.1285] m in lift_carriage_link"
+all,base_link,feedthru_1,roadmap only,roadmap only,,,,,,,,,"offset [0.2, 0.272, 0.102] m in base_link"
+all,base_link,feedthru_2,roadmap only,roadmap only,,,,,,,,,"offset [0.245, 0.272, 0.102] m in base_link"
+all,lift_carriage_link,getac_pocket,roadmap only,roadmap only,,,,,,,,,"offset [0.2553, 0, 0.2188] m in lift_carriage_link"
+all,lift_carriage_link,getac_second_position_ghost,roadmap only,roadmap only,,,,,,,,,"offset [0.2553, 0, 0.2398] m in lift_carriage_link"
+all,base_link,harness_bat_base,roadmap only,roadmap only,,,,,,,,,"offset [-0.0104, -0.0037, 0.0762] m in base_link"
+all,base_link,harness_fittings_base,roadmap only,roadmap only,,,,,,,,,"offset [0.009, 0, 0.167] m in base_link"
+all,lift_column_base_link,harness_fittings_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1075, 0, 0.261] m in lift_column_base_link"
+all,lift_carriage_link,harness_fittings_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.0675, -0.0035, 0.166] m in lift_carriage_link"
+all,base_link,harness_r24_base,roadmap only,roadmap only,,,,,,,,,"offset [0.1005, -0.0005, 0.1034] m in base_link"
+all,lift_column_base_link,harness_r24_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.161, -0.0475, 0.2401] m in lift_column_base_link"
+all,lift_carriage_link,harness_r24_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.0502, 0.0169, -0.0488] m in lift_carriage_link"
+all,base_link,harness_safe_base,roadmap only,roadmap only,,,,,,,,,"offset [-0.1638, 0.0132, 0.0961] m in base_link"
+all,lift_column_base_link,harness_safe_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1609, -0.0475, 0.2399] m in lift_column_base_link"
+all,lift_carriage_link,harness_safe_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.0002, -0.0016, -0.0556] m in lift_carriage_link"
+all,base_link,harness_sig_base,roadmap only,roadmap only,,,,,,,,,"offset [0.0002, 0.0045, 0.0817] m in base_link"
+all,lift_column_base_link,harness_sig_col,roadmap only,roadmap only,,,,,,,,,"offset [-0.1212, -0.0027, 0.2432] m in lift_column_base_link"
+all,lift_carriage_link,harness_sig_mov,roadmap only,roadmap only,,,,,,,,,"offset [0.0203, -0.0012, 0.0429] m in lift_carriage_link"
+all,base_link,k1k2_option_b_1,roadmap only,roadmap only,,,,,,,,,"offset [-0.217, 0.2095, 0.0295] m in base_link"
+all,base_link,keepout_bp000,roadmap only,roadmap only,,,,,,,,,"offset [0.06, 0, 0.077] m in base_link"
+all,base_link,keepout_bp050,roadmap only,roadmap only,,,,,,,,,"offset [0.11, 0, 0.077] m in base_link"
+all,lift_column_base_link,lift_base_plate,roadmap only,pending (intended),,,,,,,,,"B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)"
+all,lift_column_base_link,lift_node,roadmap only,roadmap only,,,,,,,,,"offset [-0.155, 0, 0.0125] m in lift_column_base_link"
+all,base_link,motor_brackets_1,roadmap only,roadmap only,,,,,,,,,"offset [0, 0.1066, -0.0095] m in base_link"
+all,base_link,motor_brackets_2,roadmap only,roadmap only,,,,,,,,,"offset [0, 0.2496, -0.0095] m in base_link"
+all,base_link,motor_brackets_3,roadmap only,roadmap only,,,,,,,,,"offset [0, -0.1066, -0.0095] m in base_link"
+all,base_link,motor_brackets_4,roadmap only,roadmap only,,,,,,,,,"offset [0, -0.2496, -0.0095] m in base_link"
+all,lift_column_base_link,rear_estop_clear_ghost,roadmap only,roadmap only,,,,,,,,,"offset [-0.152, 0, 0.332] m in lift_column_base_link"
+all,lift_column_base_link,rear_estop_housing,roadmap only,pending (intended),,,,,,,,,"B2 (2 Nov 2026, proposed): post-mount housing of the second E-stop at P2"
+all,base_link,rear_plate,roadmap only,roadmap only,,,,,,,,,"offset [-0.312, 0, -0.0425] m in base_link"
+all,lift_carriage_link,rod_corner_bracket,roadmap only,roadmap only,,,,,,,,,"offset [-0.109, 0.05, -0.0115] m in lift_carriage_link"
+all,base_link,rz_batcon,roadmap only,roadmap only,,,,,,,,,"offset [-0.207, 0.192, 0.142] m in base_link"
+all,base_link,rz_bms,roadmap only,roadmap only,,,,,,,,,"offset [-0.222, -0.228, 0.0667] m in base_link"
+all,base_link,rz_brake,roadmap only,roadmap only,,,,,,,,,"offset [-0.222, -0.193, 0.0043] m in base_link"
+all,base_link,rz_disc,roadmap only,roadmap only,,,,,,,,,"offset [-0.33, 0.115, 0.092] m in base_link"
+all,base_link,rz_f0,roadmap only,roadmap only,,,,,,,,,"offset [-0.227, 0.2175, -0.0058] m in base_link"
+all,base_link,rz_fba,roadmap only,roadmap only,,,,,,,,,"offset [-0.312, -0.0745, 0.0068] m in base_link"
+all,base_link,rz_fbb,roadmap only,roadmap only,,,,,,,,,"offset [-0.312, -0.0745, 0.1167] m in base_link"
+all,base_link,rz_fchg,roadmap only,roadmap only,,,,,,,,,"offset [-0.199, -0.188, -0.0272] m in base_link"
+all,base_link,rz_k1k2_1,roadmap only,roadmap only,,,,,,,,,"offset [-0.2405, 0.2245, 0.0648] m in base_link"
+all,base_link,rz_k1k2_2,roadmap only,roadmap only,,,,,,,,,"offset [-0.1745, 0.2085, 0.0648] m in base_link"
+all,base_link,rz_kchg,roadmap only,roadmap only,,,,,,,,,"offset [-0.2595, -0.188, -0.0182] m in base_link"
+all,base_link,rz_pre,roadmap only,roadmap only,,,,,,,,,"offset [-0.252, 0.1795, 0.0668] m in base_link"
+all,base_link,rz_pwr017_1,roadmap only,roadmap only,,,,,,,,,"offset [-0.327, 0.103, -0.0232] m in base_link"
+all,base_link,rz_pwr017_2,roadmap only,roadmap only,,,,,,,,,"offset [-0.302, 0.048, 0.0568] m in base_link"
+all,base_link,rz_sb50,roadmap only,roadmap only,,,,,,,,,"offset [-0.35, 0.045, 0.037] m in base_link"
+all,lift_column_base_link,service_loop,roadmap only,roadmap only,,,,,,,,,"offset [-0.1325, -0.045, 0.3764] m in lift_column_base_link"
+all,base_link,shims_1,roadmap only,roadmap only,,,,,,,,,"offset [0.2751, 0.215, -0.0465] m in base_link"
+all,base_link,shims_2,roadmap only,roadmap only,,,,,,,,,"offset [0.2751, -0.215, -0.0465] m in base_link"
+all,base_link,shims_3,roadmap only,roadmap only,,,,,,,,,"offset [-0.275, 0.215, -0.0465] m in base_link"
+all,base_link,shims_4,roadmap only,roadmap only,,,,,,,,,"offset [-0.275, -0.215, -0.0465] m in base_link"
+all,lift_carriage_link,slot_cover_strips,roadmap only,roadmap only,,,,,,,,,"offset [0.21, 0, 0.29] m in lift_carriage_link"
+all,base_link,tz_receiver,roadmap only,pending (intended),,,,,,,,,"B4 (2 Nov 2026, decided): TZBOT WCM-500-24 receiver at the front of the base; not in the base URDF yet"
+all,base_link,us_locknut_1,roadmap only,roadmap only,,,,,,,,,"offset [0.3615, 0.13, -0.0066] m in base_link"
+all,base_link,us_locknut_2,roadmap only,roadmap only,,,,,,,,,"offset [0.3615, -0.13, -0.0066] m in base_link"
+all,base_link,us_locknut_3,roadmap only,roadmap only,,,,,,,,,"offset [-0.3615, 0.13, -0.0066] m in base_link"
+all,base_link,us_locknut_4,roadmap only,roadmap only,,,,,,,,,"offset [-0.3615, -0.13, -0.0066] m in base_link"

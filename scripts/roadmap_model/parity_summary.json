@@ -1,0 +1,127 @@
+{
+ "tolerance_mm": 0.5,
+ "tolerance_deg": 0.2,
+ "configurations": [
+  "bp000 L1000",
+  "bp000 L1175",
+  "bp000 L1350",
+  "bp050 L1000"
+ ],
+ "mapped_items": 50,
+ "matched": 43,
+ "out_of_tolerance": 7,
+ "pending": 3,
+ "not_compared": 0,
+ "unmapped_urdf": 3,
+ "roadmap_only": 82,
+ "unmapped_roadmap": 0,
+ "comparisons": 200,
+ "comparisons_out": 28,
+ "worst": [
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp000 L1000",
+   "dpos_mm": 26.0,
+   "dsize_mm": 152.0
+  },
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp000 L1175",
+   "dpos_mm": 26.0,
+   "dsize_mm": 152.0
+  },
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp000 L1350",
+   "dpos_mm": 26.0,
+   "dsize_mm": 152.0
+  },
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp050 L1000",
+   "dpos_mm": 26.0,
+   "dsize_mm": 152.0
+  },
+  {
+   "urdf": "lift_column_base_link",
+   "roadmap": "lift_column#0",
+   "configuration": "bp000 L1000",
+   "dpos_mm": 12.0,
+   "dsize_mm": 24.0
+  },
+  {
+   "urdf": "lift_column_base_link",
+   "roadmap": "lift_column#0",
+   "configuration": "bp000 L1175",
+   "dpos_mm": 12.0,
+   "dsize_mm": 24.0
+  },
+  {
+   "urdf": "lift_column_base_link",
+   "roadmap": "lift_column#0",
+   "configuration": "bp000 L1350",
+   "dpos_mm": 12.0,
+   "dsize_mm": 24.0
+  },
+  {
+   "urdf": "lift_column_base_link",
+   "roadmap": "lift_column#0",
+   "configuration": "bp050 L1000",
+   "dpos_mm": 12.0,
+   "dsize_mm": 24.0
+  },
+  {
+   "urdf": "base_link#2",
+   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "configuration": "bp000 L1000",
+   "dpos_mm": 2.56,
+   "dsize_mm": 5.0
+  },
+  {
+   "urdf": "base_link#2",
+   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "configuration": "bp000 L1175",
+   "dpos_mm": 2.56,
+   "dsize_mm": 5.0
+  },
+  {
+   "urdf": "base_link#2",
+   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "configuration": "bp000 L1350",
+   "dpos_mm": 2.56,
+   "dsize_mm": 5.0
+  },
+  {
+   "urdf": "base_link#2",
+   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "configuration": "bp050 L1000",
+   "dpos_mm": 2.56,
+   "dsize_mm": 5.0
+  }
+ ],
+ "urdf_sha256": {
+  "combined_robot.urdf": "012ee29acf6590aa1efdb85745e31b910e6a599feaee549ce43245ab6d56e1b2",
+  "combined_robot_bp050.urdf": "986a61600e98bcf9517271e84b90c76732790024f6253afdda4badcb1c6c5971"
+ },
+ "sources": {
+  "openamrobot_description": {
+   "repository": "openAMRobot/openamr-platform-sw",
+   "commit": "131e500fc4e5afc9f648cbd7dbf5b416280761fb",
+   "role": "PLATFORM-PIN"
+  },
+  "openamrobot_upperbody_description": {
+   "repository": "openAMRobot/openamr-upperbody-sw",
+   "commit": "a8c304d8a6335c479e56f20e32675d2d87144a50",
+   "role": "main"
+  },
+  "openarm_description": {
+   "repository": "enactic/openarm_description",
+   "commit": "14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831",
+   "role": "upstream pin"
+  }
+ }
+}
