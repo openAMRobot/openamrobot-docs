@@ -1,0 +1,43 @@
+{
+ "totals": {
+  "L1000": {
+   "mass_kg": 99.64,
+   "com_m": [
+    0.0265,
+    0.0011,
+    0.3202
+   ],
+   "frame": "base_footprint, bp000"
+  },
+  "L1350": {
+   "mass_kg": 99.64,
+   "com_m": [
+    0.0265,
+    0.0011,
+    0.3927
+   ],
+   "frame": "base_footprint, bp000"
+  }
+ },
+ "comparison": {
+  "combined_model_urdf_kg": {
+   "base": 6.702,
+   "equipment": 0.7,
+   "lift": 11.7,
+   "openarm": 12.26,
+   "sensors": 0.063
+  },
+  "combined_model_total_kg": 31.43,
+  "roadmap_kg": {
+   "openarm": 12.26,
+   "base": 73.91,
+   "sensors": 0.05,
+   "equipment": 0.7,
+   "lift": 11.76,
+   "lift_carriage": 0.96
+  },
+  "roadmap_total_kg": 99.64,
+  "base_urdf_kg": 6.7,
+  "note": "The base URDF at the PLATFORM-PIN carries 6.7 kg in total; the roadmap base group from BOM Issue 7.14 is 73.9 kg. Upper-body groups: see mass_provenance.yaml (lift 11.7 kg, equipment 0.70 kg, sensors 0.063 kg, OpenArm upstream nominals)."
+ }
+}

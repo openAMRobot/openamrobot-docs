@@ -47,6 +47,11 @@ SHELF_FIRST = ["compute", "base_controller", "bay_fbc", "bay_din_tb"]   # option
 TOP_ACCESS = {"bay_fbc", "bay_din", "bay_ddr240"}   # fuses and terminals: nothing above them
 
 
+def under_lift_plate(lo, hi):
+    """Footprint of the lift base plate MEC-019 and the column above it (x -0.080 to 0.250 plus 5 mm, |y| <= 0.075): no top access."""
+    return lo[0] < 0.255 and hi[1] > -0.075 and lo[1] < 0.075
+
+
 def bearing_in_sector(x, y):
     return abs(math.degrees(math.atan2(y - LIDAR[1], x - LIDAR[0]))) <= SECTOR_DEG
 
@@ -126,8 +131,7 @@ def place(items, zones, order=None):
                                 continue
                             if g.free(np.maximum(lo - [gap, gap, 0], zlo), np.minimum(hi + [gap, gap, gap], zhi)):
                                 if it["id"] in TOP_ACCESS or it.get("top_access"):
-                                    a, b = g.idx(lo, hi)
-                                    if z.get("roof") is not None and z["roof"](lo, hi):
+                                    if (z.get("roof") is not None and z["roof"](lo, hi)) or under_lift_plate(lo, hi):
                                         continue
                                 best = (zn, lo + p / 2, p)
                                 break
@@ -170,16 +174,26 @@ def option_a(items):
     """Two-tier bay: the best of the shelf priority orders (most parts placed, then most compute and control parts on the shelf)."""
     global SHELF_FIRST
     keep, best = list(SHELF_FIRST), None
-    for order in itertools.permutations(["compute", "base_controller", "bay_fbc", "bay_din_tb"]):
+    for order in itertools.permutations(["compute", "bay_fbc", "bay_din_tb", "base_controller"]):
         SHELF_FIRST = list(order)
         r = _option_a([dict(i) for i in items])
         on_shelf = sum(1 for k, v in r["placed"].items() if v[0] == "A_upper" and TIER.get(k.rsplit("_", 1)[0] if k[-2:] in ("_1", "_2") else k, "upper") == "upper")
-        score = (len(r["placed"]), on_shelf, -len(r["nofit"]))
+        score = (len(r["placed"]) + sum(1 for k in r["nofit"] if k in STAY) * 0.5, on_shelf, -len(r["nofit"]))
         if best is None or score > best[0]:
             best = (score, r, list(order))
     SHELF_FIRST = keep
     best[1]["shelf_order"] = best[2]
-    return best[1]
+    return stays(best[1])
+
+
+STAY = {"base_controller": "stays on its controller plate MMP.04.00.00.003 on the IMU bracket (today's position; not heavy or vibrating, inside the shortened bracket at x <= 0.094)"}
+
+
+def stays(r):
+    """Parts that keep their present position when the bay has no room for them (not a no-fit)."""
+    r["stays"] = {k: STAY[k] for k in r["nofit"] if k in STAY}
+    r["nofit"] = [k for k in r["nofit"] if k not in STAY]
+    return r
 
 
 def _option_a(items):
@@ -218,11 +232,11 @@ def _option_a(items):
         if t in (None, "din"):
             continue
         if t == "lower":
-            it = dict(it, zones=["A_lower", "strip_r", "strip_l"])
+            it = dict(it, zones=["A_lower", "strip_r", "strip_l"], priority=-1 if it["id"] == "bay_rsd100" else 9)
         elif it["id"] in SHELF_FIRST:
-            it = dict(it, zones=["A_upper", "A_lower"], priority=SHELF_FIRST.index(it["id"]))
+            it = dict(it, zones=["A_upper"] if it["id"] == "compute" else ["A_upper", "A_lower"], priority=SHELF_FIRST.index(it["id"]))
         elif it["id"] == "bay_usbhub":
-            it = dict(it, zones=["A_upper", "A_lower"])
+            it = dict(it, zones=["A_lower", "A_upper"], priority=8)   # the shelf is kept for compute, NUCLEO, FB-C and the terminal blocks
         else:  # small boards: on the plates (>= 50 mm from the receiver coil); the strips beside the receiver only as a last resort
             it = dict(it, zones=["A_upper", "A_lower", "strip_l", "strip_r"])
         its.append(it)
@@ -279,8 +293,8 @@ def option_b(items):
     for d in din_items:
         its.append(dict(d, zones=["pocket_l", "pocket_r"]))
     placed, nofit = place(its, zones)
-    return {"placed": placed, "nofit": nofit, "plates": [{"name": "MEC-005 plate (raised over the receiver, single tier)", "lo": [0.140, -0.163, PLATE_Z], "hi": [0.330, 0.163, FLOOR]},
-                                                        {"name": "MEC-005 plate tongue between the arch legs", "lo": [X0, -0.086, PLATE_Z], "hi": [0.140, 0.086, FLOOR]}]}
+    return stays({"placed": placed, "nofit": nofit, "plates": [{"name": "MEC-005 plate (raised over the receiver, single tier)", "lo": [0.140, -0.163, PLATE_Z], "hi": [0.330, 0.163, FLOOR]},
+                                                        {"name": "MEC-005 plate tongue between the arch legs", "lo": [X0, -0.086, PLATE_Z], "hi": [0.140, 0.086, FLOOR]}]})
 
 
 def fit_numbers(res, items):
@@ -305,7 +319,7 @@ def fit_numbers(res, items):
     by_zone = {}
     for k, (zn, c, d) in P.items():
         by_zone.setdefault(zn, []).append(k)
-    return {"placed": len(P), "not_placed": list(res["nofit"]), "lowest_metal_above_receiver_mm": None if low is None else round((low - RX["hi"][2]) * 1000, 1),
+    return {"placed": len(P), "not_placed": list(res["nofit"]), "stays_in_place": res.get("stays", {}), "lowest_metal_above_receiver_mm": None if low is None else round((low - RX["hi"][2]) * 1000, 1),
             "lowest_part_beside_receiver_lateral_mm": None if lateral is None else round(lateral * 1000, 1),
             "top_mm": round(top * 1000, 1), "cover_margin_mm": round((COVER - top) * 1000, 1), "scan_band_parts": scan,
             "min_gap_mm": round(gap * 1000, 1), "plate_area_used_pct": round(100 * used / area, 1), "by_zone": by_zone}

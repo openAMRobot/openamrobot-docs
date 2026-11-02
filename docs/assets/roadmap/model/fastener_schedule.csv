@@ -1,6 +1,7 @@
 joint,part,size,qty,standard,material,class,drawn
+CAN1 transceiver SN65HVD230 to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 CAN3 transceiver and termination to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
-Isolated input module ISO1212 (PNOZ Y32) to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+Low-side driver TPL7407L to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 Actuator-bus voltage module INA228 to the MEC-005 plate,M2.5 hex standoff + ISO 7380 screw,M2.5 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 3.3 V regulator for the MB7060s to the MEC-005 plate,M2.5 hex standoff + ISO 7380 screw,M2.5 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 USB-PD module (Getac charging) to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
@@ -37,4 +38,4 @@ MEC-005 upper shelf on the lower plate (option A),hex standoff M4 x 50 + ISO 738
 DIN carrier to the centre-bracket front legs (option A),ISO 4762 + rivet nut,M5 x 12,4,ISO 4762,A2,proposed,n
 Getac pocket and light-bar plate to the post front face,T-slot nut + ISO 4762,M6 x 12,4,ISO 4762,steel,proposed,n
 MEC-015 motor brackets to the base sheet,hex bolt + nut + washer,M8 x 20,8,ISO 4017 / ISO 4032 / ISO 7089,steel 8.8,proposed,n
-Harness P-clips,button head screw + rivet nut,M4 x 8,39,ISO 7380,A2,proposed,n
+Harness P-clips,button head screw + rivet nut,M4 x 8,38,ISO 7380,A2,proposed,n

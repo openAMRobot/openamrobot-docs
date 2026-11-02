@@ -968,6 +968,7 @@ def private_terms():
 # sensor_bodies, written by build.py and checked there against the platform-sw visual STL of the sensor). The
 # intended offset between the drawn body and the frame (where the frame sits on the body) is declared once below,
 # with its source, and applied: the drawn body reference point must sit at the frame origin plus that offset.
+WHEEL_COMPRESSION_M = 0.002  # intended tyre compression (owner decision of 2 Nov 2026, B1)
 SENSOR_POSE_TOL_M = 0.001
 SENSOR_POSE_TOL_DEG = 0.2
 SENSOR_FIT_RMS_MAX_M = 0.0002  # the drawn mesh must be the reference body moved rigidly
@@ -1277,6 +1278,10 @@ def check_model_sources(root, html, err):
             lo = [min(x, y) for x, y in zip(lo, a["min"])]
             hi = [max(x, y) for x, y in zip(hi, a["max"])]
         boxes[(n.get("extras") or {}).get("id", n.get("name"))] = ([lo[0], lo[1], lo[2] + blz], [hi[0], hi[1], hi[2] + blz])
+    # B1 (2 Nov 2026): rubber drive wheels r 0.100 on the axle at 0.098: wheel-to-floor overlap up to 2 mm is an intended contact
+    for node in ("hub_motor_wheel_left", "hub_motor_wheel_right"):
+        if node in boxes and boxes[node][0][2] < -WHEEL_COMPRESSION_M - 1e-4:
+            err("model", "%s reaches %.1f mm below the floor: more than the intended %.0f mm tyre compression" % (node, -boxes[node][0][2] * 1000, WHEEL_COMPRESSION_M * 1000))
     tol = 0.001
     for e in sensor_pose_errors(snap, glb_vertices(payload, blz), upper_body_sensor_poses(js, os.path.join(mdir, "combined_robot.urdf"))):
         err("model", e)

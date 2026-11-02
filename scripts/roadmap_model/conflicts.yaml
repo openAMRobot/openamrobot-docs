@@ -4,7 +4,6 @@ conflicts:
   - {item: "TF-Luna x", a: "x 0.399 (sensor_frames.yaml; decisions.yaml NEAR-FIELD-FRAMES)", b: "x 0.390 (P-03 rev19.7, BOM 7.14); design-intent mount puts the lens at 0.390", status: "open: register change proposed"}
   - {item: "MB7060 x", a: "us_* x 0.3906 / -0.3886 (sensor_frames.yaml)", b: "x 0.390 (decisions.yaml NEAR-FIELD-FRAMES, BOM 7.14)", status: "open: platform-sw rounding"}
   - {item: "LiDAR x", a: "lidar_link x 0.330 (sensor_frames.yaml, #49)", b: "S3 body centre x 0.321 in CAD", status: "open (keep 0.330 and move the S3, or 0.321)"}
-  - {item: "Wheel radius", a: "base_link 0.098 m", b: "supplier wheel radius 0.100 m (datums drive_wheel_radius); rounding to 0.1 requested", status: "open: the model wheel reaches 2 mm below the floor"}
   - {item: "Track", a: "0.400 m placeholder (model, URDF)", b: "0.46 m measured on the legacy robot", status: "open"}
   - {item: "TF-Luna opening", a: "M-01: 22.0 mm hole", b: "CAD owner proposal: 30 x 23 mm window with mount", status: "open (both variants drawn as design intent)"}
   - {item: "Ultrasonic hole", a: "CAD v0.2: 29.46 mm", b: "27.5 mm (decisions.yaml NEAR-FIELD-FRAMES, M-01)", status: "CAD fix promised 31 Oct, not pushed"}
@@ -28,11 +27,14 @@ conflicts:
   - {item: "Onboard count", a: "BOM Issue 7.14: 115 onboard of 146 records", b: "the model rule (offboard rows, qty 0, fallback lift excluded) gives 121; the onboard flag column is not public", status: "open: BOM owner to publish the flag"}
   - {item: "Rear side pockets", a: "B5 / platform-sw #95: 140 x 91 x 210 mm each side", b: "CAD v0.2 side panel return flanges at y 0.193: 91 mm only between z 74 and 191 mm, 36 mm at the flanges", status: "open: B5 to note the flanges"}
   - {item: "Rear zone depth with a tray", a: "B5: 70 mm behind the cells", b: "design-intent tray MEC-007 walls use about 19 mm of it and about 20 mm of each side pocket", status: "open: tray design and B5"}
-  - {item: "Lift base plate outline", a: "roadmap model drew 300 x 100 mm (until 24 Oct)", b: "MEC-019 360 x 230 x 10 mm (M-01 rev19.7)", status: "fixed in this update"}
-  - {item: "Lift plate front bolts", a: "B7: bolts through the deck into the frame below", b: "CAD v0.2 has no frame under the front bolt row (x 0.210 / 0.260)", status: "open: CAD owner"}
+  - {item: "Lift base plate outline", a: "MEC-019 360 x 230 x 10 mm through the deck, 4 x M8 on 190 x 300 (M-01 rev19.7, B7)", b: "owner decision 2 Nov 2026: 330 x 140 x 10 mm 6082-T6 on the centre-frame arch, 4 x M8 into the arch rivet nuts (inner pattern 120 x 100 mm)", status: "decided 2 Nov; P-03 and M-01 to record it"}
+  - {item: "Lift plate front bolts", a: "B7: bolts through the deck into the frame below", b: "CAD v0.2 has no frame under the front bolt row (x 0.210 / 0.260)", status: "superseded by the 2 Nov plate on the arch (no deck bolts); load check on the hardware page"}
   - {item: "Getac mount depth", a: "datums.yaml chest_equipment_x_from_profile_front_face = 0", b: "the rotatable mount needs depth behind the tablet (design intent: 9 mm)", status: "open: M-09"}
-  - {item: "Front bay content", a: "E2 parts list for the front bay plate", b: "PNOZ DIN assembly, DDR-240B-24 and RSD-60G-5 do not fit in the bay or the side pockets with catalogue outlines", status: "open: hardware owner layout due"}
-  - {item: "IMU bracket rule", a: "nothing heavy or vibrating on MMP.04.00.00.002", b: "CAD v0.2 puts the Jetson with its fan on that bracket", status: "open: CAD owner"}
+  - {item: "Front bay content", a: "E2 parts list for the front bay plate", b: "with the TZBOT receiver under the bay: option A (two-tier) places every part, option B (DIN parts in the side pockets) cannot place the PNOZ s3, the DDR-240B-24 and the terminal blocks", status: "open: owner to choose (option A proposed)"}
+  - {item: "IMU bracket rule", a: "nothing heavy or vibrating on MMP.04.00.00.002", b: "CAD v0.2 puts the Jetson with its fan on that bracket", status: "open: front bay option A moves the Jetson to the shelf (proposed)"}
   - {item: "openamrobot-ui", a: "B2: nothing merged", b: "#57 merged on 30 Oct into a non-main branch; main unchanged at 0ca798b", status: "consistent for main"}
   - {item: "platform-fw references", a: "fw #19 cites rev19.6; fw issue #11 says 4 TF-Luna, 2 MB7040", b: "P-03 rev20.2; 2 TF-Luna + 4 MB7060", status: "open: firmware owner"}
   - {item: "Wrist cameras", a: "robot page draws them as page fittings", b: "the exploded view does not (not in the registry)", status: "open: move into the registry"}
+  - {item: "Second E-stop position", a: "datums second_estop_below_profile_top 0.040 on lift_column_base_link (P1, 0.776 m above the floor)", b: "owner reach requirement 0.90 to 1.50 m at every lift stop (2 Nov 2026): only P2 on the arm post meets it (1.129 / 1.304 / 1.479 m)", status: "P2 proposed; datums unchanged until the P-03 entry"}
+  - {item: "TZBOT receiver position", a: "B5: receiver 240 x 210 x 65 mm, position not documented", b: "owner decision 2 Nov 2026: front of the base, centred, front edge 25 mm from the front panel, 240 along x, bottom 50 mm above the floor", status: "decided; CAD owner to model the cut-out and the bracket"}
+  - {item: "Wheel radius", a: "base_link 0.098 m", b: "supplier wheel radius 0.100 m", status: "decided 2 Nov 2026: 2 mm intended tyre compression, an intended contact"}

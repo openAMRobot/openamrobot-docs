@@ -129,38 +129,40 @@
  "front_bay": {
   "A": {
    "fit": {
-    "placed": 22,
+    "placed": 21,
     "not_placed": [],
+    "stays_in_place": {
+     "base_controller": "stays on its controller plate MMP.04.00.00.003 on the IMU bracket (today's position; not heavy or vibrating, inside the shortened bracket at x <= 0.094)"
+    },
     "lowest_metal_above_receiver_mm": 23.0,
     "lowest_part_beside_receiver_lateral_mm": 25.0,
     "top_mm": 273.0,
     "cover_margin_mm": 17.0,
     "scan_band_parts": [],
     "min_gap_mm": 5.0,
-    "plate_area_used_pct": 44.7,
+    "plate_area_used_pct": 38.4,
     "by_zone": {
+     "A_lower": [
+      "bay_rsd100",
+      "bay_usbhub",
+      "bay_pwr009",
+      "bay_pwr029",
+      "bay_usbpd",
+      "bay_pwr032",
+      "bay_ina228"
+     ],
      "A_upper": [
       "compute",
-      "base_controller",
-      "bay_fbc",
       "bay_din_tb",
+      "bay_fbc",
+      "bay_iso1212",
       "bay_tpl7407",
       "bay_usbcan_1",
       "bay_usbcan_2",
       "bay_can2",
       "bay_lidar_uart",
-      "bay_can1"
-     ],
-     "A_lower": [
-      "bay_rsd100",
-      "bay_usbhub",
-      "bay_pwr009",
-      "bay_iso1212",
-      "bay_pwr029",
-      "bay_usbpd",
-      "bay_can3",
-      "bay_pwr032",
-      "bay_ina228"
+      "bay_can1",
+      "bay_can3"
      ],
      "strip_r": [
       "bay_rsd60"
@@ -172,6 +174,19 @@
     }
    },
    "placed": {
+    "bay_rsd100": [
+     "A_lower",
+     [
+      0.1985,
+      -0.0835,
+      0.157
+     ],
+     [
+      97.0,
+      159.0,
+      38.0
+     ]
+    ],
     "compute": [
      "A_upper",
      [
@@ -185,37 +200,11 @@
       45.0
      ]
     ],
-    "base_controller": [
-     "A_upper",
-     [
-      0.2117,
-      -0.128,
-      0.207
-     ],
-     [
-      133.3,
-      70.0,
-      22.0
-     ]
-    ],
-    "bay_fbc": [
-     "A_upper",
-     [
-      0.2505,
-      -0.037,
-      0.233
-     ],
-     [
-      41.0,
-      102.0,
-      74.0
-     ]
-    ],
     "bay_din_tb": [
      "A_upper",
      [
-      0.3006,
-      -0.1142,
+      0.1606,
+      -0.1393,
       0.2172
      ],
      [
@@ -224,17 +213,17 @@
       42.5
      ]
     ],
-    "bay_rsd100": [
-     "A_lower",
+    "bay_fbc": [
+     "A_upper",
      [
-      0.1985,
-      -0.0835,
-      0.157
+      0.236,
+      -0.126,
+      0.2165
      ],
      [
-      97.0,
-      159.0,
-      38.0
+      102.0,
+      74.0,
+      41.0
      ]
     ],
     "bay_usbhub": [
@@ -277,16 +266,16 @@
      ]
     ],
     "bay_iso1212": [
-     "A_lower",
+     "A_upper",
      [
-      0.287,
-      -0.1375,
-      0.144
+      0.262,
+      -0.077,
+      0.2215
      ],
      [
       64.0,
-      51.0,
-      12.0
+      12.0,
+      51.0
      ]
     ],
     "bay_pwr029": [
@@ -306,46 +295,46 @@
      "A_upper",
      [
       0.249,
-      0.038,
-      0.2215
+      -0.0375,
+      0.202
      ],
      [
       38.0,
-      12.0,
-      51.0
+      51.0,
+      12.0
      ]
     ],
     "bay_usbpd": [
      "A_lower",
      [
-      0.12,
-      -0.058,
+      0.28,
+      -0.148,
       0.1455
      ],
      [
-      30.0,
       50.0,
+      30.0,
       15.0
      ]
     ],
     "bay_usbcan_1": [
      "A_upper",
      [
-      0.2925,
-      -0.0755,
-      0.226
+      0.3075,
+      -0.133,
+      0.2035
      ],
      [
       25.0,
-      15.0,
-      60.0
+      60.0,
+      15.0
      ]
     ],
     "bay_usbcan_2": [
      "A_upper",
      [
-      0.2925,
-      -0.0555,
+      0.1575,
+      -0.1005,
       0.226
      ],
      [
@@ -357,8 +346,8 @@
     "bay_can2": [
      "A_upper",
      [
-      0.2977,
-      -0.158,
+      0.2427,
+      0.037,
       0.2246
      ],
      [
@@ -370,47 +359,47 @@
     "bay_lidar_uart": [
      "A_upper",
      [
-      0.115,
-      0.047,
-      0.216
+      0.25,
+      0.017,
+      0.201
      ],
      [
+      40.0,
       20.0,
-      10.0,
-      40.0
+      10.0
      ]
     ],
     "bay_can1": [
      "A_upper",
      [
-      0.315,
-      -0.0725,
-      0.212
+      0.3105,
+      -0.082,
+      0.201
      ],
      [
-      10.0,
       21.0,
-      32.0
+      32.0,
+      10.0
      ]
     ],
     "bay_can3": [
-     "A_lower",
+     "A_upper",
      [
       0.121,
-      -0.0175,
-      0.143
+      0.047,
+      0.2065
      ],
      [
       32.0,
-      21.0,
-      10.0
+      10.0,
+      21.0
      ]
     ],
     "bay_pwr032": [
      "A_lower",
      [
       0.1175,
-      0.072,
+      -0.073,
       0.143
      ],
      [
@@ -422,8 +411,8 @@
     "bay_ina228": [
      "A_lower",
      [
-      0.2377,
-      0.0309,
+      0.1177,
+      0.0709,
       0.141
      ],
      [
@@ -565,9 +554,9 @@
    },
    "shelf_order": [
     "compute",
-    "base_controller",
+    "bay_din_tb",
     "bay_fbc",
-    "bay_din_tb"
+    "base_controller"
    ]
   },
   "B": {
@@ -576,9 +565,11 @@
     "not_placed": [
      "bay_ddr240",
      "bay_din_pnoz",
-     "base_controller",
      "bay_din_tb"
     ],
+    "stays_in_place": {
+     "base_controller": "stays on its controller plate MMP.04.00.00.003 on the IMU bracket (today's position; not heavy or vibrating, inside the shortened bracket at x <= 0.094)"
+    },
     "lowest_metal_above_receiver_mm": 23.0,
     "lowest_part_beside_receiver_lateral_mm": null,
     "top_mm": 258.0,
@@ -885,15 +876,6 @@
      0.1641,
      -0.0255,
      0.1205
-    ],
-    "yaw": 0.0,
-    "zone": "A_upper"
-   },
-   "base_controller": {
-    "p": [
-     0.2117,
-     -0.128,
-     0.109
     ],
     "yaw": 0.0,
     "zone": "A_upper"

@@ -34,7 +34,8 @@ def main():
              "flag_rod": "LFT-004", "lift_flag": "LFT-006"}
     di = json.load(open(os.path.join(MODEL, "design_intent", "index.json")))
     di = di if isinstance(di, list) else di["items"]
-    di_parts = {"motor_brackets", "battery_tray", "rear_estop_housing", "getac_pocket", "rear_estop_clear_ghost", "getac_second_position_ghost"}
+    di_parts = {"motor_brackets", "battery_tray", "rear_estop_housing", "getac_pocket", "estop_p1_ghost", "estop_p3_ghost", "estop_p4_ghost",
+                "getac_second_position_ghost", "lift_base_plate", "tz_metal_free_zone", "base_cutout", "tz_transmitter"}
     asm = cq.Assembly(name="OpenAMRobot2_layout_base_footprint")
     n = 0
     for p in scene:
@@ -67,7 +68,7 @@ def main():
             shp = cq.importers.importStep(stp)
             use = pls
             if item == "rear_estop_housing":
-                use = [pls[1] if "ghost" in f["variant"] else pls[0]]
+                use = [p_ for p_ in pls if p_.get("variant") == f["variant"]]
             if item in ("getac_pocket", "lift_base_plate"):
                 use = pls[:1]
             for i, pl in enumerate(use):

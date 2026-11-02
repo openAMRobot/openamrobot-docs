@@ -8,15 +8,39 @@
   "bp050 L1000"
  ],
  "mapped_items": 50,
- "matched": 43,
- "out_of_tolerance": 7,
- "pending": 3,
+ "matched": 42,
+ "out_of_tolerance": 6,
+ "pending": 12,
+ "pending_mapped": 2,
+ "pending_roadmap_only": 10,
+ "pending_list": [
+  "base_cutout: B4 (2 Nov 2026): base-sheet cut-out for the receiver (ghost; base_chassis.stl has the CAD v0.2 sheet)",
+  "base_link#2: C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX on J401 off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position",
+  "estop_p1_ghost: B2: position P1 (the combined model's current second_estop_link), ghost",
+  "estop_p3_ghost: B2: position P3, ghost",
+  "estop_p4_ghost: B2: position P4, ghost",
+  "lift_base_plate: B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)",
+  "rear_estop_housing: B2 (2 Nov 2026, proposed): post-mount housing of the second E-stop at P2",
+  "second_estop_link: B2 (2 Nov 2026, proposed): the roadmap draws the recommended post-mount position P2; the combined model keeps P1 (datums second_estop_below_profile_top and its parent lift_column_base_link) until the P-03 entry",
+  "tz_ferrite: B4 (2 Nov 2026): ferrite shielding sheet on the receiver top (proposed)",
+  "tz_metal_free_zone: B4 (2 Nov 2026): 20 mm metal-free zone around the receiver (keep-out ghost)",
+  "tz_receiver: B4 (2 Nov 2026, decided): TZBOT WCM-500-24 receiver at the front of the base; not in the base URDF yet",
+  "tz_transmitter: B4 (2 Nov 2026): floor transmitter, offboard, placeholder height"
+ ],
+ "out_list": [
+  "arm_profile_link / arm_profile",
+  "base_link#0 / front_panel + rear_panel + side_panel_left + side_panel_right + base_plate + centre_bracket + electronics_bracket + support_front_left + support_front_right + support_rear_left + support_rear_right + lidar_support + lidar_spacer + camera_mount + ultrasonic_mount_front_left + ultrasonic_mount_front_right + ultrasonic_mount_rear_left + ultrasonic_mount_rear_right + tof_mount_front + tof_mount_rear + driver_mount + controller_plate",
+  "head_light_link / head_light",
+  "lift_carriage_link / lift_column#1",
+  "lift_column_base_link / lift_column#0",
+  "lift_flag_rod_link / flag_rod"
+ ],
  "not_compared": 0,
  "unmapped_urdf": 3,
- "roadmap_only": 82,
+ "roadmap_only": 103,
  "unmapped_roadmap": 0,
  "comparisons": 200,
- "comparisons_out": 28,
+ "comparisons_out": 24,
  "worst": [
   {
    "urdf": "lift_carriage_link",
@@ -75,32 +99,32 @@
    "dsize_mm": 24.0
   },
   {
-   "urdf": "base_link#2",
-   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp000 L1000",
-   "dpos_mm": 2.56,
-   "dsize_mm": 5.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
   },
   {
-   "urdf": "base_link#2",
-   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp000 L1175",
-   "dpos_mm": 2.56,
-   "dsize_mm": 5.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
   },
   {
-   "urdf": "base_link#2",
-   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp000 L1350",
-   "dpos_mm": 2.56,
-   "dsize_mm": 5.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
   },
   {
-   "urdf": "base_link#2",
-   "roadmap": "motor_driver + compute + base_controller + battery + estop + reset_button",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp050 L1000",
-   "dpos_mm": 2.56,
-   "dsize_mm": 5.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
   }
  ],
  "urdf_sha256": {
