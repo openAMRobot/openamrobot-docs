@@ -1,9 +1,9 @@
 {
  "fingerprint": {
-  "model/model.js": "77006791afbdb6582a17712e800d8889d77dab500ea4bf238575ed46c223c612",
-  "model/exploded.json": "0e39f2d3ff4c9739be21b1a52a9c4217b3c0753c1f269bfc77ea6063d0b18b56",
+  "model/model.js": "c93503b75d690ab467f865afadb52719f13c2fd865abadef96380b78a08276f9",
+  "model/exploded.json": "78fd8503618ac935728157f659138e4a085da769fd04674f2290f0b3b1aa9e4d",
   "robot.html": "52dd02b2a4167c41c8e2fa09f148dc9e71cb17b5616dfb74036e3de5faaeb5b3",
-  "exploded.html": "27452a4d4b4599445e8a5d7c874852a64474ed220abf7df37e2ab428a7d89dc8"
+  "exploded.html": "d90e0b3bba706160b748f243b34e96c49f0e2902a1a81c6bb970b3915b84c963"
  },
  "robot_state": {
   "lift": 1,
@@ -31,7 +31,7 @@
   ]
  },
  "exploded_home_offset_m": 0,
- "parts": 135,
+ "parts": 142,
  "mismatches": [],
  "errors": [],
  "rows": [
@@ -1156,22 +1156,6 @@
    "mismatch": []
   },
   {
-   "comp": "bay_ddr240",
-   "part": "bay_ddr240",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 3,
-   "offset": [
-    -0.25,
-    0,
-    0.3
-   ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
    "comp": "bay_pwr032",
    "part": "bay_pwr032",
    "robot_drawn": true,
@@ -1764,22 +1748,6 @@
    "mismatch": []
   },
   {
-   "comp": "tablet_mount",
-   "part": "tablet_mount",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 8,
-   "offset": [
-    0,
-    0,
-    0.2
-   ],
-   "robot_meshes": 1,
-   "exploded_meshes": 1,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
    "comp": "bay_plate",
    "part": "bay_plate",
    "robot_drawn": true,
@@ -1860,6 +1828,150 @@
    "mismatch": []
   },
   {
+   "comp": "motor_brackets",
+   "part": "motor_brackets_1",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 2,
+   "offset": [
+    0,
+    0,
+    0.25
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "motor_brackets",
+   "part": "motor_brackets_2",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 2,
+   "offset": [
+    0,
+    0,
+    0.25
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "motor_brackets",
+   "part": "motor_brackets_3",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 2,
+   "offset": [
+    0,
+    0,
+    0.25
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "motor_brackets",
+   "part": "motor_brackets_4",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 2,
+   "offset": [
+    0,
+    0,
+    0.25
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "battery_tray",
+   "part": "battery_tray",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 3,
+   "offset": [
+    0,
+    0,
+    0.25
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "rear_estop_housing",
+   "part": "rear_estop_housing",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 7,
+   "offset": [
+    0,
+    0,
+    0.1
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "rear_estop_clear_ghost",
+   "part": "rear_estop_clear_ghost",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 7,
+   "offset": [
+    0,
+    0,
+    0.1
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "getac_pocket",
+   "part": "getac_pocket",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    0,
+    0.1
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "getac_portrait_ghost",
+   "part": "getac_portrait_ghost",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    0,
+    0.1
+   ],
+   "robot_meshes": 1,
+   "exploded_meshes": 1,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
    "comp": "harness_bat",
    "part": "harness_bat_base",
    "robot_drawn": true,
@@ -1870,8 +1982,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 12,
-   "exploded_meshes": 12,
+   "robot_meshes": 64,
+   "exploded_meshes": 64,
    "same_transform": true,
    "mismatch": []
   },
@@ -1886,40 +1998,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 12,
-   "exploded_meshes": 12,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_safe",
-   "part": "harness_safe_col",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 6,
-   "exploded_meshes": 6,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_safe",
-   "part": "harness_safe_mov",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 4,
-   "exploded_meshes": 4,
+   "robot_meshes": 41,
+   "exploded_meshes": 41,
    "same_transform": true,
    "mismatch": []
   },
@@ -1934,40 +2014,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 5,
-   "exploded_meshes": 5,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_r24",
-   "part": "harness_r24_col",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 4,
-   "exploded_meshes": 4,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_r24",
-   "part": "harness_r24_mov",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 4,
-   "exploded_meshes": 4,
+   "robot_meshes": 21,
+   "exploded_meshes": 21,
    "same_transform": true,
    "mismatch": []
   },
@@ -1982,40 +2030,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 20,
-   "exploded_meshes": 20,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_sig",
-   "part": "harness_sig_col",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 24,
-   "exploded_meshes": 24,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_sig",
-   "part": "harness_sig_mov",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 10,
-   "exploded_meshes": 10,
+   "robot_meshes": 115,
+   "exploded_meshes": 115,
    "same_transform": true,
    "mismatch": []
   },
@@ -2032,54 +2048,6 @@
    ],
    "robot_meshes": 22,
    "exploded_meshes": 22,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_fittings",
-   "part": "harness_fittings_col",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 6,
-   "exploded_meshes": 6,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "harness_fittings",
-   "part": "harness_fittings_mov",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    0,
-    0.45
-   ],
-   "robot_meshes": 8,
-   "exploded_meshes": 8,
-   "same_transform": true,
-   "mismatch": []
-  },
-  {
-   "comp": "service_loop",
-   "part": "service_loop",
-   "robot_drawn": true,
-   "exploded_drawn": true,
-   "stage": 9,
-   "offset": [
-    0,
-    -0.2,
-    0.1
-   ],
-   "robot_meshes": 1,
-   "exploded_meshes": 1,
    "same_transform": true,
    "mismatch": []
   },
@@ -2164,15 +2132,159 @@
    "mismatch": []
   },
   {
-   "comp": "fasteners",
+   "comp": "harness_upper",
+   "part": "harness_safe_col",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "harness_safe_mov",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 12,
+   "exploded_meshes": 12,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "harness_r24_col",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "harness_r24_mov",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 12,
+   "exploded_meshes": 12,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "harness_sig_col",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 32,
+   "exploded_meshes": 32,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "harness_sig_mov",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 30,
+   "exploded_meshes": 30,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "harness_fittings_col",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 6,
+   "exploded_meshes": 6,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "harness_fittings_mov",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 8,
+   "exploded_meshes": 8,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "harness_upper",
+   "part": "service_loop",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.25,
+    0.1
+   ],
+   "robot_meshes": 4,
+   "exploded_meshes": 4,
+   "same_transform": true,
+   "mismatch": []
+  },
+  {
+   "comp": "fasteners_upper",
    "part": "fasteners_col",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 9,
+   "stage": 8,
    "offset": [
     0,
     0,
-    0.45
+    0.1
    ],
    "robot_meshes": 3,
    "exploded_meshes": 3,
@@ -2180,15 +2292,15 @@
    "mismatch": []
   },
   {
-   "comp": "fasteners",
+   "comp": "fasteners_upper",
    "part": "fasteners_mov",
    "robot_drawn": true,
    "exploded_drawn": true,
-   "stage": 9,
+   "stage": 8,
    "offset": [
     0,
     0,
-    0.45
+    0.1
    ],
    "robot_meshes": 13,
    "exploded_meshes": 13,

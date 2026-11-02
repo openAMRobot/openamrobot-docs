@@ -169,7 +169,8 @@ def pack(items, zones, obstacles, ceiling=None, shells=()):
                         zhi = np.array([z["x"][1], z["y"][1], z["z"][1]])
                         if (hi > zhi + 1e-6).any():
                             continue
-                        if g.free(np.maximum(lo - [gap, gap, 0], zlo), np.minimum(hi + [gap, gap, gap], zhi)):
+                        gz = 0 if zz <= z["z"][0] + 1e-9 else gap
+                        if g.free(np.maximum(lo - [gap, gap, gz], zlo), np.minimum(hi + [gap, gap, gap], zhi)):
                             best = (lo + p / 2, p)
                             break
                     if best:
@@ -229,7 +230,7 @@ def harness_graph(U):
     N = {
         # front bay trunk (above the plate parts, under the cover)
         "FL1": (0.150, 0.125, Z), "FL2": (0.330, 0.125, Z), "FR1": (0.150, -0.125, Z), "FR2": (0.330, -0.125, Z),
-        "FC": (0.150, 0.0, Z), "FCF": (0.330, 0.0, 0.215),
+        "FC": (0.150, 0.0, Z), "FCF": (0.255, 0.0, 0.258),
         # through the centre-bracket walls (grommets) and across the drive section, above the wheels
         "GCF_L": (0.118, 0.125, Z), "GCF_R": (0.118, -0.125, Z), "CL": (0.0, 0.125, Z), "CR": (0.0, -0.125, Z),
         "GCR_L": (-0.118, 0.125, Z), "GCR_R": (-0.118, -0.125, Z), "CC": (0.0, 0.0, 0.250),
@@ -348,6 +349,21 @@ def main():
             obst.append((np.array([x - KO, y - KO, 0.054]), np.array([x + KO, y + KO, 0.296])))
     battery_lo, battery_hi = box_of["battery"]
     obst.append((battery_lo, battery_hi))
+    # fixed parts of the parts table and the design-intent battery tray are obstacles too
+    for it in T["fixed"]:
+        if it.get("group", "base") != "base" or "dims" not in it or it["id"] in ("tz_receiver", "fan"):
+            continue
+        for rp in it.get("repeat", [[0, 0, 0]]):
+            c0 = np.add(it["pos"], rp)
+            h = np.array(it["dims"]) * MM / 2
+            obst.append((c0 - h - .003, c0 + h + .003))
+    tray = [d for d in DI if d.get("item") == "battery_tray"]
+    if tray and os.environ.get("OAMR_TRAY_OBSTACLE"):  # the B5 zones are packed as documented; tray clashes are reported by analyse.py
+        import trimesh
+        f0 = tray[0]["files"][0]
+        m = trimesh.load(os.path.join(MODEL, f0["stl"] if f0["stl"].startswith("design_intent") else "design_intent/" + f0["stl"]))
+        o = np.array(tray[0]["placement"][0]["xyz"] if isinstance(tray[0]["placement"], list) else tray[0]["placement"]["xyz"])
+        obst.append((m.bounds[0] * MM + o - .002, m.bounds[1] * MM + o + .002))
 
     # front-bay ceiling: cover underside, then the front flange slope
     def ceiling(x):
@@ -491,6 +507,64 @@ def main():
     di_comp = {}
     for d in DI:
         di_comp[d.get("item")] = d
+
+    def di_mesh(item, variant, pl, colour, opacity=None, group="base"):
+        import trimesh
+        rec = di_comp[item]
+        f = [x for x in rec["files"] if x["variant"] == variant][0]
+        m = trimesh.load(os.path.join(MODEL, f["stl"] if f["stl"].startswith("design_intent") else "design_intent/" + f["stl"]))
+        v = np.asarray(m.vertices) * MM
+        rx, ry, rz = pl["rpy"]
+        cx, sx, cy, sy, cz, sz = math.cos(rx), math.sin(rx), math.cos(ry), math.sin(ry), math.cos(rz), math.sin(rz)
+        Rm = np.array([[cz, -sz, 0], [sz, cz, 0], [0, 0, 1]]) @ np.array([[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]]) @ np.array([[1, 0, 0], [0, cx, -sx], [0, sx, cx]])
+        v = v @ Rm.T + np.array(pl["xyz"])
+        if group in ("col", "mov"):
+            v = v - [FACTS["lift_plate"]["col_axis_x"]["bp000"], 0, 0]
+        d = {"t": "mesh", "v": [R(x, 4) for x in v.reshape(-1)], "f": np.asarray(m.faces).reshape(-1).tolist(), "c": colour}
+        if opacity is not None:
+            d["o"] = opacity
+        return d
+
+    DI_DRAW = [  # item, variant, component id, name, bom, colour, group, stage, ghost
+        ("motor_bracket", "motor_bracket", "motor_brackets", "Motor shaft-flat brackets MEC-015 (design intent)", "MEC-015", "#6d7780", "base", 2, False),
+        ("battery_tray", "battery_tray", "battery_tray", "Battery tray MEC-007 with restraint and detachable end panels (design intent)", "MEC-007", "#8d9aa5", "base", 3, False),
+        ("rear_estop_housing", "rear_estop_housing", "rear_estop_housing", "Second E-stop housing on the static column (design intent)", "SAF-001", "#c9b037", "col", 7, False),
+        ("rear_estop_housing", "rear_estop_housing_clear_ghost", "rear_estop_clear_ghost", "Second E-stop clear position, 180 mm below the column top (ghost)", "SAF-001", "#27ae60", "col", 7, True),
+        ("getac_pocket", "getac_pocket", "getac_pocket", "Getac ZX80 rotatable pocket, back plate and light-bar plate (design intent)", "UI-002, MEC-012", "#5d6d7e", "mov", 8, False),
+        ("getac_pocket", "getac_pocket_portrait", "getac_portrait_ghost", "Getac ZX80 pocket in the portrait position (ghost)", "UI-002", "#8e44ad", "mov", 8, True),
+    ]
+    for item, variant, cid, name, bomid, colour, group, stage, ghost in DI_DRAW:
+        if item not in di_comp:
+            continue
+        rec = di_comp[item]
+        pls = rec["placement"] if isinstance(rec["placement"], list) else [rec["placement"]]
+        if item == "rear_estop_housing":
+            pls = [pls[1] if ghost else pls[0]]
+        if item == "getac_pocket":
+            pls = pls[:1]
+        parts = [cid] if len(pls) == 1 else ["%s_%d" % (cid, i + 1) for i in range(len(pls))]
+        f0 = [x for x in rec["files"] if x["variant"] == variant][0]
+        comp(cid, name, bomid, len(parts), "proposed" if ghost else "provisional",
+             "%s. Method: %s, %s mm. Adjustment: %s." % (name, rec.get("method", ""), rec.get("thickness_mm", ""), rec.get("adjustment", "")),
+             "design_intent/%s.step (scripts/roadmap_model/design_intent/%s.py)" % (variant, item),
+             "%s (%s)" % (rec.get("configuration", ""), rec.get("placement_note", "")[:160]),
+             (f0.get("mass_kg") or rec.get("mass_kg") or 0) * (0 if ghost else len(parts)), "design-intent volume x density", stage, parts, group=group,
+             label=("Ghost, not fitted" if ghost else "Design intent, not CAD: owner fridayali"),
+             off=[0, 0, .25] if group == "base" else [0, 0, .1], opn=[0, 0, .12] if group == "base" else [0, 0, 0],
+             link="https://github.com/openAMRobot/openamr-upperbody-hw/blob/main/docs/mechanical/upper_body_option_B.md")
+        for k, pl in zip(parts, pls):
+            geo[k]["prims"].append(di_mesh(item, variant, pl, colour, .3 if ghost else None, group))
+        if ghost:
+            comps[-1]["hq"] = False
+    # the getac pocket replaces the placeholder mount envelope of parts.yaml
+    if "getac_pocket" in di_comp:
+        comps[:] = [c for c in comps if c["id"] != "tablet_mount"]
+        exploded.pop("tablet_mount", None)
+        geo.pop("tablet_mount", None)
+        BM["UI-002"] = {"by": "getac_pocket"}
+        BM["MEC-012"] = {"by": "getac_pocket"}
+    BM["MEC-015"] = {"by": "motor_brackets", "cls": "provisional", "mass": 4 * 0.279, "msrc": "design-intent volume x 7850"}
+    BM["MEC-007"] = {"by": "battery_tray", "cls": "provisional"}
 
     # ---------------- CAN terminations (CTL-009, CTL-010)
     # ---------------- harness

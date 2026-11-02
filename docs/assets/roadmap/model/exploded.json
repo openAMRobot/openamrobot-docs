@@ -921,23 +921,6 @@
     ]
    }
   },
-  "bay_ddr240": {
-   "stage": 3,
-   "offsets": {
-    "bay_ddr240": [
-     -0.25,
-     0,
-     0.3
-    ]
-   },
-   "open": {
-    "bay_ddr240": [
-     -0.12,
-     0,
-     0.14
-    ]
-   }
-  },
   "bay_pwr032": {
    "stage": 3,
    "offsets": {
@@ -1497,23 +1480,6 @@
     ]
    }
   },
-  "tablet_mount": {
-   "stage": 8,
-   "offsets": {
-    "tablet_mount": [
-     0,
-     0,
-     0.2
-    ]
-   },
-   "open": {
-    "tablet_mount": [
-     0,
-     0,
-     0.12
-    ]
-   }
-  },
   "bay_plate": {
    "stage": 4,
    "offsets": {
@@ -1589,6 +1555,138 @@
      -0.12,
      0,
      0.14
+    ]
+   }
+  },
+  "motor_brackets": {
+   "stage": 2,
+   "offsets": {
+    "motor_brackets_1": [
+     0,
+     0,
+     0.25
+    ],
+    "motor_brackets_2": [
+     0,
+     0,
+     0.25
+    ],
+    "motor_brackets_3": [
+     0,
+     0,
+     0.25
+    ],
+    "motor_brackets_4": [
+     0,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "motor_brackets_1": [
+     0,
+     0,
+     0.12
+    ],
+    "motor_brackets_2": [
+     0,
+     0,
+     0.12
+    ],
+    "motor_brackets_3": [
+     0,
+     0,
+     0.12
+    ],
+    "motor_brackets_4": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "battery_tray": {
+   "stage": 3,
+   "offsets": {
+    "battery_tray": [
+     0,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "battery_tray": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "rear_estop_housing": {
+   "stage": 7,
+   "offsets": {
+    "rear_estop_housing": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "rear_estop_housing": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "rear_estop_clear_ghost": {
+   "stage": 7,
+   "offsets": {
+    "rear_estop_clear_ghost": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "rear_estop_clear_ghost": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "getac_pocket": {
+   "stage": 8,
+   "offsets": {
+    "getac_pocket": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "getac_pocket": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "getac_portrait_ghost": {
+   "stage": 8,
+   "offsets": {
+    "getac_portrait_ghost": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "getac_portrait_ghost": [
+     0,
+     0,
+     0
     ]
    }
   },
@@ -2259,10 +2357,10 @@
   ]
  },
  "generated": [
+  "battery_tray",
   "bay_can1",
   "bay_can2",
   "bay_can3",
-  "bay_ddr240",
   "bay_fbc",
   "bay_ina228",
   "bay_iso1212",
@@ -2281,6 +2379,8 @@
   "fasteners",
   "fasteners_upper",
   "feedthru",
+  "getac_pocket",
+  "getac_portrait_ghost",
   "harness_bat",
   "harness_fittings",
   "harness_r24",
@@ -2290,6 +2390,9 @@
   "k1k2_option_b",
   "lift_bolt_keepout",
   "lift_node",
+  "motor_brackets",
+  "rear_estop_clear_ghost",
+  "rear_estop_housing",
   "rear_plate",
   "rz_batcon",
   "rz_bms",
@@ -2305,7 +2408,6 @@
   "rz_pwr017",
   "rz_sb50",
   "shims",
-  "tablet_mount",
   "tz_receiver",
   "us_locknut"
  ]

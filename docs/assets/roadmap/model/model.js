@@ -719,7 +719,8 @@
 
   // ---------------------------------------------------------------- placement parts (model/placement.json)
   // Each geometry entry becomes a part group in its parent (base: robot root, floor frame; col: lift assembly;
-  // mov: lift stage). Primitives: box (s size, p centre, r rotation), cyl (r, h, p, ax axis), tube (pts polyline, r).
+  // mov: lift stage). Primitives: box (s size, p centre, r rotation), cyl (r, h, p, ax axis), tube (pts polyline, r),
+  // mesh (v flat vertex list, f triangle indices; the design-intent parts of model/design_intent/).
   // Geometries are shared between equal primitives (repeated fasteners and clips). Primitives marked hq are small
   // parts: they are hidden until High quality is on (M.setSmallParts).
   function placementParts(THREE, R) {
@@ -737,25 +738,40 @@
     };
     var geo = function (q) {
       var k = q.t + JSON.stringify(q.t === 'box' ? q.s : [q.r, q.h]);
-      if (q.t === 'tube') {
-        var V = THREE.Vector3, pts = q.pts.map(function (a) { return new V(a[0], a[1], a[2]); });
-        var path = new THREE.CurvePath();
-        for (var i = 0; i < pts.length - 1; i++) path.add(new THREE.LineCurve3(pts[i], pts[i + 1]));
-        return new THREE.TubeGeometry(path, Math.max(2, (pts.length - 1) * 2), q.r, 6, false);
+      if (q.t === 'mesh') {
+        var mg = new THREE.BufferGeometry();
+        mg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(q.v), 3));
+        mg.setIndex(q.f);
+        mg = mg.toNonIndexed();
+        mg.computeVertexNormals();
+        return mg;
       }
       if (!geos[k]) geos[k] = q.t === 'box' ? new THREE.BoxGeometry(q.s[0], q.s[1], q.s[2]) : new THREE.CylinderGeometry(q.r, q.r, q.h, 12);
       return geos[k];
     };
     var parents = {base: R.root, col: R.col, mov: R.mov};
+    var tubeMeshes = function (q, m) {  // one straight tube per segment: the drawn route passes every route point
+      var V = THREE.Vector3, out = [];
+      for (var i = 0; i < q.pts.length - 1; i++) {
+        var a = new V().fromArray(q.pts[i]), b = new V().fromArray(q.pts[i + 1]);
+        if (a.distanceTo(b) < 1e-6) continue;
+        out.push(new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(a, b), 1, q.r, 6, false), m));
+      }
+      return out;
+    };
     for (var pid in P.geometry) {
       var e = P.geometry[pid], c = info[pid] || {}, g = new THREE.Group();
       g.name = pid;
       g.userData = {id: pid, part: true, cid: c.id, provisional: c['class'] === 'provisional', placeholder: !!c.placeholder, proposed: !!c.proposed};
       e.prims.forEach(function (q) {
+        if (q.t === 'tube') {
+          tubeMeshes(q, mat(q.c, q.o)).forEach(function (k) { k.castShadow = true; k.receiveShadow = true; if (c.hq) k.userData.hq = true; g.add(k); });
+          return;
+        }
         var m = new THREE.Mesh(geo(q), mat(q.c, q.o));
         if (q.t === 'box' && q.r) m.rotation.set(q.r[0], q.r[1], q.r[2]);
         if (q.t === 'cyl') { if (q.ax === 'x') m.rotation.z = Math.PI / 2; else if (q.ax === 'z') m.rotation.x = Math.PI / 2; }
-        if (q.t !== 'tube') m.position.set(q.p[0], q.p[1], q.p[2]);
+        if (q.t !== 'tube' && q.t !== 'mesh') m.position.set(q.p[0], q.p[1], q.p[2]);
         m.castShadow = !(q.o < 1);
         m.receiveShadow = true;
         if (q.hq || c.hq) m.userData.hq = true;
