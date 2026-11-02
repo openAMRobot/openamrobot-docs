@@ -68,7 +68,7 @@ STORE_PICTURES = [("01_aisle_follow", (1920, 1080)), ("02_pick_side", (1920, 108
 STORE_SHEET = "media/store/contact_sheet.jpg"
 PICTURE_MAX_BYTES = 1000 * 1000
 THUMB_MAX_BYTES = 120 * 1000
-ROBOT_FIRST_LOAD_MAX_BYTES = 4093278 + 100 * 1024  # #58 first load (page, scripts, finish.json) plus 100 KB
+ROBOT_FIRST_LOAD_MAX_BYTES = 4198150 + 2 * 1024  # first load (page, scripts, finish.json) with the model call to action card (#69), plus 2 KB
 TOUR_SECONDS = (40.0, 50.0)
 EXPLODED_FIRST_LOAD_MAX_BYTES = 4 * 1000 * 1000  # page, scripts, exploded.json and video posters; not the videos
 ROBOT_MAX_BYTES = 600 * 1024  # robot.html without a bundled three.js
@@ -827,7 +827,7 @@ def check_store_media(root, html, err):
         if m and 'loading="lazy"' not in tag and not m.group(1).startswith("data:") and os.path.isfile(os.path.join(root, m.group(1))):
             first += os.path.getsize(os.path.join(root, m.group(1)))
     if first > ROBOT_FIRST_LOAD_MAX_BYTES:
-        err("robot.html", "first load %d bytes, over %d (#58 plus 100 KB)" % (first, ROBOT_FIRST_LOAD_MAX_BYTES))
+        err("robot.html", "first load %d bytes, over %d (#69 plus 2 KB)" % (first, ROBOT_FIRST_LOAD_MAX_BYTES))
 
 
 def mp4_seconds(path):
