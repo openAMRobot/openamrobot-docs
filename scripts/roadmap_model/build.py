@@ -25,7 +25,7 @@ import re
 
 import numpy as np
 
-from frames import FACTS, HERE, MODEL, REPO, aabb, bl_to_bf, datums, glb_nodes, load_yaml, sensor_frames
+from frames import FACTS, HERE, MODEL, REPO, SENSOR_FRAMES, aabb, bl_to_bf, datums, glb_nodes, load_yaml, sensor_frames
 
 R = lambda v, n=4: round(float(v), n)
 MM = 0.001
@@ -1008,6 +1008,13 @@ def main():
                             "us_front_left": "ultrasonic_front_left", "us_front_right": "ultrasonic_front_right",
                             "us_rear_left": "ultrasonic_rear_left", "us_rear_right": "ultrasonic_rear_right"},
             "datums": {k: v for k, v in D.items() if not isinstance(v, dict)}}
+    snap["sensor_frames_rpy"] = {k: [R(x, 5) for x in v["rpy"]] for k, v in SF.items()}
+    snap["sensor_bodies"] = sensor_bodies(G, SF, snap["frame_nodes"])
+    old_snap = os.path.join(MODEL, "source_snapshot.json")
+    if os.path.exists(old_snap):
+        keep = json.load(open(old_snap)).get("combined_model")
+        if keep:
+            snap["combined_model"] = keep
     json.dump(snap, open(os.path.join(REPO, "docs", "assets", "roadmap", "model", "source_snapshot.json"), "w"), indent=1)
     summary = {"packed": {k: [[R(x) for x in v[0]], [R(x * 1000, 1) for x in v[1]]] for k, v in placed.items()}, "nofit": nofit,
                "k1k2_options": opt, "bolts": bolts, "bay_plate_area_m2": R(area, 4), "seed": issues_seed,
@@ -1016,6 +1023,40 @@ def main():
     json.dump(summary, open(os.path.join(HERE, "build_summary.json"), "w"), indent=1, default=str)
     print(json.dumps({k: summary[k] for k in ("nofit", "coverage", "onboard", "records")}, indent=0))
     print("K1/K2:", {k: v["fits"] for k, v in opt.items()})
+
+
+SENSOR_TYPE = {"imu_link": "imu", "lidar_link": "lidar", "base_camera_link": "base_camera", "tof_front": "tof", "tof_rear": "tof",
+               "us_front_left": "ultrasonic", "us_front_right": "ultrasonic", "us_rear_left": "ultrasonic", "us_rear_right": "ultrasonic"}
+
+
+def rpy_matrix(r, p, y):
+    cr, sr, cp, sp, cy, sy = math.cos(r), math.sin(r), math.cos(p), math.sin(p), math.cos(y), math.sin(y)
+    return np.array([[cy, -sy, 0], [sy, cy, 0], [0, 0, 1]]) @ np.array([[cp, 0, sp], [0, 1, 0], [-sp, 0, cp]]) @ np.array([[1, 0, 0], [0, cr, -sr], [0, sr, cr]])
+
+
+def sensor_bodies(G, SF, frame_nodes):
+    """Reference body of each base sensor for the pose check of scripts/check_roadmap.py: its drawn GLB mesh expressed in
+    its sensor_frames.yaml frame (mm, vertex order of the GLB), validated against the platform-sw visual STL of the sensor
+    type (largest vertex-to-surface distance, recorded; at most 0.6 mm or the build stops)."""
+    import trimesh
+    stl_dir = os.path.join(os.path.dirname(os.path.dirname(SENSOR_FRAMES)), "meshes", "visual")
+    out, meshes = {}, {}
+    for frame, node in frame_nodes.items():
+        typ = SENSOR_TYPE[frame]
+        f = SF[frame]
+        local = (G[node]["v"] - np.array(f["xyz"])) @ rpy_matrix(*f["rpy"])
+        if typ not in meshes:
+            meshes[typ] = trimesh.load(os.path.join(stl_dir, typ + ".stl"), force="mesh")
+        _, dist, _ = trimesh.proximity.closest_point(meshes[typ], local)
+        if dist.max() > 0.0006:
+            raise SystemExit("sensor body %s: drawn mesh is %.2f mm off the source STL %s.stl in its frame" % (node, dist.max() * 1000, typ))
+        lo, hi = local.min(0), local.max(0)
+        out[frame] = {"node": node, "type": typ, "stl": "openamr-platform-sw ros2/src/openamrobot_description/meshes/visual/%s.stl" % typ,
+                      "stl_residual_max_mm": round(float(dist.max()) * 1000, 3),
+                      "centre_local_mm": [round(float(x) * 1000, 2) for x in (lo + hi) / 2],
+                      "extents_mm": [round(float(x) * 1000, 2) for x in hi - lo],
+                      "ref_local_mm": [[round(float(x) * 1000, 3) for x in p] for p in local]}
+    return out
 
 
 def assembly(fasteners):

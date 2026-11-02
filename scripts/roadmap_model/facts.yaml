@@ -13,7 +13,7 @@ documents:
   S-01: rev18.3
   UC1: Use Case 1 Requirements Baseline rev18.5
   decisions: .github decisions.yaml a9e229e (in_force P-03-rev20.2)
-  datums: openamr-upperbody-sw datums.yaml 2026-11-01.c (5d9fb0a)
+  datums: openamr-upperbody-sw datums.yaml 2026-11-01.d (a8c304d; .c to .d adds the lift velocity and effort limits only, no geometry)
   sensor_frames: openamr-platform-sw sensor_frames.yaml (4926f40)
 base_link_z: 0.098          # B7, datums base_link_height_above_floor
 wheel_radius_supplier: 0.100  # datums drive_wheel_radius (rounding to 0.1 requested, not decided)
