@@ -235,9 +235,9 @@ def rear_a9_html():
     """A9: the GI-080 attempts, the 25 mm² cable rules, the two battery trays and the decided GI-025 fix."""
     bs = json.load(open(os.path.join(HERE, "build_summary.json")))
     g = bs.get("gi080", {})
-    rows = [["%d" % st["option"], E(st["what"]), E("fits" if (st.get("fits") or (st["option"] != 2 and not st.get("nofit"))) else
-                                                    "no fit: " + ", ".join(st.get("nofit") or st.get("front_bay_nofit") or []))] for st in g.get("steps", [])]
-    t = table(["Option (A9, in order)", "What was tried", "Result"], rows)
+    step = __import__("rear_layout").gi080_step_result
+    rows = [["%d" % st["option"], E(st["what"]), E(step(st))] for st in g.get("steps", [])]
+    t = table(["Option (in order; 1 to 3 A9, 4 and 5 independent review, all proposed)", "What was tried", "Result"], rows)
     c = bs.get("cables_25mm2", {})
     t2 = table(["Cable (25 mm²)", "Route (mm)", "Straight (mm)", "Bend radius 60 mm"],
                [[E(k), "%.0f" % (v["route_m"] * 1000), "%.0f" % (v["direct_m"] * 1000),

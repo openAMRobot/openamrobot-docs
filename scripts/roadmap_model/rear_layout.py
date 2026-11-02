@@ -145,3 +145,25 @@ def layout():
 if __name__ == "__main__":
     import json
     print(json.dumps(layout(), indent=1))
+
+
+def gi080_step_result(st):
+    """Result text of one GI-080 attempt (build_summary.json gi080 steps) with its measured numbers."""
+    o = st["option"]
+    if o == 2:
+        ok = bool(st.get("fits"))
+        return "fits" if ok else "no fit: the %s front bay has no place for FB-B" % st.get("front_bay_layout", "").split(" (")[0]
+    if o == 4:
+        if not st.get("nofit"):
+            return "fits"
+        return "no fit: %.0f of %.0f cm² of plate floor free with 5 mm gaps, largest free rectangle %d x %d mm, a holder needs %d x %d mm" % (
+            st["plate_free_floor_cm2"], st["plate_floor_cm2"], st["largest_free_rectangle_mm"][0], st["largest_free_rectangle_mm"][1],
+            st["holder_footprint_mm"][0], st["holder_footprint_mm"][1])
+    if o == 5:
+        if st.get("fits"):
+            return "fits"
+        s = next(iter(st["sides"].values()))
+        return ("no fit on either tray: %.0f mm between the tray wall and the margin in y, %.0f mm of tray length outside the margin in x, "
+                "%.0f mm from the tray floor to the plate underside; the BMS needs 40 x 110 x 200 mm") % (
+            s["gap_wall_to_margin_y_mm"], s["strip_outside_margin_x_mm"], s["height_tray_floor_to_plate_mm"])
+    return "fits" if not st.get("nofit") else "no fit: " + ", ".join(st["nofit"])

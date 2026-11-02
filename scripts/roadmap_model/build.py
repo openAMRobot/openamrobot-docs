@@ -120,7 +120,9 @@ def surface_points(v, f, step=0.002):
 
 
 zone_of = {}
-TOP_ACCESS = {"rz_fba", "rz_fbb", "rz_f0", "rz_fchg", "rz_pre"}   # fuses: top access with the cover off (A1 service access)
+TOP_ACCESS = {"rz_fba", "rz_fbb", "rz_f0", "rz_fchg", "rz_pre"}
+# compact MIDI fuse holder, one fuse per holder (GI-080 option 4, proposed): catalogue class outline, verify against the chosen order code
+MIDI_HOLDER = {"dims": [62, 33, 30], "mass": 0.05, "part": "compact single MIDI fuse holder (order code open)", "geom": "catalogue outline, verify"}   # fuses: top access with the cover off (A1 service access)
 
 
 def pack(items, zones, obstacles, ceiling=None, shells=()):
@@ -488,6 +490,68 @@ def main():
             placed.update(pl3)
             zo.update({k_: "rear_panel_face" for k_ in pl3})
             nofit = [k_ for k_ in nofit if not k_.startswith("rz_bms")]
+    # independent review of 2 Nov 2026, two more options (both proposed): 4) FB-B replaced by four compact MIDI fuse holders on
+    # the power plate (F-TRAC 40 A, F-ARM-L 30 A, F-ARM-R 30 A, F-LIFT 15 A), fed from K2 with 25 mm² and linked by a bus bar;
+    # 5) the BMS upright against the receiver-side wall of one battery tray, outside the 20 mm metal-free margin, short sense harness
+    gi80["midi"] = False
+    if any(k_.startswith("rz_fbb") for k_ in nofit):
+        fbb0 = [it for it in T["packed"] if it["id"] == "rz_fbb"][0]
+        midi = dict(fbb0, qty=4, dims=list(MIDI_HOLDER["dims"]), mass=MIDI_HOLDER["mass"], part=MIDI_HOLDER["part"], geom=MIDI_HOLDER["geom"],
+                    name="SAFE bus fuses F-TRAC 40 A, F-ARM-L 30 A, F-ARM-R 30 A, F-LIFT 15 A: four compact MIDI fuse holders (proposed, replaces FB-B)",
+                    zone="rear_plate", fallback=[], gap=0.005)
+        zf4 = {"rear_plate": dict(zones["rear_plate"], floor_only=True)}
+        pl4, nf4 = pack([midi], zf4, plate_obstacles(placed, zo, "*"), None, shells)
+        # free floor of the plate at holder height, every part and obstacle grown by the 5 mm gap (what the packer sees)
+        r_, (px0, py0, pzt), (px1, py1, _) = 0.001, pz[0], pz[1]
+        pzt = pz[1][2]
+        nx_, ny_ = int(round((px1 - px0) / r_)), int(round((py1 - py0) / r_))
+        occ_ = np.zeros((nx_, ny_), bool)
+        for lo_, hi_ in plate_obstacles(placed, zo, "*"):
+            if hi_[2] <= pzt + 1e-4 or lo_[2] >= pzt + MIDI_HOLDER["dims"][2] * MM:
+                continue
+            a_, b_ = max(0, int((lo_[0] - px0) / r_)), min(nx_, int(np.ceil((hi_[0] - px0) / r_)))
+            c_, e_ = max(0, int((lo_[1] - py0) / r_)), min(ny_, int(np.ceil((hi_[1] - py0) / r_)))
+            if a_ < b_ and c_ < e_:
+                occ_[a_:b_, c_:e_] = True
+        S_ = np.pad(occ_.astype(int).cumsum(0).cumsum(1), ((1, 0), (1, 0)))
+        best_ = (0, 0)
+        for W_ in range(4, nx_ + 1, 2):
+            for H_ in range(4, ny_ + 1, 2):
+                if W_ * H_ <= best_[0] * best_[1]:
+                    continue
+                if (S_[W_:, H_:] - S_[:-W_, H_:] - S_[W_:, :-H_] + S_[:-W_, :-H_] == 0).any():
+                    best_ = (W_, H_)
+        gi80["steps"].append({"option": 4, "what": "FB-B replaced by four compact MIDI fuse holders on the power plate (%s mm each, catalogue outline, verify), 25 mm² feed from K2, bus bar between the holders" % " x ".join("%g" % d for d in MIDI_HOLDER["dims"]),
+                              "placed": sorted(pl4), "nofit": nf4, "plate_free_floor_cm2": R((~occ_).sum() * r_ * r_ * 1e4, 0), "plate_floor_cm2": R(nx_ * ny_ * r_ * r_ * 1e4, 0),
+                              "largest_free_rectangle_mm": list(best_), "holder_footprint_mm": MIDI_HOLDER["dims"][:2], "note": "free floor and rectangle measured with every part and obstacle grown by the 5 mm gap"})
+        if not nf4:
+            placed.update(pl4)
+            zo.update({k_: "rear_plate" for k_ in pl4})
+            nofit = [k_ for k_ in nofit if not k_.startswith("rz_fbb")]
+            items = [midi if it["id"] == "rz_fbb" else it for it in items]
+            gi80["midi"] = True
+            gi80["midi_item"] = midi
+    gi80["bms_tray"] = None
+    if any(k_.startswith("rz_bms") for k_ in nofit):
+        bms = [it for it in items if it["id"] == "rz_bms"][0]
+        res5 = {}
+        for side, t_ in (("left", RL["trays"][0]), ("right", RL["trays"][1])):
+            yw = t_["lo"][1] if t_["lo"][1] > 0 else t_["hi"][1]          # receiver-side (inner) wall of the tray
+            sgn = 1 if yw > 0 else -1
+            y0, y1 = sorted([yw - sgn * 0.001, yw - sgn * (0.001 + 0.060)])
+            zf5 = {"tray_wall": {"x": [t_["lo"][0], t_["hi"][0]], "y": [y0, y1], "z": [t_["lo"][2], FACTS["cover_underside"]], "floor_only": True}}
+            pl5, nf5 = pack([dict(bms, zone="tray_wall", fallback=[], gap=0.003)], zf5, plate_obstacles(placed, zo, "*") + [(np.array(RL["plate"][0]) - [0, 0, 0.003], np.array(RL["plate"][1]))], None, shells)
+            free_x = max(0.0, t_["hi"][0] - max(t_["lo"][0], RL["margin"][1][0]))   # tray length outside the margin in x
+            res5[side] = {"placed": sorted(pl5), "nofit": nf5, "wall_y_m": R(yw, 4), "strip_outside_margin_x_mm": R(free_x * 1000, 1),
+                          "gap_wall_to_margin_y_mm": R((abs(yw) - RL["margin"][1][1]) * 1000, 1), "height_tray_floor_to_plate_mm": R((RL["plate"][0][2] - t_["lo"][2]) * 1000, 1)}
+            if not nf5:
+                placed.update(pl5)
+                zo.update({k_: "tray_wall" for k_ in pl5})
+                nofit = [k_ for k_ in nofit if not k_.startswith("rz_bms")]
+                gi80["bms_tray"] = side
+                break
+        gi80["steps"].append({"option": 5, "what": "BMS (%s mm) upright against the receiver-side wall of one battery tray, outside the 20 mm metal-free margin, short sense harness" % " x ".join("%g" % d for d in bms["dims"]),
+                              "fits": gi80["bms_tray"] is not None, "sides": res5})
     zone_of.clear()
     zone_of.update(zo)
     gi80["final_nofit"] = list(nofit)
@@ -500,12 +564,13 @@ def main():
     FBR = {fb_default: FB.layout([dict(i) for i in fb_items])}
     fb_fit = {k: FB.fit_numbers(v, fb_items) for k, v in FBR.items()}
     print("front bay:", {k: (v["placed"], v["not_placed"]) for k, v in fb_fit.items()})
-    items = [dict(it, zone="front_bay") if (gi80["fbb_front"] and it["id"] == "rz_fbb") else dict(it) for it in T["packed"]]
+    items = [dict(it, zone="front_bay") if (gi80["fbb_front"] and it["id"] == "rz_fbb") else (dict(gi80["midi_item"]) if (gi80["midi"] and it["id"] == "rz_fbb") else dict(it)) for it in T["packed"]]
 
     # ---------------- packed parts (rear zone) and the front bay of both options
-    stage_of = {"front_bay": 4, "rear_plate": 3, "rear_corner_l": 3, "rear_corner_r": 3, "rear_l2": 3, "rear_panel_face": 3}
+    stage_of = {"front_bay": 4, "rear_plate": 3, "rear_corner_l": 3, "rear_corner_r": 3, "rear_l2": 3, "rear_panel_face": 3, "tray_wall": 3}
     ZONE_TXT = {"rear_plate": "rear power-electronics plate above the reserved receiver zone (A1)", "rear_l2": "second level above the rear power plate (GI-080 option 1)",
-                "rear_panel_face": "rear panel inner face above the receiver, outside its 20 mm metal-free margin (GI-080 option 3)", "rear_corner_l": "left pocket rear corner behind the cells (A1)",
+                "rear_panel_face": "rear panel inner face above the receiver, outside its 20 mm metal-free margin (GI-080 option 3)",
+                "tray_wall": "upright against the receiver-side wall of a battery tray, outside the 20 mm metal-free margin (GI-080 option 5)", "rear_corner_l": "left pocket rear corner behind the cells (A1)",
                 "rear_corner_r": "right pocket rear corner behind the cells (A1)", "rear_behind": "rear zone behind the cells (B5)", "rear_side_l": "rear zone, left side pocket (B5, real section)",
                 "rear_side_r": "rear zone, right side pocket (B5, real section)",
                 "arch": "under the arch top above the hub motors (overflow proposal, not B5: the B5 rear zone is too small with the tray and the real pocket section)", "A_lower": "front bay, lower plate on the base sheet (power conversion and safety)",
@@ -908,6 +973,10 @@ def main():
         ("CBL-P60", "rz_bms", "battery+", "BMS sense harness and NTCs", "BAT", "BMS sense harness", 6.0, "BMS connector", "cell taps", "", "PWR-025"),
         ("CBL-P61", "bay_din", "rz_pre", "Precharge relay Kpre drive", "SIG", "2 x 0.5 mm²", 4.0, "terminal", "Kpre coil", "TPL7407L channel", "SAF-004"),
     ]
+    if gi80["midi"]:   # GI-080 option 4: one MIDI holder per SAFE branch; K2 feeds holder 1, a bus bar links the four holders
+        mfuse = {"F-TRAC": "rz_fbb_1", "F-ARM-L": "rz_fbb_2", "F-ARM-R": "rz_fbb_3", "F-LIFT": "rz_fbb_4"}
+        CAB = [(c[0], c[1] if c[1] != "rz_fbb" else mfuse.get(c[8], "rz_fbb_1"), c[2] if c[2] != "rz_fbb" else "rz_fbb_1") + tuple(c[3:]) for c in CAB]
+        CAB = [c if c[0] != "CBL-P06" else c[:3] + ("K2 to the SAFE bus MIDI holders (bus bar to the other three)",) + c[4:] for c in CAB]
     BEND25 = {}
     cab_rows, tubes, fittings, unattached = [], {d: {"base": [], "col": [], "mov": []} for d in DOMAIN_COL}, [], []
     for cid, a, b, fn, dom, gauge, od, ca, cb, pin, bomref in CAB:

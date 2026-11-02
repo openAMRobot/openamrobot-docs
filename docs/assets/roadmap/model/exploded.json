@@ -18,7 +18,7 @@
   {
    "n": 3,
    "title": "Power and safety",
-   "text": "Power and safety in the rear section (owner correction A1, 2 Nov 2026): the TZBOT WCM-500-24 receiver reserved at the rear panel on the centre line (not installed in 2.0) with its 20 mm metal-free margin, 4 + 4 EVE LF105 cells upright in the two side pocket trays with the series link across the centre, and the power electronics on the MEC-006 plate above the receiver. The base E-stop (robot left) and the RESET button (robot right) on the front panel.",
+   "text": "Power and safety in the rear section (owner correction A1, 2 Nov 2026): the TZBOT WCM-500-24 receiver reserved at the rear panel on the centre line (not installed in 2.0) with its 20 mm metal-free margin, 4 + 4 EVE LF105 cells upright in two removable side pocket trays joined by the keyed connector PWR-018 on the series link across the centre (A9), and the power electronics on the MEC-006 plate above the receiver. The base E-stop (robot left) and the RESET button (robot right) on the front panel.",
    "frame": "base"
   },
   {
@@ -42,7 +42,7 @@
   {
    "n": 7,
    "title": "Lift column and adapter plate",
-   "text": "The lift base plate on the centre-frame arch, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top with the second E-stop on it behind the post, button up (owner correction A5, 2 Nov 2026). On the left side face of the static profile: the three lift stop sensors.",
+   "text": "The lift base plate on the centre-frame arch, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the one-piece 10 mm adapter plate on the column top (425 x 100 mm with a 65 mm rear extension, A6) with the second E-stop on it behind the post, button up (owner correction A5, 2 Nov 2026). On the rear face of the static profile: the three lift stop sensors; the flag rod hangs from the plate extension (A6).",
    "frame": [
     "lift_base_plate",
     "lift_column",

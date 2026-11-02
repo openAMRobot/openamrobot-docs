@@ -550,8 +550,8 @@ def main():
         ps, a_ = arm_parts(side, q, .6, up["col_top"] + .166 + tr, .06)
         return [(lp.id, Geo(lp, {"bp": "bp000", "travel": 0}, .006)) for lp in ps if not lp.id.endswith("_base")], a_
     def adjacent(a_, b_):
-        ia, ib = a_[1], b_[1]
-        return abs(ia - ib) <= 1 or (ia >= 7 and ib >= 7)
+        ia, ib = a_[1], b_[1]   # list order: link1..link7 (0..6), finger1, finger2 (7, 8); the fingers sit on the gripper on link7
+        return abs(ia - ib) <= 1 or (ia >= 6 and ib >= 6)
     nposes = 0
     for tr, nm in ((0.0, "L1000"), (.35, "L1350")):
         cfg = {"bp": "bp000", "travel": tr}
@@ -876,16 +876,16 @@ def main():
     if nof or nof_fb:
         dims = {it["id"]: it["dims"] for it in load_yaml(os.path.join(HERE, "parts.yaml"))["packed"]}
         RLb = __import__("rear_layout").layout()
+        RLb_step = __import__("rear_layout").gi080_step_result
         pz = RLb["plate"]
         g80 = summ.get("gi080", {})
-        tried = "; ".join("option %d (%s): %s" % (st["option"], st["what"], "fits" if (st.get("fits") or (st.get("option") != 2 and not st.get("nofit"))) else
-                                                  "no fit (%s)" % ", ".join(st.get("nofit") or st.get("front_bay_nofit") or [])) for st in g80.get("steps", []))
+        tried = "; ".join("option %d (%s): %s" % (st["option"], st["what"], RLb_step(st)) for st in g80.get("steps", []))
         issue("blocker", "Rear layout (A1) / %s" % ", ".join(nof + nof_fb), "power-electronics plate above the receiver and the pocket rear corners",
-              "no space for %s: plate %.0f x %.0f mm, underside %.0f mm, height %.0f mm to the cover (rear flange slope from x -0.315); disconnect and SB50 on the rear panel; nothing above FB-A, FB-B, F0, F-CHG and the precharge kit (fuse access). Tried in order (A9): %s" % (
+              "no space for %s: plate %.0f x %.0f mm, underside %.0f mm, height %.0f mm to the cover (rear flange slope from x -0.315); disconnect and SB50 on the rear panel; nothing above FB-A, FB-B, F0, F-CHG and the precharge kit (fuse access). Tried in order (A9 options 1 to 3, independent review options 4 and 5, all proposed): %s" % (
                   ", ".join(nof + nof_fb), (pz[1][0] - pz[0][0]) * 1000, (pz[1][1] - pz[0][1]) * 1000, pz[0][2] * 1000, (FACTS["cover_underside"] - pz[1][2]) * 1000, tried),
               "every onboard part placed with >= 5 mm clearance and fuse access; nothing on the cells; F0 within about 150 mm of the battery positive; BMS close to the cells",
               "parts.yaml catalogue outlines (verify); owner corrections A1 and A9 of 2 Nov 2026; build_summary.json gi080",
-              "none of the three options fits with catalogue outlines: a lower-profile SAFE-bus fuse block, a BMS order code with a smaller outline, or a deeper rear section; hardware owner layout due",
+              "none of the five options fits with catalogue outlines: a lower-profile SAFE-bus fuse block, a BMS order code with a smaller outline, or a deeper rear section; hardware owner layout due",
               OWN["elec"], "layout")
     # A9 cable rules on the 25 mm² runs (build_summary.json cables_25mm2)
     c25 = summ.get("cables_25mm2", {})
