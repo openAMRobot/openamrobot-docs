@@ -39,6 +39,7 @@ Usage: python3 scripts/check_roadmap.py [--dir docs/assets/roadmap] [--today]
 """
 import argparse
 import base64
+import csv
 import datetime as dt
 import hashlib
 import json
@@ -893,6 +894,144 @@ def private_terms():
     return [t.strip() for t in raw.split(",") if t.strip()]
 
 
+
+# ---------------------------------------------------------------- 2 Nov 2026 model checks (section G1)
+PARTNER_TERMS = re.compile(r"\b(?:PAIA|Enactic|Reazon)\b", re.I)
+SOURCE_SNAPSHOT = "model/source_snapshot.json"  # written by scripts/roadmap_model/build.py
+
+
+def check_model_sources(root, html, err):
+    """BOM coverage, one model source for both 3D pages, sensor and upper-body positions against the source snapshot
+    (sensor_frames.yaml, datums.yaml, section B), the design heights, cable endpoints, partner terms."""
+    mdir = os.path.join(root, "model")
+    # robot.html and exploded.html load the same model files
+    srcs = {}
+    for p in ("robot.html", "exploded.html"):
+        srcs[p] = {s for s in re.findall(r'<script src="([^"]+)"', html[p]) if s.startswith("model/") and "store" not in s}
+    if srcs["robot.html"] != srcs["exploded.html"]:
+        err("model", "robot.html and exploded.html load different model sources: %s / %s" % (sorted(srcs["robot.html"]), sorted(srcs["exploded.html"])))
+    # partner terms and em dashes in the visible text and scripts (fonts and base64 stripped)
+    for p, h in html.items():
+        t = re.sub(r"[A-Za-z0-9+/=.]{60,}", "", re.sub(r"data:[^)\"']+", "", h))
+        m = PARTNER_TERMS.search(t)
+        if m:
+            err(p, "names %s (Use Case 1 partner and upstream cooperation are not published)" % m.group(0))
+        if "\u2014" in t:
+            err(p, "contains an em dash")
+    try:
+        snap = json.load(open(os.path.join(root, SOURCE_SNAPSHOT), encoding="utf-8"))
+        place = json.load(open(os.path.join(mdir, "placement.json"), encoding="utf-8"))
+        with open(os.path.join(mdir, "base_glb.js"), encoding="utf-8") as f:
+            payload = f.read()
+        with open(os.path.join(mdir, "model.js"), encoding="utf-8") as f:
+            js = f.read()
+    except (OSError, ValueError) as e:
+        err("model", "source snapshot: %s" % e)
+        return
+    # GLB node boxes (base_footprint)
+    m = re.search(r'window\.BASE_GLB="([^"]+)"', payload)
+    raw = base64.b64decode(m.group(1).replace(".", ""))
+    jl = struct.unpack("<I", raw[12:16])[0]
+    doc = json.loads(raw[20:20 + jl])
+    blz = snap["base_link_z"]
+    boxes = {}
+    for n in doc["nodes"]:
+        if "mesh" not in n:
+            continue
+        lo, hi = [9] * 3, [-9] * 3
+        for pr in doc["meshes"][n["mesh"]]["primitives"]:
+            a = doc["accessors"][pr["attributes"]["POSITION"]]
+            lo = [min(x, y) for x, y in zip(lo, a["min"])]
+            hi = [max(x, y) for x, y in zip(hi, a["max"])]
+        boxes[(n.get("extras") or {}).get("id", n.get("name"))] = ([lo[0], lo[1], lo[2] + blz], [hi[0], hi[1], hi[2] + blz])
+    tol = 0.001
+    for frame, node in snap["frame_nodes"].items():
+        p = snap["sensor_frames"][frame]
+        if node not in boxes:
+            err("model", "sensor %s: GLB node %s missing" % (frame, node))
+            continue
+        lo, hi = boxes[node]
+        if not all(lo[i] - tol <= p[i] <= hi[i] + tol for i in range(3)):
+            err("model", "sensor frame %s %s is not within 1 mm of its drawn body %s" % (frame, p, node))
+    for frame in ("us_front_left", "us_front_right", "us_rear_left", "us_rear_right"):
+        node = snap["frame_nodes"].get(frame)
+        if node in boxes:
+            lo, hi = boxes[node]
+            c = [(lo[i] + hi[i]) / 2 for i in range(3)]
+            if abs(c[1] - snap["sensor_frames"][frame][1]) > tol or abs(c[2] - snap["sensor_frames"][frame][2]) > tol:
+                err("model", "%s drawn centre (y %.4f, z %.4f) is more than 1 mm from sensor_frames.yaml" % (frame, c[1], c[2]))
+    # upper body: model.js values against datums.yaml (snapshot)
+    chest = json.loads(re.search(r"/\*CHEST-JSON\*/(.*?)/\*CHEST-JSON-END\*/", js).group(1))
+    lift = json.loads(re.search(r"/\*LIFT-JSON\*/(.*?)/\*LIFT-JSON-END\*/", js).group(1))
+    dm = snap["datums"]
+    pairs = [("getac_tablet_z_above_column_top", chest["drawn"]["getac_tablet"]["z"]),
+             ("second_estop_below_profile_top", chest["second_estop"]["below_top"]),
+             ("second_estop_panel_behind_profile", chest["second_estop"]["panel_ahead"]),
+             ("head_light_gap_below_tablet", chest["gap_light_tablet"]),
+             ("lift_stop_sensor_z_l1000", lift["z"][0]), ("lift_stop_sensor_z_l1175", lift["z"][1]), ("lift_stop_sensor_z_l1350", lift["z"][2]),
+             ("lift_stop_sensor_face_x", lift["face_x"]), ("lift_flag_below_plate", lift["flag_below_plate"]), ("lift_flag_gap", lift["gap"]),
+             ("lift_flag_rod_length", lift["rod"]["len"]), ("lift_flag_rod_offset_from_face", lift["rod"]["off"])]
+    for k, v in pairs:
+        if k in dm and abs(float(dm[k]) - float(v)) > tol:
+            err("model", "upper-body item %s: model %.4f, datums.yaml %.4f (more than 1 mm)" % (k, v, dm[k]))
+    gs, hs = chest["drawn"]["getac_tablet"]["size"], chest["drawn"]["head_light"]["size"]
+    for k, v in (("getac_tablet_size", gs), ("head_light_size", hs)):
+        if k in dm and any(abs(a - b) > tol for a, b in zip(dm[k], v)):
+            err("model", "upper-body item %s: model %s, datums.yaml %s" % (k, v, dm[k]))
+    light_z = chest["drawn"]["getac_tablet"]["z"] - gs[2] / 2 - chest["gap_light_tablet"] - hs[2] / 2
+    if abs(light_z - chest["drawn"]["head_light"]["z"]) > tol:
+        err("model", "head light height %.4f is not 30 mm below the Getac (%.4f)" % (chest["drawn"]["head_light"]["z"], light_z))
+    # design heights (section B)
+    dims = re.search(r"M\.DIMS = \{(.*?)\};", js, re.S).group(1)
+    num = lambda key: float(re.search(r"\b%s: ([-\d.]+)" % key, dims).group(1))
+    top = num("PLATE_TOP") + float(re.search(r"RETRACTED: ([\d.]+)", dims).group(1))
+    sh = top + num("MOUNT_ABOVE_COL")
+    checks = [("us_* z", snap["sensor_frames"]["us_front_left"][2], .0914), ("imu_link z", snap["sensor_frames"]["imu_link"][2], .21904),
+              ("LiDAR scan plane", num("LIDAR_Z"), .22205), ("shoulder L1000", sh, 1.0), ("shoulder L1175", sh + .175, 1.175),
+              ("shoulder L1350", sh + .35, 1.35), ("head lens L1000", sh + num("ZED_ABOVE_SH"), 1.223), ("head lens ahead of J1_A", num("ZED_X") - num("MOUNT_X"), .042)]
+    for name, got, want in checks:
+        if abs(got - want) > 0.0005:
+            err("model", "%s is %.5f m, design value %.5f m" % (name, got, want))
+    # BOM coverage: every onboard BOM 7.14 line, model quantity equals BOM quantity when drawn
+    parts = embedded(html["hardware.html"], "PARTS")
+    bom = {k: v for k, v in parts.items() if re.match(r"^[A-Z]+(?:-[A-Z0-9]+)+$", k)}
+    try:
+        with open(os.path.join(mdir, "bom_coverage.csv"), encoding="utf-8") as f:
+            cov = {r["id"]: r for r in csv.DictReader(f)}
+    except OSError:
+        err("model", "bom_coverage.csv missing")
+        return
+    for k, v in bom.items():
+        r = cov.get(k)
+        if not r:
+            err("bom_coverage.csv", "BOM 7.14 line %s is missing" % k)
+            continue
+        if r["onboard"] == "y" and r["drawn"] == "y" and r["model_qty"] != v.get("Qty", "") and str(v.get("Qty", "")).strip().isdigit():
+            err("bom_coverage.csv", "%s: model quantity %s, BOM quantity %s" % (k, r["model_qty"], v.get("Qty")))
+        if r["onboard"] == "y" and r["drawn"] == "n" and not r["reason_not_drawn"]:
+            err("bom_coverage.csv", "%s is onboard, not drawn and gives no reason" % k)
+    for k in cov:
+        if k not in bom:
+            err("bom_coverage.csv", "%s is not a BOM 7.14 line" % k)
+    # cable endpoints attach to drawn parts
+    drawn = set(boxes)
+    for c in model_components(js):
+        drawn.update(c.get("nodes", []) + c.get("parts", []) + [c["id"]])
+    drawn.update(["openarm_left", "openarm_right"])
+    with open(os.path.join(mdir, "cable_list.csv"), encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if not r["route_length_m"]:
+                continue
+            for end in ("from_part", "to_part"):
+                if r[end] not in drawn:
+                    err("cable_list.csv", "%s %s %s is not a drawn part" % (r["id"], end, r[end]))
+            for end, xyz in (("from_part", r["from_xyz"]), ("to_part", r["to_xyz"])):
+                b = boxes.get(r[end])
+                if b and xyz:
+                    p = json.loads(xyz)
+                    if not all(b[0][i] - .015 <= p[i] <= b[1][i] + .015 for i in range(3)):
+                        err("cable_list.csv", "%s %s end %s is more than 15 mm from %s" % (r["id"], end, p, r[end]))
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default=os.path.join(os.path.dirname(__file__), "..", "docs", "assets", "roadmap"))
@@ -984,6 +1123,7 @@ def main():
     for p in PAGES:
         check_nav(p, html[p], err)
     check_model(args.dir, html["exploded.html"], err)
+    check_model_sources(args.dir, html, err)
     check_shared(args.dir, html, err)
     check_no_light_strips(args.dir, err)
     check_no_duplicate_fittings(args.dir, html, err)

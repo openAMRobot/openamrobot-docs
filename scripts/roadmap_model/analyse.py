@@ -404,7 +404,7 @@ def main():
                 ("camera_mount", "base_camera"), ("ultrasonic", "ultrasonic"), ("tof", "tof"), ("ultrasonic", "us_locknut"), ("compute", "electronics_bracket"),
                 ("controller_plate", "*"), ("base_controller", "controller_plate"), ("imu", "electronics_bracket"), ("motor_driver", "driver_mount"),
                 ("battery", "battery_tray"), ("hub_motor", "motor_brackets"), ("castor", "shims"), ("getac", "getac_"), ("head_light", "getac_pocket"),
-                ("getac_portrait_ghost", "*"), ("rear_estop_clear_ghost", "*"), ("k1k2_option_b", "*"), ("tz_receiver", "*"), ("estop", "front_panel"),
+                ("getac_second_position_ghost", "*"), ("rear_estop_clear_ghost", "*"), ("k1k2_option_b", "*"), ("tz_receiver", "*"), ("estop", "front_panel"),
                 ("reset_button", "front_panel"), ("feedthru", "side_panel"), ("rz_disc", "rear_panel"), ("rz_sb50", "rear_panel"), ("fasteners", "*"),
                 ("harness_fittings", "*"), ("shims", "*"), ("us_locknut", "*"), ("lift_bolt_keepout", "*"),
                 ("lift_sensor_bracket", "lift_sensor_bracket"), ("flag_rod", "lift_flag"), ("rear_estop_housing", "second_estop"),
@@ -506,7 +506,7 @@ def main():
                 r = pair(gc, geos[other])
                 if r and r[1] > .0005 and other != "head_camera_bracket":
                     issue("major", "head_camera / %s" % other, "hp%02d" % hp, "overlap %.1f mm" % (r[1] * 1000), "overlap <= 0.5 mm", "datums.yaml head camera", "check the pitch bracket", OWN["mech"], "interference")
-    gp = geos.get("getac_portrait_ghost")
+    gp = geos.get("getac_second_position_ghost")
     if gp:
         for other in ("head_light", "arm_profile", "head_camera", "head_camera_bracket"):
             r = pair(gp, geos[other])

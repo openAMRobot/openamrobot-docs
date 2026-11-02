@@ -1673,17 +1673,17 @@
     ]
    }
   },
-  "getac_portrait_ghost": {
+  "getac_second_position_ghost": {
    "stage": 8,
    "offsets": {
-    "getac_portrait_ghost": [
+    "getac_second_position_ghost": [
      0,
      0,
      0.1
     ]
    },
    "open": {
-    "getac_portrait_ghost": [
+    "getac_second_position_ghost": [
      0,
      0,
      0
@@ -2380,7 +2380,7 @@
   "fasteners_upper",
   "feedthru",
   "getac_pocket",
-  "getac_portrait_ghost",
+  "getac_second_position_ghost",
   "harness_bat",
   "harness_fittings",
   "harness_r24",

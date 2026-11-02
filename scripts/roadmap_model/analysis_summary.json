@@ -164,11 +164,22 @@
   "gemini_336L_bt10": [],
   "zed_mini_hp30": [
    [
-    "getac_pocket",
-    324,
+    "getac_second_position_ghost",
+    2172,
     [
      -45.0,
      45.0,
+     -30.0,
+     5.0
+    ],
+    0.031
+   ],
+   [
+    "getac_pocket",
+    93,
+    [
+     -43.0,
+     43.0,
      -30.0,
      -9
     ],
@@ -496,7 +507,7 @@
  "sweep_steps_per_arm": 131,
  "counts": {
   "blocker": 1,
-  "major": 34,
+  "major": 35,
   "minor": 43
  },
  "steel_chassis_kg": 15.77

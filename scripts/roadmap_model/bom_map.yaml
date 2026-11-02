@@ -9,8 +9,8 @@ IMU-001: {by: imu, cls: envelope, geo: "EV_ICM-42688-P board outline (GLB envelo
 CTL-001: {by: base_controller, cls: envelope, geo: "NUCLEO-144 133.34 x 70 mm (UM2407)", pos: "CAD v0.2 controller plate MMP.04.00.00.003", mass: 0.08, msrc: "estimate"}
 CTL-002: {by: none, cls: not drawn, reason: "qty 0 (removed, P-03 rev20.2)"}
 CTL-008: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.03, msrc: "estimate"}
-CTL-009: {by: can_terms, cls: proposed, geo: "120 ohm termination plug", pos: "CAN1 bus ends (cable_list.csv)", mass: 0.004, msrc: "estimate"}
-CTL-010: {by: can_terms, cls: proposed, geo: "120 ohm termination plug", pos: "CAN2 bus ends (cable_list.csv)", mass: 0.004, msrc: "estimate"}
+CTL-009: {by: can_terms, mqty: 2, cls: proposed, geo: "120 ohm termination plug", pos: "CAN1 bus ends (cable_list.csv)", mass: 0.004, msrc: "estimate"}
+CTL-010: {by: can_terms, mqty: 2, cls: proposed, geo: "120 ohm termination plug", pos: "CAN2 bus ends (cable_list.csv)", mass: 0.004, msrc: "estimate"}
 CTL-011: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.03, msrc: "estimate"}
 CTL-012: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route (SPI4 pin map, B4)", mass: 0.01, msrc: "estimate"}
 CTL-016: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the service loop", mass: 0.08, msrc: "estimate"}
@@ -79,9 +79,9 @@ MEC-010: {by: tof_mount, cls: CAD-derived, geo: "MMP.00.00.00.005 STEP", pos: "C
 MEC-011: {by: ultrasonic_mount, cls: CAD-derived, geo: "MMP.00.00.00.006 STEP", pos: "CAD v0.2", mass: 0.06, msrc: "estimate"}
 MEC-012: {by: tablet_mount}
 MEC-013: {by: harness_fittings, cls: proposed, geo: "P-clips, grommets, edge guards", pos: "harness route", mass: 0.15, msrc: "estimate"}
-MEC-014: {by: fasteners, cls: proposed, geo: "fastener_schedule.csv", pos: "joints of the model", mass: 0.6, msrc: "estimate"}
+MEC-014: {by: fasteners, mqty: "", cls: proposed, geo: "fastener_schedule.csv", pos: "joints of the model", mass: 0.6, msrc: "estimate"}
 MEC-015: {by: motor_brackets, cls: provisional, geo: "design intent motor_bracket (D i)", pos: "both shaft ends of each wheel", mass: 1.2, msrc: "design-intent estimate"}
-MEC-016: {by: shims}
+MEC-016: {by: shims, mqty: 1, note: "one assortment, four shim stacks drawn"}
 MEC-017: {by: none, cls: not drawn, reason: "branding decals are robot page fittings, geometry not defined"}
 MEC-018: {by: lift_column, cls: primitive, geo: "DOLD 240 x 60, 530 retracted, inner stage placeholder", pos: "B7 column axis x 0.060 (bp000)", mass: 11.7, msrc: "datums lift_mass_dold_v4_350 (catalogue)"}
 MEC-019: {by: lift_base_plate, cls: primitive, geo: "360 x 230 x 10 6082-T6 (B7)", pos: "B7 bp000 / bp050", mass: 2.1, msrc: "volume x 2700 kg/m3 less holes"}
@@ -93,7 +93,7 @@ LFT-003: {by: lift_sensor_brackets, cls: placeholder, geo: "datums lift_sensor_b
 LFT-004: {by: flag_rod, cls: placeholder, geo: "20 x 20 x 430", pos: "datums.yaml lift_flag_rod_*", mass: 0.22, msrc: "estimate 0.5 kg/m"}
 LFT-005: {by: rod_corner_bracket, cls: placeholder, geo: "20 corner bracket", pos: "datums.yaml", mass: 0.02, msrc: "estimate"}
 LFT-006: {by: lift_flag, cls: placeholder, geo: "45 x 20 x 2 SS400", pos: "datums.yaml lift_flag_*", mass: 0.014, msrc: "volume x 7850"}
-LFT-007: {by: fasteners, cls: proposed, geo: "fastener_schedule.csv", pos: "LIFT-SNS-01 joints", mass: 0.03, msrc: "estimate"}
+LFT-007: {by: fasteners, mqty: 1, cls: proposed, geo: "fastener_schedule.csv", pos: "LIFT-SNS-01 joints", mass: 0.03, msrc: "estimate"}
 PWR-001: {by: battery, cls: provisional, geo: "B5 cell-group envelope 314 x 140 x 210", pos: "B5 rear deck, 2 mm behind the centre bracket", mass: 21.5, msrc: "B5 assembly 20 to 23 kg provisional (midpoint)"}
 PWR-002: {by: rz_bms}
 PWR-003: {by: rz_f0}
@@ -148,4 +148,3 @@ WCH-006: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", m
 WCH-007: {by: inside:tz_receiver, cls: provisional, geo: "drawn with the receiver", pos: "with WCH-002", mass: 0.0, msrc: "included in WCH-002"}
 WIR-001: {by: harness, cls: proposed, geo: "cable tubes", pos: "harness route", mass: 2.2, msrc: "computed from route lengths (cable_list.csv)"}
 WIR-002: {by: harness, cls: proposed, geo: "cable tubes", pos: "harness route", mass: 0.15, msrc: "computed from route lengths"}
-ARM-011b: {skip: true}

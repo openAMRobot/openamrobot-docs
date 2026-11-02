@@ -1,8 +1,8 @@
 {
  "fingerprint": {
   "model/model.js": "c93503b75d690ab467f865afadb52719f13c2fd865abadef96380b78a08276f9",
-  "model/exploded.json": "78fd8503618ac935728157f659138e4a085da769fd04674f2290f0b3b1aa9e4d",
-  "robot.html": "52dd02b2a4167c41c8e2fa09f148dc9e71cb17b5616dfb74036e3de5faaeb5b3",
+  "model/exploded.json": "a02b0caf49fa69827e80ad2d4415d2057570b86c1e4616d2cf8d04e3edfa5600",
+  "robot.html": "e6aee43ba1fbded5fa3c54ddb4bb78091a761b036ccbd7ac68ebe4280cdaac8c",
   "exploded.html": "d90e0b3bba706160b748f243b34e96c49f0e2902a1a81c6bb970b3915b84c963"
  },
  "robot_state": {
@@ -1956,8 +1956,8 @@
    "mismatch": []
   },
   {
-   "comp": "getac_portrait_ghost",
-   "part": "getac_portrait_ghost",
+   "comp": "getac_second_position_ghost",
+   "part": "getac_second_position_ghost",
    "robot_drawn": true,
    "exploded_drawn": true,
    "stage": 8,
