@@ -112,6 +112,9 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       <div class="grp" role="group" aria-label="View">
         <button id="b-asm" aria-pressed="true">Assembled</button><button id="b-explode" aria-pressed="false">Explode robot</button><button id="b-open" aria-pressed="false">Open the base</button><button id="b-cut" aria-pressed="false">Cutaway</button>
       </div>
+      <div class="grp" role="group" aria-label="Front bay layout (proposed, 2 Nov 2026)">
+        <span class="hint" style="margin:0">Front bay:</span><button id="b-fa" aria-pressed="true" title="Two-tier bay: lower plate for power conversion and safety, upper shelf for compute and control (proposed default)">option A</button><button id="b-fb" aria-pressed="false" title="28 Oct alternative: DIN parts in the rear side pockets, single-tier bay above the TZBOT receiver">option B</button>
+      </div>
       <div class="grp" role="group" aria-label="Camera and labels">
         <button id="b-reset">Reset view</button><button id="b-nums" aria-pressed="true">Labels</button><button id="b-hq" aria-pressed="true" title="Off: light look for slow devices (environment on metal and glass only, contact shadow without shadow map)">High quality</button>
       </div>
@@ -249,7 +252,22 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     ['b-asm', 'b-explode', 'b-open', 'b-cut', 'b-reset', 'b-nums', 'b-hq', 'b-tour'].forEach(function (id) { $(id).disabled = true; });
   }
 
-  var scene, camera, controls, root, parts = {}, anchors = [], need = true;
+  var scene, camera, controls, root, parts = {}, anchors = [], need = true, robotObj = null;
+  // front bay option shown (C1, 2 Nov 2026): option A is the proposed default; ?bay=B opens option B
+  var fbOpt = (/[?&]bay=B\b/.test(location.search) ? 'B' : ((window.OAMR_MODEL.PLACE || {}).front_bay || {})['default'] || 'A');
+  function setFrontBay(o) {
+    fbOpt = o;
+    if (robotObj) {
+      window.OAMR_MODEL.setFrontBay(robotObj, o);
+      (((window.OAMR_MODEL.PLACE || {}).front_bay || {}).relocatable || []).forEach(function (pid) {
+        (parts[pid] || []).forEach(function (g) { g.userData.home = g.position.clone(); });
+      });
+    }
+    $('b-fa').setAttribute('aria-pressed', String(o === 'A'));
+    $('b-fb').setAttribute('aria-pressed', String(o === 'B'));
+    if (typeof applyPose === 'function' && root) applyPose();
+    need = true;
+  }
   var stageEl = $('stage'), layer = $('colayer'), svg = $('colines'), nums = {};
   var DIR = null, baseIds = {}, offR = {}, offB = {}, homeBox = {}, owner = {}, compStage = {};
   // view weights: r explode robot, b open the base, c cutaway (current and target)
@@ -297,11 +315,13 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
 
     // the shared model (MODEL.build, as on the Robot page): lift at L1000, bp000, head pitch 30 degrees (hp30)
     var robot = MODEL.build(THREE, {headPitch: 30});
+    robotObj = robot;
     root = robot.root;
     LOOK.robotEnv(root, CAL);
     scene.add(root);
     parts = robot.parts;
     baseIds = robot.baseIds;
+    MODEL.setFrontBay(robot, fbOpt);
     root.updateMatrixWorld(true);
 
     // per-mesh materials so that parts dim, fade and highlight on their own
@@ -389,7 +409,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       var f = factor(pid), dim = set && !on[pid], hi = hiSet[pid];
       parts[pid].forEach(function (g) {
         g.position.copy(g.userData.home).add(v.clone().applyQuaternion(g.userData.inv));
-        g.visible = f > .01;
+        g.visible = f > .01 && (!g.userData.option || g.userData.option === fbOpt);
         g.traverse(function (o) {
           if (!o.isMesh) return;
           var m = o.material, b = o.userData.base, op = (dim ? Math.min(b.opacity, .12) : b.opacity) * f;
@@ -943,6 +963,10 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     $('b-explode').addEventListener('click', function () { setView(mode() === 'robot' ? 0 : 1, 0, WT.c); });
     $('b-open').addEventListener('click', function () { setView(0, mode() === 'base' ? 0 : 1, WT.c); });
     $('b-cut').addEventListener('click', function () { setView(WT.r, WT.b, WT.c > .5 ? 0 : 1); });
+    $('b-fa').setAttribute('aria-pressed', String(fbOpt === 'A'));
+    $('b-fb').setAttribute('aria-pressed', String(fbOpt === 'B'));
+    $('b-fa').addEventListener('click', function () { setFrontBay('A'); });
+    $('b-fb').addEventListener('click', function () { setFrontBay('B'); });
     $('b-reset').addEventListener('click', function () { resetView(false); });
     $('b-hq').addEventListener('click', function () { lookTouched = true; setLook(!light); });
     $('b-nums').addEventListener('click', function () {

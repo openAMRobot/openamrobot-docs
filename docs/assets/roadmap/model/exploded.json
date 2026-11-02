@@ -819,6 +819,23 @@
     ]
    }
   },
+  "bay_can1_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_can1_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can1_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
   "bay_can2": {
    "stage": 4,
    "offsets": {
@@ -836,20 +853,54 @@
     ]
    }
   },
+  "bay_can2_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_can2_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can2_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
   "bay_can3": {
-   "stage": 3,
+   "stage": 4,
    "offsets": {
     "bay_can3": [
-     -0.25,
      0,
-     0.3
+     0,
+     0.32
     ]
    },
    "open": {
     "bay_can3": [
-     -0.12,
      0,
-     0.14
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_can3_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_can3_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can3_optb": [
+     0,
+     0,
+     0.16
     ]
    }
   },
@@ -864,6 +915,23 @@
    },
    "open": {
     "bay_iso1212": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_iso1212_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_iso1212_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_iso1212_optb": [
      0,
      0,
      0.16
@@ -887,6 +955,23 @@
     ]
    }
   },
+  "bay_tpl7407_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_tpl7407_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_tpl7407_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
   "bay_ina228": {
    "stage": 4,
    "offsets": {
@@ -898,6 +983,57 @@
    },
    "open": {
     "bay_ina228": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_ina228_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_ina228_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_ina228_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_rsd60": {
+   "stage": 4,
+   "offsets": {
+    "bay_rsd60": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_rsd60": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_rsd60_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_rsd60_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_rsd60_optb": [
      0,
      0,
      0.16
@@ -921,20 +1057,71 @@
     ]
    }
   },
+  "bay_rsd100_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_rsd100_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_rsd100_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_ddr240": {
+   "stage": 4,
+   "offsets": {
+    "bay_ddr240": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_ddr240": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
   "bay_pwr032": {
-   "stage": 3,
+   "stage": 4,
    "offsets": {
     "bay_pwr032": [
-     -0.25,
      0,
-     0.3
+     0,
+     0.32
     ]
    },
    "open": {
     "bay_pwr032": [
-     -0.12,
      0,
-     0.14
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_pwr032_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr032_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr032_optb": [
+     0,
+     0,
+     0.16
     ]
    }
   },
@@ -949,6 +1136,23 @@
    },
    "open": {
     "bay_usbpd": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_usbpd_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbpd_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbpd_optb": [
      0,
      0,
      0.16
@@ -972,6 +1176,23 @@
     ]
    }
   },
+  "bay_pwr009_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr009_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr009_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
   "bay_pwr029": {
    "stage": 4,
    "offsets": {
@@ -983,6 +1204,23 @@
    },
    "open": {
     "bay_pwr029": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_pwr029_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr029_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr029_optb": [
      0,
      0,
      0.16
@@ -1006,6 +1244,50 @@
     ]
    }
   },
+  "bay_fbc_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_fbc_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_fbc_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_din": {
+   "stage": 4,
+   "offsets": {
+    "bay_din_pnoz": [
+     0,
+     0,
+     0.32
+    ],
+    "bay_din_tb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_din_pnoz": [
+     0,
+     0,
+     0.16
+    ],
+    "bay_din_tb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
   "bay_usbhub": {
    "stage": 4,
    "offsets": {
@@ -1017,6 +1299,23 @@
    },
    "open": {
     "bay_usbhub": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_usbhub_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbhub_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbhub_optb": [
      0,
      0,
      0.16
@@ -1050,6 +1349,33 @@
     ]
    }
   },
+  "bay_usbcan_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbcan_1_optb": [
+     0,
+     0,
+     0.32
+    ],
+    "bay_usbcan_2_optb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbcan_1_optb": [
+     0,
+     0,
+     0.16
+    ],
+    "bay_usbcan_2_optb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
   "bay_lidar_uart": {
    "stage": 4,
    "offsets": {
@@ -1067,37 +1393,20 @@
     ]
    }
   },
-  "rz_fba": {
-   "stage": 3,
+  "bay_lidar_uart_optb": {
+   "stage": 4,
    "offsets": {
-    "rz_fba": [
-     -0.25,
+    "bay_lidar_uart_optb": [
      0,
-     0.3
+     0,
+     0.32
     ]
    },
    "open": {
-    "rz_fba": [
-     -0.12,
+    "bay_lidar_uart_optb": [
      0,
-     0.14
-    ]
-   }
-  },
-  "rz_fbb": {
-   "stage": 3,
-   "offsets": {
-    "rz_fbb": [
-     -0.25,
      0,
-     0.3
-    ]
-   },
-   "open": {
-    "rz_fbb": [
-     -0.12,
-     0,
-     0.14
+     0.16
     ]
    }
   },
@@ -1189,17 +1498,17 @@
     ]
    }
   },
-  "rz_bms": {
+  "rz_batcon": {
    "stage": 3,
    "offsets": {
-    "rz_bms": [
+    "rz_batcon": [
      -0.25,
      0,
      0.3
     ]
    },
    "open": {
-    "rz_bms": [
+    "rz_batcon": [
      -0.12,
      0,
      0.14
@@ -1257,6 +1566,40 @@
     ]
    }
   },
+  "bay_plate": {
+   "stage": 4,
+   "offsets": {
+    "bay_plate": [
+     0,
+     0,
+     0.28
+    ]
+   },
+   "open": {
+    "bay_plate": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "bay_plate_optb": {
+   "stage": 4,
+   "offsets": {
+    "bay_plate_optb": [
+     0,
+     0,
+     0.28
+    ]
+   },
+   "open": {
+    "bay_plate_optb": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
   "rz_disc": {
    "stage": 3,
    "offsets": {
@@ -1285,23 +1628,6 @@
    },
    "open": {
     "rz_sb50": [
-     0,
-     0,
-     0.12
-    ]
-   }
-  },
-  "rz_batcon": {
-   "stage": 3,
-   "offsets": {
-    "rz_batcon": [
-     0,
-     0,
-     0.2
-    ]
-   },
-   "open": {
-    "rz_batcon": [
      0,
      0,
      0.12
@@ -1480,47 +1806,71 @@
     ]
    }
   },
-  "bay_plate": {
-   "stage": 4,
+  "tz_ferrite": {
+   "stage": 3,
    "offsets": {
-    "bay_plate": [
+    "tz_ferrite": [
      0,
      0,
-     0.28
+     -0.25
     ]
    },
    "open": {
-    "bay_plate": [
+    "tz_ferrite": [
      0,
      0,
-     0.14
+     -0.12
     ]
    }
   },
-  "lift_bolt_keepout": {
-   "stage": 4,
+  "tz_metal_free_zone": {
+   "stage": 3,
    "offsets": {
-    "keepout_bp000": [
+    "tz_metal_free_zone": [
      0,
      0,
-     0
-    ],
-    "keepout_bp050": [
-     0,
-     0,
-     0
+     -0.25
     ]
    },
    "open": {
-    "keepout_bp000": [
+    "tz_metal_free_zone": [
      0,
      0,
-     0
-    ],
-    "keepout_bp050": [
+     -0.12
+    ]
+   }
+  },
+  "base_cutout": {
+   "stage": 1,
+   "offsets": {
+    "base_cutout": [
      0,
      0,
-     0
+     -0.2
+    ]
+   },
+   "open": {
+    "base_cutout": [
+     0,
+     0,
+     -0.1
+    ]
+   }
+  },
+  "tz_transmitter": {
+   "stage": 1,
+   "offsets": {
+    "tz_transmitter": [
+     0,
+     0,
+     -0.3
+    ]
+   },
+   "open": {
+    "tz_transmitter": [
+     0,
+     0,
+     -0.15
     ]
    }
   },
@@ -1538,23 +1888,6 @@
      -0.12,
      0,
      0.1
-    ]
-   }
-  },
-  "k1k2_option_b": {
-   "stage": 3,
-   "offsets": {
-    "k1k2_option_b_1": [
-     -0.25,
-     0,
-     0.3
-    ]
-   },
-   "open": {
-    "k1k2_option_b_1": [
-     -0.12,
-     0,
-     0.14
     ]
    }
   },
@@ -1623,7 +1956,7 @@
    }
   },
   "rear_estop_housing": {
-   "stage": 7,
+   "stage": 8,
    "offsets": {
     "rear_estop_housing": [
      0,
@@ -1639,17 +1972,51 @@
     ]
    }
   },
-  "rear_estop_clear_ghost": {
+  "estop_p1_ghost": {
    "stage": 7,
    "offsets": {
-    "rear_estop_clear_ghost": [
+    "estop_p1_ghost": [
      0,
      0,
      0.1
     ]
    },
    "open": {
-    "rear_estop_clear_ghost": [
+    "estop_p1_ghost": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "estop_p3_ghost": {
+   "stage": 8,
+   "offsets": {
+    "estop_p3_ghost": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "estop_p3_ghost": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "estop_p4_ghost": {
+   "stage": 7,
+   "offsets": {
+    "estop_p4_ghost": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "estop_p4_ghost": [
      0,
      0,
      0
@@ -1741,6 +2108,23 @@
     ]
    }
   },
+  "harness_lv": {
+   "stage": 9,
+   "offsets": {
+    "harness_lv_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_lv_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
   "harness_sig": {
    "stage": 9,
    "offsets": {
@@ -1792,11 +2176,6 @@
      0,
      0,
      0.45
-    ],
-    "can_term_4": [
-     0,
-     0,
-     0.45
     ]
    },
    "open": {
@@ -1811,11 +2190,6 @@
      0.2
     ],
     "can_term_3": [
-     0,
-     0,
-     0.2
-    ],
-    "can_term_4": [
      0,
      0,
      0.2
@@ -1843,11 +2217,6 @@
    "stage": 8,
    "offsets": {
     "harness_safe_col": [
-     0,
-     -0.25,
-     0.1
-    ],
-    "harness_safe_mov": [
      0,
      -0.25,
      0.1
@@ -1890,11 +2259,6 @@
    },
    "open": {
     "harness_safe_col": [
-     0,
-     0,
-     0
-    ],
-    "harness_safe_mov": [
      0,
      0,
      0
@@ -2357,24 +2721,48 @@
   ]
  },
  "generated": [
+  "base_cutout",
   "battery_tray",
   "bay_can1",
+  "bay_can1_optb",
   "bay_can2",
+  "bay_can2_optb",
   "bay_can3",
+  "bay_can3_optb",
+  "bay_ddr240",
+  "bay_din",
   "bay_fbc",
+  "bay_fbc_optb",
   "bay_ina228",
+  "bay_ina228_optb",
   "bay_iso1212",
+  "bay_iso1212_optb",
   "bay_lidar_uart",
+  "bay_lidar_uart_optb",
   "bay_plate",
+  "bay_plate_optb",
   "bay_pwr009",
+  "bay_pwr009_optb",
   "bay_pwr029",
+  "bay_pwr029_optb",
   "bay_pwr032",
+  "bay_pwr032_optb",
   "bay_rsd100",
+  "bay_rsd100_optb",
+  "bay_rsd60",
+  "bay_rsd60_optb",
   "bay_tpl7407",
+  "bay_tpl7407_optb",
   "bay_usbcan",
+  "bay_usbcan_optb",
   "bay_usbhub",
+  "bay_usbhub_optb",
   "bay_usbpd",
+  "bay_usbpd_optb",
   "can_terms",
+  "estop_p1_ghost",
+  "estop_p3_ghost",
+  "estop_p4_ghost",
   "fan",
   "fasteners",
   "fasteners_upper",
@@ -2383,24 +2771,19 @@
   "getac_second_position_ghost",
   "harness_bat",
   "harness_fittings",
+  "harness_lv",
   "harness_r24",
   "harness_safe",
   "harness_sig",
   "harness_upper",
-  "k1k2_option_b",
-  "lift_bolt_keepout",
   "lift_node",
   "motor_brackets",
-  "rear_estop_clear_ghost",
   "rear_estop_housing",
   "rear_plate",
   "rz_batcon",
-  "rz_bms",
   "rz_brake",
   "rz_disc",
   "rz_f0",
-  "rz_fba",
-  "rz_fbb",
   "rz_fchg",
   "rz_k1k2",
   "rz_kchg",
@@ -2408,7 +2791,10 @@
   "rz_pwr017",
   "rz_sb50",
   "shims",
+  "tz_ferrite",
+  "tz_metal_free_zone",
   "tz_receiver",
+  "tz_transmitter",
   "us_locknut"
  ]
 }

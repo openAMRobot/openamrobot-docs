@@ -16,13 +16,19 @@ documents:
   datums: openamr-upperbody-sw datums.yaml 2026-11-01.d (a8c304d; .c to .d adds the lift velocity and effort limits only, no geometry)
   sensor_frames: openamr-platform-sw sensor_frames.yaml (4926f40)
 base_link_z: 0.098          # B7, datums base_link_height_above_floor
-wheel_radius_supplier: 0.100  # datums drive_wheel_radius (rounding to 0.1 requested, not decided)
+wheel_radius_supplier: 0.100  # datums drive_wheel_radius
+wheel_compression: 0.002     # owner decision 2 Nov 2026 (B1): rubber tyres r 0.100 on the axle at 0.098; the 2 mm is intended tyre
+                             # compression under load and levels the rigid chassis (no suspension); wheel-to-floor overlap <= 2 mm is an intended contact
 track: 0.400                 # placeholder; 0.46 measured on the legacy robot
 chassis: [0.780, 0.582]
 base_sheet: {bottom: 0.052, top: 0.054}
 deck: 0.294
 cover_underside: 0.290      # deck 0.054 + 236 mm (B5)
-lift_plate: {size: [0.360, 0.230, 0.010], top: 0.304, deck_bolts: [0.300, 0.190], col_axis_x: {bp000: 0.060, bp050: 0.110}}
+# lift base plate MEC-019, owner decision 2 Nov 2026 (B3): one 10 mm 6082-T6 plate on the centre-frame arch top (z 0.294), bolted from above
+# into the inner arch rivet-nut pattern (CAD MMP.04.00.00.000: 4 x M8 blind rivet nuts at x +/-0.060, y +/-0.050); column screwed from below
+lift_plate: {size: [0.330, 0.140, 0.010], x: [-0.080, 0.250], top: 0.304, arch_bolts: {x: [-0.060, 0.060], y: [-0.050, 0.050]},
+             arch_outer: {x: [-0.095, 0.095], y: [-0.150, 0.150]}, col_axis_x: {bp000: 0.060, bp050: 0.110}, col_screws: [0.190, 0.030]}
+arch: {top: 0.294, sheet: 0.002, walls_x: [-0.117, 0.117], ribs_y: [-0.077, 0.077], material: "S235JR (EN 1.0114), 2 mm"}
 column: {section: [0.240, 0.060], retracted: 0.530, stroke: 0.350, mass: 11.7}
 shoulder: {L1000: 1.000, L1175: 1.175, L1350: 1.350}
 head_lens_L1000: 1.223
@@ -39,4 +45,13 @@ rear_zones:   # B5 / platform-sw #95: free zones next to the cells (x, y, z exte
   side_l: {x: [-0.277, -0.137], y: [0.157, 0.248], z: [0.054, 0.264]}
   side_r: {x: [-0.277, -0.137], y: [-0.248, -0.157], z: [0.054, 0.264]}
 front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0.003}
-tzbot_receiver: {size: [0.240, 0.210, 0.065], mass: 5.0, floor_gap: [0.0, 0.050], metal_clear: 0.020, align: 0.030}
+# TZBOT WCM-500-24 receiver, owner decision 2 Nov 2026 (B4): front of the base, centred, front edge 25 mm from the front panel inner face
+# (x 0.388), 240 mm along x, bottom 2 mm below the base sheet underside (50 mm above the floor)
+tzbot_receiver: {size: [0.240, 0.210, 0.065], mass: 5.0, centre: [0.243, 0.0, 0.0825], front_panel_inner_x: 0.388, front_gap: 0.025,
+                 floor_gap: [0.0, 0.050], metal_clear: 0.020, align: 0.030, ferrite_t: 0.001, cutout_existing: [0.313, 0.359, -0.111, 0.111]}
+front_bay_option_default: A   # proposed (2 Nov 2026): two-tier bay, see front_bay.py
+second_estop: {position: P2, post_below_top: 0.055, panel_behind_face: 0.048}   # proposed (B2); datums keep P1 until the P-03 entry
+# lowest points of the robot below the base sheet (full assembly STEP MMP.00.00.00.000_full_assembly, openamr-platform-hw main,
+# exact OCC bounding boxes of every solid, floor at the castor wheel bottom; base sheet at 52.0 / 54.0 mm as corrected in base_mesh_map.yaml)
+cad_lowest: {drive_tyre: -0.0020, castor_wheels: 0.0, castor_bolt_tips_m6x20: 0.0410, m5x20_bolt_tips: 0.0448, m4x16_bolt_tips: 0.0460,
+             lidar_support_m4_bolt_tips: 0.0472, nuts_and_washers: [0.0470, 0.0510], base_sheet_bottom: 0.052}

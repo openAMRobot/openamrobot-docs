@@ -116,12 +116,25 @@ def model_js():
     return chest, lift, comps
 
 
-def build_scene(G, P, chest, lift, head_pitch=30):
-    """Parts of the robot (the page scene) except the arms."""
+def relocated(v, k, P, option=None):
+    """Base GLB node vertices moved by a front bay option (model.js M.setFrontBay): yaw about the node centre, then translation."""
+    F = P.get("front_bay") or {}
+    r = ((F.get("relocate") or {}).get(option or F.get("default")) or {}).get(k)
+    if not r:
+        return v
+    c = np.array(F["glb_centre"][k]) + [0, 0, FACTS["base_link_z"]]
+    Rz = rpy_matrix([0, 0, r["yaw"]])
+    return (v - c) @ Rz.T + np.array(r["p"]) + [0, 0, FACTS["base_link_z"]]
+
+
+def build_scene(G, P, chest, lift, head_pitch=30, option=None):
+    """Parts of the robot (the page scene) except the arms; the front bay option shown (default: the proposed one)."""
     parts = []
+    opt = option or (P.get("front_bay") or {}).get("default")
     for k, n in G.items():
         env = n["extras"].get("class") == "envelope"  # envelopes are boxes by definition: exact tests on their bounds
-        parts.append(Part(k, n["v"], n["f"], "base", boxes=[(n["v"].min(0), n["v"].max(0))] if env else None))
+        v = relocated(n["v"], k, P, opt)
+        parts.append(Part(k, v, n["f"], "base", boxes=[(v.min(0), v.max(0))] if env else None))
     t, L, Wc, RET, HEAD = .304, .24, .06, .53, .012
     c = t + RET
     i = RET - HEAD - .012
@@ -129,7 +142,6 @@ def build_scene(G, P, chest, lift, head_pitch=30):
     def add(pid, vf, g, exact=True):
         v = np.asarray(vf[0])
         parts.append(Part(pid, v, vf[1], g, boxes=[(v.min(0), v.max(0))] if (exact and len(v) == 8) else None))
-    add("lift_base_plate", box_mesh([.36, .23, .01], [0, 0, t - .005]), "col")
     add("lift_column", box_mesh([L, Wc, i + .012], [0, 0, t + (i + .012) / 2]), "col")
     add("lift_column_stage", box_mesh([L - .016, Wc - .012, .44], [0, 0, c - HEAD - .22]), "mov")
     add("lift_column_head", box_mesh([.25, .072, HEAD], [0, 0, c - HEAD / 2]), "mov")
@@ -150,8 +162,12 @@ def build_scene(G, P, chest, lift, head_pitch=30):
     ev = G["estop"]["v"] - [0, 0, FACTS["base_link_z"]]
     ax = e["glb_axis"]
     ev = ev + [e["panel_ahead"] - ax[0], -ax[1], -ax[2]]
-    ev = ev @ rpy_matrix([0, 0, math.pi]).T + [-L / 2, 0, c - HEAD - .006 - e["below_top"]]
-    add("second_estop", (ev, G["estop"]["f"]), "col", exact=False)
+    if e.get("position") == "P2":  # arm-post rear face, moving group (proposed, 2 Nov 2026)
+        ev = ev @ rpy_matrix([0, 0, math.pi]).T + [MOUNT_X - PX / 2, 0, c + .01 + PL - e["post_below_top"]]
+        add("second_estop", (ev, G["estop"]["f"]), "mov", exact=False)
+    else:
+        ev = ev @ rpy_matrix([0, 0, math.pi]).T + [-L / 2, 0, c - HEAD - .006 - e["below_top"]]
+        add("second_estop", (ev, G["estop"]["f"]), "col", exact=False)
     C = chest["drawn"]
     fr = MOUNT_X + PX / 2
     ts = C["getac_tablet"]["size"]
@@ -180,6 +196,8 @@ def build_scene(G, P, chest, lift, head_pitch=30):
         for pp in cc["parts"]:
             info[pp] = cc["id"]
     for pid, e in P["geometry"].items():
+        if e.get("option") and e["option"] != opt:
+            continue
         vs, fs, off, bx, allbox = [], [], 0, [], True
         for q in e["prims"]:
             if q["t"] == "box" and not q.get("r"):
@@ -409,7 +427,12 @@ def main():
                 ("harness_fittings", "*"), ("shims", "*"), ("us_locknut", "*"), ("lift_bolt_keepout", "*"),
                 ("lift_sensor_bracket", "lift_sensor_bracket"), ("flag_rod", "lift_flag"), ("rear_estop_housing", "second_estop"),
                 ("bay_plate", "lidar_support"), ("lift_base_plate", "lift_node"), ("lift_column_stage", "lift_column"), ("lift_column_head", "lift_column"),
-                ("lift_column_head", "arm_profile"), ("rear_estop", "lift_column")]
+                ("lift_column_head", "arm_profile"), ("rear_estop", "lift_column"),
+                # 2 Nov 2026: plate on the arch, E-stop P2 on the post, receiver set, ghosts, raised bay plate (its CAD conflicts are issues below)
+                ("lift_base_plate", "centre_bracket"), ("second_estop", "arm_profile"), ("rear_estop_housing", "arm_profile"), ("rear_estop_housing", "second_estop"),
+                ("estop_p", "*"), ("tz_", "*"), ("base_cutout", "*"), ("bay_plate", "lidar_support"), ("bay_plate", "electronics_bracket"),
+                ("bay_plate", "compute"), ("bay_plate", "base_controller"), ("lift_node", "lift_column"),
+                ("bay_", "electronics_bracket"), ("compute", "electronics_bracket"), ("base_controller", "controller_plate")]  # bracket shortening: own issue
 
     def is_declared(a, b):
         for x, y in declared:
@@ -476,25 +499,7 @@ def main():
               ("overlap %.1f mm" if k == "overlap" else "clearance %.1f mm") % (val * 1000),
               "overlap <= 0.5 mm, clearance >= 5 mm", "roadmap model scene (placement.json, GLB, datums.yaml)",
               "move or resize one part; check against CAD", OWN["mech"], "interference")
-    # bp050: front lift-plate bolts and the LiDAR support
-    lsup = G["lidar_support"]["v"]
-    for bp, pts in summ["bolts"].items():
-        for (x, y) in pts:
-            if x > .135:
-                near = lsup[(np.abs(lsup[:, 0] - x) < .03)]
-                dy = np.min(np.abs(np.abs(near[:, 1]) - abs(y))) if len(near) else 1
-                gap = (abs(y) - .085) * 1000 - 8
-                frame_below = "none (cover sheet only; centre bracket ends at x 0.135)"
-                issue("major", "MEC-019 front deck bolts / frame", bp, "front bolt at x %.3f, y %+.3f: frame below: %s" % (x, y, frame_below),
-                      "B7: bolts go through the deck into the frame below", "M-01 rev19.7 / B7; CAD v0.2 centre bracket x +-0.135",
-                      "add a cross member or two standoff tubes from the base sheet under the front bolt row (both bp000 and bp050 rows), or turn the pattern (300 along y) and re-check",
-                      OWN["mech"], "load path")
-                break
-        if bp == "bp050":
-            x, y = max(pts)
-            issue("major" if (abs(y) - .085 - .008) < .005 else "minor", "MEC-019 bp050 front bolts / LiDAR support MMP.07", "bp050",
-                  "bolt axis y %.3f vs support edge 0.085: washer clearance %.1f mm" % (abs(y), (abs(y) - .085 - .008) * 1000),
-                  ">= 5 mm tool and washer clearance", "B7 pattern 190 x 300; CAD v0.2 MMP.07", "shift the support or the pattern; check the nut access from the bay", OWN["mech"], "interference")
+    # lift base plate on the arch (B3): the load check follows the mass roll-up below
 
     # ---- head pitch and Getac positions
     for hp in range(15, 40, 5):
@@ -512,7 +517,10 @@ def main():
             r = pair(gp, geos[other])
             if r and r[1] > .0005:
                 issue("major", "getac pocket portrait / %s" % other, "portrait, L1000", "overlap %.1f mm" % (r[1] * 1000), "overlap <= 0.5 mm",
-                      "design_intent/getac_pocket_portrait.step; datums head_light_gap_below_tablet", "raise the pivot or move the light bar below the portrait sweep (needs about 16 mm more)", OWN["mech"], "interference")
+                      "design_intent/getac_pocket_portrait.step; datums head_light_gap_below_tablet", "move the pivot hub further above the tablet centre", OWN["mech"], "interference")
+            elif r and r[0] < .005:
+                issue("major", "getac pocket portrait / %s" % other, "portrait, L1000", "clearance %.1f mm" % (r[0] * 1000), "clearance >= 5 mm",
+                      "design_intent/getac_pocket_portrait.step", "move the pivot hub further above the tablet centre", OWN["mech"], "interference")
 
     # ---- arm reach sweep
     sweep = {}
@@ -675,8 +683,10 @@ def main():
                     pts.append(w.mean(0))
         return np.mean(pts, 0) if pts else None
     res = {}
+    placed_mass = {}
     for tr, nm in ((0.0, "L1000"), (.35, "L1350")):
         tot, mom, unplaced = 0, np.zeros(3), []
+        placed_mass[nm] = []
         for bid, m, comp in mass_items:
             c = None
             if comp.startswith("inside:"):
@@ -694,6 +704,7 @@ def main():
             if c is None:
                 unplaced.append(bid)
                 c = np.array([0, 0, .2])
+            placed_mass[nm].append((bid, float(m), [round(float(x), 4) for x in c], comp))
             tot += m
             mom += m * c
         com = mom / tot
@@ -739,35 +750,161 @@ def main():
               "drive pair %.1f kg (%.1f kg per wheel), castors front %.1f / rear %.1f kg each" % (l["drive_pair_kg"], l["per_drive_wheel_kg"], l["per_castor_front_kg"], l["per_castor_rear_kg"]),
               "ZLTECH rating 120 kg per motor pair", "lever-rule split, rigid supports", "set the castor shims (MEC-016) so the drive wheels keep traction without overload", OWN["mech"], "mass")
 
-    # ---- TZBOT receiver
-    rx = names.get("tz_receiver")
-    if rx:
+    # ---- lift base plate on the arch (B3): load check (lift_plate_check.py)
+    import lift_plate_check as LPC
+    lp = FACTS["lift_plate"]
+    above = {}
+    for nm in ("L1000", "L1350"):
+        sel = [(m, np.array(c)) for bid, m, c, comp in placed_mass[nm] if c[2] > lp["top"] + 0.001 and bid != "MEC-019"]
+        mt = sum(m for m, _ in sel)
+        above[nm] = (mt, (sum(m * c for m, c in sel) / mt).tolist())
+    arm_m = sum(m for bid, m, c, comp in placed_mass["L1350"] if bid == "ARM-001")
+    sh = np.array([up["shoulder"][0], 0, up["col_top"] + .166 + .35])
+    sel = [(m, np.array(c)) for bid, m, c, comp in placed_mass["L1350"] if c[2] > lp["top"] + 0.001 and bid not in ("MEC-019", "ARM-001")]
+    sel += [(arm_m, sh + [0.606 / 2, 0, 0]), (2 * 4.1, sh + [0.606, 0, 0])]
+    m_af = sum(m for m, _ in sel)
+    arms_fwd = (m_af, (sum(m * c for m, c in sel) / m_af).tolist())
+    decel = stab["L1350"]["a_max_fore"]
+    plate = LPC.run(lp, {k: (v[0], v[1]) for k, v in above.items()}, decel, arms_fwd)
+    plate["above_plate"] = {k: {"mass_kg": round(v[0], 2), "com_m": [round(x, 4) for x in v[1]]} for k, v in above.items()}
+    plate["arms_forward"] = {"mass_kg": round(arms_fwd[0], 2), "com_m": [round(x, 4) for x in arms_fwd[1]], "arm_mass_kg_both": round(arm_m, 2),
+                             "payload_kg_each": 4.1, "reach_m": 0.606, "source": "OpenArm 2.0 figures used by the robot page (payload 4.1 kg nominal, 6 kg peak, reach 0.606 m)"}
+    plate["decel_m_s2"] = decel
+    mu = plate["max_utilisation"]
+    margin_ok = max(mu.values()) <= 0.67
+    w = plate["worst"]
+    wc = [c for c in plate["cases"] if c["case"] + " (" + c["bp"] + ")" == w][0]
+    issue("minor" if margin_ok else "major", "Lift base plate MEC-019 on the centre-frame arch: load path", w,
+          "worst case: bolt %.2f, rivet-nut pull-through %.2f, plate %.2f (%.0f MPa), arch top sheet %.2f (%.0f MPa) utilisation; per rear bolt %.0f N tension, %.0f N shear; column tilt %.2f deg" % (
+              mu["bolt_utilisation"], mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], wc["plate_stress_MPa"], mu["arch_sheet_utilisation"],
+              wc["arch_sheet_stress_MPa"], max(wc["bolt_tension_per_bolt_N"].values()), wc["bolt_shear_per_bolt_N"], plate["max_column_tilt_deg"]),
+          "utilisation <= 0.67 (factor 1.5 on unfactored loads) for every element", "lift_plate_check.py; EN 485-2, EN 10025-2, EN 1993-1-8; CAD MMP.04.00.00.000",
+          "load path into the arch with margin: GI-026 / GI-027 (front deck bolts without a frame) closed" if margin_ok else
+          "add a doubler under the arch top between the rear rivet nuts and the rear wall, or use the outer 190 x 300 rivet-nut pattern as well (wider plate)",
+          OWN["mech"], "load path")
+
+    # ---- TZBOT WCM-500-24 receiver (B4): position, lowest point, floor gap, cut-out, metal-free zone, EMC distances
+    TZ = FACTS["tzbot_receiver"]
+    tzout = {}
+    if "tz_receiver" in geos:
         g = geos["tz_receiver"]
-        bottom = g.lo[2]
+        lo, hi = g.lo, g.hi
+        lowc = FACTS["cad_lowest"]
+        tzout["position"] = {"lo": lo.round(4).tolist(), "hi": hi.round(4).tolist(), "orientation": "240 mm along x, 210 mm along y",
+                             "front_edge_to_front_panel_inner_mm": round((TZ["front_panel_inner_x"] - hi[0]) * 1000, 1),
+                             "occupies_z_mm": [round(lo[2] * 1000, 1), round(hi[2] * 1000, 1)]}
+        tzout["lowest_point"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "cad": {k: v for k, v in lowc.items()},
+                                 "lowest_non_wheel_mm": round(min(lowc["castor_bolt_tips_m6x20"], lowc["m5x20_bolt_tips"], lowc["m4x16_bolt_tips"]) * 1000, 1),
+                                 "ground_clearance_changes": bool(lo[2] < min(lowc["castor_bolt_tips_m6x20"], lowc["m5x20_bolt_tips"]))}
+        tzout["floor_gap"] = {"receiver_bottom_mm": round(lo[2] * 1000, 1), "transmitter_height": "not in openamr-platform-hw datasheets/TZBot (folder holds a README only)",
+                              "gap_mm": "50.0 - transmitter height", "owner_window_mm": [0, 50], "wcm500_window_mm": [10, 30],
+                              "wcm500_window_source": "openamr-platform-sw docking research 14_docking_research.md section 3.2 (public extract)",
+                              "transmitter_height_for_wcm500_window_mm": [20, 40], "owner_rule": "a transmitter under 45 mm gives at least 5 mm"}
+        bc = summ.get("receiver", {}).get("cutout")
+        tzout["cutout"] = {"xy_m": bc, "size_mm": [round((bc[1] - bc[0]) * 1000), round((bc[3] - bc[2]) * 1000)],
+                           "existing_contact_charger_cutout_m": TZ["cutout_existing"],
+                           "removes": ["the existing contact-charger cut-out under the LiDAR (46 x 222 mm), absorbed",
+                                       "the base-sheet footprint of the LiDAR support MMP.07 feet and their 4 x ISO 7045 M4 x 16 screws (x 0.245 to 0.319, y +/-0.078)",
+                                       "the base-sheet footprint of the electronics bracket MMP.04.00.00.002 walls forward of x 0.103 (bracket to be shortened)",
+                                       "the old MEC-005 bay plate rivet nuts in the bay centre (the plate moves up to z 0.135 on standoffs outside |y| 0.125)",
+                                       "base-sheet area %.0f cm2 (2 mm steel, %.2f kg)" % ((bc[1] - bc[0]) * (bc[3] - bc[2]) * 1e4, (bc[1] - bc[0]) * (bc[3] - bc[2]) * 0.002 * 7850)],
+                           "stops_at": "x 0.370, the front panel bottom flange line (a cut to x 0.383 would leave a 3.4 mm strip)"}
+        # metal within 20 mm of the receiver (default front bay option)
+        NONMETAL = ("camera_mount", "ultrasonic_mount", "tof_mount", "lidar_spacer", "ultrasonic_front", "ultrasonic_rear", "tof_front", "tof_rear",
+                    "tz_", "base_cutout", "estop_p", "keepout", "harness_fittings")
+        FIX = {"base_plate": "cut-out to the receiver outline plus 20 mm (B4)",
+               "lidar_support": "MMP.07 walls stand on the base sheet at y +/-0.069, inside the receiver: shorten MMP.07 by 84 mm and stand it on the raised bay plate (z 0.135); keep the 17.5 mm spacer, scan plane 222.05 mm",
+               "electronics_bracket": "shorten MMP.04.00.00.002 to end at x 0.100 (IMU board at x 0.018 to 0.061 stays at imu_link)",
+               "front_panel": "notch the front panel bottom flange (x 0.370 to 0.388) over y +/-0.125, or accept 7 mm and ask TZBOT",
+               "bay_plate": "plate at z 0.135 (20 mm above the receiver top), aluminium; standoffs outside |y| 0.125",
+               "castor_front_left": "outside (clearance shown)", "castor_front_right": "outside (clearance shown)",
+               "hub_motor_wheel_left": "outside", "hub_motor_wheel_right": "outside", "base_camera": "Gemini 336L housing above the zone; keep 20 mm",
+               "estop": "XB4 body and ZBE contact block above the receiver front edge: ask TZBOT whether small switch metal at 10 mm is acceptable",
+               "reset_button": "as the E-stop: ask TZBOT", "centre_bracket": "the arch front feet (x 0.117 to 0.135) and their inner M5 bolts (y +/-0.105) clash with the receiver rear corners: trim the feet at |y| < 0.125 and move the inner foot bolts to y +/-0.130",
+               "fasteners_base": "the M4 brass heat-set inserts and screws of the Gemini mount MEC-009 (x 0.372, z 0.123) sit 8 mm above the receiver front: use PEEK or nylon M4 screws, keep the small brass inserts and ask TZBOT",
+               "us_locknut_1": "use nylon 3/4 in NPS lock nuts on the front MB7060 (MEC-021 allows nylon)", "us_locknut_2": "use nylon 3/4 in NPS lock nuts on the front MB7060 (MEC-021 allows nylon)"}
         metal = []
-        for k in ("base_plate", "castor_front_left", "castor_front_right", "hub_motor_wheel_left", "hub_motor_wheel_right", "lidar_support", "bay_plate", "front_panel"):
-            if k in geos:
-                r = pair(g, geos[k], .02)
-                if r:
-                    metal.append((k, round(r[0] * 1000, 1), round(r[1] * 1000, 1)))
-        issue("major", "TZBOT receiver WCM-500-24 / floor clearance", "position not documented (drawn provisional under the front bay)",
-              "receiver 65 mm tall vs base sheet bottom 52 mm: recess of at least %.0f mm into the base needed for a %.0f mm floor gap" % ((.065 + bottom - .052) * 1000, bottom * 1000),
-              "floor gap 0 to 50 mm; no metal within 20 mm", "B5; CAD v0.2 base sheet 52.0 / 54.0 mm", "cut the steel base sheet (280 x 250 mm with the 20 mm metal-free border) and give the receiver its own bracket; pick the zone with the battery and bay layout", OWN["mech"], "tzbot")
-        for k, dmin, dep in metal:
-            issue("major", "TZBOT receiver / %s (metal within 20 mm)" % k, "provisional receiver position", "clearance %.1f mm, overlap %.1f mm" % (dmin, dep),
-                  ">= 20 mm metal-free", "B5 TZBOT WCM-500-24", "cut-out or relocate", OWN["mech"], "tzbot")
+        for k, gg in geos.items():
+            if k == "tz_receiver" or k.startswith(NONMETAL):
+                continue
+            if k.startswith("harness_"):  # the receiver's own output and signal cables (WCH-005, WCH-006 to the receiver) start at it
+                keep = [q for q in P["geometry"].get(k, {}).get("prims", []) if q.get("cid") not in ("CBL-P30", "CBL-P31")]
+                pts = []
+                for q in keep:
+                    A_ = np.array(q["pts"])
+                    for i in range(len(A_) - 1):
+                        pts += list(A_[i] + np.linspace(0, 1, 40)[:, None] * (A_[i + 1] - A_[i]))
+                if not pts:
+                    continue
+                pts = np.array(pts)
+                inside_ = ((pts >= lo - TZ["metal_clear"]) & (pts <= hi + TZ["metal_clear"])).all(1)
+                if not inside_.any():
+                    continue
+                dd = np.max(np.maximum(lo - pts[inside_], pts[inside_] - hi), axis=1)
+                r = (max(0.0, float(dd.min())), max(0.0, float(-dd.min())))
+            else:
+                r = pair(g, gg, TZ["metal_clear"])
+            if r:
+                metal.append({"part": k, "clearance_mm": round(r[0] * 1000, 1), "overlap_mm": round(r[1] * 1000, 1),
+                              "fix": FIX.get(k, "cable or part: keep it 20 mm from the receiver (route over the bay plate or outboard of |y| 0.125)" if k.startswith(("harness", "service")) else "move it 20 mm away or make it non-metallic")})
+        metal.sort(key=lambda m: m["clearance_mm"] - m["overlap_mm"])
+        tzout["metal_within_20mm"] = metal
+        for m_ in metal:
+            issue("major", "TZBOT receiver / %s (metal within 20 mm)" % m_["part"], "receiver at the B4 position, front bay option %s" % P["front_bay"]["default"],
+                  "clearance %.1f mm, overlap %.1f mm" % (m_["clearance_mm"], m_["overlap_mm"]), ">= 20 mm metal-free around the receiver",
+                  "B5 TZBOT installation rule; owner decision B4 (2 Nov 2026)", m_["fix"], OWN["mech"] if not m_["part"].startswith(("harness", "bay_")) else OWN["elec"], "tzbot")
+        # EMC distances from the receiver coil (assumed in the bottom 15 mm of the receiver, facing the transmitter)
+        coil_lo, coil_hi = lo.copy(), hi.copy()
+        coil_hi[2] = lo[2] + 0.015
+        cv, cf = box_mesh(coil_hi - coil_lo, (coil_lo + coil_hi) / 2)
+        coil = Geo(Part("coil", cv, cf, "base"), base_cfg, .004)
+        def dist_to(k):
+            if k not in geos:
+                return None
+            d, _ = cKDTree(coil.samples).query(geos[k].samples)
+            return round(float(d.min()) * 1000, 1)
+        emc = {"IMU (EV_ICM-42688-P)": dist_to("imu"), "Jetson Orin NX on J401": dist_to("compute"), "NUCLEO-H723ZG": dist_to("base_controller"),
+               "Gemini 336L": dist_to("base_camera")}
+        # cables by function: CAN and USB (harness tubes carry their cable id)
+        cab = {r["id"]: r for r in csv.DictReader(open(os.path.join(MODEL, "cable_list.csv")))}
+        for label, pred in (("CAN cables", lambda r: "CAN" in r["function"] or "CAN" in r["gauge_or_type"]), ("USB cables", lambda r: "USB" in r["function"] or "USB" in r["gauge_or_type"])):
+            ids = {k for k, r in cab.items() if pred(r)}
+            pts = []
+            for pid, e in P["geometry"].items():
+                if not pid.startswith("harness_") or e.get("group") != "base":
+                    continue
+                for q in e["prims"]:
+                    if q["t"] == "tube" and q.get("cid") in ids:
+                        A_ = np.array(q["pts"])
+                        for i in range(len(A_) - 1):
+                            pts += list(A_[i] + np.linspace(0, 1, 30)[:, None] * (A_[i + 1] - A_[i]))
+            if pts:
+                d, _ = cKDTree(coil.samples).query(np.array(pts))
+                emc[label] = round(float(d.min()) * 1000 - 3, 1)  # minus a typical cable radius
+        tzout["emc_distances_mm"] = emc
+        tzout["emc_note"] = "distances from the receiver coil (assumed in the bottom 15 mm of the receiver, facing the floor transmitter) to the nearest point of each item; under 50 mm flagged"
+        for k, v in emc.items():
+            if v is not None and v < 50:
+                issue("major", "TZBOT receiver coil / %s (EMC distance)" % k, "charging, front bay option %s" % P["front_bay"]["default"], "%.1f mm from the coil" % v,
+                      ">= 50 mm until TZBOT gives a minimum distance and the field at 50 / 100 mm", "owner request B4 (2 Nov 2026); ferrite sheet on the receiver top",
+                      "route or move the item above the bay plate, keep the ferrite sheet, and ask TZBOT for the minimum distance to electronics", OWN["elec"], "tzbot")
+        issue("major", "TZBOT floor transmitter height / air gap", "charging position", "gap = 50.0 mm - transmitter height; the height is not in openamr-platform-hw datasheets/TZBot",
+              "0 to 50 mm (owner); WCM-500: 10 to 30 mm, no contact (platform-sw docking research, public extract)", "B4; receiver bottom 50.0 mm above the floor",
+              "ask TZBOT for the transmitter height: 20 to 40 mm gives 10 to 30 mm; under 45 mm gives at least 5 mm", OWN["lead"], "tzbot")
 
     # ---- services and fits from the build summary
     nof = summ["nofit"]
-    if nof:
-        issue("blocker", "Front bay and rear zone layout / %s" % ", ".join(nof), "proposed layout (packer, 3 mm gaps, 10 mm around converters)",
-              "no space for %s after the front bay and both rear side pockets" % ", ".join(nof), "every onboard part placed",
-              "parts.yaml catalogue outlines (verify), CAD v0.2 free space", "two-level bay plate or a DIN carrier on the centre-bracket rear wall; re-check with real datasheet outlines; the BMS/PDB layout from the hardware owner is due",
+    fbs = summ.get("front_bay", {})
+    fbd = summ.get("front_bay_default", "A")
+    nof_fb = (fbs.get(fbd) or {}).get("fit", {}).get("not_placed", [])
+    if nof or nof_fb:
+        dims = {it["id"]: it["dims"] for it in load_yaml(os.path.join(HERE, "parts.yaml"))["packed"]}
+        issue("blocker", "Rear zone layout (B5) / %s" % ", ".join(nof + nof_fb), "B5 rear zone with the design-intent battery tray MEC-007 and the real side-pocket section; overflow under the arch tried",
+              "no space for %s: behind the cells 66 mm deep with the tray rear wall (70 mm without it) for the 70 mm deep FB-A / FB-B; side pockets 71 mm wide (with the tray wall) and 117 mm tall only between z 74 and 191 mm, 140 mm long, for the BMS %s mm" % (
+                  ", ".join(nof + nof_fb), "x".join("%g" % d for d in dims.get("rz_bms", []))),
+              "every onboard part placed with >= 5 mm clearance", "parts.yaml catalogue outlines (verify), B5, CAD v0.2 side panel flanges, design_intent/battery_tray.py",
+              "FB-A and FB-B on the rear panel inner face above the disconnect (vertical, 70 mm deep into the zone is then not needed) or a lower-profile fuse block; a BMS no larger than 140 x 70 x 115 mm for the pocket, or fix the Daly order code and its outline; then update B5",
               OWN["elec"], "layout")
-    over = [k for k, v in summ["packed"].items() if k.startswith("bay_") and v[0][0] < 0]
-    if over:
-        issue("major", "Front bay overflow / %s" % ", ".join(over), "proposed layout", "%d front-bay parts only fit in the rear side pockets" % len(over),
-              "front bay holds the listed parts (E2)", "packer result (build_summary.json)", "adopt the 28 Oct alternative (DIN parts in the side pockets) or enlarge the bay", OWN["elec"], "layout")
     for k, o in summ["k1k2_options"].items():
         if k == "A":
             issue("minor", "K1/K2 option A GX11CAC fit", "rear zone", "fits: %s" % o["fits"], "fits the rear zone", "packer", "decision 2 Nov", OWN["elec"], "fit")
@@ -778,16 +915,18 @@ def main():
     # side pockets vs the side panel return flanges
     issue("major", "Rear side pockets / side panel return flanges", "rear zone", "pocket 91 mm wide only between z 74 and 191 mm; 36 mm at the flange heights (inner flange at y 0.193)",
           "B5 / platform-sw #95: 140 x 91 x 210 mm free each side", "CAD v0.2 side panel MMP.00.00.00.003 (GLB)", "keep tall parts (BMS, K1/K2) inside y 0.193 or between the flanges; update B5", OWN["mech"], "layout")
-    # the MEC-005 single plate
-    issue("major", "MEC-005 single removable plate / LiDAR support MMP.07 and electronics bracket MMP.04.00.00.002", "front bay",
-          "both stand on the base sheet in the bay: a one-piece plate must pass under the LiDAR support (3 mm) or be two wing plates",
-          "one removable flat plate (E1)", "CAD v0.2", "mount the LiDAR support on the plate and shorten the 17.5 mm spacer to 14.5 mm to keep the 222.05 mm scan plane, or split MEC-005", OWN["mech"], "layout")
+    # the raised bay plate over the receiver (front bay options A and B) needs two CAD changes
+    jet_fixed = fbd == "A"
     issue("major", "Jetson Orin NX with fan on the IMU bracket MMP.04.00.00.002", "CAD v0.2", "compute (with fan) shares the electronics bracket with the EV_ICM-42688-P",
-          "nothing heavy or vibrating on the IMU bracket (E2)", "CAD v0.2 compute node on the bracket top", "move the IMU to its own sub-plate on elastomer mounts or move the Jetson; the bay has no 90 mm wide free spot", OWN["mech"], "layout")
+          "nothing heavy or vibrating on the IMU bracket (E2)", "CAD v0.2 compute node on the bracket top",
+          "front bay option A (proposed) moves the Jetson to the upper shelf; owner to adopt the option in CAD" if jet_fixed else "move the IMU to its own sub-plate or move the Jetson", OWN["mech"], "layout")
     issue("minor", "Battery assembly removal path", "cover off", "cells lift out vertically through the cover opening; 26 mm above the cells, nothing on top (B5)",
           "removable without removing the arms", "B5; lift base plate at x -0.12 to 0.24 (rear edge 17 mm ahead of the cells)", "keep the cover split behind the lift plate", OWN["mech"], "services")
     issue("minor", "Disconnect handle access", "rear panel", "BS-6004B drawn at the rear panel centre above the rear TF-Luna", "reachable from outside", "proposed position", "confirm the panel cut-out", OWN["elec"], "services")
-    issue("minor", "Front bay plate removal with the cover off", "cover off", "plate lifts out after the 8 M4 screws; the lift-plate nuts below the deck need the bay keep-outs", "removable with the cover off", "proposed", "keep the keep-outs free of parts", OWN["mech"], "services")
+    issue("minor", "Front bay plates removal with the cover off", "cover off, option A", "shelf lifts off its 4 standoffs, then the lower plate off its 6 standoffs; the strip boards beside the receiver are reached after the lower plate",
+          "removable with the cover off; every fuse and connector reachable", "front_bay.py", "keep the strip boards' connectors facing up", OWN["mech"], "services")
+    issue("minor", "Lift base plate removal and cover opening", "cover off", "the cover opening (x -0.146 to 0.156, y -0.113 to 0.107) must be extended forward to x 0.260 for the plate front (0.250) and the column at bp050 (front 0.230)",
+          "cover clears the plate and the column", "CAD v0.2 cover MMP.01.00.00.001; B3", "extend the cover opening to x 0.260 (owner to confirm in CAD)", OWN["mech"], "services")
     # service loop
     sd = summ["seed"][0] if summ.get("seed") else {}
     if sd:
@@ -797,11 +936,16 @@ def main():
     rodv = names["flag_rod"].world(base_cfg)
     issue("major", "Flag rod LFT-004 / adapter plate MEC-004 footprint", "all lift positions", "rod y %.0f to %.0f mm vs plate edge 50 mm: %.0f to %.0f mm outside" % (rodv[:, 1].min() * 1000, rodv[:, 1].max() * 1000, rodv[:, 1].min() * 1000 - 50, rodv[:, 1].max() * 1000 - 50),
           "inside the plate footprint", "datums.yaml lift_flag_rod_offset_from_face; B8", "rod mount bracket of design_intent/adapter_post (keeps the rod inside) or a 130 mm wide plate", OWN["mech"], "interference")
-    issue("major", "Second E-stop at 40 mm below the column top / right gripper", "arm workspace", "hit in the 29 Oct simulation; clear position 180 mm below the top edge (ghost drawn)",
-          "no arm contact", "B8; datums second_estop_below_profile_top", "move to the 180 mm position at M-09; housing flange needs >= 50 mm below the top (design intent)", OWN["mech"], "arm reach")
+    ep = json.load(open(os.path.join(HERE, "estop_positions.json")))
+    p2 = ep["positions"]["P2"]
+    hits = {k: sum(v["reach_study_hits"].values()) for k, v in p2["stops"].items()}
+    issue("major", "Second E-stop P2 (proposed) / arm reach envelope", "L1000 / L1175 / L1350, arm-post rear face, 55 mm below the post top",
+          "actuator centre %s m; single-joint sweep clear; reach study %s of about %d valid random poses per arm and stop come within 5 mm" % (
+              " / ".join("%.3f" % v["actuator_centre_m"] for v in p2["stops"].values()), " / ".join(str(v) for v in hits.values()), ep["n_per_arm"] * 0.92),
+          "0.90 to 1.50 m at every stop, no arm contact (owner, 2 Nov 2026)", "estop_positions.py; design_intent/rear_estop_housing.py",
+          "P-03 entry for P2 (then datums second_estop_below_profile_top and its parent link change); add the housing as a MoveIt collision object on arm_profile_link", OWN["manip"], "arm reach")
     issue("major", "Getac ZX80 at shoulder height / arms", "arm workspace", "hit in 23 of 154 simulation frames (29 Oct)", "no arm contact", "B8", "M-09 position; MoveIt collision object", OWN["mech"], "arm reach")
     issue("minor", "Left tote wall / sensors S1, S2", "visualization", "3.2 mm overlap", "none", "B8 (visualization only)", "fix the tote model", OWN["tech"], "interference")
-    issue("minor", "Hub motor wheel radius 0.100 vs base_link 0.098", "all", "wheel envelope reaches 2 mm below the floor", "wheel radius = base_link height", "datums drive_wheel_radius / base_link_height_above_floor", "decide the rounding to 0.1 (open)", OWN["mech"], "geometry")
 
     # ---- write
     order = {"blocker": 0, "major": 1, "minor": 2}
@@ -814,7 +958,20 @@ def main():
         w.writeheader()
         for r in issues:
             w.writerow({k: r[k] for k in keys})
+    wl = min(float(G[k]["v"][:, 2].min()) for k in ("hub_motor_wheel_left", "hub_motor_wheel_right"))
+    intended = [{"pair": "hub motor wheels / floor", "overlap_mm": round(-wl * 1000, 2), "limit_mm": FACTS["wheel_compression"] * 1000,
+                 "reason": "owner decision 2 Nov 2026 (B1): rubber tyres r 0.100 m on the axle at 0.098 m; 2 mm intended tyre compression under load levels the rigid chassis (no suspension)",
+                 "within_limit": -wl <= FACTS["wheel_compression"] + 1e-6}]
+    if not intended[0]["within_limit"]:
+        issue("major", "Hub motor wheels / floor", "all", "overlap %.1f mm" % (-wl * 1000), "intended contact <= 2 mm (B1)", "base GLB", "check the wheel model", OWN["mech"], "geometry")
+    gpo = {}
+    if gp:
+        for other in ("head_light", "arm_profile", "head_camera", "head_camera_bracket"):
+            r = pair(gp, geos[other], .05)
+            gpo[other] = None if r is None else {"clearance_mm": round(r[0] * 1000, 1), "overlap_mm": round(r[1] * 1000, 1)}
     out = {"self_check": check, "frames": frames, "heights": heights, "mass": res, "stability": stab, "loads": loads, "views": views,
+           "intended_contacts": intended, "tzbot": tzout, "lift_base_plate": plate, "estop_positions": ep, "front_bay": {k: v.get("fit") for k, v in fbs.items()},
+           "front_bay_default": fbd, "getac_portrait": gpo, "mass_items": placed_mass,
            "sweep": {"%s|%s|%s" % k: v[:20] for k, v in sweep.items()}, "sweep_steps_per_arm": nsteps,
            "counts": {s: sum(1 for r in issues if r["severity"] == s) for s in order}, "steel_chassis_kg": round(steel, 2)}
     json.dump(out, open(os.path.join(HERE, "analysis_summary.json"), "w"), indent=1, default=str)

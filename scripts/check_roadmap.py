@@ -629,8 +629,11 @@ def check_chest_and_riser(root, html, err, comps):
     se = chest.get("second_estop") or {}
     if not 0.02 <= se.get("below_top", -1) <= 0.06:  # centre 20 to 60 mm below the static profile top
         err("model.js", "M.CHEST second_estop below_top %s: the second E-stop sits close to the static profile upper edge" % se.get("below_top"))
-    if len(re.findall(r"part\('second_estop', R\.col\)", js)) != 1 or re.search(r"part\('second_estop'\)", js):
-        err("model.js", "the second E-stop must be built exactly once, in the static lift group (part('second_estop', R.col))")
+    # built exactly once: P1 (datum) in the static lift group, P2 (proposed 2 Nov 2026) on the arm post in the moving group
+    if len(re.findall(r"part\('second_estop'", js)) != 1 or not re.search(r"part\('second_estop', p2 \? mov : R\.col\)", js):
+        err("model.js", "the second E-stop must be built exactly once, at P2 on the arm post (moving group) or P1 on the static profile (part('second_estop', p2 ? mov : R.col))")
+    if se.get("position") not in ("P1", "P2"):
+        err("model.js", "M.CHEST second_estop position %s, expected P1 (datum) or P2 (proposed)" % se.get("position"))
     fm = re.search(r"function chestItems\s*\(", js)
     body = function_body(js, fm.end()) if fm else ""
     if fm and not ("-D.COL.L / 2" in body and "rotation.z = Math.PI" in body):
@@ -1330,6 +1333,16 @@ def check_model_sources(root, html, err):
     for k in cov:
         if k not in bom:
             err("bom_coverage.csv", "%s is not a BOM 7.14 line" % k)
+    # base GLB nodes moved by the default front bay option (placement.json front_bay.relocate, model.js M.setFrontBay)
+    fbay = place.get("front_bay") or {}
+    for k, r in ((fbay.get("relocate") or {}).get(fbay.get("default")) or {}).items():
+        if k in boxes:
+            lo, hi = boxes[k]
+            e = [(hi[i] - lo[i]) / 2 for i in range(3)]
+            if abs(abs(r["yaw"]) - 1.5708) < 0.01:
+                e = [e[1], e[0], e[2]]
+            c = [r["p"][0], r["p"][1], r["p"][2] + blz]
+            boxes[k] = ([c[i] - e[i] for i in range(3)], [c[i] + e[i] for i in range(3)])
     # cable endpoints attach to drawn parts
     drawn = set(boxes)
     for c in model_components(js):

@@ -61,7 +61,7 @@ def main():
                  "configuration": meta["configuration"], "adjustment": meta["adjustment"], "fasteners": meta["fasteners"],
                  "files": files, "source_script": "scripts/roadmap_model/design_intent/%s.py" % item,
                  "next_step": meta["next_step"], "owner": "fridayali"}
-        for k in ("mass_note", "existing_cad_note"):
+        for k in ("mass_note", "existing_cad_note", "parameters", "variants_note"):
             if meta.get(k):
                 entry[k] = meta[k]
         index.append(entry)
