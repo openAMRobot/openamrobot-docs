@@ -158,6 +158,24 @@ class WholeCheck(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
 
+class ReferencePagesCurrent(unittest.TestCase):
+    """Reference pages follow the 2 Nov 2026 register: E-stop on the adapter plate, 10 mm gap, ZED 57 mm, 4 + 4 cells proposed."""
+    def test_committed_reference_pages_pass(self):
+        errs = []
+        C.check_reference_pages(os.path.join(ROOT, "docs", "assets", "roadmap"), lambda p, m: errs.append(p + ": " + m))
+        self.assertEqual(errs, [])
+
+    def test_superseded_values_fail(self):
+        for text in ("second E-stop on the rear face of the static lift column", "head light, a 30 mm gap, Getac",
+                     "lens 42 mm ahead of and 223 mm above", "eight upright cells in one row across the robot"):
+            self.assertTrue(C.superseded_reference_hits(text), text)
+
+    def test_current_values_pass(self):
+        for text in ("second E-stop on top of the moving adapter plate", "a 10 mm gap", "lens 57 mm ahead of",
+                     "supersedes the static-column position of the E-stop", "lift stop sensors on the rear face of the static DOLD column"):
+            self.assertEqual(C.superseded_reference_hits(text), [], text)
+
+
 if __name__ == "__main__":
     unittest.main()
 

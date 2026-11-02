@@ -1470,6 +1470,42 @@ def check_model_sources(root, html, err):
                     if not all(b[0][i] - .015 <= p[i] <= b[1][i] + .015 for i in range(3)):
                         err("cable_list.csv", "%s %s end %s is more than 15 mm from %s" % (r["id"], end, p, r[end]))
 
+# Superseded values that must not appear in the current reference pages (owner decisions of
+# 2 Nov 2026, register openAMRobot/.github#84: SAFETY-PROCUREMENT, TABLET-MOUNT, head camera, battery trays).
+REFERENCE_PAGES = ["general-arrangement.md", "index.md", "hardware-architecture.md", "mass-and-stability.md"]
+SUPERSEDED_REFERENCE = [
+    (r"static (lift )?column", "second E-stop is on top of the moving adapter plate (SAFETY-PROCUREMENT)", r"E-stop"),
+    (r"\b30 mm gap\b", "light-to-Getac gap is 10 mm (TABLET-MOUNT)", None),
+    (r"\b42 mm ahead of\b", "ZED Mini lens is 57 mm ahead of the arm mount point", None),
+    (r"\bin one row\b", "battery is proposed as 4 + 4 cells in two trays", None),
+]
+
+
+def superseded_reference_hits(text):
+    hits = []
+    for line in text.splitlines():
+        for pat, why, near in SUPERSEDED_REFERENCE:
+            for m in re.finditer(pat, line):
+                if near:
+                    window = line[max(0, m.start() - 160):m.end() + 40]
+                    if not re.search(near, window) or re.search(r"supersed", window):
+                        continue
+                hits.append("%s: %s" % (m.group(0), why))
+    return hits
+
+
+def check_reference_pages(root, err):
+    ref = os.path.join(root, "..", "..", "reference", "openamrobot-2")
+    for name in REFERENCE_PAGES:
+        try:
+            with open(os.path.join(ref, name), encoding="utf-8") as f:
+                text = f.read()
+        except OSError:
+            continue
+        for h in superseded_reference_hits(text):
+            err("reference/openamrobot-2/" + name, "superseded value: " + h)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default=os.path.join(os.path.dirname(__file__), "..", "docs", "assets", "roadmap"))
@@ -1652,6 +1688,7 @@ def main():
 
     # 6. known contacts (declared overlaps, warn only in the model, recorded as issues)
     check_known_contacts(args.dir, err)
+    check_reference_pages(args.dir, err)
 
     # 7. STATE.md figures (read from the generated files)
     try:
