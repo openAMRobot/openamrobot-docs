@@ -918,6 +918,35 @@ def main():
               "parts.yaml estimated outlines (verify); owner corrections A1 and A9 of 2 Nov 2026; build_summary.json gi080",
               "a manual two-level layout with datasheet outlines follows in the next PR",
               OWN["elec"], "manual layout pending")
+    g80m = summ.get("gi080", {})
+    if g80m.get("manual") and not (nof or nof_fb):   # rear power module laid out by hand (rear_power.py): what is left to verify
+        fit_ = g80m.get("fit", {})
+        lv = g80m.get("levels", {})
+        issue("minor", "Rear power module layout (rear_power.py) / catalogue outlines", "receiver gap %s mm, plate underside %s mm, main line %s mm, FB-B shelf %s mm" % (
+                  lv.get("gap_mm"), lv.get("plate_underside_mm"), lv.get("main_line_mm"), lv.get("fbb_shelf_mm")),
+              "every part placed, no clash below 5 mm; closest: %s; %d adaptations of the owner report: %s" % (
+                  ", ".join("%s / %s %.1f mm" % (c_["a"], c_["b"], c_["gap_mm"]) for c_ in fit_.get("closest", [])[:4]), len(g80m.get("adaptations", [])),
+                  "; ".join("%s: %s" % (a_["part"], a_["model"]) for a_ in g80m.get("adaptations", []))),
+              "every part placed with >= 5 mm clearance, fuses reachable, nothing on the cells, F0 within about 150 mm of battery +",
+              "rear power owner report rev 2 (evans-kwashie, 2 Nov 2026); owner decision of 3 Nov 2026 (15 mm receiver gap); build_summary.json gi080",
+              "verify the Daly, 5007100, 6004, 7748, 5046, GX11CAC and busbar outlines and stud positions on drawings; CAD the shelves and busbars (harness_cad_changes.csv)",
+              OWN["elec"], "verify")
+        near_ = fit_.get("within_20mm_of_receiver", [])
+        if near_:
+            issue("minor", "TZBOT receiver / parts within 20 mm (non-metal)", "receiver prepared, installed later; 15 mm gap to the power plate (owner decision 3 Nov 2026)",
+                  "within 20 mm of the receiver: %s; specified non-metallic (G10 plate, POM standoffs, PA66 or PEEK fasteners, plastic part feet)" % ", ".join(
+                      "%s %.1f mm" % (n_["part"], n_["gap_mm"]) for n_ in near_),
+                  "no metal within 20 mm of the receiver (TZBOT WCM-500-24 manual V2.5)", "TZBOT manual V2.5; rear_power.py",
+                  "warning: confirm with TZBOT that the non-metal parts and the K1/K2 bases at 18 mm are acceptable", OWN["elec"], "verify with supplier")
+    fg_ = summ.get("flag_guide")
+    if fg_:
+        sm_ = fg_["summary"]
+        issue("minor", "Flag rod guide / band between the flag and the corner bracket", "L1000 to L1350, every 25 mm",
+              "guide z %.0f to %.0f mm in the %.0f to %.0f mm band: %.1f mm below, %.1f mm above; rod engaged at every step: %s (at least %.1f mm below the guide); chain %.1f mm, sensors %.1f mm" % (
+                  fg_["z"][0] * 1000, fg_["z"][1] * 1000, fg_["band"][0] * 1000, fg_["band"][1] * 1000, fg_["band_margin_mm"][0], fg_["band_margin_mm"][1],
+                  sm_["rod_engaged_all"], sm_["min_rod_below_guide_mm"], sm_.get("min_chain_to_guide_mm", 0), sm_["min_sensors_to_guide_mm"]),
+              "flag and corner bracket clear the guide at every position; chain, sensors and cables at least 5 mm",
+              "owner decision of 3 Nov 2026; flag_guide.py", "if the tolerance stack exceeds 3 mm, use a 15 mm corner bracket (5 mm more band) or move it to the +y face of the rod", OWN["mech"], "verify")
     # A9 cable rules on the 25 mm² runs (build_summary.json cables_25mm2)
     c25 = summ.get("cables_25mm2", {})
     if c25:
