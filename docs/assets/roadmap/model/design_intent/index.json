@@ -1,0 +1,1089 @@
+{
+ "schema": 1,
+ "frame": "base_footprint: floor under the drive-axle midpoint, x forward, y left, z up; metres and radians (base_link = +0.098 m z)",
+ "snapshot": "2026-11-01",
+ "units_in_scripts": "mm, deg",
+ "items": [
+  {
+   "letter": "a",
+   "item": "tof_mount",
+   "bom": "MEC-010",
+   "status": "design intent",
+   "existing_cad": "openamr-platform-hw mechanical/cad/production_files/MMP.00.00.00.005 TF-Luna mount.STEP (fixed 10 deg, 22 mm hole)",
+   "method": "PETG print",
+   "thickness_mm": 3.0,
+   "mass_kg": 0.021,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "front",
+     "xyz": [
+      0.388,
+      0.0,
+      0.0914
+     ],
+     "rpy": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "rear",
+     "xyz": [
+      -0.388,
+      0.0,
+      0.0914
+     ],
+     "rpy": [
+      0.0,
+      0.0,
+      3.141592653589793
+     ]
+    }
+   ],
+   "placement_note": "panel inner face assumed 2 mm inside the panel outer face x +/-0.390; height 91.4 mm (front centre opening, sensor_frames.yaml); x of the lens face then 0.390 (P-03 rev19.7, BOM 7.14), not 0.399 (sensor_frames.yaml)",
+   "configuration": "pitch 10 deg down (adjustable 5 to 15 deg), front and rear identical",
+   "adjustment": "arc slot +/-5 deg about a y-axis pivot at the panel, M3 clamp; hole and window variants",
+   "fasteners": [
+    {
+     "joint": "TF-Luna mount to panel",
+     "part": "ISO 7380 button head screw + ISO 4032 nut + ISO 7089 washer",
+     "size": "M3 x 10",
+     "qty": 2,
+     "standard": "ISO 7380",
+     "class": "proposed"
+    },
+    {
+     "joint": "carrier pivot",
+     "part": "ISO 4762 screw into heat-set insert",
+     "size": "M3 x 8",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "pitch clamp",
+     "part": "ISO 4762 screw + ISO 7089 washer into heat-set insert",
+     "size": "M3 x 8",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "carrier heat-set inserts",
+     "part": "brass heat-set insert",
+     "size": "M3 x 5.7",
+     "qty": 4,
+     "standard": "manufacturer",
+     "class": "proposed"
+    },
+    {
+     "joint": "TF-Luna to carrier",
+     "part": "ISO 7380 screw",
+     "size": "M2 x 6",
+     "qty": 2,
+     "standard": "ISO 7380",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "tof_mount_hole22",
+     "step": "design_intent/tof_mount_hole22.step",
+     "stl": "design_intent/tof_mount_hole22.stl",
+     "solids": [
+      "MEC-010_plate_and_cheeks",
+      "MEC-010_carrier_10deg"
+     ],
+     "step_bytes": 476949,
+     "stl_bytes": 84084,
+     "reimport_valid": true,
+     "mass_kg": 0.021
+    },
+    {
+     "variant": "tof_mount_window30x23",
+     "step": "design_intent/tof_mount_window30x23.step",
+     "stl": "design_intent/tof_mount_window30x23.stl",
+     "solids": [
+      "MEC-010_plate_and_cheeks",
+      "MEC-010_carrier_10deg"
+     ],
+     "step_bytes": 497120,
+     "stl_bytes": 78884,
+     "reimport_valid": true,
+     "mass_kg": 0.02
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/tof_mount.py",
+   "next_step": "CAD owner: check the TF-Luna M2 hole pattern against the datasheet drawing, decide 22 mm hole vs 30 x 23 window, then update MMP.00.00.00.005.",
+   "owner": "fridayali"
+  },
+  {
+   "letter": "b",
+   "item": "ultrasonic_mount",
+   "bom": "MEC-011 (+ MEC-021 lock nut)",
+   "status": "design intent",
+   "existing_cad": "openamr-platform-hw mechanical/cad/production_files/MMP.00.00.00.006 Ultrasonic mount.STEP (no tilt; CAD panel hole 29.46 mm)",
+   "method": "PETG print",
+   "thickness_mm": 4.0,
+   "mass_kg": 0.009,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "front_left",
+     "xyz": [
+      0.39,
+      0.13,
+      0.0914
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "front_right",
+     "xyz": [
+      0.39,
+      -0.13,
+      0.0914
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "rear_left",
+     "xyz": [
+      -0.39,
+      0.13,
+      0.0914
+     ],
+     "rpy": [
+      0,
+      0,
+      3.141592653589793
+     ]
+    },
+    {
+     "name": "rear_right",
+     "xyz": [
+      -0.39,
+      -0.13,
+      0.0914
+     ],
+     "rpy": [
+      0,
+      0,
+      3.141592653589793
+     ]
+    }
+   ],
+   "placement_note": "hole y +/-0.130, 91.4 mm above the floor (sensor_frames.yaml us_*); panel outer face x +/-0.390 (decided 0.390, sensor_frames.yaml 0.3906 / -0.3886)",
+   "configuration": "level (0 deg); wedges 3 and 6 deg down optional",
+   "adjustment": "tilt wedge between panel and retention plate (0 / 3 / 6 deg); lock nut clamps the housing",
+   "fasteners": [
+    {
+     "joint": "MB7060 to panel",
+     "part": "3/4in NPS lock nut (MEC-021)",
+     "size": "3/4in NPS",
+     "qty": 4,
+     "standard": "ASME B1.20.1 thread",
+     "class": "named"
+    },
+    {
+     "joint": "retention plate to panel",
+     "part": "ISO 7380 screw + ISO 7089 washer + ISO 4032 nut",
+     "size": "M3 x 12",
+     "qty": 8,
+     "standard": "ISO 7380",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "ultrasonic_mount",
+     "step": "design_intent/ultrasonic_mount.step",
+     "stl": "design_intent/ultrasonic_mount.stl",
+     "solids": [
+      "MEC-011_retention_plate",
+      "MEC-011_nut_seat"
+     ],
+     "step_bytes": 56753,
+     "stl_bytes": 28084,
+     "reimport_valid": true,
+     "mass_kg": 0.009
+    },
+    {
+     "variant": "ultrasonic_mount_tilt3",
+     "step": "design_intent/ultrasonic_mount_tilt3.step",
+     "stl": "design_intent/ultrasonic_mount_tilt3.stl",
+     "solids": [
+      "MEC-011_retention_plate",
+      "MEC-011_nut_seat"
+     ],
+     "step_bytes": 61236,
+     "stl_bytes": 29084,
+     "reimport_valid": true,
+     "mass_kg": 0.011
+    },
+    {
+     "variant": "ultrasonic_mount_tilt6",
+     "step": "design_intent/ultrasonic_mount_tilt6.step",
+     "stl": "design_intent/ultrasonic_mount_tilt6.stl",
+     "solids": [
+      "MEC-011_retention_plate",
+      "MEC-011_nut_seat"
+     ],
+     "step_bytes": 61677,
+     "stl_bytes": 29084,
+     "reimport_valid": true,
+     "mass_kg": 0.014
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/ultrasonic_mount.py",
+   "next_step": "CAD owner: change the panel hole to 27.5 mm and confirm the lock-nut across-flats against the MEC-021 part.",
+   "owner": "fridayali"
+  },
+  {
+   "letter": "c",
+   "item": "gemini_mount",
+   "bom": "MEC-009",
+   "status": "design intent",
+   "existing_cad": "openamr-platform-hw mechanical/cad/production_files/MMP.01.00.00.003 Camera mount.STEP (fixed 10 deg)",
+   "method": "PETG print",
+   "thickness_mm": 4.0,
+   "mass_kg": 0.079,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "base_camera_link",
+     "xyz": [
+      0.387,
+      0.0,
+      0.144
+     ],
+     "rpy": [
+      0.0,
+      -0.1745,
+      0.0
+     ]
+    }
+   ],
+   "placement_note": "base_camera_link (0.387, 0, 0.046) in base_link (sensor_frames.yaml); housing centre 142.5 mm above the floor (M-01 rev19.7)",
+   "configuration": "bt10 (baseline); bt05 and bt15 locked alternatives",
+   "adjustment": "cradle pivots about the front-glass line; locked at bt05 / bt10 / bt15 by an M4 screw into the cradle insert",
+   "fasteners": [
+    {
+     "joint": "cradle lock",
+     "part": "ISO 4762 screw + ISO 7089 washer",
+     "size": "M4 x 10",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "cradle lock inserts",
+     "part": "brass heat-set insert",
+     "size": "M4 x 8.1",
+     "qty": 2,
+     "standard": "manufacturer",
+     "class": "named"
+    },
+    {
+     "joint": "cradle pivot",
+     "part": "ISO 4762 shoulder-free screw + ISO 7089 washer + ISO 10511 nyloc nut",
+     "size": "M4 x 12",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "camera to cradle",
+     "part": "ISO 4762 screw",
+     "size": "M4 x 8",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "base to chassis",
+     "part": "ISO 7380 screw + ISO 4032 nut + ISO 7089 washer",
+     "size": "M4 x 12",
+     "qty": 2,
+     "standard": "ISO 7380",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "gemini_mount",
+     "step": "design_intent/gemini_mount.step",
+     "stl": "design_intent/gemini_mount.stl",
+     "solids": [
+      "MEC-009_base_and_cheeks",
+      "MEC-009_cradle_bt10"
+     ],
+     "step_bytes": 185176,
+     "stl_bytes": 107484,
+     "reimport_valid": true,
+     "mass_kg": 0.079
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/gemini_mount.py",
+   "next_step": "CAD owner: check the Gemini 336L bottom-thread spacing and the front opening (about 126 x 36 mm) at bt15, then update MMP.01.00.00.003.",
+   "owner": "fridayali"
+  },
+  {
+   "letter": "d",
+   "item": "zed_bracket",
+   "bom": "ARM-011",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "machined 6082-T6",
+   "thickness_mm": 5.0,
+   "mass_kg": 0.437,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "lens_line",
+     "xyz": [
+      0.297,
+      0.0,
+      1.223
+     ],
+     "rpy": [
+      0.0,
+      0.5235987755982988,
+      0.0
+     ]
+    }
+   ],
+   "placement_note": "column axis x 0.060 (bp000) + 0.180 + 0.057; z 0.304 + 0.530 + 0.166 + 0.223 at L1000",
+   "configuration": "L1000, hp30",
+   "adjustment": "pitch hp15 to hp35 in 5 deg steps about the lens line, M4 lock screw (staggered holes, left 15/25/35, right 20/30)",
+   "fasteners": [
+    {
+     "joint": "foot to post top",
+     "part": "ISO 4762 screw + ISO 7089 washer into the post end tap",
+     "size": "M8 x 16",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "cradle pivot",
+     "part": "ISO 4762 screw + ISO 7089 washers + ISO 10511 nyloc nut",
+     "size": "M5 x 16",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "pitch lock",
+     "part": "ISO 4762 screw + ISO 7089 washer into M4 tapped cradle arm",
+     "size": "M4 x 10",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "ZED mount to cradle",
+     "part": "1/4-20 UNC screw (supplied with the ZED mount)",
+     "size": "1/4-20 x 3/8in",
+     "qty": 1,
+     "standard": "ASME B18.3",
+     "class": "named"
+    }
+   ],
+   "files": [
+    {
+     "variant": "zed_bracket",
+     "step": "design_intent/zed_bracket.step",
+     "stl": "design_intent/zed_bracket.stl",
+     "solids": [
+      "ARM-011_foot_and_cheeks",
+      "ARM-011_cradle_hp30"
+     ],
+     "step_bytes": 184110,
+     "stl_bytes": 72684,
+     "reimport_valid": true,
+     "mass_kg": 0.437
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/zed_bracket.py",
+   "next_step": "CAD owner: confirm the HFS6-60120 end-tap size in the order code and the ZED Mini mount interface; check the bracket against the arm sweep at hp35.",
+   "owner": "fridayali"
+  },
+  {
+   "letter": "e",
+   "item": "getac_pocket",
+   "bom": "UI-002, MEC-012 (pocket and back plate); AUX-001 plate",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "laser-cut 5754 aluminium plates, machined 6082-T6 spacer hub, PETG pocket",
+   "thickness_mm": 3.0,
+   "mass_kg": 0.461,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "pocket_origin",
+     "xyz": [
+      0.3,
+      0.0,
+      1.04
+     ],
+     "rpy": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "placement_note": "arm-post front face x 0.060 + 0.180 + 0.060 = 0.300 (bp000); tablet centre 0.246 above the column top at L1000 (datums.yaml getac_tablet_z_above_column_top), 0.834 + 0.246 - 0.040 (A3: 40 mm lower)",
+   "configuration": "L1000, portrait on a fixed mount (A3)",
+   "adjustment": "none (fixed portrait mount); the tablet lifts out of the pocket",
+   "fasteners": [
+    {
+     "joint": "back plate to arm post",
+     "part": "ISO 4762 screw + ISO 7089 washer + M6 T-slot nut (HFS6)",
+     "size": "M6 x 12",
+     "qty": 4,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "hub to back plate",
+     "part": "ISO 10642 countersunk screw",
+     "size": "M4 x 10",
+     "qty": 4,
+     "standard": "ISO 10642",
+     "class": "proposed"
+    },
+    {
+     "joint": "pocket on hub",
+     "part": "ISO 4762 screw + ISO 7089 washer",
+     "size": "M4 x 8",
+     "qty": 3,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "light plate to arm post",
+     "part": "ISO 4762 screw + ISO 7089 washer + M6 T-slot nut (HFS6)",
+     "size": "M6 x 10",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "head light to plate",
+     "part": "ISO 4762 screw (thermal pad between)",
+     "size": "M3 x 8",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "getac_pocket",
+     "step": "design_intent/getac_pocket.step",
+     "stl": "design_intent/getac_pocket.stl",
+     "solids": [
+      "MEC-012_back_plate",
+      "UI-002_spacer_hub",
+      "AUX-001_light_plate",
+      "AUX-001_head_light_envelope",
+      "UI-002_pocket_portrait"
+     ],
+     "step_bytes": 166043,
+     "stl_bytes": 70984,
+     "reimport_valid": true,
+     "mass_kg": 0.461
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/getac_pocket.py",
+   "next_step": "Owner: enter the fixed portrait mount and the 10 mm light gap in P-03 and M-01; confirm the ZX80 USB-C port position, then CAD (M-09).",
+   "owner": "fridayali"
+  },
+  {
+   "letter": "f",
+   "item": "lift_base_plate",
+   "bom": "MEC-019",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "machined 6082-T6",
+   "thickness_mm": 10.0,
+   "mass_kg": 1.207,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "plate_top_in_base_footprint",
+     "xyz": [
+      0.0,
+      0.0,
+      0.304
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "placement_note": "plate x -0.080 to 0.250, y +/-0.070, z 0.294 to 0.304; arch bolts x +/-0.060, y +/-0.050; column screws bp000 x -0.035 / 0.155, bp050 x 0.015 / 0.205, y +/-0.015",
+   "configuration": "one plate for bp000 and bp050 (two column hole sets)",
+   "adjustment": "two column hole sets (bp000, bp050); arch slots 18 mm long give +/-3.5 mm fore-aft",
+   "fasteners": [
+    {
+     "joint": "DOLD column to the lift base plate (from below, first, on the bench)",
+     "part": "DIN 7500 thread-forming countersunk screw, flush with the plate underside",
+     "size": "M8 x 30 (>= 20 mm engagement)",
+     "qty": 4,
+     "standard": "DIN 7500",
+     "class": "named"
+    },
+    {
+     "joint": "lift base plate to the centre-frame arch (from above, into the M8 rivet nuts)",
+     "part": "ISO 4762 socket head cap screw class 8.8 + ISO 7089 washer",
+     "size": "M8 x 20",
+     "qty": 4,
+     "standard": "ISO 4762 / ISO 7089",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "lift_base_plate",
+     "step": "design_intent/lift_base_plate.step",
+     "stl": "design_intent/lift_base_plate.stl",
+     "solids": [
+      "MEC-019_lift_base_plate"
+     ],
+     "step_bytes": 114130,
+     "stl_bytes": 125484,
+     "reimport_valid": true,
+     "mass_kg": 1.207
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/lift_base_plate.py",
+   "next_step": "CAD owner: confirm the arch rivet-nut pattern (inner 120 x 100), read the DOLD column-screw pattern, cut the cover opening forward to x 0.260 and model the plate in CAD.",
+   "owner": "fridayali",
+   "parameters": {
+    "length_mm": 330.0,
+    "width_mm": 140.0,
+    "thickness_mm": 10.0,
+    "x_rear_m": -0.08,
+    "x_front_m": 0.25,
+    "arch_holes_x_m": [
+     -0.06,
+     0.06
+    ],
+    "arch_holes_y_m": [
+     -0.05,
+     0.05
+    ],
+    "column_axis_x_m": {
+     "bp000": 0.06,
+     "bp050": 0.11
+    },
+    "column_screws_mm": [
+     190.0,
+     30.0
+    ],
+    "edge_mm": 20.0
+   }
+  },
+  {
+   "letter": "g",
+   "item": "adapter_post",
+   "bom": "MEC-004, MEC-003",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "machined 6082-T6 plates; MISUMI HFS6-60120 profile cut and end-tapped",
+   "thickness_mm": 10.0,
+   "mass_kg": 1.546,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "carriage_reference",
+     "xyz": [
+      0.06,
+      0.0,
+      0.834
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "placement_note": "post spans z 0.844 to 1.184 at L1000; J1_A at z 1.000; L1175 / L1350 add 0.175 / 0.350",
+   "configuration": "L1000, bp000",
+   "adjustment": "post and upright on T-nuts (height of the upright adjustable); flag rod on the plate rear extension with one M5 and the corner bracket",
+   "fasteners": [
+    {
+     "joint": "adapter plate to DOLD carriage",
+     "part": "ISO 10642 countersunk screw (from the top)",
+     "size": "M8 x 20",
+     "qty": 4,
+     "standard": "ISO 10642",
+     "class": "proposed"
+    },
+    {
+     "joint": "post to adapter plate (from below)",
+     "part": "ISO 4762 screw + ISO 7089 washer into the post end tap",
+     "size": "M8 x 25",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "named"
+    },
+    {
+     "joint": "rear upright to post",
+     "part": "ISO 4762 screw + M6 T-slot nut (HFS6)",
+     "size": "M6 x 16",
+     "qty": 4,
+     "standard": "ISO 4762",
+     "class": "named"
+    },
+    {
+     "joint": "rear upright to plate (from below)",
+     "part": "ISO 4762 screw into tapped upright",
+     "size": "M6 x 20",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "stiffener to upright",
+     "part": "ISO 4762 screw into tapped gusset",
+     "size": "M6 x 20",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "stiffener to plate (from below)",
+     "part": "ISO 4762 screw into tapped gusset",
+     "size": "M6 x 20",
+     "qty": 2,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "J1_A spacer",
+     "part": "1 mm spacer plate (aluminium)",
+     "size": "90 x 90 x 1",
+     "qty": 2,
+     "standard": "-",
+     "class": "named"
+    },
+    {
+     "joint": "flag rod to the plate rear extension (from the top)",
+     "part": "ISO 4762 screw into the M5 tapped rod end (LFT-007)",
+     "size": "M5 x 20",
+     "qty": 1,
+     "standard": "ISO 4762",
+     "class": "named"
+    },
+    {
+     "joint": "rod corner bracket to the plate rear extension",
+     "part": "ISO 4762 screw into a tapped hole",
+     "size": "M4 x 10",
+     "qty": 1,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "adapter_post",
+     "step": "design_intent/adapter_post.step",
+     "stl": "design_intent/adapter_post.stl",
+     "solids": [
+      "MEC-004_adapter_plate",
+      "MEC-003_arm_post_HFS6-60120_envelope",
+      "MEC-004_rear_upright",
+      "MEC-004_stiffener",
+      "MEC-004_J1A_spacer_left",
+      "MEC-004_J1A_spacer_right",
+      "LFT-004_flag_rod_ref"
+     ],
+     "step_bytes": 188631,
+     "stl_bytes": 108884,
+     "reimport_valid": true,
+     "mass_kg": 1.546
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/adapter_post.py",
+   "next_step": "CAD owner: model the one-piece plate with the rear extension (A6); read the DOLD carriage screw pattern; M-09.",
+   "owner": "fridayali",
+   "mass_note": "HFS6-60120 post drawn as a solid envelope and excluded from mass_kg: take the MISUMI catalogue mass per metre x 0.34 m"
+  },
+  {
+   "letter": "h",
+   "item": "rear_estop_housing",
+   "bom": "SAF-001 (second unit), housing to MEC-014/MEC-013",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "laser-cut and bent 5754 aluminium sheet",
+   "thickness_mm": 2.0,
+   "mass_kg": 0.08,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "adapter_top",
+     "xyz": [
+      0.06,
+      0.0,
+      0.844
+     ],
+     "rpy": [
+      0,
+      -1.5707963267948966,
+      0
+     ],
+     "group": "mov",
+     "variant": "rear_estop_housing"
+    }
+   ],
+   "placement_note": "xyz at bp000 and L1000, on the adapter plate top; moves with the lift (+0.175 / +0.350); pitch -pi/2: button up",
+   "configuration": "one position (A5): adapter plate top behind the post, centred in y, above the column, button up; moves with the lift",
+   "adjustment": "fore-aft on the plate between the column axis and the rear upright (slotted flange holes, +/-10 mm)",
+   "fasteners": [
+    {
+     "joint": "housing flanges to the adapter plate",
+     "part": "ISO 4762 screw + ISO 7089 washer into tapped holes",
+     "size": "M6 x 10",
+     "qty": 4,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "E-stop in housing",
+     "part": "XB4 mounting nut (supplied)",
+     "size": "22.5 mm",
+     "qty": 1,
+     "standard": "Schneider XB4",
+     "class": "named"
+    },
+    {
+     "joint": "cable exit",
+     "part": "cable gland IP67",
+     "size": "M16 x 1.5",
+     "qty": 1,
+     "standard": "EN 62444",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "rear_estop_housing",
+     "step": "design_intent/rear_estop_housing.step",
+     "stl": "design_intent/rear_estop_housing.stl",
+     "solids": [
+      "SAF-001_housing_adapter_top",
+      "SAF-001_XB4BS8445_ZBE-102_envelope"
+     ],
+     "step_bytes": 95340,
+     "stl_bytes": 55284,
+     "reimport_valid": true,
+     "mass_kg": 0.08
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/rear_estop_housing.py",
+   "next_step": "Owner: enter the adapter-plate position in P-03 and M-01; CAD owner: tapped holes and the cable hole in MEC-004 (M-09).",
+   "owner": "fridayali"
+  },
+  {
+   "letter": "i",
+   "item": "motor_bracket",
+   "bom": "MEC-015",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "laser-cut and bent S355 steel sheet, zinc plated",
+   "thickness_mm": 5.0,
+   "mass_kg": 0.279,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "left_inner",
+     "xyz": [
+      0.0,
+      0.1266,
+      0.098
+     ],
+     "rpy": [
+      0,
+      0,
+      3.141592653589793
+     ]
+    },
+    {
+     "name": "left_outer",
+     "xyz": [
+      0.0,
+      0.2296,
+      0.098
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "right_inner",
+     "xyz": [
+      0.0,
+      -0.1266,
+      0.098
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "right_outer",
+     "xyz": [
+      0.0,
+      -0.2296,
+      0.098
+     ],
+     "rpy": [
+      0,
+      0,
+      3.141592653589793
+     ]
+    }
+   ],
+   "placement_note": "local +y points away from the wheel: inner brackets face inboard, outer brackets outboard",
+   "configuration": "4 brackets; brake side inboard on both wheels",
+   "adjustment": "axle height +/-2 mm in the slot (98 to 102 mm), foot shims MEC-016",
+   "fasteners": [
+    {
+     "joint": "bracket on shaft",
+     "part": "supplied M14 x 1.5 nut and washer (ZLTECH)",
+     "size": "M14 x 1.5",
+     "qty": 4,
+     "standard": "supplier",
+     "class": "named"
+    },
+    {
+     "joint": "bracket foot to base sheet",
+     "part": "ISO 4017 hex screw 8.8 + 2 x ISO 7089 washer + ISO 7040 nyloc nut",
+     "size": "M8 x 20",
+     "qty": 8,
+     "standard": "ISO 4017",
+     "class": "proposed"
+    },
+    {
+     "joint": "height shim",
+     "part": "MEC-016 shim 0.5 / 1 / 2 mm",
+     "size": "70 x 40",
+     "qty": 4,
+     "standard": "-",
+     "class": "named"
+    }
+   ],
+   "files": [
+    {
+     "variant": "motor_bracket",
+     "step": "design_intent/motor_bracket.step",
+     "stl": "design_intent/motor_bracket.stl",
+     "solids": [
+      "MEC-015_shaft_flat_bracket"
+     ],
+     "step_bytes": 51320,
+     "stl_bytes": 22684,
+     "reimport_valid": true,
+     "mass_kg": 0.279
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/motor_bracket.py",
+   "next_step": "CAD owner: model MEC-015 against the B2 drawing, confirm the deck cut-out and the side-panel clearance at the outer feet, FEA for factor 3.0.",
+   "owner": "fridayali",
+   "existing_cad_note": "MMP.03.00.00.001 to .004 (wheel brackets, motor bracket, drive shaft) belong to the release 001 drive-shaft wheel, not the ZLLG80 hub motor"
+  },
+  {
+   "letter": "j",
+   "item": "lift_sensor_set",
+   "bom": "LFT-001, LFT-002 (cable, not drawn here), LFT-003, LFT-004, LFT-005, LFT-006, LFT-007",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "bought sensors, brackets and profile; laser-cut SS400 flag",
+   "thickness_mm": 45.0,
+   "mass_kg": 0.652,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "column_base_axis",
+     "xyz": [
+      0.06,
+      0.0,
+      0.304
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "placement_note": "moving parts rise 0.175 / 0.350 m at L1175 / L1350",
+   "configuration": "L1000 (moving parts), bp000",
+   "adjustment": "sensor heights along the T-slot; sensing distance with the two M12 nuts; flag height on the rod",
+   "fasteners": [
+    {
+     "joint": "BEF-WN-M12 to DOLD T-slot",
+     "part": "bracket screw + T-nut (LFT-007)",
+     "size": "M5 x 10 (DOLD slot to confirm)",
+     "qty": 3,
+     "standard": "ISO 4762",
+     "class": "named"
+    },
+    {
+     "joint": "sensor in bracket",
+     "part": "M12 x 1 nuts (supplied with the sensor)",
+     "size": "M12 x 1",
+     "qty": 6,
+     "standard": "supplier",
+     "class": "named"
+    },
+    {
+     "joint": "rod to adapter plate",
+     "part": "ISO 4762 screw into the M5 rod end tap (LFT-007)",
+     "size": "M5 x 20",
+     "qty": 1,
+     "standard": "ISO 4762",
+     "class": "named"
+    },
+    {
+     "joint": "corner bracket to rod",
+     "part": "ISO 7380 screw + short M4 T-nut (LFT-007)",
+     "size": "M4 x 8",
+     "qty": 2,
+     "standard": "ISO 7380",
+     "class": "named"
+    },
+    {
+     "joint": "corner bracket to plate",
+     "part": "ISO 4762 screw (into tapped plate)",
+     "size": "M4 x 10",
+     "qty": 1,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "flag to rod",
+     "part": "ISO 7380 screw + short M4 T-nut",
+     "size": "M4 x 8",
+     "qty": 2,
+     "standard": "ISO 7380",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "lift_sensor_set",
+     "step": "design_intent/lift_sensor_set.step",
+     "stl": "design_intent/lift_sensor_set.stl",
+     "solids": [
+      "LFT-001_IME12_1_envelope",
+      "LFT-003_BEF-WN-M12_1",
+      "LFT-001_IME12_2_envelope",
+      "LFT-003_BEF-WN-M12_2",
+      "LFT-001_IME12_3_envelope",
+      "LFT-003_BEF-WN-M12_3",
+      "LFT-004_rod_L430",
+      "LFT-005_corner_bracket",
+      "LFT-006_flag_SS400"
+     ],
+     "step_bytes": 157877,
+     "stl_bytes": 43684,
+     "reimport_valid": true,
+     "mass_kg": 0.652
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/lift_sensor_set.py",
+   "next_step": "Confirm the rear T-slot of the DOLD profile and the BEF-WN-M12 outline (issue #23); M-09.",
+   "owner": "fridayali",
+   "mass_note": "rod mass from the solid 20 x 20 envelope (a slotted 5-series profile is lighter, about 0.4 of it)"
+  },
+  {
+   "letter": "k",
+   "item": "battery_tray",
+   "bom": "MEC-007 (with PWR-027 restraint)",
+   "status": "design intent",
+   "existing_cad": null,
+   "method": "laser-cut and bent 5754 aluminium trays",
+   "thickness_mm": 3.0,
+   "mass_kg": 1.479,
+   "mass_basis": "per set as exported, volume x density",
+   "placement": [
+    {
+     "name": "in_place",
+     "xyz": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rpy": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "placement_note": "parts exported in base_footprint; trays left x -0.272..-0.136 y 0.097..0.261; right x -0.272..-0.136 y -0.261..-0.097",
+   "configuration": "two side pockets of the rear section (A1), arrangement 4 across (y), 130 along x",
+   "adjustment": "strap tension; trays lift out vertically with the cover off",
+   "fasteners": [
+    {
+     "joint": "tray to base sheet",
+     "part": "ISO 4762 screw + ISO 7089 washer + rivet nut",
+     "size": "M6 x 12",
+     "qty": 8,
+     "standard": "ISO 4762",
+     "class": "proposed"
+    },
+    {
+     "joint": "cell strap",
+     "part": "strap with buckle",
+     "size": "20 mm",
+     "qty": 2,
+     "standard": "proposed",
+     "class": "proposed"
+    }
+   ],
+   "files": [
+    {
+     "variant": "battery_tray",
+     "step": "design_intent/battery_tray.step",
+     "stl": "design_intent/battery_tray.stl",
+     "solids": [
+      "MEC-007_pocket_tray_left",
+      "PWR-027_strap_left",
+      "MEC-007_pocket_tray_right",
+      "PWR-027_strap_right"
+     ],
+     "step_bytes": 136305,
+     "stl_bytes": 56884,
+     "reimport_valid": true,
+     "mass_kg": 1.479
+    }
+   ],
+   "source_script": "scripts/roadmap_model/design_intent/battery_tray.py",
+   "next_step": "Hardware owner: BMS and busbar layout with real parts; CAD owner: MEC-007 pocket trays and the side-panel flange notches (GI-025).",
+   "owner": "fridayali"
+  }
+ ]
+}

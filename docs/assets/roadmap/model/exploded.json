@@ -18,13 +18,13 @@
   {
    "n": 3,
    "title": "Power and safety",
-   "text": "The battery cell-group envelope on the rear deck behind the centre bracket (provisional), drawn as eight LF105 cell boxes inside the envelope; the BMS, power distribution board, fuse and wiring go behind and beside it and are not drawn. The base E-stop (robot left) and the RESET button (robot right) sit in the front-panel holes of the release 001 buttons (P-03 rev20.0 item 24), drawn as placeholders from datasheet dimensions. The safety relay set and the charging receiver have no position in the 2.0 documentation and are listed only.",
+   "text": "Power and safety in the rear section (owner correction A1, 2 Nov 2026): the TZBOT WCM-500-24 receiver prepared at the rear panel on the centre line (installed later) with its 20 mm metal-free margin and the base-sheet cut-out, 4 + 4 EVE LF105 cells upright in two removable side pocket trays joined by the keyed connector PWR-018 on the series link across the centre (A9), and the power electronics on the MEC-006 plate above the receiver. The base E-stop (robot left) and the RESET button (robot right) on the front panel.",
    "frame": "base"
   },
   {
    "n": 4,
    "title": "Compute and base controller",
-   "text": "The electronics bracket with the Jetson Orin NX on its J401 carrier, the NUCLEO-H723ZG base controller on its plate and the IMU board.",
+   "text": "Front electronics bay, one layout (owner correction A2, 2 Nov 2026): the MEC-005 plate on the base sheet with a second tier, the Jetson Orin NX on its J401 carrier, the NUCLEO-H723ZG, the CAN and I/O modules, the converters, FB-C and the PNOZ s3 on a DIN carrier; the IMU board stays on the electronics bracket at imu_link.",
    "frame": "base"
   },
   {
@@ -42,7 +42,7 @@
   {
    "n": 7,
    "title": "Lift column and adapter plate",
-   "text": "The lift base plate at position bp000, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the 10 mm adapter plate on the column top. On the rear face of the static column profile, close to its upper edge: the second E-stop. On its left side face: the three lift stop sensors on their brackets, and the flag rod with its corner bracket and steel flag hanging from the adapter plate. Placeholders until work package M-09.",
+   "text": "The lift base plate on the centre-frame arch, the DOLD Hexalift V4 column (drawn as a primitive; supplier CAD pending) and the one-piece 10 mm adapter plate on the column top (425 x 100 mm with a 65 mm rear extension, A6) with the second E-stop on it behind the post, button up (owner correction A5, 2 Nov 2026). On the rear face of the static profile: the three lift stop sensors; the flag rod hangs from the plate extension (A6).",
    "frame": [
     "lift_base_plate",
     "lift_column",
@@ -55,13 +55,19 @@
   {
    "n": 8,
    "title": "Arm profile and arms",
-   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket (lens 42 mm ahead of the shoulder, 30 degrees down). On the front of the profile, bottom up: the head light and the Getac ZX80 tablet (drawn landscape; rotatable mount with a portrait second position), placeholders until work package M-09.",
+   "text": "The HFS6-60120 arm profile on the adapter plate, the two OpenArm 2.0 arms on their mounts and the head camera on its bracket (lens 57 mm ahead of the shoulder, 30 degrees down; A4). On the front of the profile, bottom up: the head light and the Getac ZX80 tablet in portrait (A3), the light top edge 10 mm below the Getac.",
    "frame": [
     "arm_profile",
     "openarm",
     "head_camera_bracket",
     "head_camera"
    ]
+  },
+  {
+   "n": 9,
+   "title": "Harness",
+   "text": "Every cable of the harness on its routed path, coloured by domain, with the P-clips, grommets, CAN terminations, the upper-body service loop and the drawn fasteners. Proposed by the roadmap model; cable_list.csv gives each route.",
+   "frame": "base"
   }
  ],
  "components": {
@@ -795,6 +801,1201 @@
      0.92
     ]
    }
+  },
+  "bay_can1": {
+   "stage": 4,
+   "offsets": {
+    "bay_can1": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can1": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_can2": {
+   "stage": 4,
+   "offsets": {
+    "bay_can2": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can2": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_can3": {
+   "stage": 4,
+   "offsets": {
+    "bay_can3": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_can3": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_iso1212": {
+   "stage": 4,
+   "offsets": {
+    "bay_iso1212": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_iso1212": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_tpl7407": {
+   "stage": 4,
+   "offsets": {
+    "bay_tpl7407": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_tpl7407": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_ina228": {
+   "stage": 4,
+   "offsets": {
+    "bay_ina228": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_ina228": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_rsd60": {
+   "stage": 4,
+   "offsets": {
+    "bay_rsd60": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_rsd60": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_rsd100": {
+   "stage": 4,
+   "offsets": {
+    "bay_rsd100": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_rsd100": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_ddr240": {
+   "stage": 4,
+   "offsets": {
+    "bay_ddr240": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_ddr240": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_pwr032": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr032": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr032": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_usbpd": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbpd": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbpd": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_pwr009": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr009": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr009": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_pwr029": {
+   "stage": 4,
+   "offsets": {
+    "bay_pwr029": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_pwr029": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_fbc": {
+   "stage": 4,
+   "offsets": {
+    "bay_fbc": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_fbc": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_din": {
+   "stage": 4,
+   "offsets": {
+    "bay_din_pnoz": [
+     0,
+     0,
+     0.32
+    ],
+    "bay_din_tb": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_din_pnoz": [
+     0,
+     0,
+     0.16
+    ],
+    "bay_din_tb": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_usbhub": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbhub": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbhub": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_usbcan": {
+   "stage": 4,
+   "offsets": {
+    "bay_usbcan_1": [
+     0,
+     0,
+     0.32
+    ],
+    "bay_usbcan_2": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_usbcan_1": [
+     0,
+     0,
+     0.16
+    ],
+    "bay_usbcan_2": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "bay_lidar_uart": {
+   "stage": 4,
+   "offsets": {
+    "bay_lidar_uart": [
+     0,
+     0,
+     0.32
+    ]
+   },
+   "open": {
+    "bay_lidar_uart": [
+     0,
+     0,
+     0.16
+    ]
+   }
+  },
+  "rz_fba": {
+   "stage": 3,
+   "offsets": {
+    "rz_fba": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_fba": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_pwr017": {
+   "stage": 3,
+   "offsets": {
+    "rz_pwr017_1": [
+     -0.25,
+     0,
+     0.3
+    ],
+    "rz_pwr017_2": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_pwr017_1": [
+     -0.12,
+     0,
+     0.14
+    ],
+    "rz_pwr017_2": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_f0": {
+   "stage": 3,
+   "offsets": {
+    "rz_f0": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_f0": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_k1k2": {
+   "stage": 3,
+   "offsets": {
+    "rz_k1k2_1": [
+     -0.25,
+     0,
+     0.3
+    ],
+    "rz_k1k2_2": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_k1k2_1": [
+     -0.12,
+     0,
+     0.14
+    ],
+    "rz_k1k2_2": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_pre": {
+   "stage": 3,
+   "offsets": {
+    "rz_pre": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_pre": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_kchg": {
+   "stage": 3,
+   "offsets": {
+    "rz_kchg": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_kchg": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_fchg": {
+   "stage": 3,
+   "offsets": {
+    "rz_fchg": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_fchg": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_brake": {
+   "stage": 3,
+   "offsets": {
+    "rz_brake": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_brake": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
+  "bay_plate": {
+   "stage": 4,
+   "offsets": {
+    "bay_plate": [
+     0,
+     0,
+     0.28
+    ]
+   },
+   "open": {
+    "bay_plate": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_disc": {
+   "stage": 3,
+   "offsets": {
+    "rz_disc": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "rz_disc": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "rz_sb50": {
+   "stage": 3,
+   "offsets": {
+    "rz_sb50": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "rz_sb50": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "tz_receiver": {
+   "stage": 3,
+   "offsets": {
+    "tz_receiver": [
+     0,
+     0,
+     -0.25
+    ]
+   },
+   "open": {
+    "tz_receiver": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "fan": {
+   "stage": 4,
+   "offsets": {
+    "fan": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "fan": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "feedthru": {
+   "stage": 4,
+   "offsets": {
+    "feedthru_1": [
+     0,
+     0,
+     0.2
+    ],
+    "feedthru_2": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "feedthru_1": [
+     0,
+     0,
+     0.12
+    ],
+    "feedthru_2": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "lift_node": {
+   "stage": 7,
+   "offsets": {
+    "lift_node": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "lift_node": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "shims": {
+   "stage": 3,
+   "offsets": {
+    "shims_1": [
+     0,
+     0,
+     0.2
+    ],
+    "shims_2": [
+     0,
+     0,
+     0.2
+    ],
+    "shims_3": [
+     0,
+     0,
+     0.2
+    ],
+    "shims_4": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "shims_1": [
+     0,
+     0,
+     0.12
+    ],
+    "shims_2": [
+     0,
+     0,
+     0.12
+    ],
+    "shims_3": [
+     0,
+     0,
+     0.12
+    ],
+    "shims_4": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "us_locknut": {
+   "stage": 3,
+   "offsets": {
+    "us_locknut_1": [
+     0,
+     0,
+     0.2
+    ],
+    "us_locknut_2": [
+     0,
+     0,
+     0.2
+    ],
+    "us_locknut_3": [
+     0,
+     0,
+     0.2
+    ],
+    "us_locknut_4": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "us_locknut_1": [
+     0,
+     0,
+     0.12
+    ],
+    "us_locknut_2": [
+     0,
+     0,
+     0.12
+    ],
+    "us_locknut_3": [
+     0,
+     0,
+     0.12
+    ],
+    "us_locknut_4": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "tz_metal_free_zone": {
+   "stage": 3,
+   "offsets": {
+    "tz_metal_free_zone": [
+     0,
+     0,
+     -0.25
+    ]
+   },
+   "open": {
+    "tz_metal_free_zone": [
+     0,
+     0,
+     -0.12
+    ]
+   }
+  },
+  "base_cutout": {
+   "stage": 1,
+   "offsets": {
+    "base_cutout": [
+     0,
+     0,
+     -0.2
+    ]
+   },
+   "open": {
+    "base_cutout": [
+     0,
+     0,
+     -0.1
+    ]
+   }
+  },
+  "battery_cells": {
+   "stage": 3,
+   "offsets": {
+    "battery_cells_left": [
+     0,
+     0,
+     0.3
+    ],
+    "battery_cells_right": [
+     0,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "battery_cells_left": [
+     0,
+     0,
+     0.14
+    ],
+    "battery_cells_right": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "battery_tray": {
+   "stage": 3,
+   "offsets": {
+    "battery_tray_left": [
+     0,
+     0,
+     0.25
+    ],
+    "battery_tray_right": [
+     0,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "battery_tray_left": [
+     0,
+     0,
+     0.12
+    ],
+    "battery_tray_right": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "battery_series_link": {
+   "stage": 3,
+   "offsets": {
+    "battery_series_link": [
+     0,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "battery_series_link": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rz_batcon": {
+   "stage": 3,
+   "offsets": {
+    "rz_batcon": [
+     0,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_batcon": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "rear_plate": {
+   "stage": 3,
+   "offsets": {
+    "rear_plate": [
+     -0.25,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "rear_plate": [
+     -0.12,
+     0,
+     0.1
+    ]
+   }
+  },
+  "motor_brackets": {
+   "stage": 2,
+   "offsets": {
+    "motor_brackets_1": [
+     0,
+     0,
+     0.25
+    ],
+    "motor_brackets_2": [
+     0,
+     0,
+     0.25
+    ],
+    "motor_brackets_3": [
+     0,
+     0,
+     0.25
+    ],
+    "motor_brackets_4": [
+     0,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "motor_brackets_1": [
+     0,
+     0,
+     0.12
+    ],
+    "motor_brackets_2": [
+     0,
+     0,
+     0.12
+    ],
+    "motor_brackets_3": [
+     0,
+     0,
+     0.12
+    ],
+    "motor_brackets_4": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "rear_estop_housing": {
+   "stage": 8,
+   "offsets": {
+    "rear_estop_housing": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "rear_estop_housing": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "getac_pocket": {
+   "stage": 8,
+   "offsets": {
+    "getac_pocket": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "getac_pocket": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "harness_bat": {
+   "stage": 9,
+   "offsets": {
+    "harness_bat_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_bat_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_safe": {
+   "stage": 9,
+   "offsets": {
+    "harness_safe_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_safe_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_r24": {
+   "stage": 9,
+   "offsets": {
+    "harness_r24_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_r24_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_lv": {
+   "stage": 9,
+   "offsets": {
+    "harness_lv_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_lv_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_sig": {
+   "stage": 9,
+   "offsets": {
+    "harness_sig_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_sig_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_fittings": {
+   "stage": 9,
+   "offsets": {
+    "harness_fittings_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "harness_fittings_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "can_terms": {
+   "stage": 9,
+   "offsets": {
+    "can_term_1": [
+     0,
+     0,
+     0.45
+    ],
+    "can_term_2": [
+     0,
+     0,
+     0.45
+    ],
+    "can_term_3": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "can_term_1": [
+     0,
+     0,
+     0.2
+    ],
+    "can_term_2": [
+     0,
+     0,
+     0.2
+    ],
+    "can_term_3": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "fasteners": {
+   "stage": 9,
+   "offsets": {
+    "fasteners_base": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "fasteners_base": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "harness_upper": {
+   "stage": 8,
+   "offsets": {
+    "harness_safe_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_r24_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_r24_mov": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_sig_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_sig_mov": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_fittings_col": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "harness_fittings_mov": [
+     0,
+     -0.25,
+     0.1
+    ],
+    "service_loop": [
+     0,
+     -0.25,
+     0.1
+    ]
+   },
+   "open": {
+    "harness_safe_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_r24_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_r24_mov": [
+     0,
+     0,
+     0
+    ],
+    "harness_sig_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_sig_mov": [
+     0,
+     0,
+     0
+    ],
+    "harness_fittings_col": [
+     0,
+     0,
+     0
+    ],
+    "harness_fittings_mov": [
+     0,
+     0,
+     0
+    ],
+    "service_loop": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "fasteners_upper": {
+   "stage": 8,
+   "offsets": {
+    "fasteners_col": [
+     0,
+     0,
+     0.1
+    ],
+    "fasteners_mov": [
+     0,
+     0,
+     0.1
+    ]
+   },
+   "open": {
+    "fasteners_col": [
+     0,
+     0,
+     0
+    ],
+    "fasteners_mov": [
+     0,
+     0,
+     0
+    ]
+   }
   }
  },
  "labels": {
@@ -1188,5 +2389,62 @@
     "caption": "OpenAMRobot 2.0 roadmap model. Not an assembly instruction"
    }
   ]
- }
+ },
+ "generated": [
+  "base_cutout",
+  "battery_cells",
+  "battery_series_link",
+  "battery_tray",
+  "bay_can1",
+  "bay_can2",
+  "bay_can3",
+  "bay_ddr240",
+  "bay_din",
+  "bay_fbc",
+  "bay_ina228",
+  "bay_iso1212",
+  "bay_lidar_uart",
+  "bay_plate",
+  "bay_pwr009",
+  "bay_pwr029",
+  "bay_pwr032",
+  "bay_rsd100",
+  "bay_rsd60",
+  "bay_tpl7407",
+  "bay_usbcan",
+  "bay_usbhub",
+  "bay_usbpd",
+  "can_terms",
+  "fan",
+  "fasteners",
+  "fasteners_upper",
+  "feedthru",
+  "getac_pocket",
+  "harness_bat",
+  "harness_fittings",
+  "harness_lv",
+  "harness_r24",
+  "harness_safe",
+  "harness_sig",
+  "harness_upper",
+  "lift_node",
+  "motor_brackets",
+  "rear_estop_housing",
+  "rear_plate",
+  "rz_batcon",
+  "rz_brake",
+  "rz_disc",
+  "rz_f0",
+  "rz_fba",
+  "rz_fchg",
+  "rz_k1k2",
+  "rz_kchg",
+  "rz_pre",
+  "rz_pwr017",
+  "rz_sb50",
+  "shims",
+  "tz_metal_free_zone",
+  "tz_receiver",
+  "us_locknut"
+ ]
 }

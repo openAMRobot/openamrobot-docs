@@ -1,0 +1,81 @@
+# Section B facts of record (Drive documents and team Slack, as of 1 Nov 2026) that the model uses.
+# Units: metres, kilograms, radians unless stated. Frame: base_footprint (floor under the drive-axle midpoint,
+# x forward, y left, z up, REP 103/105). base_link = base_footprint + base_link_z.
+snapshot: "2 Nov 2026"
+window: "24 Oct to 1 Nov 2026"
+documents:
+  P-03: rev20.2 (1 Nov 2026)
+  E-01: rev1.6 (1 Nov 2026)
+  M-01: rev19.7 (1 Nov 2026)
+  P-02: rev19.2
+  BOM: Issue 7.14 (27 Oct 2026, with 1 Nov changes; 146 records, 115 onboard)
+  B-02: rev18.10 (25 Oct 2026)
+  S-01: rev18.3
+  UC1: Use Case 1 Requirements Baseline rev18.5
+  decisions: .github decisions.yaml 5ed600e (main after openAMRobot/.github#84; in_force P-03-rev20.2)
+  datums: openamr-upperbody-sw datums.yaml 2026-11-01.d (a8c304d; .c to .d adds the lift velocity and effort limits only, no geometry)
+  sensor_frames: openamr-platform-sw sensor_frames.yaml (4926f40)
+base_link_z: 0.098          # B7, datums base_link_height_above_floor
+wheel_radius_supplier: 0.100  # datums drive_wheel_radius
+wheel_compression: 0.002     # owner decision 2 Nov 2026 (B1): rubber tyres r 0.100 on the axle at 0.098; the 2 mm is intended tyre
+                             # compression under load and levels the rigid chassis (no suspension); wheel-to-floor overlap <= 2 mm is an intended contact
+track: 0.400                 # placeholder; 0.46 measured on the legacy robot
+chassis: [0.780, 0.582]
+base_sheet: {bottom: 0.052, top: 0.054}
+deck: 0.294
+cover_underside: 0.290      # deck 0.054 + 236 mm (B5)
+# lift base plate MEC-019, owner decision 2 Nov 2026 (B3): one 10 mm 6082-T6 plate on the centre-frame arch top (z 0.294), bolted from above
+# into the inner arch rivet-nut pattern (CAD MMP.04.00.00.000: 4 x M8 blind rivet nuts at x +/-0.060, y +/-0.050); column screwed from below
+lift_plate: {size: [0.330, 0.140, 0.010], x: [-0.080, 0.250], top: 0.304, arch_bolts: {x: [-0.060, 0.060], y: [-0.050, 0.050]},
+             arch_outer: {x: [-0.095, 0.095], y: [-0.150, 0.150]}, col_axis_x: {bp000: 0.060, bp050: 0.110}, col_screws: [0.190, 0.030]}
+arch: {top: 0.294, sheet: 0.002, walls_x: [-0.117, 0.117], ribs_y: [-0.077, 0.077], material: "S235JR (EN 1.0114), 2 mm"}
+column: {section: [0.240, 0.060], retracted: 0.530, stroke: 0.350, mass: 11.7}
+shoulder: {L1000: 1.000, L1175: 1.175, L1350: 1.350}
+head_lens_L1000: 1.223
+imu_z: 0.21904
+us_z: 0.0914
+lidar_scan_plane: 0.22205
+mass_cap: 120.0
+motor_pair_rating: 120.0
+speed_max: 1.5
+estop_clear_below_top: 0.180
+battery: {envelope: [0.140, 0.314, 0.210], cells: 8, cell_mass: 1.98, assembly_mass: [20.0, 23.0]}
+rear_zones:   # B5 / platform-sw #95: free zones next to the cells (x, y, z extents)
+  behind: {x: [-0.347, -0.277], y: [-0.157, 0.157], z: [0.054, 0.264]}
+  side_l: {x: [-0.277, -0.137], y: [0.157, 0.248], z: [0.054, 0.264]}
+  side_r: {x: [-0.277, -0.137], y: [-0.248, -0.157], z: [0.054, 0.264]}
+front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0.003}
+# TZBOT WCM-500-24 receiver (manual V2.5: 170 x 150 x 52 mm, about 1.5 kg). Owner correction A1 as corrected on 2 Nov 2026 (owner; to be
+# entered in P-03 and M-01; register CHARGING): wireless charging prepared in 2.0, the receiver unit is installed later (manual charging through SB50 at any time); 170 mm along the
+# robot (x) x 150 mm across (y), centred on the long axis, as close to the rear panel inner face as possible without touching the rear
+# TF-Luna, the rear MB7060s, their mounts or the rear panel flange (rear_layout.py measures them); bottom 2 mm below the base-sheet
+# underside (50 mm above the floor). No 240 x 210 mm zone (withdrawn). No transmitter is drawn.
+tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5, touch_clear: 0.001,
+                 status: "prepared, installed later", below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
+                 align: [0.020, 0.020], metal_clear: 0.020,
+                 freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
+                 signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",
+                           red: "receiver output to battery +", black: "receiver output to battery -"}}
+# rear section (A1, A9): the CAD v0.2 dimensions measured by rear_layout.py are the reference (A9, 2 Nov 2026);
+# side pockets (side-wall inner width - 150) / 2 across, minus the 20 mm metal-free margin next to the receiver
+rear_section: {rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_y: 0.288,
+               power_plate: {t: 0.003, min_above_receiver: 0.020}}
+# 8 x EVE LF105 (200 h x 130 x 38 mm, 1.98 kg) upright, 4 per side pocket, 8S (replaces the single row across the robot, B-02 rev18.10)
+cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002}
+tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (installed with the receiver), same outer size (manual V2.5); not drawn
+emc_flag_distance: 0.050      # roadmap screening value until TZBOT gives a minimum distance
+front_bay_layout: single   # owner correction A2 (2 Nov 2026): one layout, one plate on the base sheet; second tier only if one plate does not fit
+second_estop: {position: adapter_top, housing: [0.064, 0.050, 0.050], button_up: true}   # owner correction A5 (2 Nov 2026): on top of the adapter plate behind the post, centred in y, button up
+getac: {orientation: portrait, size: [0.0176, 0.1498, 0.234], lower_by: 0.040, light_gap: 0.010}   # owner correction A3 (2 Nov 2026)
+zed_ahead_of_j1a: 0.057   # owner correction A4 (2 Nov 2026), was 0.042
+# lowest points of the robot below the base sheet (full assembly STEP MMP.00.00.00.000_full_assembly, openamr-platform-hw main,
+# exact OCC bounding boxes of every solid, floor at the castor wheel bottom; base sheet at 52.0 / 54.0 mm as corrected in base_mesh_map.yaml)
+cad_lowest: {drive_tyre: -0.0020, castor_wheels: 0.0, castor_bolt_tips_m6x20: 0.0410, m5x20_bolt_tips: 0.0448, m4x16_bolt_tips: 0.0460,
+             lidar_support_m4_bolt_tips: 0.0472, nuts_and_washers: [0.0470, 0.0510], base_sheet_bottom: 0.052}
+# A6 (owner correction, 2 Nov 2026; to be entered in P-03 and M-01): lift stop sensors and flag rod at the rear of the column.
+# Inputs only; frames.lift_rear_layout() derives the sensor, flag, rod, corner-bracket and adapter-plate geometry (column frame:
+# x from the column axis, y lateral, z above the column base = lift base-plate top). Sensor and bracket outlines as LIFT-SNS-01 rev 1.
+lift_rear: {column_rear_x: -0.120, sensor_z: [0.120, 0.295, 0.470], sensor: {d: 0.012, len: 0.048}, bracket: {leg: 0.040, t: 0.004, h: 0.025, axis_from_face: 0.028},
+            flag: [0.045, 0.002, 0.020], gap: 0.002, rod_clear: 0.009, rod: {w: 0.020, len: 0.430}, corner: {leg: 0.020, t: 0.003},
+            bolt_edge: 0.012, flag_below_plate: 0.410, plate: {front_x: 0.240, width: 0.100, t: 0.010, material: "6082-T6"},
+            lift_node_z: 0.355}

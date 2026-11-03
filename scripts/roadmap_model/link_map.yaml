@@ -1,0 +1,185 @@
+# URDF link to roadmap part map (convergence phase 1, warn only).
+#
+# Goal: the roadmap becomes a renderer of the expanded combined_robot.xacro (openamr-upperbody-sw) at a pinned commit, with
+# no hand-typed dimensions in model.js. One geometry, two presentations. URDF only: physics, inertials, collisions,
+# ros2_control, MoveIt, Gazebo. Roadmap only: finishes, labels, exploded offsets, BOM classes, harness, fasteners and
+# design-intent parts; a roadmap-only part always attaches to a URDF link with an offset.
+#
+# mapped: one entry per compared item.
+#   urdf:    URDF link names (a list is compared as the union of their visuals); "link#i" selects the i-th visual
+#   roadmap: roadmap part ids as the pages build them (model.js / placement.json); "part#i" selects the i-th part group
+#   mode:    aabb  - world box of the visuals (centre = pose, extents = primitive size), tolerance 0.5 mm
+#            frame - link frame origin and orientation (OpenArm links, meshes upstream), tolerance 0.5 mm and 0.2 deg
+#   pending: an intended difference of the 2 Nov 2026 owner decisions that the combined model takes later (reason)
+# urdf_only: URDF links with a visual that the roadmap does not draw (reason).
+# roadmap_only: every roadmap part without a URDF visual, with the URDF link it attaches to (written by
+#   parity.py --sync-roadmap-only from the page scene; the offset is the part's box centre in that link's frame).
+mapped:
+  - {urdf: ["base_link#0"], mode: aabb, note: "base_chassis.stl: CAD v0.2 sheet metal and printed mounts",
+     roadmap: [front_panel, rear_panel, side_panel_left, side_panel_right, base_plate, centre_bracket, electronics_bracket,
+               support_front_left, support_front_right, support_rear_left, support_rear_right, lidar_support, lidar_spacer,
+               camera_mount, ultrasonic_mount_front_left, ultrasonic_mount_front_right, ultrasonic_mount_rear_left,
+               ultrasonic_mount_rear_right, tof_mount_front, tof_mount_rear, driver_mount, controller_plate]}
+  - {urdf: ["base_link#1"], mode: aabb, note: "base_covers.stl", roadmap: [cover, cover_flange_front, cover_flange_rear]}
+  - {urdf: ["base_link#2"], mode: aabb, note: "base_equipment.stl: component envelopes",
+     roadmap: [motor_driver, compute, base_controller, battery, estop, reset_button],
+     pending: "C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX on J401 off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position"}
+  - {urdf: [fl_caster_link], roadmap: [castor_front_left], mode: aabb}
+  - {urdf: [fr_caster_link], roadmap: [castor_front_right], mode: aabb}
+  - {urdf: [bl_caster_link], roadmap: [castor_rear_left], mode: aabb}
+  - {urdf: [br_caster_link], roadmap: [castor_rear_right], mode: aabb}
+  - {urdf: [left_wheel_link], roadmap: [hub_motor_wheel_left], mode: aabb}
+  - {urdf: [right_wheel_link], roadmap: [hub_motor_wheel_right], mode: aabb}
+  - {urdf: [lidar_link], roadmap: [lidar], mode: aabb}
+  - {urdf: [base_camera_link], roadmap: [base_camera], mode: aabb}
+  - {urdf: [imu_link], roadmap: [imu], mode: aabb}
+  - {urdf: [us_front_left], roadmap: [ultrasonic_front_left], mode: aabb}
+  - {urdf: [us_front_right], roadmap: [ultrasonic_front_right], mode: aabb}
+  - {urdf: [us_rear_left], roadmap: [ultrasonic_rear_left], mode: aabb}
+  - {urdf: [us_rear_right], roadmap: [ultrasonic_rear_right], mode: aabb}
+  - {urdf: [tof_front], roadmap: [tof_front], mode: aabb}
+  - {urdf: [tof_rear], roadmap: [tof_rear], mode: aabb}
+  - {urdf: [lift_column_base_link], roadmap: ["lift_column#0"], mode: aabb, note: "static DOLD profile"}
+  - {urdf: [lift_carriage_link], roadmap: ["lift_column#1"], mode: aabb, note: "moving inner stage and head plate"}
+  - {urdf: [adapter_plate_link], roadmap: [adapter_plate], mode: aabb,
+     pending: "A6 (owner, 2 Nov 2026): one-piece adapter plate with a 65 mm rear extension behind the column rear face (425 x 100 x 10 mm) that carries the flag rod; the combined model keeps the plate flush with the column rear face (P-03 rev20.1 item 25 D2) until the P-03 and M-01 entry"}
+  - {urdf: [arm_profile_link], roadmap: [arm_profile], mode: aabb, note: "MISUMI HFS6-60120 arm post"}
+  - {urdf: [head_camera_bracket_link], roadmap: [head_camera_bracket], mode: aabb}
+  - {urdf: [head_camera_link], roadmap: [head_camera], mode: aabb, rot: true, note: "ZED Mini at hp30",
+     pending: "A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"}
+  - {urdf: [getac_tablet_link], roadmap: [getac_tablet], mode: aabb,
+     pending: "A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower, fixed mount (combined model has the superseded landscape tablet until the P-03 entry)"}
+  - {urdf: [head_light_link], roadmap: [head_light], mode: aabb,
+     pending: "A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the superseded landscape tablet)"}
+  - {urdf: [second_estop_link], roadmap: [second_estop], mode: aabb,
+     pending: "A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry"}
+  - {urdf: [lift_stop_sensor_l1000_link, lift_stop_sensor_l1175_link, lift_stop_sensor_l1350_link],
+     roadmap: [lift_stop_sensors, lift_sensor_brackets], mode: aabb, note: "three SICK IME12 with BEF-WN-M12 brackets, one roadmap group each",
+     pending: "A6 (owner, 2 Nov 2026): sensors on the rear face of the static column, centred in y, sensing faces toward +y; the combined model keeps the side face until the P-03 and M-01 entry"}
+  - {urdf: [lift_flag_rod_link], roadmap: [flag_rod], mode: aabb,
+     pending: "A6 (owner, 2 Nov 2026): rod behind the column under the adapter-plate rear extension; the combined model keeps the side-face position until the P-03 and M-01 entry"}
+  - {urdf: [lift_flag_link], roadmap: [lift_flag], mode: aabb,
+     pending: "A6 (owner, 2 Nov 2026): flag on the rod behind the column, 2 mm off the rear-face sensors (part of the rod position)"}
+  # OpenArm 2.0 (upstream meshes): link frames at all joints 0
+  - {urdf: [openarm_left_base_link], roadmap: ["openarm_left:base"], mode: frame}
+  - {urdf: [openarm_left_link1], roadmap: ["openarm_left:link1"], mode: frame}
+  - {urdf: [openarm_left_link2], roadmap: ["openarm_left:link2"], mode: frame}
+  - {urdf: [openarm_left_link3], roadmap: ["openarm_left:link3"], mode: frame}
+  - {urdf: [openarm_left_link4], roadmap: ["openarm_left:link4"], mode: frame}
+  - {urdf: [openarm_left_link5], roadmap: ["openarm_left:link5"], mode: frame}
+  - {urdf: [openarm_left_link6], roadmap: ["openarm_left:link6"], mode: frame}
+  - {urdf: [openarm_left_ee_base_link], roadmap: ["openarm_left:link7"], mode: frame}
+  - {urdf: [openarm_left_ee_link1], roadmap: ["openarm_left:finger1"], mode: frame}
+  - {urdf: [openarm_left_ee_link2], roadmap: ["openarm_left:finger2"], mode: frame}
+  - {urdf: [openarm_right_base_link], roadmap: ["openarm_right:base"], mode: frame}
+  - {urdf: [openarm_right_link1], roadmap: ["openarm_right:link1"], mode: frame}
+  - {urdf: [openarm_right_link2], roadmap: ["openarm_right:link2"], mode: frame}
+  - {urdf: [openarm_right_link3], roadmap: ["openarm_right:link3"], mode: frame}
+  - {urdf: [openarm_right_link4], roadmap: ["openarm_right:link4"], mode: frame}
+  - {urdf: [openarm_right_link5], roadmap: ["openarm_right:link5"], mode: frame}
+  - {urdf: [openarm_right_link6], roadmap: ["openarm_right:link6"], mode: frame}
+  - {urdf: [openarm_right_ee_base_link], roadmap: ["openarm_right:link7"], mode: frame}
+  - {urdf: [openarm_right_ee_link1], roadmap: ["openarm_right:finger1"], mode: frame}
+  - {urdf: [openarm_right_ee_link2], roadmap: ["openarm_right:finger2"], mode: frame}
+
+urdf_only:
+  camera_link: "legacy 0.04 x 0.08 x 0.04 box at the PLATFORM-PIN 131e500 (removed on platform-sw main by #106); the 2.0 base camera is base_camera_link"
+  left_wrist_camera_link: "drawn on robot.html as a page fitting, not a registry part (conflicts: wrist cameras)"
+  right_wrist_camera_link: "drawn on robot.html as a page fitting, not a registry part (conflicts: wrist cameras)"
+
+# pending roadmap-only parts of the owner decisions (listed in the parity report with their reason)
+pending_roadmap_only:
+  lift_base_plate: "B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)"
+  tz_receiver: "A1 (owner, 2 Nov 2026): TZBOT WCM-500-24 receiver prepared at the rear panel on the centre line, installed later (wireless charging prepared in 2.0); not in the base URDF"
+  rear_estop_housing: "A5 (owner, 2 Nov 2026): housing of the second E-stop on the adapter plate, button up"
+  tz_metal_free_zone: "A1: 20 mm metal-free margin around the prepared receiver (keep-out ghost)"
+  battery_cells: "A1: 8 x LF105 in the two side pockets (the base URDF battery is the single row)"
+  battery_tray: "A1: two pocket trays"
+  battery_series_link: "A1: series link across the centre"
+  base_cutout: "A1: base-sheet cut-out prepared for the receiver at the rear (ghost; base_chassis.stl has the CAD v0.2 sheet)"
+
+roadmap_only:
+  base_cutout: {attach: base_link, offset_m: [-0.2745, 0, -0.045]}
+  battery_cells_left: {attach: base_link, offset_m: [-0.204, 0.179, 0.061]}
+  battery_cells_right: {attach: base_link, offset_m: [-0.204, -0.179, 0.061]}
+  battery_series_link: {attach: base_link, offset_m: [-0.164, 0, 0.1559]}
+  battery_tray_left: {attach: base_link, offset_m: [-0.204, 0.179, 0.059]}
+  battery_tray_right: {attach: base_link, offset_m: [-0.204, -0.179, 0.059]}
+  bay_can1: {attach: base_link, offset_m: [0.121, -0.078, 0.0283]}
+  bay_can2: {attach: base_link, offset_m: [0.3077, -0.1344, 0.0228]}
+  bay_can3: {attach: base_link, offset_m: [0.2205, -0.063, 0.0338]}
+  bay_ddr240: {attach: base_link, offset_m: [0.19, 0.093, 0.1077]}
+  bay_din_pnoz: {attach: base_link, offset_m: [0.2002, 0.1487, 0.1077]}
+  bay_din_tb: {attach: base_link, offset_m: [0.2706, -0.1393, 0.039]}
+  bay_fbc: {attach: base_link, offset_m: [0.182, -0.0975, 0.0688]}
+  bay_ina228: {attach: base_link, offset_m: [0.1477, 0.04, -0.0313]}
+  bay_iso1212: {attach: base_link, offset_m: [0.137, 0.0175, 0.0238]}
+  bay_lidar_uart: {attach: base_link, offset_m: [0.245, -0.103, 0.0278]}
+  bay_plate: {attach: base_link, offset_m: [0.2175, 0, 0.06]}
+  bay_pwr009: {attach: base_link, offset_m: [0.305, -0.133, -0.0277]}
+  bay_pwr029: {attach: base_link, offset_m: [0.12, 0.072, -0.0152]}
+  bay_pwr032: {attach: base_link, offset_m: [0.1175, 0.047, -0.0352]}
+  bay_rsd100: {attach: base_link, offset_m: [0.1985, -0.144, 0.0972]}
+  bay_rsd60: {attach: base_link, offset_m: [0.305, 0.1335, 0.0197]}
+  bay_tpl7407: {attach: base_link, offset_m: [0.2005, 0.021, 0.0238]}
+  bay_usbcan_1: {attach: base_link, offset_m: [0.135, -0.0255, 0.0253]}
+  bay_usbcan_2: {attach: base_link, offset_m: [0.2, -0.0255, 0.0253]}
+  bay_usbhub: {attach: base_link, offset_m: [0.165, -0.0555, 0.0852]}
+  bay_usbpd: {attach: base_link, offset_m: [0.3, 0.1045, -0.0252]}
+  can_term_1: {attach: base_link, offset_m: [-0.0693, -0.0018, 0.0734]}
+  can_term_2: {attach: base_link, offset_m: [0.2117, -0.128, -0.013]}
+  can_term_3: {attach: base_link, offset_m: [0.3077, -0.1344, 0.033]}
+  fan: {attach: base_link, offset_m: [0.18, 0, 0.1755]}
+  fasteners_base: {attach: base_link, offset_m: [0.1535, 0, 0.0865]}
+  fasteners_col: {attach: lift_column_base_link, offset_m: [-0.122, -0.02, 0.287]}
+  fasteners_mov: {attach: lift_carriage_link, offset_m: [0.1658, 0, 0.1285]}
+  feedthru_1: {attach: base_link, offset_m: [0.2, 0.272, 0.102]}
+  feedthru_2: {attach: base_link, offset_m: [0.245, 0.272, 0.102]}
+  getac_pocket: {attach: lift_carriage_link, offset_m: [0.2553, 0, 0.1927]}
+  harness_bat_base: {attach: base_link, offset_m: [-0.0227, 0, 0.0835]}
+  harness_fittings_base: {attach: base_link, offset_m: [0.0375, 0, 0.15]}
+  harness_fittings_col: {attach: lift_column_base_link, offset_m: [-0.141, -0.0375, 0.261]}
+  harness_fittings_mov: {attach: lift_carriage_link, offset_m: [0.0675, -0.0035, 0.166]}
+  harness_lv_base: {attach: base_link, offset_m: [0.2585, 0, 0.0808]}
+  harness_r24_base: {attach: base_link, offset_m: [0.086, -0.0001, 0.0931]}
+  harness_r24_col: {attach: lift_column_base_link, offset_m: [-0.161, -0.0475, 0.2401]}
+  harness_r24_mov: {attach: lift_carriage_link, offset_m: [0.0502, 0.0165, -0.0792]}
+  harness_safe_base: {attach: base_link, offset_m: [-0.0771, 0.0122, 0.1243]}
+  harness_safe_col: {attach: lift_column_base_link, offset_m: [-0.1244, -0.0252, 0.0093]}
+  harness_sig_base: {attach: base_link, offset_m: [0.0058, -0.0001, 0.0831]}
+  harness_sig_col: {attach: lift_column_base_link, offset_m: [-0.1594, -0.0256, 0.2434]}
+  harness_sig_mov: {attach: lift_carriage_link, offset_m: [0.0276, -0.0014, 0.0429]}
+  lift_base_plate: {attach: base_link, offset_m: [0.085, 0, 0.201]}
+  lift_node: {attach: lift_column_base_link, offset_m: [-0.1325, 0, 0.051]}
+  motor_brackets_1: {attach: base_link, offset_m: [0, 0.1066, -0.0095]}
+  motor_brackets_2: {attach: base_link, offset_m: [0, 0.2496, -0.0095]}
+  motor_brackets_3: {attach: base_link, offset_m: [0, -0.1066, -0.0095]}
+  motor_brackets_4: {attach: base_link, offset_m: [0, -0.2496, -0.0095]}
+  rear_estop_housing: {attach: lift_carriage_link, offset_m: [0, 0, 0.042]}
+  rear_plate: {attach: base_link, offset_m: [-0.2515, 0, 0.0255]}
+  rod_corner_bracket: {attach: lift_carriage_link, offset_m: [-0.153, 0.038, -0.0115]}
+  rz_batcon: {attach: base_link, offset_m: [-0.164, 0, 0.1547]}
+  rz_brake: {attach: base_link, offset_m: [-0.311, 0.015, 0.0353]}
+  rz_disc: {attach: base_link, offset_m: [-0.3372, -0.05, 0.072]}
+  rz_f0: {attach: base_link, offset_m: [-0.1855, -0.035, 0.0552]}
+  rz_fba: {attach: base_link, offset_m: [-0.256, -0.0025, 0.0777]}
+  rz_fchg: {attach: base_link, offset_m: [-0.321, -0.062, 0.1438]}
+  rz_k1k2_1: {attach: base_link, offset_m: [-0.1795, 0.0625, 0.0658]}
+  rz_k1k2_2: {attach: base_link, offset_m: [-0.3295, 0.1395, 0.0678]}
+  rz_kchg: {attach: base_link, offset_m: [-0.3485, 0.01, 0.0428]}
+  rz_pre: {attach: base_link, offset_m: [-0.326, -0.1408, 0.0873]}
+  rz_pwr017_1: {attach: base_link, offset_m: [-0.346, 0.045, 0.1078]}
+  rz_pwr017_2: {attach: base_link, offset_m: [-0.326, -0.1458, 0.0098]}
+  rz_sb50: {attach: base_link, offset_m: [-0.35, 0.06, 0.052]}
+  service_loop: {attach: lift_column_base_link, offset_m: [-0.1325, -0.045, 0.3764]}
+  shims_1: {attach: base_link, offset_m: [0.2751, 0.215, -0.0465]}
+  shims_2: {attach: base_link, offset_m: [0.2751, -0.215, -0.0465]}
+  shims_3: {attach: base_link, offset_m: [-0.275, 0.215, -0.0465]}
+  shims_4: {attach: base_link, offset_m: [-0.275, -0.215, -0.0465]}
+  slot_cover_strips: {attach: lift_carriage_link, offset_m: [0.21, 0, 0.29]}
+  tz_metal_free_zone: {attach: base_link, offset_m: [-0.284, 0, -0.022]}
+  tz_receiver: {attach: base_link, offset_m: [-0.284, 0, -0.022]}
+  us_locknut_1: {attach: base_link, offset_m: [0.3615, 0.13, -0.0066]}
+  us_locknut_2: {attach: base_link, offset_m: [0.3615, -0.13, -0.0066]}
+  us_locknut_3: {attach: base_link, offset_m: [-0.3615, 0.13, -0.0066]}
+  us_locknut_4: {attach: base_link, offset_m: [-0.3615, -0.13, -0.0066]}

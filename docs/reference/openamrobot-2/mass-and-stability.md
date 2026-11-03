@@ -35,7 +35,7 @@ The rerun covers:
 |---|---|
 | Lift position | Fully extended, shoulder 1350 mm at the OpenArm arm mount point; retracted, shoulder 1000 mm |
 | Base-plate position | Both column positions, centre (`bp000`) and +50 mm (`bp050`) |
-| Upper-body geometry | Lift column 530 to 880 mm on the 304 mm base-plate top face, column axis 330 mm behind the chassis front edge (x = +0.060 m from `base_link` at `bp000`, +0.110 m at `bp050`, P-03 revision 19.0), arm mount point 180 mm ahead of the column axis, head camera 42 mm ahead of and 223 mm above the arm mount point (P-03 revision 20.0, 28 October 2026; was 22 mm); chest Getac ZX80 (590 g) and head light, second E-stop on the static column |
+| Upper-body geometry | Lift column 530 to 880 mm on the 304 mm base-plate top face, column axis 330 mm behind the chassis front edge (x = +0.060 m from `base_link` at `bp000`, +0.110 m at `bp050`, P-03 revision 19.0), arm mount point 180 mm ahead of the column axis, head camera 57 mm ahead of and 223 mm above the arm mount point (owner decision of 2 November 2026; 42 mm in P-03 revision 20.0, 22 mm before); chest Getac ZX80 (590 g, portrait, fixed mount) and head light, second E-stop on top of the moving adapter plate (register SAFETY-PROCUREMENT) |
 | Height envelope | Complete robot at most 1700 mm at full lift extension |
 | Poses and loads | Travel, both arms forward with payload, one arm sideways, 150 N drawer pull at 1090 mm, braking and turning |
 

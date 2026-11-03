@@ -1,0 +1,40 @@
+joint,part,size,qty,standard,material,class,drawn
+CAN1 transceiver SN65HVD230 to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+CAN2 isolator (CAN Isolator 3 Click) to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+Isolated input module ISO1212 (PNOZ Y32) to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+Low-side driver TPL7407L to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+Actuator-bus voltage module INA228 to the MEC-005 plate,M2.5 hex standoff + ISO 7380 screw,M2.5 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+3.3 V regulator for the MB7060s to the MEC-005 plate,M2.5 hex standoff + ISO 7380 screw,M2.5 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+Compute branch TVS and EMI filter to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
+Lift base plate MEC-019 to the centre-frame arch (from above),"socket head cap screw, class 8.8",M8 x 20,4,ISO 4762,"steel 8.8, zinc flake",proposed,y
+Lift base plate MEC-019 to the centre-frame arch (from above),washer,M8,4,ISO 7089,steel 200 HV,proposed,y
+Lift base plate MEC-019 to the centre-frame arch,"existing M8 blind rivet nut, round thin, stainless, in the arch top (CAD MMP.04.00.00.000)",M8,4,BOM_specs_MMP.xlsx,stainless steel,named,y
+"DOLD column to the lift base plate (from below, first, on the bench; bp000 hole set)","countersunk thread-forming screw, flush with the plate underside",M8 x 30 (>= 20 mm engagement),4,DIN 7500,steel,named,y
+"DOLD column to the lift base plate (bp050 hole set, alternative)",same set at the bp050 holes,M8 x 30,4,DIN 7500,steel,named,n
+"HFS6-60120 post to adapter plate (from below, end-tapped)",socket head cap screw,M8 x 25,2,ISO 4762,steel 8.8,proposed,y
+Rear upright (10 mm) and stiffener to the post,T-slot nut + socket head cap screw,M6 x 16,6,MISUMI HNTT6 / ISO 4762,steel,proposed,y
+OpenArm J1_A base to the post side face (1 mm spacer),T-slot nut + socket head cap screw,M6 x 20,8,MISUMI HNTT6 / ISO 4762,steel,proposed,y
+J1_A spacer,1 mm spacer plate,1 mm,2,B7,aluminium,named,y
+Gemini 336L to PETG mount MEC-009,heat-set insert,M4 x 8.1,2,brass heat-set insert,brass,named,y
+Gemini 336L to PETG mount MEC-009,socket head cap screw,M4 x 8,2,ISO 4762,A2,proposed,y
+LIFT-SNS-01 rod corner bracket,short nut,M4,2,LFT-007,steel,named,y
+LIFT-SNS-01 rod corner bracket,button head screw,M4 x 8,2,ISO 7380,steel,named,y
+LIFT-SNS-01 rod to adapter plate,socket head cap screw,M5 x 20,1,ISO 4762,steel,named,y
+LIFT-SNS-01 sensor brackets to the DOLD T-slot,bracket screw + T-nut,per BEF-WN-M12,3,LFT-007,steel,named,y
+MB7060 in the 27.5 mm panel hole,3/4 in NPS lock nut,3/4 in NPS,4,MEC-021,nylon / steel,named,y
+MEC-005 lower plate to the base sheet (rivet nuts),ISO 7380 button head screw + rivet nut,M4 x 8,6,ISO 7380,A2,proposed,y
+DIN rail to MEC-005,pan head screw,M4 x 8,2,ISO 7045,A2,proposed,y
+"RSD-60G-5, RSD-100B-24 to MEC-005",socket head cap screw + washer,M4 x 8,8,ISO 4762 / ISO 7089,A2,proposed,n
+"FB-A, FB-B, PWR-017 to MEC-006",socket head cap screw + washer,M5 x 12,10,ISO 4762 / ISO 7089,A2,proposed,n
+"K1/K2, F0 holder, BMS to the side pocket plates",socket head cap screw + washer,M5 x 12,10,ISO 4762 / ISO 7089,A2,proposed,n
+Battery tray MEC-007 to the deck,socket head cap screw + washer,M6 x 16,6,ISO 4762 / ISO 7089,steel 8.8,proposed,n
+Detachable battery side panels,quarter-turn fastener,M5,8,DIN 7500-compatible quarter-turn,steel,proposed,n
+"PETG sensor mounts (MEC-010, MEC-011) to the panels",heat-set insert + ISO 7380,M3 x 6,12,brass insert / ISO 7380,A2,proposed,n
+Second E-stop housing P2 to the arm-post rear slots (HFS6),ISO 4762 + ISO 7089 + M6 T-slot nut,M6 x 10,4,ISO 4762,steel,proposed,n
+TZBOT receiver bracket WCH-007 to the base sheet (outside the 20 mm zone),"ISO 7380 + rivet nut, stainless (non-magnetic A4)",M5 x 10,4,ISO 7380,A4,proposed,n
+Ferrite sheet on the receiver top,adhesive backing (no metal fasteners in the 20 mm zone),-,1,-,-,proposed,n
+MEC-005 upper shelf on the lower plate (second tier),hex standoff M4 x 50 + ISO 7380,M4,4,hex standoff / ISO 7380,A2,proposed,n
+DIN carrier to the centre-bracket front legs,ISO 4762 + rivet nut,M5 x 12,4,ISO 4762,A2,proposed,n
+Getac pocket and light-bar plate to the post front face,T-slot nut + ISO 4762,M6 x 12,4,ISO 4762,steel,proposed,n
+MEC-015 motor brackets to the base sheet,hex bolt + nut + washer,M8 x 20,8,ISO 4017 / ISO 4032 / ISO 7089,steel 8.8,proposed,n
+Harness P-clips,button head screw + rivet nut,M4 x 8,39,ISO 7380,A2,proposed,n

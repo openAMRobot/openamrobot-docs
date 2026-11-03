@@ -1,0 +1,58 @@
+# Parts table of the roadmap model (edit this file, then rerun build.py).
+# dims: [x, y, z] in mm as mounted by default; rot: allowed packer orientations (any|upright|flat).
+# zone: front_bay | rear_behind | rear_side_l | rear_side_r (packed by build.py, class proposed) or fixed (pos given).
+# geom: datasheet outline the dims come from; "catalogue outline, verify" means the datasheet is not in the
+# repository and the dims must be checked against it before CAD.
+# domain: BAT | SAFE | R24 | LV | SIG (layout grouping and harness colour).
+
+packed:
+  # ---------------------------------------------------------------- front electronics bay (MEC-005 plate)
+  - {id: bay_can1, name: CAN1 transceiver SN65HVD230, bom: CTL-003, part: Waveshare SN65HVD230 CAN Board, dims: [32, 21, 10], zone: front_bay, domain: SIG, mass: 0.006, geom: "catalogue outline, verify", standoff: M3}
+  - {id: bay_can2, name: CAN2 isolator (CAN Isolator 3 Click), bom: CTL-014, part: MIKROE-5785, dims: [57.15, 25.4, 10], zone: front_bay, domain: SIG, mass: 0.008, geom: "mikroBUS L size 57.15 x 25.4 mm", standoff: M3}
+  - {id: bay_can3, fallback: [rear_side_l, rear_side_r, rear_behind], name: CAN3 transceiver and termination, bom: CTL-015, part: CAN3 transceiver + 120 ohm, dims: [32, 21, 10], zone: front_bay, domain: SIG, mass: 0.006, geom: "same board class as CTL-003, proposed", standoff: M3}
+  - {id: bay_iso1212, name: Isolated input module ISO1212 (PNOZ Y32), bom: CTL-004, part: ISO1212EVM, dims: [64, 51, 12], zone: front_bay, domain: SIG, mass: 0.02, geom: "catalogue outline, verify", standoff: M3}
+  - {id: bay_tpl7407, name: Low-side driver TPL7407L, bom: CTL-018, part: TPL7407LEVM (stock risk, TPL7407LDR on SOIC-16 adapter proposed), dims: [51, 38, 12], zone: front_bay, domain: SIG, mass: 0.015, geom: "catalogue outline, verify", standoff: M3}
+  - {id: bay_ina228, name: Actuator-bus voltage module INA228, bom: PWR-016, part: Adafruit 5832, dims: [25.4, 17.8, 6], zone: front_bay, domain: SIG, mass: 0.003, geom: "catalogue outline, verify", standoff: M2.5}
+  - {id: bay_rsd60, fallback: [rear_side_l, rear_side_r, rear_behind], name: 5 V converter RSD-60G-5, bom: PWR-007, part: MEAN WELL RSD-60G-5, dims: [120, 50, 33], zone: front_bay, domain: LV, mass: 0.32, geom: "catalogue outline, verify", converter: true, standoff: M4}
+  - {id: bay_rsd100, fallback: [rear_side_l, rear_side_r, rear_behind], name: Regulated 24 V converter RSD-100B-24, bom: PWR-012, part: MEAN WELL RSD-100B-24, dims: [159, 97, 38], zone: front_bay, domain: R24, mass: 0.6, geom: "catalogue outline, verify", converter: true, standoff: M4}
+  - {id: bay_ddr240, fallback: [rear_side_l, rear_side_r, rear_behind], name: SAFE 24 V converter DDR-240B-24 (DIN rail), bom: PWR-030, part: MEAN WELL DDR-240B-24, dims: [63, 125.2, 100], zone: front_bay, domain: SAFE, mass: 0.75, geom: "catalogue outline, verify", converter: true, din: true}
+  - {id: bay_pwr032, fallback: [rear_side_l, rear_side_r, rear_behind], name: 3.3 V regulator for the MB7060s, bom: PWR-032, part: 3.3 V regulator >= 300 mA, dims: [25, 20, 10], zone: front_bay, domain: LV, mass: 0.005, geom: "proposed size", standoff: M2.5}
+  - {id: bay_usbpd, name: USB-PD module (Getac charging), bom: PWR-008, part: 24 V in, USB-C PD 15 to 30 W, dims: [50, 30, 15], zone: front_bay, domain: R24, mass: 0.03, geom: "proposed size", standoff: M3}
+  - {id: bay_pwr009, name: Compute branch TVS and EMI filter, bom: PWR-009, part: TVS and EMI network, dims: [60, 40, 25], zone: front_bay, domain: BAT, mass: 0.06, geom: "proposed size", standoff: M3}
+  - {id: bay_pwr029, name: Compute inrush limiter, bom: PWR-029, part: J401 input protection, dims: [50, 30, 20], zone: front_bay, domain: BAT, mass: 0.04, geom: "proposed size", standoff: M3}
+  - {id: bay_fbc, fallback: [rear_side_l, rear_side_r, rear_behind], name: Regulated 24 V fuse block FB-C, bom: FB-C, part: Blue Sea 5046 (F-SAFE, F-PANEL, F-HUB, F-FAN, spares), dims: [102, 74, 41], zone: front_bay, domain: R24, mass: 0.12, geom: "catalogue outline, verify", standoff: M4}
+  - {id: bay_din, fallback: [rear_side_l, rear_side_r, rear_behind], name: Short DIN rail with PNOZ s3 and terminal blocks, bom: SAF-002, part: Pilz PNOZ s3 750103 + DIN terminal blocks (proposed), dims: [100, 98, 121], zone: front_bay, domain: SIG, mass: 0.35, geom: "PNOZ s3 22.5 x 98 x 121 catalogue outline, verify; rail 35 mm", din: true}
+  - {id: bay_usbhub, fallback: [rear_side_l, rear_side_r, rear_behind], name: USB 3 powered hub, bom: CMP-009, part: StarTech ST7300USBME, dims: [135, 80, 25], zone: front_bay, domain: SIG, mass: 0.35, geom: "catalogue outline, verify", standoff: M3}
+  - {id: bay_usbcan, fallback: [rear_side_l, rear_side_r, rear_behind], name: Arm USB-to-CAN-FD adapters, bom: ARM-006, qty: 2, part: supported adapter revision, dims: [60, 25, 15], zone: front_bay, domain: SIG, mass: 0.03, geom: "proposed size"}
+  - {id: bay_lidar_uart, name: LiDAR USB-to-UART adapter, bom: NAV-003, part: USB-to-UART adapter + 5 V cable, dims: [40, 20, 10], zone: front_bay, domain: SIG, mass: 0.01, geom: "proposed size"}
+  # ---------------------------------------------------------------- rear power zone (B5 accepted layout)
+  - {id: rz_fba, name: BAT bus fuse block FB-A, bom: FB-A, part: Blue Sea SafetyHub 150 (7748), dims: [70, 165, 100], zone: rear_plate, domain: BAT, mass: 0.45, geom: "catalogue outline, verify"}
+  - {id: rz_fbb, name: SAFE bus fuse block FB-B (F-TRAC, F-ARM-L, F-ARM-R, F-LIFT), bom: FB-B, part: Blue Sea SafetyHub 150 (7748), dims: [70, 165, 100], zone: rear_plate, domain: SAFE, mass: 0.45, geom: "catalogue outline, verify"}
+  - {id: rz_pwr017, fallback: [rear_corner_l, rear_corner_r], name: Positive and negative distribution blocks, bom: PWR-017, qty: 2, part: touch-protected DC distribution blocks, dims: [40, 100, 40], zone: rear_plate, domain: BAT, mass: 0.2, geom: "proposed size"}
+  - {id: rz_f0, name: Main fuse F0 110 A Class T and holder, bom: PWR-003, part: Blue Sea 5112 + 5007100, dims: [100, 61, 55], zone: rear_plate, domain: BAT, mass: 0.3, geom: "catalogue outline, verify"}
+  - {id: rz_k1k2, fallback: [rear_corner_l, rear_corner_r], name: K1 and K2 contactors (GX11CAC recorded), bom: SAF-003, qty: 2, part: Gigavac GX11CAC, dims: [73, 45, 76], zone: rear_plate, domain: SAFE, mass: 0.45, geom: "catalogue outline, verify"}
+  - {id: rz_pre, fallback: [rear_corner_l, rear_corner_r], name: Precharge kit Kpre + resistor + 1 A fuse (across K2), bom: SAF-004, part: Kpre relay, PWR-014 resistor, PWR-015 fuse, dims: [80, 50, 35], zone: rear_plate, domain: SAFE, mass: 0.12, geom: "proposed size"}
+  - {id: rz_batcon, fallback: [rear_corner_l, rear_corner_r], name: Battery main mating connector, bom: PWR-018, part: keyed touch-protected DC connector, dims: [40, 60, 30], zone: rear_plate, domain: BAT, mass: 0.08, geom: "proposed size"}
+  - {id: rz_bms, name: Smart BMS Daly M-series 8S 150 A, bom: PWR-002, part: order code not yet fixed, dims: [110, 40, 200], zone: rear_plate, domain: BAT, mass: 0.9, geom: "catalogue outline, verify (order code open)"}
+  - {id: rz_kchg, fallback: [rear_corner_l, rear_corner_r], name: Charge relay KCHG, bom: WCH-004, part: 24 V coil 1NO + 1NC, dims: [35, 30, 30], zone: rear_plate, domain: BAT, mass: 0.05, geom: "proposed size"}
+  - {id: rz_fchg, fallback: [rear_corner_l, rear_corner_r], name: Charge branch fuse F-CHG 30 A MIDI, bom: PWR-022, part: MIDI fuse + holder, dims: [66, 30, 32], zone: rear_plate, domain: BAT, mass: 0.05, geom: "catalogue outline, verify"}
+  - {id: rz_brake, fallback: [rear_corner_l, rear_corner_r], name: Brake coil suppression, bom: SAF-007, part: matched transient control, dims: [30, 20, 15], zone: rear_plate, domain: SAFE, mass: 0.01, geom: "proposed size"}
+
+fixed:
+  # explicit positions: pos = box centre (m, base_footprint); dims mm
+  - {id: rz_disc, name: Lockable battery disconnect BS-6004B, bom: PWR-004, part: Blue Sea BS-6004B, dims: [70, 70, 80], pos: [-0.3372, -0.050, 0.170], cls: provisional, domain: BAT, mass: 0.35, geom: "provisional size (datasheet not in repo)", pos_src: "proposed: rear panel above the plate, left of the rear TF-Luna, handle through the rear panel (A1 rear layout)"}
+  - {id: rz_sb50, name: SB50 charge connector, bom: PWR-019, part: Anderson SB50 panel mount, dims: [40, 50, 38], pos: [-0.350, 0.060, 0.150], cls: proposed, domain: BAT, mass: 0.06, geom: "catalogue outline, verify", pos_src: "proposed: rear panel above the plate, reachable for manual charging (Daly 28.4 V / 20 A charger at any time)"}
+  - {id: tz_receiver, name: "TZBOT receiver WCM-500-24 (prepared, installed later)", bom: WCH-002, part: WCM-500-24 receiver + WCH-007 bracket, dims: [170, 150, 52], pos: [-0.2525, 0.0, 0.076], cls: provisional, domain: BAT, mass: 0.0, geom: "TZBOT WCM-500-24 manual V2.5: 170 x 150 x 52 mm, about 1.5 kg", pos_src: "owner correction of 2 Nov 2026 (owner): 170 mm along x, 150 mm across y, centred, as close to the rear panel inner face as possible without touching the rear TF-Luna, MB7060s, mounts or the rear panel flange (rear_layout.py), bottom 50 mm above the floor; wireless charging prepared in 2.0, receiver installed later (decisions.yaml CHARGING)"}
+  - {id: fan, name: Chassis cooling fan 24 V, bom: CMP-006, part: 24 V fan, size after thermal check (80 mm drawn), dims: [80, 80, 25], pos: [0.180, 0.0, 0.2735], cls: proposed, domain: R24, mass: 0.09, geom: "proposed 80 x 80 x 25", pos_src: "proposed: under the cover above the Jetson, exhaust through the cover"}
+  - {id: feedthru, name: USB and Ethernet service feed-throughs, bom: "", part: panel feed-throughs (proposed), qty: 2, dims: [40, 30, 30], pos: [0.200, 0.272, 0.200], cls: proposed, domain: SIG, mass: 0.04, geom: "proposed size", pos_src: "proposed: left side panel next to the bay", repeat: [[0, 0, 0], [0.045, 0, 0]]}
+  - {id: lift_node, name: Lift node CTL-017 (CAN3), bom: CTL-017, part: small MCU / CAN interface, dims: [25, 40, 60], pos: [-0.0725, 0.0, 0.355], cls: provisional, group: col, domain: SAFE, mass: 0.06, geom: "proposed size", pos_src: "not documented: drawn on the static column rear face below the L1000 stop sensor (A6), above the lift motor"}
+  - {id: shims, name: Castor height shims, bom: MEC-016, part: laser-cut 0.5 / 1 / 2 mm shim stack (1 mm drawn), qty: 4, dims: [62, 60, 1], pos: [0.27505, 0.215, 0.0515], cls: proposed, domain: MECH, mass: 0.03, geom: "castor plate footprint", pos_src: "castor positions (M.DIMS CASTER)", repeat: [[0, 0, 0], [0, -0.430, 0], [-0.55, 0, 0], [-0.55, -0.430, 0]]}
+  - {id: us_locknut, name: MB7060 3/4 in NPS lock nuts, bom: MEC-021, part: 3/4 in NPS lock nut, qty: 4, cyl: {r: 0.0175, h: 0.006, axis: x}, pos: [0.3615, 0.130, 0.0914], cls: proposed, domain: MECH, mass: 0.02, geom: "3/4 in NPS nut, 35 mm across", pos_src: "sensor_frames us_* (y, z); behind the 2 mm front panel", repeat: [[0, 0, 0], [0, -0.26, 0], [-0.7230, 0, 0], [-0.7230, -0.26, 0]]}
+  - {id: tablet_mount, name: Getac ZX80 fixed portrait mount and adapter, bom: UI-002, part: fixed portrait mount + MEC-012 adapter, dims: [12, 120, 120], pos: [0.234, 0.0, 1.080], cls: placeholder, group: mov, domain: MECH, mass: 0.4, geom: "placeholder envelope", pos_src: "datums.yaml chest_equipment_x_from_profile_front_face = 0 leaves no depth for the mount: drawn inside the profile front 12 mm, see geometry issues"}
+
+harness_domains:
+  BAT: {colour: "#c0392b", label: "Battery and BAT bus (25 / 10 / 6 mm²)"}
+  SAFE: {colour: "#e67e22", label: "SAFE bus and SAFE 24 V"}
+  R24: {colour: "#f1c40f", label: "Regulated 24 V (always on)"}
+  LV: {colour: "#27ae60", label: "5 V and 3.3 V"}
+  SIG: {colour: "#2980b9", label: "Signal, CAN, USB, safety loops"}

@@ -36,6 +36,17 @@ jobs:
       - name: Check the roadmap pages
         run: python3 scripts/check_roadmap.py
 
+      - name: Roadmap checker regression tests
+        run: python3 -m unittest discover -s scripts/tests
+
+      - name: Parity check dependencies
+        run: pip install numpy==2.1.3 pyyaml==6.0.2
+
+      # Out-of-tolerance items are warnings only (convergence phase 1, parity.py --ci exits 0 on them);
+      # a missing dependency or any execution error fails the step.
+      - name: Roadmap vs combined model parity (warn only, convergence phase 1)
+        run: cd scripts/roadmap_model && python3 parity.py --ci
+
       - name: Check generated links
         uses: lycheeverse/lychee-action@v2
         with:
