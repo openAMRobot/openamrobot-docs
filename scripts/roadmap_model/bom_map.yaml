@@ -13,7 +13,7 @@ CTL-009: {by: can_terms, mqty: 2, cls: proposed, geo: "120 ohm termination plug"
 CTL-010: {by: can_terms, mqty: 2, cls: proposed, geo: "120 ohm termination plug", pos: "CAN2 bus ends (cable_list.csv)", mass: 0.004, msrc: "estimate"}
 CTL-011: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route", mass: 0.03, msrc: "estimate"}
 CTL-012: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route (SPI4 pin map, B4)", mass: 0.01, msrc: "estimate"}
-CTL-016: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the service loop", mass: 0.08, msrc: "estimate"}
+CTL-016: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the lift energy chain", mass: 0.08, msrc: "estimate"}
 CTL-017: {by: lift_node}
 DOC-001: {by: none, cls: not drawn, reason: offboard}
 DOC-002: {by: none, cls: not drawn, reason: offboard}
@@ -33,12 +33,12 @@ ARM-005: {by: inside:openarm, cls: CAD-derived, geo: "openarm_description grippe
 ARM-006: {by: bay_usbcan}
 ARM-007: {by: none, cls: not drawn, reason: offboard}
 ARM-008: {by: none, cls: not drawn, reason: "qty 0 (withdrawn)"}
-ARM-009: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the service loop", mass: 0.05, msrc: "estimate"}
+ARM-009: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the lift energy chain", mass: 0.05, msrc: "estimate"}
 ARM-010: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route along the arms (placeholder)", mass: 0.06, msrc: "estimate"}
 ARM-011: {by: head_camera_bracket, cls: primitive, geo: "datums head_camera_bracket_*", pos: "datums.yaml (post top)", mass: 0.05, msrc: "estimate"}
 AUX-001: {by: head_light, cls: placeholder, geo: "datums head_light_size 20 x 158 x 17", pos: "datums.yaml head_light_gap_below_tablet", mass: 0.11, msrc: "datums head_light_mass (upper bound)"}
 AUX-002: {by: none, cls: not drawn, reason: "function on CTL-017, no separate part"}
-AUX-003: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the service loop", mass: 0.08, msrc: "estimate"}
+AUX-003: {by: harness, cls: proposed, geo: "cable tube", pos: "harness route via the lift energy chain", mass: 0.08, msrc: "estimate"}
 CAP-001: {by: none, cls: not drawn, reason: offboard}
 CAP-002: {by: none, cls: not drawn, reason: offboard}
 CAP-003: {by: none, cls: not drawn, reason: offboard}

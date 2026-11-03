@@ -590,12 +590,39 @@
     for (s of [-1, 1]) plane(THREE, g, .4, .05, decal, Math.PI / 2, s > 0 ? Math.PI : 0, -.08, s * (D.HW + .0015), .17);
     plane(THREE, g, .34, .043, decal, Math.PI / 2, -Math.PI / 2, D.X0 - .0015, -.05, .155);
   }
-  // Lift cable from the arm profile down the column back to the plate, for the column top at z colTop.
+  // Lift energy chain (placement.json energy_chain, harness.py): vertical U behind the column; the links are placed for the
+  // lift travel T (M.setChain). The robot page calls cableGeometry on every lift move: it moves the chain (the old free lift
+  // cable is gone, the geometry it gets back is empty).
+  M.setChain = function (THREE, T) {
+    var E = M.PLACE && M.PLACE.energy_chain;
+    if (!E) return;
+    var zc = (E.fixed_z + E.moving_z0 + T + Math.PI * E.R - E.length) / 2, a = E.fixed_z - zc, b = Math.PI * E.R;
+    (M._chains || []).forEach(function (g) {
+      g.children.forEach(function (k, i) {
+        var s = (i + .5) * E.pitch, y, z, th;
+        if (s < a) { y = E.y_fixed; z = E.fixed_z - s; th = -Math.PI / 2; }
+        else if (s < a + b) { th = Math.PI + (s - a) / E.R; y = E.R * Math.cos(th); z = zc + E.R * Math.sin(th); th += Math.PI / 2; }
+        else { y = E.y_moving; z = zc + s - a - b; th = Math.PI / 2; }
+        k.position.set(E.x, y, z);
+        k.rotation.set(th, 0, 0);
+      });
+    });
+  };
+  function chainLinks(THREE, g) {
+    var E = M.PLACE.energy_chain, m = new THREE.MeshStandardMaterial({color: 0x30363d, roughness: .7}), bx = new THREE.BoxGeometry(E.outer_w, E.pitch * .92, E.outer_h);
+    var c = new THREE.Group();
+    c.userData.id = E.part;
+    for (var i = 0; i < Math.round(E.length / E.pitch); i++) {
+      var k = new THREE.Mesh(bx, m);
+      k.castShadow = true;
+      c.add(k);
+    }
+    g.add(c);
+    return c;
+  }
   M.cableGeometry = function (THREE, colTop) {
-    var e = colTop, t = M.DIMS.PLATE_TOP, D = M.DIMS, V = THREE.Vector3;
-    return new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new V(D.MOUNT_X - D.PROFILE.X / 2 - .012, .012, e + .06),
-      new V(.03, .012, e + .03), new V(-.06, -.03, e + .02), new V(-.125, -.035, e - .06), new V(-.15, -.035, (e + t) / 2 + .05),
-      new V(-.15, -.035, t + .1), new V(-.14, -.035, t + .012)]), 48, .0055, 8, false);  // rear drop beside the second E-stop (-y)
+    M.setChain(THREE, Math.max(0, colTop - M.DIMS.PLATE_TOP - M.DIMS.COL.RETRACTED));
+    return new THREE.BufferGeometry();
   };
   function columnFittings(THREE, col, mov, mats) {
     var D = M.DIMS, e = D.COL, t = D.PLATE_TOP, x, y;
@@ -840,6 +867,8 @@
     chestItems(THREE, R, mov, mats).forEach(function (g) { add(g.userData.id, g); });
     liftSensors(THREE, R, mov, mats).forEach(function (g) { add(g.userData.id, g); });
     placementParts(THREE, R).forEach(function (g) { add(g.userData.id, g); });
+    M._chains = M.PLACE && M.PLACE.energy_chain ? (R.parts.lift_energy_chain || []).filter(function (g) { return g.parent === col; }).map(function (g) { return chainLinks(THREE, g); }) : [];
+    M.setChain(THREE, 0);
     M.setSmallParts(root, o.smallParts === undefined ? true : o.smallParts);
     if (o.fittings) R.fit = columnFittings(THREE, col, mov, mats);
     var geos = M.armGeometries(THREE);

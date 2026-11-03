@@ -1829,6 +1829,77 @@
     ]
    }
   },
+  "wheel_guards": {
+   "stage": 9,
+   "offsets": {
+    "wheel_guard_left": [
+     0,
+     0,
+     0.45
+    ],
+    "wheel_guard_right": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "wheel_guard_left": [
+     0,
+     0,
+     0.2
+    ],
+    "wheel_guard_right": [
+     0,
+     0,
+     0.2
+    ]
+   }
+  },
+  "dp_lift": {
+   "stage": 8,
+   "offsets": {
+    "dp_lift": [
+     0,
+     -0.2,
+     0.1
+    ]
+   },
+   "open": {
+    "dp_lift": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "lift_energy_chain": {
+   "stage": 8,
+   "offsets": {
+    "lift_energy_chain": [
+     0,
+     -0.2,
+     0.1
+    ],
+    "lift_energy_chain_moving": [
+     0,
+     -0.2,
+     0.1
+    ]
+   },
+   "open": {
+    "lift_energy_chain": [
+     0,
+     0,
+     0
+    ],
+    "lift_energy_chain_moving": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
   "can_terms": {
    "stage": 9,
    "offsets": {
@@ -1891,7 +1962,7 @@
      -0.25,
      0.1
     ],
-    "harness_r24_col": [
+    "harness_safe_mov": [
      0,
      -0.25,
      0.1
@@ -1921,7 +1992,7 @@
      -0.25,
      0.1
     ],
-    "service_loop": [
+    "harness_sleeve": [
      0,
      -0.25,
      0.1
@@ -1933,7 +2004,7 @@
      0,
      0
     ],
-    "harness_r24_col": [
+    "harness_safe_mov": [
      0,
      0,
      0
@@ -1963,7 +2034,7 @@
      0,
      0
     ],
-    "service_loop": [
+    "harness_sleeve": [
      0,
      0,
      0
@@ -2415,6 +2486,7 @@
   "bay_usbhub",
   "bay_usbpd",
   "can_terms",
+  "dp_lift",
   "fan",
   "fasteners",
   "fasteners_upper",
@@ -2427,6 +2499,7 @@
   "harness_safe",
   "harness_sig",
   "harness_upper",
+  "lift_energy_chain",
   "lift_node",
   "motor_brackets",
   "rear_estop_housing",
@@ -2445,6 +2518,7 @@
   "shims",
   "tz_metal_free_zone",
   "tz_receiver",
-  "us_locknut"
+  "us_locknut",
+  "wheel_guards"
  ]
 }

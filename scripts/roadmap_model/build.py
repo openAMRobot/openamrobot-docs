@@ -977,84 +977,58 @@ def main():
         mfuse = {"F-TRAC": "rz_fbb_1", "F-ARM-L": "rz_fbb_2", "F-ARM-R": "rz_fbb_3", "F-LIFT": "rz_fbb_4"}
         CAB = [(c[0], c[1] if c[1] != "rz_fbb" else mfuse.get(c[8], "rz_fbb_1"), c[2] if c[2] != "rz_fbb" else "rz_fbb_1") + tuple(c[3:]) for c in CAB]
         CAB = [c if c[0] != "CBL-P06" else c[:3] + ("K2 to the SAFE bus MIDI holders (bus bar to the other three)",) + c[4:] for c in CAB]
-    BEND25 = {}
-    cab_rows, tubes, fittings, unattached = [], {d: {"base": [], "col": [], "mov": []} for d in DOMAIN_COL}, [], []
+    # ---------------- harness: named harnesses on supported routes, tie points, lift energy chain (harness.py)
+    import harness as HN
+    if "fan" in geo:   # chassis fan under the cover: lead at its underside
+        fb_ = [HN.prim_box(p_) for p_ in geo["fan"]["prims"]]
+        flo, fhi = np.min([b_[0] for b_ in fb_], 0), np.max([b_[1] for b_ in fb_], 0)
+        TERM["fan"] = [R((flo[0] + fhi[0]) / 2), R((flo[1] + fhi[1]) / 2), R(flo[2])]
+        ID_OF_TERM["fan"] = "fan"
+    hctx = {"G": {k: {"v": np.array(v["v"]), "f": np.array(v["f"])} for k, v in G.items()}, "geo": geo, "fbd": fbd, "TERM": TERM,
+            "ID_OF_TERM": ID_OF_TERM, "CAB": CAB, "U": U, "LR": LR, "RL": RL, "fb_default": fb_default, "hide": ["battery"]}
+    hcache = HN.load_cache(os.path.join(MODEL, "harness_routes.json"), hctx, FACTS)   # routes reused when the routing inputs are unchanged
+    HR = HN.run(hctx, FACTS, cache=hcache)
+    BEND25, cab_rows, unattached = {}, [], []
+    tubes = {d: {"base": [], "col": [], "mov": []} for d in DOMAIN_COL}
+    axo = np.array([FACTS["lift_plate"]["col_axis_x"]["bp000"], 0, 0])
+    mass_pm = {"25 mm²": 0.26, "10 mm²": 0.11, "6 mm²": 0.07, "2.5 mm²": 0.035, "1.5 mm²": 0.022}
+    HNAME = {h["id"]: h["name"] for h in HN.HARNESSES}
     for cid, a, b, fn, dom, gauge, od, ca, cb, pin, bomref in CAB:
-        if a not in TERM or b not in TERM:
-            cab_rows.append({"id": cid, "from": a, "to": b, "function": fn, "domain": dom, "gauge_or_type": gauge, "od_mm": od,
-                             "connector_a": ca, "connector_b": cb, "pin_or_terminal": pin, "bom": bomref, "route": "not routed: endpoint not placed",
-                             "route_length_m": "", "length_with_margin_m": "", "min_bend_radius_mm": max(60 if gauge == "25 mm²" else 0, round(6 * od)),
-                             "mass_kg": 0, "from_part": a, "to_part": b, "from_xyz": "", "to_xyz": ""})
+        m = HR["meta"][cid]
+        secs = m["sections"]
+        L = sum(plen(s["pts"]) for s in secs if s["kind"] != "chain") + (HR["chain"]["length"] + 0.10 if any(s["kind"] == "chain" for s in secs) else 0)
+        routed = bool(secs) and m["status"] == "routed"
+        if not routed:
             unattached.append(cid)
-            continue
-        pa, pb = TERM[a], TERM[b]
-        na, nb = near(pa), near(pb)
-        local = gauge == "25 mm²" and pa[0] < -0.10 and pb[0] < -0.10
-        if local:
-            # A9: 25 mm² runs inside the rear bay go point to point (one horizontal leg at the higher terminal, then one vertical drop)
-            zt = max(pa[2], pb[2])
-            path = []
-            pts = [list(pa)] + ([[pa[0], pa[1], zt]] if pa[2] < zt - 1e-6 else []) + [[pb[0], pb[1], zt]] + ([list(pb)] if pb[2] < zt - 1e-6 else [])
-            pts = [q for i, q in enumerate(pts) if i == 0 or np.linalg.norm(np.subtract(q, pts[i - 1])) > 1e-6]
-        else:
-            path = route(N, E, na, nb)
-            pts = [pa] + [list(N[k]) for k in path] + [pb]
-        if gauge == "25 mm²":
-            # bend check: each interior corner needs R*tan(theta/2) of straight cable on both sides (R = 60 mm)
-            worst = None
-            for i in range(1, len(pts) - 1):
-                u, v = np.subtract(pts[i], pts[i - 1]), np.subtract(pts[i + 1], pts[i])
-                lu, lv = np.linalg.norm(u), np.linalg.norm(v)
-                if lu < 1e-6 or lv < 1e-6:
-                    continue
-                th = math.acos(max(-1.0, min(1.0, float(np.dot(u, v) / (lu * lv)))))
-                if th < math.radians(5):
-                    continue
-                need = 0.060 * math.tan(th / 2)
-                have = min(lu if i == 1 else lu / 2, lv if i == len(pts) - 2 else lv / 2)
-                if worst is None or have - need < worst[0]:
-                    worst = (have - need, round(math.degrees(th)), round(need * 1000, 1), round(have * 1000, 1))
-            BEND25[cid] = {"route_m": R(plen(pts), 3), "direct_m": R(float(np.linalg.norm(np.subtract(pa, pb))), 3), "local": bool(local),
-                           "bend_ok": bool(worst is None or worst[0] >= -1e-6),
-                           "worst_corner": None if worst is None else {"deg": worst[1], "need_mm": worst[2], "have_mm": worst[3]}}
-        groups = ["base" if (a not in ID_OF_TERM or not ID_OF_TERM[a].startswith(("openarm", "head_", "getac", "second", "lift_"))) else
-                  ("col" if ID_OF_TERM[a] in ("second_estop", "lift_stop_sensors", "lift_node", "lift_column") else "mov")]
-        groups += [NG[k] for k in path]
-        bt = ID_OF_TERM.get(b, b)
-        groups += ["mov" if bt in ("openarm_left", "openarm_right", "head_camera", "getac_tablet", "head_light") else
-                   ("col" if bt in ("second_estop", "lift_stop_sensors", "lift_node", "lift_column") else "base")]
-        if local:
-            groups = ["base"] * len(pts)
-        L = plen(pts)
-        # split into groups: a segment belongs to the group of its upper end (base->col segments drawn in col)
-        seg = {"base": [], "col": [], "mov": []}
-        cur, cg = [pts[0]], groups[0]
-        for i in range(1, len(pts)):
-            g = groups[i]
-            rank = {"base": 0, "col": 1, "mov": 2}
-            if g != cg:
-                hg = g if rank[g] > rank[cg] else cg
-                if len(cur) > 1:
-                    seg[cg].append(cur)
-                seg[hg].append([cur[-1], pts[i]])
-                cur, cg = [pts[i]], g
-            else:
-                cur.append(pts[i])
-        if len(cur) > 1:
-            seg[cg].append(cur)
-        r = od / 2000
-        for g, ss in seg.items():
-            for s in ss:
-                tubes[dom][g].append({"cid": cid, "pts": s, "r": r})
-        mass_per_m = {"25 mm²": 0.26, "10 mm²": 0.11, "6 mm²": 0.07, "2.5 mm²": 0.035, "1.5 mm²": 0.022}.get(gauge, 0.03)
-        cab_rows.append({"id": cid, "from": a, "to": b, "function": fn, "domain": dom, "gauge_or_type": gauge, "od_mm": od,
-                         "connector_a": ca, "connector_b": cb, "pin_or_terminal": pin, "bom": bomref,
-                         "route": " > ".join(path) if path else "direct inside the rear bay (A9)", "route_length_m": R(L, 3), "length_with_margin_m": R(L * 1.1, 3),
-                         "min_bend_radius_mm": max(60 if gauge == "25 mm²" else 0, round(6 * od)), "mass_kg": R(L * 1.1 * mass_per_m, 3),
-                         "from_part": ID_OF_TERM.get(a, a.rsplit("_", 1)[0] if a.endswith(("_1", "_2")) else a),
-                         "to_part": ID_OF_TERM.get(b, b.rsplit("_", 1)[0] if b.endswith(("_1", "_2")) else b),
-                         "from_xyz": [R(v) for v in pa], "to_xyz": [R(v) for v in pb]})
-    # harness components per domain and group
+        rmins = [HN.route_radius(s["pts"])[0] for s in secs if s["kind"] != "chain"]
+        route_txt = m["status"] if not routed else " > ".join(
+            HN.zones_of(next(s["pts"] for s in secs if s["kind"] == "base"), (HR["withdraw"][1]["lo"], HR["withdraw"][1]["hi"])) if any(s["kind"] == "base" for s in secs) else []) 
+        if routed:
+            up = [s["kind"] for s in secs if s["kind"] != "base"]
+            names = {"sleeve": "DP-LIFT > fixed sleeve (column -y face)", "chain": "energy chain", "moving": "moving trunk and post riser", "column": "static column"}
+            route_txt = " > ".join([t for t in [route_txt] if t] + [names[k] for k in up])
+        nties = sum(1 for t in HR["ties"] if cid in t["cables"])
+        row = {"id": cid, "from": a, "to": b, "function": fn, "domain": dom, "gauge_or_type": gauge, "od_mm": od, "connector_a": ca, "connector_b": cb,
+               "pin_or_terminal": pin, "bom": bomref, "harness": m["harness"], "harness_name": HNAME[m["harness"]], "route": route_txt,
+               "route_length_m": R(L, 3) if routed else "", "length_with_margin_m": R(L * 1.1, 3) if routed else "",
+               "min_bend_radius_mm": m["rmin"], "route_min_radius_mm": (R(min(rmins) * 1000, 0) if rmins and min(rmins) < 1e3 else "straight") if routed else "",
+               "flex_min_radius_mm": m["flex"] if m.get("lift") else "", "label_a": m["label_a"], "label_b": m["label_b"], "disconnect": m["disconnect"],
+               "tie_points": nties if routed else 0, "mass_kg": R(L * 1.1 * mass_pm.get(gauge, 0.03), 3) if routed else 0,
+               "from_part": ID_OF_TERM.get(a, a.rsplit("_", 1)[0] if a.endswith(("_1", "_2")) else a),
+               "to_part": ID_OF_TERM.get(b, b.rsplit("_", 1)[0] if b.endswith(("_1", "_2")) else b),
+               "from_xyz": [R(v) for v in secs[0]["pts"][0]] if routed else "", "to_xyz": [R(v) for v in secs[-1]["pts"][-1]] if routed else ""}
+        cab_rows.append(row)
+        if gauge == "25 mm²" and routed:
+            r0 = min(rmins)
+            BEND25[cid] = {"route_m": R(L, 3), "direct_m": R(float(np.linalg.norm(np.subtract(TERM[a], TERM[b]))), 3), "local": True,
+                           "bend_ok": bool(r0 >= 0.060 - 5e-4), "worst_corner": {"deg": 90, "need_mm": 60.0, "have_mm": R(r0 * 1000, 1)}}
+        for s in secs:
+            if s["kind"] in ("chain", "sleeve"):
+                continue   # drawn as the energy chain (model.js) and as one sleeve
+            g = s["group"]
+            pts = HN.fillet(s["pts"], m["rmin"] / 1000)
+            off = axo if g in ("col", "mov") else np.zeros(3)
+            tubes[dom][g].append({"cid": cid, "pts": [list(np.subtract(p, off)) for p in pts], "r": od / 2000})
     for dom, gg in tubes.items():
         if dom == "MECH":
             continue
@@ -1064,57 +1038,79 @@ def main():
                 continue
             k = "harness_%s_%s" % (dom.lower(), g)
             parts.append(k)
-            off = np.array([FACTS["lift_plate"]["col_axis_x"]["bp000"], 0, 0]) if g in ("col", "mov") else np.zeros(3)
-            geo[k] = {"group": g, "prims": [dict(tube([np.subtract(p, off) for p in t["pts"]], t["r"], DOMAIN_COL[dom]), cid=t["cid"]) for t in tl]}
+            geo[k] = {"group": g, "prims": [dict(tube(t["pts"], t["r"], DOMAIN_COL[dom]), cid=t["cid"]) for t in tl]}
         if not parts:
             continue
         rows = [c for c in cab_rows if c["domain"] == dom]
         comp("harness_" + dom.lower(), "Harness: " + T["harness_domains"][dom]["label"], ", ".join(sorted({c["bom"] for c in rows})), len(rows), "proposed",
-             "%d cables of the %s domain on their routes (cable_list.csv)." % (len(rows), dom), "tubes at the cable outer diameter on the routed path",
-             "routed by build.py on the harness graph (bp000, L1000); upper-body cables through the service loop",
+             "%d cables of the %s domain on their routes, in harnesses %s (cable_list.csv)." % (len(rows), dom, ", ".join(sorted({c["harness"] for c in rows}))),
+             "tubes at the cable outer diameter on the routed path, bends at the class minimum radius",
+             "routed by harness.py: supported routes along the floor, the side panels and the uprights (bp000, L1000)",
              sum(c["mass_kg"] for c in rows), "route length x 1.1 x mass per metre", 9, parts, off=[0, 0, .45], opn=[0, 0, .2])
         for k in parts:
             exploded["harness_" + dom.lower()]["offsets"][k] = [0, 0, .45]
-    # fittings: tie points every 150 mm, P-clips at trunk nodes, grommets at wall / deck crossings
+    # tie points, grommets, guards, DP-LIFT, sleeve and chain brackets
     fit = {"base": [], "col": [], "mov": []}
-    nodes_used = set()
-    for c in cab_rows:
-        for k in c["route"].split(" > "):
-            nodes_used.add(k)
-    for k in sorted(nodes_used):
-        if k not in N:
-            continue
-        p = np.array(N[k])
-        g = NG[k]
-        off = np.array([FACTS["lift_plate"]["col_axis_x"]["bp000"], 0, 0]) if g in ("col", "mov") else np.zeros(3)
-        if k.startswith("G"):
-            fit[g].append(cyl(.014, .006, p - off, "z" if k == "GD" else "x", "#222222", hq=True))
-            fittings.append(("grommet", k))
-        else:
-            fit[g].append(box([.012, .016, .016], p - off, "#555555", hq=True))
-            fittings.append(("P-clip / tie mount", k))
+    for t in HR["ties"]:
+        g = t.get("group", "base")
+        off = axo if g in ("col", "mov") else np.zeros(3)
+        p = np.subtract(t["p"], off)
+        fit[g].append(box([.008, .008, .008] if t["kind"] == "clip" else [.012, .012, .006], p, "#2b2b2b", hq=True, name=t["id"]))
+        if t["kind"] in ("tie base on standoff", "tie base on a bracket") and t.get("base"):
+            b_ = np.subtract(t["base"], off)
+            mid, ln = (p + b_) / 2, float(np.linalg.norm(p - b_))
+            axis = "xyz"[int(np.argmax(np.abs(p - b_)))]
+            if ln > .004:
+                fit[g].append(cyl(.003, ln, mid, axis, "#9a9a9a", hq=True))
+    for gr in HR["grommets"]:
+        gp = gr["p"]
+        grp = "mov" if "adapter plate" in gr["on"] else "base"
+        off = axo if grp == "mov" else np.zeros(3)
+        fit[grp].append(cyl(.008, .004, np.subtract(gp, off), "z", "#1a1a1a", hq=True))
     fparts = []
     for g, pr in fit.items():
         if pr:
             k = "harness_fittings_" + g
             fparts.append(k)
             geo[k] = {"group": g, "prims": pr}
-    comp("harness_fittings", "Harness fittings: P-clips, tie mounts and grommets", "MEC-013", len(fittings), "proposed",
-         "Tie mount or P-clip at every trunk node, grommet at the centre-bracket walls and the deck crossing.", "small primitives",
-         "harness graph nodes", 0.15, "estimate", 9, fparts, hq=True, off=[0, 0, .45], opn=[0, 0, .2])
-    # service loop (upper-body cables, sized for the 350 mm stroke), static column, drawn at L1000
-    sl = [N["SL1"], N["SLB"], N["SL2"]]
-    loop_len = plen([N["SL1"], N["SLB"], N["SL2"]])
-    need = (U["col_top"] + FACTS["column"]["stroke"] - 0.020) - (U["col_top"] - 0.040) + 0.06
-    k = "service_loop"
-    off = np.array([FACTS["lift_plate"]["col_axis_x"]["bp000"], 0, 0])
-    pts = [np.subtract(N["SL1"], off), np.subtract([N["SL1"][0] - .015, N["SL1"][1], N["SLB"][2] + .03], off), np.subtract(N["SLB"], off),
-           np.subtract([N["SL2"][0] + .0, N["SL2"][1], N["SLB"][2] + .03], off), np.subtract(N["SL2"], off)]
-    geo[k] = {"group": "col", "prims": [tube(pts, .011, "#34495e")]}
-    comp("service_loop", "Upper-body service loop (cable sleeve, 22 mm)", "MEC-013", 1, "proposed",
-         "All upper-body cables in one sleeve from the static column top to the carriage, a hanging loop sized for the 350 mm stroke.",
-         "22 mm braided sleeve tube", "proposed: -y side of the static column, drawn at L1000", 0.25, "estimate", 9, [k], off=[0, -.2, .1], opn=[0, 0, 0])
-    issues_seed.append({"service_loop_length": R(plen(pts), 3), "service_loop_need": R(need, 3)})
+    comp("harness_fittings", "Harness fittings: tie bases, clips and grommets", "MEC-013", len(HR["ties"]) + len(HR["grommets"]), "proposed",
+         "%d tie points (tie bases on the floor, the side panels, the arch and the brackets, clips on the column, the plate angle and the post) "
+         "at 150 mm or less and within 50 mm of every connector and branch; %d grommets or split entries at the panel penetrations." % (len(HR["ties"]), len(HR["grommets"])),
+         "small primitives", "harness.py tie points", R(0.004 * len(HR["ties"]) + 0.003 * len(HR["grommets"]), 3), "estimate", 9, fparts, hq=True, off=[0, 0, .45], opn=[0, 0, .2])
+    gparts = []
+    for gd in HR["guards"]:
+        k = gd["id"]
+        geo[k] = {"group": "base", "prims": [box(np.subtract(gd["plate"][1], gd["plate"][0]), np.add(gd["plate"][0], gd["plate"][1]) / 2, "#9aa3ab"),
+                                            box(np.subtract(gd["lip"][1], gd["lip"][0]), np.add(gd["lip"][0], gd["lip"][1]) / 2, "#9aa3ab")]}
+        gparts.append(k)
+    comp("wheel_guards", "Over-wheel cable guards (side trunks across the drive section)", "MEC-013", len(gparts), "proposed",
+         "2 mm aluminium tray on each side-panel inner face, 8 mm above the tyre top: the side trunks cross the drive section on it, clear of the wheel.",
+         "primitive", "harness.py, above the drive wheels", 0.12, "estimate 2 mm aluminium", 9, gparts, off=[0, 0, .45], opn=[0, 0, .2])
+    dpb = HR["dp"]["box"]
+    geo["dp_lift"] = {"group": "col", "prims": [box(np.subtract(dpb[1], dpb[0]), np.add(dpb[0], dpb[1]) / 2 - axo, "#5d6d7e", name="DP-LIFT"),
+                                                box([.020, .004, .016], np.array([-0.082, -0.0485, 0.345]) - axo, "#2c3e50"),
+                                                box([.016, .004, .014], np.array([-0.0725, -0.0485, 0.355]) - axo + [0, 0, .02], "#2c3e50")]}
+    comp("dp_lift", "Disconnect point DP-LIFT (bulkhead connector plate behind the lift base plate)", "MEC-013", 1, "proposed",
+         "All lift and upper-body cables plug in here: the lift assembly comes off without opening the base harness.", "primitive",
+         "harness.py, above the deck exit behind the lift base plate", 0.15, "estimate", 8, ["dp_lift"], group="col", off=[0, -.2, .1], opn=[0, 0, 0])
+    geo["harness_sleeve"] = {"group": "col", "prims": [tube([np.subtract(p, axo) for p in HR["sleeve"]], HR["upper"]["sleeve_r_bundle"], "#34495e")]}
+    comp("harness_sleeve", "Fixed upper-body sleeve on the static column (-y face)", "MEC-013", 1, "proposed",
+         "Braided sleeve over the upper-body cables from DP-LIFT up the -y face of the static column into the energy-chain fixed end (180 degree turn, R %.0f mm)." % (HR["upper"]["sleeve_r"] * 1000),
+         "tube", "harness.py", 0.08, "estimate", 8, ["harness_sleeve"], group="col", off=[0, -.2, .1], opn=[0, 0, 0])
+    chn = HR["chain"]
+    geo["lift_energy_chain"] = {"group": "col", "prims": [box([chn["outer_w"] + .01, .006, .04], [chn["x"] - axo[0], chn["y_fixed"] - .022, chn["fixed_z"] - .01], "#5d6d7e", name="fixed_end_bracket")]}
+    geo["lift_energy_chain_moving"] = {"group": "mov", "prims": [
+        box([chn["outer_w"] + .01, .006, .04], [chn["x"] - axo[0], chn["y_moving"] + .022, chn["moving_z0"] + .01], "#5d6d7e", name="moving_end_bracket"),
+        box([HR["upper"]["x_riser"] - chn["x"] + .02, .025, .003], [(HR["upper"]["x_riser"] + chn["x"]) / 2 - axo[0], chn["y_moving"], HR["upper"]["z_trunk"] - .0125], "#9aa3ab", name="hung_angle"),
+        box([HR["upper"]["x_riser"] - chn["x"] + .02, .003, .028], [(HR["upper"]["x_riser"] + chn["x"]) / 2 - axo[0], chn["y_moving"] - .0125, HR["upper"]["z_trunk"] + .001], "#9aa3ab")]}
+    comp("lift_energy_chain", "Lift energy chain (vertical U, inner 38 x 25 mm, R 75 mm)", "MEC-013", 1, "proposed",
+         "%s; %d links, %.3f m; fixed end on the -y face of the static column at z %.3f, moving end under the adapter-plate rear extension; drawn for the current lift height." % (
+             chn["type"], chn["links"], chn["length"], chn["fixed_z"]),
+         "links drawn by model.js from placement.json energy_chain", "harness.py energy_chain()", 0.45, "estimate", 8,
+         ["lift_energy_chain", "lift_energy_chain_moving"], group="col", off=[0, -.2, .1], opn=[0, 0, 0])
+    issues_seed.append({"energy_chain": {k: chn[k] for k in ("length", "R", "stroke")}, "chain_clash": sorted({c for s in chn["stops"] for c in s["clash"]}),
+                        "harness_blocked": sorted(c for c in unattached if HR["meta"][c]["status"].startswith("blocked"))})
+    fittings = [("tie", t["id"]) for t in HR["ties"]] + [("grommet", g["id"]) for g in HR["grommets"]]
 
     # ---------------- CAN terminations
     tparts = []
@@ -1193,7 +1189,8 @@ def main():
     F("DIN carrier to the centre-bracket front legs", "ISO 4762 + rivet nut", "M5 x 12", 4, "ISO 4762", "A2", "proposed", "n")
     F("Getac pocket and light-bar plate to the post front face", "T-slot nut + ISO 4762", "M6 x 12", 4, "ISO 4762", "steel", "proposed", "n")
     F("MEC-015 motor brackets to the base sheet", "hex bolt + nut + washer", "M8 x 20", 8, "ISO 4017 / ISO 4032 / ISO 7089", "steel 8.8", "proposed", "n")
-    F("Harness P-clips", "button head screw + rivet nut", "M4 x 8", len([f for f in fittings if f[0] != "grommet"]), "ISO 7380", "A2", "proposed", "n")
+    for fa in HN.fasteners(HR):
+        F(*fa)
     fparts = []
     for g, pr in fx.items():
         if pr:
@@ -1222,10 +1219,10 @@ def main():
                 comps.remove(c)
                 exploded.pop(c["id"])
     if up["harness"]:
-        rows_up = [r for r in cab_rows if r["route"] and any(k in r["route"] for k in ("SL1", "CS_T", "CY_T"))]
-        comp("harness_upper", "Harness on the lift column and carriage (service loop, upper-body cables)", "ARM-009, ARM-010, ARM-006, AUX-003, LFT-002, CTL-016", len(rows_up), "proposed",
-             "Upper-body part of the routed cables: service loop down the static column (-y side), the second E-stop loop down the rear face, the lift sensor cables on the +y face, and the carriage runs to the arms, ZED, Getac and head light.",
-             "tubes at the cable outer diameter", "routed by build.py (bp000, L1000)", 0.6, "estimate", 8, up["harness"], off=[0, -.25, .1], opn=[0, 0, 0])
+        rows_up = [r for r in cab_rows if r["harness"] in ("W08", "W09") and r["route_length_m"]]
+        comp("harness_upper", "Harness on the lift column and carriage (W08 lift column, W09 upper body: sleeve, energy chain, moving trunk)", "ARM-009, ARM-010, ARM-006, AUX-003, LFT-002, CTL-016", len(rows_up), "proposed",
+             "Upper-body part of the routed cables: fixed sleeve up the -y face of the static column into the energy chain, the lift stop sensor cables down the rear face to the lift node, and the moving trunk under the adapter plate with the risers at the arm post to the arms, ZED, Getac, head light and second E-stop.",
+             "tubes at the cable outer diameter", "routed by harness.py (bp000, L1000)", 0.6, "estimate", 8, up["harness"], off=[0, -.25, .1], opn=[0, 0, 0])
     if up["fasteners"]:
         comp("fasteners_upper", "Fasteners of the lift and arm post (named and proposed)", "MEC-014", len(up["fasteners"]), "proposed",
              "Lift sensor bracket screws, post bolts from below, rear upright T-nuts and the J1_A mounting screws.", "ISO / DIN standard part envelopes",
@@ -1258,7 +1255,11 @@ def main():
                  "components": comps, "geometry": geo,
                  "hide_glb": ["battery"],   # A1: the single-row battery envelope is replaced by the cells in the side pockets
                  "front_bay": {"default": fb_default, "layout": FBR[fb_default].get("layout", ""), "relocate": fb_relocate, "glb_centre": fb_glb_centre, "relocatable": ["compute", "base_controller"]},
-                 "upper_body": {k: (v if not isinstance(v, (list, tuple)) else [R(x) for x in v]) for k, v in U.items() if k != "datums_revision"}}
+                 "upper_body": {k: (v if not isinstance(v, (list, tuple)) else [R(x) for x in v]) for k, v in U.items() if k != "datums_revision"},
+                 "energy_chain": {"x": R(chn["x"] - FACTS["lift_plate"]["col_axis_x"]["bp000"]), "y_fixed": chn["y_fixed"], "y_moving": chn["y_moving"],
+                                  "fixed_z": chn["fixed_z"], "moving_z0": chn["moving_z0"], "R": chn["R"], "length": chn["length"], "pitch": chn["pitch"],
+                                  "outer_w": chn["outer_w"], "outer_h": chn["outer_h"], "stroke": chn["stroke"], "part": "lift_energy_chain",
+                                  "about": "lift energy chain, drawn by model.js for the lift travel (col group: x from the column axis, z absolute)"}}
     json.dump(placement, open(os.path.join(MODEL, "placement.json"), "w"), separators=(",", ":"))
     # exploded.json: merge entries, add stage 9
     xp = os.path.join(MODEL, "exploded.json")
@@ -1333,10 +1334,17 @@ def main():
         w.writerows(fasteners)
     with open(os.path.join(MODEL, "cable_list.csv"), "w", newline="") as f:
         keys = ["id", "from", "to", "function", "domain", "gauge_or_type", "od_mm", "connector_a", "connector_b", "pin_or_terminal", "bom",
-                "route", "route_length_m", "length_with_margin_m", "min_bend_radius_mm", "mass_kg", "from_part", "to_part", "from_xyz", "to_xyz"]
+                "harness", "harness_name", "route", "route_length_m", "length_with_margin_m", "min_bend_radius_mm", "route_min_radius_mm",
+                "flex_min_radius_mm", "label_a", "label_b", "disconnect", "tie_points", "mass_kg", "from_part", "to_part", "from_xyz", "to_xyz"]
         w = csv.DictWriter(f, fieldnames=keys)
         w.writeheader()
         w.writerows(cab_rows)
+    with open(os.path.join(MODEL, "harness_routes.json"), "w", encoding="utf-8") as f:
+        json.dump(HN.routes_json(HR, cab_rows, hcache["key"]), f, separators=(",", ":"))
+    with open(os.path.join(MODEL, "harness_cad_changes.csv"), "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["item", "part", "change", "qty", "where"])
+        w.writeheader()
+        w.writerows(HN.cad_changes(HR))
     assembly(fasteners)
     # source snapshot for scripts/check_roadmap.py (CI has no ../src): the source values the model must match
     snap = {"about": "Source values the roadmap model is checked against (scripts/check_roadmap.py). Generated by build.py.",
@@ -1415,14 +1423,16 @@ def assembly(fasteners):
         (6, "Battery: two removable pocket trays MEC-007 with 4 + 4 LF105 upright, straps; the 8S series link across the centre joins them through the keyed main connector PWR-018 (A9)", "M6 x 12 tray screws into rivet nuts", "hex key 5 mm, 13 mm socket for the M8 terminals", "M6 8.8: 10 Nm; cell terminals per EVE", "cells go in from above with the cover off (each tray with its 4 cells lowered or lifted on its own after PWR-018 is unplugged); side-panel return flanges notched at x -0.275 to -0.133 (GI-025, decided)"),
         (7, "Rear power plate MEC-006 above the receiver zone (underside 122 mm): F0, K1/K2, precharge, FB-A, PWR-017, KCHG, F-CHG; disconnect and SB50 on the rear panel", "M5 x 12", "hex key 4 mm, 13 mm socket for M8 lugs", "M5: 5.5 Nm; M8 lugs per maker", "after the trays; nothing above a fuse; plate on 4 standoffs from the base sheet outside the metal-free margin; it comes out without removing the cells (2 mm clear of the trays in plan) once PWR-018 on the series link above it is unplugged"),
         (8, "Sensors: LiDAR on the shortened MMP.07 on the lower plate + 17.5 mm spacer, Gemini on MEC-009, MB7060 with lock nuts, TF-Luna, E-stop, RESET", "M4 inserts, 3/4 in NPS nuts", "hex key 3 mm, 32 mm spanner", "M4: 1.5 Nm into PETG inserts", "front MB7060 nuts reached from inside before the bay plate goes in"),
-        (9, "Harness: trunks (front trunk below the scan plane), grommets, P-clips, connectors; CAN terminations", "M4 P-clip screws", "crimp tools (TST-004), hex key 2.5 mm", "M4: 2 Nm", "cover off; every fuse and connector reachable"),
-        (10, "Cover with the opening extended to x 0.260 around the lift base plate, flanges", "MEC-001 cover screws", "hex key 3 mm", "M4: 2.8 Nm", "from above"),
-        (11, "DOLD column on the lift base plate MEC-019, from below, on the bench (bp000 or bp050 hole set)", "4 x M8 x 30 DIN 7500 countersunk, flush", "5 mm hex key, torque wrench", "M8 thread-forming: per DOLD", "plate upside down on the bench, full access to the underside; heads flush so the plate sits flat on the arch"),
-        (12, "Lift base plate with the column onto the arch, bolted from above into the 4 arch rivet nuts", "4 x M8 x 20 ISO 4762 8.8 + ISO 7089 washers", "6 mm hex key or 6 mm bit on a torque wrench", "M8 8.8 into a stainless blind rivet nut: 15 Nm (rivet-nut limit, below the 25 Nm bolt value)", "bolt heads at y +/-0.050 beside the 60 mm column: 13.5 mm from the head edge to the column face, a 6 mm hex bit (13 mm socket body) fits; rivet nuts captive, no access from below needed"),
-        (13, "Adapter plate (one part with the rear extension for the flag rod, A6), HFS6 post, rear upright, stiffener", "M8 x 25, M6 T-nuts", "6 / 5 mm hex key", "M8: 25 Nm, M6: 10 Nm", "post bolts from below the adapter plate before it goes on the carriage"),
-        (14, "Arms on the post (1 mm spacers), ZED bracket and camera, Getac pocket and light plate, second E-stop housing on the adapter plate behind the post (A5)", "M6 T-nuts", "5 mm hex key", "M6: 10 Nm", "arms at home pose; Getac pocket last"),
-        (15, "Lift stop sensors on the rear face of the static column (A6), flag rod under the adapter-plate rear extension (M5 into the rod end, corner bracket), flag", "LFT-007 set", "hex key 2.5 / 3 / 4 mm", "M4: 2 Nm", "lift at L1000; set the 2 mm flag gap"),
-        (16, "Service loop and upper-body cables (arm cables and the second E-stop loop through the lift cable chain), function test", "", "", "", "check the loop at L1350 and L1000"),
+        (9, "Harness fittings (after every component, before the cover): M4 rivet nuts and screw-mount tie bases at the tie points of harness_routes.json (base sheet, side panels, arch, brackets; standoffs where the route is 15 to 40 mm off the surface), the two over-wheel cable guards, grommets or edge trim at every penetration (harness_cad_changes.csv), the deck split entry and the DP-LIFT bracket", "M4 x 8 ISO 7380 into M4 rivet nuts; M4 x 20 standoffs", "rivet-nut tool M4, hex key 2.5 mm", "M4 into a rivet nut: 2 Nm", "cover off, front tier and trays out: every tie point reached from above"),
+        (10, "Base harnesses laid in and tied: W01 rear power (lugs on the studs), W02 drive section, W03 left and W04 right side trunks (floor lanes, over-wheel guards, lanes beside the trays), W05 front sensors, W07 front tier; labels at both ends of every cable (label_a / label_b), harness labels at the main breakouts; CAN terminations", "cable ties on the tie bases", "crimp tools (TST-004), label printer", "lugs per maker; M8 battery studs per EVE", "trays and front tier back in after their cables are laid: each plugs in at its disconnect point (DP-TRAY-L / -R, DP-FT)"),
+        (11, "Harness check before the cover: no cable over a component or across a tray, tier or cover withdrawal path, bend radii at or above the class minimum, CAN, USB, SPI and LiDAR at least 30 mm from power where practical and crossing at right angles, continuity and insulation test", "", "multimeter, insulation tester", "", "python3 scripts/check_roadmap.py for the model; on the robot a visual check against the harness drawing"),
+        (12, "Cover with the opening extended to x 0.260 around the lift base plate, flanges", "MEC-001 cover screws", "hex key 3 mm", "M4: 2.8 Nm", "from above"),
+        (13, "DOLD column on the lift base plate MEC-019, from below, on the bench (bp000 or bp050 hole set)", "4 x M8 x 30 DIN 7500 countersunk, flush", "5 mm hex key, torque wrench", "M8 thread-forming: per DOLD", "plate upside down on the bench, full access to the underside; heads flush so the plate sits flat on the arch"),
+        (14, "Lift base plate with the column onto the arch, bolted from above into the 4 arch rivet nuts", "4 x M8 x 20 ISO 4762 8.8 + ISO 7089 washers", "6 mm hex key or 6 mm bit on a torque wrench", "M8 8.8 into a stainless blind rivet nut: 15 Nm (rivet-nut limit, below the 25 Nm bolt value)", "bolt heads at y +/-0.050 beside the 60 mm column: 13.5 mm from the head edge to the column face, a 6 mm hex bit (13 mm socket body) fits; rivet nuts captive, no access from below needed"),
+        (15, "Adapter plate (one part with the rear extension for the flag rod, A6), HFS6 post, rear upright, stiffener", "M8 x 25, M6 T-nuts", "6 / 5 mm hex key", "M8: 25 Nm, M6: 10 Nm", "post bolts from below the adapter plate before it goes on the carriage"),
+        (16, "Arms on the post (1 mm spacers), ZED bracket and camera, Getac pocket and light plate, second E-stop housing on the adapter plate behind the post (A5)", "M6 T-nuts", "5 mm hex key", "M6: 10 Nm", "arms at home pose; Getac pocket last"),
+        (17, "Lift stop sensors on the rear face of the static column (A6), flag rod under the adapter-plate rear extension (M5 into the rod end, corner bracket), flag", "LFT-007 set", "hex key 2.5 / 3 / 4 mm", "M4: 2 Nm", "lift at L1000; set the 2 mm flag gap"),
+        (18, "Lift column harness W08 and upper-body harness W09 (after the lift and the upper body, before the chest covers): fixed sleeve with P-clips on the -y T-slot of the static column, energy chain (fixed end bracket on the column, moving end bracket and hung angle under the adapter plate), cables laid into the chain with strain relief at both ends, moving trunk and risers clipped at the post; all lift cables plug in at DP-LIFT; function test", "M5 T-slot nuts, M5 x 10; chain end pins", "hex key 2.5 / 4 mm", "M5 T-slot: 4 Nm", "run the lift L1000 to L1350 and back: no cable taut, rubbing or in a pinch point, chain clear of the flag rod, sensors and cover"),
     ]
     with open(os.path.join(MODEL, "assembly_sequence.csv"), "w", newline="") as f:
         w = csv.writer(f)

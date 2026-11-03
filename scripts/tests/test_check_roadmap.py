@@ -213,3 +213,165 @@ class KnownContacts(unittest.TestCase):
     def test_missing_issue_row_fails(self):
         drop = lambda rows = "": "\n".join(l for l in rows.splitlines() if "TZBOT receiver / floor transmitter WCM-500-24" not in l) + "\n"
         self.assertTrue(any("row missing" in e for e in self.run_check(edit_rows=drop)))
+
+# ---------------------------------------------------------------- harness rules (harness_routes.json)
+def _h(**kw):
+    """Minimal harness data: one base cable along the floor between two connectors, tie points every 100 mm."""
+    pts = [[0.0, 0.2, 0.065], [0.4, 0.2, 0.065]]
+    H = {"rules": {"max_span_m": 0.150, "tie_near_m": 0.050, "tie_tol_m": 0.030, "over_band_m": 0.040, "entry_m": 0.025},
+         "harnesses": [{"id": "W03"}],
+         "obstacles": [{"id": "box_a", "lo": [0.10, -0.05, 0.054], "hi": [0.20, 0.05, 0.120], "top_access": False}],
+         "withdrawal": [{"id": "tray", "lo": [-0.30, 0.10, 0.054], "hi": [-0.15, 0.26, 0.30], "members": ["tray_part"]}],
+         "ties": [{"id": "T%d" % i, "p": [x, 0.2, 0.065]} for i, x in enumerate([0.04, 0.14, 0.24, 0.36])],
+         "branches": [], "chain": None,
+         "cables": [{"id": "CBL-X1", "harness": "W03", "gauge": "0.5 mm²", "od_mm": 3.0, "min_bend_mm": 18, "flex_min_mm": 30, "own": [],
+                     "lift": False, "sections": [{"kind": "base", "group": "base", "pts": pts}]}]}
+    H.update(kw)
+    return H
+
+
+def _chain(**kw):
+    ch = {"R": 0.075, "stroke": 0.35, "min_bottom_z": 0.311, "slack_req_m": 0.02,
+          "stops": [{"T": round(i * 0.025, 3), "fixed_run_m": 0.2 - i * 0.0125, "moving_run_m": 0.3 + i * 0.0125, "loop_bottom_z": 0.32 + i * 0.0125, "clash": []} for i in range(15)]}
+    ch.update(kw)
+    return ch
+
+
+def _lift_cable(**kw):
+    c = {"id": "CBL-L1", "harness": "W09", "gauge": "ZED", "od_mm": 5.0, "min_bend_mm": 30, "flex_min_mm": 50, "own": [], "lift": True, "slack_min_m": 0.03,
+         "sections": [{"kind": "base", "group": "base", "pts": [[0.0, 0.0, 0.1], [0.03, 0.0, 0.1]]},
+                      {"kind": "chain", "group": "col", "pts": [[0, 0, 0.6], [0, 0, 0.4]]},
+                      {"kind": "moving", "group": "mov", "pts": [[0, 0.1, 0.80], [0.03, 0.1, 0.80]]}]}
+    c.update(kw)
+    return c
+
+
+class HarnessSpan(unittest.TestCase):
+    def test_supported_route_passes(self):
+        self.assertEqual(C.harness_span_errors(_h()), [])
+
+    def test_unsupported_span_fails(self):
+        H = _h(ties=[{"id": "T0", "p": [0.04, 0.2, 0.065]}, {"id": "T1", "p": [0.36, 0.2, 0.065]}])
+        self.assertTrue(any("unsupported span 320 mm" in e for e in C.harness_span_errors(H)))
+
+    def test_no_tie_near_connector_fails(self):
+        H = _h(ties=[{"id": "T%d" % i, "p": [x, 0.2, 0.065]} for i, x in enumerate([0.08, 0.18, 0.28, 0.36])])
+        self.assertTrue(any("within 50 mm of the connector at its start" in e for e in C.harness_span_errors(H)))
+
+    def test_branch_without_tie_fails(self):
+        H = _h(branches=[{"cable": "CBL-X1", "p": [0.30, 0.2, 0.065]}])
+        self.assertEqual(C.harness_span_errors(_h(branches=[{"cable": "CBL-X1", "p": [0.26, 0.2, 0.065]}])), [])
+        H["ties"] = [t for t in H["ties"] if t["id"] != "T2" and t["id"] != "T3"] + [{"id": "T9", "p": [0.39, 0.2, 0.065]}]
+        self.assertTrue(any("of the branch" in e for e in C.harness_span_errors(H)))
+
+
+class HarnessOverComponent(unittest.TestCase):
+    def test_route_beside_component_passes(self):
+        self.assertEqual(C.harness_over_errors(_h()), [])
+
+    def test_route_over_component_fails(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.0, 0.140], [0.4, 0.0, 0.140]]
+        self.assertTrue(any("passes over box_a" in e for e in C.harness_over_errors(H)))
+
+    def test_route_through_component_fails(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.0, 0.080], [0.4, 0.0, 0.080]]
+        self.assertTrue(any("passes through box_a" in e for e in C.harness_over_errors(H)))
+
+    def test_own_end_part_is_exempt(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.0, 0.140], [0.4, 0.0, 0.140]]
+        H["cables"][0]["own"] = ["box_a"]
+        self.assertEqual(C.harness_over_errors(H), [])
+
+    def test_top_access_part_has_no_height_limit(self):
+        H = _h()
+        H["obstacles"][0]["top_access"] = True
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.0, 0.250], [0.4, 0.0, 0.250]]
+        self.assertTrue(any("passes over box_a" in e for e in C.harness_over_errors(H)))
+
+
+class HarnessWithdrawal(unittest.TestCase):
+    def test_route_outside_withdrawal_path_passes(self):
+        self.assertEqual(C.harness_withdrawal_errors(_h()), [])
+
+    def test_route_across_tray_path_fails(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[-0.20, 0.0, 0.27], [-0.20, 0.30, 0.27]]
+        self.assertTrue(any("withdrawal path of tray" in e for e in C.harness_withdrawal_errors(H)))
+
+    def test_own_assembly_cable_passes(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[-0.20, 0.0, 0.27], [-0.20, 0.30, 0.27]]
+        H["cables"][0]["own"] = ["tray_part"]
+        self.assertEqual(C.harness_withdrawal_errors(H), [])
+
+
+class HarnessBend(unittest.TestCase):
+    def test_gentle_route_passes(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[0, 0.2, 0.065], [0.2, 0.2, 0.065], [0.2, 0.4, 0.065]]
+        self.assertEqual(C.harness_bend_errors(H), [])
+
+    def test_tight_corner_fails(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[0, 0.2, 0.065], [0.2, 0.2, 0.065], [0.2, 0.21, 0.065], [0.3, 0.21, 0.065]]
+        self.assertTrue(any("bend radius" in e for e in C.harness_bend_errors(H)))
+
+    def test_25mm2_below_class_minimum_fails(self):
+        H = _h()
+        H["cables"][0].update(gauge="25 mm²", min_bend_mm=40)
+        self.assertTrue(any("class minimum 60 mm" in e for e in C.harness_bend_errors(H)))
+
+    def test_chain_radius_below_flex_minimum_fails(self):
+        H = _h(cables=[_lift_cable(flex_min_mm=80)], chain=_chain())
+        self.assertTrue(any("continuous-flex minimum" in e for e in C.harness_bend_errors(H)))
+        self.assertEqual(C.harness_bend_errors(_h(cables=[_lift_cable()], chain=_chain())), [])
+
+
+class HarnessLift(unittest.TestCase):
+    def test_cable_in_chain_passes(self):
+        self.assertEqual(C.harness_lift_errors(_h(cables=[_lift_cable()], chain=_chain())), [])
+
+    def test_lift_cable_outside_chain_fails(self):
+        c = _lift_cable()
+        c["sections"] = [c["sections"][0], {"kind": "moving", "group": "mov", "pts": [[0, 0, 0.3], [0, 0, 0.8]]}]
+        self.assertTrue(any("outside the energy chain" in e for e in C.harness_lift_errors(_h(cables=[c], chain=_chain()))))
+
+    def test_chain_too_short_fails(self):
+        ch = _chain()
+        ch["stops"][-1]["fixed_run_m"] = -0.01
+        self.assertTrue(any("shorter than zero" in e for e in C.harness_lift_errors(_h(cables=[_lift_cable()], chain=ch))))
+
+    def test_chain_contact_fails(self):
+        ch = _chain()
+        ch["stops"][3]["clash"] = ["loop / flag rod"]
+        self.assertTrue(any("touches loop / flag rod" in e for e in C.harness_lift_errors(_h(cables=[_lift_cable()], chain=ch))))
+
+    def test_taut_cable_fails(self):
+        self.assertTrue(any("slack" in e for e in C.harness_lift_errors(_h(cables=[_lift_cable(slack_min_m=0.0)], chain=_chain()))))
+
+
+class HarnessLabels(unittest.TestCase):
+    ROW = {"id": "CBL-X1", "harness": "W03", "label_a": "W03-X1-A", "label_b": "W03-X1-B"}
+
+    def test_labelled_cable_passes(self):
+        self.assertEqual(C.harness_label_errors(_h(), [dict(self.ROW)]), [])
+
+    def test_cable_without_harness_fails(self):
+        self.assertTrue(any("has no harness" in e for e in C.harness_label_errors(_h(), [dict(self.ROW, harness="")])))
+
+    def test_cable_without_label_fails(self):
+        self.assertTrue(any("has no label_b" in e for e in C.harness_label_errors(_h(), [dict(self.ROW, label_b="")])))
+
+    def test_unknown_harness_fails(self):
+        self.assertTrue(any("is not defined" in e for e in C.harness_label_errors(_h(), [dict(self.ROW, harness="W99")])))
+
+
+class HarnessCommitted(unittest.TestCase):
+    def test_committed_harness_passes(self):
+        H = json.load(open(os.path.join(MODEL, "harness_routes.json"), encoding="utf-8"))
+        import csv
+        rows = list(csv.DictReader(open(os.path.join(MODEL, "cable_list.csv"), encoding="utf-8")))
+        self.assertEqual(C.harness_errors(H, rows), [])

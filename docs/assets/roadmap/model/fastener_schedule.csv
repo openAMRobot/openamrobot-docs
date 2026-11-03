@@ -37,4 +37,15 @@ MEC-005 upper shelf on the lower plate (second tier),hex standoff M4 x 50 + ISO 
 DIN carrier to the centre-bracket front legs,ISO 4762 + rivet nut,M5 x 12,4,ISO 4762,A2,proposed,n
 Getac pocket and light-bar plate to the post front face,T-slot nut + ISO 4762,M6 x 12,4,ISO 4762,steel,proposed,n
 MEC-015 motor brackets to the base sheet,hex bolt + nut + washer,M8 x 20,8,ISO 4017 / ISO 4032 / ISO 7089,steel 8.8,proposed,n
-Harness P-clips,button head screw + rivet nut,M4 x 8,39,ISO 7380,A2,proposed,n
+"Harness tie bases on the base sheet, side panels, arch and brackets (screw-mount tie base, cable tie)",ISO 7380 button head screw + M4 blind rivet nut,M4 x 8,46,ISO 7380,A2,proposed,y
+Harness tie bases on standoffs (route 15 to 40 mm from the surface),M4 hex standoff F-F + 2 x ISO 7380 + M4 blind rivet nut,"M4 x 20 standoff, M4 x 8",69,DIN 7380 / hex standoff,A2 / brass,proposed,y
+Strain-relief clamps at connectors with no structure within 60 mm (on the part's own mounting bracket or DIN rail),cable clamp + ISO 7380 into the part mounting,M3 x 8,5,ISO 7380,A2,proposed,y
+Tie bases on small brackets (route 60 to 100 mm from the nearest structure),2 mm aluminium angle bracket + ISO 7380 + M4 blind rivet nut; tie base M4 x 8,M4 x 8,2,ISO 7380,A2,proposed,y
+"Lacing ties at branches to the supported trunk (cable tie, no fastener)",cable tie,-,1,-,PA66,proposed,y
+Sleeve and lift-sensor cable clips on the static column T-slots,P-clip + M5 T-slot nut + ISO 7380,M5 x 10,15,ISO 7380,steel zinc,proposed,y
+Moving-trunk and riser clips on the hung angle and the arm post,P-clip + ISO 7380 (angle: M4 rivet nut; post: M6 T-slot nut),M4 x 8 / M6 x 10,17,ISO 7380,A2,proposed,y
+Over-wheel cable guards to the side-panel inner faces,ISO 7380 + M4 blind rivet nut,M4 x 8,6,ISO 7380,A2,proposed,y
+DP-LIFT connector plate to the lift base plate rear edge,ISO 4762 into tapped holes,M5 x 10,2,ISO 4762,A2,proposed,n
+Energy-chain fixed end bracket to the static column -y T-slot,ISO 4762 + M5 T-slot nut,M5 x 10,2,ISO 4762,steel zinc,proposed,n
+Energy-chain end connectors to their brackets (fixed and moving end),ISO 7380 + nut (chain end pins),M4 x 10,4,ISO 7380,A2,proposed,n
+Energy-chain moving end bracket and hung angle under the adapter plate +y edge,ISO 4762 into tapped holes in the adapter plate,M5 x 10,4,ISO 4762,A2,proposed,n

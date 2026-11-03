@@ -883,69 +883,47 @@
  },
  "cables_25mm2": {
   "CBL-P01": {
-   "route_m": 0.236,
+   "route_m": 0.196,
    "direct_m": 0.175,
    "local": true,
    "bend_ok": true,
    "worst_corner": {
     "deg": 90,
     "need_mm": 60.0,
-    "have_mm": 81.0
-   }
-  },
-  "CBL-P02": {
-   "route_m": 0.162,
-   "direct_m": 0.153,
-   "local": true,
-   "bend_ok": false,
-   "worst_corner": {
-    "deg": 90,
-    "need_mm": 60.0,
-    "have_mm": 10.0
+    "have_mm": 64.7
    }
   },
   "CBL-P03": {
-   "route_m": 0.15,
+   "route_m": 0.113,
    "direct_m": 0.11,
    "local": true,
-   "bend_ok": false,
+   "bend_ok": true,
    "worst_corner": {
     "deg": 90,
     "need_mm": 60.0,
-    "have_mm": 55.0
+    "have_mm": 66.3
    }
   },
   "CBL-P04": {
-   "route_m": 0.191,
+   "route_m": 0.212,
    "direct_m": 0.169,
    "local": true,
-   "bend_ok": false,
+   "bend_ok": true,
    "worst_corner": {
     "deg": 90,
     "need_mm": 60.0,
-    "have_mm": 24.0
-   }
-  },
-  "CBL-P05": {
-   "route_m": 0.171,
-   "direct_m": 0.169,
-   "local": true,
-   "bend_ok": false,
-   "worst_corner": {
-    "deg": 90,
-    "need_mm": 60.0,
-    "have_mm": 2.0
+    "have_mm": 63.4
    }
   },
   "CBL-P59": {
-   "route_m": 0.276,
+   "route_m": 0.248,
    "direct_m": 0.201,
    "local": true,
    "bend_ok": true,
    "worst_corner": {
     "deg": 90,
     "need_mm": 60.0,
-    "have_mm": 104.0
+    "have_mm": 62.7
    }
   }
  },
@@ -990,8 +968,16 @@
  "bay_plate_area_m2": 0.0006,
  "seed": [
   {
-   "service_loop_length": 0.517,
-   "service_loop_need": 0.43
+   "energy_chain": {
+    "length": 0.792,
+    "R": 0.075,
+    "stroke": 0.35
+   },
+   "chain_clash": [],
+   "harness_blocked": [
+    "CBL-P02",
+    "CBL-P05"
+   ]
   }
  ],
  "coverage": {
