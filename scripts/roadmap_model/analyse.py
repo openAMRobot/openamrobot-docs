@@ -470,7 +470,12 @@ def main():
                 ("estop_p", "*"), ("tz_", "*"), ("base_cutout", "*"), ("rear_estop_housing", "second_estop"), ("rear_estop_housing", "adapter_plate"),
                 ("second_estop", "adapter_plate"), ("battery_cells", "battery_tray"), ("battery_series_link", "battery_"), ("rear_plate", "rz_"), ("battery_cells", "harness"), ("bay_plate", "lidar_support"), ("bay_plate", "electronics_bracket"),
                 ("bay_plate", "compute"), ("bay_plate", "base_controller"), ("lift_node", "lift_column"),
-                ("bay_", "electronics_bracket"), ("compute", "electronics_bracket"), ("base_controller", "controller_plate")]  # bracket shortening: own issue
+                ("bay_", "electronics_bracket"), ("compute", "electronics_bracket"), ("base_controller", "controller_plate"),  # bracket shortening: own issue
+                # mounting contacts of the 3 Nov 2026 layout (rear_power.py, front_bay.py side plates, harness.py channels, flag_guide.py)
+                ("rp_fbb_shelf", "rz_fbb"), ("rp_fba_shelf", "rz_fba"), ("rp_bus_standoffs", "rz_pwr017_1"), ("rp_bus_standoffs", "rear_plate"),
+                ("rp_bms_bracket", "rz_bms"), ("rp_busn_bracket", "rz_pwr017_2"), ("rp_corner_plate_l", "rz_"), ("side_plates", "bay_"),
+                ("side_plates", "castor_"), ("ch_branch", "ch_central"), ("ch_branch", "wheel_guard"), ("flag_rod_guide", "flag_rod"),
+                ("flag_rod_guide", "lift_column")]
 
     def is_declared(a, b):
         for x, y in declared:

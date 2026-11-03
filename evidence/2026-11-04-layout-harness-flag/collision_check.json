@@ -1,0 +1,8 @@
+{
+ "cables": 61,
+ "busbars": 7,
+ "through_parts": [],
+ "through_panels_without_opening": [],
+ "bends_below_minimum": [],
+ "note": "static parts at bp000 and L1000; moving sections and the energy chain are checked by check_roadmap.py (lift rules) and analyse.py"
+}

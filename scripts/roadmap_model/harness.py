@@ -303,6 +303,9 @@ def build_model(ctx):
         y0, y1 = sorted([s * (abs(lo[1] if s > 0 else hi[1]) + 0.005), s * 0.290])
         keep.append({"id": "wheel_zone_" + side, "lo": [lo[0] - 0.025, y0, 0.0], "hi": [hi[0] + 0.025, y1, guards[0]["z"]],
                      "why": "drive wheel and its side zone up to the wheel guard"})
+    # LiDAR scan plane 222.05 mm +- 5 mm in the open sector (+-95 deg from lidar_link at x 0.330): no cable or tie in it
+    keep.append({"id": "lidar_scan_band", "lo": [0.0, -0.295, 0.2120], "hi": [0.400, 0.295, 0.2325], "sector": {"x": 0.330, "y": 0.0, "deg": 95.0},
+                 "members": ["lidar"], "why": "RPLIDAR S3 scan plane +-5 mm (and 5 mm margin) in the open sector"})
     mf = geo.get("tz_metal_free_zone")
     if mf:
         b = prim_box(mf["prims"][0])
@@ -689,6 +692,10 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
     for k in keep:
         g = np.zeros(V.n, bool)
         g[V.slab(k["lo"], k["hi"])] = True
+        if k.get("sector"):   # only the cells inside the bearing sector
+            ii_, jj_, _ = np.indices(V.n)
+            xx, yy = LO[0] + (ii_ + .5) * RES, LO[1] + (jj_ + .5) * RES
+            g &= np.abs(np.degrees(np.arctan2(yy - k["sector"]["y"], xx - k["sector"]["x"]))) <= k["sector"]["deg"]
         kzs.append((k, g))
     pas = np.zeros(V.n, bool)            # declared protected passages (channels, over-wheel guards)
     for p_ in PASSAGES:

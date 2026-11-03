@@ -722,7 +722,7 @@ def main():
     h_free = 231 - 120
     opt = {"A": {"part": "Gigavac GX11CAC", "dims": [73, 45, 76], "fits": len(k1) == 2, "height_free_mm": h_free},
            "B_tesys": {"part": "Schneider TeSys D LC1D80BD", "dims": [85, 127, 186], "fits": False, "nofit": ["186 mm deep (mounted height) > %d mm under the FB-B shelf and > 170 mm to the cover" % h_free]},
-           "B_siemens": {"part": "Siemens 3RT2045", "dims": [70, 140, 152], "fits": False, "nofit": ["152 mm deep > %d mm under the FB-B shelf" % h_free]}}
+           "B_siemens": {"part": "Siemens 3RT2 size S3", "dims": [70, 140, 152], "fits": False, "nofit": ["3RT2045: 152 mm deep > %d mm under the FB-B shelf" % h_free]}}
 
     # ---------------- design-intent parts (from the CAD fork index), drawn as envelopes of their placement
     di_comp = {}

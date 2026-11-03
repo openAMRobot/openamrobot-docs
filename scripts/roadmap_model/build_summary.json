@@ -777,7 +777,7 @@
    ]
   },
   "B_siemens": {
-   "part": "Siemens 3RT2045",
+   "part": "Siemens 3RT2 size S3",
    "dims": [
     70,
     140,
@@ -785,7 +785,7 @@
    ],
    "fits": false,
    "nofit": [
-    "152 mm deep > 111 mm under the FB-B shelf"
+    "3RT2045: 152 mm deep > 111 mm under the FB-B shelf"
    ]
   }
  },
@@ -896,10 +896,6 @@
     {
      "part": "rp_bus_standoffs",
      "gap_mm": 18.0
-    },
-    {
-     "part": "rp_f0_spacer",
-     "gap_mm": 18.6
     }
    ]
   },

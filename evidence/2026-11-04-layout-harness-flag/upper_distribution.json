@@ -1,0 +1,113 @@
+{
+ "adopted": false,
+ "decision": "No upper distribution enclosure: every upper load is fed directly from the base. The documented upper loads are small (head light 0.32 A at 24 V, Getac PD at most 30 W through the base USB-PD module); the arm power (2 x 6 mm\u00b2, F-ARM 30 A) and the hardwired second E-stop loop pass the chain in any case, so an enclosure would not remove the larger cables from the chain; it would add a DC/DC converter and a hub (heat and mass) on the moving stage between the arm bases. USB lengths along the routes (lift travel included in the chain length, 10 % service margin): the ZED Mini (CBL-P49) and the wrist-camera leads (CBL-P52, CBL-P53) reach or exceed the 3 m working limit of a passive USB 3 cable, so they are specified as active (repeater) USB 3 cables, powered from the base hub (verify with Stereolabs and the gripper-camera supplier); a powered USB 3 hub on the moving stage is the fallback if active cables are not accepted. The Getac USB-C PD cable stays within the 4 m Type-C limit. Revisit if the wrist-camera or arm-logic currents (verify) need a local supply.",
+ "chain_fill_pct": 22.1,
+ "chain_cables": 10,
+ "chain_length_m": 0.792,
+ "usb": [
+  {
+   "id": "CBL-P49",
+   "function": "USB 3 Type-C to the ZED Mini (via the service loop)",
+   "route_m": 3.072,
+   "with_service_margin_m": 3.379,
+   "connectors": "USB-A / USB-C",
+   "limit_m": 3.0,
+   "ok": false
+  },
+  {
+   "id": "CBL-P52",
+   "function": "Wrist camera left (to the gripper)",
+   "route_m": 2.742,
+   "with_service_margin_m": 3.016,
+   "connectors": "USB-A / gripper camera",
+   "limit_m": 3.0,
+   "ok": false
+  },
+  {
+   "id": "CBL-P53",
+   "function": "Wrist camera right (to the gripper)",
+   "route_m": 2.892,
+   "with_service_margin_m": 3.181,
+   "connectors": "USB-A / gripper camera",
+   "limit_m": 3.0,
+   "ok": false
+  },
+  {
+   "id": "CBL-P23",
+   "function": "USB-C PD to the Getac ZX80",
+   "route_m": 3.306,
+   "with_service_margin_m": 3.636,
+   "connectors": "USB-C / USB-C",
+   "limit_m": 4.0,
+   "ok": true
+  },
+  {
+   "id": "CBL-P58",
+   "function": "J401 USB 3 to the hub",
+   "route_m": 0.585,
+   "with_service_margin_m": 0.644,
+   "connectors": "USB-A / USB-B",
+   "limit_m": 3.0,
+   "ok": true
+  }
+ ],
+ "loads": [
+  {
+   "device": "Head light Falcon FLDL-i150x15-W",
+   "supply": "24 V (F-PANEL via the lift node low-side switch)",
+   "operating": "0.32 A at 24 V (7.7 W)",
+   "peak": "verify (inrush)",
+   "source": "docs general-arrangement (P-03 rev20.2 values): 0.32 A at 24 V",
+   "cable": "CBL-P24"
+  },
+  {
+   "device": "Getac ZX80 USB-C PD",
+   "supply": "24 V into the USB-PD module PWR-008 in the base, USB-C PD to the tablet",
+   "operating": "15 to 30 W PD (module rating)",
+   "peak": "30 W PD; 3 A F-PANEL fuse on the 24 V side",
+   "source": "BOM Issue 7.14 PWR-008 (24 V in, USB-C PD 15 to 30 W); E-01 rev1.6 F-PANEL 3 A",
+   "cable": "CBL-P23"
+  },
+  {
+   "device": "ZED Mini",
+   "supply": "USB 3 bus power from the powered hub CMP-009",
+   "operating": "verify (Stereolabs datasheet: USB bus powered)",
+   "peak": "verify",
+   "source": "Stereolabs ZED Mini datasheet (not in the repositories): verify",
+   "cable": "CBL-P49"
+  },
+  {
+   "device": "Wrist cameras (2)",
+   "supply": "USB from the hub through the matched gripper-camera harness",
+   "operating": "verify",
+   "peak": "verify",
+   "source": "BOM Issue 7.14 ARM-010 (matched harness); no current documented",
+   "cable": "CBL-P52, CBL-P53"
+  },
+  {
+   "device": "Arms (logic and motors), 2",
+   "supply": "SAFE bus F-ARM-L / F-ARM-R 30 A each, 6 mm\u00b2",
+   "operating": "verify (OpenArm documentation)",
+   "peak": "fuse 30 A per arm",
+   "source": "E-01 rev1.6 fuse schedule (F-ARM-L, F-ARM-R 30 A)",
+   "cable": "CBL-P14, CBL-P15"
+  },
+  {
+   "device": "Arm USB-to-CAN-FD adapters (2)",
+   "supply": "USB bus power in the base (right side zone)",
+   "operating": "verify",
+   "peak": "verify",
+   "source": "BOM Issue 7.14 ARM-006",
+   "cable": "CBL-P50, CBL-P51"
+  },
+  {
+   "device": "Second E-stop (2NC)",
+   "supply": "hardwired safety loop to the PNOZ s3 (series with the base E-stop)",
+   "operating": "safety loop current per PNOZ s3",
+   "peak": "-",
+   "source": "E-01 rev1.6; SAFETY-PROCUREMENT",
+   "cable": "CBL-P33"
+  }
+ ],
+ "estop": "The second E-stop stays hardwired (2NC loop CBL-P33 in series with the base E-stop into the PNOZ s3); never USB or software."
+}

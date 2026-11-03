@@ -134,7 +134,7 @@ fs.mkdirSync(OUT, {recursive: true});
                       ['#27ae60', '5 V and 3.3 V'], ['#2980b9', 'Signal: CAN, USB, SPI, sensor lines, safety loops']];
         let y0 = H - 18 - cats.length * 18;
         g.fillStyle = '#1d2733'; g.font = '600 13px sans-serif'; g.fillText('Cable categories', W + 14, y0 - 8);
-        cats.forEach((c, i) => { g.fillStyle = c[0]; g.fillRect(W + 16, y0 + i * 18 - 10, 22, 8); g.fillStyle = '#1d2733'; g.font = '12px sans-serif'; g.fillText(c[1], W + 46, y0 + i * 18 - 2); });
+        cats.forEach((c, i) => { g.fillStyle = c[0]; g.fillRect(W + 16, y0 + 12 + i * 18 - 10, 22, 8); g.fillStyle = '#1d2733'; g.font = '12px sans-serif'; g.fillText(c[1], W + 46, y0 + 12 + i * 18 - 2); });
       }
       renderer.dispose();
       return cv.toDataURL('image/png');

@@ -61,7 +61,6 @@ MOUNTS = {
     "rp_fbb_shelf": ("FB-B shelf (L3) on four posts from the plate", [-312, -183], [-85, 85], [231, 234], "5052 aluminium 3 mm (more than 20 mm above the receiver); posts POM where they meet the plate"),
     "rp_fba_shelf": ("FB-A shelf on the rear panel and one post", [-364, -316], [-13, 139], [205, 208], "5052 aluminium 3 mm, bracket to the rear panel; post POM"),
     "rp_bus_standoffs": ("BUS+ insulating standoffs (2), plate to block", [-290, -270], [-20, 10], [120, 156], "POM, M6 (verify)"),
-    "rp_f0_spacer": ("F0 holder fixing strip", [-188, -137], [-90, 69], [117, 120], "G10 (part of the plate), PA66 screws"),
     "rp_bms_bracket": ("BMS clamp strips on the right side panel (2), PA66 liner", [-275, -127], [-290, -287], [96, 170], "aluminium strip with PA66 liner; rivet nuts in the side panel"),
     "rp_busn_bracket": ("BUS- upright bracket on the rear panel / base sheet", [-330, -286], [-162, -118], [96, 100], "aluminium angle 2 mm"),
     "rp_corner_plate_l": ("Left rear corner mounting plate (KCHG, F-CHG, brake suppression)", [-352, -278], [98, 163], [54, 57], "aluminium 3 mm on the base sheet (outside the receiver margin)"),
@@ -151,7 +150,7 @@ def fit_check(obstacles=None, receiver=None, trays=None):
         return float(np.linalg.norm(d)) * 1000
 
     allowed = {("rp_fbb_shelf", "rz_fbb"), ("rp_fba_shelf", "rz_fba"), ("rp_bus_standoffs", "rz_pwr017_1"), ("rp_bus_standoffs", "rear_plate"),
-               ("rp_f0_spacer", "rz_f0"), ("rp_f0_spacer", "rear_plate"), ("rear_plate", "rz_f0"), ("rear_plate", "rz_k1k2_1"), ("rear_plate", "rz_k1k2_2"),
+               ("rear_plate", "rz_f0"), ("rear_plate", "rz_k1k2_1"), ("rear_plate", "rz_k1k2_2"),
                ("rp_bms_bracket", "rz_bms"), ("rp_busn_bracket", "rz_pwr017_2"), ("rp_corner_plate_l", "rz_kchg"), ("rp_corner_plate_l", "rz_fchg")}
     plate_tray_ok = ("rear_plate", "left_tray"), ("rear_plate", "right_tray")   # 2 mm, recorded A1 plate outline between the trays
     ks = sorted(B)
