@@ -10,7 +10,7 @@ conflicts:
   - {item: "MEC-011 quantity", a: "BOM Issue 7.14 MEC-011 qty 4", b: "Mechanical sheet qty 2", status: "open: BOM owner"}
   - {item: "HAR-012 / HAR-013", a: "drop counts as listed in BOM 7.14", b: "swapped against the wire list", status: "open: BOM owner"}
   - {item: "HAR-001 F0 rating", a: "HAR-001 says F0 100 A", b: "F0 110 A Class T (E-01 rev1.6, PWR-003)", status: "open: BOM owner"}
-  - {item: "CBL-010 wording", a: "CBL-010 still says chest E-stop", b: "the term is retired: second E-stop on the static lift column", status: "open: BOM owner"}
+  - {item: "CBL-010 wording", a: "CBL-010 still says chest E-stop", b: "the term is retired: second E-stop on the moving adapter plate", status: "open: BOM owner"}
   - {item: "Brake supply", a: "BOM COIL row: brakes on RSD-100B-24", b: "E-01 rev1.6: brakes on the SAFE 24 V DDR-240B-24 (E-stop engages the brakes)", status: "E-01 wins; BOM to follow"}
   - {item: "NAV-001 distributor", a: "one distributor in the BOM supplier column", b: "a different distributor in the purchase view", status: "open (names not published)"}
   - {item: "F-LIFT cable", a: "E-01 rev1.6 wire table: 2.5 mm²", b: "E-01 fuse schedule: 1.5 mm²", status: "open: the model uses 2.5 mm²"}

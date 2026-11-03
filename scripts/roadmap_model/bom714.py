@@ -38,13 +38,13 @@ ADD = [
     row("PWR-032", "Power", "3.3 V regulator for the four MB7060 sensors", "TBD", "3.3 V regulator, at least 300 mA, fed from the 5 V rail", 1, "Specified; SKU pending", pkg="BUY-20"),
 ]
 EDIT = {
-    "SAF-001": {"Qty": "2", "Component / assembly": "E-stop button assemblies: base front and static lift column",
-                "Model / order code": "XB4BS8445 plus ZBE-102 (2NC + 1NO), one on the base front panel, one on the rear face of the static lift column"},
+    "SAF-001": {"Qty": "2", "Component / assembly": "E-stop button assemblies: base front and on top of the moving adapter plate",
+                "Model / order code": "XB4BS8445 plus ZBE-102 (2NC + 1NO), one on the base front panel, one on top of the moving adapter plate behind the arm post, button up, cable through the lift cable chain (owner decision of 2 Nov 2026, register SAFETY-PROCUREMENT)"},
     "ARM-008": {"Qty": "0", "Selection status": "Withdrawn (P-03 rev20.0 item 24)",
-                "Component / assembly": "Kit E-stop (ESTOP-KIT), withdrawn: the second robot button is SAF-001 on the static lift column"},
+                "Component / assembly": "Kit E-stop (ESTOP-KIT), withdrawn: the second robot button is SAF-001 on the moving adapter plate"},
     "CTL-002": {"Qty": "0"},
     "AUX-001": {"Component / assembly": "Head light", "Manufacturer": "Falcon Illumination",
-                "Model / order code": "FLDL-i150x15-W, 158 x 17 x 20 mm, 24 V 0.32 A, M8 4-pin; flat on an aluminium cooling plate, 30 mm below the Getac",
+                "Model / order code": "FLDL-i150x15-W, 158 x 17 x 20 mm, 24 V 0.32 A, M8 4-pin; flat on an aluminium cooling plate, 10 mm below the Getac (owner decision of 2 Nov 2026, register TABLET-MOUNT)",
                 "Selection status": "Selected (P-03 rev20.0 item 24)"},
     "MEC-018": {"Model / order code": "DOLD Hexalift V4 350, BS-HM240G350530-MFF24; 350 mm stroke; 530 mm retracted; 880 mm extended; 24 V; 800 N push; 400 N pull; 18 mm/s; 11.7 kg catalogue; 240 mm side fore-aft; written 800 N power-off holding confirmation received, delivered-unit holding test open"},
     "MEC-019": {"Qty": "1", "Model / order code": "6082-T6 plate 360 x 230 x 10 mm, positions bp000 and bp050; column to plate 4 x M8 DIN 7500 countersunk from below, at least 20 mm engagement; plate to deck 4 x M8 class 8.8 on a 190 x 300 mm pattern through the deck into the frame; plate not tapped"},

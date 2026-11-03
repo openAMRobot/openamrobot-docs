@@ -1475,7 +1475,9 @@ def check_model_sources(root, html, err):
 REFERENCE_PAGES = ["general-arrangement.md", "index.md", "hardware-architecture.md", "mass-and-stability.md"]
 SUPERSEDED_REFERENCE = [
     (r"static (lift )?column", "second E-stop is on top of the moving adapter plate (SAFETY-PROCUREMENT)", r"E-stop"),
-    (r"\b30 mm gap\b", "light-to-Getac gap is 10 mm (TABLET-MOUNT)", None),
+    (r"\b30 mm (gap|below the Getac)\b", "light-to-Getac gap is 10 mm (TABLET-MOUNT)", None),
+    (r"outside the lift cable chain", "second E-stop cable runs through the lift cable chain", None),
+    (r"rear face of the arm post", "second E-stop is on top of the moving adapter plate", r"E-stop"),
     (r"\b42 mm ahead of\b", "ZED Mini lens is 57 mm ahead of the arm mount point", None),
     (r"\bin one row\b", "battery is proposed as 4 + 4 cells in two trays", None),
 ]
@@ -1486,10 +1488,9 @@ def superseded_reference_hits(text):
     for line in text.splitlines():
         for pat, why, near in SUPERSEDED_REFERENCE:
             for m in re.finditer(pat, line):
-                if near:
-                    window = line[max(0, m.start() - 160):m.end() + 40]
-                    if not re.search(near, window) or re.search(r"supersed", window):
-                        continue
+                window = line[max(0, m.start() - 160):m.end() + 80]
+                if re.search(r"supersed", window, re.I) or (near and not re.search(near, window)):
+                    continue
                 hits.append("%s: %s" % (m.group(0), why))
     return hits
 
@@ -1504,6 +1505,15 @@ def check_reference_pages(root, err):
             continue
         for h in superseded_reference_hits(text):
             err("reference/openamrobot-2/" + name, "superseded value: " + h)
+    # the generated public roadmap pages (owner review of #68): same superseded values, visible text and data
+    for name in ("hardware.html", "robot.html", "index.html", "progress.html"):
+        try:
+            with open(os.path.join(root, name), encoding="utf-8") as f:
+                text = f.read()
+        except OSError:
+            continue
+        for h in sorted(set(superseded_reference_hits(text.replace("<", "\n<")))):
+            err(name, "superseded value: " + h)
 
 
 def main():

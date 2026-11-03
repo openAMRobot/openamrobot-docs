@@ -167,12 +167,15 @@ class ReferencePagesCurrent(unittest.TestCase):
 
     def test_superseded_values_fail(self):
         for text in ("second E-stop on the rear face of the static lift column", "head light, a 30 mm gap, Getac",
-                     "lens 42 mm ahead of and 223 mm above", "eight upright cells in one row across the robot"):
+                     "lens 42 mm ahead of and 223 mm above", "eight upright cells in one row across the robot",
+                     "wired outside the lift cable chain", "light flat on a cooling plate, 30 mm below the Getac",
+                     "second E-stop on the rear face of the arm post"):
             self.assertTrue(C.superseded_reference_hits(text), text)
 
     def test_current_values_pass(self):
         for text in ("second E-stop on top of the moving adapter plate", "a 10 mm gap", "lens 57 mm ahead of",
-                     "supersedes the static-column position of the E-stop", "lift stop sensors on the rear face of the static DOLD column"):
+                     "supersedes the static-column position of the E-stop", "lift stop sensors on the rear face of the static DOLD column",
+                     "Battery (25 to 29 Oct): cells in one row; superseded 2 Nov 2026 by two trays"):
             self.assertEqual(C.superseded_reference_hits(text), [], text)
 
 
