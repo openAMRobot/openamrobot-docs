@@ -272,26 +272,27 @@ def lift_rear_html(an):
 
 
 def rear_a9_html():
-    """A9: the GI-080 attempts, the 25 mm² cable rules, the two battery trays and the decided GI-025 fix."""
+    """Rear power module (rear_power.py): levels, the 25 mm² main path and busbars, the adaptations of the owner report, the trays."""
     bs = json.load(open(os.path.join(HERE, "build_summary.json")))
     g = bs.get("gi080", {})
-    step = __import__("rear_layout").gi080_step_result
-    rows = [["%d" % st["option"], E(st["what"]), E(step(st))] for st in g.get("steps", [])]
-    t = table(["Option (in order; 1 to 3 A9, 4 and 5 independent review, all proposed)", "What was tried", "Result"], rows)
-    c = bs.get("cables_25mm2", {})
-    t2 = table(["Cable (25 mm²)", "Route (mm)", "Straight (mm)", "Bend radius 60 mm"],
-               [[E(k), "%.0f" % (v["route_m"] * 1000), "%.0f" % (v["direct_m"] * 1000),
-                 "ok" if v["bend_ok"] else E("%.0f mm straight cable at a %d deg corner, %.0f mm needed" % (v["worst_corner"]["have_mm"], v["worst_corner"]["deg"], v["worst_corner"]["need_mm"]))]
-                for k, v in sorted(c.items())])
+    lv = g.get("levels", {})
+    t = table(["Path element", "Kind", "Length (mm)", "90 degree bends", "Section / legs"],
+              [[E(m["id"]), E(m["kind"]), "%.0f" % m["polyline_mm"], str(m["bends_90"]), E(m.get("section", "legs " + " / ".join("%.0f" % v for v in m.get("legs_mm", []))))]
+               for m in g.get("main_path", [])])
+    ta = table(["Part", "Owner report rev 2", "Model", "Measured reason"], [[E(a["part"]), E(a["owner_report"]), E(a["model"]), E(a["reason"])] for a in g.get("adaptations", [])])
+    fit = g.get("fit", {})
     tc = bs.get("battery_trays", {})
-    return ("<h3>Rear power layout (A9)</h3><p>Rules: nothing on top of the cells; F0 within about 150 mm cable length of battery +; the BMS close to the "
-            "cells; bend radius at least 60 mm on 25 mm² cables. The options were tried in order and the first that fits is kept. Result: %s (%s).</p>" % (
-                "every part placed" if not g.get("final_nofit") else "no option fits, " + E(", ".join(g["final_nofit"])) + " not placed", gi("Rear layout (A1)")) + t +
-            "<p>25 mm² runs in the rear bay (%s):</p>" % gi("Rear layout (A9)") + t2 +
-            "<p>Battery: two removable trays (4 + 4 LF105), joined by the keyed, touch-protected main connector PWR-018 on the 8S series link; this "
-            "replaces the one removable battery assembly of B-02 rev18.10 (listed under conflicts for the battery owner). The cells go in from above with "
-            "the cover off (%s); the power plate comes out without removing the cells after PWR-018 is unplugged; nothing sits on the cells (%s).</p>"
-            "<p>Side-panel return flanges: decided fix (A9), notch the flanges at x -0.275 to -0.133 m; CAD pending (%s).</p>" % (
+    return ("<h3>Rear power module (rear power owner report rev 2)</h3><p>Explicit layout in <code>scripts/roadmap_model/rear_power.py</code> (proposed; "
+            "catalogue outlines to verify). Levels: receiver top %s mm, %s mm gap (owner decision of 3 Nov 2026), G10 power plate underside %s mm; stud and "
+            "busbar plane %s mm; FB-B shelf %s mm; FB-A shelf %s mm at the rear panel; cover %s mm in the flat part. Everything within 20 mm of the receiver is "
+            "non-metallic (warning to verify with TZBOT): %s. Parts placed: %s; clashes below 5 mm: %s.</p>" % (
+                lv.get("receiver_top_mm"), lv.get("gap_mm"), lv.get("plate_underside_mm"), lv.get("main_line_mm"), lv.get("fbb_shelf_mm"), lv.get("fba_shelf_mm"),
+                lv.get("cover_flat_mm"), E(", ".join("%s %.1f mm" % (n["part"], n["gap_mm"]) for n in fit.get("within_20mm_of_receiver", []))),
+                "all" if not g.get("final_nofit") else E(", ".join(g["final_nofit"]) + " not placed"), E(", ".join(fit.get("clashes", [])) or "none")) + t +
+            "<p>Adaptations of the owner report, each with its measured reason:</p>" + ta +
+            "<p>Battery: two removable trays (4 + 4 LF105), joined by the keyed, touch-protected main connector PWR-018 on the 8S series link; the "
+            "cells go in from above with the cover off (%s); the trays come out after PWR-018 and the tray leads (DP-TRAY-L, DP-TRAY-R) are unplugged; nothing "
+            "sits on the cells (%s).</p><p>Side-panel return flanges: decided fix (A9), notch the flanges at x -0.275 to -0.133 m; CAD pending (%s).</p>" % (
                 "yes" if tc.get("cells_from_above") else "no", "yes" if tc.get("nothing_on_cells") else "no", gi("Rear side pockets")))
 
 

@@ -118,7 +118,7 @@ fs.mkdirSync(OUT, {recursive: true});
       // legend
       g.fillStyle = '#f8f9fa'; g.fillRect(W, 0, LW, H);
       g.fillStyle = '#1d2733'; g.font = '600 16px sans-serif'; g.fillText('Legend', W + 14, 26);
-      const rowH = Math.min(22, (H - 50) / Math.max(1, marks.length));
+      const rowH = Math.min(22, (H - 170) / Math.max(1, marks.length));
       const fs = Math.max(10, Math.min(13, rowH - 6));
       marks.forEach((m, i) => {
         const y = 48 + i * rowH;
@@ -129,6 +129,13 @@ fs.mkdirSync(OUT, {recursive: true});
         if (t !== m.text) t = t.slice(0, -1) + '…';
         g.fillText(t, W + 40, y);
       });
+      if (v.categories !== false) {  // cable-category colour key (harness domains of parts.yaml)
+        const cats = [['#c0392b', 'Battery and BAT bus (25 / 10 / 6 mm², busbars)'], ['#e67e22', 'SAFE bus and SAFE 24 V'], ['#f1c40f', 'Regulated 24 V (always on)'],
+                      ['#27ae60', '5 V and 3.3 V'], ['#2980b9', 'Signal: CAN, USB, SPI, sensor lines, safety loops']];
+        let y0 = H - 18 - cats.length * 18;
+        g.fillStyle = '#1d2733'; g.font = '600 13px sans-serif'; g.fillText('Cable categories', W + 14, y0 - 8);
+        cats.forEach((c, i) => { g.fillStyle = c[0]; g.fillRect(W + 16, y0 + i * 18 - 10, 22, 8); g.fillStyle = '#1d2733'; g.font = '12px sans-serif'; g.fillText(c[1], W + 46, y0 + i * 18 - 2); });
+      }
       renderer.dispose();
       return cv.toDataURL('image/png');
     }, v);
