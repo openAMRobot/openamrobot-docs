@@ -1,7 +1,7 @@
 {
  "fingerprint": {
-  "model/model.js": "6a9231f552dc47d2f084a04e3c90900b0c9694c58959bb3c72b5f090421ef275",
-  "model/exploded.json": "087aed36459df91c9c0bfb309adbf7c8a2f6b5f5434b660f7324e303e66ab05e",
+  "model/model.js": "2e347154b5beaef43017ccf1a586118ebf36c19bb9f029511e1a2a9d1bd231c8",
+  "model/exploded.json": "92875a08d9d9985cdb6d627ccb7c1bc65ec1e4f876681f18bc53c6d964d31f43",
   "robot.html": "4affc8b72aa06e39eb80f64d8971f9f2f8fc703126ca17231a146cc7127c8839",
   "exploded.html": "972bbdd53fade0e3fcce638a1659ee750129cb9f743ec4280421134c6da0408a"
  },
@@ -31,7 +31,7 @@
   ]
  },
  "exploded_home_offset_m": 0,
- "parts": 144,
+ "parts": 149,
  "mismatches": [],
  "errors": [],
  "rows": [
@@ -2154,8 +2154,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 60,
-   "exploded_meshes": 60,
+   "robot_meshes": 415,
+   "exploded_meshes": 415,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2171,8 +2171,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 26,
-   "exploded_meshes": 26,
+   "robot_meshes": 274,
+   "exploded_meshes": 274,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2188,8 +2188,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 24,
-   "exploded_meshes": 24,
+   "robot_meshes": 222,
+   "exploded_meshes": 222,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2205,8 +2205,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 6,
-   "exploded_meshes": 6,
+   "robot_meshes": 56,
+   "exploded_meshes": 56,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2222,8 +2222,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 162,
-   "exploded_meshes": 162,
+   "robot_meshes": 922,
+   "exploded_meshes": 922,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2239,8 +2239,93 @@
     0,
     0.45
    ],
-   "robot_meshes": 29,
-   "exploded_meshes": 29,
+   "robot_meshes": 197,
+   "exploded_meshes": 197,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "wheel_guards",
+   "part": "wheel_guard_left",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 9,
+   "offset": [
+    0,
+    0,
+    0.45
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "wheel_guards",
+   "part": "wheel_guard_right",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 9,
+   "offset": [
+    0,
+    0,
+    0.45
+   ],
+   "robot_meshes": 2,
+   "exploded_meshes": 2,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "dp_lift",
+   "part": "dp_lift",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.2,
+    0.1
+   ],
+   "robot_meshes": 3,
+   "exploded_meshes": 3,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "lift_energy_chain",
+   "part": "lift_energy_chain",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.2,
+    0.1
+   ],
+   "robot_meshes": 25,
+   "exploded_meshes": 25,
+   "same_transform": true,
+   "hidden_option": false,
+   "mismatch": []
+  },
+  {
+   "comp": "lift_energy_chain",
+   "part": "lift_energy_chain_moving",
+   "robot_drawn": true,
+   "exploded_drawn": true,
+   "stage": 8,
+   "offset": [
+    0,
+    -0.2,
+    0.1
+   ],
+   "robot_meshes": 3,
+   "exploded_meshes": 3,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2324,15 +2409,15 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 2,
-   "exploded_meshes": 2,
+   "robot_meshes": 7,
+   "exploded_meshes": 7,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
   },
   {
    "comp": "harness_upper",
-   "part": "harness_r24_col",
+   "part": "harness_safe_mov",
    "robot_drawn": true,
    "exploded_drawn": true,
    "stage": 8,
@@ -2341,8 +2426,8 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 6,
-   "exploded_meshes": 6,
+   "robot_meshes": 42,
+   "exploded_meshes": 42,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2358,8 +2443,8 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 12,
-   "exploded_meshes": 12,
+   "robot_meshes": 26,
+   "exploded_meshes": 26,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2375,8 +2460,8 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 31,
-   "exploded_meshes": 31,
+   "robot_meshes": 42,
+   "exploded_meshes": 42,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2392,8 +2477,8 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 35,
-   "exploded_meshes": 35,
+   "robot_meshes": 125,
+   "exploded_meshes": 125,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2409,8 +2494,8 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 5,
-   "exploded_meshes": 5,
+   "robot_meshes": 15,
+   "exploded_meshes": 15,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2426,15 +2511,15 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 10,
-   "exploded_meshes": 10,
+   "robot_meshes": 18,
+   "exploded_meshes": 18,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
   },
   {
    "comp": "harness_upper",
-   "part": "service_loop",
+   "part": "harness_sleeve",
    "robot_drawn": true,
    "exploded_drawn": true,
    "stage": 8,
@@ -2443,8 +2528,8 @@
     -0.25,
     0.1
    ],
-   "robot_meshes": 4,
-   "exploded_meshes": 4,
+   "robot_meshes": 14,
+   "exploded_meshes": 14,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []

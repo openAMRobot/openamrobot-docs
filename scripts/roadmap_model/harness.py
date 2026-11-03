@@ -162,15 +162,15 @@ def mesh_points(v, f, step=0.003):
 
 def wheel_guards(G):
     """Over-wheel cable guards (new parts, CAD change): a 2 mm aluminium tray on the side-panel inner face above
-    each drive wheel, 8 mm above the tyre top, from x -0.140 to 0.140; the side trunks cross the drive section on it."""
+    each drive wheel, 8 mm above the tyre top, from x -0.130 to 0.130; the side trunks cross the drive section on it."""
     out = []
     for side, s in (("left", 1), ("right", -1)):
         lo, hi = np.array(G["hub_motor_wheel_" + side]["v"]).min(0), np.array(G["hub_motor_wheel_" + side]["v"]).max(0)
         z0 = hi[2] + 0.008
         y_in = 0.236
         out.append({"id": "wheel_guard_" + side, "side": side, "z": round(z0, 4),
-                    "plate": [[-0.140, min(s * y_in, s * 0.287), z0], [0.140, max(s * y_in, s * 0.287), z0 + 0.002]],
-                    "lip": [[-0.140, min(s * y_in, s * (y_in + 0.002)), z0], [0.140, max(s * y_in, s * (y_in + 0.002)), z0 + 0.022]]})
+                    "plate": [[-0.130, min(s * y_in, s * 0.287), z0], [0.130, max(s * y_in, s * 0.287), z0 + 0.002]],
+                    "lip": [[-0.130, min(s * y_in, s * (y_in + 0.002)), z0], [0.130, max(s * y_in, s * (y_in + 0.002)), z0 + 0.022]]})
     return out
 
 
@@ -617,6 +617,9 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
     results = {}
     cached = cached or {}
     for c in cables:
+        if c["id"] in cached and isinstance(cached[c["id"]], dict):   # blocked in the last build with the same inputs
+            results[c["id"]] = {"ok": False, "why": cached[c["id"]]["blocked"]}
+            continue
         if c["id"] in cached:   # same inputs as the last build (harness_routes.json input_hash): reuse the route
             pts = cached[c["id"]]
             cells = [V.cell(q) for _, q in sample(pts, RES / 2)]
@@ -698,9 +701,9 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
 
 # ---------------------------------------------------------------- ties, branches, grommets
 def nearest_struct(V, d_struct, p):
-    """Nearest structure cell to p (name and point), searched in a 50 mm cube."""
+    """Nearest structure cell to p (name and point), searched in an 80 mm cube."""
     c = V.cell(p)
-    rr = 10
+    rr = 16
     sl = tuple(slice(max(0, c[i] - rr), min(V.n[i], c[i] + rr + 1)) for i in range(3))
     sub = V.struct[sl]
     if not sub.any():
@@ -789,7 +792,8 @@ def tie_points(V, d_struct, routes, branches, own_of=None):
                 return
             if fallback_kind:
                 s, p = min(sm, key=lambda q: abs(q[0] - prefer))
-                mine.append((s, new_tie(p, kind=fallback_kind, on=(own_of or {}).get(cid))))
+                ends = (own_of or {}).get(cid) or (None, None)
+                mine.append((s, new_tie(p, kind=fallback_kind, on=ends[0] if s < L / 2 else ends[1])))
 
         if L > 2 * NEAR:
             take(0.008, NEAR, 0.025, "strain relief at the connector")
@@ -1112,7 +1116,13 @@ def run(ctx, F, cache=None):
         m["harness"] = harness_of(m["a"], m["b"], [p for s in m["sections"] if s["kind"] == "base" for p in s["pts"]], tier_ends)
     hmap = {cid: m["harness"] for cid, m in meta.items() if cid in routes}
     br = branch_points(routes, hmap)
-    ties = tie_points(V, d_struct, routes, br, {c: (IDT.get(meta[c]["a"], meta[c]["a"])) for c in routes})
+    ends_of = {}
+    for c_ in routes:
+        a_, b_ = meta[c_]["a"], meta[c_]["b"]
+        if meta[c_].get("swap"):
+            a_, b_ = b_, a_
+        ends_of[c_] = (IDT.get(a_, a_), IDT.get(b_, b_) if b_ not in UP_MOV and b_ not in UP_COL else "deck exit grommet frame")
+    ties = tie_points(V, d_struct, routes, br, ends_of)
     # upper-body clips: sleeve and column on the static column T-slots, moving trunk on the hung angle, risers on the post
     for cid, m in meta.items():
         for s in m["sections"]:
@@ -1138,7 +1148,7 @@ def run(ctx, F, cache=None):
             dps.append("DP-FT (front tier: pluggable connector at the tier part)")
         if {m["a"], m["b"]} & {"battery+", "battery-"} or cid == "CBL-P60":
             dps.append("DP-TRAY-%s (tray lead connector)" % ("L" if "battery+" in (m["a"], m["b"]) else "R"))
-        if m.get("upper"):
+        if m.get("upper") and m["upper"][0] is None:   # cables between the base and the lift; not the ones that stay on the column
             dps.append("DP-LIFT (bulkhead behind the lift base plate)")
         if m["b"] in ("arm_l", "arm_r"):
             dps.append("arm base connector (existing)")
@@ -1270,7 +1280,7 @@ def routes_json(HR, rows, key):
             "branches": [{"cable": c, "p": [round(float(v), 4) for v in p]} for c, ps in sorted(HR["branches"].items()) for p in ps],
             "grommets": HR["grommets"], "guards": HR["guards"], "dp_lift": HR["dp"], "chain": ch, "cables": cables,
             "unrouted": {k: m["status"] for k, m in meta.items() if m["status"] != "routed"},
-            "base_routes_raw": {k: v["pts"] for k, v in HR["raw"].items() if v.get("ok")}}
+            "base_routes_raw": {k: (v["pts"] if v.get("ok") else {"blocked": v.get("why", "")}) for k, v in HR["raw"].items()}}
 
 
 def fasteners(HR):
@@ -1320,8 +1330,8 @@ def cad_changes(HR):
         rows.append({"item": "penetrations", "part": on, "change": "%d x cable hole with grommet or edge trim (hole size per cable set)" % len(gs), "qty": len(gs),
                      "where": "; ".join("%s %s" % (g["id"], [round(v * 1000) for v in g["p"]]) for g in gs)})
     for gd in HR["guards"]:
-        rows.append({"item": "new part", "part": gd["id"], "change": "over-wheel cable guard, 2 mm aluminium tray with a 22 mm lip, 280 mm long, 3 x M4 rivet nuts in the side panel; edge trim on both ends",
-                     "qty": 1, "where": "z %.0f mm (8 mm above the tyre top), x -140 to 140 mm" % (gd["z"] * 1000)})
+        rows.append({"item": "new part", "part": gd["id"], "change": "over-wheel cable guard, 2 mm aluminium tray with a 22 mm lip, 260 mm long, 3 x M4 rivet nuts in the side panel; edge trim on both ends",
+                     "qty": 1, "where": "z %.0f mm (8 mm above the tyre top), x -130 to 130 mm" % (gd["z"] * 1000)})
     ch = HR["chain"]
     rows += [{"item": "new part", "part": "DP-LIFT bracket", "change": "bulkhead connector plate on the lift base plate rear edge (2 x M5 tapped holes in MEC-019)", "qty": 1, "where": str([[round(v * 1000) for v in p] for p in HR["dp"]["box"]])},
              {"item": "deck", "part": "centre-frame arch top sheet", "change": "split cable entry opening behind the lift base plate (about 60 x 30 mm) with a split grommet frame", "qty": 1, "where": str([round(v * 1000) for v in HR["dp"]["inlet"]])},

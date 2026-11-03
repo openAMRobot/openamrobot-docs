@@ -2,6 +2,15 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-03
+
+### Changed
+
+- Roadmap model harness: every cable of `cable_list.csv` belongs to a named harness (W01 rear power, W02 drive section, W03 and W04 left and right side trunks, W05 front sensors, W07 front tier, W08 lift column, W09 upper body) on a defined, supported route found by `scripts/roadmap_model/harness.py` on a voxel model of the base: along the floor, the side panels and the uprights, branching inward at each consumer, never over a component, never across the withdrawal path of a battery tray, the front tiers or the cover, crossing the drive section on two new over-wheel guards; tie points at 150 mm or less and within 50 mm of every connector and branch, grommets at the penetrations, labels at both ends of every cable, disconnect points DP-TRAY-L/R, DP-FT and DP-LIFT. Short lug-to-lug links are smooth curves at their class bend radius (25 mm² at least 60 mm).
+- Lift and upper-body harness: deck exit and DP-LIFT behind the lift base plate, a fixed sleeve on the -y face of the static column and a vertical energy chain behind the column (inner 38 x 25 mm, bend radius 75 mm, 24 links, 0.792 m) checked at every 25 mm of the 350 mm stroke; the chain is drawn for the current lift height on the robot and exploded pages (the free lift cable of the robot page is removed).
+- New files: `model/harness_routes.json` (routes, tie points, chain states; checked), `model/harness_cad_changes.csv` (mounting points and parts for CAD); `cable_list.csv` gains harness, labels, disconnect, route radius and tie-point columns; harness fasteners in `fastener_schedule.csv`; harness steps 9 to 11 and 18 in `assembly_sequence.csv`.
+- `scripts/check_roadmap.py`: fails on an unsupported span over 150 mm or no tie point within 50 mm of a connector or branch, a cable over the top of or through a component, a cable across a withdrawal path, a bend radius below its class minimum, a lift cable outside the energy chain or a chain that does not hold over the stroke, and a cable without a harness or labels; with a failing and a passing test per rule.
+
 ## 2026-11-02
 
 ### Changed

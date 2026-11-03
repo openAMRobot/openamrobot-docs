@@ -672,13 +672,13 @@ groups:
           component: harness_fittings
           mass_kg: 0.15
           com_m:
-          - 0.0271
-          - -0.0191
-          - 0.5763
+          - 0.0214
+          - -0.0039
+          - 0.5189
           size_m:
-          - 0.707
-          - 0.316
-          - 0.089
+          - 0.732
+          - 0.372
+          - 0.229
           source: estimate
         - bom: MEC-014
           component: fasteners
@@ -1128,11 +1128,11 @@ groups:
         com_m:
         - -0.0537
         - -0.0001
-        - 0.1113
+        - 0.1112
         inertia_kgm2:
-          ixx: 2.10584
-          iyy: 3.47426
-          izz: 1.58593
+          ixx: 2.101
+          iyy: 3.46931
+          izz: 1.58668
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.0
@@ -1327,15 +1327,15 @@ totals:
     mass_kg: 94.86
     com_m:
     - 0.0201
-    - -0.0001
-    - 0.3379
+    - -0.0
+    - 0.3378
     frame: base_footprint, bp000
   L1350:
     mass_kg: 94.86
     com_m:
     - 0.0201
-    - -0.0001
-    - 0.4141
+    - -0.0
+    - 0.414
     frame: base_footprint, bp000
 comparison:
   combined_model_urdf_kg:
