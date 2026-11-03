@@ -1,6 +1,6 @@
 {
  "self_check": {
-  "compared": 136,
+  "compared": 141,
   "max_dev_mm": 3.0,
   "worst": [
    [
@@ -8,8 +8,8 @@
     0.002999999776482576
    ],
    [
-    "service_loop",
-    0.0014737263917923016
+    "harness_sleeve",
+    0.0013826797246933031
    ],
    [
     "flag_rod",
@@ -406,7 +406,7 @@
     "lift_column": 18.0,
     "rear_estop_housing": null,
     "second_estop": null,
-    "service_loop": null,
+    "lift_energy_chain": 13.6,
     "cover": null,
     "lift_sensor_bracket_1": 29.5,
     "lift_sensor_bracket_2": 48.0,
@@ -416,14 +416,13 @@
     "lift_stop_sensor_3": 10.2,
     "lift_node": 27.4,
     "rear_plate": null,
-    "harness_r24_col": null,
-    "harness_sig_col": 47.5
+    "harness_sig_col": 50.0
    },
    "L1175": {
     "lift_column": 18.0,
     "rear_estop_housing": null,
     "second_estop": null,
-    "service_loop": null,
+    "lift_energy_chain": 13.6,
     "cover": null,
     "lift_sensor_bracket_1": null,
     "lift_sensor_bracket_2": 29.5,
@@ -433,14 +432,13 @@
     "lift_stop_sensor_3": 10.0,
     "lift_node": null,
     "rear_plate": null,
-    "harness_r24_col": null,
-    "harness_sig_col": 47.7
+    "harness_sig_col": 49.3
    },
    "L1350": {
     "lift_column": 18.0,
     "rear_estop_housing": null,
     "second_estop": null,
-    "service_loop": null,
+    "lift_energy_chain": 13.7,
     "cover": null,
     "lift_sensor_bracket_1": null,
     "lift_sensor_bracket_2": null,
@@ -450,8 +448,7 @@
     "lift_stop_sensor_3": 2.0,
     "lift_node": null,
     "rear_plate": null,
-    "harness_r24_col": null,
-    "harness_sig_col": 47.7
+    "harness_sig_col": 49.3
    }
   },
   "estop_to_rod_mount_mm": 93.0
@@ -532,8 +529,8 @@
    "mass": 94.85879944943558,
    "com": [
     0.0201,
-    -0.0001,
-    0.3379
+    -0.0,
+    0.3378
    ],
    "unplaced": [
     "ARM-004",
@@ -545,8 +542,8 @@
    "mass": 94.85879944943558,
    "com": [
     0.0201,
-    -0.0001,
-    0.4141
+    -0.0,
+    0.414
    ],
    "unplaced": [
     "ARM-004",
@@ -559,18 +556,18 @@
   "L1000": {
    "margin_fore_m": 0.255,
    "margin_aft_m": 0.2951,
-   "margin_lat_m": 0.2149,
+   "margin_lat_m": 0.215,
    "a_max_fore": 7.4,
    "a_max_lat": 6.24,
-   "com_z": 0.3379
+   "com_z": 0.3378
   },
   "L1350": {
    "margin_fore_m": 0.255,
    "margin_aft_m": 0.2951,
-   "margin_lat_m": 0.2149,
+   "margin_lat_m": 0.215,
    "a_max_fore": 6.04,
    "a_max_lat": 5.09,
-   "com_z": 0.4141
+   "com_z": 0.414
   }
  },
  "loads": {
@@ -595,17 +592,10 @@
   "lidar_plane": [
    [
     "bay_ddr240",
-    38,
+    37,
     "125",
-    "163",
+    "162",
     0.109005733794145
-   ],
-   [
-    "bay_usbhub",
-    18,
-    "-169",
-    "-151",
-    0.1321892582625381
    ],
    [
     "bay_rsd100",
@@ -615,18 +605,25 @@
     0.15004665940966494
    ],
    [
+    "bay_usbhub",
+    16,
+    "-169",
+    "-153",
+    0.1321892582625381
+   ],
+   [
     "bay_fbc",
-    17,
-    "-151",
+    14,
+    "-148",
     "-134",
     0.13930180364948616
    ],
    [
-    "harness_sig_base",
+    "harness_safe_base",
     14,
-    "-179",
-    "179",
-    0.15002999700059985
+    "-180",
+    "180",
+    0.19270118448374957
    ],
    [
     "bay_din_pnoz",
@@ -634,6 +631,13 @@
     "113",
     "125",
     0.15408966545489028
+   ],
+   [
+    "harness_fittings_base",
+    10,
+    "-175",
+    "175",
+    0.1455091062442485
    ],
    [
     "support_front_left",
@@ -650,60 +654,39 @@
     0.16880588139404848
    ],
    [
-    "rz_fba",
-    6,
-    "-174",
-    "177",
-    0.5518435013661029
+    "harness_r24_base",
+    4,
+    "-153",
+    "-149",
+    0.13941210973001808
+   ],
+   [
+    "harness_sig_base",
+    4,
+    "-173",
+    "-169",
+    0.18399319232933978
    ],
    [
     "centre_bracket",
-    5,
-    "164",
+    1,
+    "168",
     "169",
-    0.4366935450525992
+    0.4400908092580441
    ],
    [
     "imu",
-    3,
-    "-180",
+    1,
+    "180",
     "181",
-    0.26925047904823207
+    0.2743500004708767
    ],
    [
     "battery_cells_left",
-    2,
+    1,
     "169",
-    "171",
+    "170",
     0.5241280854905602
-   ],
-   [
-    "battery_cells_right",
-    2,
-    "-171",
-    "-169",
-    0.5241280854905602
-   ],
-   [
-    "bay_plate",
-    1,
-    "163",
-    "164",
-    0.21069089325360033
-   ],
-   [
-    "harness_safe_base",
-    1,
-    "172",
-    "173",
-    0.5081085636948073
-   ],
-   [
-    "harness_bat_base",
-    1,
-    "-175",
-    "-174",
-    0.469913796193642
    ]
   ],
   "lidar_plane_open_sector": [
@@ -858,13 +841,13 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2593,
-     0.947
+     0.9467
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 43.3,
     "column_screw_rows_N": {
-     "rear": 82.9,
-     "front": -372.9
+     "rear": 82.8,
+     "front": -372.8
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 102.6,
@@ -891,16 +874,16 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2593,
-     0.947
+     0.9467
     ],
     "decel_m_s2": 6.04,
-    "moment_at_column_axis_Nm": 158.1,
+    "moment_at_column_axis_Nm": 158.0,
     "column_screw_rows_N": {
-     "rear": 687.1,
-     "front": -977.1
+     "rear": 686.8,
+     "front": -976.7
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 388.0,
+     "x -0.060": 387.9,
      "x +0.060": 164.0
     },
     "bolt_shear_per_bolt_N": 44.6,
@@ -912,7 +895,7 @@
     "plate_max_moment_Nm": 58.2,
     "plate_stress_MPa": 24.9,
     "plate_utilisation": 0.098,
-    "arch_sheet_stress_MPa": 169.8,
+    "arch_sheet_stress_MPa": 169.7,
     "arch_sheet_utilisation": 0.722,
     "arch_sheet_uplift_mm": 0.485,
     "plate_deflection_at_column_front_mm": -0.279,
@@ -924,16 +907,16 @@
     "mass_kg": 37.76,
     "com_m": [
      0.457,
-     1.1157
+     1.1155
     ],
     "decel_m_s2": 6.04,
-    "moment_at_column_axis_Nm": 313.7,
+    "moment_at_column_axis_Nm": 313.6,
     "column_screw_rows_N": {
-     "rear": 1465.6,
-     "front": -1836.0
+     "rear": 1465.3,
+     "front": -1835.7
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 773.4,
+     "x -0.060": 773.3,
      "x +0.060": 326.9
     },
     "bolt_shear_per_bolt_N": 57.0,
@@ -945,9 +928,9 @@
     "plate_max_moment_Nm": 116.0,
     "plate_stress_MPa": 49.7,
     "plate_utilisation": 0.195,
-    "arch_sheet_stress_MPa": 338.4,
+    "arch_sheet_stress_MPa": 338.3,
     "arch_sheet_utilisation": 1.44,
-    "arch_sheet_uplift_mm": 0.967,
+    "arch_sheet_uplift_mm": 0.966,
     "plate_deflection_at_column_front_mm": -0.556,
     "column_tilt_deg": 0.362
    },
@@ -957,13 +940,13 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.947
+     0.9467
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 43.3,
     "column_screw_rows_N": {
-     "rear": 82.9,
-     "front": -372.9
+     "rear": 82.8,
+     "front": -372.8
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 68.4,
@@ -990,28 +973,28 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.947
+     0.9467
     ],
     "decel_m_s2": 6.04,
-    "moment_at_column_axis_Nm": 158.1,
+    "moment_at_column_axis_Nm": 158.0,
     "column_screw_rows_N": {
-     "rear": 687.1,
-     "front": -977.1
+     "rear": 686.8,
+     "front": -976.7
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 361.9,
+     "x -0.060": 361.8,
      "x +0.060": 117.9
     },
     "bolt_shear_per_bolt_N": 44.6,
     "bolt_utilisation": 0.015,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.03,
+    "rivet_nut_pull_through_utilisation": 0.029,
     "Bp_Rd_kN": 12.3,
     "plate_max_moment_Nm": 18.1,
     "plate_stress_MPa": 7.8,
     "plate_utilisation": 0.03,
-    "arch_sheet_stress_MPa": 157.5,
+    "arch_sheet_stress_MPa": 157.4,
     "arch_sheet_utilisation": 0.67,
     "arch_sheet_uplift_mm": 0.441,
     "plate_deflection_at_column_front_mm": -0.087,
@@ -1023,17 +1006,17 @@
     "mass_kg": 37.76,
     "com_m": [
      0.407,
-     1.1157
+     1.1155
     ],
     "decel_m_s2": 6.04,
-    "moment_at_column_axis_Nm": 313.7,
+    "moment_at_column_axis_Nm": 313.6,
     "column_screw_rows_N": {
-     "rear": 1465.6,
-     "front": -1836.0
+     "rear": 1465.3,
+     "front": -1835.7
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 747.9,
-     "x +0.060": 243.7
+     "x -0.060": 747.8,
+     "x +0.060": 243.6
     },
     "bolt_shear_per_bolt_N": 57.0,
     "bolt_utilisation": 0.029,
@@ -1044,8 +1027,8 @@
     "plate_max_moment_Nm": 37.4,
     "plate_stress_MPa": 16.0,
     "plate_utilisation": 0.063,
-    "arch_sheet_stress_MPa": 325.4,
-    "arch_sheet_utilisation": 1.385,
+    "arch_sheet_stress_MPa": 325.3,
+    "arch_sheet_utilisation": 1.384,
     "arch_sheet_uplift_mm": 0.912,
     "plate_deflection_at_column_front_mm": -0.179,
     "column_tilt_deg": 0.27
@@ -1059,7 +1042,7 @@
    "arch_sheet_utilisation": 1.44
   },
   "max_column_tilt_deg": 0.362,
-  "shoulder_height_ref_m": 0.9469997479608512,
+  "shoulder_height_ref_m": 0.9467110024391977,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -1077,16 +1060,16 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.0007,
-     0.7026
+     0.0008,
+     0.7023
     ]
    },
    "L1350": {
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.0007,
-     0.947
+     0.0008,
+     0.9467
     ]
    }
   },
@@ -1095,7 +1078,7 @@
    "com_m": [
     0.407,
     0.0006,
-    1.1157
+    1.1155
    ],
    "arm_mass_kg_both": 12.26,
    "payload_kg_each": 4.1,
@@ -1833,9 +1816,9 @@
     "MEC-013",
     0.15,
     [
-     0.0271,
-     -0.0191,
-     0.5763
+     0.0196,
+     -0.0047,
+     0.5194
     ],
     "harness_fittings"
    ],
@@ -2815,9 +2798,9 @@
     "MEC-013",
     0.15,
     [
-     0.0271,
-     -0.0191,
-     0.693
+     0.0196,
+     -0.0047,
+     0.6361
     ],
     "harness_fittings"
    ],
@@ -3228,7 +3211,7 @@
  "sweep_valid_poses": 488,
  "counts": {
   "blocker": 0,
-  "major": 4,
+  "major": 6,
   "minor": 47
  },
  "steel_chassis_kg": 15.77

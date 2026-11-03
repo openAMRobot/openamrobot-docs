@@ -35,6 +35,12 @@ parses them and fails when:
   or tour keyframes name unknown ids, the tour is not 40 to 50 s, or a tour
   video or poster is missing, over 15 MB, or loads before it is played.
 
+- the harness (model/harness_routes.json, model/cable_list.csv) has an unsupported span over 150 mm or no tie
+  point within 50 mm of a connector or branch, a cable over the top of (or through) a component, a cable across a
+  withdrawal path (battery trays, front tiers, cover), a bend radius below its cable class minimum, a lift cable
+  outside the energy chain or an energy chain that does not hold over the stroke, or a cable without a harness or
+  without labels at both ends.
+
 Usage: python3 scripts/check_roadmap.py [--dir docs/assets/roadmap] [--today]
 """
 import argparse
@@ -1516,6 +1522,275 @@ def check_reference_pages(root, err):
             err(name, "superseded value: " + h)
 
 
+# ---------------------------------------------------------------- harness rules (model/harness_routes.json)
+HARNESS_ROUTES = "model/harness_routes.json"   # written by scripts/roadmap_model/build.py (harness.py)
+CLASS_MIN_BEND_MM = {"25 mm²": 60}             # bend radius floor per cable class (A9); other classes: the row value
+
+
+def _v(a, b):
+    return [b[i] - a[i] for i in range(3)]
+
+
+def _norm(a):
+    return sum(x * x for x in a) ** 0.5
+
+
+def _samples(pts, step=0.005):
+    """(arc length, point) along a polyline, at most step apart, ends included."""
+    out, s0 = [], 0.0
+    for i in range(len(pts) - 1):
+        a, b = pts[i], pts[i + 1]
+        L = _norm(_v(a, b))
+        n = max(1, int(L / step))
+        for k in range(n):
+            t = k / n
+            out.append((s0 + t * L, [a[j] + t * (b[j] - a[j]) for j in range(3)]))
+        s0 += L
+    out.append((s0, list(pts[-1])))
+    return out
+
+
+def _project(pts, p):
+    """Arc length and distance of the polyline point nearest to p."""
+    best, s0 = (None, 1e9), 0.0
+    for i in range(len(pts) - 1):
+        a, b = pts[i], pts[i + 1]
+        ab = _v(a, b)
+        L2 = sum(x * x for x in ab)
+        t = 0.0 if L2 < 1e-12 else max(0.0, min(1.0, sum((p[j] - a[j]) * ab[j] for j in range(3)) / L2))
+        q = [a[j] + t * ab[j] for j in range(3)]
+        d = _norm(_v(q, p))
+        if d < best[1]:
+            best = (s0 + t * L2 ** 0.5, d)
+        s0 += L2 ** 0.5
+    return best
+
+
+def route_radius(pts):
+    """Largest bend radius a polyline holds at every corner (each corner takes R tan(theta / 2) of straight cable from
+    both neighbouring segments; an end segment at a connector carries one share). Same rule as harness.route_radius."""
+    import math
+    th = [0.0]
+    for i in range(1, len(pts) - 1):
+        u, v = _v(pts[i - 1], pts[i]), _v(pts[i], pts[i + 1])
+        lu, lv = _norm(u), _norm(v)
+        a = 0.0 if lu < 1e-9 or lv < 1e-9 else math.acos(max(-1.0, min(1.0, sum(u[j] * v[j] for j in range(3)) / (lu * lv))))
+        th.append(a if a >= math.radians(3) else 0.0)
+    th.append(0.0)
+    best = float("inf")
+    for i in range(len(pts) - 1):
+        t = math.tan(th[i] / 2) + math.tan(th[i + 1] / 2)
+        if t > 1e-9:
+            best = min(best, _norm(_v(pts[i], pts[i + 1])) / t)
+    return best
+
+
+def harness_span_errors(H):
+    """Unsupported span over max_span_m between supports (tie points within tie_tol_m of the route, except lacing ties
+    to the bundle; section ends at connectors or chain brackets), and no tie point within tie_near_m of a connector or
+    of a branch point."""
+    R = H["rules"]
+    out = []
+    ties = H.get("ties", [])
+    for c in H["cables"]:
+        for k, sec in enumerate(c.get("sections", [])):
+            if sec["kind"] == "chain" or len(sec["pts"]) < 2:
+                continue
+            pts = sec["pts"]
+            L = _samples(pts)[-1][0]
+            on = sorted(s for s, d in (_project(pts, t["p"]) for t in ties if t.get("kind") != "lacing tie") if d <= R["tie_tol_m"])
+            sup = [0.0] + on + [L]
+            gap = max(sup[i + 1] - sup[i] for i in range(len(sup) - 1))
+            if gap > R["max_span_m"] + 1e-6:
+                out.append("%s %s section: unsupported span %.0f mm (more than %.0f mm)" % (c["id"], sec["kind"], gap * 1000, R["max_span_m"] * 1000))
+            for end, s_end in (("start", 0.0), ("end", L)):
+                if L > 2 * R["tie_near_m"] and not any(abs(s - s_end) <= R["tie_near_m"] + 1e-6 for s in on):
+                    out.append("%s %s section: no tie point within %.0f mm of the connector at its %s" % (c["id"], sec["kind"], R["tie_near_m"] * 1000, end))
+    for b in H.get("branches", []):
+        if not any(_norm(_v(t["p"], b["p"])) <= R["tie_near_m"] + 1e-6 for t in ties):
+            out.append("%s: no tie point within %.0f mm of the branch at %s" % (b["cable"], R["tie_near_m"] * 1000, [round(v, 3) for v in b["p"]]))
+    return out
+
+
+def harness_over_errors(H):
+    """A base route over the top of a component (inside its footprint, in the band over_band_m above its top; up to
+    the cover for a top-access part) or through it, except the cable's own end parts and the connector entry."""
+    R = H["rules"]
+    out = []
+    for c in H["cables"]:
+        own = set(c.get("own", []))
+        for sec in c.get("sections", []):
+            if sec["kind"] != "base":
+                continue
+            ends = [sec["pts"][0], sec["pts"][-1]]
+            hit = {}
+            for _, p in _samples(sec["pts"]):
+                if any(_norm(_v(p, e)) <= R["entry_m"] for e in ends):
+                    continue
+                for o in H["obstacles"]:
+                    if o["id"] in own:
+                        continue
+                    lo, hi = o["lo"], o["hi"]
+                    if not (lo[0] + .001 < p[0] < hi[0] - .001 and lo[1] + .001 < p[1] < hi[1] - .001):
+                        continue
+                    top = 9 if o.get("top_access") else hi[2] + R["over_band_m"]
+                    if hi[2] <= p[2] < top:
+                        hit.setdefault(("over", o["id"]), p)
+                    elif lo[2] <= p[2] < hi[2]:
+                        hit.setdefault(("through", o["id"]), p)
+            for (kind, oid), p in sorted(hit.items()):
+                out.append("%s passes %s %s at %s" % (c["id"], kind, oid, [round(v, 3) for v in p]))
+    return out
+
+
+def harness_withdrawal_errors(H):
+    """A route inside a withdrawal path (battery trays and front tiers lift out upward, the cover band) when none of
+    the cable's own parts belongs to that removable assembly."""
+    out = []
+    for c in H["cables"]:
+        own = set(c.get("own", []))
+        for z in H["withdrawal"]:
+            if own & set(z.get("members", [])):
+                continue
+            for sec in c.get("sections", []):
+                if sec["kind"] != "base":
+                    continue
+                bad = None
+                for _, p in _samples(sec["pts"]):
+                    if all(z["lo"][i] < p[i] < z["hi"][i] for i in range(3)) and not any(
+                            abs(p[0] - e[0]) <= .012 and abs(p[1] - e[1]) <= .012 for e in z.get("except", [])):
+                        bad = p
+                        break
+                if bad:
+                    out.append("%s crosses the withdrawal path of %s at %s" % (c["id"], z["id"], [round(v, 3) for v in bad]))
+    return out
+
+
+def harness_bend_errors(H):
+    """Bend radius below the cable class minimum on any drawn section, a row minimum below the class floor, or an
+    energy chain radius below the continuous-flex minimum of a cable in it."""
+    out = []
+    ch = H.get("chain") or {}
+    for c in H["cables"]:
+        floor = CLASS_MIN_BEND_MM.get(c.get("gauge", ""), 0)
+        if c["min_bend_mm"] < floor:
+            out.append("%s: minimum bend radius %s mm below the %s class minimum %d mm" % (c["id"], c["min_bend_mm"], c.get("gauge"), floor))
+        for sec in c.get("sections", []):
+            if sec["kind"] == "chain":
+                if ch.get("R", 0) * 1000 < c.get("flex_min_mm", 0) - 1e-6:
+                    out.append("%s: energy chain radius %.0f mm below its continuous-flex minimum %d mm" % (c["id"], ch.get("R", 0) * 1000, c["flex_min_mm"]))
+                continue
+            r = route_radius(sec["pts"])
+            if r * 1000 < c["min_bend_mm"] - 0.5:
+                out.append("%s %s section: bend radius %.0f mm, minimum %d mm" % (c["id"], sec["kind"], r * 1000, c["min_bend_mm"]))
+    return out
+
+
+def harness_lift_errors(H):
+    """Every cable between the base or the static column and the lift stage runs in the energy chain (or a declared
+    service loop); the chain holds at every stop: both runs present, loop clear of the cover, cables not taut."""
+    out = []
+    ch = H.get("chain")
+    for c in H["cables"]:
+        kinds = [s["kind"] for s in c.get("sections", [])]
+        groups = {s.get("group", "base") for s in c.get("sections", [])}
+        moves = "mov" in groups and (groups & {"base", "col"})
+        if (c.get("lift") or moves) and not ({"chain", "service_loop"} & set(kinds)):
+            out.append("%s is a lift cable outside the energy chain or service loop" % c["id"])
+        if c.get("lift") and "chain" in kinds:
+            i = kinds.index("chain")
+            if not (any(g in ("base", "col") for g in [s.get("group", "base") for s in c["sections"][:i]])
+                    and all(s.get("group") == "mov" for s in c["sections"][i + 1:]) and len(c["sections"]) > i + 1):
+                out.append("%s: the energy chain is not the only link between the static and the moving sections" % c["id"])
+    if any(c.get("lift") for c in H["cables"]):
+        if not ch:
+            out.append("lift cables but no energy chain")
+            return out
+        Ts = [s["T"] for s in ch["stops"]]
+        for want in (0.0, 0.175, ch["stroke"]):
+            if not any(abs(t - want) < 1e-6 for t in Ts):
+                out.append("energy chain: no state at travel %.3f m" % want)
+        if Ts and max(Ts[i + 1] - Ts[i] for i in range(len(Ts) - 1)) > 0.0251:
+            out.append("energy chain: states more than 25 mm of travel apart")
+        for s in ch["stops"]:
+            if s["fixed_run_m"] < -1e-6 or s["moving_run_m"] < -1e-6:
+                out.append("energy chain at travel %.3f m: a run is shorter than zero (chain too short or too long)" % s["T"])
+            if s["loop_bottom_z"] < ch["min_bottom_z"] - 1e-6:
+                out.append("energy chain at travel %.3f m: loop bottom %.3f below %.3f" % (s["T"], s["loop_bottom_z"], ch["min_bottom_z"]))
+            for k in s.get("clash", []):
+                out.append("energy chain at travel %.3f m: touches %s" % (s["T"], k))
+        for c in H["cables"]:
+            if c.get("lift") and c.get("slack_min_m", 0) < ch.get("slack_req_m", 0.02) - 1e-6:
+                out.append("%s: slack %.0f mm over the stroke, at least %.0f mm needed" % (c["id"], c.get("slack_min_m", 0) * 1000, ch.get("slack_req_m", 0.02) * 1000))
+    return out
+
+
+def harness_label_errors(H, rows):
+    """A cable without a harness, a harness unknown to harness_routes.json, or a cable end without a label."""
+    out = []
+    hids = {h["id"] for h in H.get("harnesses", [])}
+    seen = set()
+    for r in rows:
+        if not r.get("harness"):
+            out.append("%s has no harness" % r["id"])
+        elif hids and r["harness"] not in hids:
+            out.append("%s: harness %s is not defined" % (r["id"], r["harness"]))
+        for k in ("label_a", "label_b"):
+            v = r.get(k, "")
+            if not v:
+                out.append("%s has no %s" % (r["id"], k))
+            elif v in seen:
+                out.append("%s: label %s used twice" % (r["id"], v))
+            seen.add(v)
+    return out
+
+
+def harness_errors(H, rows):
+    return (harness_label_errors(H, rows) + harness_span_errors(H) + harness_over_errors(H) + harness_withdrawal_errors(H)
+            + harness_bend_errors(H) + harness_lift_errors(H))
+
+
+def check_harness(root, err):
+    try:
+        H = json.load(open(os.path.join(root, HARNESS_ROUTES), encoding="utf-8"))
+        with open(os.path.join(root, "model", "cable_list.csv"), encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+    except (OSError, ValueError) as e:
+        err("model", "harness: %s" % e)
+        return
+    ids = {c["id"] for c in H["cables"]}
+    for r in rows:
+        if r["route_length_m"] and r["id"] not in ids:
+            err("harness_routes.json", "%s is routed in cable_list.csv but has no route" % r["id"])
+    for e in harness_errors(H, rows):
+        err("harness", e)
+
+
+SELF_CHECK_MAX_MM = 5.0  # analyse.py self-check: Python analysis scene vs page scene (was 3.0 mm before the lift chain)
+
+
+def self_check_errors(summary):
+    s = (summary or {}).get("self_check") or {}
+    if not s.get("compared"):
+        return ["analysis_summary.json has no self-check against the page scene (run analyse.py --dump)"]
+    if s.get("max_dev_mm") is None or s["max_dev_mm"] > SELF_CHECK_MAX_MM:
+        worst = ", ".join("%s %.1f mm" % (w[0], w[1] * 1000) for w in (s.get("worst") or [])[:3])
+        return ["Python scene differs from the page scene by %s mm (limit %.1f): %s" % (s.get("max_dev_mm"), SELF_CHECK_MAX_MM, worst)]
+    return []
+
+
+def check_self_check(root, err):
+    path = os.path.join(root, "..", "..", "..", "scripts", "roadmap_model", "analysis_summary.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            summary = json.load(f)
+    except (OSError, ValueError) as e:
+        err("model", "analysis_summary.json: %s" % e)
+        return
+    for m in self_check_errors(summary):
+        err("model", m)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default=os.path.join(os.path.dirname(__file__), "..", "docs", "assets", "roadmap"))
@@ -1608,6 +1883,7 @@ def main():
         check_nav(p, html[p], err)
     check_model(args.dir, html["exploded.html"], err)
     check_model_sources(args.dir, html, err)
+    check_harness(args.dir, err)
     check_shared(args.dir, html, err)
     check_no_light_strips(args.dir, err)
     check_no_duplicate_fittings(args.dir, html, err)
@@ -1699,6 +1975,7 @@ def main():
     # 6. known contacts (declared overlaps, warn only in the model, recorded as issues)
     check_known_contacts(args.dir, err)
     check_reference_pages(args.dir, err)
+    check_self_check(args.dir, err)
 
     # 7. STATE.md figures (read from the generated files)
     try:

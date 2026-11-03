@@ -32,11 +32,41 @@ def table(head, rows, cls="tbl"):
     return '<div class="%s"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (cls, h, b)
 
 
+def harness_table(hr, cab):
+    """One row per named harness: route, cables (routed / all), length with margin, smallest bend radius held, tie points."""
+    if not hr.get("harnesses"):
+        return ""
+    rows = []
+    for h in hr["harnesses"]:
+        mine = [c for c in cab if c.get("harness") == h["id"]]
+        rt = [c for c in mine if c["route_length_m"]]
+        radii = [float(c["route_min_radius_mm"]) for c in rt if c.get("route_min_radius_mm") not in ("", "straight")]
+        ties = sum(1 for t in hr.get("ties", []) if any(x in h.get("all_cables", []) for x in t["cables"]))
+        rows.append([E(h["id"]), E(h["name"]), E(h["route"]), "%d / %d" % (len(rt), len(mine)), "%.1f" % sum(float(c["length_with_margin_m"]) for c in rt),
+                     "%.0f" % min(radii) if radii else "-", str(ties)])
+    ch = hr.get("chain") or {}
+    b = ch.get("bundle", {})
+    return (table(["Harness", "Name", "Route", "Cables routed / all", "Length m (10 % margin)", "Smallest bend radius held, mm", "Tie points"], rows) +
+            "<p><b>Lift energy chain:</b> %s; %d links, %.3f m, bend radius %.0f mm; %d cables in it (%.0f mm² of %.0f mm² inner section, %.0f %% fill, "
+            "largest OD %.1f mm, continuous-flex minimum %d mm). Fixed end at z %.3f on the static column, loop bottom %.0f mm at L1000 and %.0f mm at L1350 "
+            "above the floor, fixed run %.0f mm at L1350; %s at the 25 mm steps of the stroke.</p>" % (
+                E(ch.get("type", "")), ch.get("links", 0), ch.get("length", 0), ch.get("R", 0) * 1000, b.get("count", 0), b.get("area_mm2", 0), 38 * 25,
+                b.get("fill_pct", 0), b.get("max_od_mm", 0), b.get("flex_min_mm", 0), ch.get("fixed_z", 0),
+                ch["stops"][0]["loop_bottom_z"] * 1000 if ch.get("stops") else 0, ch["stops"][-1]["loop_bottom_z"] * 1000 if ch.get("stops") else 0,
+                ch["stops"][-1]["fixed_run_m"] * 1000 if ch.get("stops") else 0,
+                "no contact with the column, sensors, flag rod, lift node, DP-LIFT or cover" if not any(st_["clash"] for st_ in ch.get("stops", [])) else
+                "contact: " + E(", ".join(sorted({c_ for st_ in ch["stops"] for c_ in st_["clash"]})))))
+
+
 def model_section():
     cov = list(csv.DictReader(open(os.path.join(MODEL, "bom_coverage.csv"))))
     an = json.load(open(os.path.join(HERE, "analysis_summary.json")))
     bs = json.load(open(os.path.join(HERE, "build_summary.json")))
     cab = list(csv.DictReader(open(os.path.join(MODEL, "cable_list.csv"))))
+    try:
+        hr = json.load(open(os.path.join(MODEL, "harness_routes.json"), encoding="utf-8"))
+    except (OSError, ValueError):
+        hr = {}
     fas = list(csv.DictReader(open(os.path.join(MODEL, "fastener_schedule.csv"))))
     on = [r for r in cov if r["onboard"] == "y"]
     cnt = collections.Counter(r["class"] for r in on)
@@ -73,13 +103,21 @@ def model_section():
         "the MEC-006 plate above the prepared TZBOT receiver, underside 122 mm above the floor, with a second level allowed for the BMS and PWR-017 and nothing "
         "above a fuse. Not placed: %s (geometry issue %s). K1/K2 option A GX11CAC fits: %s. Option B TeSys D LC1D80BD fits: %s (labelled ghost). "
         "Siemens 3RT2 S3 fits: %s.</p>" % (E(", ".join(nofit)) or "none", gi("Rear layout"), "yes" if k["A"]["fits"] else "no", "yes" if k["B_tesys"]["fits"] else "no", "yes" if k["B_siemens"]["fits"] else "no") +
-        "<p><b>Harness:</b> %d cables (%d routed, %.1f m with the 10 %% service margin), coloured by domain (BAT red, SAFE orange, regulated 24 V yellow, "
-        "5 V / 3.3 V green, signal blue), with P-clips, grommets at the centre-bracket walls and the deck crossing, CAN terminations and one "
-        "service loop for all upper-body cables sized for the 350 mm stroke; the front trunk drops below the LiDAR scan plane (222.05 mm, +/-5 mm) behind the open sector; the rear trunk runs over the series-link strip at the arch edge. <b>Fasteners:</b> %d schedule rows (named and proposed), the start of MEC-014; "
-        "small parts load with High quality only.</p>" % (len(cab), len(routed), total_len, len(fas)) +
-        "<p>Files: %s, %s, %s, %s, %s; layout STEP for SolidWorks: %s.</p>" % (
+        "<p><b>Harness:</b> %d cables in %d named harnesses (W01 to W09), %d on supported routes (%.1f m with the 10 %% service margin); "
+        "%d partly routed or not routed (endpoint not placed, or no compliant passage in the rear layout: see the geometry issues). Routes run "
+        "along the floor, the side panels and the uprights, branch inward at each consumer, cross the drive section on the two over-wheel guards and "
+        "leave the base at one deck exit behind the lift base plate, where every lift cable plugs in at DP-LIFT. %d tie points at 150 mm or less "
+        "and within 50 mm of every connector and branch, %d grommets or split entries. Upper body: fixed sleeve on the -y face of the static column, "
+        "energy chain behind the column (%s, %d links, R %.0f mm), moving trunk under the adapter plate. Labels at both ends of every cable. "
+        "<b>Fasteners:</b> %d schedule rows (named and proposed), the start of MEC-014; small parts load with High quality only.</p>" % (
+            len(cab), len(hr.get("harnesses", [])), len(routed), total_len, len(cab) - len(routed), len(hr.get("ties", [])), len(hr.get("grommets", [])),
+            E(hr["chain"]["type"].split(" (")[0]) if hr.get("chain") else "-", hr["chain"]["links"] if hr.get("chain") else 0,
+            hr["chain"]["R"] * 1000 if hr.get("chain") else 0, len(fas)) +
+        harness_table(hr, cab) +
+        "<p>Files: %s, %s, %s, %s, %s, %s, %s; layout STEP for SolidWorks: %s.</p>" % (
             A("model/bom_coverage.csv", "bom_coverage.csv"), A("model/fastener_schedule.csv", "fastener_schedule.csv"),
-            A("model/cable_list.csv", "cable_list.csv"), A("model/assembly_sequence.csv", "assembly_sequence.csv"),
+            A("model/cable_list.csv", "cable_list.csv"), A("model/harness_routes.json", "harness_routes.json"),
+            A("model/harness_cad_changes.csv", "harness_cad_changes.csv"), A("model/assembly_sequence.csv", "assembly_sequence.csv"),
             A("model/geometry_issues.csv", "geometry_issues.csv"), A("model/export/openamrobot2_layout.step", "openamrobot2_layout.step")))
     return section("model3d", "3D model: BOM coverage, front bay, rear zone and harness", body,
                    "roadmap model build of %s (scripts/roadmap_model), BOM Issue 7.14, datums.yaml 2026-11-01.d, sensor_frames.yaml at platform-sw 4926f40" % SNAP)

@@ -222,7 +222,38 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
             fs.append(ff + off)
             off += len(v)
         parts.append(Part(pid, np.vstack(vs), np.vstack(fs), e["group"], info.get(pid), boxes=bx if (allbox and bx) else None))
+    # lift energy chain links: model.js chainLinks + M.setChain draw them at build time for the lift travel 0 (L1000);
+    # add the same link boxes here so the Python scene equals the page scene (self-check). The chain changes shape with
+    # the travel; its clearance over the stroke is checked by harness.py energy_chain() at the three lift stops.
+    E = P.get("energy_chain")
+    ch = next((q for q in parts if E and q.id == E.get("part")), None)
+    if ch is not None:
+        vs, fs, off = [ch.v0], [ch.f], len(ch.v0)
+        for v, ff in chain_link_meshes(E, 0.0):
+            vs.append(v)
+            fs.append(ff + off)
+            off += len(v)
+        ch.v0, ch.f, ch.boxes = np.vstack(vs), np.vstack(fs), None
     return parts
+
+
+def chain_link_meshes(E, T):
+    """Link boxes of the lift energy chain for the lift travel T, as model.js M.setChain places them (col group frame)."""
+    zc = (E["fixed_z"] + E["moving_z0"] + T + math.pi * E["R"] - E["length"]) / 2
+    a, b = E["fixed_z"] - zc, math.pi * E["R"]
+    out = []
+    for i in range(int(round(E["length"] / E["pitch"]))):
+        s = (i + .5) * E["pitch"]
+        if s < a:
+            y, z, th = E["y_fixed"], E["fixed_z"] - s, -math.pi / 2
+        elif s < a + b:
+            th = math.pi + (s - a) / E["R"]
+            y, z = E["R"] * math.cos(th), zc + E["R"] * math.sin(th)
+            th += math.pi / 2
+        else:
+            y, z, th = E["y_moving"], zc + s - a - b, math.pi / 2
+        out.append(box_mesh([E["outer_w"], E["pitch"] * .92, E["outer_h"]], [E["x"], y, z], rpy_matrix([th, 0, 0])))
+    return out
 
 
 def arm_parts(side, q, grip, sh, bpx):
@@ -424,7 +455,7 @@ def main():
                 ("lift_column", "rear_estop"), ("lift_column_head", "adapter_plate"), ("adapter_plate", "arm_profile"), ("adapter_plate", "flag_rod"), ("rod_corner_bracket", "adapter_plate"), ("rod_corner_bracket", "flag_rod"), ("rod_corner_bracket", "fasteners"), ("battery_series_link", "rz_batcon"),
                 ("arm_profile", "head_camera_bracket"), ("head_camera_bracket", "head_camera"), ("arm_profile", "getac"), ("arm_profile", "head_light"),
                 ("arm_profile", "fasteners"), ("adapter_plate", "fasteners"), ("lift_sensor", "lift_stop"), ("lift_sensor", "fasteners"),
-                ("lift_stop", "lift_sensor"), ("harness", "*"), ("service_loop", "*"), ("keepout", "*"), ("can_term", "*"), ("lidar", "lidar_"),
+                ("lift_stop", "lift_sensor"), ("harness", "*"), ("lift_energy_chain", "*"), ("wheel_guard", "side_panel"), ("dp_lift", "*"), ("keepout", "*"), ("can_term", "*"), ("lidar", "lidar_"),
                 ("camera_mount", "base_camera"), ("ultrasonic", "ultrasonic"), ("tof", "tof"), ("ultrasonic", "us_locknut"), ("compute", "electronics_bracket"),
                 ("controller_plate", "*"), ("base_controller", "controller_plate"), ("imu", "electronics_bracket"), ("motor_driver", "driver_mount"),
                 ("battery", "battery_tray"), ("hub_motor", "motor_brackets"), ("castor", "shims"), ("getac", "getac_"), ("head_light", "getac_pocket"),
@@ -934,11 +965,19 @@ def main():
           "removable with the cover off; every fuse and connector reachable", "front_bay.py", "keep connectors facing up", OWN["mech"], "services")
     issue("minor", "Lift base plate removal and cover opening", "cover off", "the cover opening (x -0.146 to 0.156, y -0.113 to 0.107) must be extended forward to x 0.260 for the plate front (0.250) and the column at bp050 (front 0.230)",
           "cover clears the plate and the column", "CAD v0.2 cover MMP.01.00.00.001; B3", "extend the cover opening to x 0.260 (owner to confirm in CAD)", OWN["mech"], "services")
-    # service loop
-    sd = summ["seed"][0] if summ.get("seed") else {}
+    # lift energy chain and blocked harness routes (harness.py, harness_routes.json)
+    sd = {}
+    for d_ in summ.get("seed", []):
+        if "energy_chain" in d_:
+            sd = d_
     if sd:
-        issue("minor" if sd["service_loop_length"] >= sd["service_loop_need"] else "major", "Upper-body service loop length", "L1000 to L1350",
-              "loop %.0f mm vs %.0f mm needed at L1350" % (sd["service_loop_length"] * 1000, sd["service_loop_need"] * 1000), "covers the 350 mm stroke plus bend allowance", "harness route", "size the sleeve at build", OWN["elec"], "harness")
+        ch_ = sd["energy_chain"]
+        issue("minor" if not sd["chain_clash"] else "major", "Lift energy chain over the stroke", "L1000 to L1350 (every 25 mm)",
+              "chain %.3f m, R %.0f mm, stroke %.0f mm; %s" % (ch_["length"], ch_["R"] * 1000, ch_["stroke"] * 1000, "no contact" if not sd["chain_clash"] else "contact: " + ", ".join(sd["chain_clash"])),
+              "both runs present, loop clear of the cover, no contact with the column, sensors, flag rod, lift node or DP-LIFT", "harness_routes.json chain", "confirm the chain order code and bracket CAD", OWN["elec"], "harness")
+        for cid in sd.get("harness_blocked", []):
+            issue("major", "No compliant harness route: %s" % cid, "rear bay (A9 layout)", "no route between the two terminals keeps the rules (not over a fuse block or component, R >= 60 mm, no detour over 2.5 x)",
+                  "every cable on a supported route", "harness_routes.json unrouted", "rear-layout rework with GI-080 (space a cable passage beside FB-A or move the terminal)", OWN["elec"], "harness")
     # A6: flag rod on the one-piece adapter plate (GI-010 closes when the rod is inside the plate footprint); stroke check of the
     # rod and the flag against the column, the lift cable chain (service loop), the second E-stop housing, the rear power
     # electronics and the top cover, at L1000, L1175 and L1350
@@ -955,7 +994,7 @@ def main():
         cfg = {"bp": "bp000", "travel": tr}
         gr = {k: Geo(names[k], cfg, .003) for k in ("flag_rod", "lift_flag", "rod_corner_bracket") if k in names}
         res_ = {}
-        for other in ("lift_column", "rear_estop_housing", "second_estop", "service_loop", "cover", "lift_stop_sensors", "lift_sensor_bracket_1", "lift_sensor_bracket_2",
+        for other in ("lift_column", "rear_estop_housing", "second_estop", "lift_energy_chain", "cover", "lift_stop_sensors", "lift_sensor_bracket_1", "lift_sensor_bracket_2",
                       "lift_sensor_bracket_3", "lift_stop_sensor_1", "lift_stop_sensor_2", "lift_stop_sensor_3", "lift_node", "rear_plate", "harness_r24_col", "harness_sig_col"):
             if other not in names:
                 continue

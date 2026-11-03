@@ -7,7 +7,7 @@ ids:
   "decided fix, CAD pending|Rear side pockets / side panel return flanges": GI-025
   "to solve before receiver installation|TZBOT receiver / floor transmitter WCM-500-24 (charging gap)": GI-036
   "fit|K1/K2 option A GX11CAC fit": GI-037
-  "harness|Upper-body service loop length": GI-039
+  "harness|Lift energy chain over the stroke": GI-039
   "interference|Left tote wall / sensors S1, S2": GI-040
   "interference|camera_mount / lidar_support": GI-056
   "interference|electronics_bracket / motor_brackets_1": GI-057
@@ -52,6 +52,8 @@ ids:
   "layout|Rear layout (A9) / 25 mm\u00b2 cable rules": GI-126
   "interference|rz_brake / rz_fba": GI-127
   "interference|rz_brake / rz_kchg": GI-128
+  "harness|No compliant harness route: CBL-P02": GI-129
+  "harness|No compliant harness route: CBL-P05": GI-130
 closed:
   GI-001: {key: "layout|Front bay and rear zone layout", reason: "closed: one front bay layout (A2, owner 2 Nov 2026) places all 22 parts, two tiers because one plate does not take every part, with fuse and connector access"}
   GI-003: {key: "arm reach|OpenArm left / getac_pocket", reason: "closed: Getac portrait, 40 mm lower (A3); the single-joint arm sweep no longer hits the pocket"}

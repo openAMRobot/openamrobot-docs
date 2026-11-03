@@ -24,7 +24,9 @@ Frame: `base_footprint` (floor under the drive-axle midpoint, x forward, y left,
 | `urdf_expand.py` | Expands the combined robot model (combined_robot.xacro) without ROS: pip xacro and a minimal ament index under `../ament` |
 | `link_map.yaml`, `parity_dump.js`, `parity.py` | Roadmap vs combined model parity report (warn only, convergence phase 1) |
 | `mass_export.py` | `mass_export.yaml`: masses, COM and box inertia per URDF link, for the platform-sw mass PR and mass_provenance.yaml |
+| `harness.py` | Harness routing (called by `build.py`): named harnesses W01 to W09 on supported routes (5 mm voxel router with keep-outs, withdrawal paths and the bend radius per cable class), tie points, grommets, over-wheel guards, DP-LIFT, the lift energy chain over the stroke; writes `harness_routes.json` (checked by `scripts/check_roadmap.py`) and `harness_cad_changes.csv` (mounting points and parts for CAD). Routes are reused while their inputs are unchanged (`input_hash`); a full reroute takes about 15 minutes |
 | `shots.js` | Screenshots of the shared model for the visual review |
+| `harness_shots.js` | Screenshots of the harness routes, tie points and the energy chain at L1000, L1175 and L1350 |
 | `design_intent/` | Parametric CadQuery scripts of the design-intent parts (`run_all.py`) |
 
 Goal of the roadmap model: the roadmap becomes a renderer of the expanded combined_robot.xacro (openamr-upperbody-sw) at a pinned
@@ -34,6 +36,9 @@ a roadmap-only part always attaches to a URDF link with an offset. Phases: 1) wa
 an overlay file keyed by URDF link name; 3) parity fails CI above 0.5 mm and the frozen fixture in upperbody-sw is removed; 4) the
 combined model feeds the lift joint, limits, mass, COM, collision reports and MoveIt trajectories into the roadmap, and the roadmap
 feeds BOM masses, visual-only detail links and confirmed design-intent datums back.
+
+Dependencies: Python 3 with numpy, scipy, pyyaml, trimesh (with rtree), cadquery and build123d (if they conflict over OCP, keep the OCP
+version cadquery needs), xacro (pip); Node with Playwright and Chromium for the scene dumps, the screenshots and the sync audit.
 
 Sources are read from `../src` (clones of the openAMRobot repositories at the snapshot; override with `OAMR_SRC`):
 `openamr-upperbody-sw` (datums.yaml), `openamr-platform-sw` (sensor_frames.yaml). Run everything with `./run_all.sh`.
