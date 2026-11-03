@@ -1,46 +1,22 @@
 {
  "packed": {
-  "rz_fba": [
-   [
-    -0.256,
-    -0.0025,
-    0.175
-   ],
-   [
-    70.0,
-    165.0,
-    100.0
-   ]
-  ],
   "rz_f0": [
    [
-    -0.1855,
-    -0.035,
-    0.1525
+    -0.1625,
+    -0.0105,
+    0.149
    ],
    [
-    61.0,
-    100.0,
-    55.0
-   ]
-  ],
-  "rz_k1k2_1": [
-   [
-    -0.1795,
-    0.0625,
-    0.163
-   ],
-   [
-    73.0,
-    45.0,
-    76.0
+    51.0,
+    159.0,
+    58.0
    ]
   ],
   "rz_pwr017_1": [
    [
-    -0.346,
-    0.045,
-    0.205
+    -0.28,
+    -0.0065,
+    0.176
    ],
    [
     40.0,
@@ -48,59 +24,71 @@
     40.0
    ]
   ],
-  "rz_fchg": [
+  "rz_k1k2_1": [
    [
-    -0.321,
-    -0.062,
-    0.241
+    -0.2325,
+    -0.023,
+    0.158
    ],
    [
-    30.0,
-    66.0,
-    32.0
-   ]
-  ],
-  "rz_kchg": [
-   [
-    -0.3485,
-    0.01,
-    0.14
-   ],
-   [
-    35.0,
-    30.0,
-    30.0
-   ]
-  ],
-  "rz_brake": [
-   [
-    -0.311,
-    0.015,
-    0.1325
-   ],
-   [
-    30.0,
-    20.0,
-    15.0
+    45.0,
+    73.0,
+    76.0
    ]
   ],
   "rz_k1k2_2": [
    [
-    -0.3295,
-    0.1395,
-    0.165
+    -0.2325,
+    0.055,
+    0.158
    ],
    [
-    73.0,
     45.0,
+    73.0,
     76.0
+   ]
+  ],
+  "rz_fbb": [
+   [
+    -0.2475,
+    0.0,
+    0.258
+   ],
+   [
+    129.0,
+    165.0,
+    48.0
+   ]
+  ],
+  "rz_fba": [
+   [
+    -0.34,
+    0.063,
+    0.2245
+   ],
+   [
+    44.0,
+    146.0,
+    33.0
+   ]
+  ],
+  "rz_bms": [
+   [
+    -0.201,
+    -0.276,
+    0.133
+   ],
+   [
+    164.0,
+    21.0,
+    66.0
    ]
   ],
   "rz_pwr017_2": [
    [
-    -0.326,
-    -0.1458,
-    0.107
+    -0.306,
+    -0.14,
+    0.15
    ],
    [
     40.0,
@@ -111,20 +99,53 @@
   "rz_pre": [
    [
     -0.326,
-    -0.1408,
-    0.1845
+    -0.138,
+    0.2225
    ],
    [
     80.0,
     50.0,
     35.0
    ]
+  ],
+  "rz_kchg": [
+   [
+    -0.2945,
+    0.113,
+    0.072
+   ],
+   [
+    35.0,
+    30.0,
+    30.0
+   ]
+  ],
+  "rz_fchg": [
+   [
+    -0.317,
+    0.148,
+    0.073
+   ],
+   [
+    66.0,
+    30.0,
+    32.0
+   ]
+  ],
+  "rz_brake": [
+   [
+    -0.335,
+    0.11,
+    0.1025
+   ],
+   [
+    30.0,
+    20.0,
+    15.0
+   ]
   ]
  },
- "nofit": [
-  "rz_fbb",
-  "rz_bms"
- ],
+ "nofit": [],
  "front_bay": {
   "single": {
    "fit": {
@@ -137,31 +158,35 @@
     "top_mm": 274.0,
     "cover_margin_mm": 16.0,
     "scan_band_parts": [],
-    "min_gap_mm": 5.0,
-    "plate_area_used_pct": 46.8,
+    "min_gap_mm": 3.0,
+    "plate_area_used_pct": 31.8,
     "by_zone": {
      "A_upper": [
       "bay_rsd100",
-      "bay_fbc",
+      "compute",
       "bay_din_tb",
-      "bay_usbhub",
       "bay_iso1212",
       "bay_tpl7407",
-      "bay_usbcan_1",
-      "bay_usbcan_2",
       "bay_can2",
-      "bay_lidar_uart",
       "bay_can1",
       "bay_can3"
      ],
+     "side_r": [
+      "bay_usbhub",
+      "bay_usbcan_1",
+      "bay_usbcan_2",
+      "bay_lidar_uart"
+     ],
+     "side_l": [
+      "bay_fbc",
+      "bay_usbpd",
+      "bay_pwr032"
+     ],
      "A_lower": [
-      "compute",
       "base_controller",
       "bay_rsd60",
       "bay_pwr009",
       "bay_pwr029",
-      "bay_usbpd",
-      "bay_pwr032",
       "bay_ina228"
      ],
      "A_din": [
@@ -184,25 +209,103 @@
       159.0
      ]
     ],
-    "bay_fbc": [
-     "A_upper",
+    "bay_usbhub": [
+     "side_r",
      [
-      0.182,
-      -0.0975,
-      0.166
+      0.1975,
+      -0.2375,
+      0.097
      ],
      [
-      74.0,
-      41.0,
-      102.0
+      135.0,
+      25.0,
+      80.0
+     ]
+    ],
+    "bay_fbc": [
+     "side_l",
+     [
+      0.203,
+      0.229,
+      0.0735
+     ],
+     [
+      146.0,
+      44.0,
+      33.0
+     ]
+    ],
+    "bay_usbpd": [
+     "side_l",
+     [
+      0.155,
+      0.1945,
+      0.072
+     ],
+     [
+      50.0,
+      15.0,
+      30.0
+     ]
+    ],
+    "bay_usbcan_1": [
+     "side_r",
+     [
+      0.16,
+      -0.2125,
+      0.0695
+     ],
+     [
+      60.0,
+      15.0,
+      25.0
+     ]
+    ],
+    "bay_usbcan_2": [
+     "side_r",
+     [
+      0.16,
+      -0.1925,
+      0.0695
+     ],
+     [
+      60.0,
+      15.0,
+      25.0
+     ]
+    ],
+    "bay_lidar_uart": [
+     "side_r",
+     [
+      0.15,
+      -0.175,
+      0.067
+     ],
+     [
+      40.0,
+      10.0,
+      20.0
+     ]
+    ],
+    "bay_pwr032": [
+     "side_l",
+     [
+      0.1425,
+      0.177,
+      0.067
+     ],
+     [
+      25.0,
+      10.0,
+      20.0
      ]
     ],
     "compute": [
-     "A_lower",
+     "A_upper",
      [
       0.1641,
       -0.0255,
-      0.0795
+      0.1375
      ],
      [
       118.1,
@@ -223,19 +326,6 @@
       42.5
      ]
     ],
-    "bay_usbhub": [
-     "A_upper",
-     [
-      0.165,
-      -0.0555,
-      0.1825
-     ],
-     [
-      80.0,
-      25.0,
-      135.0
-     ]
-    ],
     "base_controller": [
      "A_lower",
      [
@@ -252,105 +342,66 @@
     "bay_rsd60": [
      "A_lower",
      [
-      0.305,
-      0.1335,
-      0.117
+      0.165,
+      -0.053,
+      0.0735
      ],
      [
+      120.0,
       50.0,
-      33.0,
-      120.0
+      33.0
      ]
     ],
     "bay_pwr009": [
      "A_lower",
      [
-      0.305,
-      -0.133,
+      0.135,
+      0.022,
       0.0695
      ],
      [
-      40.0,
       60.0,
+      40.0,
       25.0
      ]
     ],
     "bay_iso1212": [
      "A_upper",
      [
-      0.137,
-      0.0175,
-      0.121
+      0.177,
+      -0.112,
+      0.1405
      ],
      [
       64.0,
-      51.0,
-      12.0
+      12.0,
+      51.0
      ]
     ],
     "bay_pwr029": [
      "A_lower",
      [
-      0.12,
-      0.072,
-      0.082
+      0.195,
+      0.027,
+      0.067
      ],
      [
+      50.0,
       30.0,
-      20.0,
-      50.0
+      20.0
      ]
     ],
     "bay_tpl7407": [
      "A_upper",
      [
-      0.2005,
-      0.021,
-      0.121
+      0.1705,
+      -0.092,
+      0.134
      ],
      [
       51.0,
-      38.0,
-      12.0
-     ]
-    ],
-    "bay_usbpd": [
-     "A_lower",
-     [
-      0.3,
-      0.1045,
-      0.072
-     ],
-     [
-      50.0,
-      15.0,
-      30.0
-     ]
-    ],
-    "bay_usbcan_1": [
-     "A_upper",
-     [
-      0.135,
-      -0.0255,
-      0.1225
-     ],
-     [
-      60.0,
-      25.0,
-      15.0
-     ]
-    ],
-    "bay_usbcan_2": [
-     "A_upper",
-     [
-      0.2,
-      -0.0255,
-      0.1225
-     ],
-     [
-      60.0,
-      25.0,
-      15.0
+      12.0,
+      38.0
      ]
     ],
     "bay_can2": [
@@ -366,24 +417,24 @@
       10.0
      ]
     ],
-    "bay_lidar_uart": [
-     "A_upper",
-     [
-      0.245,
-      -0.103,
-      0.125
-     ],
-     [
-      40.0,
-      10.0,
-      20.0
-     ]
-    ],
     "bay_can1": [
      "A_upper",
      [
+      0.231,
+      -0.1075,
+      0.12
+     ],
+     [
+      32.0,
+      21.0,
+      10.0
+     ]
+    ],
+    "bay_can3": [
+     "A_upper",
+     [
       0.121,
-      -0.078,
+      0.047,
       0.1255
      ],
      [
@@ -392,43 +443,17 @@
       21.0
      ]
     ],
-    "bay_can3": [
-     "A_upper",
-     [
-      0.2205,
-      -0.063,
-      0.131
-     ],
-     [
-      21.0,
-      10.0,
-      32.0
-     ]
-    ],
-    "bay_pwr032": [
-     "A_lower",
-     [
-      0.1175,
-      0.047,
-      0.062
-     ],
-     [
-      25.0,
-      20.0,
-      10.0
-     ]
-    ],
     "bay_ina228": [
      "A_lower",
      [
-      0.1477,
-      0.04,
-      0.0659
+      0.1177,
+      0.0709,
+      0.06
      ],
      [
       25.4,
-      6.0,
-      17.8
+      17.8,
+      6.0
      ]
     ],
     "bay_din_pnoz": [
@@ -564,8 +589,8 @@
    },
    "shelf_order": [
     "bay_rsd100",
-    "bay_fbc",
     "compute",
+    "bay_fbc",
     "bay_din_tb"
    ]
   }
@@ -577,10 +602,10 @@
     "p": [
      0.1641,
      -0.0255,
-     -0.0185
+     0.0395
     ],
     "yaw": 0.0,
-    "zone": "A_lower"
+    "zone": "A_upper"
    },
    "base_controller": {
     "p": [
@@ -666,12 +691,12 @@
    [
     -0.366,
     -0.095,
-    0.122
+    0.117
    ],
    [
     -0.137,
     0.095,
-    0.125
+    0.12
    ]
   ],
   "margin": [
@@ -736,145 +761,474 @@
     45,
     76
    ],
-   "fits": true
+   "fits": true,
+   "height_free_mm": 111
   },
   "B_tesys": {
    "part": "Schneider TeSys D LC1D80BD",
    "dims": [
-    120,
-    75,
-    127
+    85,
+    127,
+    186
    ],
    "fits": false,
    "nofit": [
-    "rz_fbb",
-    "opt_B_tesys_1",
-    "opt_B_tesys_2",
-    "rz_bms",
-    "rz_pre"
+    "186 mm deep (mounted height) > 111 mm under the FB-B shelf and > 170 mm to the cover"
    ]
   },
   "B_siemens": {
-   "part": "Siemens 3RT2 size S3",
+   "part": "Siemens 3RT2045",
    "dims": [
-    152,
     70,
-    140
+    140,
+    152
    ],
    "fits": false,
    "nofit": [
-    "opt_B_siemens_2",
-    "rz_fba",
-    "rz_fbb",
-    "rz_bms",
-    "rz_pre"
+    "152 mm deep > 111 mm under the FB-B shelf"
    ]
   }
  },
  "gi080": {
-  "first_pass_nofit": [
-   "rz_fbb",
-   "rz_bms"
-  ],
+  "first_pass_nofit": [],
   "steps": [
    {
-    "option": 1,
-    "what": "second level above the power plate: level 1 on the plate, shelf underside 209 mm above the floor (tallest non-fuse part + 8 mm), 78 mm to the cover underside; fuse columns kept open",
-    "level1_nofit": [
-     "rz_fbb",
+    "option": "manual",
+    "what": "explicit rear power module layout (rear_power.py): owner report rev 2 with 5 measured adaptations",
+    "placed": [
      "rz_bms",
-     "rz_pwr017_2"
-    ],
-    "placed": [],
-    "nofit": [
+     "rz_brake",
+     "rz_f0",
+     "rz_fba",
      "rz_fbb",
-     "rz_bms",
+     "rz_fchg",
+     "rz_k1k2_1",
+     "rz_k1k2_2",
+     "rz_kchg",
+     "rz_pre",
      "rz_pwr017_1",
      "rz_pwr017_2"
-    ]
-   },
-   {
-    "option": 2,
-    "what": "FB-B (SAFE-bus fuse block, 70 x 165 x 100 mm, fuses reached from above) to the front bay near the motor driver",
-    "fits": false,
-    "front_bay_layout": "two-tier (one plate does not take every part)",
-    "front_bay_nofit": [
-     "rz_fbb"
     ],
-    "rear_nofit_after": [
-     "rz_fbb",
-     "rz_bms"
-    ]
-   },
-   {
-    "option": 3,
-    "what": "BMS upright on the rear panel inner face above the receiver, outside the 20 mm metal-free margin",
-    "placed": [],
-    "nofit": [
-     "rz_bms"
-    ]
-   },
-   {
-    "option": 4,
-    "what": "FB-B replaced by four compact MIDI fuse holders on the power plate (62 x 33 x 30 mm each, catalogue outline, verify), 25 mm\u00b2 feed from K2, bus bar between the holders",
-    "placed": [],
-    "nofit": [
-     "rz_fbb_1",
-     "rz_fbb_2",
-     "rz_fbb_3",
-     "rz_fbb_4"
-    ],
-    "plate_free_floor_cm2": 71.0,
-    "plate_floor_cm2": 435.0,
-    "largest_free_rectangle_mm": [
-     30,
-     64
-    ],
-    "holder_footprint_mm": [
-     62,
-     33
-    ],
-    "note": "free floor and rectangle measured with every part and obstacle grown by the 5 mm gap"
-   },
-   {
-    "option": 5,
-    "what": "BMS (110 x 40 x 200 mm) upright against the receiver-side wall of one battery tray, outside the 20 mm metal-free margin, short sense harness",
-    "fits": false,
-    "sides": {
-     "left": {
-      "placed": [],
-      "nofit": [
-       "rz_bms"
-      ],
-      "wall_y_m": 0.097,
-      "strip_outside_margin_x_mm": 43.0,
-      "gap_wall_to_margin_y_mm": 2.0,
-      "height_tray_floor_to_plate_mm": 68.0
-     },
-     "right": {
-      "placed": [],
-      "nofit": [
-       "rz_bms"
-      ],
-      "wall_y_m": -0.097,
-      "strip_outside_margin_x_mm": 43.0,
-      "gap_wall_to_margin_y_mm": 2.0,
-      "height_tray_floor_to_plate_mm": 68.0
-     }
-    }
+    "nofit": [],
+    "clashes": []
    }
   ],
   "fbb_front": false,
   "midi": false,
-  "bms_tray": null,
-  "final_nofit": [
-   "rz_fbb",
-   "rz_bms"
+  "manual": true,
+  "fit": {
+   "clashes": [],
+   "closest": [
+    {
+     "a": "rear_plate",
+     "b": "left_tray",
+     "gap_mm": 2.0
+    },
+    {
+     "a": "rear_plate",
+     "b": "right_tray",
+     "gap_mm": 2.0
+    },
+    {
+     "a": "rz_bms",
+     "b": "right_tray",
+     "gap_mm": 4.5
+    },
+    {
+     "a": "rz_k1k2_1",
+     "b": "rz_k1k2_2",
+     "gap_mm": 5.0
+    },
+    {
+     "a": "rz_fchg",
+     "b": "rz_kchg",
+     "gap_mm": 5.0
+    },
+    {
+     "a": "rz_k1k2_1",
+     "b": "rz_pwr017_1",
+     "gap_mm": 5.0
+    },
+    {
+     "a": "rz_k1k2_2",
+     "b": "rz_pwr017_1",
+     "gap_mm": 5.0
+    },
+    {
+     "a": "rz_kchg",
+     "b": "left_tray",
+     "gap_mm": 5.0
+    },
+    {
+     "a": "rz_pre",
+     "b": "rz_pwr017_2",
+     "gap_mm": 5.0
+    },
+    {
+     "a": "rz_k1k2_2",
+     "b": "left_tray",
+     "gap_mm": 5.5
+    },
+    {
+     "a": "rp_corner_plate_l",
+     "b": "support_rear_left",
+     "gap_mm": 5.8
+    },
+    {
+     "a": "rz_fchg",
+     "b": "support_rear_left",
+     "gap_mm": 5.8
+    }
+   ],
+   "within_20mm_of_receiver": [
+    {
+     "part": "rear_plate",
+     "gap_mm": 15.0
+    },
+    {
+     "part": "rz_k1k2_1",
+     "gap_mm": 18.0
+    },
+    {
+     "part": "rz_k1k2_2",
+     "gap_mm": 18.0
+    },
+    {
+     "part": "rp_bus_standoffs",
+     "gap_mm": 18.0
+    },
+    {
+     "part": "rp_f0_spacer",
+     "gap_mm": 18.6
+    }
+   ]
+  },
+  "main_path": [
+   {
+    "id": "CBL-P01",
+    "kind": "25 mm\u00b2 cable",
+    "polyline_mm": 153.0,
+    "bends_90": 1,
+    "legs_mm": [
+     68.0,
+     85.0
+    ],
+    "length_on_r63_mm": 126.0
+   },
+   {
+    "id": "CBL-P02",
+    "kind": "25 mm\u00b2 cable",
+    "polyline_mm": 150.0,
+    "bends_90": 0,
+    "legs_mm": [
+     150.0
+    ],
+    "length_on_r63_mm": 150.0
+   },
+   {
+    "id": "CBL-P03",
+    "kind": "busbar BB-01",
+    "polyline_mm": 26.0,
+    "bends_90": 0,
+    "section": "Cu 25 x 4 mm, heat-shrink insulated (verify >= 150 A continuous, creepage)"
+   },
+   {
+    "id": "CBL-P04",
+    "kind": "busbar BB-02",
+    "polyline_mm": 47.5,
+    "bends_90": 0,
+    "section": "Cu 25 x 4 mm, heat-shrink insulated (verify)"
+   },
+   {
+    "id": "CBL-P05",
+    "kind": "busbar BB-03",
+    "polyline_mm": 41.0,
+    "bends_90": 0,
+    "section": "Cu 25 x 4 mm, heat-shrink insulated (verify)"
+   },
+   {
+    "id": "CBL-P06",
+    "kind": "busbar BB-04",
+    "polyline_mm": 78.0,
+    "bends_90": 2,
+    "section": "Cu 25 x 4 mm, heat-shrink insulated (verify)"
+   },
+   {
+    "id": "CBL-P59",
+    "kind": "busbar BB-05",
+    "polyline_mm": 351.0,
+    "bends_90": 4,
+    "section": "flexible laminated Cu 25 x 3 mm in silicone sleeve (verify ampacity and voltage drop)"
+   },
+   {
+    "id": "CBL-P28",
+    "kind": "busbar BB-07",
+    "polyline_mm": 59.0,
+    "bends_90": 2,
+    "section": "Cu 12 x 2 mm from the F-CHG +x stud, heat-shrink insulated (verify for 30 A)"
+   },
+   {
+    "id": "CBL-P62",
+    "kind": "busbar BB-06",
+    "polyline_mm": 299.0,
+    "bends_90": 3,
+    "section": "flexible laminated Cu 25 x 3 mm in silicone sleeve (verify)"
+   }
+  ],
+  "adaptations": [
+   {
+    "part": "FB-B",
+    "owner_report": "on the plate (owner report)",
+    "model": "L3 shelf above BUS+, K1 and K2, x -312 to -183, z 234 to 282",
+    "reason": "with F0 across the front edge, the F0 to QS1 run (y -70) and the QS1 to BUS+ to K1 to K2 line (y -41.5) on the plate, the free plate floor is at most 57 x 190 mm (x -255 to -193 next to the contactors) or 46 x 190 mm behind BUS+; FB-B needs 129 x 165 mm"
+   },
+   {
+    "part": "FB-A",
+    "owner_report": "shelf above K1/K2 (owner report)",
+    "model": "rear shelf at the rear panel, x -362 to -318, z 208 to 241",
+    "reason": "the shelf above K1/K2 is taken by FB-B; at the rear the cover slope leaves 7 mm above FB-A at x -362"
+   },
+   {
+    "part": "pack -",
+    "owner_report": "-",
+    "model": "kept at the inner front corner of the right tray",
+    "reason": "B- to pack - is a tray lead (BB-06, DP-TRAY-R); unbolted before the right tray lifts out"
+   },
+   {
+    "part": "P- (CBL-P59)",
+    "owner_report": "along the tray front to BUS- (owner report)",
+    "model": "BB-05 under the BMS and behind the right tray to BUS- in the right rear corner",
+    "reason": "the right tray front touches the centre arch (1 mm): a lead along the tray front is inside the tray withdrawal path; under the BMS (46 mm free) and behind the tray (12 mm gap at the rear support) a flat bar fits"
+   },
+   {
+    "part": "series link",
+    "owner_report": "front, x -164 at z 252",
+    "model": "x -146 at z 280, tray ends at the second cell (y +-150), PWR-018 at x -150",
+    "reason": "the old link ends coincided with pack + and pack - (8 mm); battery owner to confirm the string ends (B-02)"
+   }
+  ],
+  "levels": {
+   "receiver_top_mm": 102.0,
+   "plate_underside_mm": 117.0,
+   "gap_mm": 15.0,
+   "main_line_mm": 202,
+   "fbb_shelf_mm": [
+    231,
+    234
+   ],
+   "fba_shelf_mm": [
+    205,
+    208
+   ],
+   "cover_flat_mm": 290.0
+  },
+  "final_nofit": []
+ },
+ "flag_guide": {
+  "z": [
+   0.7875,
+   0.8075
+  ],
+  "band": [
+   0.784,
+   0.811
+  ],
+  "band_margin_mm": [
+   3.5,
+   3.5
+  ],
+  "opening": "-y face open (sensor and flag side), width 20.6 mm",
+  "clearance_mm": 0.3,
+  "liner": "PTFE 0.5 mm bonded (verify; UHMW-PE alternative)",
+  "wall": "stainless 1.4301, 1.5 mm, U bent",
+  "arm": "6082-T6 3 mm plate on the +y side of the ring; spacer block to the static column +y face",
+  "summary": {
+   "rod_engaged_all": true,
+   "min_rod_below_guide_mm": 33.5,
+   "min_flag_to_guide_mm": 3.5,
+   "min_corner_to_guide_mm": 3.5,
+   "flag_to_sensor_face_mm": 2.0,
+   "min_sensors_to_guide_mm": 10.8,
+   "min_chain_to_guide_mm": 8.1,
+   "min_chain_to_rod_mm": 9.5,
+   "ok": true
+  },
+  "checks": [
+   {
+    "T": 0.0,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 383.5,
+    "flag_to_guide_mm": 344.3,
+    "corner_to_guide_mm": 3.5,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 34.5,
+    "chain_to_rod_mm": 9.5
+   },
+   {
+    "T": 0.025,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 358.5,
+    "flag_to_guide_mm": 319.3,
+    "corner_to_guide_mm": 28.5,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 11.7,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.05,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 333.5,
+    "flag_to_guide_mm": 294.4,
+    "corner_to_guide_mm": 51.7,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.075,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 308.5,
+    "flag_to_guide_mm": 269.5,
+    "corner_to_guide_mm": 74.0,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.1,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 283.5,
+    "flag_to_guide_mm": 244.6,
+    "corner_to_guide_mm": 97.6,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.125,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 258.5,
+    "flag_to_guide_mm": 219.7,
+    "corner_to_guide_mm": 121.8,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.15,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 233.5,
+    "flag_to_guide_mm": 194.9,
+    "corner_to_guide_mm": 146.2,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.175,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 208.5,
+    "flag_to_guide_mm": 170.1,
+    "corner_to_guide_mm": 170.8,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.2,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 183.5,
+    "flag_to_guide_mm": 145.3,
+    "corner_to_guide_mm": 195.5,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.225,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 158.5,
+    "flag_to_guide_mm": 120.7,
+    "corner_to_guide_mm": 220.3,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.25,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 133.5,
+    "flag_to_guide_mm": 96.3,
+    "corner_to_guide_mm": 245.1,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.275,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 108.5,
+    "flag_to_guide_mm": 72.3,
+    "corner_to_guide_mm": 270.0,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.3,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 83.5,
+    "flag_to_guide_mm": 49.2,
+    "corner_to_guide_mm": 294.8,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.325,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 58.5,
+    "flag_to_guide_mm": 28.5,
+    "corner_to_guide_mm": 319.7,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   },
+   {
+    "T": 0.35,
+    "rod_engaged": true,
+    "rod_below_guide_mm": 33.5,
+    "flag_to_guide_mm": 3.5,
+    "corner_to_guide_mm": 344.6,
+    "flag_to_sensor_face_mm": 2.0,
+    "sensors_to_guide_mm": 10.8,
+    "chain_to_guide_mm": 8.1,
+    "chain_to_rod_mm": 13.6
+   }
+  ],
+  "removal": "rod removal: stop the lift between the stops (flag between two sensors), remove the M5 rod screw and the corner bracket, slide the rod out of the guide through its open -y side (the rod clears the sensor bodies by 9 mm in x), then lower it",
+  "rod_x_base": [
+   -0.123,
+   -0.103
   ]
  },
  "battery_trays": {
   "trays": 2,
-  "connector": "PWR-018 keyed, on the 8S link at x -0.164, z 0.252",
+  "connector": "PWR-018 keyed, on the 8S link at x -0.150, z 0.262",
   "plate_overlaps_trays_in_plan": false,
   "plate_tray_gap_mm": 2.0,
   "cells_from_above": true,
@@ -883,47 +1237,25 @@
  },
  "cables_25mm2": {
   "CBL-P01": {
-   "route_m": 0.196,
-   "direct_m": 0.175,
+   "route_m": 0.153,
+   "direct_m": 0.152,
    "local": true,
    "bend_ok": true,
    "worst_corner": {
     "deg": 90,
     "need_mm": 60.0,
-    "have_mm": 64.7
+    "have_mm": 68.0
    }
   },
-  "CBL-P03": {
-   "route_m": 0.113,
-   "direct_m": 0.11,
+  "CBL-P02": {
+   "route_m": 0.15,
+   "direct_m": 0.182,
    "local": true,
    "bend_ok": true,
    "worst_corner": {
     "deg": 90,
     "need_mm": 60.0,
-    "have_mm": 66.3
-   }
-  },
-  "CBL-P04": {
-   "route_m": 0.212,
-   "direct_m": 0.169,
-   "local": true,
-   "bend_ok": true,
-   "worst_corner": {
-    "deg": 90,
-    "need_mm": 60.0,
-    "have_mm": 63.4
-   }
-  },
-  "CBL-P59": {
-   "route_m": 0.248,
-   "direct_m": 0.201,
-   "local": true,
-   "bend_ok": true,
-   "worst_corner": {
-    "deg": 90,
-    "need_mm": 60.0,
-    "have_mm": 62.7
+    "have_mm": Infinity
    }
   }
  },
@@ -974,20 +1306,17 @@
     "stroke": 0.35
    },
    "chain_clash": [],
-   "harness_blocked": [
-    "CBL-P02",
-    "CBL-P05"
-   ]
+   "harness_blocked": []
   }
  ],
  "coverage": {
   "CAD-derived": 7,
   "envelope": 13,
-  "not drawn": 33,
+  "not drawn": 31,
   "placeholder": 10,
   "prepared, installed later": 1,
   "primitive": 6,
-  "proposed": 61,
+  "proposed": 63,
   "provisional": 14,
   "unmapped": 1
  },

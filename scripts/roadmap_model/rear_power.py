@@ -48,11 +48,11 @@ PARTS = {
     "rz_pre": ("Precharge kit Kpre + resistor + 1 A fuse (across K2), right rear corner above BUS-", "SAF-004", "Kpre relay, PWR-014 resistor, PWR-015 fuse",
                "80 x 50 x 35 mm (proposed size)", [-366, -286], [-163, -113], [205, 240], "SAFE", "corner", 0.12),
     "rz_kchg": ("Charge relay KCHG, left rear corner", "WCH-004", "24 V coil 1NO + 1NC", "35 x 30 x 30 mm (proposed size)",
-                [-330, -295], [98, 128], [57, 87], "BAT", "corner", 0.05),
+                [-312, -277], [98, 128], [57, 87], "BAT", "corner", 0.05),
     "rz_fchg": ("Charge branch fuse F-CHG 30 A MIDI, left rear corner", "PWR-022", "MIDI fuse + holder", "66 x 30 x 32 mm (catalogue outline, verify)",
                 [-350, -284], [133, 163], [57, 89], "BAT", "corner", 0.05),
-    "rz_brake": ("Brake coil suppression, left rear corner above KCHG", "SAF-007", "matched transient control", "30 x 20 x 15 mm (proposed size)",
-                 [-310, -280], [100, 120], [100, 115], "SAFE", "corner", 0.01),
+    "rz_brake": ("Brake coil suppression, left rear corner beside the SB50", "SAF-007", "matched transient control", "30 x 20 x 15 mm (proposed size)",
+                 [-350, -320], [100, 120], [95, 110], "SAFE", "corner", 0.01),
     "rz_disc": ("Lockable battery disconnect QS1 BS-6004B through the rear panel, both M10 studs facing into the robot", "PWR-004", "Blue Sea BS-6004B",
                 "67 mm face, 64 mm behind the panel (owner report rev 2, verify)", [-370, -306], [-89.5, -22.5], [158, 225], "BAT", "rear", 0.35),
 }
@@ -81,6 +81,7 @@ STUDS = {
 FIXED_CABLES = {
     "CBL-P01": [[-156, 117, 268], [-156, 49, 268], [-156, 49, 183]],      # pack + lug, along -y at the lug height, down onto the F0 line stud
     "CBL-P02": [[-156, -70, 183], [-306, -70, 183]],                      # F0 load stud straight back along x to QS1 S1 (90 degree lug at QS1)
+    "CBL-P29": [[-294.5, 113, 87], [-294.5, 113, 150], [-330, 113, 150]],    # KCHG up, then back along x into the SB50 rear contacts
 }
 # insulated copper busbars (E-01 circuit unchanged): cable id, name, section, points
 BUSBARS = {
@@ -92,6 +93,8 @@ BUSBARS = {
                 [[-232.5, 73.5, 202], [-232.5, 89, 202], [-232.5, 89, 258], [-232.5, 82.5, 258]]),
     "CBL-P59": ("BB-05 BMS P- to BUS- (under the BMS, behind the right tray)", "flexible laminated Cu 25 x 3 mm in silicone sleeve (verify ampacity and voltage drop)",
                 [[-125, -276, 100], [-125, -276, 78], [-278, -276, 78], [-278, -140, 78], [-278, -140, 110], [-286, -140, 110]]),
+    "CBL-P28": ("BB-07 F-CHG to KCHG (side by side in the left rear corner)", "Cu 12 x 2 mm from the F-CHG +x stud, heat-shrink insulated (verify for 30 A)",
+                [[-292, 148, 89], [-292, 148, 100], [-292, 113, 100], [-292, 113, 87]]),
     "CBL-P62": ("BB-06 BMS B- to pack - (tray lead, DP-TRAY-R)", "flexible laminated Cu 25 x 3 mm in silicone sleeve (verify)",
                 [[-125, -266, 166], [-125, -266, 270], [-162, -266, 270], [-162, -117, 270], [-162, -117, 261]]),
 }

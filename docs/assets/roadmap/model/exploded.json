@@ -1145,6 +1145,23 @@
     ]
    }
   },
+  "rz_fbb": {
+   "stage": 3,
+   "offsets": {
+    "rz_fbb": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_fbb": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
   "rz_pwr017": {
    "stage": 3,
    "offsets": {
@@ -1233,6 +1250,23 @@
     ]
    }
   },
+  "rz_bms": {
+   "stage": 3,
+   "offsets": {
+    "rz_bms": [
+     -0.25,
+     0,
+     0.3
+    ]
+   },
+   "open": {
+    "rz_bms": [
+     -0.12,
+     0,
+     0.14
+    ]
+   }
+  },
   "rz_kchg": {
    "stage": 3,
    "offsets": {
@@ -1298,6 +1332,70 @@
      0,
      0,
      0.14
+    ]
+   }
+  },
+  "side_plates": {
+   "stage": 4,
+   "offsets": {
+    "side_plates": [
+     0,
+     0,
+     0.28
+    ]
+   },
+   "open": {
+    "side_plates": [
+     0,
+     0,
+     0.14
+    ]
+   }
+  },
+  "ch_central": {
+   "stage": 9,
+   "offsets": {
+    "ch_branch_power": [
+     0,
+     0,
+     0.45
+    ],
+    "ch_branch_signal": [
+     0,
+     0,
+     0.45
+    ],
+    "ch_central_power": [
+     0,
+     0,
+     0.45
+    ],
+    "ch_central_signal": [
+     0,
+     0,
+     0.45
+    ]
+   },
+   "open": {
+    "ch_branch_power": [
+     0,
+     0,
+     0.2
+    ],
+    "ch_branch_signal": [
+     0,
+     0,
+     0.2
+    ],
+    "ch_central_power": [
+     0,
+     0,
+     0.2
+    ],
+    "ch_central_signal": [
+     0,
+     0,
+     0.2
     ]
    }
   },
@@ -1390,6 +1488,23 @@
      0.12
     ],
     "feedthru_2": [
+     0,
+     0,
+     0.12
+    ]
+   }
+  },
+  "flag_rod_guide": {
+   "stage": 7,
+   "offsets": {
+    "flag_rod_guide": [
+     0,
+     0,
+     0.2
+    ]
+   },
+   "open": {
+    "flag_rod_guide": [
      0,
      0,
      0.12
@@ -1640,6 +1755,83 @@
    },
    "open": {
     "rear_plate": [
+     -0.12,
+     0,
+     0.1
+    ]
+   }
+  },
+  "rear_mounts": {
+   "stage": 3,
+   "offsets": {
+    "rp_fbb_shelf": [
+     -0.25,
+     0,
+     0.25
+    ],
+    "rp_fba_shelf": [
+     -0.25,
+     0,
+     0.25
+    ],
+    "rp_bus_standoffs": [
+     -0.25,
+     0,
+     0.25
+    ],
+    "rp_f0_spacer": [
+     -0.25,
+     0,
+     0.25
+    ],
+    "rp_bms_bracket": [
+     -0.25,
+     0,
+     0.25
+    ],
+    "rp_busn_bracket": [
+     -0.25,
+     0,
+     0.25
+    ],
+    "rp_corner_plate_l": [
+     -0.25,
+     0,
+     0.25
+    ]
+   },
+   "open": {
+    "rp_fbb_shelf": [
+     -0.12,
+     0,
+     0.1
+    ],
+    "rp_fba_shelf": [
+     -0.12,
+     0,
+     0.1
+    ],
+    "rp_bus_standoffs": [
+     -0.12,
+     0,
+     0.1
+    ],
+    "rp_f0_spacer": [
+     -0.12,
+     0,
+     0.1
+    ],
+    "rp_bms_bracket": [
+     -0.12,
+     0,
+     0.1
+    ],
+    "rp_busn_bracket": [
+     -0.12,
+     0,
+     0.1
+    ],
+    "rp_corner_plate_l": [
      -0.12,
      0,
      0.1
@@ -1917,6 +2109,11 @@
      0,
      0,
      0.45
+    ],
+    "can_term_4": [
+     0,
+     0,
+     0.45
     ]
    },
    "open": {
@@ -1931,6 +2128,11 @@
      0.2
     ],
     "can_term_3": [
+     0,
+     0,
+     0.2
+    ],
+    "can_term_4": [
      0,
      0,
      0.2
@@ -2486,11 +2688,13 @@
   "bay_usbhub",
   "bay_usbpd",
   "can_terms",
+  "ch_central",
   "dp_lift",
   "fan",
   "fasteners",
   "fasteners_upper",
   "feedthru",
+  "flag_rod_guide",
   "getac_pocket",
   "harness_bat",
   "harness_fittings",
@@ -2503,12 +2707,15 @@
   "lift_node",
   "motor_brackets",
   "rear_estop_housing",
+  "rear_mounts",
   "rear_plate",
   "rz_batcon",
+  "rz_bms",
   "rz_brake",
   "rz_disc",
   "rz_f0",
   "rz_fba",
+  "rz_fbb",
   "rz_fchg",
   "rz_k1k2",
   "rz_kchg",
@@ -2516,6 +2723,7 @@
   "rz_pwr017",
   "rz_sb50",
   "shims",
+  "side_plates",
   "tz_metal_free_zone",
   "tz_receiver",
   "us_locknut",

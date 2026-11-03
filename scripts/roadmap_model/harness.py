@@ -43,12 +43,14 @@ SUPPORT_MAX = 0.030         # every base route point within 30 mm of a supportin
 END_FREE = 0.060            # ... except within 60 mm of its connectors (local exit) and inside declared protected passages
 AXIS_TOL_DEG = 15.0         # route segments within 15 degrees of the structure axes (except declared 45 degree transitions)
 SEP_WORK = 0.030            # working separation sensitive / power (verify against the interface documents; no value documented)
-DETOUR = 2.5                # a grid route longer than 2.5 x direct (and 250 mm more) means the layout has no passage
+DETOUR = 4.0                # a grid route longer than 4 x direct (and 400 mm more) means the layout has no passage (corridor routes are longer by design)
 # declared cable openings in structure (CAD changes): id, part, box
 OPENINGS = [{"id": "slot in the electronics bracket left wall (left hub-motor lead and brake)", "part": "electronics_bracket",
              "lo": [-0.016, 0.068, 0.120], "hi": [0.016, 0.096, 0.165]},
             {"id": "slot in the electronics bracket right wall (right hub-motor lead and brake)", "part": "electronics_bracket",
              "lo": [-0.016, -0.096, 0.120], "hi": [0.016, -0.068, 0.165]},
+            {"id": "slot in the centre-bracket left side wall for the CH-B1 branch (edge trim)", "part": "centre_bracket", "lo": [-0.058, 0.160, 0.215], "hi": [-0.022, 0.182, 0.240]},
+            {"id": "slot in the centre-bracket right side wall for the CH-B2 branch (edge trim)", "part": "centre_bracket", "lo": [-0.058, -0.182, 0.215], "hi": [-0.022, -0.160, 0.240]},
             {"id": "slot in the electronics bracket rear wall (both hub-motor leads from the ZLAC8015D motor ports, edge trim)", "part": "electronics_bracket",
              "lo": [-0.022, -0.075, 0.115], "hi": [-0.010, 0.075, 0.168]}]   # cables drawn as parts: crossing them is not "over a component"
 
@@ -87,20 +89,24 @@ CORRIDORS = [
      "lo": [-0.290, 0.255, 0.054], "hi": [0.320, 0.288, 0.290]},
     {"id": "C-R", "name": "right side corridor: floor and side-panel lane beside the front side zone, over-wheel guard R (the rear part beside the right tray is the BMS slot)",
      "lo": [-0.110, -0.288, 0.054], "hi": [0.320, -0.255, 0.290]},
-    {"id": "CH-C1", "name": "central power channel over the drive section (SAFE, BAT, motor driver power)", "lo": [-0.135, -0.085, 0.212], "hi": [0.098, -0.040, 0.240]},
-    {"id": "CH-C2", "name": "central signal channel over the drive section (CAN, USB, sensor lines)", "lo": [-0.135, 0.040, 0.212], "hi": [0.098, 0.085, 0.240]},
+    {"id": "CH-C1", "name": "central power channel over the drive section, left (SAFE, BAT, motor driver power)", "lo": [-0.135, 0.040, 0.212], "hi": [0.098, 0.085, 0.240]},
+    {"id": "CH-C2", "name": "central signal channel over the drive section, right (CAN, USB, sensor lines; deck exit to DP-LIFT)", "lo": [-0.135, -0.085, 0.212], "hi": [0.098, -0.040, 0.240]},
     {"id": "C-FP", "name": "front panel lane behind the front sensors", "lo": [0.330, -0.190, 0.054], "hi": [0.370, 0.190, 0.200]},
     {"id": "C-RM", "name": "rear module exits over the F0 holder into the arch opening (|y| < 0.090)", "lo": [-0.190, -0.090, 0.218], "hi": [-0.135, 0.090, 0.270]},
 ]
 
 # declared protected passages (cables may run over a component top here; they are supported by the channel or guard):
 # the two central channels over the drive section and the over-wheel guards
-PASSAGES = [{"id": "CH-C1 central power channel over the drive section", "lo": [-0.140, -0.085, 0.215], "hi": [0.100, -0.040, 0.250]},
-            {"id": "CH-C2 central signal channel over the drive section", "lo": [-0.140, 0.040, 0.215], "hi": [0.100, 0.085, 0.250]},
+PASSAGES = [{"id": "CH-C1 central power channel over the drive section", "lo": [-0.140, 0.040, 0.215], "hi": [0.100, 0.085, 0.250]},
+            {"id": "CH-C2 central signal channel over the drive section", "lo": [-0.140, -0.085, 0.215], "hi": [0.100, -0.040, 0.250]},
+            {"id": "fan lead strip on the arch front wall (fan bracket)", "lo": [0.097, -0.045, 0.235], "hi": [0.160, 0.045, 0.290]},
+            {"id": "CH-B1 power branch to the left side corridor (over the wheel, through the arch side wall)", "lo": [-0.065, 0.040, 0.206], "hi": [-0.015, 0.240, 0.250]},
+            {"id": "CH-B2 signal branch to the right side corridor (over the wheel, through the arch side wall)", "lo": [-0.065, -0.240, 0.206], "hi": [-0.015, -0.040, 0.250]},
             {"id": "over-wheel guard L", "lo": [-0.135, 0.236, 0.206], "hi": [0.135, 0.288, 0.290]},
             {"id": "over-wheel guard R", "lo": [-0.135, -0.288, 0.206], "hi": [0.135, -0.236, 0.290]}]
-CHANNELS = [{"id": "ch_central_power", "name": "CH-C1 central power channel (SAFE / BAT) over the drive section", "y": [-0.085, -0.040]},
-            {"id": "ch_central_signal", "name": "CH-C2 central signal channel (CAN, USB, sensor lines) over the drive section", "y": [0.040, 0.085]}]
+BRANCH_X = (-0.060, -0.020)   # cross branches of the central channels: through the arch side wall above the wheel guard
+CHANNELS = [{"id": "ch_central_power", "name": "CH-C1 central power channel (SAFE / BAT) over the drive section, left", "y": [0.040, 0.085]},
+            {"id": "ch_central_signal", "name": "CH-C2 central signal channel (CAN, USB, sensor lines) over the drive section, right (deck exit side)", "y": [-0.085, -0.040]}]
 CH_X, CH_FLOOR, CH_TOP = (-0.135, 0.098), 0.212, 0.240
 CH_DROP = (-0.100, -0.040)   # drop-out in both channel floors above the motor driver (edge trim): motor driver power, CAN1
 
@@ -108,6 +114,10 @@ CH_DROP = (-0.100, -0.040)   # drop-out in both channel floors above the motor d
 def channel_prims():
     """U-channels hung from the arch top sheet (CAD change): 3 mm floor, 2 mm walls; boxes (lo, hi) per channel."""
     out = {}
+    for nm, s_ in (("ch_branch_power", 1), ("ch_branch_signal", -1)):   # cross branches: floor from the channel to the wheel guard
+        y0, y1 = sorted([s_ * 0.085, s_ * 0.236])
+        out[nm] = [([BRANCH_X[0], y0, CH_FLOOR], [BRANCH_X[1], y1, CH_FLOOR + 0.003]), ([BRANCH_X[0] - 0.002, y0, CH_FLOOR], [BRANCH_X[0], y1, CH_TOP]),
+                   ([BRANCH_X[1], y0, CH_FLOOR], [BRANCH_X[1] + 0.002, y1, CH_TOP])]
     for c in CHANNELS:
         y0, y1 = c["y"]
         d0, d1 = CH_DROP
@@ -126,7 +136,9 @@ def min_bend_static(gauge, od):
     if gauge == "25 mm²":
         return 60
     if gauge.startswith("busbar"):
-        return 4   # formed copper bar: inner bend radius >= 1 x thickness (verify with the bar supplier)
+        return 4
+    if "class 6" in gauge:
+        return round(4 * od)   # extra-flexible fine-strand cable: 4 x OD (verify with the cable datasheet)   # formed copper bar: inner bend radius >= 1 x thickness (verify with the bar supplier)
     return max(15, round(6 * od))
 
 
@@ -309,8 +321,9 @@ def build_model(ctx):
         lo, hi = np.min([b[0] for b in bs], 0), np.max([b[1] for b in bs], 0)
         side = {k for k, v in fbd.items() if str(v[0]).startswith("side")}   # side-zone parts stay when the tiers lift out
         mem = sorted(set([k for k in comps if k.startswith("bay_") and k.rsplit("_", 1)[0] not in side and k not in side] + [k for k in fbd if k not in side]))
-        withdraw.append({"id": "front_tiers", "lo": [lo[0], lo[1], 0.054], "hi": [hi[0], hi[1], 0.300], "members": mem,
-                         "why": "front-bay tiers (lower plate, shelf, DIN carrier) lift out upward (cover off)"})
+        notch = [[round(x_, 3), round(y_, 3), 0.2] for x_ in (0.285, 0.305, 0.325) for y_ in (-0.024, 0.0, 0.024)]   # shelf notch around the LiDAR spacer
+        withdraw.append({"id": "front_tiers", "lo": [lo[0], lo[1], 0.054], "hi": [hi[0], hi[1], 0.300], "members": mem, "except": notch,
+                         "why": "front-bay tiers (lower plate, shelf, DIN carrier) lift out upward (cover off); the shelf notch around the LiDAR spacer is outside it"})
     withdraw.append({"id": "cover", "lo": [-0.390, -0.291, COVER_BAND], "hi": [0.390, 0.291, 0.300], "members": [],
                      "why": "cover lifts off; only the deck exit behind the lift base plate passes it", "except": [ctx["deck_exit"]]})
     return V, comps, keep, withdraw, guards
@@ -690,7 +703,10 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
         g = np.zeros(V.n, bool)
         top = (hi[2] + TOP_BAND[k] if k in TOP_BAND else 0.300) if k.startswith(TOP_ACCESS) else hi[2] + OVER_H
         g[V.slab([lo[0] + 0.001, lo[1] + 0.001, hi[2]], [hi[0] - 0.001, hi[1] - 0.001, top])] = True
-        gf = np.zeros(V.n, bool)          # above the component top up to the next structure (shelf, plate, deck) or the cover (3 Nov 2026 rule)
+        gf = np.zeros(V.n, bool)          # above the component top up to the next structure (parts under the base sheet: none)
+        if hi[2] <= 0.056:
+            over[k] = (g, gf)
+            continue   # first structure above: shelf, plate, deck or the cover (3 Nov 2026 rule)
         sl_ = V.slab([lo[0] + 0.001, lo[1] + 0.001, hi[2]], [hi[0] - 0.001, hi[1] - 0.001, 0.300])
         gf[sl_] = ~np.logical_or.accumulate(V.struct[sl_], axis=2)
         over[k] = (g, gf & ~pas)
@@ -811,7 +827,7 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
                     q = simplify(shortcut(free, w, V, bend_repair(free, w, V, q, c["rmin"]), c["rmin"]))
                     pts = q
             Lr = plen(pts)
-            if Lr > max(DETOUR * direct, direct + 0.25):
+            if Lr > max(DETOUR * direct, direct + 0.40):
                 results[c["id"]] = {"ok": False, "why": "the only compliant route is %.2f m for a %.2f m link: no cable passage in the layout" % (Lr, direct), "pts_rejected": pts}
                 continue
         cells = [V.cell(q) for _, q in sample(pts, RES / 2)]
@@ -1078,8 +1094,9 @@ def upper_sections(cid, end, U, ch, term):
     zt, xp = up["z_trunk"], up["x_riser"]
     T = term
     if end in ("lift_node", "lift_motor", "lsens1", "lsens2", "lsens3"):
-        if end == "lift_node":
-            return [("column", "col", [dp["node"]] + ortho(dp["node"], T[end], "yxz"))]
+        if end == "lift_node":   # DP-LIFT node outlet straight along y into the node -y face
+            a = [T[end][0], dp["node"][1], T[end][2]]
+            return [("column", "col", [a, [T[end][0], T[end][1] - 0.020, T[end][2]]])]
         if end == "lift_motor":
             a = [dp["outlet"][0], dp["outlet"][1], dp["outlet"][2]]
             return [("column", "col", [a] + ortho(a, T[end], "xzy"))]
@@ -1088,16 +1105,15 @@ def upper_sections(cid, end, U, ch, term):
         # down the column rear face beside the sensors at y -0.060 (T-slot clips), then into the node's -y face
         q = [p[0], -0.060, p[2]]
         r = [p[0], -0.060, node[2]]
-        return [("column", "col", [p, q, r] + ortho(r, [node[0], -0.020, node[2]], "xy"))]
+        return [("column", "col", [p, q, r, [p[0], -0.020, node[2]]])]   # into the node -y face (the node spans the sensor x)
     chain = chain_points(ch, 0.0)
     secs = [("sleeve", "col", [list(map(float, q)) for q in sleeve]), ("chain", "col", chain)]
     base_mov = trunk + [[xp, ch["y_moving"], zt]]
     p = list(T[end])
     s0 = base_mov[-1]
-    if end == "estop2":   # cable gland on the +y side of the housing; up through the adapter-plate grommet beside the lift stage
-        xg = p[0] - 0.010
-        a = [xg, ch["y_moving"], zt]
-        mv = trunk + [a] + ortho(a, [xg, 0.036, p[2]], "yz") + ortho([xg, 0.036, p[2]], p, "xy")
+    if end == "estop2":   # up the chain moving-end bracket, forward along the +y edge of the adapter plate (clip strip), into the gland on the +y side
+        a = trunk[0]
+        mv = [a, [a[0], a[1], p[2]], [p[0], a[1], p[2]], p]
     elif end in ("arm_l", "arm_r"):   # riser on the arm post rear face to the shoulder height, along the post rear face in y, forward to the arm base connector
         mv = base_mov + ortho(s0, p, "zyx")
     elif end == "zed":
@@ -1121,6 +1137,7 @@ HARNESSES = [
     {"id": "W08", "name": "Lift column harness", "route": "deck exit, DP-LIFT, rear and -y faces of the static column: lift motor, lift node CAN3, lift stop sensors"},
     {"id": "W09", "name": "Upper-body harness", "route": "deck exit, DP-LIFT, fixed sleeve on the -y face of the static column, energy chain behind the column, moving trunk under the adapter plate, risers at the arm post: arms (power, CAN-FD, wrist cameras), ZED Mini, Getac USB-PD, head light, second E-stop"},
 ]
+DEFERRED = {"CBL-P30": "receiver prepared, installed later; KCHG to the receiver output is laid when the receiver is installed (WCH-002)"}
 UP_MOV = {"arm_l", "arm_r", "zed", "getac", "light", "estop2"}
 UP_COL = {"lift_node", "lift_motor", "lsens1", "lsens2", "lsens3"}
 FRONT_SENS = {"estop", "reset", "us_fl", "us_fr", "tof_f", "lidar", "gemini"}
@@ -1205,6 +1222,9 @@ def run(ctx, F, cache=None):
         m = {"id": cid, "a": a, "b": b, "fn": fn, "dom": dom, "gauge": gauge, "od": od, "ca": ca, "cb": cb, "pin": pin, "bom": bomref,
              "rmin": min_bend_static(gauge, od), "flex": min_bend_flex(od), "own": sorted(own(a) | own(b)), "sections": []}
         meta[cid] = m
+        if cid in DEFERRED:
+            m["status"] = "deferred: " + DEFERRED[cid]
+            continue
         if a not in TERM or b not in TERM:
             miss = ", ".join(k for k in (a, b) if k not in TERM)
             if b in UP_MOV and a not in TERM:   # the upper part (DP-LIFT to the consumer) is defined; the base end waits for its part
@@ -1309,6 +1329,10 @@ def run(ctx, F, cache=None):
             dps.append("DP-TRAY-%s (tray lead connector)" % ("L" if "battery+" in (m["a"], m["b"]) else "R"))
         if m.get("upper") and m["upper"][0] is None:   # cables between the base and the lift; not the ones that stay on the column
             dps.append("DP-LIFT (bulkhead behind the lift base plate)")
+        if "fan" in (m["a"], m["b"]):
+            dps.append("DP-FAN (fan lead connector at the front end of CH-C1; the fan comes off with the cover)")
+        if "rz_bms" in (m["a"], m["b"]):
+            dps.append("DP-BMS (at the BMS: B- and P- bolted, sense and CAN2 plugged; BMS out through the right side panel)")
         if m["b"] in ("arm_l", "arm_r"):
             dps.append("arm base connector (existing)")
         m["disconnect"] = "; ".join(dps)
@@ -1321,7 +1345,9 @@ def run(ctx, F, cache=None):
     ch["bundle"] = chain_bundle(meta)
     upl["sleeve_r_bundle"] = round((math.sqrt(sum(m["od"] ** 2 for m in meta.values() if m.get("lift"))) * 1.15 + 2) / 2000, 4)
     over_to = {}
-    for k, (lo, hi) in comps.items():   # z of the first structure above each 10 mm cell of a component footprint (the cover if none)
+    for k, (lo, hi) in comps.items():   # z of the first structure above each 10 mm cell
+        if hi[2] <= 0.056:   # under the base sheet (castors): the base sheet is above it
+            continue   # (z of a component footprint cell: the cover if no structure above)
         xs = np.arange(lo[0] + 0.005, hi[0], 0.010)
         ys = np.arange(lo[1] + 0.005, hi[1], 0.010)
         grid = []
@@ -1425,7 +1451,7 @@ def input_key(ctx, F, jobs_src=None):
     h = hashlib.sha256()
     for fn in (build_model, wheel_guards, inside_mask, route_base, astar, smooth_p2p, resample, shortcut, bend_repair, seg_ok, simplify, route_radius, is_axis, channel_prims):
         h.update(inspect.getsource(fn).encode())
-    h.update(repr((CH_DROP, DIAG_COST, T45_MAX, PASSAGES, SUPPORT_MAX, END_FREE, AXIS_TOL_DEG, RES, LO.tolist(), HI.tolist(), COVER_BAND, OVER_H, SUPPORT_DIRECT, SUPPORT_STANDOFF, CLEAR, NO_OVER, P2P_MAX, DETOUR, OPENINGS,
+    h.update(repr((BRANCH_X, CH_DROP, DIAG_COST, T45_MAX, PASSAGES, SUPPORT_MAX, END_FREE, AXIS_TOL_DEG, RES, LO.tolist(), HI.tolist(), COVER_BAND, OVER_H, SUPPORT_DIRECT, SUPPORT_STANDOFF, CLEAR, NO_OVER, P2P_MAX, DETOUR, OPENINGS,
                    STRUCT_GLB, NO_SUPPORT_GLB, STRUCT_PLACEMENT, IGNORE_PLACEMENT, TOP_ACCESS, UP_MOV, UP_COL)).encode())
     for k in sorted(ctx["G"]):
         h.update(k.encode())
