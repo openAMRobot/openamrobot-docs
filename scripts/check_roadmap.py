@@ -1766,6 +1766,31 @@ def check_harness(root, err):
         err("harness", e)
 
 
+SELF_CHECK_MAX_MM = 5.0  # analyse.py self-check: Python analysis scene vs page scene (was 3.0 mm before the lift chain)
+
+
+def self_check_errors(summary):
+    s = (summary or {}).get("self_check") or {}
+    if not s.get("compared"):
+        return ["analysis_summary.json has no self-check against the page scene (run analyse.py --dump)"]
+    if s.get("max_dev_mm") is None or s["max_dev_mm"] > SELF_CHECK_MAX_MM:
+        worst = ", ".join("%s %.1f mm" % (w[0], w[1] * 1000) for w in (s.get("worst") or [])[:3])
+        return ["Python scene differs from the page scene by %s mm (limit %.1f): %s" % (s.get("max_dev_mm"), SELF_CHECK_MAX_MM, worst)]
+    return []
+
+
+def check_self_check(root, err):
+    path = os.path.join(root, "..", "..", "..", "scripts", "roadmap_model", "analysis_summary.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            summary = json.load(f)
+    except (OSError, ValueError) as e:
+        err("model", "analysis_summary.json: %s" % e)
+        return
+    for m in self_check_errors(summary):
+        err("model", m)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default=os.path.join(os.path.dirname(__file__), "..", "docs", "assets", "roadmap"))
@@ -1950,6 +1975,7 @@ def main():
     # 6. known contacts (declared overlaps, warn only in the model, recorded as issues)
     check_known_contacts(args.dir, err)
     check_reference_pages(args.dir, err)
+    check_self_check(args.dir, err)
 
     # 7. STATE.md figures (read from the generated files)
     try:

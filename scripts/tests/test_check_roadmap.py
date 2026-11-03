@@ -179,6 +179,18 @@ class ReferencePagesCurrent(unittest.TestCase):
             self.assertEqual(C.superseded_reference_hits(text), [], text)
 
 
+class SelfCheck(unittest.TestCase):
+    """The Python analysis scene must equal the page scene (owner review of #70: lift chain 263 mm)."""
+    def test_small_deviation_passes(self):
+        self.assertEqual(C.self_check_errors({"self_check": {"compared": 141, "max_dev_mm": 3.0, "worst": [["rod_corner_bracket", .003]]}}), [])
+
+    def test_large_deviation_fails(self):
+        self.assertTrue(C.self_check_errors({"self_check": {"compared": 141, "max_dev_mm": 263.058, "worst": [["lift_energy_chain", .263]]}}))
+
+    def test_missing_self_check_fails(self):
+        self.assertTrue(C.self_check_errors({"self_check": {}}))
+
+
 if __name__ == "__main__":
     unittest.main()
 

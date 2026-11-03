@@ -1,12 +1,8 @@
 {
  "self_check": {
   "compared": 141,
-  "max_dev_mm": 263.058,
+  "max_dev_mm": 3.0,
   "worst": [
-   [
-    "lift_energy_chain",
-    0.26305789951546277
-   ],
    [
     "rod_corner_bracket",
     0.002999999776482576
@@ -22,6 +18,10 @@
    [
     "head_light",
     0.001000000023748726
+   ],
+   [
+    "battery_series_link",
+    0.0007033680677414056
    ]
   ]
  },
@@ -406,7 +406,7 @@
     "lift_column": 18.0,
     "rear_estop_housing": null,
     "second_estop": null,
-    "lift_energy_chain": null,
+    "lift_energy_chain": 13.6,
     "cover": null,
     "lift_sensor_bracket_1": 29.5,
     "lift_sensor_bracket_2": 48.0,
@@ -422,7 +422,7 @@
     "lift_column": 18.0,
     "rear_estop_housing": null,
     "second_estop": null,
-    "lift_energy_chain": null,
+    "lift_energy_chain": 13.6,
     "cover": null,
     "lift_sensor_bracket_1": null,
     "lift_sensor_bracket_2": 29.5,
@@ -438,7 +438,7 @@
     "lift_column": 18.0,
     "rear_estop_housing": null,
     "second_estop": null,
-    "lift_energy_chain": null,
+    "lift_energy_chain": 13.7,
     "cover": null,
     "lift_sensor_bracket_1": null,
     "lift_sensor_bracket_2": null,
@@ -1042,7 +1042,7 @@
    "arch_sheet_utilisation": 1.44
   },
   "max_column_tilt_deg": 0.362,
-  "shoulder_height_ref_m": 0.9467084651323291,
+  "shoulder_height_ref_m": 0.9467110024391977,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -1816,9 +1816,9 @@
     "MEC-013",
     0.15,
     [
-     0.0214,
-     -0.0039,
-     0.5189
+     0.0196,
+     -0.0047,
+     0.5194
     ],
     "harness_fittings"
    ],
@@ -2798,9 +2798,9 @@
     "MEC-013",
     0.15,
     [
-     0.0214,
-     -0.0039,
-     0.6356
+     0.0196,
+     -0.0047,
+     0.6361
     ],
     "harness_fittings"
    ],

@@ -222,7 +222,38 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
             fs.append(ff + off)
             off += len(v)
         parts.append(Part(pid, np.vstack(vs), np.vstack(fs), e["group"], info.get(pid), boxes=bx if (allbox and bx) else None))
+    # lift energy chain links: model.js chainLinks + M.setChain draw them at build time for the lift travel 0 (L1000);
+    # add the same link boxes here so the Python scene equals the page scene (self-check). The chain changes shape with
+    # the travel; its clearance over the stroke is checked by harness.py energy_chain() at the three lift stops.
+    E = P.get("energy_chain")
+    ch = next((q for q in parts if E and q.id == E.get("part")), None)
+    if ch is not None:
+        vs, fs, off = [ch.v0], [ch.f], len(ch.v0)
+        for v, ff in chain_link_meshes(E, 0.0):
+            vs.append(v)
+            fs.append(ff + off)
+            off += len(v)
+        ch.v0, ch.f, ch.boxes = np.vstack(vs), np.vstack(fs), None
     return parts
+
+
+def chain_link_meshes(E, T):
+    """Link boxes of the lift energy chain for the lift travel T, as model.js M.setChain places them (col group frame)."""
+    zc = (E["fixed_z"] + E["moving_z0"] + T + math.pi * E["R"] - E["length"]) / 2
+    a, b = E["fixed_z"] - zc, math.pi * E["R"]
+    out = []
+    for i in range(int(round(E["length"] / E["pitch"]))):
+        s = (i + .5) * E["pitch"]
+        if s < a:
+            y, z, th = E["y_fixed"], E["fixed_z"] - s, -math.pi / 2
+        elif s < a + b:
+            th = math.pi + (s - a) / E["R"]
+            y, z = E["R"] * math.cos(th), zc + E["R"] * math.sin(th)
+            th += math.pi / 2
+        else:
+            y, z, th = E["y_moving"], zc + s - a - b, math.pi / 2
+        out.append(box_mesh([E["outer_w"], E["pitch"] * .92, E["outer_h"]], [E["x"], y, z], rpy_matrix([th, 0, 0])))
+    return out
 
 
 def arm_parts(side, q, grip, sh, bpx):
