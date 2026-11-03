@@ -441,6 +441,37 @@ class HarnessAbove(unittest.TestCase):
         H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.1, -0.1, 0.0], "hi": [0.5, 0.1, 0.3]}]
         self.assertEqual(C.harness_above_errors(H), [])
 
+    def test_module_cable_of_other_harness_is_not_exempt_in_the_zone(self):
+        # owner review of #71: module=True must not exempt a W02 or W03 cable inside EZ-W01 (above-component case)
+        H = self._ab(0.200)
+        H["cables"][0].update({"harness": "W03", "module": True})
+        H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.1, -0.1, 0.0], "hi": [0.5, 0.1, 0.3]}]
+        self.assertTrue(any("runs above the top of box_a" in e for e in C.harness_above_errors(H)))
+
+    def test_module_cable_of_other_harness_through_obstacle_fails(self):
+        # the reviewer's reproduction: CBL-P07 (W02, module) through a foreign obstacle inside EZ-W01
+        H = _h()
+        H["obstacles"] = [{"id": "foreign", "lo": [-0.25, -0.02, 0.13], "hi": [-0.20, 0.02, 0.17], "top_access": False}]
+        H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.372, -0.29, 0.054], "hi": [-0.108, 0.29, 0.292]}]
+        H["cables"][0].update({"id": "CBL-P07", "harness": "W02", "module": True, "own": []})
+        H["cables"][0]["sections"][0]["pts"] = [[-0.30, 0.0, 0.15], [-0.15, 0.0, 0.15]]
+        self.assertTrue(any("foreign" in e for e in C.harness_over_errors(H)))
+
+    def test_module_cable_exempt_only_at_its_local_exit(self):
+        z = {"id": "EZ-W01", "harness": "W01", "lo": [-0.372, -0.29, 0.054], "hi": [-0.108, 0.29, 0.292]}
+        c = {"id": "CBL-P07", "harness": "W02", "module": True,
+             "sections": [{"kind": "base", "pts": [[-0.30, 0.0, 0.15], [-0.15, 0.0, 0.15]]}]}
+        H = {"exception_zones": [z], "passages": []}
+        self.assertTrue(C._exempt(c, [-0.28, 0.0, 0.15], H))     # 20 mm from its end in the zone
+        self.assertFalse(C._exempt(c, [-0.22, 0.0, 0.15], H))    # 80 mm from both ends
+
+    def test_listed_passage_covers_only_its_cables(self):
+        q = {"id": "C-RM", "lo": [-0.195, -0.09, 0.19], "hi": [-0.135, 0.09, 0.27], "cables": ["CBL-P07"]}
+        H = {"exception_zones": [], "passages": [q]}
+        p = [-0.17, 0.0, 0.24]
+        self.assertTrue(C._exempt({"id": "CBL-P07", "harness": "W02", "sections": []}, p, H))
+        self.assertFalse(C._exempt({"id": "CBL-P99", "harness": "W02", "sections": []}, p, H))
+
     def test_exception_zone_does_not_cover_other_harnesses(self):
         H = self._ab(0.200)
         H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.1, -0.1, 0.0], "hi": [0.5, 0.1, 0.3]}]

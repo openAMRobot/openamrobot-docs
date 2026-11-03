@@ -1749,12 +1749,29 @@ def _in_box(p, b, e=0.0):
     return all(b["lo"][i] - e <= p[i] <= b["hi"][i] + e for i in range(3))
 
 
+MODULE_EXIT_M = 0.05  # a cable of another harness ending at a power-module part is exempt only within this distance of that end
+
+
+def _cable_ends(c):
+    pts = [q for s in c.get("sections", []) for q in s.get("pts", [])]
+    return (pts[0], pts[-1]) if pts else ()
+
+
 def _exempt(c, p, H):
     """A point of cable c inside a declared protected passage, or inside the declared battery and power module exception zone
-    when the cable belongs to that zone's harness or starts or ends at a module part."""
-    if any(_in_box(p, q) for q in H.get("passages", [])):
-        return True
-    return any(_in_box(p, z) and (c.get("harness") == z.get("harness") or c.get("module")) for z in H.get("exception_zones", []))
+    when the cable belongs to that zone's harness. A cable of another harness that starts or ends at a module part is exempt
+    only at its local exit (within MODULE_EXIT_M of a route end inside the zone); elsewhere in the zone every obstacle,
+    above-component and support check applies (owner review of #71)."""
+    if any(_in_box(p, q) and ("cables" not in q or c.get("id") in q["cables"]) for q in H.get("passages", [])):
+        return True   # a passage with a cable list covers only the listed cables
+    for z in H.get("exception_zones", []):
+        if not _in_box(p, z):
+            continue
+        if c.get("harness") == z.get("harness"):
+            return True
+        if c.get("module") and any(_in_box(e, z) and _norm(_v(e, p)) <= MODULE_EXIT_M for e in _cable_ends(c)):
+            return True
+    return False
 
 
 def harness_axis_errors(H):

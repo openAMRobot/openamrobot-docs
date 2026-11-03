@@ -1321,14 +1321,26 @@ def main():
         w = csv.DictWriter(f, fieldnames=keys)
         w.writeheader()
         w.writerows(cab_rows)
+    # Declared exit passage of the battery and power module (owner review of #71): cables of other harnesses that start or end at a
+    # module part leave the module only here, listed by ID; everywhere else in the module exception zone every check applies.
+    # Kept here (not in harness.py) so the route cache stays valid; the routes already run in this box.
+    exit_passages = [{"id": "C-RM rear module exit channel over the F0 access band into the arch opening",
+                      "lo": [-0.195, -0.090, 0.190], "hi": [-0.135, 0.090, 0.270],
+                      "cables": ["CBL-P07", "CBL-P12", "CBL-P14", "CBL-P15", "CBL-P20", "CBL-P35", "CBL-P61"],
+                      "why": "exit lane from the rear module into the arch opening (|y| < 90 mm); above the 60 mm F0 access band; cables in a lidded U-channel (harness_cad_changes.csv)"}]
+    RJ = HN.routes_json(HR, cab_rows, hcache["key"])
+    RJ["passages"] = list(RJ.get("passages", [])) + exit_passages
     with open(os.path.join(MODEL, "harness_routes.json"), "w", encoding="utf-8") as f:
-        json.dump(HN.routes_json(HR, cab_rows, hcache["key"]), f, separators=(",", ":"))
+        json.dump(RJ, f, separators=(",", ":"))
     with open(os.path.join(MODEL, "harness_cad_changes.csv"), "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["item", "part", "change", "qty", "where"])
         w.writeheader()
         w.writerows(HN.cad_changes(HR))
         mmw = lambda lo_, hi_: "x %.0f to %.0f, y %.0f to %.0f, z %.0f to %.0f mm" % (lo_[0] * 1000, hi_[0] * 1000, lo_[1] * 1000, hi_[1] * 1000, lo_[2] * 1000, hi_[2] * 1000)
-        extra = [{"item": "rear power module", "part": "MEC-006 power plate", "change": "plate material and height: G10 / FR4 glass-epoxy 3 mm (non-metal within 20 mm of the receiver), underside 117 mm (15 mm above the receiver top); PA66 or PEEK fasteners within 20 mm of the receiver (verify with TZBOT)",
+        extra = [{"item": "new part", "part": "C-RM rear module exit channel (W02, W03, W04, W09 cables leaving the module into the arch opening)",
+                  "change": "U-channel 2 mm walls with a clip lid, mounted on the arch rear opening above the F0 access band; edge trim at both ends; cables CBL-P07, P12, P14, P15, P20, P35, P61",
+                  "qty": 1, "where": "x -195 to -135, y -90 to 90, z 190 to 270 mm"},
+                 {"item": "rear power module", "part": "MEC-006 power plate", "change": "plate material and height: G10 / FR4 glass-epoxy 3 mm (non-metal within 20 mm of the receiver), underside 117 mm (15 mm above the receiver top); PA66 or PEEK fasteners within 20 mm of the receiver (verify with TZBOT)",
                   "qty": 1, "where": mmw(RP["parts"]["rear_plate"]["lo"], RP["parts"]["rear_plate"]["hi"])}]
         for k_, m_ in RP["mounts"].items():
             extra.append({"item": "new part", "part": m_["name"], "change": "new mounting part, %s" % m_["material"], "qty": 1, "where": mmw(m_["lo"], m_["hi"])})
