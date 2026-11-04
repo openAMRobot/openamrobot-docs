@@ -32,7 +32,7 @@ parses them and fails when:
   model/finish.json names an unknown material class or part;
 - the exploded view lacks a control (explode robot, open the base, cutaway,
   tour, pause, stop, record), its opened-base offsets, labels, view settings
-  or tour keyframes name unknown ids, the tour is not 40 to 50 s, or a tour
+  or tour keyframes name unknown ids, the tour is not 40 to 90 s, a tour hide or lift value is invalid, or a tour
   video or poster is missing, over 15 MB, or loads before it is played.
 
 - the harness (model/harness_routes.json, model/cable_list.csv) has an unsupported span over 150 mm or no tie
@@ -77,7 +77,8 @@ PICTURE_MAX_BYTES = 1000 * 1000
 THUMB_MAX_BYTES = 120 * 1000
 # payload budget of the 2 Nov 2026 update: default view at most 15 MB, High quality at most 40 MB
 ROBOT_FIRST_LOAD_MAX_BYTES = 15 * 1000 * 1000  # page, scripts, finish.json, placement.json
-TOUR_SECONDS = (40.0, 50.0)
+TOUR_SECONDS = (40.0, 90.0)
+TOUR_LIFT_M = (0.0, 0.35)  # tour keyframe lift: travel above L1000, up to L1350
 EXPLODED_FIRST_LOAD_MAX_BYTES = 15 * 1000 * 1000  # page, scripts, exploded.json, placement.json and video posters; not the videos
 ROBOT_MAX_BYTES = 600 * 1024  # robot.html without a bundled three.js
 THREE_CORE = "model/three-r160.min.js"
@@ -401,13 +402,16 @@ def check_views(root, html, ex, byid, glb, err):
             err("exploded.json", "the first tour keyframe has no caption")
         for k in keys:
             fr = k.get("frame", "robot")
-            ids = ([] if fr in ("robot", "base") else fr if isinstance(fr, list) else [fr]) + k.get("labels", []) + k.get("focus", [])
+            ids = ([] if fr in ("robot", "base") else fr if isinstance(fr, list) else [fr]) + k.get("labels", []) + k.get("focus", []) + \
+                [c for c in k.get("hide", []) if c != "@upper"]
             for cid in ids:
                 if cid not in byid:
                     err("exploded.json", "tour keyframe at %s s names unknown component %s" % (k.get("t"), cid))
             for w in ("r", "b", "c"):
                 if not 0 <= k.get(w, 0) <= 1:
                     err("exploded.json", "tour keyframe at %s s: %s outside 0 to 1" % (k.get("t"), w))
+            if not (isinstance(k.get("lift", 0), (int, float)) and TOUR_LIFT_M[0] <= k.get("lift", 0) <= TOUR_LIFT_M[1]):
+                err("exploded.json", "tour keyframe at %s s: lift outside %s to %s m" % (k.get("t"), TOUR_LIFT_M[0], TOUR_LIFT_M[1]))
     for cid in EXPLODED_CONTROLS:
         if not re.search(r'<button id="%s"' % cid, html):
             err("exploded.html", "control %s is missing" % cid)
