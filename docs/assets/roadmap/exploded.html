@@ -315,6 +315,10 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
       if (on) liftPid[lp] = true;
       if (up) upperPid[lp] = true;
     });
+    // a part group inside another lifted part group moves with it: lift it once, not twice
+    for (lp in parts) parts[lp].forEach(function (g) {
+      for (var o = g.parent; o && g.userData.lifts; o = o.parent) if (o.userData.lifts) g.userData.lifts = false;
+    });
 
     // per-mesh materials so that parts dim, fade and highlight on their own
     var cellOpacity = (X.views.open_base || {}).cell_opacity || .7;

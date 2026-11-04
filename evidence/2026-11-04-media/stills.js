@@ -11,15 +11,16 @@ const W = 2560, H = 1440;
 const HID = ['cover', 'cover_flange', '@upper', 'lift_base_plate'];
 const REAR = ['rear_plate', 'rz_f0', 'rz_k1k2', 'rz_fbb', 'rz_fba', 'rz_bms', 'rz_pwr017', 'rz_disc', 'tz_receiver'];
 const SIDE = ['side_plates', 'bay_fbc', 'bay_usbpd', 'bay_pwr032', 'bay_usbhub', 'bay_usbcan', 'bay_lidar_uart', 'bay_plate', 'compute'];
+const BODY = ['base_plate', 'cover', 'front_panel', 'rear_panel', 'side_panel', 'hub_motor_wheel', 'castor', 'lift_column', 'adapter_plate', 'arm_profile', 'openarm', 'head_camera', 'getac_tablet'];
 const ROBOT = [
-  ['01_robot_front_three_quarter_L1000', {frame: 'robot', az: -38, el: 14, zoom: 1.0}],
-  ['02_robot_rear_three_quarter_L1350', {frame: 'robot', az: 148, el: 14, zoom: 1.0, lift: 0.35}],
-  ['03_robot_side', {frame: 'robot', az: -90, el: 4, zoom: 1.0}],
-  ['04_base_cover_off_harness', {frame: 'base', az: -38, el: 52, zoom: 0.95, hide: HID}],
-  ['05_rear_power_module', {frame: REAR, min_r: 0.18, az: 145, el: 40, zoom: 0.85, hide: HID}],
-  ['06_front_bay_side_zones', {frame: SIDE, min_r: 0.18, az: -20, el: 52, zoom: 0.95, hide: HID}],
-  ['07_lift_column_rear', {frame: ['lift_column', 'lift_energy_chain', 'flag_rod', 'flag_rod_guide', 'lift_stop_sensors'], az: 210, el: 12, zoom: 1.0, hide: ['openarm']}],
-  ['08_exploded_view', {frame: 'robot', az: -42, el: 20, r: 1}],
+  ['01_robot_front_three_quarter_L1000', {frame: BODY, az: -38, el: 14, zoom: 1.0}],
+  ['02_robot_rear_three_quarter_L1350', {frame: BODY, az: 148, el: 14, zoom: 1.0, lift: 0.35}],
+  ['03_robot_side', {frame: BODY, az: -90, el: 4, zoom: 1.0}],
+  ['04_base_cover_off_harness', {frame: 'base', az: -38, el: 52, zoom: 0.85, hide: HID}],
+  ['05_rear_power_module', {frame: REAR, min_r: 0.18, az: 145, el: 40, zoom: 1.05, hide: HID}],
+  ['06_front_bay_side_zones', {frame: SIDE, min_r: 0.18, az: -20, el: 52, zoom: 1.1, hide: HID}],
+  ['07_lift_column_rear', {frame: ['lift_column', 'lift_energy_chain', 'flag_rod', 'flag_rod_guide', 'lift_stop_sensors'], az: 210, el: 10, zoom: 1.6, hide: ['openarm']}],
+  ['08_exploded_view', {frame: 'robot', az: -42, el: 20, r: 1, zoom: 0.8}],
 ];
 const STORE = [
   ['09_store_picking_from_shelf', 15.6, 'pick'],
