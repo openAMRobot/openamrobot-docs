@@ -1,129 +1,102 @@
 ---
 title: Coordinate frames
 tags: [beginner, builder]
-description: map, odom and base_link — the three frames every robot navigation argument is really about.
+description: How map, odom, base_footprint and base_link relate in OpenAMRobot 2.0.
 ---
 
 # Coordinate frames
 
-
-**For:** anyone learning how a robot knows where it is.
+**For:** anyone learning how a mobile robot represents its position.
 **Before you start:** nothing.
-**When you finish:** you will understand why robots have several ideas of "where" at once, and
-which one to trust for what.
+**When you finish:** you will understand the purpose of the map, odometry and robot-base frames, and how the current OpenAMRobot 2.0 model connects them.
 
-## The problem frames solve
+## Why frames matter
 
-A robot needs to answer questions like *where is the charging dock relative to my gripper?* The
-dock is known on a map. The gripper is known relative to the arm base. The arm base is known
-relative to the robot body. The robot body is somewhere on the map, approximately.
+A robot needs to combine measurements from sensors mounted in different places. A lidar measures from the lidar; a camera measures from its optical centre; navigation reasons about the robot relative to a map. TF2 represents these relationships as a tree of coordinate frames and transforms.
 
-Chaining those relationships by hand is error-prone and quickly impossible. So robots publish a
-**transform tree**: a set of named coordinate frames and the transforms between them, continuously
-updated. Ask for any frame relative to any other and the system walks the tree for you.
+In ROS 2, [tf2](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Tf2.html) lets a node ask for the transform between two frames without manually chaining every relationship.
 
-In ROS 2 this is [tf2](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Tf2.html).
+## The REP 105 navigation frames
 
-## The three frames that matter
-
-By convention, described in [REP 105](https://www.ros.org/reps/rep-0105.html), a mobile robot has
-three:
+REP 105 defines the conventional mobile-robot relationship:
 
 ```
-map  ──────►  odom  ──────►  base_link
- │              │              │
- │              │              └── the robot itself
- │              └── smooth, drifts
- └── accurate, jumps
+map ──► odom ──► base_footprint ──► base_link ──► sensor frames
 ```
 
-### `base_link`
-
-The robot. Attached to its body, usually at the centre of the drive axis. Everything physically on
-the robot — lidar, camera, arm base — is a fixed transform from here, and those come from the
-URDF.
-
-### `odom`
-
-The frame the robot's own motion estimate lives in. Start the robot, and `odom` is wherever it
-happened to be. As it drives, odometry integrates wheel rotation and IMU to estimate movement.
-
-`odom` is **smooth and continuous**. It never jumps. But it **drifts**: wheels slip, encoders
-quantise, small errors accumulate. Drive a robot in a large square and it will believe it finished
-somewhere near where it started, and be wrong by a growing margin.
-
-Use `odom` for anything over short time and distance — local obstacle avoidance, velocity control,
-anything where smoothness matters more than absolute truth.
+This is the current OpenAMRobot 2.0 frame hierarchy in the platform URDF and Gazebo odometry configuration. The fixed transform from `base_footprint` to `base_link` places the body reference 0.098 m above the floor. Nav2's current configuration uses `base_link` as its robot base frame.
 
 ### `map`
 
-The world frame. Fixed to the environment. A pose in `map` means the same physical place tomorrow.
+The world reference used for goals and saved locations. Localization estimates the robot's position in this frame and publishes the correction to the odometry frame.
 
-`map` is **accurate but discontinuous**. Localization corrects the robot's estimate whenever the
-laser scan says the estimate was off, and those corrections appear as small jumps.
+### `odom`
 
-Use `map` for goals, saved locations and anything that must mean the same thing across sessions.
+The locally continuous frame associated with the robot's odometry. It is useful for short-term motion and control, but accumulates drift over time.
 
-### Why both
+### `base_footprint`
 
-This is the point people miss, and it is elegant. Localization does not correct `base_link`. It
-corrects the **`map` → `odom`** transform.
+A floor-level reference beneath the robot, used as the mobile platform's URDF root and as the child frame of Gazebo's odometry transform in the current 2.0 simulation model.
 
-The robot's own motion estimate stays smooth and unbroken in `odom`. The accumulated correction
-lives in one transform above it. So you get both properties at once: smooth control from `odom`,
-globally correct positions from `map`, no contradiction between them.
+### `base_link`
 
-Publishers:
+The robot body reference. In the current platform model it is connected to `base_footprint` by a fixed joint with a vertical offset of 0.098 m. Nav2's AMCL, controller and costmap configuration currently use `base_link` as the base frame.
 
-| Transform | Published by |
-|:--|:--|
-| `map` → `odom` | The localizer, AMCL in this stack |
-| `odom` → `base_link` | The odometry source |
-| `base_link` → sensors | `robot_state_publisher`, from the URDF |
+## Why both `map` and `odom`?
+
+Odometry should remain smooth for local motion, even though it drifts. Localization corrects the robot's global estimate by updating `map` → `odom`, rather than making the odometry estimate jump.
+
+Use `odom` for continuous local motion and `map` for globally referenced goals and locations.
+
+## Current OpenAMRobot 2.0 frame ownership
+
+| Transform | Source in the current platform model |
+|---|---|
+| `map` → `odom` | AMCL is configured to broadcast the localization transform; confirm the active localizer in the selected launch. |
+| `odom` → `base_footprint` | Gazebo DiffDrive configuration sets `odom` as parent and `base_footprint` as child. |
+| `base_footprint` → `base_link` | Fixed joint in `robo_urdf.urdf.xacro`, z = 0.098 m. |
+| `base_link` → sensor frames | Fixed joints in the robot description, including `sensors.xacro`. |
+
+The current Nav2 configuration uses `base_link` for AMCL, the BT navigator, controller and costmaps. Do not assume that every Nav2 stack uses the same base frame; inspect the selected parameter file and launch configuration.
 
 ## Sensor frames
 
-Every sensor gets its own frame, because measurements are made in the sensor's own coordinates. A
-lidar reports ranges from the lidar; a camera reports pixels from the camera's optical centre.
+Sensor frames describe the coordinate system in which each sensor reports measurements. The robot description defines the mounting transforms from `base_link`.
 
-Cameras carry a subtlety worth knowing early. There is usually a `camera_link` following the robot
-convention — x forward, y left, z up — and a `camera_optical_frame` following the vision convention
-— z forward, x right, y down. A fixed rotation connects them. Mixing them up produces detections
-that appear rotated by 90 degrees, which is a rite of passage in robotics debugging.
+Camera optical frames follow the ROS optical convention: z forward, x right and y down. The camera link itself follows the usual robot convention: x forward, y left and z up. The fixed transform between them is important when interpreting images and 3D data.
 
-## Seeing the tree
+## Inspect the live TF tree
+
+Run these commands in a terminal where the ROS 2 environment is sourced and the relevant robot stack is running:
 
 ```bash
-ros2 run tf2_tools view_frames        # writes a PDF of the whole tree
-ros2 run tf2_ros tf2_echo map base_link    # live transform between two frames
+ros2 run tf2_tools view_frames
+ros2 run tf2_ros tf2_echo map base_link
+ros2 run tf2_ros tf2_echo odom base_footprint
+ros2 run tf2_ros tf2_echo base_footprint base_link
 ```
 
-`view_frames` is the first command to run when something spatial is wrong. A missing edge in that
-tree explains a surprising number of symptoms.
+The first command generates a frame-tree PDF. Check the parent/child relationships and timestamps against the active launch configuration.
 
-## What breaks, and what it looks like
+## Common symptoms
 
-| Symptom | Frame cause |
-|:--|:--|
-| Robot drifts away from the map over time | `map` → `odom` not being published; you are running on odometry alone |
-| Detections appear rotated | Optical frame confused with link frame |
-| "Lookup would require extrapolation into the future" | Clock mismatch. Under simulation, `use_sim_time` is not set on some node. |
-| Lidar points appear inside the robot | Wrong sensor mounting transform in the URDF |
-| Robot pose jumps constantly | Localization is uncertain and correcting hard. Often too few features, or a bad initial guess. |
+| Symptom | What to inspect |
+|---|---|
+| Robot pose drifts relative to the map | Whether the localization node publishes `map` → `odom`; inspect localization quality and scan data. |
+| TF lookup reports extrapolation | Check timestamps and consistent `use_sim_time` settings across nodes. |
+| Sensor data appears rotated or displaced | Check the sensor mounting transform and optical-frame convention in the URDF. |
+| Duplicate-parent or disconnected-tree errors | Inspect the live TF tree and identify competing publishers or missing transforms. |
+
+## Source of truth
+
+The frame hierarchy above is derived from the current [platform URDF](https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/urdf/robo_urdf.urdf.xacro), [Gazebo control description](https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/urdf/gazebo_control.xacro), [sensor description](https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_description/urdf/sensors.xacro) and [Nav2 parameters](https://github.com/openAMRobot/openamr-platform-sw/blob/main/ros2/src/openamrobot_nav2/config/nav2_params.yaml). If the implementation changes, update this page from those canonical files.
 
 ## Further reading
 
+- [REP 105 — Coordinate Frames for Mobile Platforms](https://www.ros.org/reps/rep-0105.html)
+- [REP 103 — Units and Coordinate Conventions](https://www.ros.org/reps/rep-0103.html)
 - [tf2 concepts](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Tf2.html)
-- [REP 105 — coordinate frames for mobile platforms](https://www.ros.org/reps/rep-0105.html)
-- [REP 103 — units and conventions](https://www.ros.org/reps/rep-0103.html)
-- [tf2 tutorials](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Tf2/Tf2-Main.html)
-
-## Related
-
-[Odometry](odometry.md) · [Localization](localization.md) ·
-[TF and transforms](../ros2/tf-frames.md) ·
-[openamr-platform-sw Concepts](../../reference/openamr-platform-sw/concepts.md)
 
 ## Next
 
-[Odometry](odometry.md)
+[Odometry](odometry.md) · [Localization](localization.md)
