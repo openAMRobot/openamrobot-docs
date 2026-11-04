@@ -26,9 +26,12 @@ L
 [ -f $S/stills/10_store_at_dock.png ] || { log "stills start"; node $E/stills.js $B $S/stills >> $S/media_job.log 2>&1; log "stills done"; }
 # 3. tour posters and the no-WebGL image (October script: frame 780, opened base; frame 0 raw canvas)
 [ -f $S/posters/exploded-static.png ] || { mkdir -p $S/posters; log "posters"; node $R/evidence/2026-10-27-store-media/exploded_stills.js $B $S/posters >> $S/media_job.log 2>&1; }
-# 4. tour videos: 1080p twice (byte identity), then the vertical cut
-for v in tour1080a tour1080b tour1080x1350; do
-  case $v in tour1080x1350) W=1080; H=1350;; *) W=1920; H=1080;; esac
-  [ -f $S/$v.mp4 ] || { log "$v start"; (time node scripts/render_tour.js $W $H $S/$v.tmp.mp4 $B) >> $S/media_job.log 2>&1 && mv $S/$v.tmp.mp4 $S/$v.mp4; log "$v done"; }
-done
+# 4. tour videos. 1080p twice at CRF 23 (byte identity): tour1080a piped, tour1080b with its PNG frames kept; the published
+#    1080p is encoded from those frames at CRF 27 (the 87.5 s tour is 24 MB at CRF 23, over the 15 MB limit), then the
+#    vertical cut at CRF 27 (frames kept, resumable)
+tour() { local v=$1 W=$2 H=$3; shift 3; [ -f $S/$v.mp4 ] || { log "$v start"; (time node scripts/render_tour.js $W $H $S/$v.tmp.mp4 $B "$@") >> $S/media_job.log 2>&1 && mv $S/$v.tmp.mp4 $S/$v.mp4; log "$v done"; }; }
+tour tour1080a 1920 1080
+tour tour1080b 1920 1080 --frames-dir $S/tourframes1080 --resume 1 --crf 23
+tour tour1080p 1920 1080 --frames-dir $S/tourframes1080 --resume 1 --crf 27
+tour tour1080x1350 1080 1350 --frames-dir $S/tourframes1350 --resume 1 --crf 27
 log ALL_DONE
