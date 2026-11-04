@@ -1,0 +1,56 @@
+{
+ "seen": [
+  {
+   "t": 1,
+   "cap": "OpenAMRobot 2.0, assembled. Shared roadmap model, visualization only"
+  },
+  {
+   "t": 14,
+   "cap": "Cutaway: cover and panels translucent, the base internals in context"
+  },
+  {
+   "t": 30,
+   "cap": "Battery: 4 + 4 EVE LF105 cells (8S LiFePO4) upright in two removable side trays, joined by the keyed connector PWR-018"
+  },
+  {
+   "t": 47,
+   "cap": "Lift stop sensors on the rear face of the static column: three fixed inductive sensors, one steel flag moving with the lift (L1000, L1175, L1350)"
+  },
+  {
+   "t": 51,
+   "cap": "Rear power module, cover off: F0 at the plate front, K1 and K2 joined by busbars, FB-B on its shelf above, FB-A at the rear"
+  },
+  {
+   "t": 55,
+   "cap": "Two levels above the prepared wireless charging receiver, 15 mm gap; the BMS on edge in the right side gap"
+  },
+  {
+   "t": 60,
+   "cap": "Base harness, cover off: power corridor on the robot's left, signal corridor on its right, covered central channels over the drive section, tie points on every run"
+  },
+  {
+   "t": 67,
+   "cap": "Front bay side zones beside the two tiers: power on the robot's left (FB-C, USB-PD, 3.3 V), signal on its right (USB hub, USB-CAN-FD, LiDAR UART)"
+  },
+  {
+   "t": 72,
+   "cap": "Lift energy chain behind the column at L1000: the lift cables run from DP-LIFT up in one vertical U chain"
+  },
+  {
+   "t": 75,
+   "cap": "Lift moving up to L1350: the chain rolls over its 75 mm radius along the stroke"
+  },
+  {
+   "t": 81,
+   "cap": "Flag rod guide at the top of the static column: an open ring holds the rod and leaves the sensor side open for the flag (L1350)"
+  },
+  {
+   "t": 87,
+   "cap": "OpenAMRobot 2.0 roadmap model. Not an assembly instruction"
+  }
+ ],
+ "paused": "Resume",
+ "heldCap": "OpenAMRobot 2.0, assembled. Shared roadmap model, visualization only",
+ "ended": true,
+ "errors": []
+}

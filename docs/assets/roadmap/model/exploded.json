@@ -66,7 +66,7 @@
   {
    "n": 9,
    "title": "Harness",
-   "text": "Every cable of the harness on its routed path, coloured by domain, with the P-clips, grommets, CAN terminations, the upper-body service loop and the drawn fasteners. Proposed by the roadmap model; cable_list.csv gives each route.",
+   "text": "Every cable of the harness on its routed path, coloured by domain, with the P-clips, grommets, CAN terminations, the lift energy chain and the drawn fasteners. Proposed by the roadmap model; cable_list.csv gives each route.",
    "frame": "base"
   }
  ],
@@ -2262,7 +2262,6 @@
   }
  },
  "labels": {
-  "battery": "Battery cells, 8 x LF105",
   "compute": "Jetson Orin NX + J401",
   "base_controller": "NUCLEO-H723ZG",
   "motor_driver": "Motor driver",
@@ -2278,7 +2277,32 @@
   "lift_sensor_brackets": "Sensor brackets",
   "flag_rod": "Flag rod",
   "rod_corner_bracket": "Rod corner bracket",
-  "lift_flag": "Steel flag"
+  "lift_flag": "Steel flag",
+  "rear_plate": "G10 power plate",
+  "rz_f0": "F0 main fuse",
+  "rz_k1k2": "K1 / K2",
+  "rz_fbb": "FB-B",
+  "rz_fba": "FB-A",
+  "rz_bms": "BMS",
+  "rz_pwr017": "BUS+ / BUS-",
+  "tz_receiver": "Receiver (prepared)",
+  "battery_cells": "Cells, 4 + 4 LF105",
+  "battery_tray": "Battery trays",
+  "rz_batcon": "PWR-018",
+  "ch_central": "Central channels",
+  "wheel_guards": "Over-wheel guards",
+  "harness_fittings": "Tie points",
+  "side_plates": "Side zone plates",
+  "bay_fbc": "FB-C",
+  "bay_usbpd": "USB-PD",
+  "bay_pwr032": "3.3 V",
+  "bay_usbhub": "USB hub",
+  "bay_usbcan": "USB-CAN-FD",
+  "bay_lidar_uart": "LiDAR UART",
+  "lift_energy_chain": "Energy chain",
+  "dp_lift": "DP-LIFT",
+  "lift_column": "Lift column",
+  "flag_rod_guide": "Flag rod guide"
  },
  "views": {
   "about": "open_base: the opened base (cover and flanges lifted and faded, panels out, internal components raised for reading; not assembly positions; the upper body is hidden). cutaway: opacity of the closing parts.",
@@ -2319,7 +2343,7 @@
  },
  "tour": {
   "fps": 30,
-  "about": "Keyframes of the guided tour (seconds); r, b, c: explode robot, open the base, cutaway; frame: robot, base or component ids; az and el in degrees; the caption shows from its keyframe on.",
+  "about": "Keyframes of the guided tour (seconds); r, b, c: explode robot, open the base, cutaway; lift: lift travel above L1000 (m); hide: components faded out (component ids, @upper: the lift assembly and the arms); frame: robot, base or component ids; az and el in degrees; the caption shows from its keyframe on.",
   "keys": [
    {
     "t": 0,
@@ -2390,7 +2414,8 @@
     "caption": "Open the base: cover lifted, panels out, components raised above the deck",
     "names": true,
     "labels": [
-     "battery",
+     "battery_cells",
+     "rear_plate",
      "compute",
      "base_controller",
      "motor_driver",
@@ -2409,7 +2434,8 @@
     "b": 1,
     "names": true,
     "labels": [
-     "battery",
+     "battery_cells",
+     "rear_plate",
      "compute",
      "base_controller",
      "motor_driver",
@@ -2423,7 +2449,10 @@
    {
     "t": 28.5,
     "frame": [
-     "battery"
+     "battery_cells",
+     "battery_tray",
+     "battery_series_link",
+     "rz_batcon"
     ],
     "min_r": 0.24,
     "zoom": 1.3,
@@ -2432,18 +2461,25 @@
     "b": 1,
     "names": true,
     "labels": [
-     "battery",
+     "battery_cells",
+     "battery_tray",
+     "rz_batcon",
      "motor_driver"
     ],
     "focus": [
-     "battery"
+     "battery_cells",
+     "battery_tray",
+     "rz_batcon"
     ],
-    "caption": "Battery cell-group envelope, provisional: eight EVE LF105 cells, 8S1P LiFePO4"
+    "caption": "Battery: 4 + 4 EVE LF105 cells (8S LiFePO4) upright in two removable side trays, joined by the keyed connector PWR-018"
    },
    {
     "t": 31,
     "frame": [
-     "battery"
+     "battery_cells",
+     "battery_tray",
+     "battery_series_link",
+     "rz_batcon"
     ],
     "min_r": 0.24,
     "zoom": 1.3,
@@ -2452,11 +2488,15 @@
     "b": 1,
     "names": true,
     "labels": [
-     "battery",
+     "battery_cells",
+     "battery_tray",
+     "rz_batcon",
      "motor_driver"
     ],
     "focus": [
-     "battery"
+     "battery_cells",
+     "battery_tray",
+     "rz_batcon"
     ]
    },
    {
@@ -2576,7 +2616,7 @@
     "az": -55,
     "el": 10,
     "zoom": 1.2,
-    "caption": "Upper body: lift column, arm profile and two OpenArm 2.0 arms",
+    "caption": "Upper body: lift column, arm profile, two OpenArm 2.0 arms and the Getac ZX80 in portrait",
     "focus": [
      "openarm"
     ]
@@ -2597,34 +2637,13 @@
     ]
    },
    {
-    "t": 46.0,
+    "az": 70,
+    "caption": "Lift stop sensors on the rear face of the static column: three fixed inductive sensors, one steel flag moving with the lift (L1000, L1175, L1350)",
     "frame": [
      "lift_stop_sensors",
      "flag_rod",
      "lift_flag"
     ],
-    "az": 70,
-    "el": 12,
-    "zoom": 1.1,
-    "caption": "Lift stop sensors: three fixed inductive sensors on the static column, one steel flag moving with the lift (L1000, L1175, L1350)",
-    "labels": [
-     "lift_stop_sensors",
-     "lift_flag"
-    ],
-    "focus": [
-     "lift_stop_sensors",
-     "lift_flag",
-     "flag_rod"
-    ]
-   },
-   {
-    "t": 47.0,
-    "frame": [
-     "lift_stop_sensors",
-     "flag_rod",
-     "lift_flag"
-    ],
-    "az": 70,
     "el": 12,
     "zoom": 1.1,
     "labels": [
@@ -2635,21 +2654,453 @@
      "lift_stop_sensors",
      "lift_flag",
      "flag_rod"
-    ]
+    ],
+    "t": 46
    },
    {
-    "t": 48,
+    "az": 70,
+    "frame": [
+     "lift_stop_sensors",
+     "flag_rod",
+     "lift_flag"
+    ],
+    "el": 12,
+    "zoom": 1.1,
+    "labels": [
+     "lift_stop_sensors",
+     "lift_flag"
+    ],
+    "focus": [
+     "lift_stop_sensors",
+     "lift_flag",
+     "flag_rod"
+    ],
+    "t": 48
+   },
+   {
+    "az": 145,
+    "el": 42,
+    "caption": "Rear power module, cover off: F0 at the plate front, K1 and K2 joined by busbars, FB-B on its shelf above, FB-A at the rear",
+    "frame": [
+     "rear_plate",
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba",
+     "rz_bms",
+     "rz_pwr017",
+     "rz_disc",
+     "tz_receiver"
+    ],
+    "min_r": 0.2,
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate"
+    ],
+    "names": true,
+    "labels": [
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba",
+     "rear_plate",
+     "rz_pwr017"
+    ],
+    "focus": [
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba"
+    ],
+    "t": 50,
+    "zoom": 0.85
+   },
+   {
+    "az": 135,
+    "el": 42,
+    "frame": [
+     "rear_plate",
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba",
+     "rz_bms",
+     "rz_pwr017",
+     "rz_disc",
+     "tz_receiver"
+    ],
+    "min_r": 0.2,
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate"
+    ],
+    "names": true,
+    "labels": [
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba",
+     "rear_plate",
+     "rz_pwr017"
+    ],
+    "focus": [
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba"
+    ],
+    "t": 52.5,
+    "zoom": 0.85
+   },
+   {
+    "az": -125,
+    "el": 16,
+    "caption": "Two levels above the prepared wireless charging receiver, 15 mm gap; the BMS on edge in the right side gap",
+    "frame": [
+     "rear_plate",
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba",
+     "rz_bms",
+     "rz_pwr017",
+     "rz_disc",
+     "tz_receiver"
+    ],
+    "min_r": 0.2,
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate",
+     "side_panel",
+     "rear_panel"
+    ],
+    "names": true,
+    "labels": [
+     "rz_bms",
+     "tz_receiver",
+     "rear_plate",
+     "rz_fbb",
+     "rz_k1k2"
+    ],
+    "focus": [
+     "rz_bms",
+     "tz_receiver"
+    ],
+    "t": 54,
+    "zoom": 0.9
+   },
+   {
+    "az": -135,
+    "el": 16,
+    "frame": [
+     "rear_plate",
+     "rz_f0",
+     "rz_k1k2",
+     "rz_fbb",
+     "rz_fba",
+     "rz_bms",
+     "rz_pwr017",
+     "rz_disc",
+     "tz_receiver"
+    ],
+    "min_r": 0.2,
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate",
+     "side_panel",
+     "rear_panel"
+    ],
+    "names": true,
+    "labels": [
+     "rz_bms",
+     "tz_receiver",
+     "rear_plate",
+     "rz_fbb",
+     "rz_k1k2"
+    ],
+    "focus": [
+     "rz_bms",
+     "tz_receiver"
+    ],
+    "t": 56.5,
+    "zoom": 0.9
+   },
+   {
+    "az": -38,
+    "el": 55,
+    "zoom": 0.95,
+    "caption": "Base harness, cover off: power corridor on the robot's left, signal corridor on its right, covered central channels over the drive section, tie points on every run",
+    "frame": "base",
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate"
+    ],
+    "names": true,
+    "labels": [
+     "ch_central",
+     "wheel_guards",
+     "harness_fittings",
+     "side_plates",
+     "rear_plate"
+    ],
+    "focus": [
+     "ch_central",
+     "wheel_guards"
+    ],
+    "t": 58.5
+   },
+   {
+    "az": -26,
+    "el": 55,
+    "zoom": 0.95,
+    "frame": "base",
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate"
+    ],
+    "names": true,
+    "labels": [
+     "ch_central",
+     "wheel_guards",
+     "harness_fittings",
+     "side_plates",
+     "rear_plate"
+    ],
+    "focus": [
+     "ch_central",
+     "wheel_guards"
+    ],
+    "t": 63
+   },
+   {
+    "az": -15,
+    "el": 58,
+    "caption": "Front bay side zones beside the two tiers: power on the robot's left (FB-C, USB-PD, 3.3 V), signal on its right (USB hub, USB-CAN-FD, LiDAR UART)",
+    "frame": [
+     "side_plates",
+     "bay_fbc",
+     "bay_usbpd",
+     "bay_pwr032",
+     "bay_usbhub",
+     "bay_usbcan",
+     "bay_lidar_uart"
+    ],
+    "min_r": 0.2,
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate"
+    ],
+    "names": true,
+    "labels": [
+     "bay_fbc",
+     "bay_usbpd",
+     "bay_pwr032",
+     "bay_usbhub",
+     "bay_usbcan",
+     "bay_lidar_uart"
+    ],
+    "focus": [
+     "side_plates"
+    ],
+    "t": 65
+   },
+   {
+    "az": -5,
+    "el": 58,
+    "frame": [
+     "side_plates",
+     "bay_fbc",
+     "bay_usbpd",
+     "bay_pwr032",
+     "bay_usbhub",
+     "bay_usbcan",
+     "bay_lidar_uart"
+    ],
+    "min_r": 0.2,
+    "hide": [
+     "cover",
+     "cover_flange",
+     "@upper",
+     "lift_base_plate"
+    ],
+    "names": true,
+    "labels": [
+     "bay_fbc",
+     "bay_usbpd",
+     "bay_pwr032",
+     "bay_usbhub",
+     "bay_usbcan",
+     "bay_lidar_uart"
+    ],
+    "focus": [
+     "side_plates"
+    ],
+    "t": 69.5
+   },
+   {
+    "az": 205,
+    "caption": "Lift energy chain behind the column at L1000: the lift cables run from DP-LIFT up in one vertical U chain",
+    "frame": [
+     "lift_column",
+     "lift_energy_chain",
+     "dp_lift"
+    ],
+    "el": 14,
+    "zoom": 1.0,
+    "names": true,
+    "labels": [
+     "lift_energy_chain",
+     "dp_lift",
+     "lift_column"
+    ],
+    "focus": [
+     "lift_energy_chain"
+    ],
+    "t": 71.5
+   },
+   {
+    "az": 210,
+    "caption": "Lift moving up to L1350: the chain rolls over its 75 mm radius along the stroke",
+    "frame": [
+     "lift_column",
+     "lift_energy_chain",
+     "dp_lift"
+    ],
+    "el": 14,
+    "zoom": 1.0,
+    "names": true,
+    "labels": [
+     "lift_energy_chain",
+     "dp_lift",
+     "lift_column"
+    ],
+    "focus": [
+     "lift_energy_chain"
+    ],
+    "t": 73.5
+   },
+   {
+    "az": 215,
+    "lift": 0.35,
+    "frame": [
+     "lift_column",
+     "lift_energy_chain",
+     "dp_lift"
+    ],
+    "el": 14,
+    "zoom": 1.0,
+    "names": true,
+    "labels": [
+     "lift_energy_chain",
+     "dp_lift",
+     "lift_column"
+    ],
+    "focus": [
+     "lift_energy_chain"
+    ],
+    "t": 76.5
+   },
+   {
+    "az": 215,
+    "lift": 0.35,
+    "frame": [
+     "lift_column",
+     "lift_energy_chain",
+     "dp_lift"
+    ],
+    "el": 14,
+    "zoom": 1.0,
+    "names": true,
+    "labels": [
+     "lift_energy_chain",
+     "dp_lift",
+     "lift_column"
+    ],
+    "focus": [
+     "lift_energy_chain"
+    ],
+    "t": 77.5
+   },
+   {
+    "az": 100,
+    "lift": 0.35,
+    "caption": "Flag rod guide at the top of the static column: an open ring holds the rod and leaves the sensor side open for the flag (L1350)",
+    "frame": [
+     "flag_rod_guide"
+    ],
+    "min_r": 0.13,
+    "el": 24,
+    "names": true,
+    "labels": [
+     "flag_rod_guide",
+     "flag_rod",
+     "lift_flag",
+     "lift_stop_sensors"
+    ],
+    "focus": [
+     "flag_rod_guide"
+    ],
+    "t": 79.5,
+    "hide": [
+     "lift_energy_chain",
+     "harness_upper",
+     "openarm"
+    ],
+    "zoom": 1.8
+   },
+   {
+    "az": 115,
+    "lift": 0.35,
+    "frame": [
+     "flag_rod_guide"
+    ],
+    "min_r": 0.13,
+    "el": 24,
+    "names": true,
+    "labels": [
+     "flag_rod_guide",
+     "flag_rod",
+     "lift_flag",
+     "lift_stop_sensors"
+    ],
+    "focus": [
+     "flag_rod_guide"
+    ],
+    "t": 84,
+    "hide": [
+     "lift_energy_chain",
+     "harness_upper",
+     "openarm"
+    ],
+    "zoom": 1.8
+   },
+   {
     "frame": "robot",
     "az": -40,
     "el": 18,
-    "caption": "OpenAMRobot 2.0 roadmap model. Not an assembly instruction"
+    "caption": "OpenAMRobot 2.0 roadmap model. Not an assembly instruction",
+    "t": 86
    },
    {
-    "t": 49.5,
     "frame": "robot",
     "az": -40,
     "el": 18,
-    "caption": "OpenAMRobot 2.0 roadmap model. Not an assembly instruction"
+    "caption": "OpenAMRobot 2.0 roadmap model. Not an assembly instruction",
+    "t": 87.5
    }
   ]
  },
