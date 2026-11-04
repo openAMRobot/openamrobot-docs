@@ -53,7 +53,7 @@ warnings.
 | File | Format | Bytes | Encode | Render |
 |---|---|---|---|---|
 | `openamrobot-2-tour-1080p.mp4` | 1920x1080, 30 fps, 2626 frames, 87.533 s | 13,252,159 | CRF 27 | from the frames of the second render |
-| `openamrobot-2-tour-1080x1350.mp4` | 1080x1350, 30 fps, 2626 frames, 87.533 s | VERT_BYTES | CRF 27 | VERT_TIME |
+| `openamrobot-2-tour-1080x1350.mp4` | 1080x1350, 30 fps, 2626 frames, 87.533 s | 11,924,041 | CRF 27 | 69 min 15 s, frames kept |
 | `openamrobot-2-store-1080p.mp4` | 1920x1080, 24 fps, 819 frames, 34.125 s | 14,089,451 | two-pass, `--target-bytes 14500000` | 275 min, 2 workers |
 
 **Tour determinism.** The 1080p tour was rendered twice at CRF 23: once piped (155 min 37 s), once with its PNG frames

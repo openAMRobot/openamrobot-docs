@@ -1,0 +1,46 @@
+media_job.log:2026-11-04T00:27:29Z pic 01_aisle_follow
+media_job.log:2026-11-04T00:30:04Z pic 02_pick_side
+media_job.log:2026-11-04T00:31:29Z pic 03_place_tote
+media_job.log:2026-11-04T00:33:08Z pic 04_front_low
+media_job.log:2026-11-04T00:35:08Z pic 05_store_overview
+media_job.log:2026-11-04T00:36:47Z pic 06_dock
+media_job.log:2026-11-04T00:38:05Z pic 02_pick_side_1080x1350
+media_job.log:2026-11-04T00:39:26Z pic 04_front_low_1080x1350
+media_job.log:2026-11-04T00:40:54Z stills start
+media_job.log:errors 0 []
+media_job.log:2026-11-04T00:45:38Z stills done
+media_job.log:2026-11-04T00:45:38Z posters
+media_job.log:2026-11-04T00:46:14Z tour1080a start
+media_job.log:2026-11-04T00:51:30Z stills start
+media_job.log:errors 0 []
+media_job.log:2026-11-04T00:54:59Z stills done
+media_job.log:2026-11-04T00:54:59Z tour1080a start
+media_job.log:real	155m37.261s
+media_job.log:2026-11-04T03:30:36Z tour1080a done
+media_job.log:2026-11-04T03:30:36Z tour1080b start
+media_job.log:2026-11-04T03:33:29Z tour1080b start
+media_job.log:real	114m48.566s
+media_job.log:2026-11-04T05:28:18Z tour1080b done
+media_job.log:2026-11-04T05:28:18Z tour1080p start
+media_job.log:real	0m39.435s
+media_job.log:2026-11-04T05:28:57Z tour1080p done
+media_job.log:2026-11-04T05:28:58Z tour1080x1350 start
+media_job.log:real	69m14.699s
+media_job.log:2026-11-04T06:38:12Z tour1080x1350 done
+media_job.log:2026-11-04T06:38:12Z ALL_DONE
+store_job.log:2026-11-04T00:07:45Z det1 start
+store_job.log:frames 0 to 59 done in 1004 s
+store_job.log:real	16m53.842s
+store_job.log:2026-11-04T00:24:39Z det1 done
+store_job.log:2026-11-04T00:24:39Z det2 start
+store_job.log:frames 0 to 59 done in 1332 s
+store_job.log:real	22m19.859s
+store_job.log:2026-11-04T00:46:59Z det2 done
+store_job.log:2026-11-04T00:46:59Z store start
+store_job.log:frames 0 to 818 done in 16462 s
+store_job.log:real	275m5.972s
+store_job.log:2026-11-04T05:22:05Z store done
+store_job.log:2026-11-04T05:22:05Z STORE_ALL_DONE
+store_job.log:2026-11-04T05:22:42Z store re-encode --target-bytes 14500000
+store_job.log:frames 0 to 818 done in 1 s
+store_job.log:real	1m13.409s
