@@ -92,7 +92,7 @@ You can also send a goal from the command line:
 ros2 action send_goal /fibonacci example_interfaces/action/Fibonacci "{order: 5}" --feedback
 ```
 
-The `--feedback` option asks the CLI to display feedback while the action is executing. The final result contains the generated sequence.
+The `--feedback` option asks the CLI to display feedback while the action is executing. The final result contains the generated sequence. The server in this tutorial is provided by `action_tutorials_cpp`, not `demo_nodes_cpp`.
 
 ## 3. What an action gives you
 
@@ -141,6 +141,8 @@ Check the owning repository's interface definitions before building a client.
 - [Parameters](parameters.md)
 - [Launch files](launch-files.md)
 - [ROS 2 Jazzy concepts](https://docs.ros.org/en/jazzy/Concepts.html)
+- [demo_nodes_cpp package](https://index.ros.org/p/demo_nodes_cpp/)
+- [action_tutorials_cpp package](https://index.ros.org/p/action_tutorials_cpp/)
 
 ## Contribution note
 
