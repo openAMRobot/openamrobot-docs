@@ -381,6 +381,124 @@ class HarnessLabels(unittest.TestCase):
         self.assertTrue(any("is not defined" in e for e in C.harness_label_errors(_h(), [dict(self.ROW, harness="W99")])))
 
 
+class HarnessAxis(unittest.TestCase):
+    """Route segments along the structure axes; 45 degree transitions only when declared and short."""
+    def test_axis_route_passes(self):
+        self.assertEqual(C.harness_axis_errors(_h()), [])
+
+    def test_diagonal_span_fails(self):
+        H = _h()
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.2, 0.065], [0.3, 0.0, 0.065]]
+        self.assertTrue(any("off the structure axes" in e for e in C.harness_axis_errors(H)))
+
+    def test_declared_45_transition_passes(self):
+        H = _h(rules=dict(_h()["rules"], t45_max_m=0.12))
+        H["cables"][0]["sections"][0].update(pts=[[0.0, 0.2, 0.065], [0.2, 0.2, 0.065], [0.25, 0.25, 0.065], [0.4, 0.25, 0.065]], t45=[1])
+        self.assertEqual(C.harness_axis_errors(H), [])
+
+    def test_long_45_transition_fails(self):
+        H = _h(rules=dict(_h()["rules"], t45_max_m=0.12))
+        H["cables"][0]["sections"][0].update(pts=[[0.0, 0.2, 0.065], [0.15, 0.35, 0.065]], t45=[0])
+        self.assertTrue(any("off the structure axes" in e for e in C.harness_axis_errors(H)))
+
+
+class HarnessSupport(unittest.TestCase):
+    """Every base route point within 30 mm of a supporting surface, except near its connectors and in declared passages."""
+    def _sup(self, d_mid):
+        H = _h(rules=dict(_h()["rules"], support_max_m=0.030, end_free_m=0.060))
+        H["cables"][0]["sections"][0]["support"] = [[round(s / 100, 2), d_mid if 0.1 < s / 100 < 0.3 else 5.0] for s in range(0, 41)]
+        return H
+
+    def test_supported_route_passes(self):
+        self.assertEqual(C.harness_support_errors(self._sup(12.0)), [])
+
+    def test_unsupported_route_fails(self):
+        self.assertTrue(any("from the nearest supporting surface" in e for e in C.harness_support_errors(self._sup(80.0))))
+
+    def test_declared_passage_passes(self):
+        H = self._sup(80.0)
+        H["passages"] = [{"id": "channel", "lo": [0.05, 0.15, 0.0], "hi": [0.35, 0.25, 0.2]}]
+        self.assertEqual(C.harness_support_errors(H), [])
+
+
+class HarnessAbove(unittest.TestCase):
+    """No base route above a component top up to the next structure (shelf, deck, cover) outside the exception zone."""
+    def _ab(self, z):
+        H = _h(rules=dict(_h()["rules"], over_to_structure=True))
+        H["over_to"] = {"box_a": {"x0": 0.10, "y0": -0.05, "res": 0.01, "z": [[0.30] * 10 for _ in range(10)]}}
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.0, z], [0.4, 0.0, z]]
+        return H
+
+    def test_beside_component_passes(self):
+        self.assertEqual(C.harness_above_errors(_h(rules=dict(_h()["rules"], over_to_structure=True), over_to={})), [])
+
+    def test_route_above_component_fails(self):
+        self.assertTrue(any("runs above the top of box_a" in e for e in C.harness_above_errors(self._ab(0.200))))
+
+    def test_exception_zone_passes_for_its_harness(self):
+        H = self._ab(0.200)
+        H["cables"][0]["harness"] = "W01"
+        H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.1, -0.1, 0.0], "hi": [0.5, 0.1, 0.3]}]
+        self.assertEqual(C.harness_above_errors(H), [])
+
+    def test_module_cable_of_other_harness_is_not_exempt_in_the_zone(self):
+        # owner review of #71: module=True must not exempt a W02 or W03 cable inside EZ-W01 (above-component case)
+        H = self._ab(0.200)
+        H["cables"][0].update({"harness": "W03", "module": True})
+        H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.1, -0.1, 0.0], "hi": [0.5, 0.1, 0.3]}]
+        self.assertTrue(any("runs above the top of box_a" in e for e in C.harness_above_errors(H)))
+
+    def test_module_cable_of_other_harness_through_obstacle_fails(self):
+        # the reviewer's reproduction: CBL-P07 (W02, module) through a foreign obstacle inside EZ-W01
+        H = _h()
+        H["obstacles"] = [{"id": "foreign", "lo": [-0.25, -0.02, 0.13], "hi": [-0.20, 0.02, 0.17], "top_access": False}]
+        H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.372, -0.29, 0.054], "hi": [-0.108, 0.29, 0.292]}]
+        H["cables"][0].update({"id": "CBL-P07", "harness": "W02", "module": True, "own": []})
+        H["cables"][0]["sections"][0]["pts"] = [[-0.30, 0.0, 0.15], [-0.15, 0.0, 0.15]]
+        self.assertTrue(any("foreign" in e for e in C.harness_over_errors(H)))
+
+    def test_module_cable_exempt_only_at_its_local_exit(self):
+        z = {"id": "EZ-W01", "harness": "W01", "lo": [-0.372, -0.29, 0.054], "hi": [-0.108, 0.29, 0.292]}
+        c = {"id": "CBL-P07", "harness": "W02", "module": True,
+             "sections": [{"kind": "base", "pts": [[-0.30, 0.0, 0.15], [-0.15, 0.0, 0.15]]}]}
+        H = {"exception_zones": [z], "passages": []}
+        self.assertTrue(C._exempt(c, [-0.28, 0.0, 0.15], H))     # 20 mm from its end in the zone
+        self.assertFalse(C._exempt(c, [-0.22, 0.0, 0.15], H))    # 80 mm from both ends
+
+    def test_listed_passage_covers_only_its_cables(self):
+        q = {"id": "C-RM", "lo": [-0.195, -0.09, 0.19], "hi": [-0.135, 0.09, 0.27], "cables": ["CBL-P07"]}
+        H = {"exception_zones": [], "passages": [q]}
+        p = [-0.17, 0.0, 0.24]
+        self.assertTrue(C._exempt({"id": "CBL-P07", "harness": "W02", "sections": []}, p, H))
+        self.assertFalse(C._exempt({"id": "CBL-P99", "harness": "W02", "sections": []}, p, H))
+
+    def test_exception_zone_does_not_cover_other_harnesses(self):
+        H = self._ab(0.200)
+        H["exception_zones"] = [{"id": "EZ-W01", "harness": "W01", "lo": [-0.1, -0.1, 0.0], "hi": [0.5, 0.1, 0.3]}]
+        self.assertTrue(any("runs above the top of box_a" in e for e in C.harness_above_errors(H)))
+
+
+class HarnessSeparation(unittest.TestCase):
+    """Separation of each sensitive cable from the power routes is reported and matches the routes."""
+    def _sep(self, reported):
+        sig = {"id": "CBL-S1", "harness": "W03", "gauge": "STP", "od_mm": 6.0, "min_bend_mm": 36, "flex_min_mm": 60, "own": [], "lift": False, "sensitive": True,
+               "sections": [{"kind": "base", "group": "base", "pts": [[0.0, 0.0, 0.065], [0.4, 0.0, 0.065]]}]}
+        pw = {"id": "CBL-W1", "harness": "W03", "gauge": "10 mm²", "od_mm": 7.5, "min_bend_mm": 45, "flex_min_mm": 75, "own": [], "lift": False, "power": True,
+              "sections": [{"kind": "base", "group": "base", "pts": [[0.0, 0.1, 0.065], [0.4, 0.1, 0.065]]}]}
+        H = _h(rules=dict(_h()["rules"], sep_work_m=0.030), cables=[sig, pw])
+        H["separation"] = [] if reported is None else [{"id": "CBL-S1", "pct_separated": reported}]
+        return H
+
+    def test_matching_report_passes(self):
+        self.assertEqual(C.harness_separation_errors(self._sep(100.0)), [])
+
+    def test_missing_report_fails(self):
+        self.assertTrue(any("without a separation figure" in e for e in C.harness_separation_errors(self._sep(None))))
+
+    def test_wrong_report_fails(self):
+        self.assertTrue(any("reported" in e for e in C.harness_separation_errors(self._sep(40.0))))
+
+
 class HarnessCommitted(unittest.TestCase):
     def test_committed_harness_passes(self):
         H = json.load(open(os.path.join(MODEL, "harness_routes.json"), encoding="utf-8"))

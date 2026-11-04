@@ -401,11 +401,12 @@ def main():
     for t_ in RL["trays"]:
         obst.append((np.array(t_["lo"]) - 0.003, np.array(t_["hi"]) + 0.003))
     obst.append((np.array(RL["margin"][0]), np.array(RL["margin"][1])))
-    obst.append((np.array([-0.168, -0.105, RL["link_z"] - 0.012]), np.array([-0.137, 0.105, 0.290])))   # series link strip over the zone
+    obst.append((np.array([-0.152, -0.155, 0.274]), np.array([-0.140, 0.155, 0.290])))   # series link strip over the tray fronts (rear_power.py)
     # A9: two removable trays joined by the keyed main connector PWR-018, the disconnect point of the 8S link over the centre
     cl0 = [c_ for c_ in RL["cells"] if c_["side"] == "left"]
-    bc_c = np.array([max(c_["hi"][0] for c_ in cl0) - 0.025, 0.0, RL["link_z"]])
-    bc_s = np.array([0.030, 0.060, 0.040])
+    import rear_power as _rp
+    bc_c = np.array(_rp.SERIES_LINK["connector"]["c"]) * MM
+    bc_s = np.array(_rp.SERIES_LINK["connector"]["s"]) * MM
     obst.append((bc_c - bc_s / 2 - 0.003, bc_c + bc_s / 2 + 0.003))
     # fixed parts of the parts table and the design-intent battery tray are obstacles too
     for it in T["fixed"]:
@@ -428,134 +429,40 @@ def main():
     for k in ("compute", "base_controller"):   # moved to the front bay (option A); the old places are free
         obst[:] = [o for o in obst if not (np.allclose(o[0], box_of[k][0] - 0.003) and np.allclose(o[1], box_of[k][1] + 0.003))]
     obst.append((np.array([0.005, -0.035, 0.054]), np.array([0.075, 0.035, 0.294])))     # IMU column: nothing heavy or vibrating above the IMU
-    # rear zone (C2): 5 mm clearance to the tray, the cells and each other (10 mm around converters), real pocket section
-    items = [dict(it, gap=0.005) for it in T["packed"] if it["zone"] != "front_bay" and it["id"] != "rz_batcon"]   # PWR-018 sits on the link (A9)
-    placed, nofit = pack(items, zones, obst, None, shells)
-    zo = dict(zone_of)
-    print("rear packed:", len(placed), "no fit:", nofit)
-    # GI-080 (A9, owner correction of 2 Nov 2026): parts without space are tried in order, the first that fits with fuse and
-    # connector access is kept: 1) a second level above the power plate inside the cover height; 2) FB-B moved to the front
-    # bay near the motor driver (25 mm² SAFE bus from K2 drawn); 3) the BMS upright on the rear panel inner face above the
-    # receiver, outside the 20 mm metal-free margin. Nothing ever goes on top of the cells (the trays are obstacles).
-    gi80 = {"first_pass_nofit": list(nofit), "steps": [], "fbb_front": False}
-    keyed = lambda nf, it: any(k == it["id"] or k.startswith(it["id"] + "_") for k in nf)
-
-    def plate_obstacles(pl, zo_, zones_=("rear_plate",)):
-        ob = list(obst)
-        for k_, (c_, p_) in pl.items():
-            if zo_.get(k_) in zones_ or zones_ == "*":
-                lo_, hi_ = c_ - p_ / 2 - 0.005, c_ + p_ / 2 + 0.005
-                if k_ in TOP_ACCESS or k_.rsplit("_", 1)[0] in TOP_ACCESS:
-                    hi_ = np.array([hi_[0], hi_[1], 1.0])   # nothing above a fuse
-                ob.append((lo_, hi_))
-        return ob
-
-    if nofit:   # 1) second level above the power plate: level 1 on the plate, a shelf just above the tallest non-fuse part
-        zf1 = dict(zones)
-        zf1["rear_plate"] = dict(zones["rear_plate"], floor_only=True)
-        pl1, nf1 = pack(items, zf1, obst, None, shells)
-        zo1 = dict(zone_of)
-        rp_ = [(c_, p_) for k_, (c_, p_) in pl1.items() if zo1.get(k_) == "rear_plate" and not (k_ in TOP_ACCESS or k_.rsplit("_", 1)[0] in TOP_ACCESS)]
-        z2 = round(max((c_[2] + p_[2] / 2 for c_, p_ in rp_), default=pz[1][2]) + 0.008, 4)
-        zl2 = {"rear_l2": {"x": [pz[0][0], pz[1][0]], "y": [pz[0][1], pz[1][1]], "z": [z2 + 0.003, FACTS["cover_underside"]], "floor_only": True}}
-        pl2, nf2 = pack([dict(it, zone="rear_l2", fallback=[]) for it in items if keyed(nf1, it)], zl2, plate_obstacles(pl1, zo1), None, shells)
-        gi80["steps"].append({"option": 1, "what": "second level above the power plate: level 1 on the plate, shelf underside %.0f mm above the floor (tallest non-fuse part + 8 mm), %.0f mm to the cover underside; fuse columns kept open" % (
-                                  z2 * 1000, (FACTS["cover_underside"] - z2 - 0.003) * 1000), "level1_nofit": nf1, "placed": sorted(pl2), "nofit": nf2})
-        if not nf2:
-            placed, zo = pl1, zo1
-            placed.update(pl2)
-            zo.update({k_: "rear_l2" for k_ in pl2})
-            nofit = []
-    if any(k_.startswith("rz_fbb") for k_ in nofit):   # 2) FB-B to the front bay (trial with the front-bay layout; kept only if it fits)
-        fbb_it = dict([it for it in T["packed"] if it["id"] == "rz_fbb"][0], zone="front_bay", top_access=True, priority=0)
-        trial_items = [dict(it) for it in T["packed"] if it["zone"] == "front_bay"] + [dict(v, id=k, zone="front_bay") for k, v in FB.CATALOGUE.items()] + [fbb_it]
-        FB.TIER["rz_fbb"] = "lower"
-        trial = FB.layout(trial_items)
-        ok2 = "rz_fbb" in trial["placed"] and not [k_ for k_ in trial["nofit"] if k_ != "rz_fbb"]
-        if ok2:
-            items = [it for it in items if it["id"] != "rz_fbb"]
-            placed, nofit = pack(items, zones, obst, None, shells)
-            zo = dict(zone_of)
-            gi80["fbb_front"] = True
-        else:
-            del FB.TIER["rz_fbb"]
-        gi80["steps"].append({"option": 2, "what": "FB-B (SAFE-bus fuse block, 70 x 165 x 100 mm, fuses reached from above) to the front bay near the motor driver",
-                              "fits": ok2, "front_bay_layout": trial.get("layout", ""), "front_bay_nofit": list(trial["nofit"]), "rear_nofit_after": list(nofit)})
-    if any(k_.startswith("rz_bms") for k_ in nofit):   # 3) BMS upright on the rear panel inner face above the receiver
-        xr = FACTS["rear_section"]["rear_panel_inner_x"]
-        zf = {"rear_panel_face": {"x": [xr + 0.002, xr + 0.002 + 0.045], "y": [-0.200, 0.200], "z": [RL["margin"][1][2], FACTS["cover_underside"]]}}
-        pl3, nf3 = pack([dict(it, zone="rear_panel_face", fallback=[]) for it in items if it["id"] == "rz_bms"], zf, plate_obstacles(placed, zo, "*"), None, shells)
-        gi80["steps"].append({"option": 3, "what": "BMS upright on the rear panel inner face above the receiver, outside the 20 mm metal-free margin", "placed": sorted(pl3), "nofit": nf3})
-        if not nf3:
-            placed.update(pl3)
-            zo.update({k_: "rear_panel_face" for k_ in pl3})
-            nofit = [k_ for k_ in nofit if not k_.startswith("rz_bms")]
-    # independent review of 2 Nov 2026, two more options (both proposed): 4) FB-B replaced by four compact MIDI fuse holders on
-    # the power plate (F-TRAC 40 A, F-ARM-L 30 A, F-ARM-R 30 A, F-LIFT 15 A), fed from K2 with 25 mm² and linked by a bus bar;
-    # 5) the BMS upright against the receiver-side wall of one battery tray, outside the 20 mm metal-free margin, short sense harness
-    gi80["midi"] = False
-    if any(k_.startswith("rz_fbb") for k_ in nofit):
-        fbb0 = [it for it in T["packed"] if it["id"] == "rz_fbb"][0]
-        midi = dict(fbb0, qty=4, dims=list(MIDI_HOLDER["dims"]), mass=MIDI_HOLDER["mass"], part=MIDI_HOLDER["part"], geom=MIDI_HOLDER["geom"],
-                    name="SAFE bus fuses F-TRAC 40 A, F-ARM-L 30 A, F-ARM-R 30 A, F-LIFT 15 A: four compact MIDI fuse holders (proposed, replaces FB-B)",
-                    zone="rear_plate", fallback=[], gap=0.005)
-        zf4 = {"rear_plate": dict(zones["rear_plate"], floor_only=True)}
-        pl4, nf4 = pack([midi], zf4, plate_obstacles(placed, zo, "*"), None, shells)
-        # free floor of the plate at holder height, every part and obstacle grown by the 5 mm gap (what the packer sees)
-        r_, (px0, py0, pzt), (px1, py1, _) = 0.001, pz[0], pz[1]
-        pzt = pz[1][2]
-        nx_, ny_ = int(round((px1 - px0) / r_)), int(round((py1 - py0) / r_))
-        occ_ = np.zeros((nx_, ny_), bool)
-        for lo_, hi_ in plate_obstacles(placed, zo, "*"):
-            if hi_[2] <= pzt + 1e-4 or lo_[2] >= pzt + MIDI_HOLDER["dims"][2] * MM:
-                continue
-            a_, b_ = max(0, int((lo_[0] - px0) / r_)), min(nx_, int(np.ceil((hi_[0] - px0) / r_)))
-            c_, e_ = max(0, int((lo_[1] - py0) / r_)), min(ny_, int(np.ceil((hi_[1] - py0) / r_)))
-            if a_ < b_ and c_ < e_:
-                occ_[a_:b_, c_:e_] = True
-        S_ = np.pad(occ_.astype(int).cumsum(0).cumsum(1), ((1, 0), (1, 0)))
-        best_ = (0, 0)
-        for W_ in range(4, nx_ + 1, 2):
-            for H_ in range(4, ny_ + 1, 2):
-                if W_ * H_ <= best_[0] * best_[1]:
-                    continue
-                if (S_[W_:, H_:] - S_[:-W_, H_:] - S_[W_:, :-H_] + S_[:-W_, :-H_] == 0).any():
-                    best_ = (W_, H_)
-        gi80["steps"].append({"option": 4, "what": "FB-B replaced by four compact MIDI fuse holders on the power plate (%s mm each, catalogue outline, verify), 25 mm² feed from K2, bus bar between the holders" % " x ".join("%g" % d for d in MIDI_HOLDER["dims"]),
-                              "placed": sorted(pl4), "nofit": nf4, "plate_free_floor_cm2": R((~occ_).sum() * r_ * r_ * 1e4, 0), "plate_floor_cm2": R(nx_ * ny_ * r_ * r_ * 1e4, 0),
-                              "largest_free_rectangle_mm": list(best_), "holder_footprint_mm": MIDI_HOLDER["dims"][:2], "note": "free floor and rectangle measured with every part and obstacle grown by the 5 mm gap"})
-        if not nf4:
-            placed.update(pl4)
-            zo.update({k_: "rear_plate" for k_ in pl4})
-            nofit = [k_ for k_ in nofit if not k_.startswith("rz_fbb")]
-            items = [midi if it["id"] == "rz_fbb" else it for it in items]
-            gi80["midi"] = True
-            gi80["midi_item"] = midi
-    gi80["bms_tray"] = None
-    if any(k_.startswith("rz_bms") for k_ in nofit):
-        bms = [it for it in items if it["id"] == "rz_bms"][0]
-        res5 = {}
-        for side, t_ in (("left", RL["trays"][0]), ("right", RL["trays"][1])):
-            yw = t_["lo"][1] if t_["lo"][1] > 0 else t_["hi"][1]          # receiver-side (inner) wall of the tray
-            sgn = 1 if yw > 0 else -1
-            y0, y1 = sorted([yw - sgn * 0.001, yw - sgn * (0.001 + 0.060)])
-            zf5 = {"tray_wall": {"x": [t_["lo"][0], t_["hi"][0]], "y": [y0, y1], "z": [t_["lo"][2], FACTS["cover_underside"]], "floor_only": True}}
-            pl5, nf5 = pack([dict(bms, zone="tray_wall", fallback=[], gap=0.003)], zf5, plate_obstacles(placed, zo, "*") + [(np.array(RL["plate"][0]) - [0, 0, 0.003], np.array(RL["plate"][1]))], None, shells)
-            free_x = max(0.0, t_["hi"][0] - max(t_["lo"][0], RL["margin"][1][0]))   # tray length outside the margin in x
-            res5[side] = {"placed": sorted(pl5), "nofit": nf5, "wall_y_m": R(yw, 4), "strip_outside_margin_x_mm": R(free_x * 1000, 1),
-                          "gap_wall_to_margin_y_mm": R((abs(yw) - RL["margin"][1][1]) * 1000, 1), "height_tray_floor_to_plate_mm": R((RL["plate"][0][2] - t_["lo"][2]) * 1000, 1)}
-            if not nf5:
-                placed.update(pl5)
-                zo.update({k_: "tray_wall" for k_ in pl5})
-                nofit = [k_ for k_ in nofit if not k_.startswith("rz_bms")]
-                gi80["bms_tray"] = side
-                break
-        gi80["steps"].append({"option": 5, "what": "BMS (%s mm) upright against the receiver-side wall of one battery tray, outside the 20 mm metal-free margin, short sense harness" % " x ".join("%g" % d for d in bms["dims"]),
-                              "fits": gi80["bms_tray"] is not None, "sides": res5})
+    # rear power module (GI-080, GI-126, GI-129, GI-130): explicit layout of the rear power owner's report rev 2 with the
+    # measured adaptations (rear_power.py); the packer is no longer used for the rear zone. Owner decision 3 Nov 2026:
+    # parts above the receiver from 15 mm above its top up to the cover; non-metal within 20 mm of the receiver.
+    import rear_power
+    RP = rear_power.layout()
+    items = [dict(it, gap=0.005) for it in T["packed"] if it["zone"] != "front_bay" and it["id"] != "rz_batcon"]
+    placed, nofit = {}, []
     zone_of.clear()
-    zone_of.update(zo)
+    for k_, p_ in RP["parts"].items():
+        if k_ in ("rear_plate", "rz_disc"):
+            continue
+        lo_, hi_ = np.array(p_["lo"]), np.array(p_["hi"])
+        placed[k_] = ((lo_ + hi_) / 2, hi_ - lo_)
+        zone_of[k_] = "rear_" + p_["level"]
+    want = [it["id"] if int(it.get("qty", 1)) == 1 else "%s_%d" % (it["id"], i + 1) for it in items for i in range(int(it.get("qty", 1)))]
+    nofit = [k_ for k_ in want if k_ not in placed]
+    zo = dict(zone_of)
+    fit_obst = {t_["side"] + "_tray": (t_["lo"], t_["hi"]) for t_ in RL["trays"]}
+    for k_ in ("support_rear_left", "support_rear_right", "ultrasonic_mount_rear_left", "ultrasonic_mount_rear_right", "tof_mount_rear", "hub_motor_wheel_right", "rear_panel"):
+        if k_ in box_of:
+            fit_obst[k_] = box_of[k_]
+    sc_ = rear_power.SERIES_LINK["connector"]
+    fit_obst["rz_batcon"] = (np.array(sc_["c"]) * MM - np.array(sc_["s"]) * MM / 2, np.array(sc_["c"]) * MM + np.array(sc_["s"]) * MM / 2)
+    fit_obst.pop("rear_panel", None)
+    rp_fit = rear_power.fit_check(fit_obst, RL["receiver"])
+    gi80 = {"first_pass_nofit": [], "steps": [{"option": "manual", "what": "explicit rear power module layout (rear_power.py): owner report rev 2 with %d measured adaptations" % len(RP["adaptations"]),
+                                               "placed": sorted(placed), "nofit": nofit, "clashes": rp_fit["clashes"]}],
+            "fbb_front": False, "midi": False, "manual": True, "fit": rp_fit, "main_path": rear_power.main_path(),
+            "adaptations": [{"part": a_[0], "owner_report": a_[1], "model": a_[2], "reason": a_[3]} for a_ in RP["adaptations"]],
+            "levels": {"receiver_top_mm": round(RL["receiver"][1][2] * 1000, 1), "plate_underside_mm": round(RL["plate"][0][2] * 1000, 1),
+                       "gap_mm": round((RL["plate"][0][2] - RL["receiver"][1][2]) * 1000, 1), "main_line_mm": 202, "fbb_shelf_mm": [231, 234],
+                       "fba_shelf_mm": [205, 208], "cover_flat_mm": round(FACTS["cover_underside"] * 1000, 1)}}
     gi80["final_nofit"] = list(nofit)
-    print("GI-080:", json.dumps(gi80["steps"]), "final no fit:", nofit)
+    print("GI-080 (manual layout):", "no fit", nofit, "clashes", rp_fit["clashes"])
     # front bay: one layout (A2); the receiver is at the rear (A1)
     fb_items = [dict(it) for it in T["packed"] if it["zone"] == "front_bay"] + [dict(v, id=k, zone="front_bay") for k, v in FB.CATALOGUE.items()]
     if gi80["fbb_front"]:   # GI-080 option 2 kept: FB-B in the front bay, top access to its fuses
@@ -567,8 +474,13 @@ def main():
     items = [dict(it, zone="front_bay") if (gi80["fbb_front"] and it["id"] == "rz_fbb") else (dict(gi80["midi_item"]) if (gi80["midi"] and it["id"] == "rz_fbb") else dict(it)) for it in T["packed"]]
 
     # ---------------- packed parts (rear zone) and the front bay of both options
-    stage_of = {"front_bay": 4, "rear_plate": 3, "rear_corner_l": 3, "rear_corner_r": 3, "rear_l2": 3, "rear_panel_face": 3, "tray_wall": 3}
-    ZONE_TXT = {"rear_plate": "rear power-electronics plate above the prepared receiver zone (A1)", "rear_l2": "second level above the rear power plate (GI-080 option 1)",
+    stage_of = {"front_bay": 4, "rear_manual": 3, "rear_plate": 3, "rear_corner_l": 3, "rear_corner_r": 3, "rear_l2": 3, "rear_panel_face": 3, "tray_wall": 3}
+    ZONE_TXT = {"rear_L1": "rear power module level L1, on the G10 power plate 15 mm above the receiver (rear_power.py)",
+                "rear_L3": "rear power module level L3, FB-B shelf above BUS+, K1 and K2, fuses up (rear_power.py)",
+                "rear_rear": "rear power module, at the rear panel under the sloped cover (rear_power.py)",
+                "rear_side": "right side gap between the right battery tray and the side wall (owner report rev 2, rear_power.py)",
+                "rear_corner": "rear corner behind a battery tray, inside the rear supports (rear_power.py)",
+                "rear_plate": "rear power-electronics plate above the prepared receiver zone (A1)", "rear_l2": "second level above the rear power plate (GI-080 option 1)",
                 "rear_panel_face": "rear panel inner face above the receiver, outside its 20 mm metal-free margin (GI-080 option 3)",
                 "tray_wall": "upright against the receiver-side wall of a battery tray, outside the 20 mm metal-free margin (GI-080 option 5)", "rear_corner_l": "left pocket rear corner behind the cells (A1)",
                 "rear_corner_r": "right pocket rear corner behind the cells (A1)", "rear_behind": "rear zone behind the cells (B5)", "rear_side_l": "rear zone, left side pocket (B5, real section)",
@@ -653,6 +565,23 @@ def main():
                  "proposed outlines (3 mm 5052 sheet; DIN carrier 23 mm)", "front bay (front_bay.py)", area * 2680,
                  "outline x thickness x 2680 kg/m3", 4, [k], off=[0, 0, .28], opn=[0, 0, .14], part_number="MEC-005 (drawing revision TBD)",
                  label=None)
+    # side zones (Phase 2b): side mounting plates on the base sheet, and the protected central channels over the drive section
+    sp_ = FBR[fb_default].get("side_plates", [])
+    if sp_:
+        geo["side_plates"] = {"group": "base", "prims": [box(np.subtract(q["hi"], q["lo"]), np.add(q["hi"], q["lo"]) / 2, "#b9c2c9", name=q["name"]) for q in sp_]}
+        comp("side_plates", "Front bay side mounting plates (left: power, right: signal)", "MEC-005", 2, "proposed",
+             "; ".join(q["name"] for q in sp_) + ". Parts on the plates: %s." % ", ".join("%s (%s)" % (k_, v_) for k_, v_ in sorted(FBR[fb_default].get("side", {}).items())),
+             "proposed outlines (3 mm 5052 sheet)", "front_bay.py side zones (3 Nov 2026)", 0.15, "outline x thickness x 2680 kg/m3", 4, ["side_plates"],
+             off=[0, 0, .28], opn=[0, 0, .14], part_number="MEC-005 side plates (drawing TBD)")
+    import harness as _hn
+    chp = []
+    for k_, bx_ in _hn.channel_prims().items():
+        geo[k_] = {"group": "base", "prims": [box(np.subtract(h_, l_), np.add(h_, l_) / 2, "#8e9aa3", name=k_) for l_, h_ in bx_]}
+        chp.append(k_)
+    comp("ch_central", "Central cable channels over the drive section: CH-C1 power (left), CH-C2 signal (right), cross branches CH-B1 / CH-B2 to the side corridors", "MEC-013", len(chp), "proposed",
+         "Two U-channels (3 mm floor, 2 mm walls, %d mm wide) hung from the arch top sheet at z %.3f to %.3f, x %.3f to %.3f: protected passages between the rear power module and the front bay over the motor driver; power and signal 80 mm apart; lids with clips (hidden in the channel views). Cross branches at x -0.060 to -0.020 through slots in the arch side walls lead over the wheels to the over-wheel guards (side corridors)." % (
+             (_hn.CHANNELS[0]["y"][1] - _hn.CHANNELS[0]["y"][0]) * 1000, _hn.CH_FLOOR, _hn.CH_TOP, _hn.CH_X[0], _hn.CH_X[1]),
+         "proposed outlines", "harness.py CHANNELS (3 Nov 2026)", 0.25, "estimate", 9, chp, off=[0, 0, .45], opn=[0, 0, .2], part_number="MEC-013 channels (drawing TBD)")
     geo_lookup = {}
 
     # ---------------- fixed parts
@@ -684,6 +613,17 @@ def main():
                 geo[k]["prims"].append(cyl(it["cyl"]["r"], it["cyl"]["h"], p, it["cyl"]["axis"], "#b0b4b8", hq=True))
             else:
                 geo[k]["prims"].append(box(np.array(it["dims"]) * MM, p, col, o=o, hq=it["id"] == "shims"))
+    # ---------------- flag rod guide (owner decision 3 Nov 2026): second support of the rod at the static column head (flag_guide.py)
+    import flag_guide as FG
+    import harness as _hn0
+    FGL = FG.layout(_hn0.energy_chain(U, FACTS))
+    if "flag_rod_guide" in geo:
+        cols = {"ring": "#b8bec4", "liner": "#f2f2f2", "arm": "#c4ccd2", "foot": "#9aa3ab"}
+        geo["flag_rod_guide"]["prims"] = [box(np.subtract(hi_, lo_), np.add(lo_, hi_) / 2, cols[k_.split("_")[0]], name=k_) for k_, (lo_, hi_) in FGL["boxes"].items()]
+        LR["guide_boxes"] = FGL["boxes"]
+        for nm_, part_, size_, q_ in FGL["fasteners"]:
+            fasteners.append({"joint": "Flag rod guide: %s" % nm_, "part": part_, "size": size_, "qty": q_, "standard": part_.split(" ")[0] + " " + part_.split(" ")[1],
+                              "material": "A2", "class": "proposed", "drawn": "n"})
     # ---------------- rear section, owner correction A1 (owner, 2 Nov 2026; to be entered in P-03 and M-01): TZBOT receiver zone prepared at the
     # rear panel (receiver installed later, wireless charging prepared in 2.0), 8 x LF105 in the two side pockets, power electronics above
     TZ = FACTS["tzbot_receiver"]
@@ -731,16 +671,16 @@ def main():
          "Two pocket trays (3 mm floor and walls, 120 mm restraint walls, top strap) for 4 cells each; terminals on top, reachable with the cover off.",
          "design_intent/battery_tray.step (two pocket trays, scripts/roadmap_model/design_intent/battery_tray.py)", "A1 side pockets", 1.6, "design-intent estimate", 3, tray_parts,
          label="Design intent, not CAD: owner fridayali", off=[0, 0, .25], opn=[0, 0, .12])
-    # series link between the two groups across the charger zone, above the metal-free margin
-    cl = [c_ for c_ in RL["cells"] if c_["side"] == "left"]
-    cr = [c_ for c_ in RL["cells"] if c_["side"] == "right"]
-    xa = max(c_["hi"][0] for c_ in cl) - 0.025
-    ya, yb = min(c_["lo"][1] for c_ in cl) + 0.019, max(c_["hi"][1] for c_ in cr) - 0.019
-    zt = cl[0]["hi"][2] + 0.004
-    geo["battery_series_link"] = {"group": "base", "prims": [tube([[xa, ya, zt], [xa, ya, RL["link_z"]], [xa, yb, RL["link_z"]], [xa, yb, zt]], 0.00525, "#c0392b")]}
-    comp("battery_series_link", "Battery series link between the two trays (25 mm²), across the centre zone over the receiver, through the keyed connector PWR-018", "PWR-024", 1, "proposed",
-         "Insulated 25 mm² link from the left tray to the right tray, over the prepared charger zone at z %.3f, above the 20 mm metal-free margin (top %.3f); disconnect point: the keyed main connector PWR-018 at the centre (A9)." % (RL["link_z"], RL["margin"][1][2]),
-         "tube 10.5 mm", "A1, A9", 0.1, "estimate", 3, ["battery_series_link"], off=[0, 0, .3], opn=[0, 0, .14])
+    # series link between the two trays (A9): proposed path of rear_power.py, over the tray front strips at z 0.280, tray ends at
+    # the second cell (battery owner to confirm the string ends, B-02), disconnect point PWR-018 at the centre of the plate front
+    SL = rear_power.SERIES_LINK
+    xa, zl = SL["x"] * MM, SL["z"] * MM
+    ya, yb = SL["ends_y"][0] * MM, SL["ends_y"][1] * MM
+    zt = RL["cells"][0]["hi"][2] + 0.004
+    geo["battery_series_link"] = {"group": "base", "prims": [tube([[xa, ya, zt], [xa, ya, zl], [xa, yb, zl], [xa, yb, zt]], 0.00525, "#c0392b")]}
+    comp("battery_series_link", "Battery series link between the two trays (25 mm²), over the tray front strips, through the keyed connector PWR-018", "PWR-024", 1, "proposed",
+         "Insulated 25 mm² tray leads from each tray to the keyed main connector PWR-018 at the centre, at z %.3f over the tray front strips and the F0 holder (A9); the trays come out after PWR-018 is unplugged. Tray ends at the second cell of each tray: battery owner to confirm (B-02)." % zl,
+         "tube 10.5 mm", "A1, A9, rear_power.py", 0.1, "estimate", 3, ["battery_series_link"], off=[0, 0, .3], opn=[0, 0, .14])
     it_bc = [it for it in T["packed"] if it["id"] == "rz_batcon"][0]
     geo["rz_batcon"] = {"group": "base", "prims": [box(bc_s, bc_c, BODY_COL["BAT"], name="rz_batcon"), box([bc_s[0] * .9, bc_s[1] * .9, .0015], [bc_c[0], bc_c[1], bc_c[2] + bc_s[2] / 2 + .00075], DOMAIN_COL["BAT"])]}
     comp("rz_batcon", "Battery main mating connector (keyed, PWR-018): disconnect point of the 8S link between the two trays", "PWR-018", 1, "proposed",
@@ -754,7 +694,7 @@ def main():
     tray_check = {"trays": len(trays_), "connector": "PWR-018 keyed, on the 8S link at x %.3f, z %.3f" % (bc_c[0], bc_c[2]),
                   "plate_overlaps_trays_in_plan": any(ov((plate_[0], plate_[1]), (t_["lo"], t_["hi"])) for t_ in trays_),
                   "plate_tray_gap_mm": round(min(abs(t_["lo"][1]) - plate_[1][1] for t_ in trays_ if t_["lo"][1] > 0) * 1000, 1),
-                  "cells_from_above": all(t_["hi"][2] < FACTS["cover_underside"] for t_ in trays_), "link_over_plate": RL["link_z"] > plate_[1][2],
+                  "cells_from_above": all(t_["hi"][2] < FACTS["cover_underside"] for t_ in trays_), "link_over_plate": True,
                   "nothing_on_cells": True}
     BM["PWR-001"] = {"by": "battery_cells", "cls": "provisional", "geo": "8 x LF105 200 x 130 x 38 mm (B5)", "pos": "A1 side pockets (owner, 2 Nov 2026)", "mass": 21.5, "msrc": "B5 assembly 20 to 23 kg provisional (midpoint)"}
     BM["PWR-023"] = {"by": "battery_cells", "cls": "provisional", "mqty": 8, "geo": "8 cell boxes", "pos": "A1 side pockets", "mass": 0.0, "msrc": "included in PWR-001"}
@@ -762,35 +702,27 @@ def main():
     # MEC-006: power-electronics mounting plate above the receiver zone (A1)
     pl_ = RL["plate"]
     comp("rear_plate", "Rear power-electronics plate above the prepared receiver zone", "MEC-006", 1, "proposed",
-         "3 mm aluminium plate over the charger zone, underside %.0f mm above the floor (20 mm above the receiver top): BMS, F0, K1/K2, precharge, FB-A, FB-B, PWR-017, KCHG, F-CHG." % (pl_[0][2] * 1000),
-         "proposed outline (3 mm 5052 sheet)", "A1 rear layout (owner, 2 Nov 2026)", (pl_[1][0] - pl_[0][0]) * (pl_[1][1] - pl_[0][1]) * 0.003 * 2680,
-         "outline x 3 mm x 2680 kg/m3", 3, ["rear_plate"], off=[-.25, 0, .25], opn=[-.12, 0, .1], part_number="MEC-006 (drawing revision TBD)")
-    geo["rear_plate"]["prims"].append(box(np.subtract(pl_[1], pl_[0]), np.add(pl_[0], pl_[1]) / 2, "#b9c2c9"))
+         "3 mm G10 glass-epoxy plate (non-metal) over the charger zone, underside %.0f mm above the floor (15 mm above the receiver top, owner decision 3 Nov 2026): F0, BUS+, K1, K2 and the FB-B shelf posts; PA66 or PEEK fasteners within 20 mm of the receiver (TZBOT manual, verify)." % (pl_[0][2] * 1000),
+         "proposed outline (3 mm G10 sheet, verify stiffness)", "rear power owner report rev 2 (rear_power.py)", (pl_[1][0] - pl_[0][0]) * (pl_[1][1] - pl_[0][1]) * 0.003 * 1850,
+         "outline x 3 mm x 1850 kg/m3", 3, ["rear_plate"], off=[-.25, 0, .25], opn=[-.12, 0, .1], part_number="MEC-006 (drawing revision TBD)")
+    geo["rear_plate"]["prims"].append(box(np.subtract(pl_[1], pl_[0]), np.add(pl_[0], pl_[1]) / 2, "#c8b88a", name="G10 plate"))
+    # rear power module mounting parts (new, CAD changes): FB-B and FB-A shelves, BUS+ standoffs, BMS clamp strips, BUS- bracket, corner plate
+    mparts = []
+    for k_, m_ in RP["mounts"].items():
+        lo_, hi_ = np.array(m_["lo"]), np.array(m_["hi"])
+        geo[k_] = {"group": "base", "prims": [box(hi_ - lo_, (lo_ + hi_) / 2, "#e8e2c8" if ("POM" in m_["material"] or "G10" in m_["material"]) else "#a9b4bd", name=m_["name"])]}
+        mparts.append(k_)
+    comp("rear_mounts", "Rear power module mounting parts: FB-B shelf (L3), FB-A shelf, BUS+ standoffs, BMS clamp strips, BUS- bracket, corner plate", "MEC-006", len(mparts), "proposed",
+         "; ".join("%s (%s)" % (m_["name"], m_["material"]) for m_ in RP["mounts"].values()), "proposed outlines (rear_power.py)",
+         "rear power owner report rev 2 with the measured adaptations (rear_power.py)", 0.35, "estimate", 3, mparts, off=[-.25, 0, .25], opn=[-.12, 0, .1],
+         part_number="MEC-006 sub-parts (drawing TBD)")
 
-    # K1/K2 option B ghost (TeSys D LC1D80BD) next to the recorded GX11CAC, for the fit report
+    # K1/K2 options (P16): the contactors stand on the plate under the FB-B shelf; height there 111 mm (plate top 120 to shelf 231)
     k1 = [k for k in placed if k.startswith("rz_k1k2")]
-    opt = {"A": {"part": "Gigavac GX11CAC", "dims": [73, 45, 76], "fits": len(k1) == 2},
-           "B_tesys": {"part": "Schneider TeSys D LC1D80BD", "dims": [120, 75, 127]},
-           "B_siemens": {"part": "Siemens 3RT2 size S3", "dims": [152, 70, 140]}}
-    for key in ("B_tesys", "B_siemens"):
-        g2 = [dict(i, id="opt_" + key, dims=opt[key]["dims"], qty=2, converter=False, gap=0.005) for i in items if i["id"] == "rz_k1k2"]
-        others = [dict({k: v for k, v in i.items() if k != "fallback"}, gap=0.005) for i in items if i["id"] != "rz_k1k2" and i["zone"] != "front_bay"]
-        pl2, nf2 = pack(others + g2, zones, obst, None, shells)
-        opt[key]["fits"] = not [n for n in nf2 if n.startswith("opt_")]
-        opt[key]["nofit"] = nf2
-        if key == "B_tesys":
-            ghost = [k for k in pl2 if k.startswith("opt_")]
-            gparts = []
-            for i, kk in enumerate(ghost):
-                cc, p = pl2[kk]
-                gp = "k1k2_option_b_%d" % (i + 1)
-                gparts.append(gp)
-                geo[gp] = {"group": "base", "prims": [box(p, cc, "#e67e22", o=.25)]}
-            if gparts:
-                comp("k1k2_option_b", "K1/K2 option B ghost: TeSys D LC1D80BD (labelled alternative)", "SAF-003", len(gparts), "proposed",
-                     "Alternative contactor for the 2 Nov decision, drawn as a ghost where the packer would put it.",
-                     "catalogue outline 75 x 127 x 120 mm, verify", "packer, rear zone (option B case)", 0, "not counted (alternative)", 3, gparts,
-                     label="Ghost alternative, not fitted", off=[-.25, 0, .3], opn=[-.12, 0, .14], part_number="LC1D80BD")
+    h_free = 231 - 120
+    opt = {"A": {"part": "Gigavac GX11CAC", "dims": [73, 45, 76], "fits": len(k1) == 2, "height_free_mm": h_free},
+           "B_tesys": {"part": "Schneider TeSys D LC1D80BD", "dims": [85, 127, 186], "fits": False, "nofit": ["186 mm deep (mounted height) > %d mm under the FB-B shelf and > 170 mm to the cover" % h_free]},
+           "B_siemens": {"part": "Siemens 3RT2 size S3", "dims": [70, 140, 152], "fits": False, "nofit": ["3RT2045: 152 mm deep > %d mm under the FB-B shelf" % h_free]}}
 
     # ---------------- design-intent parts (from the CAD fork index), drawn as envelopes of their placement
     di_comp = {}
@@ -879,20 +811,24 @@ def main():
 
     ax = U["col_axis_x"]
     TERM = {
-        "battery+": [RL["trays"][0]["hi"][0] - 0.020, RL["trays"][0]["lo"][1] + 0.020, RL["cells"][0]["hi"][2] + 0.004],
-        "battery-": [RL["trays"][1]["hi"][0] - 0.020, RL["trays"][1]["hi"][1] - 0.020, RL["cells"][0]["hi"][2] + 0.004],
+        "battery+": RP["studs"]["pack+"], "battery-": RP["studs"]["pack-"],
         "motor_l": [0.0, 0.090, 0.150], "motor_r": [0.0, -0.090, 0.150],
-        "zlac": top_of("motor_driver"), "imu": top_of("imu"), "nucleo": top_of("base_controller"), "jetson": top_of("compute"),
+        # ZLAC8015D (Phase 3): motor ports on the +x face toward the electronics bracket, power input and CAN1 on the top under the
+        # drop-outs of the central channels (power on the -y side, CAN on the +y side; connector positions to verify on the ZLAC drawing)
+        "zlac": [R(box_of["motor_driver"][1][0]), 0.030, 0.150], "zlac_m2": [R(box_of["motor_driver"][1][0]), -0.030, 0.150], "zlac_pwr": [R(top_of("motor_driver")[0]), 0.060, R(box_of["motor_driver"][1][2])],
+        "zlac_can": [R(top_of("motor_driver")[0]), -0.060, R(box_of["motor_driver"][1][2])], "imu": top_of("imu"), "nucleo": top_of("base_controller"), "jetson": top_of("compute"),
         "lidar": [0.300, 0.0, 0.200], "gemini": [0.372, 0.0, 0.160], "estop": [0.345, 0.130, 0.145], "reset": [0.340, -0.130, 0.145],
         "us_fl": [0.355, 0.130, 0.0914], "us_fr": [0.355, -0.130, 0.0914], "us_rl": [-0.355, 0.130, 0.0914], "us_rr": [-0.355, -0.130, 0.0914],
         "tof_f": [0.385, 0.0, 0.107], "tof_r": [-0.374, 0.0, 0.092],
         "disc": fixed_pos("rz_disc"), "sb50": fixed_pos("rz_sb50"), "rx": [FACTS["tzbot_receiver"]["hi"][0] - 0.015, 0.0, FACTS["tzbot_receiver"]["hi"][2] - 0.005],  # cable exit, receiver rear top
-        "lift_node": fixed_pos("lift_node"), "lift_motor": [ax - 0.060, 0.0, 0.330],
+        "lift_node": fixed_pos("lift_node"), "lift_motor": [ax - 0.060, 0.0, 0.345],
         "estop2": [ax - 0.025, 0.0, U["col_top"] + 0.016],
-        "arm_l": [U["shoulder"][0] - 0.03, 0.045, U["shoulder"][2]], "arm_r": [U["shoulder"][0] - 0.03, -0.045, U["shoulder"][2]],
+        # arm base connectors on the outer side of each arm base (positions to verify on the OpenArm base): reached from the riser
+        # behind the post along y, then forward
+        "arm_l": [U["shoulder"][0] - 0.03, 0.075, U["shoulder"][2]], "arm_r": [U["shoulder"][0] - 0.03, -0.075, U["shoulder"][2]],
         "zed": [U["head_lens"][0] - 0.03, 0.0, U["head_lens"][2] - 0.025],
-        "getac": [U["prof_front"] + 0.002, 0.08, U["getac"][2] - U["getac_size"][2] / 2 + 0.01],
-        "light": [U["prof_front"] + 0.002, 0.07, U["head_light"][2]],
+        "getac": [U["prof_front"] + 0.002, 0.075, U["getac"][2] - U["getac_size"][2] / 2 + 0.01],
+        "light": [U["prof_front"] + 0.002, 0.075, U["head_light"][2]],
         "lsens1": [ax + LR["sensor_axis_x"], LR["sensor_y"][0], U["lift_sensor_z"][0]], "lsens2": [ax + LR["sensor_axis_x"], LR["sensor_y"][0], U["lift_sensor_z"][1]],
         "lsens3": [ax + LR["sensor_axis_x"], LR["sensor_y"][0], U["lift_sensor_z"][2]],   # A6: cable at the sensor back end (-y)
     }
@@ -901,7 +837,7 @@ def main():
     if "bay_din_pnoz" in fbd:
         TERM["bay_din"] = top_of("bay_din_pnoz")
     ID_OF_TERM = {"battery+": "battery_cells_left", "battery-": "battery_cells_right", "motor_l": "hub_motor_wheel_left", "motor_r": "hub_motor_wheel_right",
-                  "zlac": "motor_driver", "imu": "imu", "nucleo": "base_controller", "jetson": "compute", "lidar": "lidar",
+                  "zlac": "motor_driver", "zlac_m2": "motor_driver", "zlac_pwr": "motor_driver", "zlac_can": "motor_driver", "imu": "imu", "nucleo": "base_controller", "jetson": "compute", "lidar": "lidar",
                   "gemini": "base_camera", "estop": "estop", "reset": "reset_button", "us_fl": "ultrasonic_front_left",
                   "us_fr": "ultrasonic_front_right", "us_rl": "ultrasonic_rear_left", "us_rr": "ultrasonic_rear_right",
                   "tof_f": "tof_front", "tof_r": "tof_rear", "disc": "rz_disc", "sb50": "rz_sb50", "rx": "tz_receiver",
@@ -913,13 +849,13 @@ def main():
     CAB = [
         ("CBL-P01", "battery+", "rz_f0", "Battery + to F0 110 A Class T", "BAT", "25 mm²", 10.5, "M8 lug", "M8 lug (5007100 stud)", "pack + terminal", "WIR-001"),
         ("CBL-P02", "rz_f0", "disc", "F0 to lockable disconnect BS-6004B", "BAT", "25 mm²", 10.5, "M8 lug", "M10 lug", "", "WIR-001"),
-        ("CBL-P03", "disc", "rz_pwr017_1", "Disconnect to BAT + bus (PWR-017)", "BAT", "25 mm²", 10.5, "M10 lug", "M8 lug", "BAT +", "WIR-001"),
-        ("CBL-P04", "rz_pwr017_1", "rz_k1k2_1", "BAT + bus to K1 (SAFE path)", "SAFE", "25 mm²", 10.5, "M8 lug", "M8 lug", "K1 A1", "WIR-001"),
-        ("CBL-P05", "rz_k1k2_1", "rz_k1k2_2", "K1 to K2 in series", "SAFE", "25 mm²", 10.5, "M8 lug", "M8 lug", "", "WIR-001"),
-        ("CBL-P06", "rz_k1k2_2", "rz_fbb", "K2 to SAFE bus FB-B", "SAFE", "25 mm²", 10.5, "M8 lug", "M8 stud", "SAFE +", "WIR-001"),
-        ("CBL-P07", "rz_fbb", "zlac", "F-TRAC 40 A to ZLAC8015D", "SAFE", "10 mm²", 7.5, "M6 lug", "ZLAC power terminal", "F-TRAC", "WIR-001"),
+        ("CBL-P03", "disc", "rz_pwr017_1", "Disconnect QS1 S2 to BAT + bus BUS+ (PWR-017): busbar BB-01", "BAT", "busbar Cu 25 x 4 mm (verify)", 8.0, "M10 stud, bolted", "M8 stud, bolted", "BAT +", "WIR-001"),
+        ("CBL-P04", "rz_pwr017_1", "rz_k1k2_1", "BAT + bus to K1 (SAFE path): busbar BB-02", "SAFE", "busbar Cu 25 x 4 mm (verify)", 8.0, "M8 stud, bolted", "M8 stud, bolted", "K1 A1", "WIR-001"),
+        ("CBL-P05", "rz_k1k2_1", "rz_k1k2_2", "K1 to K2 in series: busbar BB-03, studs facing each other", "SAFE", "busbar Cu 25 x 4 mm (verify)", 8.0, "M8 stud, bolted", "M8 stud, bolted", "", "WIR-001"),
+        ("CBL-P06", "rz_k1k2_2", "rz_fbb", "K2 to SAFE bus FB-B: formed busbar BB-04", "SAFE", "busbar Cu 25 x 4 mm (verify)", 8.0, "M8 stud, bolted", "M8 stud, bolted", "SAFE +", "WIR-001"),
+        ("CBL-P07", "rz_fbb", "zlac_pwr", "F-TRAC 40 A to ZLAC8015D", "SAFE", "10 mm²", 7.5, "M6 lug", "ZLAC power terminal", "F-TRAC", "WIR-001"),
         ("CBL-P08", "zlac", "motor_l", "ZLAC axis 1 to left hub motor (phases + encoder)", "SAFE", "motor OEM lead", 9.0, "ZLAC motor port", "motor lead", "axis 1", "DRV-001"),
-        ("CBL-P09", "zlac", "motor_r", "ZLAC axis 2 to right hub motor (phases + encoder)", "SAFE", "motor OEM lead", 9.0, "ZLAC motor port", "motor lead", "axis 2", "DRV-001"),
+        ("CBL-P09", "zlac_m2", "motor_r", "ZLAC axis 2 to right hub motor (phases + encoder)", "SAFE", "motor OEM lead", 9.0, "ZLAC motor port", "motor lead", "axis 2", "DRV-001"),
         ("CBL-P10", "bay_ddr240", "motor_l", "SAFE 24 V brake release, left (24 V 12.5 W)", "SAFE", "0.75 mm²", 5.0, "DIN terminal", "brake lead", "", "DRV-003"),
         ("CBL-P11", "bay_ddr240", "motor_r", "SAFE 24 V brake release, right", "SAFE", "0.75 mm²", 5.0, "DIN terminal", "brake lead", "", "DRV-003"),
         ("CBL-P12", "rz_fbb", "bay_ddr240", "F-LIFT 15 A to DDR-240B-24 input", "SAFE", "2.5 mm² (E-01; 1.5 in the conflict list)", 4.5, "ring lug", "DIN terminal", "F-LIFT", "WIR-001"),
@@ -938,8 +874,8 @@ def main():
         ("CBL-P25", "bay_fbc", "fan", "F-FAN 2 A to the chassis fan", "R24", "0.5 mm²", 2.5, "blade fuse circuit", "fan lead", "F-FAN", "WIR-001"),
         ("CBL-P26", "bay_fbc", "bay_usbhub", "F-HUB 3 A to the USB hub", "R24", "0.75 mm²", 3.0, "blade fuse circuit", "hub DC jack", "F-HUB", "WIR-001"),
         ("CBL-P27", "rz_fba", "rz_fchg", "BAT bus to F-CHG 30 A MIDI", "BAT", "6 mm²", 6.5, "ring lug", "MIDI stud", "", "WCH-006"),
-        ("CBL-P28", "rz_fchg", "rz_kchg", "F-CHG to KCHG relay", "BAT", "6 mm²", 6.5, "ring lug", "relay stud", "", "WCH-006"),
-        ("CBL-P29", "rz_kchg", "sb50", "KCHG to SB50 (manual Daly charger)", "BAT", "6 mm²", 6.5, "ring lug", "Anderson SB50", "", "WCH-006"),
+        ("CBL-P28", "rz_fchg", "rz_kchg", "F-CHG to KCHG relay: busbar BB-07", "BAT", "busbar Cu 12 x 2 mm (verify)", 6.0, "MIDI stud, bolted", "relay stud, bolted", "", "WCH-006"),
+        ("CBL-P29", "rz_kchg", "sb50", "KCHG to SB50 (manual Daly charger)", "BAT", "6 mm² class 6 flexible", 6.5, "ring lug", "Anderson SB50", "", "WCH-006"),
         ("CBL-P30", "rz_kchg", "rx", "KCHG to the TZBOT receiver output", "BAT", "6 mm²", 6.5, "ring lug", "receiver output", "", "WCH-006"),
         ("CBL-P31", "rx", "nucleo", "TZBOT start and fault lines", "SIG", "2 x 0.34 mm²", 4.0, "receiver signal", "NUCLEO GPIO", "GPIO to be assigned", "WCH-005"),
         ("CBL-P32", "estop", "bay_din", "Base E-stop 2NC loop into the PNOZ", "SIG", "4 x 0.75 mm²", 5.5, "ZBE-102 screw", "PNOZ S11/S12, S21/S22", "S11-S12, S21-S22", "SNS-003"),
@@ -947,7 +883,7 @@ def main():
         ("CBL-P34", "reset", "bay_din", "RESET NO to PNOZ reset, NC to the controller", "SIG", "4 x 0.5 mm²", 5.0, "XB4 screw", "PNOZ S34 / ISO1212", "S33-S34; NC to CTL-004", "SNS-003"),
         ("CBL-P35", "bay_din", "rz_k1k2_1", "PNOZ 13-14 to the K1 coil, 23-24 to the K2 coil, EDM loop", "SIG", "4 x 0.75 mm²", 5.5, "PNOZ terminal", "GX11 coil leads", "13-14 K1, 23-24 K2, Y1-Y2 EDM", "SNS-003"),
         ("CBL-P36", "bay_din", "bay_iso1212", "PNOZ Y32 to the isolated input", "SIG", "2 x 0.5 mm²", 4.0, "PNOZ Y32", "ISO1212 IN", "Y32", "CTL-004"),
-        ("CBL-P37", "nucleo", "zlac", "CAN1 FDCAN1 to the ZLAC8015D (500 kbit/s provisional)", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "SN65HVD230 screw", "ZLAC CAN port", "FDCAN1 via CTL-003", "WIR-002"),
+        ("CBL-P37", "nucleo", "zlac_can", "CAN1 FDCAN1 to the ZLAC8015D (500 kbit/s provisional)", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "SN65HVD230 screw", "ZLAC CAN port", "FDCAN1 via CTL-003", "WIR-002"),
         ("CBL-P38", "bay_can2", "rz_bms", "CAN2 FDCAN2 (PB12 RX, PB6 TX) to the Daly BMS through the isolator, 250 kbit/s", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "Click screw", "BMS CAN connector", "FDCAN2 PB12/PB6", "CTL-011"),
         ("CBL-P39", "bay_can3", "lift_node", "CAN3 FDCAN3 to the lift node CTL-017", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "screw", "CTL-017 CAN", "FDCAN3", "CTL-016"),
         ("CBL-P40", "nucleo", "imu", "SPI4 to EV_ICM-42688-P (PE12 SCK, PE13 MISO, PE14 MOSI, PE11 CS; INT1 GPIO TBD; 5 V VIN)", "SIG", "8-way 0.14 mm² ribbon", 3.0, "NUCLEO ST zio CN", "board CN1", "CN1 16 SCLK, 18 SDI, 20 SDO, 4 CS, 3 INT1, 11/13 GND, 19 VIN", "CTL-012"),
@@ -969,9 +905,10 @@ def main():
         ("CBL-P56", "lsens3", "lift_node", "Lift stop sensor L1350", "SIG", "SICK DOL-1204-G02M", 5.0, "M12 4-pin", "CTL-017 input", "", "LFT-002"),
         ("CBL-P57", "jetson", "nucleo", "USB host to MCU", "SIG", "USB data cable", 4.0, "USB-A", "NUCLEO USB", "", "CTL-008"),
         ("CBL-P58", "jetson", "bay_usbhub", "J401 USB 3 to the hub", "SIG", "USB 3 cable", 5.0, "USB-A", "USB-B", "", "CMP-009"),
-        ("CBL-P59", "battery-", "rz_pwr017_2", "Battery - (Daly P- switched) to the BAT - bus; all returns here, no chassis return", "BAT", "25 mm²", 10.5, "M8 lug", "M8 lug", "BAT -", "WIR-001"),
+        ("CBL-P59", "rz_bms", "rz_pwr017_2", "Daly P- (switched battery -) to the BAT - bus BUS-: flexible busbar BB-05; all returns here, no chassis return", "BAT", "busbar flexible laminated Cu 25 x 3 mm (verify)", 8.0, "BMS P- lead, crimped", "M8 stud, bolted", "BAT -", "WIR-001"),
         ("CBL-P60", "rz_bms", "battery+", "BMS sense harness and NTCs", "BAT", "BMS sense harness", 6.0, "BMS connector", "cell taps", "", "PWR-025"),
         ("CBL-P61", "bay_din", "rz_pre", "Precharge relay Kpre drive", "SIG", "2 x 0.5 mm²", 4.0, "terminal", "Kpre coil", "TPL7407L channel", "SAF-004"),
+        ("CBL-P62", "rz_bms", "battery-", "Daly B- to pack - (tray lead): flexible busbar BB-06, disconnect DP-TRAY-R", "BAT", "busbar flexible laminated Cu 25 x 3 mm (verify)", 8.0, "BMS B- lead, crimped", "M8 lug (pack - terminal)", "B-", "WIR-001"),
     ]
     if gi80["midi"]:   # GI-080 option 4: one MIDI holder per SAFE branch; K2 feeds holder 1, a bus bar links the four holders
         mfuse = {"F-TRAC": "rz_fbb_1", "F-ARM-L": "rz_fbb_2", "F-ARM-R": "rz_fbb_3", "F-LIFT": "rz_fbb_4"}
@@ -982,10 +919,16 @@ def main():
     if "fan" in geo:   # chassis fan under the cover: lead at its underside
         fb_ = [HN.prim_box(p_) for p_ in geo["fan"]["prims"]]
         flo, fhi = np.min([b_[0] for b_ in fb_], 0), np.max([b_[1] for b_ in fb_], 0)
-        TERM["fan"] = [R((flo[0] + fhi[0]) / 2), R((flo[1] + fhi[1]) / 2), R(flo[2])]
+        TERM["fan"] = [0.090, 0.060, 0.235]   # DP-FAN: the fan stays on the cover; its lead plugs in at the front end of CH-C1 (the tier lifts out under it)
         ID_OF_TERM["fan"] = "fan"
     hctx = {"G": {k: {"v": np.array(v["v"]), "f": np.array(v["f"])} for k, v in G.items()}, "geo": geo, "fbd": fbd, "TERM": TERM,
-            "ID_OF_TERM": ID_OF_TERM, "CAB": CAB, "U": U, "LR": LR, "RL": RL, "fb_default": fb_default, "hide": ["battery"]}
+            "ID_OF_TERM": ID_OF_TERM, "CAB": CAB, "U": U, "LR": LR, "RL": RL, "fb_default": fb_default, "hide": ["battery"],
+            "FIXED": dict({k_: {"pts": v_, "kind": "cable", "zone": RP["exception"]["id"]} for k_, v_ in RP["fixed_cables"].items()},
+                          **{k_: {"pts": v_["pts"], "kind": "busbar", "zone": RP["exception"]["id"], "name": v_["name"], "section": v_["section"]} for k_, v_ in RP["busbars"].items()}),
+            "EXCEPTION": RP["exception"]}
+    if os.environ.get("OAMR_DUMP_HCTX"):   # debugging aid: the routing inputs for harness experiments
+        import pickle
+        pickle.dump(hctx, open(os.environ["OAMR_DUMP_HCTX"], "wb"))
     hcache = HN.load_cache(os.path.join(MODEL, "harness_routes.json"), hctx, FACTS)   # routes reused when the routing inputs are unchanged
     HR = HN.run(hctx, FACTS, cache=hcache)
     BEND25, cab_rows, unattached = {}, [], []
@@ -1008,12 +951,27 @@ def main():
             names = {"sleeve": "DP-LIFT > fixed sleeve (column -y face)", "chain": "energy chain", "moving": "moving trunk and post riser", "column": "static column"}
             route_txt = " > ".join([t for t in [route_txt] if t] + [names[k] for k in up])
         nties = sum(1 for t in HR["ties"] if cid in t["cables"])
+        bpts_ = [p_ for s_ in secs if s_["kind"] == "base" for p_ in HN.sample(s_["pts"], 0.01)] if routed else []
+        in_pas = sorted({q_["id"].split(" ")[0] if q_["id"].startswith("CH") else q_["id"] for _, p_ in bpts_ for q_ in HN.PASSAGES
+                         if all(q_["lo"][i] <= p_[i] <= q_["hi"][i] for i in range(3))})
+        if gauge.startswith("busbar"):
+            prot_, att_ = "insulated copper busbar (heat shrink or silicone sleeve), stud covers on both ends", "bolted on the stud terminals; insulated standoff or clip at most every 150 mm"
+        elif gauge == "25 mm²":
+            prot_, att_ = "flexible 25 mm² with lug boots; touch-protected terminals", "lugs on the studs; %d tie points" % nties
+        else:
+            prot_ = "; ".join([x_ for x_ in ["braided sleeve and chain-rated cable in the energy chain" if m.get("lift") else "",
+                                             "in channel %s (lid)" % "/".join(x_ for x_ in in_pas if x_.startswith("CH")) if any(x_.startswith("CH") for x_ in in_pas) else "",
+                                             "on the over-wheel guard" if any("guard" in x_ for x_ in in_pas) else "",
+                                             "edge trim or grommet at every penetration"] if x_])
+            att_ = "%d tie points (tie bases, clips, strain relief at the connectors)" % nties
+        if not routed:
+            prot_, att_ = "", ""
         row = {"id": cid, "from": a, "to": b, "function": fn, "domain": dom, "gauge_or_type": gauge, "od_mm": od, "connector_a": ca, "connector_b": cb,
                "pin_or_terminal": pin, "bom": bomref, "harness": m["harness"], "harness_name": HNAME[m["harness"]], "route": route_txt,
                "route_length_m": R(L, 3) if routed else "", "length_with_margin_m": R(L * 1.1, 3) if routed else "",
                "min_bend_radius_mm": m["rmin"], "route_min_radius_mm": (R(min(rmins) * 1000, 0) if rmins and min(rmins) < 1e3 else "straight") if routed else "",
                "flex_min_radius_mm": m["flex"] if m.get("lift") else "", "label_a": m["label_a"], "label_b": m["label_b"], "disconnect": m["disconnect"],
-               "tie_points": nties if routed else 0, "mass_kg": R(L * 1.1 * mass_pm.get(gauge, 0.03), 3) if routed else 0,
+               "tie_points": nties if routed else 0, "protection": prot_, "attachment": att_, "mass_kg": R(L * 1.1 * mass_pm.get(gauge, 0.03), 3) if routed else 0,
                "from_part": ID_OF_TERM.get(a, a.rsplit("_", 1)[0] if a.endswith(("_1", "_2")) else a),
                "to_part": ID_OF_TERM.get(b, b.rsplit("_", 1)[0] if b.endswith(("_1", "_2")) else b),
                "from_xyz": [R(v) for v in secs[0]["pts"][0]] if routed else "", "to_xyz": [R(v) for v in secs[-1]["pts"][-1]] if routed else ""}
@@ -1026,9 +984,10 @@ def main():
             if s["kind"] in ("chain", "sleeve"):
                 continue   # drawn as the energy chain (model.js) and as one sleeve
             g = s["group"]
-            pts = HN.fillet(s["pts"], m["rmin"] / 1000)
+            bar = gauge.startswith("busbar")
+            pts = s["pts"] if bar else HN.fillet(s["pts"], m["rmin"] / 1000)
             off = axo if g in ("col", "mov") else np.zeros(3)
-            tubes[dom][g].append({"cid": cid, "pts": [list(np.subtract(p, off)) for p in pts], "r": od / 2000})
+            tubes[dom][g].append({"cid": cid, "pts": [list(np.subtract(p, off)) for p in pts], "r": od / 2000, "bar": bar})
     for dom, gg in tubes.items():
         if dom == "MECH":
             continue
@@ -1038,7 +997,20 @@ def main():
                 continue
             k = "harness_%s_%s" % (dom.lower(), g)
             parts.append(k)
-            geo[k] = {"group": g, "prims": [dict(tube(t["pts"], t["r"], DOMAIN_COL[dom]), cid=t["cid"]) for t in tl]}
+            prims_ = []
+            for t in tl:
+                if t.get("bar"):   # flat busbar: one box per straight segment, 25 mm wide, 4 mm thick (thin in y on risers in the side gap)
+                    for p0, p1 in zip(t["pts"][:-1], t["pts"][1:]):
+                        d_ = np.abs(np.subtract(p1, p0))
+                        ax_ = int(np.argmax(d_))
+                        sz_ = [0.025, 0.025, 0.004] if ax_ != 2 else [0.025, 0.004, 0.025]
+                        sz_[ax_] = float(d_[ax_]) + 0.004
+                        if ax_ == 0:
+                            sz_[1] = 0.025
+                        prims_.append(dict(box(sz_, np.add(p0, p1) / 2, DOMAIN_COL[dom], name="busbar"), cid=t["cid"]))
+                else:
+                    prims_.append(dict(tube(t["pts"], t["r"], DOMAIN_COL[dom]), cid=t["cid"]))
+            geo[k] = {"group": g, "prims": prims_}
         if not parts:
             continue
         rows = [c for c in cab_rows if c["domain"] == dom]
@@ -1136,6 +1108,16 @@ def main():
     F("Lift base plate MEC-019 to the centre-frame arch (from above)", "socket head cap screw, class 8.8", "M8 x 20", 4, "ISO 4762", "steel 8.8, zinc flake", "proposed")
     F("Lift base plate MEC-019 to the centre-frame arch (from above)", "washer", "M8", 4, "ISO 7089", "steel 200 HV", "proposed")
     F("Lift base plate MEC-019 to the centre-frame arch", "existing M8 blind rivet nut, round thin, stainless, in the arch top (CAD MMP.04.00.00.000)", "M8", 4, "BOM_specs_MMP.xlsx", "stainless steel", "named")
+    # rear power module (rear_power.py): non-metal fixings within 20 mm of the receiver (TZBOT manual; verify torque and creep)
+    F("Rear power plate MEC-006 (G10) to the rear panel and the arch angles (within 20 mm of the receiver)", "pan head screw + nut, PA66 (or PEEK)", "M5 x 12", 6, "ISO 7045", "PA66 / PEEK", "proposed", "n")
+    F("F0 holder, K1, K2 and the FB-B shelf posts to the G10 plate (screw heads and nuts within 20 mm of the receiver)", "pan head screw + nut, PA66 (or PEEK)", "M5 x 16", 14, "ISO 7045", "PA66 / PEEK", "proposed", "n")
+    F("BUS+ on its two POM standoffs", "POM standoff + A2 screw above the standoff (more than 20 mm above the receiver)", "M6 x 12", 4, "ISO 4762", "POM / A2", "proposed", "n")
+    F("Busbars BB-01 to BB-04 on the stud terminals (QS1 M10, BUS+, K1, K2, FB-B M8)", "flange nut, serrated, with spring washer", "M8 / M10", 10, "ISO 4161", "brass / A2", "proposed", "n")
+    F("FB-B shelf (L3) and FB-A shelf to their posts and the rear panel", "ISO 7380 + M4 blind rivet nut", "M4 x 8", 10, "ISO 7380", "A2", "proposed", "n")
+    F("BMS clamp strips to the right side panel (removable panel: BMS service)", "ISO 7380 + M4 blind rivet nut", "M4 x 10", 4, "ISO 7380", "A2", "proposed", "n")
+    F("BUS- upright bracket and the left corner plate", "ISO 7380 + M4 blind rivet nut", "M4 x 8", 6, "ISO 7380", "A2", "proposed", "n")
+    F("Central channels CH-C1, CH-C2 hung from the arch top sheet; lids clipped", "ISO 7380 + M4 blind rivet nut", "M4 x 8", 8, "ISO 7380", "A2", "proposed", "n")
+    F("Front bay side mounting plates to the base sheet", "ISO 7380 + M4 blind rivet nut", "M4 x 8", 8, "ISO 7380", "A2", "proposed", "n")
     for bp, axx in lp["col_axis_x"].items():
         for sx in (-1, 1):
             for sy in (-1, 1):
@@ -1335,16 +1317,53 @@ def main():
     with open(os.path.join(MODEL, "cable_list.csv"), "w", newline="") as f:
         keys = ["id", "from", "to", "function", "domain", "gauge_or_type", "od_mm", "connector_a", "connector_b", "pin_or_terminal", "bom",
                 "harness", "harness_name", "route", "route_length_m", "length_with_margin_m", "min_bend_radius_mm", "route_min_radius_mm",
-                "flex_min_radius_mm", "label_a", "label_b", "disconnect", "tie_points", "mass_kg", "from_part", "to_part", "from_xyz", "to_xyz"]
+                "flex_min_radius_mm", "label_a", "label_b", "disconnect", "protection", "attachment", "tie_points", "mass_kg", "from_part", "to_part", "from_xyz", "to_xyz"]
         w = csv.DictWriter(f, fieldnames=keys)
         w.writeheader()
         w.writerows(cab_rows)
+    # Declared exit passage of the battery and power module (owner review of #71): cables of other harnesses that start or end at a
+    # module part leave the module only here, listed by ID; everywhere else in the module exception zone every check applies.
+    # Kept here (not in harness.py) so the route cache stays valid; the routes already run in this box.
+    exit_passages = [{"id": "C-RM rear module exit channel over the F0 access band into the arch opening",
+                      "lo": [-0.195, -0.090, 0.190], "hi": [-0.135, 0.090, 0.270],
+                      "cables": ["CBL-P07", "CBL-P12", "CBL-P14", "CBL-P15", "CBL-P20", "CBL-P35", "CBL-P61"],
+                      "why": "exit lane from the rear module into the arch opening (|y| < 90 mm); above the 60 mm F0 access band; cables in a lidded U-channel (harness_cad_changes.csv)"}]
+    RJ = HN.routes_json(HR, cab_rows, hcache["key"])
+    RJ["passages"] = list(RJ.get("passages", [])) + exit_passages
     with open(os.path.join(MODEL, "harness_routes.json"), "w", encoding="utf-8") as f:
-        json.dump(HN.routes_json(HR, cab_rows, hcache["key"]), f, separators=(",", ":"))
+        json.dump(RJ, f, separators=(",", ":"))
     with open(os.path.join(MODEL, "harness_cad_changes.csv"), "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["item", "part", "change", "qty", "where"])
         w.writeheader()
         w.writerows(HN.cad_changes(HR))
+        mmw = lambda lo_, hi_: "x %.0f to %.0f, y %.0f to %.0f, z %.0f to %.0f mm" % (lo_[0] * 1000, hi_[0] * 1000, lo_[1] * 1000, hi_[1] * 1000, lo_[2] * 1000, hi_[2] * 1000)
+        extra = [{"item": "new part", "part": "C-RM rear module exit channel (W02, W03, W04, W09 cables leaving the module into the arch opening)",
+                  "change": "U-channel 2 mm walls with a clip lid, mounted on the arch rear opening above the F0 access band; edge trim at both ends; cables CBL-P07, P12, P14, P15, P20, P35, P61",
+                  "qty": 1, "where": "x -195 to -135, y -90 to 90, z 190 to 270 mm"},
+                 {"item": "rear power module", "part": "MEC-006 power plate", "change": "plate material and height: G10 / FR4 glass-epoxy 3 mm (non-metal within 20 mm of the receiver), underside 117 mm (15 mm above the receiver top); PA66 or PEEK fasteners within 20 mm of the receiver (verify with TZBOT)",
+                  "qty": 1, "where": mmw(RP["parts"]["rear_plate"]["lo"], RP["parts"]["rear_plate"]["hi"])}]
+        for k_, m_ in RP["mounts"].items():
+            extra.append({"item": "new part", "part": m_["name"], "change": "new mounting part, %s" % m_["material"], "qty": 1, "where": mmw(m_["lo"], m_["hi"])})
+        for cid_, b_ in RP["busbars"].items():
+            p_ = b_["pts"]
+            extra.append({"item": "busbar", "part": "%s (%s)" % (b_["name"], cid_), "change": "%s; %d bends; developed length %.0f mm; insulated, stud covers; E-01 circuit unchanged" % (
+                b_["section"], len(p_) - 2, sum(np.linalg.norm(np.subtract(p_[i + 1], p_[i])) for i in range(len(p_) - 1)) * 1000), "qty": 1,
+                          "where": " > ".join(str([round(v * 1000) for v in q]) for q in p_)})
+        extra += [{"item": "rear panel", "part": "rear panel MMP (Rev B)", "change": "QS1 BS-6004B cut-out moved to y -56 mm, z 191 mm (67 mm face, key outside, studs inboard)", "qty": 1, "where": "x -370 mm"},
+                  {"item": "side panel", "part": "right side panel", "change": "BMS clamp strips: 4 x M4 blind rivet nuts; the panel stays removable for BMS service", "qty": 4, "where": "x -275 to -127 mm, z 96 to 170 mm"},
+                  {"item": "electronics bracket", "part": "MMP.04.00.00.002", "change": "rear-wall slot 150 x 53 mm with edge trim for both hub-motor leads from the ZLAC8015D", "qty": 1, "where": "x -16 mm, y -75 to 75 mm, z 115 to 168 mm"}]
+        extra.append({"item": "new part", "part": "CH-B1 / CH-B2 channel cross branches", "change": "U-branches 40 mm wide from the central channels over the wheels to the over-wheel guards; 2 slots 36 x 25 mm with edge trim in the centre-bracket side walls", "qty": 2, "where": "x -60 to -20 mm, |y| 85 to 236 mm, z 212 to 240 mm"})
+        for c_ in HN.CHANNELS:
+            extra.append({"item": "new part", "part": c_["name"], "change": "U-channel 3 mm floor, 2 mm walls, lid with clips, floor drop-out x %.0f to %.0f mm with edge trim; 4 x M4 rivet nuts in the arch top sheet" % (HN.CH_DROP[0] * 1000, HN.CH_DROP[1] * 1000),
+                          "qty": 1, "where": "x %.0f to %.0f, y %.0f to %.0f, z %.0f to %.0f mm" % (HN.CH_X[0] * 1000, HN.CH_X[1] * 1000, c_["y"][0] * 1000, c_["y"][1] * 1000, HN.CH_FLOOR * 1000, HN.CH_TOP * 1000)})
+        for q_ in FBR[fb_default].get("side_plates", []):
+            extra.append({"item": "new part", "part": q_["name"], "change": "3 mm 5052 plate on the base sheet, 4 x M4 rivet nuts", "qty": 1, "where": mmw(q_["lo"], q_["hi"])})
+        extra.append({"item": "side panel", "part": "right side panel", "change": "USB and Ethernet service feed-throughs moved from the left to the right side panel (signal side)", "qty": 2, "where": "x 200 and 245 mm, z 185 mm"})
+        ax_ = FACTS["lift_plate"]["col_axis_x"]["bp000"]
+        for k_, (lo_, hi_) in FGL["boxes"].items():
+            extra.append({"item": "new part", "part": "flag rod guide: %s" % k_.replace("_", " "), "change": {"ring": "stainless 1.4301, 1.5 mm, U bent (open toward -y)", "liner": "PTFE 0.5 mm bonded (verify)", "arm": "6082-T6 3 mm plate", "foot": "6082-T6 spacer block, 2 x M5 x 30 ISO 4762 + T-slot nuts into the static column +y face"}[k_.split("_")[0]],
+                          "qty": 1, "where": mmw([lo_[0] + ax_, lo_[1], lo_[2]], [hi_[0] + ax_, hi_[1], hi_[2]])})
+        w.writerows(extra)
     assembly(fasteners)
     # source snapshot for scripts/check_roadmap.py (CI has no ../src): the source values the model must match
     snap = {"about": "Source values the roadmap model is checked against (scripts/check_roadmap.py). Generated by build.py.",
@@ -1371,7 +1390,7 @@ def main():
                                  "plates": FBR[o]["plates"], "shelf": FBR[o].get("shelf"), "shelf_order": FBR[o].get("shelf_order")} for o in FBR},
                "front_bay_default": fb_default, "relocate": fb_relocate, "receiver": {"centre": FACTS["tzbot_receiver"]["centre"], "lo": TZL["lo"].round(4).tolist(), "hi": TZL["hi"].round(4).tolist(), "cutout": TZL["cutout"], "orientation": TZL["orientation"], "cutout_mm": TZL["cutout_mm"], "cutout_full_mm": TZL["cutout_full_mm"], "gap_m": R(TZL["lo"][2] - FACTS["tzbot_transmitter"]["size"][2]), "status": FACTS["tzbot_receiver"]["status"]},
                "rear_layout": {k: RL[k] for k in ("measured", "pocket_free", "pockets", "plate", "margin", "cutout", "trays", "link_z")},
-               "k1k2_options": opt, "gi080": gi80, "battery_trays": tray_check, "cables_25mm2": BEND25, "bolts": bolts, "bay_plate_area_m2": R(area, 4), "seed": issues_seed,
+               "k1k2_options": opt, "gi080": gi80, "flag_guide": {k_: FGL[k_] for k_ in ("z", "band", "band_margin_mm", "opening", "clearance_mm", "liner", "wall", "arm", "summary", "checks", "removal", "rod_x_base")}, "battery_trays": tray_check, "cables_25mm2": BEND25, "bolts": bolts, "bay_plate_area_m2": R(area, 4), "seed": issues_seed,
                "coverage": {c: sum(1 for r in rows if r["class"] == c) for c in sorted({r["class"] for r in rows})},
                "onboard": sum(1 for r in rows if r["onboard"] == "y"), "records": len(rows)}
     json.dump(summary, open(os.path.join(HERE, "build_summary.json"), "w"), indent=1, default=str)
@@ -1417,11 +1436,12 @@ def assembly(fasteners):
     steps = [
         (1, "Base sheet (receiver cut-out at the rear, prepared), panels, supports, centre bracket (MEC-001)", "MEC-001 sheet-metal joints (CAD v0.2)", "hex key 4 / 5 mm", "ISO 898-1 M5 8.8: 6 Nm", "open frame, all faces reachable"),
         (2, "Hub motors with MEC-015 brackets, castors with MEC-016 shims", "M8 x 20 bracket bolts; castor M6", "13 mm socket, torque wrench", "M8 8.8: 25 Nm", "from below with the base on its side; brake side inboard"),
-        (3, "TZBOT receiver zone at the rear panel: prepared, receiver installed later (cut-out, F-CHG, KCHG and the start and fault lines CBL-P31 are in place)", "receiver and WCH-007 bracket when installed", "", "", "keep the 20 mm metal-free margin and the plate underside 122 mm above the floor free"),
-        (4, "Motor driver on MMP.02.00.00.002, electronics bracket MMP.04.00.00.002 (shortened to x 0.100) with the IMU board", "M3/M4", "hex key 2.5 / 3 mm", "M3: 1.2 Nm, M4: 2.8 Nm", "from above, cover off; nothing heavy or vibrating on the IMU bracket"),
-        (5, "Front bay (one layout): lower plate on the base sheet (top z " + "%.3f" % FB.FLOOR + "), DIN carrier with PNOZ s3 and DDR-240B-24 on the arch front legs, RSD-100B-24 and small power parts, shelf on standoffs with compute (J401), NUCLEO, FB-C and terminal blocks; no receiver in the bay (A1)", "M4 standoffs, M5 carrier screws", "hex key 2.5 / 3 mm, nut driver 7 mm", "M4: 2.8 Nm", "strip boards first, then the lower plate, the DIN carrier, the shelf; every fuse (FB-C on the shelf) and the PNOZ terminals reachable from above with the cover off"),
+        (3, "TZBOT receiver zone at the rear panel: prepared, receiver installed later (cut-out, F-CHG, KCHG and the start and fault lines CBL-P31 are in place)", "receiver and WCH-007 bracket when installed", "", "", "keep the 20 mm metal-free margin free; the G10 power plate underside is 117 mm above the floor (15 mm above the receiver top, owner decision 3 Nov 2026), non-metal fixings within 20 mm"),
+        (4, "Motor driver on MMP.02.00.00.002, electronics bracket MMP.04.00.00.002 (shortened to x 0.100, new rear-wall slot with edge trim for the motor leads) with the IMU board; central channels CH-C1 (power) and CH-C2 (signal) hung from the arch top sheet, lids off", "M3/M4; M4 x 8 into rivet nuts for the channels", "hex key 2.5 / 3 mm, rivet-nut tool M4", "M3: 1.2 Nm, M4: 2.8 Nm", "from above, cover off; nothing heavy or vibrating on the IMU bracket; channels before the lift base plate"),
+        (5, "Front bay (one layout): lower plate on the base sheet (top z " + "%.3f" % FB.FLOOR + "), DIN carrier with PNOZ s3 and DDR-240B-24 on the arch front legs, RSD-100B-24 and small power parts, shelf on standoffs with compute (J401) and the control boards; side plates in the side zones: left (power) FB-C, USB-PD, 3.3 V regulator; right (signal) USB 3 hub, two USB-CAN-FD adapters, LiDAR USB-UART; no receiver in the bay (A1)", "M4 standoffs, M5 carrier screws", "hex key 2.5 / 3 mm, nut driver 7 mm", "M4: 2.8 Nm", "side plates first (they stay when the tiers come out), strip boards, then the lower plate, the DIN carrier, the shelf; FB-C fuses (left side zone) and the PNOZ terminals reachable from above with the cover off"),
         (6, "Battery: two removable pocket trays MEC-007 with 4 + 4 LF105 upright, straps; the 8S series link across the centre joins them through the keyed main connector PWR-018 (A9)", "M6 x 12 tray screws into rivet nuts", "hex key 5 mm, 13 mm socket for the M8 terminals", "M6 8.8: 10 Nm; cell terminals per EVE", "cells go in from above with the cover off (each tray with its 4 cells lowered or lifted on its own after PWR-018 is unplugged); side-panel return flanges notched at x -0.275 to -0.133 (GI-025, decided)"),
-        (7, "Rear power plate MEC-006 above the receiver zone (underside 122 mm): F0, K1/K2, precharge, FB-A, PWR-017, KCHG, F-CHG; disconnect and SB50 on the rear panel", "M5 x 12", "hex key 4 mm, 13 mm socket for M8 lugs", "M5: 5.5 Nm; M8 lugs per maker", "after the trays; nothing above a fuse; plate on 4 standoffs from the base sheet outside the metal-free margin; it comes out without removing the cells (2 mm clear of the trays in plan) once PWR-018 on the series link above it is unplugged"),
+        (7, "Rear power module (rear_power.py): G10 plate MEC-006 (underside 117 mm) with F0 across the front edge, BUS+ on POM standoffs, K1 and K2; busbars BB-01 (QS1 > BUS+), BB-02 (BUS+ > K1), BB-03 (K1 > K2); FB-B shelf (L3) with FB-B and the formed riser BB-04 from K2; FB-A shelf at the rear panel; QS1 BS-6004B and SB50 through the rear panel; BUS-, Kpre in the right rear corner; KCHG, F-CHG, brake suppression on the left corner plate; cables P01 (pack + > F0) and P02 (F0 > QS1)", "PA66 / PEEK M5 within 20 mm of the receiver; M8 / M10 flange nuts on the studs; M4 into rivet nuts for the shelves", "hex key 4 mm, 13 / 17 mm sockets, torque wrench", "M8 studs per maker; PA66 M5: hand tight per maker (verify)", "L1 parts and busbars first, then the FB-B shelf; FB-A and FB-B fuses face up with nothing above; the plate comes out without the cells once PWR-018 is unplugged"),
+        (7.5, "BMS Daly M-series on edge in the right side gap (clamp strips with PA66 liner on the removable right side panel); BB-05 (P- under the BMS, behind the right tray to BUS-) and BB-06 (B- to pack -); sense harness and CAN2 plugged", "M4 x 10 into rivet nuts; M8 on BUS- and pack -", "hex key 2.5 mm, 13 mm socket", "M4: 2 Nm", "service through the right side panel: unplug the sense and CAN2 connectors, unbolt B- and P- at the BMS, lift the BMS out sideways"),
         (8, "Sensors: LiDAR on the shortened MMP.07 on the lower plate + 17.5 mm spacer, Gemini on MEC-009, MB7060 with lock nuts, TF-Luna, E-stop, RESET", "M4 inserts, 3/4 in NPS nuts", "hex key 3 mm, 32 mm spanner", "M4: 1.5 Nm into PETG inserts", "front MB7060 nuts reached from inside before the bay plate goes in"),
         (9, "Harness fittings (after every component, before the cover): M4 rivet nuts and screw-mount tie bases at the tie points of harness_routes.json (base sheet, side panels, arch, brackets; standoffs where the route is 15 to 40 mm off the surface), the two over-wheel cable guards, grommets or edge trim at every penetration (harness_cad_changes.csv), the deck split entry and the DP-LIFT bracket", "M4 x 8 ISO 7380 into M4 rivet nuts; M4 x 20 standoffs", "rivet-nut tool M4, hex key 2.5 mm", "M4 into a rivet nut: 2 Nm", "cover off, front tier and trays out: every tie point reached from above"),
         (10, "Base harnesses laid in and tied: W01 rear power (lugs on the studs), W02 drive section, W03 left and W04 right side trunks (floor lanes, over-wheel guards, lanes beside the trays), W05 front sensors, W07 front tier; labels at both ends of every cable (label_a / label_b), harness labels at the main breakouts; CAN terminations", "cable ties on the tie bases", "crimp tools (TST-004), label printer", "lugs per maker; M8 battery studs per EVE", "trays and front tier back in after their cables are laid: each plugs in at its disconnect point (DP-TRAY-L / -R, DP-FT)"),
@@ -1431,7 +1451,7 @@ def assembly(fasteners):
         (14, "Lift base plate with the column onto the arch, bolted from above into the 4 arch rivet nuts", "4 x M8 x 20 ISO 4762 8.8 + ISO 7089 washers", "6 mm hex key or 6 mm bit on a torque wrench", "M8 8.8 into a stainless blind rivet nut: 15 Nm (rivet-nut limit, below the 25 Nm bolt value)", "bolt heads at y +/-0.050 beside the 60 mm column: 13.5 mm from the head edge to the column face, a 6 mm hex bit (13 mm socket body) fits; rivet nuts captive, no access from below needed"),
         (15, "Adapter plate (one part with the rear extension for the flag rod, A6), HFS6 post, rear upright, stiffener", "M8 x 25, M6 T-nuts", "6 / 5 mm hex key", "M8: 25 Nm, M6: 10 Nm", "post bolts from below the adapter plate before it goes on the carriage"),
         (16, "Arms on the post (1 mm spacers), ZED bracket and camera, Getac pocket and light plate, second E-stop housing on the adapter plate behind the post (A5)", "M6 T-nuts", "5 mm hex key", "M6: 10 Nm", "arms at home pose; Getac pocket last"),
-        (17, "Lift stop sensors on the rear face of the static column (A6), flag rod under the adapter-plate rear extension (M5 into the rod end, corner bracket), flag", "LFT-007 set", "hex key 2.5 / 3 / 4 mm", "M4: 2 Nm", "lift at L1000; set the 2 mm flag gap"),
+        (17, "Lift stop sensors on the rear face of the static column (A6), flag rod under the adapter-plate rear extension (M5 into the rod end, corner bracket), flag; flag rod guide (open U ring with PTFE liner on its arm) on the +y face of the static column head, the rod slid into the ring from its open -y side", "LFT-007 set; guide 2 x M5 x 30 ISO 4762 + T-slot nuts", "hex key 2.5 / 3 / 4 mm", "M4: 2 Nm, M5 T-slot: 4 Nm", "lift at L1000; set the 2 mm flag gap; run L1000 to L1350: the rod slides in the guide without binding, flag and corner bracket clear the guide by 3.5 mm"),
         (18, "Lift column harness W08 and upper-body harness W09 (after the lift and the upper body, before the chest covers): fixed sleeve with P-clips on the -y T-slot of the static column, energy chain (fixed end bracket on the column, moving end bracket and hung angle under the adapter plate), cables laid into the chain with strain relief at both ends, moving trunk and risers clipped at the post; all lift cables plug in at DP-LIFT; function test", "M5 T-slot nuts, M5 x 10; chain end pins", "hex key 2.5 / 4 mm", "M5 T-slot: 4 Nm", "run the lift L1000 to L1350 and back: no cable taut, rubbing or in a pinch point, chain clear of the flag rod, sensors and cover"),
     ]
     with open(os.path.join(MODEL, "assembly_sequence.csv"), "w", newline="") as f:

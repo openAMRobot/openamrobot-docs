@@ -59,7 +59,7 @@ tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger I
 # rear section (A1, A9): the CAD v0.2 dimensions measured by rear_layout.py are the reference (A9, 2 Nov 2026);
 # side pockets (side-wall inner width - 150) / 2 across, minus the 20 mm metal-free margin next to the receiver
 rear_section: {rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_y: 0.288,
-               power_plate: {t: 0.003, min_above_receiver: 0.020}}
+               power_plate: {t: 0.003, min_above_receiver: 0.015, material: "G10 glass-epoxy (non-metal)"}}   # owner decision 3 Nov 2026: 15 mm gap to the receiver top; non-metal within 20 mm (TZBOT manual, verify)
 # 8 x EVE LF105 (200 h x 130 x 38 mm, 1.98 kg) upright, 4 per side pocket, 8S (replaces the single row across the robot, B-02 rev18.10)
 cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002}
 tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (installed with the receiver), same outer size (manual V2.5); not drawn

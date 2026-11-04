@@ -24,7 +24,6 @@ ids:
   "stability|Static stability": GI-077
   "stability|Static stability|L1350": GI-078
   "stability|Stopping from 1.5 m/s": GI-079
-  "manual layout pending|Rear layout (A1) / rz_fbb, rz_bms": GI-080
   "decided fix, CAD pending|Lift base plate MEC-019 on the centre-frame arch: load path": GI-082
   "sensor view|LiDAR scan plane +-5 mm / support_front_left": GI-089
   "sensor view|LiDAR scan plane +-5 mm / support_front_right": GI-090
@@ -37,23 +36,20 @@ ids:
   "interference|battery_tray_left / rear_plate": GI-108
   "interference|battery_tray_right / castor_rear_right": GI-109
   "interference|battery_tray_right / rear_plate": GI-110
-  "interference|bay_can1 / bay_usbhub": GI-111
-  "interference|bay_can3 / bay_usbhub": GI-112
-  "interference|bay_ina228 / compute": GI-113
-  "interference|bay_iso1212 / bay_usbcan_1": GI-114
-  "interference|bay_pwr029 / bay_pwr032": GI-115
   "interference|bay_usbcan_1 / bay_usbhub": GI-116
-  "interference|bay_usbcan_2 / bay_usbhub": GI-117
   "layout|Jetson Orin NX on J401 position (A2)": GI-119
   "to solve before receiver installation|TZBOT receiver / rear_panel (inside the 20 mm metal-free margin)": GI-121
   "to solve before receiver installation|TZBOT receiver / tof_mount_rear (inside the 20 mm metal-free margin)": GI-122
   "to solve before receiver installation|TZBOT receiver / tof_rear (inside the 20 mm metal-free margin)": GI-123
   "services|Disconnect handle and SB50 access": GI-124
-  "layout|Rear layout (A9) / 25 mm\u00b2 cable rules": GI-126
-  "interference|rz_brake / rz_fba": GI-127
-  "interference|rz_brake / rz_kchg": GI-128
-  "harness|No compliant harness route: CBL-P02": GI-129
-  "harness|No compliant harness route: CBL-P05": GI-130
+  "interference|battery_tray_left / rz_kchg": GI-134
+  "interference|battery_tray_right / rz_bms": GI-135
+  "interference|bay_tpl7407 / compute": GI-139
+  "interference|bay_usbcan_1 / bay_usbcan_2": GI-140
+  "interference|rz_pre / rz_pwr017_2": GI-163
+  "verify|Flag rod guide / band between the flag and the corner bracket": GI-164
+  "verify|Rear power module layout (rear_power.py) / catalogue outlines": GI-165
+  "verify with supplier|TZBOT receiver / parts within 20 mm (non-metal)": GI-166
 closed:
   GI-001: {key: "layout|Front bay and rear zone layout", reason: "closed: one front bay layout (A2, owner 2 Nov 2026) places all 22 parts, two tiers because one plate does not take every part, with fuse and connector access"}
   GI-003: {key: "arm reach|OpenArm left / getac_pocket", reason: "closed: Getac portrait, 40 mm lower (A3); the single-joint arm sweep no longer hits the pocket"}
@@ -111,6 +107,7 @@ closed:
   GI-069: {key: "interference|rz_f0 / rz_pre", reason: "closed: old battery tray and B5 rear zone replaced (A1, owner 2 Nov 2026): cells in the side pockets, power electronics on the plate above the receiver"}
   GI-075: {key: "services|Disconnect handle access", reason: "closed: replaced by the A1 service check (disconnect and SB50 on the rear panel)"}
   GI-076: {key: "services|Front bay plate removal with the cover off", reason: "closed: replaced by the A2 service check"}
+  GI-080: {key: "manual layout pending|Rear layout (A1) / rz_fbb, rz_bms", reason: "closed 3 Nov 2026: explicit rear power module layout (rear_power.py, owner report rev 2 with measured adaptations): every part placed, no clash below 5 mm"}
   GI-081: {key: "arm reach|Second E-stop P2 (proposed) / arm reach envelope", reason: "closed: positions P1 to P4 removed; the E-stop on the adapter plate is checked with valid poses only (A5)"}
   GI-083: {key: "tzbot|TZBOT receiver / electronics_bracket (metal within 20 mm)", reason: "closed: receiver at the rear (owner, 2 Nov 2026)"}
   GI-084: {key: "tzbot|TZBOT receiver / fasteners_base (metal within 20 mm)", reason: "closed: receiver at the rear (owner, 2 Nov 2026)"}
@@ -119,5 +116,16 @@ closed:
   GI-087: {key: "interference|bay_plate / lidar_spacer", reason: "closed: one front bay layout on the base sheet (A2)"}
   GI-088: {key: "interference|rz_batcon / rz_f0", reason: "closed: old battery tray and B5 rear zone replaced (A1, owner 2 Nov 2026): cells in the side pockets, power electronics on the plate above the receiver"}
   GI-093: {key: "tzbot|TZBOT 2.4 GHz data link / J401 Wi-Fi (CMP-007) coexistence", reason: "closed: receiver at the rear (owner, 2 Nov 2026)"}
+  GI-111: {key: "interference|bay_can1 / bay_usbhub", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
+  GI-112: {key: "interference|bay_can3 / bay_usbhub", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
+  GI-113: {key: "interference|bay_ina228 / compute", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
+  GI-114: {key: "interference|bay_iso1212 / bay_usbcan_1", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
+  GI-115: {key: "interference|bay_pwr029 / bay_pwr032", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
+  GI-117: {key: "interference|bay_usbcan_2 / bay_usbhub", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
   GI-118: {key: "interference|rz_fba / rz_pwr017_1", reason: "no longer reported by the analysis"}
   GI-125: {key: "interference|battery_series_link / rz_batcon", reason: "closed: PWR-018 sits on the 8S series link by design (declared contact, A9)"}
+  GI-126: {key: "layout|Rear layout (A9) / 25 mm\u00b2 cable rules", reason: "closed 3 Nov 2026: F0 across the plate front edge, CBL-P01 153 mm polyline (126 mm on the R 63 bend), one 90 degree bend, legs 68 / 85 mm; CBL-P02 150 mm straight"}
+  GI-127: {key: "interference|rz_brake / rz_fba", reason: "closed 3 Nov 2026: brake suppression moved in the rear power module layout (rear_power.py)"}
+  GI-128: {key: "interference|rz_brake / rz_kchg", reason: "closed 3 Nov 2026: brake suppression moved in the rear power module layout (rear_power.py)"}
+  GI-129: {key: "harness|No compliant harness route: CBL-P02", reason: "closed 3 Nov 2026: CBL-P02 F0 load stud straight back along x to QS1 S1 (150 mm, no bend)"}
+  GI-130: {key: "harness|No compliant harness route: CBL-P05", reason: "closed 3 Nov 2026: CBL-P05 replaced by busbar BB-03 between the facing K1 and K2 studs (41 mm)"}

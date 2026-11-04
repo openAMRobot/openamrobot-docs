@@ -1625,7 +1625,7 @@ def harness_over_errors(H):
             ends = [sec["pts"][0], sec["pts"][-1]]
             hit = {}
             for _, p in _samples(sec["pts"]):
-                if any(_norm(_v(p, e)) <= R["entry_m"] for e in ends):
+                if any(_norm(_v(p, e)) <= R["entry_m"] for e in ends) or (sec["kind"] == "base" and _exempt(c, p, H)):
                     continue
                 for o in H["obstacles"]:
                     if o["id"] in own:
@@ -1633,7 +1633,7 @@ def harness_over_errors(H):
                     lo, hi = o["lo"], o["hi"]
                     if not (lo[0] + .001 < p[0] < hi[0] - .001 and lo[1] + .001 < p[1] < hi[1] - .001):
                         continue
-                    top = 9 if o.get("top_access") else hi[2] + R["over_band_m"]
+                    top = (hi[2] + o["top_band_m"] if "top_band_m" in o else 9) if o.get("top_access") else hi[2] + R["over_band_m"]
                     if hi[2] <= p[2] < top:
                         hit.setdefault(("over", o["id"]), p)
                     elif lo[2] <= p[2] < hi[2]:
@@ -1745,9 +1745,160 @@ def harness_label_errors(H, rows):
     return out
 
 
+def _in_box(p, b, e=0.0):
+    return all(b["lo"][i] - e <= p[i] <= b["hi"][i] + e for i in range(3))
+
+
+MODULE_EXIT_M = 0.05  # a cable of another harness ending at a power-module part is exempt only within this distance of that end
+
+
+def _cable_ends(c):
+    pts = [q for s in c.get("sections", []) for q in s.get("pts", [])]
+    return (pts[0], pts[-1]) if pts else ()
+
+
+def _exempt(c, p, H):
+    """A point of cable c inside a declared protected passage, or inside the declared battery and power module exception zone
+    when the cable belongs to that zone's harness. A cable of another harness that starts or ends at a module part is exempt
+    only at its local exit (within MODULE_EXIT_M of a route end inside the zone); elsewhere in the zone every obstacle,
+    above-component and support check applies (owner review of #71)."""
+    if any(_in_box(p, q) and ("cables" not in q or c.get("id") in q["cables"]) for q in H.get("passages", [])):
+        return True   # a passage with a cable list covers only the listed cables
+    for z in H.get("exception_zones", []):
+        if not _in_box(p, z):
+            continue
+        if c.get("harness") == z.get("harness"):
+            return True
+        if c.get("module") and any(_in_box(e, z) and _norm(_v(e, p)) <= MODULE_EXIT_M for e in _cable_ends(c)):
+            return True
+    return False
+
+
+def harness_axis_errors(H):
+    """Route segments (base, moving and column sections) must run within axis_tol_deg of a structure axis; the only other
+    segments allowed are declared 45 degree transitions (listed in the section's t45, planar 45 +- 5 degrees, at most
+    t45_max_m long). A diagonal span across open space fails this rule."""
+    import math
+    R = H["rules"]
+    tol, tmax = R.get("axis_tol_deg", 15.0), R.get("t45_max_m", 0.120)
+    out = []
+    for c in H["cables"]:
+        for sec in c.get("sections", []):
+            if sec["kind"] not in ("base", "moving", "column"):
+                continue
+            pts = sec["pts"]
+            t45 = set(sec.get("t45", []))
+            for i in range(len(pts) - 1):
+                d = sorted((abs(v) for v in _v(pts[i], pts[i + 1])), reverse=True)
+                L = _norm(d)
+                if L < 1e-6:
+                    continue
+                off = math.degrees(math.acos(min(1.0, d[0] / L)))
+                if off <= tol + 1e-9:
+                    continue
+                planar = math.degrees(math.atan2(d[1], d[0]))
+                if i in t45 and d[2] < 1e-4 and abs(planar - 45.0) <= 5.0 and L <= tmax + 1e-6:
+                    continue
+                out.append("%s %s section: segment %d runs %.0f degrees off the structure axes over %.0f mm (not a declared 45 degree transition)" % (
+                    c["id"], sec["kind"], i, off, L * 1000))
+    return out
+
+
+def harness_support_errors(H):
+    """Every base route point within support_max_m of a supporting surface (support distances written by harness.py every
+    10 mm), except within end_free_m of its connectors (local exit), inside declared protected passages and, for module
+    cables, inside the battery and power module exception zone."""
+    R = H["rules"]
+    smax, efree = R.get("support_max_m", 0.030), R.get("end_free_m", 0.060)
+    out = []
+    for c in H["cables"]:
+        for sec in c.get("sections", []):
+            if sec["kind"] != "base" or "support" not in sec:
+                continue
+            sm = _samples(sec["pts"], 0.002)
+            L = sm[-1][0]
+            worst = None
+            for s_, d_mm in sec["support"]:
+                if s_ < efree - 1e-6 or s_ > L - efree + 1e-6 or d_mm <= smax * 1000 + 1e-6:
+                    continue
+                p = min(sm, key=lambda q: abs(q[0] - s_))[1]
+                if _exempt(c, p, H):
+                    continue
+                if worst is None or d_mm > worst[0]:
+                    worst = (d_mm, p)
+            if worst:
+                out.append("%s base section: %.0f mm from the nearest supporting surface at %s (limit %.0f mm)" % (
+                    c["id"], worst[0], [round(v, 3) for v in worst[1]], smax * 1000))
+    return out
+
+
+def harness_above_errors(H):
+    """No base route point above the top of a component (inside its footprint, from its top up to the first structure above
+    it: a shelf, a plate, the deck or the cover; over_to written by harness.py), except the cable's own end parts, the
+    connector entry, declared protected passages and the exception zone (module cables)."""
+    R = H["rules"]
+    if not R.get("over_to_structure"):
+        return []
+    out = []
+    obs = {o["id"]: o for o in H["obstacles"]}
+    for c in H["cables"]:
+        own = set(c.get("own", []))
+        for sec in c.get("sections", []):
+            if sec["kind"] != "base":
+                continue
+            ends = [sec["pts"][0], sec["pts"][-1]]
+            hit = {}
+            for _, p in _samples(sec["pts"]):
+                if any(_norm(_v(p, e)) <= R["entry_m"] for e in ends) or _exempt(c, p, H):
+                    continue
+                for oid, g in H.get("over_to", {}).items():
+                    o = obs.get(oid)
+                    if o is None or oid in own:
+                        continue
+                    lo, hi = o["lo"], o["hi"]
+                    if not (lo[0] + .001 < p[0] < hi[0] - .001 and lo[1] + .001 < p[1] < hi[1] - .001) or p[2] < hi[2]:
+                        continue
+                    i = min(len(g["z"]) - 1, max(0, int((p[0] - g["x0"]) / g["res"])))
+                    j = min(len(g["z"][i]) - 1, max(0, int((p[1] - g["y0"]) / g["res"])))
+                    if p[2] < g["z"][i][j] - 1e-6:
+                        hit.setdefault(oid, p)
+            for oid, p in sorted(hit.items()):
+                out.append("%s runs above the top of %s at %s" % (c["id"], oid, [round(v, 3) for v in p]))
+    return out
+
+
+def harness_separation_errors(H):
+    """Separation of every sensitive cable (CAN, USB, SPI, sensor lines) from the power cables, reported in
+    harness_routes.json as the share of its length farther than the working value from every power route: each sensitive
+    cable must be listed and the reported share must match the routes within 2 points."""
+    R = H["rules"]
+    w = R.get("sep_work_m", 0.030)
+    rep = {s["id"]: s for s in H.get("separation", [])}
+    out = []
+    power = [c for c in H["cables"] if c.get("power")]
+    P = [q for c in power for sec in c["sections"] if sec["kind"] == "base" for _, q in _samples(sec["pts"], 0.005)]
+    for c in H["cables"]:
+        if not c.get("sensitive"):
+            continue
+        base = [sec for sec in c["sections"] if sec["kind"] == "base"]
+        if not base:
+            continue
+        if c["id"] not in rep:
+            out.append("%s: sensitive cable without a separation figure" % c["id"])
+            continue
+        Q = [q for _, q in _samples(base[0]["pts"], 0.005)]
+        if not P or not Q:
+            continue
+        ok = sum(1 for q in Q if min(_norm(_v(q, p)) for p in P) >= w - 1e-9) / len(Q)
+        if abs(100 * ok - rep[c["id"]]["pct_separated"]) > 2.0:
+            out.append("%s: separation %.1f %% reported, %.1f %% from the routes" % (c["id"], rep[c["id"]]["pct_separated"], 100 * ok))
+    return out
+
+
 def harness_errors(H, rows):
     return (harness_label_errors(H, rows) + harness_span_errors(H) + harness_over_errors(H) + harness_withdrawal_errors(H)
-            + harness_bend_errors(H) + harness_lift_errors(H))
+            + harness_bend_errors(H) + harness_lift_errors(H) + harness_axis_errors(H) + harness_support_errors(H)
+            + harness_above_errors(H) + harness_separation_errors(H))
 
 
 def check_harness(root, err):

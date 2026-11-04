@@ -4,7 +4,7 @@ TZBOT WCM-500-24 receiver prepared (installed later) on the centre line, 170 mm 
 rear panel inner face as possible without touching the rear TF-Luna, the rear MB7060s, their mounts or the rear panel flange
 (owner correction of 2 Nov 2026; the 240 x 210 mm zone is withdrawn), bottom 2 mm below the base-sheet underside; 20 mm
 metal-free margin around the receiver. Two side pockets beside the zone, each with 4 EVE LF105 cells upright (8S). Power electronics on a
-mounting plate above the receiver, underside at least 20 mm above the receiver top, up to the cover underside.
+mounting plate above the receiver, underside at least 15 mm above the receiver top (owner decision 3 Nov 2026; non-metal within 20 mm), up to the cover underside.
 
 The space is measured from the CAD (base GLB): rear panel, arch, top-cover supports, side panels and their return flanges
 (GI-025), rear sensor mounts and the rear cover flange slope. layout() returns every box (base_footprint, m) and a report

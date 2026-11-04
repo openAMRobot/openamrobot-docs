@@ -39,7 +39,7 @@
  ],
  "not_compared": 0,
  "unmapped_urdf": 3,
- "roadmap_only": 89,
+ "roadmap_only": 104,
  "unmapped_roadmap": 0,
  "comparisons": 200,
  "comparisons_out": 20,
@@ -141,7 +141,7 @@
   },
   "openamrobot_upperbody_description": {
    "repository": "openAMRobot/openamr-upperbody-sw",
-   "commit": "a8c304d8a6335c479e56f20e32675d2d87144a50",
+   "commit": "17cf69374c5d2c3a9c058c89f54c6bf43b3741d7",
    "role": "main"
   },
   "openarm_description": {

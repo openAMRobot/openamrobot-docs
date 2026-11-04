@@ -1,0 +1,1492 @@
+[
+ {
+  "name": "F1_flag_rod_rear_L1000",
+  "title": "Flag rod and lift stop sensors, rear 3/4 view, L1000",
+  "sub": "Cover hidden. Flag should sit 2 mm off the L1000 sensor face.",
+  "target": [
+   -0.1,
+   0.02,
+   0.6
+  ],
+  "az": 205,
+  "el": 18,
+  "dist": 1.8,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "adapter_plate",
+   "lift_column",
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "harness_sleeve",
+   "dp_lift",
+   "rear_estop_housing",
+   "second_estop",
+   "lift_base_plate",
+   "lift_node",
+   "arm_profile",
+   "battery_cells_left",
+   "battery_cells_right"
+  ]
+ },
+ {
+  "name": "F2_flag_rod_rear_L1350",
+  "title": "Flag rod and lift stop sensors, rear 3/4 view, L1350",
+  "sub": "Lift at the top stop. Flag should sit at the L1350 sensor.",
+  "lift": 0.35,
+  "target": [
+   -0.1,
+   0.02,
+   0.75
+  ],
+  "az": 205,
+  "el": 18,
+  "dist": 1.8,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "adapter_plate",
+   "lift_column",
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "harness_sleeve",
+   "rear_estop_housing"
+  ]
+ },
+ {
+  "name": "F3_flag_rod_side_close_L1000",
+  "title": "Flag rod close-up from +y side, L1000",
+  "sub": "Rod, flag, sensors and brackets on the column rear face; energy chain behind.",
+  "target": [
+   -0.11,
+   0.02,
+   0.6
+  ],
+  "az": 90,
+  "el": 4,
+  "dist": 0.9,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "side_panel_left",
+   "battery_*",
+   "support_rear_left",
+   "hub_motor_wheel_left"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "adapter_plate",
+   "lift_column",
+   "lift_energy_chain",
+   "harness_sleeve",
+   "dp_lift",
+   "rear_estop_housing",
+   "lift_base_plate"
+  ]
+ },
+ {
+  "name": "F4_flag_rod_plan_section",
+  "title": "Flag rod, plan view from above (adapter plate and arm post hidden)",
+  "sub": "Positions in x-y of rod, flag, sensors, brackets and the energy chain behind the column.",
+  "target": [
+   -0.1,
+   0,
+   0.6
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.0,
+  "ortho": 0.42,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "adapter_plate",
+   "arm_profile",
+   "getac_*",
+   "head_*",
+   "second_estop",
+   "rear_estop_housing",
+   "slot_cover_strips",
+   "harness_*_mov",
+   "harness_fittings_mov",
+   "lift_energy_chain_moving",
+   "fasteners_mov"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "lift_column",
+   "lift_energy_chain",
+   "harness_sleeve",
+   "dp_lift",
+   "lift_base_plate"
+  ]
+ },
+ {
+  "name": "F5_flag_rod_rear_straight_L1175",
+  "title": "Flag rod from straight behind, L1175",
+  "sub": "Middle stop; rod length vs the cover and the energy chain.",
+  "lift": 0.175,
+  "target": [
+   -0.1,
+   0,
+   0.62
+  ],
+  "az": 180,
+  "el": 5,
+  "dist": 1.4,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "rear_panel"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "adapter_plate",
+   "lift_column",
+   "lift_energy_chain",
+   "harness_sleeve",
+   "rear_estop_housing",
+   "tz_receiver",
+   "rear_plate"
+  ]
+ },
+ {
+  "name": "B1_rear_bay_top",
+  "title": "Rear bay, top view, cover and upper body hidden",
+  "sub": "Rear panel on the left. +y (left side of the robot) at the top.",
+  "target": [
+   -0.24,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.66,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "rz_fba",
+   "rz_pwr017_1",
+   "rz_pwr017_2",
+   "rz_f0",
+   "rz_k1k2_1",
+   "rz_k1k2_2",
+   "rz_pre",
+   "rz_kchg",
+   "rz_fchg",
+   "rz_brake",
+   "rz_disc",
+   "rz_sb50",
+   "rz_batcon",
+   "battery_series_link",
+   "battery_cells_left",
+   "battery_cells_right",
+   "tz_receiver",
+   "rear_plate",
+   "rear_panel",
+   "motor_driver",
+   "driver_mount",
+   "centre_bracket",
+   "wheel_guard_left",
+   "wheel_guard_right",
+   "hub_motor_wheel_left",
+   "hub_motor_wheel_right",
+   "support_rear_left",
+   "support_rear_right",
+   "ultrasonic_rear_left",
+   "ultrasonic_rear_right",
+   "tof_rear",
+   "lift_base_plate",
+   "dp_lift",
+   "lift_node"
+  ]
+ },
+ {
+  "name": "B2_rear_bay_3d",
+  "title": "Rear bay, 3D from rear left, cover and upper body hidden",
+  "sub": "Rear power plate, trays, receiver zone",
+  "target": [
+   -0.24,
+   0,
+   0.14
+  ],
+  "az": 150,
+  "el": 38,
+  "dist": 1.6,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "rz_fba",
+   "rz_pwr017_1",
+   "rz_pwr017_2",
+   "rz_f0",
+   "rz_k1k2_1",
+   "rz_k1k2_2",
+   "rz_pre",
+   "rz_kchg",
+   "rz_fchg",
+   "rz_brake",
+   "rz_disc",
+   "rz_sb50",
+   "rz_batcon",
+   "battery_series_link",
+   "battery_cells_left",
+   "battery_cells_right",
+   "tz_receiver",
+   "rear_plate",
+   "rear_panel",
+   "motor_driver",
+   "driver_mount",
+   "centre_bracket",
+   "wheel_guard_left",
+   "wheel_guard_right",
+   "hub_motor_wheel_left",
+   "hub_motor_wheel_right",
+   "support_rear_left",
+   "support_rear_right",
+   "ultrasonic_rear_left",
+   "ultrasonic_rear_right",
+   "tof_rear",
+   "lift_base_plate",
+   "dp_lift",
+   "lift_node"
+  ]
+ },
+ {
+  "name": "B3_front_bay_top",
+  "title": "Front bay, top view, cover and upper body hidden",
+  "sub": "Front panel on the right. Side zones between the cover supports and the side panels.",
+  "target": [
+   0.23,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.66,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "bay_can1",
+   "bay_can2",
+   "bay_can3",
+   "bay_iso1212",
+   "bay_tpl7407",
+   "bay_ina228",
+   "bay_rsd60",
+   "bay_rsd100",
+   "bay_ddr240",
+   "bay_pwr032",
+   "bay_usbpd",
+   "bay_pwr009",
+   "bay_pwr029",
+   "bay_fbc",
+   "bay_din_pnoz",
+   "bay_din_tb",
+   "bay_usbhub",
+   "bay_usbcan_1",
+   "bay_usbcan_2",
+   "bay_lidar_uart",
+   "compute",
+   "base_controller",
+   "controller_plate",
+   "electronics_bracket",
+   "imu",
+   "lidar",
+   "lidar_support",
+   "base_camera",
+   "estop",
+   "reset_button",
+   "feedthru_1",
+   "feedthru_2",
+   "can_term_2",
+   "can_term_3",
+   "support_front_left",
+   "support_front_right",
+   "ultrasonic_front_left",
+   "ultrasonic_front_right",
+   "tof_front",
+   "front_panel"
+  ]
+ },
+ {
+  "name": "B4_front_bay_3d",
+  "title": "Front bay, 3D from front left, cover and upper body hidden",
+  "sub": "Two-tier front bay",
+  "target": [
+   0.22,
+   0,
+   0.14
+  ],
+  "az": 35,
+  "el": 38,
+  "dist": 1.6,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "bay_can1",
+   "bay_can2",
+   "bay_can3",
+   "bay_iso1212",
+   "bay_tpl7407",
+   "bay_ina228",
+   "bay_rsd60",
+   "bay_rsd100",
+   "bay_ddr240",
+   "bay_pwr032",
+   "bay_usbpd",
+   "bay_pwr009",
+   "bay_pwr029",
+   "bay_fbc",
+   "bay_din_pnoz",
+   "bay_din_tb",
+   "bay_usbhub",
+   "bay_usbcan_1",
+   "bay_usbcan_2",
+   "bay_lidar_uart",
+   "compute",
+   "base_controller",
+   "controller_plate",
+   "electronics_bracket",
+   "imu",
+   "lidar",
+   "lidar_support",
+   "base_camera",
+   "estop",
+   "reset_button",
+   "feedthru_1",
+   "feedthru_2",
+   "can_term_2",
+   "can_term_3",
+   "support_front_left",
+   "support_front_right",
+   "ultrasonic_front_left",
+   "ultrasonic_front_right",
+   "tof_front",
+   "front_panel"
+  ]
+ },
+ {
+  "name": "B5_base_overview_top",
+  "title": "Base overview, top view, cover hidden",
+  "sub": "Main assemblies",
+  "target": [
+   0,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.95,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "battery_cells_left",
+   "battery_cells_right",
+   "rear_plate",
+   "tz_receiver",
+   "centre_bracket",
+   "motor_driver",
+   "hub_motor_wheel_left",
+   "hub_motor_wheel_right",
+   "wheel_guard_left",
+   "wheel_guard_right",
+   "electronics_bracket",
+   "bay_plate",
+   "compute",
+   "lidar",
+   "base_camera",
+   "estop",
+   "reset_button",
+   "side_panel_left",
+   "side_panel_right",
+   "rear_panel",
+   "front_panel",
+   "support_front_left",
+   "support_front_right",
+   "support_rear_left",
+   "support_rear_right",
+   "lift_base_plate",
+   "dp_lift"
+  ]
+ },
+ {
+  "name": "H1_harness_rear_W01_W02",
+  "title": "Inner harness: W01 rear power and W02 drive section (top view)",
+  "sub": "Other parts ghosted. Purple = cable label at mid-route, red = blocked cable drawn as fallback.",
+  "target": [
+   -0.15,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.7,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "ghostAll": true,
+  "keep": [
+   "harness_bat_base",
+   "harness_safe_base",
+   "harness_r24_base",
+   "harness_sig_base",
+   "harness_lv_base",
+   "harness_fittings_base",
+   "wheel_guard_*"
+  ],
+  "cables": [
+   "CBL-P01",
+   "CBL-P02",
+   "CBL-P03",
+   "CBL-P04",
+   "CBL-P05",
+   "CBL-P06",
+   "CBL-P27",
+   "CBL-P28",
+   "CBL-P29",
+   "CBL-P30",
+   "CBL-P59",
+   "CBL-P60",
+   "CBL-P07",
+   "CBL-P08",
+   "CBL-P09",
+   "CBL-P10",
+   "CBL-P11",
+   "CBL-P37",
+   "CBL-P40"
+  ]
+ },
+ {
+  "name": "H2_harness_front_W05_W07",
+  "title": "Inner harness: W05 front sensors and W07 front tiers (top view)",
+  "sub": "Other parts ghosted.",
+  "target": [
+   0.22,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.66,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "ghostAll": true,
+  "keep": [
+   "harness_bat_base",
+   "harness_safe_base",
+   "harness_r24_base",
+   "harness_sig_base",
+   "harness_lv_base",
+   "harness_fittings_base",
+   "wheel_guard_*"
+  ],
+  "cables": [
+   "CBL-P32",
+   "CBL-P34",
+   "CBL-P41",
+   "CBL-P42",
+   "CBL-P45",
+   "CBL-P47",
+   "CBL-P48",
+   "CBL-P17",
+   "CBL-P19",
+   "CBL-P21",
+   "CBL-P22",
+   "CBL-P26",
+   "CBL-P36",
+   "CBL-P57",
+   "CBL-P58"
+  ]
+ },
+ {
+  "name": "H3_harness_side_trunks_W03_W04",
+  "title": "Inner harness: W03 left and W04 right side trunks (3D)",
+  "sub": "Other parts ghosted.",
+  "target": [
+   0,
+   0,
+   0.15
+  ],
+  "az": -60,
+  "el": 40,
+  "dist": 2.0,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "ghostAll": true,
+  "keep": [
+   "harness_bat_base",
+   "harness_safe_base",
+   "harness_r24_base",
+   "harness_sig_base",
+   "harness_lv_base",
+   "harness_fittings_base",
+   "wheel_guard_*"
+  ],
+  "cables": [
+   "CBL-P12",
+   "CBL-P16",
+   "CBL-P18",
+   "CBL-P35",
+   "CBL-P43",
+   "CBL-P44",
+   "CBL-P61",
+   "CBL-P20",
+   "CBL-P25",
+   "CBL-P31",
+   "CBL-P38",
+   "CBL-P46"
+  ]
+ },
+ {
+  "name": "H4_harness_lift_W08_W09",
+  "title": "Inner harness: W08 lift column and W09 upper body (3D rear, L1000)",
+  "sub": "Other parts ghosted.",
+  "target": [
+   0.0,
+   0,
+   0.75
+  ],
+  "az": 210,
+  "el": 15,
+  "dist": 2.4,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*"
+  ],
+  "ghostAll": true,
+  "ghostOpacity": 0.15,
+  "keep": [
+   "harness_bat_base",
+   "harness_safe_base",
+   "harness_r24_base",
+   "harness_sig_base",
+   "harness_lv_base",
+   "harness_fittings_base",
+   "wheel_guard_*",
+   "harness_safe_col",
+   "harness_safe_mov",
+   "harness_r24_mov",
+   "harness_sig_col",
+   "harness_sig_mov",
+   "harness_fittings_col",
+   "harness_fittings_mov",
+   "harness_sleeve",
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "dp_lift"
+  ],
+  "cables": [
+   "CBL-P13",
+   "CBL-P39",
+   "CBL-P54",
+   "CBL-P55",
+   "CBL-P56",
+   "CBL-P14",
+   "CBL-P15",
+   "CBL-P23",
+   "CBL-P24",
+   "CBL-P33",
+   "CBL-P49",
+   "CBL-P50",
+   "CBL-P51",
+   "CBL-P52",
+   "CBL-P53"
+  ]
+ },
+ {
+  "name": "H5_harness_all_top",
+  "title": "Inner harness: all base harnesses (top view), harness names",
+  "sub": "Other parts ghosted.",
+  "target": [
+   0,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.95,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "ghostAll": true,
+  "keep": [
+   "harness_bat_base",
+   "harness_safe_base",
+   "harness_r24_base",
+   "harness_sig_base",
+   "harness_lv_base",
+   "harness_fittings_base",
+   "wheel_guard_*"
+  ],
+  "labels": [
+   "harness_bat_base",
+   "harness_safe_base",
+   "harness_r24_base",
+   "harness_lv_base",
+   "harness_sig_base",
+   "harness_fittings_base",
+   "wheel_guard_left",
+   "wheel_guard_right"
+  ]
+ },
+ {
+  "name": "O1_robot_body_open",
+  "title": "Robot with the body open (cover hidden), L1000",
+  "sub": "Base bays, central channels, lift and upper body; cable categories in colour.",
+  "target": [
+   0.0,
+   0,
+   0.55
+  ],
+  "az": 215,
+  "el": 24,
+  "dist": 3.2,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "side_panel_left"
+  ],
+  "labels": [
+   "rear_plate",
+   "rz_fbb",
+   "rz_bms",
+   "ch_central_power",
+   "ch_central_signal",
+   "side_plates",
+   "lift_energy_chain",
+   "dp_lift",
+   "flag_rod_guide",
+   "second_estop"
+  ]
+ },
+ {
+  "name": "R1_rear_module_top",
+  "title": "Rear power module, top view (cover hidden)",
+  "sub": "F0 across the plate front, QS1 at the rear panel, BUS+ > K1 > K2 busbars, FB-B on the L3 shelf, FB-A at the rear, BMS in the right side gap.",
+  "target": [
+   -0.24,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.62,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "rz_f0",
+   "rz_disc",
+   "rz_pwr017_1",
+   "rz_pwr017_2",
+   "rz_k1k2_1",
+   "rz_k1k2_2",
+   "rz_fbb",
+   "rz_fba",
+   "rz_bms",
+   "rz_pre",
+   "rz_kchg",
+   "rz_fchg",
+   "rz_brake",
+   "rz_sb50",
+   "rz_batcon",
+   "rp_fbb_shelf",
+   "rp_fba_shelf",
+   "rp_bus_standoffs",
+   "rp_bms_bracket",
+   "rp_busn_bracket",
+   "rp_corner_plate_l",
+   "rear_plate",
+   "tz_receiver",
+   "tz_metal_free_zone",
+   "battery_cells_left",
+   "battery_cells_right",
+   "battery_series_link"
+  ],
+  "cables": [
+   "CBL-P01",
+   "CBL-P02",
+   "CBL-P03",
+   "CBL-P04",
+   "CBL-P05",
+   "CBL-P06",
+   "CBL-P59",
+   "CBL-P62"
+  ]
+ },
+ {
+  "name": "R2_rear_module_top_l3_hidden",
+  "title": "Rear power module, top view with the FB-B shelf and FB-B hidden",
+  "sub": "Level L1/L2: 25 mm\u00b2 main path P01, P02 and busbars BB-01 to BB-04 on the stud plane z 202 mm.",
+  "target": [
+   -0.24,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.62,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan",
+   "rz_fbb",
+   "rp_fbb_shelf",
+   "rz_fba",
+   "rp_fba_shelf"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "rz_f0",
+   "rz_disc",
+   "rz_pwr017_1",
+   "rz_pwr017_2",
+   "rz_k1k2_1",
+   "rz_k1k2_2",
+   "rz_fbb",
+   "rz_fba",
+   "rz_bms",
+   "rz_pre",
+   "rz_kchg",
+   "rz_fchg",
+   "rz_brake",
+   "rz_sb50",
+   "rz_batcon",
+   "rp_fbb_shelf",
+   "rp_fba_shelf",
+   "rp_bus_standoffs",
+   "rp_bms_bracket",
+   "rp_busn_bracket",
+   "rp_corner_plate_l",
+   "rear_plate",
+   "tz_receiver",
+   "tz_metal_free_zone",
+   "battery_cells_left",
+   "battery_cells_right",
+   "battery_series_link"
+  ],
+  "cables": [
+   "CBL-P01",
+   "CBL-P02",
+   "CBL-P03",
+   "CBL-P04",
+   "CBL-P05",
+   "CBL-P06",
+   "CBL-P59",
+   "CBL-P62"
+  ]
+ },
+ {
+  "name": "R3_rear_module_side_section",
+  "title": "Rear power module, side section from -y (right side panel and right tray hidden)",
+  "sub": "Levels: receiver 50 to 102, 15 mm gap, G10 plate 117 to 120, L1 parts, main line 202, FB-B shelf 231, FB-B to 282, cover 290 (slope to the rear).",
+  "target": [
+   -0.24,
+   0,
+   0.17
+  ],
+  "az": -90,
+  "el": 0,
+  "dist": 1.5,
+  "ortho": 0.36,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan",
+   "side_panel_right",
+   "battery_cells_right",
+   "battery_tray_right",
+   "support_rear_right",
+   "hub_motor_wheel_right",
+   "castor_rear_right",
+   "ultrasonic_*_right",
+   "rp_bms_bracket"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "rz_f0",
+   "rz_disc",
+   "rz_pwr017_1",
+   "rz_pwr017_2",
+   "rz_k1k2_1",
+   "rz_k1k2_2",
+   "rz_fbb",
+   "rz_fba",
+   "rz_bms",
+   "rz_pre",
+   "rz_kchg",
+   "rz_fchg",
+   "rz_brake",
+   "rz_sb50",
+   "rz_batcon",
+   "rp_fbb_shelf",
+   "rp_fba_shelf",
+   "rp_bus_standoffs",
+   "rp_bms_bracket",
+   "rp_busn_bracket",
+   "rp_corner_plate_l",
+   "rear_plate",
+   "tz_receiver",
+   "tz_metal_free_zone",
+   "battery_cells_left",
+   "battery_cells_right",
+   "battery_series_link"
+  ],
+  "cables": [
+   "CBL-P01",
+   "CBL-P02",
+   "CBL-P03",
+   "CBL-P04",
+   "CBL-P05",
+   "CBL-P06",
+   "CBL-P59",
+   "CBL-P62"
+  ]
+ },
+ {
+  "name": "R4_rear_module_3d",
+  "title": "Rear power module, 3D from rear right (cover hidden)",
+  "sub": "BMS on edge in the right side gap (service through the right side panel), busbars BB-05 and BB-06.",
+  "target": [
+   -0.22,
+   -0.05,
+   0.17
+  ],
+  "az": -140,
+  "el": 32,
+  "dist": 1.3,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan",
+   "side_panel_right"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "rz_f0",
+   "rz_disc",
+   "rz_pwr017_1",
+   "rz_pwr017_2",
+   "rz_k1k2_1",
+   "rz_k1k2_2",
+   "rz_fbb",
+   "rz_fba",
+   "rz_bms",
+   "rz_pre",
+   "rz_kchg",
+   "rz_fchg",
+   "rz_brake",
+   "rz_sb50",
+   "rz_batcon",
+   "rp_fbb_shelf",
+   "rp_fba_shelf",
+   "rp_bus_standoffs",
+   "rp_bms_bracket",
+   "rp_busn_bracket",
+   "rp_corner_plate_l",
+   "rear_plate",
+   "tz_receiver",
+   "tz_metal_free_zone",
+   "battery_cells_left",
+   "battery_cells_right",
+   "battery_series_link"
+  ],
+  "cables": [
+   "CBL-P01",
+   "CBL-P02",
+   "CBL-P03",
+   "CBL-P04",
+   "CBL-P05",
+   "CBL-P06",
+   "CBL-P59",
+   "CBL-P62"
+  ]
+ },
+ {
+  "name": "S1_left_corridor",
+  "title": "Left side corridor C-L from +y (left side panel hidden)",
+  "sub": "Floor lane beside the left side zone, over-wheel guard L, gap between the left tray and the side wall.",
+  "target": [
+   0,
+   0.2,
+   0.16
+  ],
+  "az": 90,
+  "el": 8,
+  "dist": 1.6,
+  "ortho": 0.42,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan",
+   "side_panel_left"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "wheel_guard_left",
+   "side_plates",
+   "bay_fbc",
+   "bay_usbpd",
+   "battery_cells_left",
+   "rz_fchg",
+   "rz_kchg"
+  ],
+  "cables": [
+   "CBL-P16",
+   "CBL-P18",
+   "CBL-P20",
+   "CBL-P12",
+   "CBL-P35",
+   "CBL-P61"
+  ]
+ },
+ {
+  "name": "S2_right_corridor",
+  "title": "Right side corridor C-R from -y (right side panel hidden)",
+  "sub": "Floor lane beside the right (signal) side zone, over-wheel guard R, BMS slot beside the right tray.",
+  "target": [
+   0,
+   -0.2,
+   0.16
+  ],
+  "az": -90,
+  "el": 8,
+  "dist": 1.6,
+  "ortho": 0.42,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan",
+   "side_panel_right"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "wheel_guard_right",
+   "side_plates",
+   "bay_usbhub",
+   "bay_usbcan_1",
+   "bay_lidar_uart",
+   "rz_bms",
+   "battery_cells_right"
+  ],
+  "cables": [
+   "CBL-P38",
+   "CBL-P60",
+   "CBL-P44",
+   "CBL-P46",
+   "CBL-P31"
+  ]
+ },
+ {
+  "name": "FB1_front_bay_side_zones_top",
+  "title": "Front bay with the side zones, top view (cover hidden)",
+  "sub": "Left side zone: FB-C, USB-PD, 3.3 V (power). Right side zone: USB 3 hub, USB-CAN-FD, LiDAR UART (signal).",
+  "target": [
+   0.22,
+   0,
+   0.15
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.66,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "bay_fbc",
+   "bay_usbpd",
+   "bay_pwr032",
+   "bay_usbhub",
+   "bay_usbcan_1",
+   "bay_usbcan_2",
+   "bay_lidar_uart",
+   "side_plates",
+   "feedthru_1",
+   "compute",
+   "base_controller",
+   "bay_rsd100",
+   "bay_rsd60",
+   "bay_ddr240",
+   "bay_din_pnoz",
+   "bay_plate"
+  ]
+ },
+ {
+  "name": "FB2_front_bay_side_zones_3d",
+  "title": "Front bay with the side zones, 3D from front right (cover hidden)",
+  "sub": "Signal side zone on the right, power side zone on the left; tiers lift out, the side zones stay.",
+  "target": [
+   0.22,
+   0,
+   0.14
+  ],
+  "az": -35,
+  "el": 38,
+  "dist": 1.6,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan"
+  ],
+  "hideUpper": 2,
+  "labels": [
+   "bay_fbc",
+   "bay_usbhub",
+   "bay_usbcan_1",
+   "bay_lidar_uart",
+   "side_plates",
+   "feedthru_1",
+   "compute",
+   "bay_plate"
+  ]
+ },
+ {
+  "name": "C1_central_passage_top",
+  "title": "Central passage between the bays, top view (lift base plate and upper body hidden)",
+  "sub": "CH-C1 power channel (right), CH-C2 signal channel (left), drop-outs over the motor driver; channel lids not modelled.",
+  "target": [
+   0.0,
+   0,
+   0.2
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.5,
+  "ortho": 0.5,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan",
+   "lift_base_plate",
+   "dp_lift"
+  ],
+  "hideUpper": 2,
+  "ghostAll": true,
+  "keep": [
+   "harness_bat_base",
+   "harness_safe_base",
+   "harness_r24_base",
+   "harness_sig_base",
+   "harness_lv_base",
+   "harness_fittings_base",
+   "wheel_guard_*",
+   "ch_central_*",
+   "side_plates",
+   "motor_driver",
+   "ch_central_power",
+   "ch_central_signal",
+   "electronics_bracket"
+  ],
+  "labels": [
+   "ch_central_power",
+   "ch_central_signal",
+   "motor_driver",
+   "electronics_bracket"
+  ],
+  "cables": [
+   "CBL-P07",
+   "CBL-P08",
+   "CBL-P09",
+   "CBL-P37",
+   "CBL-P12",
+   "CBL-P14",
+   "CBL-P15"
+  ]
+ },
+ {
+  "name": "C2_central_channels_3d",
+  "title": "Central channels, 3D from rear right (centre bracket ghosted, lids hidden)",
+  "sub": "Channel interiors and supports: cables in CH-C1 and CH-C2, drop-out to the ZLAC8015D, deck exit to DP-LIFT.",
+  "target": [
+   -0.02,
+   0,
+   0.22
+  ],
+  "az": -145,
+  "el": 30,
+  "dist": 1.0,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "fan",
+   "lift_base_plate"
+  ],
+  "hideUpper": 2,
+  "ghost": [
+   "centre_bracket",
+   "electronics_bracket",
+   "rear_plate",
+   "rz_*",
+   "rp_*"
+  ],
+  "labels": [
+   "ch_central_power",
+   "ch_central_signal",
+   "motor_driver",
+   "dp_lift"
+  ],
+  "cables": [
+   "CBL-P07",
+   "CBL-P12",
+   "CBL-P14",
+   "CBL-P37"
+  ]
+ },
+ {
+  "name": "U1_upper_rear_cables",
+  "title": "Rear of the upper body: arm, camera, Getac, light and E-stop cables (L1000)",
+  "sub": "Moving trunk under the adapter plate, riser on the arm post, runs along the post faces; chain behind the column.",
+  "target": [
+   0.15,
+   0,
+   1.0
+  ],
+  "az": 205,
+  "el": 12,
+  "dist": 2.0,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*"
+  ],
+  "labels": [
+   "arm_profile",
+   "second_estop",
+   "lift_energy_chain_moving",
+   "head_camera",
+   "getac_tablet",
+   "head_light"
+  ],
+  "cables": [
+   "CBL-P14",
+   "CBL-P15",
+   "CBL-P23",
+   "CBL-P24",
+   "CBL-P33",
+   "CBL-P49",
+   "CBL-P50",
+   "CBL-P51",
+   "CBL-P52",
+   "CBL-P53"
+  ]
+ },
+ {
+  "name": "L1_lift_L1000",
+  "title": "Lift and energy chain at L1000 (rear 3/4)",
+  "sub": "Chain loop, sleeve, DP-LIFT; flag rod with both supports.",
+  "target": [
+   -0.1,
+   0,
+   0.7
+  ],
+  "az": 200,
+  "el": 15,
+  "dist": 2.2,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*"
+  ],
+  "labels": [
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "harness_sleeve",
+   "dp_lift",
+   "flag_rod",
+   "flag_rod_guide",
+   "lift_stop_sensors"
+  ]
+ },
+ {
+  "name": "L2_lift_L1350",
+  "title": "Lift and energy chain at L1350 (rear 3/4)",
+  "sub": "Top stop: chain loop raised, rod still engaged in the guide.",
+  "lift": 0.35,
+  "target": [
+   -0.1,
+   0,
+   0.85
+  ],
+  "az": 200,
+  "el": 15,
+  "dist": 2.4,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*"
+  ],
+  "labels": [
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "harness_sleeve",
+   "dp_lift",
+   "flag_rod",
+   "flag_rod_guide",
+   "lift_stop_sensors"
+  ]
+ },
+ {
+  "name": "G1_guide_close_L1000",
+  "title": "Flag rod guide close-up, L1000 (rear 3/4 from +y)",
+  "sub": "Open U ring (PTFE-lined stainless) on the arm from the static column head; corner bracket 3.5 mm above the guide.",
+  "target": [
+   -0.11,
+   0.03,
+   0.8
+  ],
+  "az": 150,
+  "el": 20,
+  "dist": 0.55,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "flag_rod_guide",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "lift_column",
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "adapter_plate"
+  ]
+ },
+ {
+  "name": "G2_guide_close_L1350",
+  "title": "Flag rod guide close-up, L1350 (rear 3/4 from +y)",
+  "sub": "Top stop: flag top 3.5 mm below the guide; rod engaged 33 mm below the guide.",
+  "lift": 0.35,
+  "target": [
+   -0.11,
+   0.03,
+   0.79
+  ],
+  "az": 150,
+  "el": 20,
+  "dist": 0.55,
+  "fov": 30,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "flag_rod_guide",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "lift_column",
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "adapter_plate"
+  ]
+ },
+ {
+  "name": "G3_guide_plan_L1000",
+  "title": "Flag rod guide, plan view at L1000 (adapter plate and upper parts hidden)",
+  "sub": "Ring open toward -y (sensors and flag side); arm on the +y side to the column +y face; chain behind.",
+  "target": [
+   -0.11,
+   0.02,
+   0.8
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.0,
+  "ortho": 0.22,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "adapter_plate",
+   "arm_profile",
+   "getac_*",
+   "head_*",
+   "second_estop",
+   "rear_estop_housing",
+   "slot_cover_strips",
+   "harness_*_mov",
+   "harness_fittings_mov",
+   "fasteners_mov",
+   "rod_corner_bracket",
+   "lift_energy_chain_moving"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "flag_rod_guide",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "lift_column",
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "adapter_plate"
+  ]
+ },
+ {
+  "name": "G4_guide_plan_L1350",
+  "title": "Flag rod guide, plan view at L1350 (adapter plate and upper parts hidden)",
+  "sub": "Same section at the top stop.",
+  "lift": 0.35,
+  "target": [
+   -0.11,
+   0.02,
+   0.8
+  ],
+  "az": 180,
+  "el": 89.5,
+  "dist": 1.0,
+  "ortho": 0.22,
+  "hide": [
+   "cover",
+   "cover_flange_*",
+   "openarm_*",
+   "adapter_plate",
+   "arm_profile",
+   "getac_*",
+   "head_*",
+   "second_estop",
+   "rear_estop_housing",
+   "slot_cover_strips",
+   "harness_*_mov",
+   "harness_fittings_mov",
+   "fasteners_mov",
+   "rod_corner_bracket",
+   "lift_energy_chain_moving"
+  ],
+  "labels": [
+   "flag_rod",
+   "lift_flag",
+   "rod_corner_bracket",
+   "flag_rod_guide",
+   "lift_stop_sensors",
+   "lift_sensor_brackets",
+   "lift_column",
+   "lift_energy_chain",
+   "lift_energy_chain_moving",
+   "adapter_plate"
+  ]
+ }
+]

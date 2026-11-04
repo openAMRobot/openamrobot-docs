@@ -98,6 +98,11 @@ def make_zone(lo, hi, obstacles=(), ceiling=None, scan_band=True):
 
 def perms(it):
     d = np.array(it["dims"]) * MM
+    if it.get("upright_side"):   # side zone: longest along x, then the narrowest across y (parts on edge where it helps), height last
+        out = sorted(set(itertools.permutations(d)), key=lambda p: (-p[0], p[1], p[2]))
+        if it["id"] in ("bay_fbc",):   # fuse block: fuses up (nothing above), longest along x
+            out = [np.array([max(d[0], d[1]), min(d[0], d[1]), d[2]])]
+        return [np.array(p) for p in out]
     if it.get("upright"):  # boards and modules drawn by the base GLB: keep their height axis, yaw 0 or 90 deg
         return [np.array(p) for p in sorted({(d[0], d[1], d[2]), (d[1], d[0], d[2])}, key=lambda p: -p[0])]
     if it.get("din"):  # DIN rail on the plate: the depth from the rail stays vertical; width and height may swap
@@ -144,6 +149,30 @@ def place(items, zones, order=None):
             else:
                 nofit.append(key)
     return placed, nofit
+
+
+# side zones (Phase 2b, proposed 3 Nov 2026): between the arch / corner supports and the side panels, x 0.130 to 0.280,
+# |y| 0.172 to 0.250 (the strip |y| 0.255 to 0.285 next to the side panel stays free: side corridor), z from a 3 mm side plate on
+# the base sheet up to 0.205 (under the side-panel top flange at 0.213). Left: power (FB-C, USB-PD, 3.3 V regulator; the 5 V converter
+# stays in the centre: with its 10 mm air gap it does not fit beside FB-C);
+# right: signal (USB 3 hub, arm USB-to-CAN-FD adapters, LiDAR USB-UART); power and signal on opposite sides of the bay.
+SIDE = {"bay_fbc": "side_l", "bay_usbpd": "side_l", "bay_pwr032": "side_l",
+        "bay_usbhub": "side_r", "bay_usbcan": "side_r", "bay_lidar_uart": "side_r"}
+SIDE_X, SIDE_Y, SIDE_TOP = (0.130, 0.280), (0.172, 0.250), 0.205
+
+
+def side_zones():
+    out = {}
+    for nm, s in (("side_l", 1), ("side_r", -1)):
+        y0, y1 = sorted([s * SIDE_Y[0], s * SIDE_Y[1]])
+        g = make_zone([SIDE_X[0], y0, FLOOR], [SIDE_X[1], y1, SIDE_TOP], [], None, scan_band=False)
+        out[nm] = (g, {})
+    return out
+
+
+def side_plates():
+    return [{"name": "Side mounting plate, left side zone (power), 3 mm on the base sheet", "lo": [SIDE_X[0], SIDE_Y[0], PLATE_Z], "hi": [SIDE_X[1], SIDE_Y[1], FLOOR]},
+            {"name": "Side mounting plate, right side zone (signal), 3 mm on the base sheet", "lo": [SIDE_X[0], -SIDE_Y[1], PLATE_Z], "hi": [SIDE_X[1], -SIDE_Y[0], FLOOR]}]
 
 
 X0 = 0.105   # bay rear limit between the arch legs (electronics bracket MMP.04.00.00.002 shortened to x 0.100 for the receiver zone)
@@ -229,11 +258,15 @@ def _option_a(items):
                       lambda x, y: (shelf_z - 0.005) if under_shelf(x, y) else ceiling_bay(x, y))
     upper = make_zone([shelf["x"][0], shelf["y"][0], shelf_z + PLATE_T], [shelf["x"][1], shelf["y"][1], COVER], obst, ceiling_bay)
     zones = {"A_lower": (lower, {"roof": lambda lo, hi: under_shelf((lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2)}), "A_upper": (upper, {})}
+    zones.update(side_zones())
     its = [dict(id="bay_din_tb", name="DIN terminal blocks on a short rail", dims=[31.2, 47.5, 42.5], din=True, domain="SIG",
                 converter=False, zones=["A_upper"], top_access=True, priority=SHELF_FIRST.index("bay_din_tb") if "bay_din_tb" in SHELF_FIRST else 3)]
     for it in items:
         t = TIER.get(it["id"])
         if t in (None, "din"):
+            continue
+        if it["id"] in SIDE:
+            its.append(dict(it, zones=[SIDE[it["id"]]], priority=0, upright_side=True))
             continue
         if t == "lower":
             it = dict(it, zones=["A_lower", "A_upper"], priority=SHELF_FIRST.index(it["id"]) if it["id"] in SHELF_FIRST else 9)
@@ -248,7 +281,8 @@ def _option_a(items):
     for k, c, d in din:
         placed[k] = ("A_din", c, d)
     return {"placed": placed, "nofit": nofit, "shelf": {"x": shelf["x"], "y": [shelf["y"][0], shelf["y"][1]], "z": shelf_z},
-            "din_region_y": [din_lo, 0.166], "plates": plates_a(shelf, shelf_z)}
+            "din_region_y": [din_lo, 0.166], "plates": plates_a(shelf, shelf_z), "side_plates": side_plates(),
+            "side": {k: v[0] for k, v in placed.items() if v[0] in ("side_l", "side_r")}}
 
 
 def plates_a(shelf, shelf_z):
@@ -268,10 +302,14 @@ def layout(items):
     obst = front_obstacles() + arch_obstacles()
     bay = make_zone([X0, -0.163, FLOOR], [0.366, 0.163, COVER], obst, ceiling_bay)
     zones = {"bay": (bay, {})}
+    zones.update(side_zones())
     its = []
     for it in items:
         t = TIER.get(it["id"])
         if t is None or it["id"] == "bay_din":
+            continue
+        if it["id"] in SIDE:
+            its.append(dict(it, zones=[SIDE[it["id"]]], priority=0, upright_side=True))
             continue
         its.append(dict(it, zones=["bay"], din=(t == "din") or it.get("din"),
                         priority=0 if it["id"] in ("compute", "base_controller", "bay_rsd100", "bay_ddr240") else 9))
@@ -281,7 +319,8 @@ def layout(items):
     placed, nofit = place(its, zones)
     plates = [{"name": "MEC-005 plate on the base sheet (single tier)", "lo": [0.140, -0.163, PLATE_Z], "hi": [0.366, 0.163, FLOOR]},
               {"name": "MEC-005 plate tongue between the arch legs", "lo": [X0, -0.086, PLATE_Z], "hi": [0.140, 0.086, FLOOR]}]
-    res = {"placed": placed, "nofit": nofit, "plates": plates, "layout": "single plate"}
+    res = {"placed": placed, "nofit": nofit, "plates": plates, "layout": "single plate", "side_plates": side_plates(),
+           "side": {k: v[0] for k, v in placed.items() if v[0] in ("side_l", "side_r")}}
     if nofit:
         two = option_a([dict(i) for i in items])
         if len(two["nofit"]) < len(nofit):
