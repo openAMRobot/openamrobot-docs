@@ -27,43 +27,44 @@ Launch files do not replace node code. They describe how the processes are assem
 
 ## 1. Run an existing launch file
 
-Install the demo packages if needed:
+Install the ROS 2 C++ demo package if needed:
 
 ```bash
 sudo apt update
-sudo apt install ros-jazzy-turtlesim ros-jazzy-turtle-tf2-py ros-jazzy-turtlesim-launch
+sudo apt install ros-jazzy-demo-nodes-cpp
 source /opt/ros/jazzy/setup.bash
 ```
 
-Run the demo launch file:
+Run the bundled talker/listener launch description:
 
 ```bash
-ros2 launch turtlesim_launch turtlesim_mimic_launch.py
+ros2 launch demo_nodes_cpp talker_listener_launch.py
 ```
 
-The launch description starts the Turtlesim nodes and the mimic node. Depending on the launch configuration, the turtles may move in a coordinated way.
+The launch file starts a publisher and subscriber together. You should see the talker publish numbered `Hello World` messages and the listener report that it heard them.
 
-Inspect the running graph:
+Inspect the running graph in a second sourced terminal:
 
 ```bash
 ros2 node list
-ros2 topic list
+ros2 topic list -t
+ros2 topic info /chatter
 ```
 
 To inspect the launch arguments before starting it:
 
 ```bash
-ros2 launch turtlesim_launch turtlesim_mimic_launch.py --show-args
+ros2 launch demo_nodes_cpp talker_listener_launch.py --show-args
 ```
 
-If the package or launch file is not found, confirm the package is installed and your ROS 2 environment is sourced.
+Stop the launch with `Ctrl+C`. If the package or launch file is not found, confirm that the matching Jazzy package is installed and your ROS 2 environment is sourced.
 
 ## 2. Find a package's launch files
 
 The share directory is where installed packages commonly install launch descriptions:
 
 ```bash
-ros2 pkg prefix --share turtlesim_launch
+ros2 pkg prefix --share demo_nodes_cpp
 ```
 
 Inspect the returned directory's `launch/` subdirectory. For a source workspace, launch files are usually stored in the package's `launch/` folder and installed by the package build configuration.
