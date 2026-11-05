@@ -11,7 +11,7 @@ on:
         required: false
         type: string
       initial_days:
-        description: "Days to inspect if no previous successful watchdog run exists"
+        description: "Days to inspect if no earlier scheduled run exists"
         required: false
         default: "7"
         type: string
