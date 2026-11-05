@@ -2,51 +2,66 @@
 title: ROS 2
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>ROS 2</h1><p>Understand ros 2 and how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--learning">Learning path</span><h1>ROS 2 in an afternoon</h1><p>Learn the communication and configuration building blocks used by the OpenAMRobot software stack.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+
+## Who this is for
+
+Beginners, builders and developers who want to understand the ROS 2 concepts used throughout the platform.
+
+**Outcome:** understand how nodes communicate, inspect a running ROS 2 graph, configure a node, start a group of nodes and investigate common communication problems.
+
+**Prerequisites:** a computer with ROS 2 Jazzy installed and sourced, or the project-provided Docker environment. Most lessons use standard ROS 2 demo packages or Turtlesim; they do not require a physical robot.
+
+## Follow the lessons in order
+
+<div class="oamr-path"><span>Nodes & topics</span><b>→</b><span>Services & actions</span><b>→</b><span>Parameters</span><b>→</b><span>Launch</span><b>→</b><span>TF & debugging</span></div>
+
+1. [Nodes and topics](nodes-and-topics.md) — processes, publishers, subscribers and message streams.
+2. [Services and actions](services-and-actions.md) — request/response calls and long-running goals.
+3. [Parameters](parameters.md) — inspect and change node configuration.
+4. [Launch files](launch-files.md) — start and configure multiple nodes together.
+5. [TF and transforms](tf-frames.md) — understand coordinate frames and transformations.
+6. [Debugging tools](debugging-tools.md) — inspect nodes, topics, logs and runtime state.
+
+The first four lessons use small, standard examples so you can learn one concept at a time. The later lessons connect those concepts to the OpenAMRobot platform.
+
+## How to use these lessons
+
+- Open a new terminal for each separately running node or command session.
+- Source the same ROS 2 distribution in every terminal.
+- Copy commands exactly first; then change one value at a time.
+- Check the expected output before moving to the next lesson.
+- Record the ROS 2 distribution and package version when reporting a problem.
+
+For Jazzy, the standard environment setup is:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+```
+
+If you are using the platform's Docker quickstart, enter its container instead of sourcing a different host ROS installation. See the [beginner simulation path](../../paths/beginner.md).
+
+## How this relates to OpenAMRobot
+
+ROS 2 is the middleware connecting robot software components. The platform uses nodes, topics, services, actions, parameters, launch files and TF to compose its mobile robot software.
+
+Do not infer exact platform interfaces from generic examples. The authoritative topic names, message types, service/action definitions and configuration are maintained by the owning OpenAMRobot repositories and must be checked against the release and launch configuration being used.
+
+The conceptual node/topic schematic below is a high-level view, not a complete runtime graph.
 
 ![Conceptual OpenAMRobot ROS 2 topic and node relationships](https://raw.githubusercontent.com/openAMRobot/openamrobot-ui/main/docs/assets/openamr_ros_topic_node_schematic.png)
 
 *Conceptual node and topic map from the OpenAMRobot UI repository; exact contracts remain canonical in the owning repositories.*
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## Capability and safety boundary
 
-## Planned coverage
+These lessons are for learning ROS 2 and inspecting software. They do not validate physical hardware, sensor calibration, command arbitration, emergency-stop performance or robot safety. Never experiment with unknown motion-related services, actions or topics on a physical robot.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
-
-## Completion criteria
-
-| Field | Required content |
-| --- | --- |
-| For | Name the primary path: Domain Expert, Beginner, Integrator, Builder, Developer or Entrepreneur |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
-
-### Procedure or explanation
-
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
-
-### If it did not work
-
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
-
-## Authoritative external references
+## Official reference
 
 - [ROS 2 Jazzy documentation](https://docs.ros.org/en/jazzy/)
+- [ROS 2 tutorials](https://docs.ros.org/en/jazzy/Tutorials.html)
 
-## Contribution note
+## Contribute
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+Improve these lessons through the normal [documentation contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep implementation-specific instructions synchronized with their owning repositories.
