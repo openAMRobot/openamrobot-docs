@@ -102,20 +102,74 @@ def load_repository_mapping(repo_root: Path) -> dict[str, list[str]]:
     return {repo: sorted(set(prefixes)) for repo, prefixes in sorted(by_repo.items())}
 
 
-def previous_successful_run(owner: str, repo: str, current_run_id: str | None, token: str) -> datetime | None:
-    """Return the start time of the most recent successful prior watchdog run."""
+def previous_scheduled_coverage_start(
+    owner: str,
+    repo: str,
+    current_run_id: str | None,
+    default_branch: str,
+    token: str,
+) -> tuple[datetime | None, str]:
+    """Choose a conservative cursor from scheduled runs on the default branch.
+
+    Manual dispatches and feature-branch runs never advance the scheduled cursor.
+    If the latest scheduled run failed or was incomplete, reuse the last successful
+    scheduled run's start time so the next audit re-covers the potentially missed
+    interval. If no scheduled run succeeded yet, start at the oldest scheduled run.
+    """
     url = f"{API_ROOT}/repos/{owner}/{repo}/actions/workflows/{WORKFLOW_FILE}/runs?" + urlencode(
-        {"status": "success", "per_page": 20}
+        {"event": "schedule", "branch": default_branch, "per_page": 100}
     )
     payload, _ = request_json(url, token)
     runs = payload.get("workflow_runs", []) if isinstance(payload, dict) else []
-    for run in runs:
-        if str(run.get("id")) == str(current_run_id):
-            continue
-        started = run.get("run_started_at") or run.get("created_at")
-        if started:
-            return parse_time(started)
-    return None
+    eligible = [
+        run for run in runs
+        if str(run.get("id")) != str(current_run_id)
+        and run.get("event") == "schedule"
+        and run.get("head_branch") == default_branch
+        and (run.get("run_started_at") or run.get("created_at"))
+    ]
+    eligible.sort(
+        key=lambda run: parse_time(run.get("run_started_at") or run["created_at"]),
+        reverse=True,
+    )
+    if not eligible:
+        return None, "no earlier scheduled run on the default branch"
+    latest = eligible[0]
+    if latest.get("conclusion") == "success":
+        selected = latest
+        basis = "most recent successful scheduled run on the default branch"
+    else:
+        successful = next((run for run in eligible if run.get("conclusion") == "success"), None)
+        if successful is not None:
+            selected = successful
+            basis = "last successful scheduled run; later scheduled run(s) were unsuccessful, so the interval is re-audited"
+        else:
+            selected = eligible[-1]
+            basis = "oldest prior scheduled run; no successful scheduled run exists, so the full interval is re-audited"
+    started = selected.get("run_started_at") or selected.get("created_at")
+    return parse_time(started), basis
+
+
+def resolve_audit_window(
+    args: argparse.Namespace,
+    owner: str,
+    repo: str,
+    current_run_id: str | None,
+    event: str,
+    default_branch: str,
+    token: str,
+) -> tuple[datetime, str]:
+    """Resolve the audit start; scheduled runs ignore manual --since overrides."""
+    if event != "schedule" and args.since:
+        return parse_time(args.since), "explicit --since / workflow input (manual run)"
+    if event == "schedule":
+        since, basis = previous_scheduled_coverage_start(
+            owner, repo, current_run_id, default_branch, token
+        )
+        if since is not None:
+            return since, basis
+    fallback = utc_now() - timedelta(days=args.initial_days)
+    return fallback, f"first-run fallback: previous {args.initial_days} days ({basis if event == 'schedule' else 'no prior scheduled run'})"
 
 
 def pages_for_prefixes(repo_root: Path, prefixes: list[str]) -> list[str]:
@@ -247,17 +301,12 @@ def run_audit(args: argparse.Namespace) -> dict[str, Any]:
     owner = os.environ.get("GITHUB_REPOSITORY", f"{OWNER}/openamrobot-docs").split("/", 1)[0]
     docs_repo = os.environ.get("GITHUB_REPOSITORY", f"{OWNER}/openamrobot-docs").split("/", 1)[-1]
     current_run_id = os.environ.get("GITHUB_RUN_ID")
+    event = os.environ.get("GITHUB_EVENT_NAME", "workflow_dispatch")
+    default_branch = os.environ.get("GITHUB_DEFAULT_BRANCH", "main")
 
-    if args.since:
-        since = parse_time(args.since)
-        window_basis = "explicit --since / workflow input"
-    else:
-        since = previous_successful_run(owner, docs_repo, current_run_id, token)
-        if since:
-            window_basis = "start time of the previous successful watchdog run"
-        else:
-            since = utc_now() - timedelta(days=args.initial_days)
-            window_basis = f"first-run fallback: previous {args.initial_days} days (no earlier successful watchdog run found)"
+    since, window_basis = resolve_audit_window(
+        args, owner, docs_repo, current_run_id, event, default_branch, token
+    )
 
     results: list[dict[str, Any]] = []
     for repo, prefixes in mapping.items():
