@@ -1,4 +1,4 @@
-# Program 1 · Operate & Train
+# Program 1 · Robot Operator & Trainer
 
 Program 1 is the Domain Expert entry point. It teaches people who understand a task or process to operate the supported robot, demonstrate work, review captured episodes and judge whether the outcome is acceptable.
 

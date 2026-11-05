@@ -15,7 +15,7 @@
 
 | Offer | Best for | Commercial next step |
 | --- | --- | --- |
-| Robotics Opportunity Workshop | Companies with an unclear automation opportunity | Feasibility or pilot proposal |
+| Embodied-AI Discovery Workshop | Companies with an unclear automation opportunity | Feasibility or pilot proposal |
 | Discovery Workshop / Demo Day | Hubs and professional communities | Cohort or corporate workshop |
-| Domain Expert · Operate & Train | Operations teams and domain experts | Enablement or deployment |
+| Robot Operator & Trainer | Operations teams and domain experts | Enablement or deployment |
 | Productization Sprint | Startups and engineering teams | Engineering project or PoC |
