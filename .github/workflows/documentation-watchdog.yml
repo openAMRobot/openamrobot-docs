@@ -1,9 +1,7 @@
 name: Documentation watchdog
 
 on:
-  schedule:
-    # Thursday 13:00 UTC. GitHub cron uses UTC and does not adjust for DST.
-    - cron: "0 13 * * 4"
+  # Manual-only until the project owner explicitly approves scheduled operation.
   workflow_dispatch:
     inputs:
       since:
@@ -18,7 +16,6 @@ on:
 
 permissions:
   contents: read
-  actions: read
 
 concurrency:
   group: documentation-watchdog
@@ -48,7 +45,6 @@ jobs:
       - name: Run read-only audit
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           WATCHDOG_SINCE: ${{ inputs.since }}
           WATCHDOG_INITIAL_DAYS: ${{ inputs.initial_days || '7' }}
         run: |
