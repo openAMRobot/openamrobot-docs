@@ -101,8 +101,6 @@ At a system level:
 
 The exact costmap layers, footprint, sensor configuration and tuning parameters belong to the current platform implementation.
 
-## Velocity and robot feedback
-
 ## Command sources and arbitration
 
 The intended safety-related command architecture is:
