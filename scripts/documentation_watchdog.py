@@ -169,7 +169,16 @@ def resolve_audit_window(
         if since is not None:
             return since, basis
     fallback = utc_now() - timedelta(days=args.initial_days)
-    return fallback, f"first-run fallback: previous {args.initial_days} days ({basis if event == 'schedule' else 'no prior scheduled run'})"
+    if event == "schedule":
+        window_basis = (
+            f"first scheduled-run fallback: previous {args.initial_days} days ({basis})"
+        )
+    else:
+        window_basis = (
+            f"manual-dispatch fallback: previous {args.initial_days} days "
+            "(no explicit --since supplied)"
+        )
+    return fallback, window_basis
 
 
 def pages_for_prefixes(repo_root: Path, prefixes: list[str]) -> list[str]:
