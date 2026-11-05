@@ -163,6 +163,18 @@ class ScheduledCoverageCursorTests(unittest.TestCase):
         )
         self.assertEqual(watchdog.isoformat(cursor), "2026-10-29T13:00:00Z")
 
+    @patch.object(watchdog, "previous_scheduled_coverage_start")
+    def test_manual_without_since_uses_clear_fallback_label(self, previous):
+        args = Namespace(since=None, initial_days=5)
+        cursor, basis = watchdog.resolve_audit_window(
+            args, "openAMRobot", "openamrobot-docs", "42",
+            "workflow_dispatch", "main", "token"
+        )
+        self.assertLessEqual(cursor, watchdog.utc_now())
+        self.assertIn("manual-dispatch fallback", basis)
+        self.assertNotIn("no prior scheduled run", basis)
+        previous.assert_not_called()
+
     @patch.object(watchdog, "request_json")
     def test_current_run_is_excluded(self, request):
         request.return_value = ({
