@@ -10,7 +10,7 @@ Beginners and developers learning how ROS 2 nodes communicate beyond topics.
 
 **When you finish:** you will be able to explain when to use a topic, service or action, call a service, send an action goal, and inspect the result.
 
-**Prerequisites:** ROS 2 Jazzy sourced in your terminal and the `demo_nodes_cpp` examples installed. These exercises use standard demo nodes; they do not launch or validate an OpenAMRobot robot.
+**Prerequisites:** ROS 2 Jazzy sourced in your terminal, `ros-jazzy-demo-nodes-cpp` for the service exercise, and `ros-jazzy-action-tutorials-cpp` for the action exercise. These exercises use standard demo nodes; they do not launch or validate an OpenAMRobot robot.
 
 ## Pick the communication pattern
 
@@ -24,11 +24,11 @@ A service is not a replacement for a stream of sensor data. An action is not jus
 
 ## 1. Call a service
 
-Install the C++ demo nodes if needed:
+Install the service and action tutorial packages if needed:
 
 ```bash
 sudo apt update
-sudo apt install ros-jazzy-demo-nodes-cpp
+sudo apt install ros-jazzy-demo-nodes-cpp ros-jazzy-action-tutorials-cpp
 source /opt/ros/jazzy/setup.bash
 ```
 
@@ -67,13 +67,13 @@ Expected response includes `sum: 5`. Stop the server with `Ctrl+C`.
 In Terminal 1, start the Fibonacci action server:
 
 ```bash
-ros2 run demo_nodes_cpp fibonacci_action_server
+ros2 run action_tutorials_cpp fibonacci_action_server
 ```
 
 In Terminal 2, start its client:
 
 ```bash
-ros2 run demo_nodes_cpp fibonacci_action_client
+ros2 run action_tutorials_cpp fibonacci_action_client
 ```
 
 The client sends a goal, receives feedback while the sequence is calculated, and then receives a result. Stop both processes with `Ctrl+C`.
@@ -92,7 +92,7 @@ You can also send a goal from the command line:
 ros2 action send_goal /fibonacci example_interfaces/action/Fibonacci "{order: 5}" --feedback
 ```
 
-The `--feedback` option asks the CLI to display feedback while the action is executing. The final result contains the generated sequence. The server in this tutorial is provided by `action_tutorials_cpp`, not `demo_nodes_cpp`.
+The `--feedback` option asks the CLI to display feedback while the action is executing. The final result contains the generated sequence. The action server and client executables are provided by the `action_tutorials_cpp` package. The service examples above are provided by `demo_nodes_cpp`.
 
 ## 3. What an action gives you
 
