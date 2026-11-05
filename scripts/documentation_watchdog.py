@@ -348,7 +348,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo-root", default=".", help="Documentation repository checkout (default: current directory)")
     parser.add_argument("--output-dir", required=True, help="Directory for Markdown and JSON report outputs")
     parser.add_argument("--since", help="ISO-8601 audit-window start; defaults to previous successful run or first-run fallback")
-    parser.add_argument("--initial-days", type=int, default=7, help="First-run fallback window in days (default: 7)")
+    parser.add_argument("--initial-days", type=int, default=7, help="Fallback window in days when no prior scheduled run exists (default: 7)")
     parser.add_argument("--token", help="GitHub token; otherwise uses GITHUB_TOKEN or GH_TOKEN")
     args = parser.parse_args(argv)
     if args.initial_days < 1:
