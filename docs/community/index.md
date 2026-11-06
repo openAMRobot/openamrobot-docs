@@ -11,30 +11,17 @@ OpenAMRobot is developed in the open across a growing set of public repositories
   <a class="oamr-button" href="https://github.com/openAMRobot/openamrobot-release/releases/latest">Latest Release</a>
 </div>
 
-## Community traction
+## Community activity
 
-Our most established repository, **openAMRobot/openamr**, currently has:
+Community activity spans the full [OpenAMRobot GitHub organization](https://github.com/openAMRobot), not only the original repository. Star and fork counts change over time, are repository-specific and do not indicate technical maturity, validation or support status.
 
-<div class="oamr-grid">
-  <article class="oamr-card">
-    <span class="oamr-status">GitHub Stars</span>
-    <h3>154</h3>
-    <p>Developers and robotics practitioners who starred the original OpenAMR repository.</p>
-  </article>
-  <article class="oamr-card">
-    <span class="oamr-status">GitHub Forks</span>
-    <h3>38</h3>
-    <p>Public forks of the original OpenAMR repository.</p>
-  </article>
-</div>
-
-These figures are a snapshot of the largest single repository as of **29 August 2026**. The OpenAMRobot ecosystem now spans multiple repositories, so organization-wide activity is broader than these two figures alone.
+For a current component-by-component view, use the [canonical repository ecosystem index](../reference/repositories.md). For live activity, releases and open contribution discussions, use the GitHub organization and the owning repository.
 
 ## Repository structure
 
 The organization separates responsibilities so contributors can work in the right place without turning one repository into a monolith.
 
-- **openamr** – original OpenAMR project and historical reference implementation
+- **openamr** – legacy umbrella repository; use the component repositories for current implementation
 - **openamr-platform-sw** – mobile-platform ROS 2 software
 - **openamr-platform-fw** – embedded firmware
 - **openamr-platform-hw** – hardware, electronics, and mechanical sources
@@ -46,6 +33,7 @@ The organization separates responsibilities so contributors can work in the righ
 - **openamrobot-docs** – central documentation
 - **openamrobot-release** – reproducible release snapshots
 - **openamrobot-manifest** – repository manifest and workspace composition
+- **openamrobot-embodied-ai** – experimental episode capture, dataset QA, imitation-learning and policy-runtime work
 
 For the complete and current list, use the GitHub organization directly.
 
