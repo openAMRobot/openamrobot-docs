@@ -76,7 +76,7 @@ def setup(pin):
     open(os.path.join(shim, "packages.py"), "w").write("from . import PackageNotFoundError, get_package_prefix, get_package_share_directory  # noqa: F401\n")
     srcs = {
         "openamrobot_description": {"repository": "openAMRobot/openamr-platform-sw", "commit": git(wt, "rev-parse", "HEAD"), "role": "PLATFORM-PIN"},
-        "openamrobot_upperbody_description": {"repository": "openAMRobot/openamr-upperbody-sw", "commit": git(os.path.dirname(os.path.dirname(os.path.dirname(pkgs["openamrobot_upperbody_description"]))), "rev-parse", "HEAD"), "role": "main"},
+        "openamrobot_upperbody_description": {"repository": "openAMRobot/openamr-upperbody-sw", "commit": git(os.path.dirname(os.path.dirname(os.path.dirname(pkgs["openamrobot_upperbody_description"]))), "rev-parse", "HEAD"), "role": os.environ.get("OAMR_UPPERBODY_ROLE", "main")},
         "openarm_description": {"repository": "enactic/openarm_description", "commit": git(pkgs["openarm_description"], "rev-parse", "HEAD"), "role": "upstream pin"},
     }
     return pkgs, srcs

@@ -52,7 +52,7 @@ def upper_body(D, rev):
     # owner corrections A3 / A4 / A5 (owner, 2 Nov 2026; to be entered in P-03 and M-01): Getac portrait, centre 40 mm lower; light bar
     # top edge 10 mm below the Getac bottom; ZED lens 57 mm ahead of J1_A; second E-stop on the adapter plate behind the post
     gs = FACTS["getac"]["size"]
-    g_z = top + D["getac_tablet_z_above_column_top"] - FACTS["getac"]["lower_by"]
+    g_z = top + FACTS["getac"]["item26_z"] - FACTS["getac"]["lower_by"]   # decided height: the item 26 placeholder (0.246) lowered by 55 mm
     light_top = g_z - gs[2] / 2 - FACTS["getac"]["light_gap"]
     eh = FACTS["second_estop"]["housing"]
     static_top = f["lift_plate"]["top"] + f["column"]["static_top"]   # DOLD STEP (owner, 8 Nov 2026): static top 25 mm below the retracted top
@@ -714,7 +714,7 @@ def main():
                   "plate_tray_gap_mm": round(min(abs(t_["lo"][1]) - plate_[1][1] for t_ in trays_ if t_["lo"][1] > 0) * 1000, 1),
                   "cells_from_above": all(t_["hi"][2] < FACTS["cover_underside"] for t_ in trays_), "link_over_plate": True,
                   "nothing_on_cells": True}
-    BM["PWR-001"] = {"by": "battery_cells", "cls": "provisional", "geo": "8 x LF105 200 x 130 x 38 mm (B5)", "pos": "A1 side pockets (owner, 2 Nov 2026)", "mass": 21.5, "msrc": "B5 assembly 20 to 23 kg provisional (midpoint)"}
+    BM["PWR-001"] = {"by": "battery_cells", "cls": "provisional", "geo": "8 x LF105 200 x 130 x 38 mm (B5)", "pos": "A1 side pockets (owner, 2 Nov 2026)", "mass": 0.0, "msrc": "mass_ledger.yaml: the cells PWR-023 and the pack parts PWR-024 to PWR-027 carry the mass"}
     BM["PWR-023"] = {"by": "battery_cells", "cls": "provisional", "mqty": 8, "geo": "8 cell boxes", "pos": "A1 side pockets", "mass": 0.0, "msrc": "included in PWR-001"}
     BM["MEC-007"] = {"by": "battery_tray", "cls": "provisional", "mqty": 1}
     # MEC-006: power-electronics mounting plate above the receiver zone (A1)
@@ -1147,8 +1147,8 @@ def main():
         for sx in (-1, 1):
             for sy in (-1, 1):
                 x, y = axx + sx * lp["col_screws"][0] / 2, sy * lp["col_screws"][1] / 2
-                if bp == "bp000":
-                    fx["base"].append(cyl(.0082, .0045, [x, y, lp["top"] - .010 + .00225], "z", "#2d2d2d", hq=True))
+                if bp == "bp000":   # low-head cap screws on the foot tabs (tab 10 mm, head 5 mm)
+                    fx["base"].append(cyl(.0065, .005, [x, y, lp["top"] + FACTS["column"]["foot"][2] + .0025], "z", "#2d2d2d", hq=True))
     F("DOLD column foot to the lift base plate MEC-019 (from above through the four foot tab holes, 260 x 30 mm, into M8 tapped through MEC-019; no washer, medium threadlocker, 9.5 mm engagement; D-20; bp000 hole set)", "low head socket cap screw, class 8.8", "M8 x 14", 4, "DIN 7984", "steel 8.8", "named")
     F("DOLD column foot to the lift base plate (bp050 tapped hole set, alternative)", "same set at the bp050 holes", "M8 x 14", 4, "DIN 7984", "steel 8.8", "named", "n")
     top = U["col_top"]
@@ -1190,8 +1190,8 @@ def main():
     F("Detachable battery side panels", "quarter-turn fastener", "M5", 8, "DIN 7500-compatible quarter-turn", "steel", "proposed", "n")
     F("PETG sensor mounts (MEC-010, MEC-011) to the panels", "heat-set insert + ISO 7380", "M3 x 6", 12, "brass insert / ISO 7380", "A2", "proposed", "n")
     F("Second E-stop housing P2 to the arm-post rear slots (HFS6)", "ISO 4762 + ISO 7089 + M6 T-slot nut", "M6 x 10", 4, "ISO 4762", "steel", "proposed", "n")
-    F("TZBOT receiver bracket WCH-007 to the base sheet (outside the 15 mm zone)", "ISO 7380 + rivet nut, stainless (non-magnetic A4)", "M5 x 10", 4, "ISO 7380", "A4", "proposed", "n")
-    F("Ferrite sheet on the receiver top", "adhesive backing (no metal fasteners in the 15 mm zone)", "-", 1, "-", "-", "proposed", "n")
+    F("TZBOT receiver plastic frame WCH-007 to the base sheet (outside the 20 mm frame zone)", "ISO 7380 + rivet nut, stainless (non-magnetic A4)", "M5 x 10", 4, "ISO 7380", "A4", "proposed", "n")
+    F("Ferrite sheet on the receiver top", "adhesive backing (no metal fasteners in the 20 mm frame zone)", "-", 1, "-", "-", "proposed", "n")
     F("MEC-005 upper shelf on the lower plate (second tier)", "hex standoff M4 x 50 + ISO 7380", "M4", 4, "hex standoff / ISO 7380", "A2", "proposed", "n")
     F("DIN carrier to the centre-bracket front legs", "ISO 4762 + rivet nut", "M5 x 12", 4, "ISO 4762", "A2", "proposed", "n")
     F("Getac pocket and light-bar plate to the post front face", "T-slot nut + ISO 4762", "M6 x 12", 4, "ISO 4762", "steel", "proposed", "n")
@@ -1281,6 +1281,7 @@ def main():
     json.dump(ex, open(xp, "w"), indent=1, ensure_ascii=False)
 
     # bom_coverage.csv
+    LEDGER = load_yaml(os.path.join(HERE, "mass_ledger.yaml"))["lines"]
     comp_by_id = {c["id"]: c for c in comps}
     rows = []
     for bid in sorted(BOM, key=lambda k: (k.split("-")[0], k)):
@@ -1326,6 +1327,13 @@ def main():
                 mq = 1
         if "mqty" in m and drawn == "y":
             mq = m["mqty"]
+        led = LEDGER.get(bid)
+        if led:   # mass_ledger.yaml: quantity x unit mass, each part once (owner decision 8 Nov 2026)
+            if "included_in" in led:
+                m["mass"], m["msrc"] = 0.0, "included in %s: %s" % (", ".join(led["included_in"]), led["src"])
+            else:
+                m["mass"] = round(led["unit_kg"] * led.get("qty", q or 1), 4)
+                m["msrc"] = "%d x %.3f kg: %s" % (led.get("qty", q or 1), led["unit_kg"], led["src"])
         rows.append({"id": bid, "part": b.get("Component / assembly", ""), "part_number": b.get("Model / order code", "")[:90],
                      "qty": qty, "subsystem": b.get("Subsystem", ""), "onboard": "y" if onboard else "n",
                      "class": m.get("cls", "unmapped"), "geometry_source": m.get("geo", ""), "position_source": m.get("pos", ""),
@@ -1398,7 +1406,7 @@ def main():
                             "us_front_left": "ultrasonic_front_left", "us_front_right": "ultrasonic_front_right",
                             "us_rear_left": "ultrasonic_rear_left", "us_rear_right": "ultrasonic_rear_right"},
             "datums": {k: v for k, v in D.items() if not isinstance(v, dict)},
-            "owner_corrections": {"source": "owner, 2 Nov 2026 (to be entered in P-03 and M-01)", "getac_size": FACTS["getac"]["size"], "getac_lower_by": FACTS["getac"]["lower_by"],
+            "owner_corrections": {"source": "owner, 2 Nov 2026 (to be entered in P-03 and M-01)", "getac_size": FACTS["getac"]["size"], "getac_lower_by": FACTS["getac"]["lower_by"], "getac_item26_z": FACTS["getac"]["item26_z"],
                                   "light_gap": FACTS["getac"]["light_gap"], "zed_ahead_of_j1a": FACTS["zed_ahead_of_j1a"], "second_estop": FACTS["second_estop"]["position"],
                                   "receiver": {"lo": FACTS["tzbot_receiver"]["lo"], "hi": FACTS["tzbot_receiver"]["hi"], "status": FACTS["tzbot_receiver"]["status"]},
                                   "lift_rear": dict(LR, column_rear_x=FACTS["lift_rear"]["column_rear_x"], sensor_z=FACTS["lift_rear"]["sensor_z"])}}

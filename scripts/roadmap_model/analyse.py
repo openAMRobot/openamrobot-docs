@@ -768,6 +768,16 @@ def main():
               "support_rear_left", "support_rear_right", "centre_bracket", "cover", "cover_flange_front", "cover_flange_rear"):
         steel += vol(G[k]["v"], G[k]["f"]) * 7850
     mass_items = [x for x in mass_items if x[0] != "MEC-001"] + [("MEC-001", steel, "chassis")]
+    # DOLD column: one purchased part, counted once, as its static and its moving share (facts.yaml column.mass_split)
+    MS = FACTS["column"]["mass_split"]
+    ms_s, ms_m = sum(x["kg"] for x in MS["static"]), sum(x["kg"] for x in MS["moving"])
+    zs_s = sum(x["kg"] * x["z_col"] for x in MS["static"]) / ms_s
+    zs_m = sum(x["kg"] * x["z_col"] for x in MS["moving"]) / ms_m
+    for i, x in enumerate(mass_items):
+        if x[0] == "MEC-018":
+            assert abs(ms_s + ms_m - x[1]) < 1e-6, "column.mass_split %.3f kg differs from the MEC-018 line %.3f kg" % (ms_s + ms_m, x[1])
+            mass_items[i:i + 1] = [("MEC-018", ms_s, x[2]), ("MEC-018:moving", ms_m, x[2])]
+            break
     # COM: place each mass at its part centroid
     cen = {}
     for p in scene:
@@ -793,7 +803,9 @@ def main():
             if bid == "ARM-001":
                 c = np.array([up["shoulder"][0] + .12, 0, up["col_top"] + .166 + tr - .25])
             elif bid == "MEC-018":
-                c = np.array([.06, 0, .304 + .53 / 2 + tr * .3])
+                c = np.array([.06, 0, .304 + zs_s])
+            elif bid == "MEC-018:moving":
+                c = np.array([.06, 0, .304 + zs_m + tr])
             elif comp == "harness":
                 c = np.array([0, 0, .2])
             elif comp == "chassis":

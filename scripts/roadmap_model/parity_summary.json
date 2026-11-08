@@ -8,23 +8,18 @@
   "bp050 L1000"
  ],
  "mapped_items": 50,
- "matched": 36,
- "out_of_tolerance": 5,
- "pending": 16,
- "pending_mapped": 9,
+ "matched": 42,
+ "out_of_tolerance": 4,
+ "pending": 11,
+ "pending_mapped": 4,
  "pending_roadmap_only": 7,
  "pending_list": [
-  "adapter_plate_link: A6 (owner, 2 Nov 2026): one-piece adapter plate with a 65 mm rear extension behind the column rear face (425 x 100 x 10 mm) that carries the flag rod; the combined model keeps the plate flush with the column rear face (P-03 rev20.1 item 25 D2) until the P-03 and M-01 entry",
   "base_cutout: A1: base-sheet cut-out prepared for the receiver at the rear (ghost; base_chassis.stl has the CAD v0.2 sheet)",
   "base_link#2: C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX (now 8 GB on Robotics 104, D-01) off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position",
   "battery_series_link: A1: series link across the centre",
-  "getac_tablet_link: A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower, fixed mount (combined model has the superseded landscape tablet until the P-03 entry)",
-  "head_camera_link: owner 8 Nov 2026: lens 60 mm ahead of J1_A (P-03 rev20.4; combined model follows in openamr-upperbody-sw #48)",
   "head_light_link: A3 (owner, 2 Nov 2026): light bar top 10 mm below the Getac bottom (combined model 30 mm below the superseded landscape tablet)",
   "lift_base_plate: B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)",
-  "lift_flag_link: A6 (owner, 2 Nov 2026): flag on the rod behind the column, 2 mm off the rear-face sensors (part of the rod position)",
   "lift_flag_rod_link: A6 (owner, 2 Nov 2026): rod behind the column under the adapter-plate rear extension; the combined model keeps the side-face position until the P-03 and M-01 entry",
-  "lift_stop_sensor_l1000_link + lift_stop_sensor_l1175_link + lift_stop_sensor_l1350_link: A6 (owner, 2 Nov 2026): sensors on the rear face of the static column, centred in y, sensing faces toward +y; the combined model keeps the side face until the P-03 and M-01 entry",
   "rear_estop_housing: A5 (owner, 2 Nov 2026): housing of the second E-stop on the adapter plate, button up",
   "second_estop_link: A5 (owner, 2 Nov 2026): the roadmap draws the second E-stop on the adapter plate behind the post, button up; the combined model keeps the static-column datum until the P-03 and M-01 entry",
   "tz_metal_free_zone: owner 8 Nov 2026: no metal within 20 mm of the receiver sides and 15 mm above it (keep-out ghost)",
@@ -34,7 +29,6 @@
  "out_list": [
   "arm_profile_link / arm_profile",
   "base_link#0 / front_panel + rear_panel + side_panel_left + side_panel_right + base_plate + centre_bracket + electronics_bracket + support_front_left + support_front_right + support_rear_left + support_rear_right + lidar_support + lidar_spacer + camera_mount + ultrasonic_mount_front_left + ultrasonic_mount_front_right + ultrasonic_mount_rear_left + ultrasonic_mount_rear_right + tof_mount_front + tof_mount_rear + driver_mount + controller_plate",
-  "head_camera_bracket_link / head_camera_bracket",
   "lift_carriage_link / lift_column#1",
   "lift_column_base_link / lift_column#0"
  ],
@@ -43,96 +37,96 @@
  "roadmap_only": 106,
  "unmapped_roadmap": 0,
  "comparisons": 200,
- "comparisons_out": 20,
+ "comparisons_out": 16,
  "worst": [
   {
-   "urdf": "lift_carriage_link",
-   "roadmap": "lift_column#1",
-   "configuration": "bp000 L1000",
-   "dpos_mm": 60.0,
-   "dsize_mm": 120.0
-  },
-  {
-   "urdf": "lift_carriage_link",
-   "roadmap": "lift_column#1",
-   "configuration": "bp000 L1175",
-   "dpos_mm": 60.0,
-   "dsize_mm": 120.0
-  },
-  {
-   "urdf": "lift_carriage_link",
-   "roadmap": "lift_column#1",
-   "configuration": "bp000 L1350",
-   "dpos_mm": 60.0,
-   "dsize_mm": 120.0
-  },
-  {
-   "urdf": "lift_carriage_link",
-   "roadmap": "lift_column#1",
-   "configuration": "bp050 L1000",
-   "dpos_mm": 60.0,
-   "dsize_mm": 120.0
-  },
-  {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp000 L1000",
-   "dpos_mm": 12.5,
+   "dpos_mm": 0.0,
    "dsize_mm": 40.0
   },
   {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp000 L1175",
-   "dpos_mm": 12.5,
+   "dpos_mm": 0.0,
    "dsize_mm": 40.0
   },
   {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp000 L1350",
-   "dpos_mm": 12.5,
+   "dpos_mm": 0.0,
    "dsize_mm": 40.0
   },
   {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp050 L1000",
-   "dpos_mm": 12.5,
+   "dpos_mm": 0.0,
    "dsize_mm": 40.0
   },
   {
-   "urdf": "head_camera_bracket_link",
-   "roadmap": "head_camera_bracket",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp000 L1000",
-   "dpos_mm": 18.0,
-   "dsize_mm": 0.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
   },
   {
-   "urdf": "head_camera_bracket_link",
-   "roadmap": "head_camera_bracket",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp000 L1175",
-   "dpos_mm": 18.0,
-   "dsize_mm": 0.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
   },
   {
-   "urdf": "head_camera_bracket_link",
-   "roadmap": "head_camera_bracket",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp000 L1350",
-   "dpos_mm": 18.0,
-   "dsize_mm": 0.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
   },
   {
-   "urdf": "head_camera_bracket_link",
-   "roadmap": "head_camera_bracket",
+   "urdf": "arm_profile_link",
+   "roadmap": "arm_profile",
    "configuration": "bp050 L1000",
-   "dpos_mm": 18.0,
-   "dsize_mm": 0.0
+   "dpos_mm": 0.0,
+   "dsize_mm": 3.6
+  },
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp000 L1000",
+   "dpos_mm": 0.0,
+   "dsize_mm": 2.4
+  },
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp000 L1175",
+   "dpos_mm": 0.0,
+   "dsize_mm": 2.4
+  },
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp000 L1350",
+   "dpos_mm": 0.0,
+   "dsize_mm": 2.4
+  },
+  {
+   "urdf": "lift_carriage_link",
+   "roadmap": "lift_column#1",
+   "configuration": "bp050 L1000",
+   "dpos_mm": 0.0,
+   "dsize_mm": 2.4
   }
  ],
  "urdf_sha256": {
-  "combined_robot.urdf": "f9b3318911543b76150f5661ab9c3d5842f5f764a7ef25f665fa4e249d26c41d",
-  "combined_robot_bp050.urdf": "2bd14375c607316f5659edfc0c7889527d68879c3c63a9e6425bcb230525d3b4"
+  "combined_robot.urdf": "c803a85c0aa48855cf7e0f3dccab421e45523bdca6c75a87149c7ad55b686cde",
+  "combined_robot_bp050.urdf": "0709c879d560cbbe879e2418ce30f842542f12d7a3cb9eb98547bbf672006776"
  },
  "sources": {
   "openamrobot_description": {
@@ -142,8 +136,8 @@
   },
   "openamrobot_upperbody_description": {
    "repository": "openAMRobot/openamr-upperbody-sw",
-   "commit": "a8c304d8a6335c479e56f20e32675d2d87144a50",
-   "role": "main"
+   "commit": "d8c0940569dc18e5a92a3c540bb60e855fe9763c",
+   "role": "upperbody-sw #48 head (paired: the export frames are the #48 link frames)"
   },
   "openarm_description": {
    "repository": "enactic/openarm_description",

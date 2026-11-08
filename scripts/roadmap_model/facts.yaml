@@ -4,7 +4,7 @@
 snapshot: "8 Nov 2026"
 window: "24 Oct to 1 Nov 2026"
 documents:
-  P-03: rev20.5 (8 Nov 2026; item 29, decision baseline of 8 Nov 2026, D-01 to D-34)
+  P-03: rev20.6 (8 Nov 2026; item 30, decision baseline of 8 Nov 2026, D-01 to D-34)
   E-01: rev1.7 (8 Nov 2026)
   M-01: rev19.9 (8 Nov 2026)
   P-02: rev19.2
@@ -50,7 +50,16 @@ column: {section: [0.240, 0.060], retracted: 0.530, stroke: 0.350, mass: 11.7,
          inner: [0.2095, 0.0533, 0.470], inner_bottom_retracted: 0.060,
          foot_screws: {x: 0.112, y: 0.020, role: "DOLD-internal (224 x 40 mm, underside counterbores), not the robot fixing"},
          tab_holes: {x: 0.130, y: 0.015, seat: 0.0045, role: "robot fixing (260 x 30 mm, top-face counterbores), D-20"},
-         step: "Hexalift_EB530_Hub350_mit_Montagelaschen.STEP (DOLD, 2019-01-28)"}
+         step: "Hexalift_EB530_Hub350_mit_Montagelaschen.STEP (DOLD, 2019-01-28)",
+         # 11.7 kg catalogue split into the static and the moving share (8 Nov 2026), from the STEP boxes above and the materials:
+         # z_col = centre of mass height in the column frame at the retracted stop; the drive takes the rest of the catalogue mass
+         mass_split: {
+           static: [{part: "outer profile 240 x 60, 0.6 m perimeter x 3 mm wall x 0.493 m, aluminium", kg: 2.40, z_col: 0.257},
+                    {part: "foot with mounting tabs 280 x 60 x 10 mm, steel", kg: 1.33, z_col: 0.005},
+                    {part: "motor, gearbox, spindle and control in the foot (catalogue rest)", kg: 5.16, z_col: 0.100}],
+           moving: [{part: "inner profile 209.5 x 53.3, 0.526 m perimeter x 3 mm wall x 0.47 m, aluminium", kg: 2.00, z_col: 0.295},
+                    {part: "top cap 240 x 60 x 8 mm, aluminium", kg: 0.31, z_col: 0.530},
+                    {part: "push tube D20 x 2 x 450 mm steel with the spindle nut", kg: 0.50, z_col: 0.300}]}}
 shoulder: {L1000: 1.000, L1175: 1.175, L1350: 1.350}
 head_lens_L1000: 1.223
 imu_z: 0.21904
@@ -104,7 +113,7 @@ tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (i
 emc_flag_distance: 0.050      # roadmap screening value until TZBOT gives a minimum distance
 front_bay_layout: single   # owner correction A2 (2 Nov 2026): one layout, one plate on the base sheet; second tier only if one plate does not fit
 second_estop: {position: adapter_top, housing: [0.064, 0.050, 0.050], button_up: true}   # owner correction A5 (2 Nov 2026): on top of the adapter plate behind the post, centred in y, button up
-getac: {orientation: portrait, size: [0.0176, 0.1498, 0.234], lower_by: 0.055, light_gap: 0.010}   # owner correction A3 (2 Nov 2026: 40 mm lower), owner decision 8 Nov 2026: 15 mm lower again (55 mm), light bar still 10 mm below
+getac: {orientation: portrait, size: [0.0176, 0.1498, 0.234], item26_z: 0.246, lower_by: 0.055, light_gap: 0.010}   # owner correction A3 (2 Nov 2026: 40 mm lower), owner decision 8 Nov 2026: 15 mm lower again (55 mm), light bar still 10 mm below
 zed_ahead_of_j1a: 0.060   # owner decision 8 Nov 2026 (was 0.057, owner correction A4 of 2 Nov 2026; 0.042 before)
 # lowest points of the robot below the base sheet (full assembly STEP MMP.00.00.00.000_full_assembly, openamr-platform-hw main,
 # exact OCC bounding boxes of every solid, floor at the castor wheel bottom; base sheet at 52.0 / 54.0 mm as corrected in base_mesh_map.yaml)

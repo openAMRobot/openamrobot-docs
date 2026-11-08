@@ -1249,12 +1249,7 @@ def upper_body_sensor_poses(js, urdf_path):
     Rz = _rpy(0, hp, 0)
     lens = [bp + num("ZED_X"), 0.0, top + float(re.search(r"RETRACTED: ([\d.]+)", dims).group(1)) + num("MOUNT_ABOVE_COL") + num("ZED_ABOVE_SH")]
     src = frames.get("head_camera_link")
-    if src:   # P-03 rev20.4 item 28: lens 60 mm ahead of J1_A; the combined model keeps 42 mm until its datums follow (+18 mm along x)
-        src = dict(src) if isinstance(src, dict) else src
-        try:
-            src["t"] = [src["t"][0] + (ZED_X - 0.222), src["t"][1], src["t"][2]]
-        except (TypeError, KeyError, IndexError):
-            src = (src[0], [src[1][0] + (ZED_X - 0.222), src[1][1], src[1][2]]) if isinstance(src, tuple) else src
+    # P-03 rev20.4 item 28: lens 60 mm ahead of J1_A; the combined model (upperbody-sw #48 head) carries it, no correction
     out["head_camera_link"] = {"drawn_body": [a + b for a, b in zip(lens, _mv(Rz, [-0.013, 0, 0]))], "drawn_R": Rz, "source": src}
     return out
 
@@ -1406,9 +1401,11 @@ def check_model_sources(root, html, err):
             err("model", "upper-body item %s: model %.4f, datums.yaml %.4f (more than 1 mm)" % (k, v, dm[k]))
     gs, hs = chest["drawn"]["getac_tablet"]["size"], chest["drawn"]["head_light"]["size"]
     if oc:
-        want_z = float(dm["getac_tablet_z_above_column_top"]) - oc["getac_lower_by"]
+        want_z = float(oc.get("getac_item26_z", dm["getac_tablet_z_above_column_top"])) - oc["getac_lower_by"]
         if abs(chest["drawn"]["getac_tablet"]["z"] - want_z) > tol:
-            err("model", "Getac centre %.4f above the column top, A3 gives %.4f (datum minus 40 mm)" % (chest["drawn"]["getac_tablet"]["z"], want_z))
+            err("model", "Getac centre %.4f above the column top, the owner decisions give %.4f (item 26 placeholder minus %.0f mm)" % (chest["drawn"]["getac_tablet"]["z"], want_z, oc["getac_lower_by"] * 1000))
+        if "getac_item26_z" in oc and abs(float(dm["getac_tablet_z_above_column_top"]) - want_z) > tol:
+            err("model", "datums.yaml getac_tablet_z_above_column_top %.4f, the owner decisions give %.4f" % (float(dm["getac_tablet_z_above_column_top"]), want_z))
         if any(abs(a - b) > tol for a, b in zip(oc["getac_size"], gs)):
             err("model", "Getac size %s, A3 gives the portrait %s" % (gs, oc["getac_size"]))
         if abs(chest["gap_light_tablet"] - oc["light_gap"]) > tol:

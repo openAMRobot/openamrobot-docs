@@ -340,15 +340,7 @@ def build_model(ctx):
     # of the side, front and rear panels (214 to 232 mm). No cable, busbar or tie in it or on a panel upper edge, all around the robot
     # (the LiDAR looks out through the front and the slot is visible); there is no inward band. Inside the base, parts may rise
     # above the slot level (rear section) and their leads may leave at the top and run down inside.
-    cs = FACTS["cover_slot"]
-    z0_, z1_ = cs["panel_top"] - cs["margin"], cs["cover_edge"] + cs["margin"]
-    yi = 0.193 - cs["depth"]   # side panels: their top flange reaches in to y 0.193 (CAD v0.2); nothing lies on it in the band
-    xf_ = 0.370 - cs["depth"]
-    xr_ = FACTS["rear_section"]["rear_panel_inner_x"] + cs["depth"]
-    for k_, lo_, hi_ in (("left", [-0.395, yi, z0_], [0.395, 0.295, z1_]), ("right", [-0.395, -0.295, z0_], [0.395, -yi, z1_]),
-                         ("front", [xf_, -0.295, z0_], [0.395, 0.295, z1_]), ("rear", [-0.395, -0.295, z0_], [xr_, 0.295, z1_])):
-        keep.append({"id": "cover_slot_" + k_, "lo": lo_, "hi": hi_, "members": ["lidar"] if k_ == "front" else [],
-                     "why": "%s slot between the panel upper edge (side panels: the whole top flange) and the cover, plus 5 mm (owner rule 8 Nov 2026, P-03 rev20.5 item 29)" % k_})
+    keep += cover_slot_keepouts(FACTS)
     mf = geo.get("tz_metal_free_zone")
     if mf:
         b = prim_box(mf["prims"][0])
@@ -717,6 +709,33 @@ def inside_mask(V):
     return (ax_ <= 0.368) & (y <= lim)
 
 
+def cover_slot_keepouts(F):
+    """The four cover-slot keep-outs (left, right, front, rear) from facts.yaml cover_slot."""
+    cs = F["cover_slot"]
+    z0_, z1_ = cs["panel_top"] - cs["margin"], cs["cover_edge"] + cs["margin"]
+    yi = 0.193 - cs["depth"]   # side panels: their top flange reaches in to y 0.193 (CAD v0.2); nothing lies on it in the band
+    xf_ = 0.370 - cs["depth"]
+    xr_ = F["rear_section"]["rear_panel_inner_x"] + cs["depth"]
+    out = []
+    for k_, lo_, hi_ in (("left", [-0.395, yi, z0_], [0.395, 0.295, z1_]), ("right", [-0.395, -0.295, z0_], [0.395, -yi, z1_]),
+                         ("front", [xf_, -0.295, z0_], [0.395, 0.295, z1_]), ("rear", [-0.395, -0.295, z0_], [xr_, 0.295, z1_])):
+        out.append({"id": "cover_slot_" + k_, "lo": lo_, "hi": hi_, "members": ["lidar"] if k_ == "front" else [],
+                    "why": "%s slot between the panel upper edge (side panels: the whole top flange) and the cover, plus 5 mm (owner rule 8 Nov 2026, P-03 rev20.5 item 29)" % k_})
+    return out
+
+
+def slot_violations(pts, keep, step=RES / 2):
+    """Keep-outs of the cover slot (cover_slot_*) that a polyline enters (owner rule 8 Nov 2026, P-03 rev20.5 item 29).
+    Checked on every route, also on fixed (declared) and cached routes, so no route bypasses the slot rule."""
+    hits = []
+    zones = [k for k in keep if str(k["id"]).startswith("cover_slot_")]
+    for _, q in sample([list(map(float, p)) for p in pts], step):
+        for k in zones:
+            if k["id"] not in hits and all(k["lo"][i] < q[i] < k["hi"][i] for i in range(3)):
+                hits.append(k["id"])
+    return hits
+
+
 def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
     """Route every base section; cables is a list of dicts with id, a/b points, own parts, radius, flags."""
     base_occ = V.struct.copy()
@@ -778,6 +797,10 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
     for c in cables:
         if c.get("fixed") is not None:   # declared route (battery and power module exception zone): cable or busbar
             pts = [[round(float(v), 4) for v in p] for p in c["fixed"]]
+            hit = slot_violations(pts, keep)
+            if hit:   # fail closed: a declared route in the cover slot is an error of the declaration, never routed
+                results[c["id"]] = {"ok": False, "why": "declared route enters %s (cover slot rule, P-03 rev20.5 item 29)" % ", ".join(hit)}
+                continue
             cells = [V.cell(q) for _, q in sample(pts, RES / 2)]
             for p in cells:
                 used[p] += 1
@@ -792,6 +815,8 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
         if c["id"] in cached and isinstance(cached[c["id"]], dict):   # blocked in the last build with the same inputs
             results[c["id"]] = {"ok": False, "why": cached[c["id"]]["blocked"]}
             continue
+        if c["id"] in cached and slot_violations(cached[c["id"]], keep):   # a cached route in the cover slot is dropped and routed again
+            cached = {k_: v_ for k_, v_ in cached.items() if k_ != c["id"]}
         if c["id"] in cached:   # same inputs as the last build (harness_routes.json input_hash): reuse the route
             pts = cached[c["id"]]
             cells = [V.cell(q) for _, q in sample(pts, RES / 2)]
@@ -1181,7 +1206,9 @@ def upper_sections(cid, end, U, ch, term, side="R"):
     elif end == "zed":
         mv = base_mov + ortho(s0, p, "zyx")
     elif end in ("getac", "light"):   # riser, forward along the post +y side face, in to the device at the profile front
-        mv = base_mov + ortho(s0, p, "zxy")
+        # a short rise (under two bend radii of a 30 mm class cable, 8 Nov 2026: the light 55 mm lower with the Getac) runs forward at
+        # the trunk height first and rises once, into the device from below
+        mv = base_mov + ortho(s0, p, "xzy" if abs(p[2] - s0[2]) < 0.065 else "zxy")
     else:
         raise KeyError(end)
     secs.append(("moving", "mov", mv))

@@ -72,7 +72,7 @@ MEC-003: {by: arm_profile, cls: primitive, geo: "HFS6-60120 60 x 120 x 340", pos
 MEC-004: {by: adapter_plate, cls: primitive, geo: "360 x 100 x 10 6082-T6", pos: "B7: rear edge flush with the column rear face", mass: 0.97, msrc: "volume x 2700 kg/m3"}
 MEC-005: {by: bay_plate, cls: proposed, geo: "3 mm 5052 aluminium sheet, proposed outline", pos: "front bay floor (E1)", mass: 0.0, msrc: "computed from outline x 3 mm x 2680 kg/m3"}
 MEC-006: {by: rear_plate, cls: proposed, geo: "3 mm aluminium cable-routing plate, proposed outline", pos: "rear zone floor behind the cells", mass: 0.0, msrc: "computed"}
-MEC-007: {by: battery_tray, cls: provisional, geo: "design intent battery_tray (D k): two trays of 4 upright cells (D-27; sized from delivered EVE cell data, 300 +/- 20 kgf, two-tray RFQ)", pos: "rear side pockets, left and right", mass: 1.6, msrc: "design-intent volume estimate; estimate, under ledger review (D-26)"}
+MEC-007: {by: battery_tray, cls: provisional, geo: "design intent battery_tray (D k): two trays of 4 upright cells (D-27; sized from delivered EVE cell data, 300 +/- 20 kgf, two-tray RFQ)", pos: "rear side pockets, left and right", mass: 1.479, msrc: "mass_ledger.yaml (design-intent solids, trays with straps)"}
 MEC-008: {by: "lidar_support, lidar_spacer", cls: CAD-derived, geo: "MMP.07.00.00.001 and .002 STEP", pos: "CAD v0.2", mass: 0.6, msrc: "estimate"}
 MEC-009: {by: camera_mount, cls: CAD-derived, geo: "MMP.01.00.00.003 STEP", pos: "CAD v0.2", mass: 0.04, msrc: "estimate"}
 MEC-010: {by: tof_mount, cls: CAD-derived, geo: "MMP.00.00.00.005 STEP", pos: "CAD v0.2", mass: 0.02, msrc: "estimate"}
@@ -84,7 +84,7 @@ MEC-015: {by: motor_brackets, cls: provisional, geo: "design intent motor_bracke
 MEC-016: {by: shims, mqty: 1, note: "one assortment, four shim stacks drawn"}
 MEC-017: {by: none, cls: not drawn, reason: "branding decals are robot page fittings, geometry not defined"}
 MEC-018: {by: lift_column, cls: primitive, geo: "DOLD 240 x 60, 530 retracted, inner stage placeholder", pos: "B7 column axis x 0.060 (bp000)", mass: 11.7, msrc: "datums lift_mass_dold_v4_350 (catalogue)"}
-MEC-019: {by: lift_base_plate, cls: primitive, geo: "360 x 230 x 10 6082-T6 (B7)", pos: "B7 bp000 / bp050", mass: 2.1, msrc: "volume x 2700 kg/m3 less holes"}
+MEC-019: {by: lift_base_plate, cls: primitive, geo: "350 x 140 x 10 6082-T6 (D-20)", pos: "B7 bp000 / bp050", mass: 1.293, msrc: "mass_ledger.yaml"}
 MEC-020: {by: none, cls: not drawn, reason: "fallback lift, not fitted"}
 MEC-021: {by: us_locknut}
 LFT-001: {by: lift_stop_sensors, cls: placeholder, geo: "M12 x 48 mm cylinder", pos: "datums.yaml lift_stop_sensor_z_*", mass: 0.09, msrc: "estimate 30 g each"}
@@ -94,7 +94,7 @@ LFT-004: {by: flag_rod, cls: placeholder, geo: "20 x 20 x 430", pos: "datums.yam
 LFT-005: {by: rod_corner_bracket, cls: placeholder, geo: "20 corner bracket", pos: "datums.yaml", mass: 0.02, msrc: "estimate"}
 LFT-006: {by: lift_flag, cls: placeholder, geo: "45 x 20 x 2 SS400", pos: "datums.yaml lift_flag_*", mass: 0.014, msrc: "volume x 7850"}
 LFT-007: {by: fasteners, mqty: 1, cls: proposed, geo: "fastener_schedule.csv", pos: "LIFT-SNS-01 joints", mass: 0.03, msrc: "estimate"}
-PWR-001: {by: battery, cls: provisional, geo: "8 x EVE LF105 in two 4-cell trays joined by PWR-018 (D-27); the B5 single-row envelope 314 x 140 x 210 is superseded", pos: "rear side pockets", mass: 21.5, msrc: "B5 assembly 20 to 23 kg provisional (midpoint); estimate, under ledger review (D-26): whether 20 to 23 kg includes tray, BMS, F0 and disconnect is open"}
+PWR-001: {by: battery, cls: provisional, geo: "8 x EVE LF105 in two 4-cell trays joined by PWR-018 (D-27); the B5 single-row envelope 314 x 140 x 210 is superseded", pos: "rear side pockets", mass: 0.0, msrc: "mass_ledger.yaml: no mass line of its own; the cells PWR-023 and the pack parts PWR-024 to PWR-027 carry the mass, trays, BMS, F0 and disconnect are their own lines"}
 PWR-002: {by: rz_bms}
 PWR-003: {by: rz_f0}
 PWR-004: {by: rz_disc}

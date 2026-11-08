@@ -353,8 +353,8 @@ def parity_section():
             "<details><summary>Out of tolerance (%d)</summary>%s</details>" % (len(rows), table(["URDF link / roadmap part"], rows)) +
             "<details><summary>Intended pending differences (%d)</summary>%s</details>" % (len(pend), table(["Item and reason"], pend)) +
             "<p><b>Mass:</b> the combined model carries %.1f kg in total (base URDF %.1f kg); the roadmap model from BOM Issue 7.14 carries %.1f kg, COM "
-            "(%.3f, %.3f, %.3f) m at L1000 and z %.3f m at L1350 (estimate, under ledger review (D-26); designed, not weighed). %s gives the per-link masses; it is held "
-            "for the platform-sw mass PR and for mass_provenance.yaml until the unique physical-instance mass ledger.</p>" % (
+            "(%.3f, %.3f, %.3f) m at L1000 and z %.3f m at L1350 (estimate, every part once from mass_ledger.yaml; designed, not weighed). %s gives the per-link masses that "
+            "openamr-platform-sw and openamr-upperbody-sw read for every link with mass.</p>" % (
                 ms["comparison"]["combined_model_total_kg"], ms["comparison"]["base_urdf_kg"], tot["L1000"]["mass_kg"], tot["L1000"]["com_m"][0], tot["L1000"]["com_m"][1],
                 tot["L1000"]["com_m"][2], tot["L1350"]["com_m"][2], A("model/mass_export.yaml", "mass_export.yaml")))
     return section("parity", "Roadmap vs combined model", body, "combined_robot.xacro expanded at %s; scripts/roadmap_model/parity.py" % E(srcs))
