@@ -3,8 +3,8 @@
 Source: the rear power owner's "BMS, Fuse Panel and PDB Layout Report" rev 2 (evans-kwashie, 2 Nov 2026; summary in
 openamrobot-docs #68, comment of 3 Nov), implemented and adapted where the measured space needs it (every adaptation is
 listed in ADAPTATIONS with its measured reason). Owner decision of 3 Nov 2026: components above the receiver may sit
-anywhere with a 15 mm gap to the receiver top (z 117 mm up to the cover). Owner decision of 8 Nov 2026: a 15 mm offset from any
-side of the receiver (the TZBOT manual asks 20 mm), so everything within 15 mm (plate, plate fasteners, standoffs, part feet) is
+anywhere with a 15 mm gap to the receiver top (z 117 mm up to the cover). Owner decision of 8 Nov 2026: no metal within 20 mm of the receiver sides (TZBOT manual V2.5, a 3D-printed plastic frame on the
+steel deck) and 15 mm above it, so everything inside that zone (plate, plate fasteners, standoffs, part feet) is
 non-metallic (verify with TZBOT).
 
 All values: base_footprint, mm in the tables below (converted to m by layout()). Catalogue outlines marked "verify" are not
@@ -30,7 +30,7 @@ FACTS = yaml.safe_load(open(os.path.join(os.path.dirname(os.path.abspath(__file_
 
 # id: (name, bom, part, geometry source, [x0, x1], [y0, y1], [z0, z1], domain, level, mass kg)
 PARTS = {
-    "rear_plate": ("Rear power plate MEC-006, G10 glass-epoxy 3 mm (non-metal, within 15 mm of the receiver)", "MEC-006",
+    "rear_plate": ("Rear power plate MEC-006, G10 glass-epoxy 3 mm (non-metal, inside the receiver metal-free zone)", "MEC-006",
                    "G10 / FR4 sheet 3 mm (verify stiffness; ribs or 4 mm if needed)", "proposed outline",
                    [-366, -137], [-95, 95], [117, 120], "MECH", "L1", 0.20),
     "rz_f0": ("Main fuse F0 110 A Class T and holder, across the plate front edge", "PWR-003", "Blue Sea 5007100 + 5112",
@@ -100,7 +100,7 @@ BUSBARS = {
     "CBL-P28": ("BB-07 F-CHG to KCHG (side by side in the left rear corner)", "Cu 12 x 2 mm from the F-CHG +x stud, heat-shrink insulated (verify for 30 A)",
                 [[-292, 148, 89], [-292, 148, 100], [-292, 113, 100], [-292, 113, 87]]),
     "CBL-P62": ("BB-06 BMS B- to pack - (tray lead, DP-TRAY-R)", "flexible laminated Cu 25 x 3 mm in silicone sleeve (verify)",
-                [[-125, -266, 166], [-125, -266, 270], [-162, -266, 270], [-162, -117, 270], [-162, -117, 261]]),
+                [[-125, -266, 166], [-130, -266, 166], [-130, -180, 166], [-130, -180, 270], [-162, -180, 270], [-162, -117, 270], [-162, -117, 261]]),
 }
 BAR_W, BAR_T = 25, 4   # drawn section (mm)
 
@@ -143,7 +143,7 @@ def boxes():
 
 
 def fit_check(obstacles=None, receiver=None, trays=None):
-    """Clearances between the module parts, to the cover, the trays and the given fixed obstacles; parts within the receiver offset (15 mm) of the
+    """Clearances between the module parts, to the cover, the trays and the given fixed obstacles; parts inside the receiver metal-free zone (20 mm on the sides, 15 mm above) of the
     receiver; returns a report dict (mm)."""
     B = boxes()
     for k, (nm, xs, ys, zs, mat) in MOUNTS.items():
@@ -183,10 +183,13 @@ def fit_check(obstacles=None, receiver=None, trays=None):
         rlo, rhi = np.asarray(receiver[0]), np.asarray(receiver[1])
         for k, b in B.items():
             g = gap(b, (rlo, rhi))
-            if g < FACTS["tzbot_receiver"]["metal_clear"] * 1000 - 1e-6:   # owner decision 8 Nov 2026: 15 mm offset from any side
+            RX_ = FACTS["tzbot_receiver"]
+            mlo = rlo - [RX_["metal_clear"], RX_["metal_clear"], 0.0]
+            mhi = rhi + [RX_["metal_clear"], RX_["metal_clear"], RX_.get("metal_clear_above", RX_["metal_clear"])]
+            if np.all(np.asarray(b[0]) < mhi - 1e-6) and np.all(np.asarray(b[1]) > mlo + 1e-6):   # owner decision 8 Nov 2026: 20 mm on the sides, 15 mm above
                 near.append({"part": k, "gap_mm": round(g, 1)})
     gaps.sort()
-    return {"clashes": clashes, "closest": [{"a": a, "b": b, "gap_mm": round(g, 1)} for g, a, b in gaps[:12]], "within_15mm_of_receiver": near}
+    return {"clashes": clashes, "closest": [{"a": a, "b": b, "gap_mm": round(g, 1)} for g, a, b in gaps[:12]], "inside_receiver_metal_free_zone": near}
 
 
 def main_path():

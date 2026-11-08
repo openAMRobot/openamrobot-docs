@@ -620,34 +620,34 @@
  },
  "receiver": {
   "centre": [
-   -0.284,
+   -0.265,
    0.0,
    0.076
   ],
   "lo": [
-   -0.369,
+   -0.35,
    -0.075,
    0.05
   ],
   "hi": [
-   -0.199,
+   -0.18,
    0.075,
    0.102
   ],
   "cutout": [
    -0.37,
-   -0.184,
-   -0.09,
-   0.09
+   -0.16,
+   -0.095,
+   0.095
   ],
   "orientation": "150 mm along x, 170 mm across y (rear charger zone)",
   "cutout_mm": [
-   186,
-   180
+   210,
+   190
   ],
   "cutout_full_mm": [
-   186,
-   180
+   210,
+   190
   ],
   "gap_m": -0.002,
   "status": "prepared, installed later"
@@ -672,11 +672,11 @@
    "side_wall_inner_y": 0.276
   },
   "pocket_free": {
-   "y_mm": 186.0,
+   "y_mm": 181.0,
    "y_formula_mm": 201.0,
    "x_mm": 235.0,
    "x_beside_support_mm": 148.6,
-   "y_inside_flanges_mm": 103.0
+   "y_inside_flanges_mm": 98.0
   },
   "pockets": {
    "arrangement": "4 across (y), 130 along x",
@@ -701,25 +701,25 @@
   ],
   "margin": [
    [
-    -0.384,
-    -0.09,
-    0.035
+    -0.37,
+    -0.095,
+    0.05
    ],
    [
-    -0.184,
-    0.09,
+    -0.16,
+    0.095,
     0.117
    ]
   ],
   "cutout": [
    [
     -0.37,
-    -0.09,
+    -0.095,
     0.052
    ],
    [
-    -0.184,
-    0.09,
+    -0.16,
+    0.095,
     0.054
    ]
   ],
@@ -880,7 +880,7 @@
      "gap_mm": 5.8
     }
    ],
-   "within_15mm_of_receiver": []
+   "inside_receiver_metal_free_zone": []
   },
   "main_path": [
    {
@@ -950,7 +950,7 @@
     "id": "CBL-P62",
     "kind": "busbar BB-06",
     "polyline_mm": 299.0,
-    "bends_90": 3,
+    "bends_90": 5,
     "section": "flexible laminated Cu 25 x 3 mm in silicone sleeve (verify)"
    }
   ],

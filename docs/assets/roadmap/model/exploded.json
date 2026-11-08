@@ -1639,6 +1639,23 @@
     ]
    }
   },
+  "tz_receiver_frame": {
+   "stage": 3,
+   "offsets": {
+    "tz_receiver_frame": [
+     0,
+     0,
+     -0.25
+    ]
+   },
+   "open": {
+    "tz_receiver_frame": [
+     0,
+     0,
+     -0.12
+    ]
+   }
+  },
   "base_cutout": {
    "stage": 1,
    "offsets": {
@@ -2188,6 +2205,11 @@
      0,
      -0.25,
      0.1
+    ],
+    "harness_sleeve_left": [
+     0,
+     -0.25,
+     0.1
     ]
    },
    "open": {
@@ -2227,6 +2249,11 @@
      0
     ],
     "harness_sleeve": [
+     0,
+     0,
+     0
+    ],
+    "harness_sleeve_left": [
      0,
      0,
      0
@@ -3167,6 +3194,7 @@
   "side_plates",
   "tz_metal_free_zone",
   "tz_receiver",
+  "tz_receiver_frame",
   "us_locknut",
   "wheel_guards"
  ]

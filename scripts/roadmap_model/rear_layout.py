@@ -54,18 +54,23 @@ def layout():
         lo_, hi_ = bb[k]
         if hi_[1] > -sy / 2 and lo_[1] < sy / 2 and hi_[2] > z0 and lo_[2] < z0 + sz:
             x0 = max(x0, float(hi_[0]))
-    x0 = round(x0 + RX["touch_clear"], 4)
+    x0 = round(x0 + mc, 4)   # owner decision 8 Nov 2026: the 20 mm plastic frame sits between the rear bodies and the receiver
     rx = _box([x0, -sy / 2, z0], [x0 + sx, sy / 2, z0 + sz])
     for k in rear_ids:
         lo_, hi_ = bb[k]
         gap = np.maximum(0, np.maximum(rx[0], lo_) - np.minimum(rx[1], hi_))
         clear_to[k] = round(float(np.linalg.norm(gap)) * 1000, 1)
     zone = _box([x_rear, -sy / 2 - mc, z0], [x_arch, sy / 2 + mc, FACTS["cover_underside"]])
-    margin = _box(rx[0] - mc, rx[1] + mc)
+    mca = RX.get("metal_clear_above", mc)
+    margin = _box([rx[0][0] - mc, rx[0][1] - mc, rx[0][2]], [rx[1][0] + mc, rx[1][1] + mc, rx[1][2] + mca])   # 20 mm on the sides (frame), 15 mm above
     cut = _box([max(margin[0][0], x_rear), margin[0][1], FACTS["base_sheet"]["bottom"]], [margin[1][0], margin[1][1], FACTS["base_sheet"]["top"]])
-    metal_in_margin = {k: clear_to[k] for k in clear_to if clear_to[k] < mc * 1000}
+    def _inside(b_):
+        return bool(np.all(b_[0] < margin[1] - 1e-6) and np.all(b_[1] > margin[0] + 1e-6))
+    metal_in_margin = {k: clear_to[k] for k in clear_to if _inside(bb[k])}
     plate_z = round(float(rx[1][2] + RS["power_plate"]["min_above_receiver"]), 4)
-    plate = _box([x_rear + 0.004, margin[0][1], plate_z], [x_arch - 0.002, margin[1][1], plate_z + RS["power_plate"]["t"]])
+    # G10 plate over the receiver: receiver outline + 15 mm across (y), as before the frame of 8 Nov 2026, so the 7 mm lane between the
+    # plate edge and each tray stays open for the cables rising from the receiver zone
+    plate = _box([x_rear + 0.004, rx[0][1] - mca, plate_z], [x_arch - 0.002, rx[1][1] + mca, plate_z + RS["power_plate"]["t"]])
     # measured space: the CAD v0.2 dimensions are the reference (A9)
     sup_l, sup_r = bb["support_rear_left"], bb["support_rear_right"]
     v = G["side_panel_left"]["v"]

@@ -19,30 +19,42 @@ groups:
           - 0.0
           - 0.75
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: upstream URDF nominal link masses (2 x 6.13 kg incl. gripper)
-        mass_kg: 12.26
+        - bom: ARM-004
+          component: openarm
+          mass_kg: 0.02
+          com_m:
+          - 0.0
+          - 0.0
+          - 0.2
+          size_m:
+          - 0.0
+          - 0.0
+          - 0.0
+          source: estimate
+        mass_kg: 12.28
         com_m:
-        - 0.12
+        - 0.1194
         - -0.031
-        - -0.25
+        - -0.2509
         inertia_kgm2:
-          ixx: 0.0
-          iyy: 0.0
-          izz: 0.0
+          ixx: 0.00604
+          iyy: 0.00863
+          izz: 0.00259
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.24
         - 0.031
         - 1.0
-  base:
-    state: roadmap_estimate
-    source: BOM Issue 7.14 masses (bom_coverage.csv; estimates and catalogue figures) and MEC-001 from the CAD volume as steel, placed at the roadmap model positions
-    owner: platform-sw (base); hardware owner for the BOM masses
+  sensors:
+    state: external_nominal
+    source: ZED Mini and its bracket (BOM)
+    owner: upper body (A6)
     links:
-      base_link:
+      head_camera_link:
         items:
         - bom: ARM-003
           component: head_camera
@@ -52,29 +64,62 @@ groups:
           - 0.0
           - 1.2165
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.038
+          - 0.124
+          - 0.04
           source: datums head_camera_mass
-        - bom: ARM-004
-          component: openarm
-          mass_kg: 0.02
+        - bom: ARM-011
+          component: head_camera_bracket
+          mass_kg: 0.05
           com_m:
+          - 0.27
           - 0.0
-          - 0.0
-          - 0.2
+          - 1.2035
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.03
+          - 0.03
+          - 0.039
           source: estimate
+        mass_kg: 0.113
+        com_m:
+        - -0.0068
+        - 0.0
+        - -0.0123
+        inertia_kgm2:
+          ixx: 0.0001
+          iyy: 3.0e-05
+          izz: 0.0001
+        inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
+        link_origin_m:
+        - 0.282
+        - 0.0
+        - 1.223
+  base:
+    state: roadmap_estimate
+    source: BOM Issue 7.14 masses (bom_coverage.csv; estimates and catalogue figures) and MEC-001 from the CAD volume as steel, placed at the roadmap model positions
+    owner: platform-sw (base); hardware owner for the BOM masses
+    links:
+      base_link:
+        items:
         - bom: ARM-006
-          component: bay_usbcan
-          mass_kg: 0.06
+          component: bay_usbcan_1
+          mass_kg: 0.03
           com_m:
           - 0.16
-          - -0.2025
-          - 0.0761
+          - -0.2125
+          - 0.0703
+          size_m:
+          - 0.06
+          - 0.015
+          - 0.027
+          source: estimate
+        - bom: ARM-006
+          component: bay_usbcan_2
+          mass_kg: 0.03
+          com_m:
+          - 0.16
+          - -0.1925
+          - 0.0703
           size_m:
           - 0.06
           - 0.015
@@ -88,9 +133,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: ARM-010
           component: harness
@@ -100,9 +145,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: AUX-003
           component: harness
@@ -112,17 +157,17 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: CAM-001
           component: base_camera
           mass_kg: 0.29
           com_m:
-          - 0.3885
-          - 0.0063
-          - 0.1438
+          - 0.3745
+          - 0.0
+          - 0.1417
           size_m:
           - 0.033
           - 0.124
@@ -136,17 +181,17 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: CMP-001
           component: compute
           mass_kg: 0.25
           com_m:
-          - 0.1644
-          - -0.0267
-          - 0.1479
+          - 0.1641
+          - -0.0255
+          - 0.1375
           size_m:
           - 0.118
           - 0.115
@@ -156,9 +201,9 @@ groups:
           component: compute
           mass_kg: 0.2
           com_m:
-          - 0.1644
-          - -0.0267
-          - 0.1479
+          - 0.1641
+          - -0.0255
+          - 0.1375
           size_m:
           - 0.118
           - 0.115
@@ -168,9 +213,9 @@ groups:
           component: compute
           mass_kg: 0.008
           com_m:
-          - 0.1644
-          - -0.0267
-          - 0.1479
+          - 0.1641
+          - -0.0255
+          - 0.1375
           size_m:
           - 0.118
           - 0.115
@@ -180,9 +225,9 @@ groups:
           component: compute
           mass_kg: 0.15
           com_m:
-          - 0.1644
-          - -0.0267
-          - 0.1479
+          - 0.1641
+          - -0.0255
+          - 0.1375
           size_m:
           - 0.118
           - 0.115
@@ -204,9 +249,9 @@ groups:
           component: compute
           mass_kg: 0.02
           com_m:
-          - 0.1644
-          - -0.0267
-          - 0.1479
+          - 0.1641
+          - -0.0255
+          - 0.1375
           size_m:
           - 0.118
           - 0.115
@@ -218,7 +263,7 @@ groups:
           com_m:
           - 0.1975
           - -0.2375
-          - 0.1174
+          - 0.0978
           size_m:
           - 0.135
           - 0.025
@@ -228,9 +273,9 @@ groups:
           component: base_controller
           mass_kg: 0.08
           com_m:
-          - 0.2081
+          - 0.2117
           - -0.128
-          - 0.0666
+          - 0.068
           size_m:
           - 0.133
           - 0.07
@@ -242,7 +287,7 @@ groups:
           com_m:
           - 0.231
           - -0.1075
-          - 0.1185
+          - 0.1208
           size_m:
           - 0.032
           - 0.021
@@ -254,7 +299,7 @@ groups:
           com_m:
           - 0.177
           - -0.112
-          - 0.1537
+          - 0.1413
           size_m:
           - 0.064
           - 0.012
@@ -268,29 +313,101 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: CTL-009
-          component: can_terms
-          mass_kg: 0.004
+          component: can_term_1
+          mass_kg: 0.001
           com_m:
-          - 0.0661
-          - -0.1271
-          - 0.136
+          - -0.0538
+          - 0.03
+          - 0.156
+          size_m:
+          - 0.016
+          - 0.01
+          - 0.01
+          source: estimate
+        - bom: CTL-009
+          component: can_term_2
+          mass_kg: 0.001
+          com_m:
+          - 0.2117
+          - -0.128
+          - 0.085
+          size_m:
+          - 0.016
+          - 0.01
+          - 0.01
+          source: estimate
+        - bom: CTL-009
+          component: can_term_3
+          mass_kg: 0.001
+          com_m:
+          - 0.3077
+          - -0.1344
+          - 0.131
+          size_m:
+          - 0.016
+          - 0.01
+          - 0.01
+          source: estimate
+        - bom: CTL-009
+          component: can_term_4
+          mass_kg: 0.001
+          com_m:
+          - -0.201
+          - -0.276
+          - 0.172
           size_m:
           - 0.016
           - 0.01
           - 0.01
           source: estimate
         - bom: CTL-010
-          component: can_terms
-          mass_kg: 0.004
+          component: can_term_1
+          mass_kg: 0.001
           com_m:
-          - 0.0661
-          - -0.1271
-          - 0.136
+          - -0.0538
+          - 0.03
+          - 0.156
+          size_m:
+          - 0.016
+          - 0.01
+          - 0.01
+          source: estimate
+        - bom: CTL-010
+          component: can_term_2
+          mass_kg: 0.001
+          com_m:
+          - 0.2117
+          - -0.128
+          - 0.085
+          size_m:
+          - 0.016
+          - 0.01
+          - 0.01
+          source: estimate
+        - bom: CTL-010
+          component: can_term_3
+          mass_kg: 0.001
+          com_m:
+          - 0.3077
+          - -0.1344
+          - 0.131
+          size_m:
+          - 0.016
+          - 0.01
+          - 0.01
+          source: estimate
+        - bom: CTL-010
+          component: can_term_4
+          mass_kg: 0.001
+          com_m:
+          - -0.201
+          - -0.276
+          - 0.172
           size_m:
           - 0.016
           - 0.01
@@ -304,9 +421,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: CTL-012
           component: harness
@@ -316,9 +433,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: CTL-014
           component: bay_can2
@@ -326,7 +443,7 @@ groups:
           com_m:
           - 0.3077
           - -0.1344
-          - 0.1185
+          - 0.1208
           size_m:
           - 0.025
           - 0.057
@@ -338,7 +455,7 @@ groups:
           com_m:
           - 0.121
           - 0.047
-          - 0.1194
+          - 0.1263
           size_m:
           - 0.032
           - 0.01
@@ -352,9 +469,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: CTL-018
           component: bay_tpl7407
@@ -362,31 +479,43 @@ groups:
           com_m:
           - 0.1705
           - -0.092
-          - 0.1439
+          - 0.1347
           size_m:
           - 0.051
           - 0.012
           - 0.039
           source: estimate from the catalogue class
         - bom: DRV-001
-          component: hub_motor_wheel
-          mass_kg: 10.0
+          component: hub_motor_wheel_left
+          mass_kg: 5.0
           com_m:
           - 0.0
-          - 0.0
-          - 0.0986
+          - 0.1705
+          - 0.098
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.2
+          - 0.168
+          - 0.2
+          source: estimate 5.0 kg per motor, catalogue figure not in repo
+        - bom: DRV-001
+          component: hub_motor_wheel_right
+          mass_kg: 5.0
+          com_m:
+          - 0.0
+          - -0.1705
+          - 0.098
+          size_m:
+          - 0.2
+          - 0.168
+          - 0.2
           source: estimate 5.0 kg per motor, catalogue figure not in repo
         - bom: DRV-002
           component: motor_driver
           mass_kg: 0.9
           com_m:
-          - -0.0789
-          - -0.0026
-          - 0.1079
+          - -0.0693
+          - -0.0018
+          - 0.1103
           size_m:
           - 0.031
           - 0.15
@@ -400,9 +529,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: F-FAN
           component: bay_fbc
@@ -410,7 +539,7 @@ groups:
           com_m:
           - 0.203
           - 0.229
-          - 0.0822
+          - 0.0743
           size_m:
           - 0.146
           - 0.044
@@ -422,7 +551,7 @@ groups:
           com_m:
           - 0.203
           - 0.229
-          - 0.0822
+          - 0.0743
           size_m:
           - 0.146
           - 0.044
@@ -434,7 +563,7 @@ groups:
           com_m:
           - 0.203
           - 0.229
-          - 0.0822
+          - 0.0743
           size_m:
           - 0.146
           - 0.044
@@ -446,7 +575,7 @@ groups:
           com_m:
           - 0.203
           - 0.229
-          - 0.0822
+          - 0.0743
           size_m:
           - 0.146
           - 0.044
@@ -458,7 +587,7 @@ groups:
           com_m:
           - -0.34
           - 0.063
-          - 0.2331
+          - 0.2252
           size_m:
           - 0.044
           - 0.146
@@ -470,7 +599,7 @@ groups:
           com_m:
           - -0.2475
           - 0.0
-          - 0.2704
+          - 0.2587
           size_m:
           - 0.129
           - 0.165
@@ -482,7 +611,7 @@ groups:
           com_m:
           - 0.203
           - 0.229
-          - 0.0822
+          - 0.0743
           size_m:
           - 0.146
           - 0.044
@@ -492,26 +621,14 @@ groups:
           component: imu
           mass_kg: 0.005
           com_m:
-          - 0.0468
+          - 0.0393
           - 0.0
-          - 0.2184
+          - 0.2182
           size_m:
           - 0.043
           - 0.025
           - 0.003
           source: estimate
-        - bom: LFT-001
-          component: lift_stop_sensors
-          mass_kg: 0.09
-          com_m:
-          - 0.0
-          - 0.0
-          - 0.2
-          size_m:
-          - 0
-          - 0
-          - 0
-          source: estimate 30 g each
         - bom: LFT-002
           component: harness
           mass_kg: 0.15
@@ -520,137 +637,89 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
-          source: estimate
-        - bom: LFT-003
-          component: lift_sensor_brackets
-          mass_kg: 0.06
-          com_m:
           - 0.0
           - 0.0
-          - 0.2
-          size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
           source: estimate
-        - bom: LFT-004
-          component: flag_rod
-          mass_kg: 0.22
-          com_m:
-          - -0.1061
-          - 0.0406
-          - 0.7083
-          size_m:
-          - 0
-          - 0
-          - 0
-          source: estimate 0.5 kg/m
-        - bom: LFT-005
-          component: rod_corner_bracket
-          mass_kg: 0.02
-          com_m:
-          - -0.093
-          - 0.038
-          - 0.824
-          size_m:
-          - 0
-          - 0
-          - 0
-          source: estimate
-        - bom: LFT-006
-          component: lift_flag
-          mass_kg: 0.014
-          com_m:
-          - -0.1005
-          - 0.027
-          - 0.424
-          size_m:
-          - 0
-          - 0
-          - 0
-          source: volume x 7850
         - bom: LFT-007
           component: fasteners
           mass_kg: 0.03
           com_m:
-          - 0.0915
+          - 0.1057
           - -0.0067
-          - 0.5942
+          - 0.5793
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.443
+          - 0.308
+          - 0.255
           source: estimate
         - bom: MEC-002
           component: castor
           mass_kg: 0.8
           com_m:
-          - -0.0123
+          - -0.0012
           - 0.0
-          - 0.0243
+          - 0.026
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate 0.2 kg each
-        - bom: MEC-003
-          component: arm_profile
-          mass_kg: 1.5
-          com_m:
-          - 0.24
-          - 0.0
-          - 1.014
-          size_m:
-          - 0
-          - 0
-          - 0
-          source: estimate 4.4 kg/m
-        - bom: MEC-004
-          component: adapter_plate
-          mass_kg: 0.97
-          com_m:
-          - 0.0875
-          - 0.0
-          - 0.839
-          size_m:
-          - 0
-          - 0
-          - 0
-          source: volume x 2700 kg/m3
         - bom: MEC-007
-          component: battery_tray
-          mass_kg: 1.6
+          component: battery_tray_left
+          mass_kg: 0.8
           com_m:
           - -0.204
-          - -0.0
-          - 0.1282
+          - 0.179
+          - 0.157
+          size_m:
+          - 0.136
+          - 0.164
+          - 0.206
+          source: design-intent estimate
+        - bom: MEC-007
+          component: battery_tray_right
+          mass_kg: 0.8
+          com_m:
+          - -0.204
+          - -0.179
+          - 0.157
           size_m:
           - 0.136
           - 0.164
           - 0.206
           source: design-intent estimate
         - bom: MEC-008
-          component: lidar_support, lidar_spacer
-          mass_kg: 0.6
+          component: lidar_support
+          mass_kg: 0.577
           com_m:
-          - 0.3142
-          - -0.0006
-          - 0.1561
+          - 0.3036
+          - 0.0
+          - 0.114
           size_m:
           - 0.123
           - 0.17
           - 0.12
           source: estimate
+        - bom: MEC-008
+          component: lidar_spacer
+          mass_kg: 0.023
+          com_m:
+          - 0.3223
+          - -0.0001
+          - 0.1828
+          size_m:
+          - 0.08
+          - 0.07
+          - 0.018
+          source: estimate
         - bom: MEC-009
           component: camera_mount
           mass_kg: 0.04
           com_m:
-          - 0.3639
-          - -0.0006
-          - 0.1429
+          - 0.3729
+          - -0.0001
+          - 0.144
           size_m:
           - 0.032
           - 0.144
@@ -660,68 +729,140 @@ groups:
           component: tof_mount
           mass_kg: 0.02
           com_m:
+          - -0.0
           - 0.0
-          - 0.0001
-          - 0.0927
+          - 0.0913
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: MEC-011
           component: ultrasonic_mount
           mass_kg: 0.06
           com_m:
-          - -0.0001
-          - 0.0002
-          - 0.0913
+          - 0.0
+          - 0.0
+          - 0.0942
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: MEC-013
           component: harness_fittings
           mass_kg: 0.15
           com_m:
-          - 0.022
-          - -0.0019
-          - 0.527
+          - -0.0005
+          - -0.0054
+          - 0.5759
           size_m:
-          - 0.729
-          - 0.577
+          - 0.724
+          - 0.567
           - 0.241
           source: estimate
         - bom: MEC-014
           component: fasteners
           mass_kg: 0.6
           com_m:
-          - 0.0915
+          - 0.1057
           - -0.0067
-          - 0.5942
+          - 0.5793
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.443
+          - 0.308
+          - 0.255
           source: estimate
         - bom: MEC-015
-          component: motor_brackets
-          mass_kg: 1.116
+          component: motor_brackets_1
+          mass_kg: 0.279
           com_m:
           - 0.0
-          - -0.0
-          - 0.0706
+          - 0.1066
+          - 0.0885
+          size_m:
+          - 0.07
+          - 0.04
+          - 0.069
+          source: design-intent volume x 7850
+        - bom: MEC-015
+          component: motor_brackets_2
+          mass_kg: 0.279
+          com_m:
+          - 0.0
+          - 0.2496
+          - 0.0885
+          size_m:
+          - 0.07
+          - 0.04
+          - 0.069
+          source: design-intent volume x 7850
+        - bom: MEC-015
+          component: motor_brackets_3
+          mass_kg: 0.279
+          com_m:
+          - 0.0
+          - -0.1066
+          - 0.0885
+          size_m:
+          - 0.07
+          - 0.04
+          - 0.069
+          source: design-intent volume x 7850
+        - bom: MEC-015
+          component: motor_brackets_4
+          mass_kg: 0.279
+          com_m:
+          - 0.0
+          - -0.2496
+          - 0.0885
           size_m:
           - 0.07
           - 0.04
           - 0.069
           source: design-intent volume x 7850
         - bom: MEC-016
-          component: shims
-          mass_kg: 0.12
+          component: shims_1
+          mass_kg: 0.03
           com_m:
-          - 0.0
-          - 0.0
+          - 0.2751
+          - 0.215
+          - 0.0515
+          size_m:
+          - 0.062
+          - 0.06
+          - 0.001
+          source: estimate
+        - bom: MEC-016
+          component: shims_2
+          mass_kg: 0.03
+          com_m:
+          - 0.2751
+          - -0.215
+          - 0.0515
+          size_m:
+          - 0.062
+          - 0.06
+          - 0.001
+          source: estimate
+        - bom: MEC-016
+          component: shims_3
+          mass_kg: 0.03
+          com_m:
+          - -0.275
+          - 0.215
+          - 0.0515
+          size_m:
+          - 0.062
+          - 0.06
+          - 0.001
+          source: estimate
+        - bom: MEC-016
+          component: shims_4
+          mass_kg: 0.03
+          com_m:
+          - -0.275
+          - -0.215
           - 0.0515
           size_m:
           - 0.062
@@ -732,33 +873,69 @@ groups:
           component: lift_base_plate
           mass_kg: 2.1
           com_m:
-          - 0.0673
-          - -0.0
-          - 0.2984
+          - 0.085
+          - 0.0
+          - 0.299
           size_m:
           - 0.33
           - 0.14
           - 0.01
           source: volume x 2700 kg/m3 less holes
         - bom: MEC-021
-          component: us_locknut
-          mass_kg: 0.08
+          component: us_locknut_1
+          mass_kg: 0.02
           com_m:
-          - 0.0
-          - 0.0
+          - 0.3615
+          - 0.13
           - 0.0914
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.006
+          - 0.035
+          - 0.035
+          source: estimate
+        - bom: MEC-021
+          component: us_locknut_2
+          mass_kg: 0.02
+          com_m:
+          - 0.3615
+          - -0.13
+          - 0.0914
+          size_m:
+          - 0.006
+          - 0.035
+          - 0.035
+          source: estimate
+        - bom: MEC-021
+          component: us_locknut_3
+          mass_kg: 0.02
+          com_m:
+          - -0.3615
+          - 0.13
+          - 0.0914
+          size_m:
+          - 0.006
+          - 0.035
+          - 0.035
+          source: estimate
+        - bom: MEC-021
+          component: us_locknut_4
+          mass_kg: 0.02
+          com_m:
+          - -0.3615
+          - -0.13
+          - 0.0914
+          size_m:
+          - 0.006
+          - 0.035
+          - 0.035
           source: estimate
         - bom: NAV-001
           component: lidar
           mass_kg: 0.18
           com_m:
-          - 0.3198
-          - -0.0004
-          - 0.1758
+          - 0.3187
+          - -0.0001
+          - 0.1696
           size_m:
           - 0.056
           - 0.056
@@ -770,19 +947,31 @@ groups:
           com_m:
           - 0.15
           - -0.175
-          - 0.0723
+          - 0.0677
           size_m:
           - 0.04
           - 0.01
           - 0.021
           source: estimate
         - bom: PWR-001
-          component: battery_cells
-          mass_kg: 21.5
+          component: battery_cells_left
+          mass_kg: 10.75
           com_m:
           - -0.204
-          - 0.0
-          - 0.225
+          - 0.179
+          - 0.159
+          size_m:
+          - 0.13
+          - 0.158
+          - 0.204
+          source: B5 assembly 20 to 23 kg provisional (midpoint)
+        - bom: PWR-001
+          component: battery_cells_right
+          mass_kg: 10.75
+          com_m:
+          - -0.204
+          - -0.179
+          - 0.159
           size_m:
           - 0.13
           - 0.158
@@ -794,7 +983,7 @@ groups:
           com_m:
           - -0.201
           - -0.276
-          - 0.1499
+          - 0.1338
           size_m:
           - 0.164
           - 0.021
@@ -806,7 +995,7 @@ groups:
           com_m:
           - -0.1625
           - -0.0105
-          - 0.1639
+          - 0.1497
           size_m:
           - 0.051
           - 0.159
@@ -830,7 +1019,7 @@ groups:
           com_m:
           - 0.165
           - -0.053
-          - 0.0822
+          - 0.0743
           size_m:
           - 0.12
           - 0.05
@@ -842,7 +1031,7 @@ groups:
           com_m:
           - 0.155
           - 0.1945
-          - 0.0799
+          - 0.0728
           size_m:
           - 0.05
           - 0.015
@@ -854,7 +1043,7 @@ groups:
           com_m:
           - 0.135
           - 0.022
-          - 0.0617
+          - 0.0703
           size_m:
           - 0.06
           - 0.04
@@ -866,7 +1055,7 @@ groups:
           com_m:
           - 0.1985
           - -0.144
-          - 0.2346
+          - 0.1952
           size_m:
           - 0.097
           - 0.038
@@ -878,23 +1067,35 @@ groups:
           com_m:
           - 0.1177
           - 0.0709
-          - 0.0602
+          - 0.0608
           size_m:
           - 0.025
           - 0.018
           - 0.008
           source: estimate from the catalogue class
         - bom: PWR-017
-          component: rz_pwr017
-          mass_kg: 0.4
+          component: rz_pwr017_1
+          mass_kg: 0.202
           com_m:
-          - -0.293
-          - -0.0733
-          - 0.1809
+          - -0.28
+          - -0.0065
+          - 0.1768
           size_m:
           - 0.04
           - 0.1
           - 0.042
+          source: estimate
+        - bom: PWR-017
+          component: rz_pwr017_2
+          mass_kg: 0.198
+          com_m:
+          - -0.306
+          - -0.14
+          - 0.1508
+          size_m:
+          - 0.04
+          - 0.04
+          - 0.102
           source: estimate
         - bom: PWR-018
           component: rz_batcon
@@ -902,7 +1103,7 @@ groups:
           com_m:
           - -0.15
           - 0.0
-          - 0.2724
+          - 0.2628
           size_m:
           - 0.03
           - 0.06
@@ -926,7 +1127,7 @@ groups:
           com_m:
           - -0.317
           - 0.148
-          - 0.0813
+          - 0.0737
           size_m:
           - 0.066
           - 0.03
@@ -938,7 +1139,7 @@ groups:
           com_m:
           - 0.195
           - 0.027
-          - 0.0613
+          - 0.0677
           size_m:
           - 0.05
           - 0.03
@@ -950,7 +1151,7 @@ groups:
           com_m:
           - 0.19
           - 0.093
-          - 0.2366
+          - 0.2057
           size_m:
           - 0.1
           - 0.063
@@ -962,43 +1163,67 @@ groups:
           com_m:
           - 0.1425
           - 0.177
-          - 0.0613
+          - 0.0677
           size_m:
           - 0.025
           - 0.01
           - 0.021
           source: estimate
         - bom: SAF-001
-          component: estop, second_estop
-          mass_kg: 0.3
+          component: estop
+          mass_kg: 0.15
           com_m:
-          - 0.2328
-          - 0.065
-          - 0.525
+          - 0.383
+          - 0.13
+          - 0.1425
           size_m:
           - 0.082
           - 0.04
           - 0.047
           source: estimate 0.15 kg each
         - bom: SAF-002
-          component: bay_din
-          mass_kg: 0.35
+          component: bay_din_pnoz
+          mass_kg: 0.282
           com_m:
-          - 0.2354
-          - 0.0047
-          - 0.1886
+          - 0.2002
+          - 0.1487
+          - 0.2057
           size_m:
           - 0.12
           - 0.023
           - 0.099
           source: estimate from the catalogue class
+        - bom: SAF-002
+          component: bay_din_tb
+          mass_kg: 0.068
+          com_m:
+          - 0.2706
+          - -0.1393
+          - 0.1371
+          size_m:
+          - 0.031
+          - 0.047
+          - 0.044
+          source: estimate from the catalogue class
         - bom: SAF-003
-          component: rz_k1k2
-          mass_kg: 0.9
+          component: rz_k1k2_1
+          mass_kg: 0.45
           com_m:
           - -0.2325
-          - 0.016
-          - 0.1774
+          - -0.023
+          - 0.1588
+          size_m:
+          - 0.045
+          - 0.073
+          - 0.078
+          source: estimate from the catalogue class
+        - bom: SAF-003
+          component: rz_k1k2_2
+          mass_kg: 0.45
+          com_m:
+          - -0.2325
+          - 0.055
+          - 0.1588
           size_m:
           - 0.045
           - 0.073
@@ -1010,7 +1235,7 @@ groups:
           com_m:
           - -0.326
           - -0.138
-          - 0.2316
+          - 0.2232
           size_m:
           - 0.08
           - 0.05
@@ -1020,7 +1245,7 @@ groups:
           component: reset_button
           mass_kg: 0.12
           com_m:
-          - 0.3899
+          - 0.368
           - -0.13
           - 0.1425
           size_m:
@@ -1034,7 +1259,7 @@ groups:
           com_m:
           - -0.335
           - 0.11
-          - 0.1066
+          - 0.1033
           size_m:
           - 0.03
           - 0.02
@@ -1044,25 +1269,25 @@ groups:
           component: tof
           mass_kg: 0.01
           com_m:
+          - -0.0
           - 0.0
-          - 0.0001
-          - 0.0921
+          - 0.0926
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: datasheet 5 g each
         - bom: SNS-002
           component: ultrasonic
           mass_kg: 0.236
           com_m:
           - 0.0005
-          - 0.0001
-          - 0.0913
+          - 0.0
+          - 0.0928
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: datasheet 59 g each
         - bom: SNS-003
           component: harness
@@ -1072,9 +1297,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: WCH-004
           component: rz_kchg
@@ -1082,7 +1307,7 @@ groups:
           com_m:
           - -0.2945
           - 0.113
-          - 0.0798
+          - 0.0727
           size_m:
           - 0.035
           - 0.03
@@ -1096,9 +1321,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: WCH-006
           component: harness
@@ -1108,9 +1333,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: estimate
         - bom: WIR-001
           component: harness
@@ -1120,9 +1345,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: computed from route lengths (cable_list.csv)
         - bom: WIR-002
           component: harness
@@ -1132,9 +1357,9 @@ groups:
           - 0.0
           - 0.2
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.0
+          - 0.0
+          - 0.0
           source: computed from route lengths
         - bom: MEC-001
           component: chassis
@@ -1144,57 +1369,24 @@ groups:
           - 0.0
           - 0.15
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.78
+          - 0.582
+          - 0.165
           source: CAD volume x 7850 kg/m3 (steel assumed), computed
-        mass_kg: 69.737
+        mass_kg: 66.63
         com_m:
-        - -0.055
-        - -0.0038
-        - 0.111
+        - -0.0637
+        - -0.0037
+        - 0.057
         inertia_kgm2:
-          ixx: 2.17994
-          iyy: 3.46856
-          izz: 1.61354
+          ixx: 2.15305
+          iyy: 2.57976
+          izz: 3.87909
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.0
         - 0.0
         - 0.098
-  sensors:
-    state: external_nominal
-    source: ZED Mini and its bracket (BOM)
-    owner: upper body (A6)
-    links:
-      head_camera_link:
-        items:
-        - bom: ARM-011
-          component: head_camera_bracket
-          mass_kg: 0.05
-          com_m:
-          - 0.27
-          - 0.0
-          - 1.2035
-          size_m:
-          - 0
-          - 0
-          - 0
-          source: estimate
-        mass_kg: 0.05
-        com_m:
-        - -0.012
-        - 0.0
-        - -0.0195
-        inertia_kgm2:
-          ixx: 0.0
-          iyy: 0.0
-          izz: 0.0
-        inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
-        link_origin_m:
-        - 0.282
-        - 0.0
-        - 1.223
   equipment:
     state: external_nominal
     source: Getac ZX80 and head light supplier figures (BOM)
@@ -1210,9 +1402,9 @@ groups:
           - 0.0
           - 0.8895
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.021
+          - 0.158
+          - 0.017
           source: datums head_light_mass (upper bound)
         mass_kg: 0.11
         com_m:
@@ -1220,9 +1412,9 @@ groups:
         - 0.0
         - -0.0771
         inertia_kgm2:
-          ixx: 0.0
-          iyy: 0.0
-          izz: 0.0
+          ixx: 0.00023
+          iyy: 1.0e-05
+          izz: 0.00023
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.31
@@ -1238,9 +1430,9 @@ groups:
           - 0.0
           - 1.025
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.018
+          - 0.15
+          - 0.234
           source: datums getac_tablet_mass
         mass_kg: 0.59
         com_m:
@@ -1248,9 +1440,9 @@ groups:
         - 0.0
         - -0.055
         inertia_kgm2:
-          ixx: 0.0
-          iyy: 0.0
-          izz: 0.0
+          ixx: 0.0038
+          iyy: 0.00271
+          izz: 0.00112
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.3088
@@ -1275,6 +1467,30 @@ groups:
           - 0.04
           - 0.06
           source: estimate
+        - bom: LFT-001
+          component: lift_stop_sensors
+          mass_kg: 0.09
+          com_m:
+          - 0.0
+          - 0.0
+          - 0.2
+          size_m:
+          - 0.016
+          - 0.048
+          - 0.369
+          source: estimate 30 g each
+        - bom: LFT-003
+          component: lift_sensor_brackets
+          mass_kg: 0.06
+          com_m:
+          - 0.0
+          - 0.0
+          - 0.2
+          size_m:
+          - 0.04
+          - 0.04
+          - 0.375
+          source: estimate
         - bom: MEC-018
           component: lift_column
           mass_kg: 11.7
@@ -1283,19 +1499,19 @@ groups:
           - 0.0
           - 0.569
           size_m:
-          - 0
-          - 0
-          - 0
+          - 0.24
+          - 0.06
+          - 0.505
           source: datums lift_mass_dold_v4_350 (catalogue)
-        mass_kg: 11.76
+        mass_kg: 11.91
         com_m:
-        - -0.0007
+        - -0.0014
         - 0.0
-        - 0.2639
+        - 0.2593
         inertia_kgm2:
-          ixx: 0.00276
-          iyy: 0.00386
-          izz: 0.00112
+          ixx: 0.27672
+          iyy: 0.33097
+          izz: 0.06134
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.06
@@ -1308,39 +1524,99 @@ groups:
     links:
       lift_carriage_link:
         items:
+        - bom: LFT-004
+          component: flag_rod
+          mass_kg: 0.22
+          com_m:
+          - -0.094
+          - 0.0393
+          - 0.7083
+          size_m:
+          - 0.02
+          - 0.022
+          - 0.43
+          source: estimate 0.5 kg/m
+        - bom: LFT-005
+          component: rod_corner_bracket
+          mass_kg: 0.02
+          com_m:
+          - -0.093
+          - 0.038
+          - 0.824
+          size_m:
+          - 0.02
+          - 0.02
+          - 0.023
+          source: estimate
+        - bom: LFT-006
+          component: lift_flag
+          mass_kg: 0.014
+          com_m:
+          - -0.1005
+          - 0.027
+          - 0.424
+          size_m:
+          - 0.045
+          - 0.002
+          - 0.02
+          source: volume x 7850
+        - bom: MEC-003
+          component: arm_profile
+          mass_kg: 1.5
+          com_m:
+          - 0.24
+          - 0.0
+          - 1.014
+          size_m:
+          - 0.122
+          - 0.064
+          - 0.34
+          source: estimate 4.4 kg/m
+        - bom: MEC-004
+          component: adapter_plate
+          mass_kg: 0.97
+          com_m:
+          - 0.0875
+          - 0.0
+          - 0.839
+          size_m:
+          - 0.425
+          - 0.1
+          - 0.01
+          source: volume x 2700 kg/m3
         - bom: MEC-012
           component: getac_pocket
           mass_kg: 0.461
           com_m:
-          - 0.3042
-          - -0.0007
-          - 1.0125
+          - 0.3153
+          - 0.0
+          - 1.0268
           size_m:
           - 0.031
           - 0.18
           - 0.269
           source: design-intent volume x density
-        - bom: UI-002
-          component: getac_pocket
-          mass_kg: 0.461
+        - bom: SAF-001
+          component: second_estop
+          mass_kg: 0.15
           com_m:
-          - 0.3042
-          - -0.0007
-          - 1.0125
+          - 0.06
+          - -0.0
+          - 0.8851
           size_m:
-          - 0.031
-          - 0.18
-          - 0.269
-          source: design-intent volume x density
-        mass_kg: 0.922
+          - 0.047
+          - 0.04
+          - 0.082
+          source: estimate 0.15 kg each
+        mass_kg: 3.335
         com_m:
-        - 0.2442
-        - -0.0007
-        - 0.1785
+        - 0.1125
+        - 0.0029
+        - 0.1013
         inertia_kgm2:
-          ixx: 0.00805
-          iyy: 0.00563
-          izz: 0.00256
+          ixx: 0.06143
+          iyy: 0.11824
+          izz: 0.0627
         inertia_note: sum of the component boxes (uniform density) about the link centre of mass, by the parallel-axis theorem; products of inertia not given
         link_origin_m:
         - 0.06
@@ -1348,18 +1624,18 @@ groups:
         - 0.834
 totals:
   L1000:
-    mass_kg: 95.43
+    mass_kg: 94.97
     com_m:
-    - 0.0187
-    - -0.0028
-    - 0.3368
+    - 0.0178
+    - -0.0025
+    - 0.3179
     frame: base_footprint, bp000
   L1350:
-    mass_kg: 95.43
+    mass_kg: 94.97
     com_m:
-    - 0.0187
-    - -0.0028
-    - 0.4121
+    - 0.0178
+    - -0.0025
+    - 0.3919
     frame: base_footprint, bp000
 comparison:
   combined_model_urdf_kg:
@@ -1370,13 +1646,13 @@ comparison:
     sensors: 0.063
   combined_model_total_kg: 31.43
   roadmap_kg:
-    openarm: 12.26
-    base: 69.74
-    sensors: 0.05
+    openarm: 12.28
+    sensors: 0.11
+    base: 66.63
     equipment: 0.7
-    lift: 11.76
-    lift_carriage: 0.92
-  roadmap_total_kg: 95.43
+    lift: 11.91
+    lift_carriage: 3.33
+  roadmap_total_kg: 94.97
   base_urdf_kg: 6.7
-  note: 'The base URDF at the PLATFORM-PIN carries 6.7 kg in total; the roadmap base group from BOM Issue 7.14 is 69.7 kg. Upper-body groups: see mass_provenance.yaml
+  note: 'The base URDF at the PLATFORM-PIN carries 6.7 kg in total; the roadmap base group from BOM Issue 7.14 is 66.6 kg. Upper-body groups: see mass_provenance.yaml
     (lift 11.7 kg, equipment 0.70 kg, sensors 0.063 kg, OpenArm upstream nominals).'

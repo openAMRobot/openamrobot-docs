@@ -32,9 +32,6 @@ ids:
   "interference|battery_tray_right / castor_rear_right": GI-109
   "interference|bay_usbcan_1 / bay_usbhub": GI-116
   "layout|Jetson Orin NX on J401 position (A2)": GI-119
-  "to solve before receiver installation|TZBOT receiver / rear_panel (inside the 15 mm offset (metal-free margin))": GI-121
-  "to solve before receiver installation|TZBOT receiver / tof_mount_rear (inside the 15 mm offset (metal-free margin))": GI-122
-  "to solve before receiver installation|TZBOT receiver / tof_rear (inside the 15 mm offset (metal-free margin))": GI-123
   "services|Disconnect handle and SB50 access": GI-124
   "interference|battery_tray_left / rz_kchg": GI-134
   "interference|battery_tray_right / rz_bms": GI-135
@@ -122,6 +119,9 @@ closed:
   GI-115: {key: "interference|bay_pwr029 / bay_pwr032", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
   GI-117: {key: "interference|bay_usbcan_2 / bay_usbhub", reason: "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"}
   GI-118: {key: "interference|rz_fba / rz_pwr017_1", reason: "no longer reported by the analysis"}
+  GI-121: {key: "to solve before receiver installation|TZBOT receiver / rear_panel (inside the 15 mm offset (metal-free margin))", reason: "closed: the receiver sits 20 mm in front of the rear panel in its 3D-printed plastic frame, so no metal is within 20 mm of its sides (owner decision 8 Nov 2026, P-03 rev20.5 item 29)"}
+  GI-122: {key: "to solve before receiver installation|TZBOT receiver / tof_mount_rear (inside the 15 mm offset (metal-free margin))", reason: "closed: the receiver sits 20 mm in front of the rear panel in its 3D-printed plastic frame, so no metal is within 20 mm of its sides (owner decision 8 Nov 2026, P-03 rev20.5 item 29)"}
+  GI-123: {key: "to solve before receiver installation|TZBOT receiver / tof_rear (inside the 15 mm offset (metal-free margin))", reason: "closed: the receiver sits 20 mm in front of the rear panel in its 3D-printed plastic frame, so no metal is within 20 mm of its sides (owner decision 8 Nov 2026, P-03 rev20.5 item 29)"}
   GI-125: {key: "interference|battery_series_link / rz_batcon", reason: "closed: PWR-018 sits on the 8S series link by design (declared contact, A9)"}
   GI-126: {key: "layout|Rear layout (A9) / 25 mm\u00b2 cable rules", reason: "closed 3 Nov 2026: F0 across the plate front edge, CBL-P01 153 mm polyline (126 mm on the R 63 bend), one 90 degree bend, legs 68 / 85 mm; CBL-P02 150 mm straight"}
   GI-127: {key: "interference|rz_brake / rz_fba", reason: "closed 3 Nov 2026: brake suppression moved in the rear power module layout (rear_power.py)"}

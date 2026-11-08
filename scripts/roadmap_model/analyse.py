@@ -459,7 +459,7 @@ def main():
                 ("camera_mount", "base_camera"), ("ultrasonic", "ultrasonic"), ("tof", "tof"), ("ultrasonic", "us_locknut"), ("compute", "electronics_bracket"),
                 ("controller_plate", "*"), ("base_controller", "controller_plate"), ("imu", "electronics_bracket"), ("motor_driver", "driver_mount"),
                 ("battery", "battery_tray"), ("hub_motor", "motor_brackets"), ("castor", "shims"), ("getac", "getac_"), ("head_light", "getac_pocket"),
-                ("getac_second_position_ghost", "*"), ("rear_estop_clear_ghost", "*"), ("k1k2_option_b", "*"), ("tz_receiver", "*"), ("estop", "front_panel"),
+                ("getac_second_position_ghost", "*"), ("rear_estop_clear_ghost", "*"), ("k1k2_option_b", "*"), ("tz_receiver", "*"), ("tz_receiver_frame", "*"), ("estop", "front_panel"),
                 ("reset_button", "front_panel"), ("feedthru", "side_panel"), ("rz_disc", "rear_panel"), ("rz_sb50", "rear_panel"), ("fasteners", "*"),
                 ("harness_fittings", "*"), ("shims", "*"), ("us_locknut", "*"), ("lift_bolt_keepout", "*"),
                 ("lift_sensor_bracket", "lift_sensor_bracket"), ("flag_rod", "lift_flag"), ("rear_estop_housing", "second_estop"),
@@ -746,6 +746,7 @@ def main():
               OWN["nav"], "sensor view")
 
     # ---- mass and stability
+    MASS_SAME_PART = {"UI-002": "MEC-012"}   # BOM 7.14 lists the Getac portrait mount twice (MEC-012 adapter, UI-002 mount, same 0.461 kg part)
     cov = list(csv.DictReader(open(os.path.join(MODEL, "bom_coverage.csv"))))
     mass_items = []
     for r in cov:
@@ -754,6 +755,8 @@ def main():
         except ValueError:
             continue
         if r["onboard"] == "y" and m > 0:
+            if r["id"] in MASS_SAME_PART and any(x[0] == MASS_SAME_PART[r["id"]] for x in mass_items):
+                continue   # the same physical part as an earlier BOM line: counted once (8 Nov 2026)
             mass_items.append((r["id"], m, r["model_component"]))
     # MEC-001 from CAD volume
     def vol(v, f):
@@ -775,7 +778,7 @@ def main():
             for p in scene:
                 if p.id == pid or p.cid == pid or p.id.startswith(pid + "_"):
                     w = p.world({"bp": "bp000", "travel": tr if p.group == "mov" else 0})
-                    pts.append(w.mean(0))
+                    pts.append((w.min(0) + w.max(0)) / 2)   # box centre (8 Nov 2026: the vertex mean put the cells 66 mm high)
         return np.mean(pts, 0) if pts else None
     res = {}
     placed_mass = {}
@@ -911,9 +914,9 @@ def main():
               TZ["source"] + "; owner correction of 2 Nov 2026 (bottom 2 mm below the base sheet)", "to solve before the receiver is installed (receiver higher, recessed transmitter or a low ramp)",
               OWN["mech"], "to solve before receiver installation")
         for k, v in sorted(RLa["metal_in_margin_mm"].items()):
-            issue("minor", "TZBOT receiver / %s (inside the 15 mm offset (metal-free margin))" % k, "prepared, installed later",
-                  "%.1f mm from the receiver" % v, ">= 15 mm offset from any side of the receiver (owner decision 8 Nov 2026)", "TZBOT WCM-500-24 manual V2.5; receiver at the rear panel (owner, 2 Nov 2026)",
-                  "to solve before the receiver is installed (non-metal panel insert or a receiver further forward); TF-Luna and its PETG mount are mostly non-metal: ask TZBOT",
+            issue("minor", "TZBOT receiver / %s (inside the 20 mm metal-free frame)" % k, "prepared, installed later",
+                  "%.1f mm from the receiver" % v, ">= 20 mm from the receiver sides (TZBOT manual V2.5, A >= 2 cm; plastic frame, owner decision 8 Nov 2026)", "TZBOT WCM-500-24 manual V2.5; receiver at the rear panel (owner, 2 Nov 2026)",
+                  "to solve before the receiver is installed (the 20 mm plastic frame keeps metal out; TF-Luna and its PETG mount are mostly non-metal)",
                   OWN["mech"], "to solve before receiver installation")
 
     # ---- services and fits from the build summary
@@ -948,12 +951,12 @@ def main():
               "rear power owner report rev 2 (evans-kwashie, 2 Nov 2026); owner decision of 3 Nov 2026 (15 mm receiver gap); build_summary.json gi080",
               "verify the Daly, 5007100, 6004, 7748, 5046, GX11CAC and busbar outlines and stud positions on drawings; CAD the shelves and busbars (harness_cad_changes.csv)",
               OWN["elec"], "verify")
-        near_ = fit_.get("within_15mm_of_receiver", [])
+        near_ = fit_.get("inside_receiver_metal_free_zone", [])
         if near_:
-            issue("minor", "TZBOT receiver / parts within 15 mm (non-metal)", "receiver prepared, installed later; 15 mm gap to the power plate (owner decision 3 Nov 2026)",
-                  "within 15 mm of the receiver: %s; specified non-metallic (G10 plate, POM standoffs, PA66 or PEEK fasteners, plastic part feet)" % ", ".join(
+            issue("minor", "TZBOT receiver / parts inside the metal-free zone (non-metal)", "receiver prepared, installed later; 15 mm gap to the power plate (owner decision 3 Nov 2026)",
+                  "inside the zone (20 mm on the sides, 15 mm above): %s; specified non-metallic (G10 plate, POM standoffs, PA66 or PEEK fasteners, plastic part feet)" % ", ".join(
                       "%s %.1f mm" % (n_["part"], n_["gap_mm"]) for n_ in near_),
-                  "no metal within 15 mm of any side of the receiver (owner decision 8 Nov 2026; TZBOT WCM-500-24 manual V2.5 asks 20 mm)", "TZBOT manual V2.5; rear_power.py",
+                  "no metal within 20 mm of the receiver sides (TZBOT manual V2.5, A >= 2 cm; 3D-printed plastic frame, design by the mechanical owner) and 15 mm above (owner decision 8 Nov 2026; TZBOT recommends 20 mm)", "TZBOT manual V2.5; rear_power.py",
                   "warning: confirm with TZBOT that the non-metal parts and the K1/K2 bases at 18 mm are acceptable", OWN["elec"], "verify with supplier")
     fg_ = summ.get("flag_guide")
     if fg_:
@@ -1017,7 +1020,7 @@ def main():
         ch_ = sd["energy_chain"]
         issue("minor" if not sd["chain_clash"] else "major", "Lift energy chain over the stroke", "L1000 to L1350 (every 25 mm)",
               "chain %.3f m, R %.0f mm, stroke %.0f mm; %s" % (ch_["length"], ch_["R"] * 1000, ch_["stroke"] * 1000, "no contact" if not sd["chain_clash"] else "contact: " + ", ".join(sd["chain_clash"])),
-              "both runs present, loop clear of the cover, no contact with the column, sensors, flag rod, lift node or DP-LIFT", "harness_routes.json chain", "confirm the chain order code and bracket CAD", OWN["elec"], "harness")
+              "both runs present, loop clear of the cover, no contact with the column, sensors, flag rod, lift node or DP-LIFT-L/R", "harness_routes.json chain", "confirm the chain order code and bracket CAD", OWN["elec"], "harness")
         for cid in sd.get("harness_blocked", []):
             issue("major", "No compliant harness route: %s" % cid, "rear bay (A9 layout)", "no route between the two terminals keeps the rules (not over a fuse block or component, R >= 60 mm, no detour over 2.5 x)",
                   "every cable on a supported route", "harness_routes.json unrouted", "rear-layout rework with GI-080 (space a cable passage beside FB-A or move the terminal)", OWN["elec"], "harness")

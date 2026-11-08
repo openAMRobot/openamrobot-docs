@@ -25,8 +25,8 @@ base_sheet: {bottom: 0.052, top: 0.054}
 deck: 0.294
 cover_underside: 0.290      # deck 0.054 + 236 mm (B5)
 # slot between the base panels and the cover skirt (CAD v0.2 base GLB: side, front and rear panel tops z 0.2142 to 0.2150, cover lower edge z 0.2321):
-# the LiDAR looks out through it; owner rule 8 Nov 2026: no cable and no tie in the slot or within 50 mm inside it, all around
-cover_slot: {panel_top: 0.2142, cover_edge: 0.2321, margin: 0.005, depth: 0.050}
+# the LiDAR looks out through it; owner rule 8 Nov 2026 (P-03 rev20.5 item 29): no cable and no tie in the slot band, all around the robot, no inward band
+cover_slot: {panel_top: 0.2142, cover_edge: 0.2321, margin: 0.003, depth: 0.005}   # owner rule 8 Nov 2026 (P-03 rev20.5 item 29): the band at the panels, no 50 mm inward band
 # lift base plate MEC-019, owner decision 2 Nov 2026 (B3): one 10 mm 6082-T6 plate on the centre-frame arch top (z 0.294), bolted from above
 # into the inner arch rivet-nut pattern (CAD MMP.04.00.00.000: 4 x M8 blind rivet nuts at x +/-0.060, y +/-0.050); column screwed from below
 lift_plate: {size: [0.330, 0.140, 0.010], x: [-0.080, 0.250], top: 0.304, arch_bolts: {x: [-0.060, 0.060], y: [-0.050, 0.050]},
@@ -61,18 +61,19 @@ front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0
 # underside (50 mm above the floor). No 240 x 210 mm zone (withdrawn). No transmitter is drawn.
 tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5, touch_clear: 0.001,
                  status: "prepared, installed later", below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
-                 align: [0.020, 0.020], metal_clear: 0.015,   # owner decision 8 Nov 2026: 15 mm offset from any side (was 20 mm)
+                 align: [0.020, 0.020], metal_clear: 0.020, metal_clear_above: 0.015,   # owner decision 8 Nov 2026: no metal within 20 mm of the receiver sides (manual V2.5 Figure 4, A >= 2 cm), held by a plastic frame on the steel deck; 15 mm above (owner, TZBOT recommends 20 mm)
+                 frame: {width: 0.020, material: "3D-printed plastic (first iteration)", design: "mechanical owner", fixing: "screws to the base sheet; receiver screwed or clipped into the frame"},
                  
                  freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
                  signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",
                            red: "receiver output to battery +", black: "receiver output to battery -"}}
 # rear section (A1, A9): the CAD v0.2 dimensions measured by rear_layout.py are the reference (A9, 2 Nov 2026);
-# side pockets (side-wall inner width - 150) / 2 across, minus the 15 mm offset next to the receiver (owner decision 8 Nov 2026, was 20 mm)
+# side pockets (side-wall inner width - 150) / 2 across, minus the 20 mm metal-free frame next to the receiver (owner decision 8 Nov 2026)
 rear_section: {rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_y: 0.288,
-               power_plate: {t: 0.003, min_above_receiver: 0.015, material: "G10 glass-epoxy (non-metal)"}}   # owner decision 3 Nov 2026: 15 mm gap to the receiver top; owner decision 8 Nov 2026: 15 mm offset from any side of the receiver
+               power_plate: {t: 0.003, min_above_receiver: 0.015, material: "G10 glass-epoxy (non-metal)"}}   # owner decisions 3 and 8 Nov 2026: 15 mm above the receiver top (TZBOT recommends 20 mm)
 # 8 x EVE LF105 (200 h x 130 x 38 mm, 1.98 kg) upright, 4 per side pocket, 8S (replaces the single row across the robot, B-02 rev18.10)
 cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002,
-        tray_from_receiver: 0.020}   # trays stay 20 mm beside the receiver (rear power module layout of 3 Nov); the 15 mm offset of 8 Nov is the minimum
+        tray_from_receiver: 0.020}   # trays 20 mm beside the receiver: the metal-free frame width (owner decision 8 Nov 2026)
 tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (installed with the receiver), same outer size (manual V2.5); not drawn
 emc_flag_distance: 0.050      # roadmap screening value until TZBOT gives a minimum distance
 front_bay_layout: single   # owner correction A2 (2 Nov 2026): one layout, one plate on the base sheet; second tier only if one plate does not fit

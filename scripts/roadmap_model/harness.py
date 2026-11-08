@@ -16,7 +16,8 @@ Base routes (base_footprint, bp000, L1000) are found on a 5 mm voxel grid of the
 - the cost of a step is low within 15 mm of a structure surface (tie base), higher within 40 mm (tie on a standoff)
   and high in free air, so routes follow the floor, the side panels and the uprights; cells already used by a cable
   are cheaper (bundles form trunks); sensitive signal cables (CAN, USB, SPI, LiDAR) pay extra within 30 mm of power.
-The upper-body harness is drawn from fixed points: deck exit and disconnect point DP-LIFT behind the lift base plate,
+The upper-body harness is drawn from fixed points: two cable openings left and right of the lift (power left, signal right, owner
+decision 8 Nov 2026) with the disconnect points DP-LIFT-L and DP-LIFT-R on the lift base plate,
 a fixed sleeve on the -y face of the static column, the energy chain behind the column, the moving section under the
 adapter plate and up the arm post.
 """
@@ -49,6 +50,15 @@ END_FREE = 0.060            # ... except within 60 mm of its connectors (local e
 AXIS_TOL_DEG = 15.0         # route segments within 15 degrees of the structure axes (except declared 45 degree transitions)
 SEP_WORK = 0.030            # working separation sensitive / power (verify against the interface documents; no value documented)
 DETOUR = 4.0                # a grid route longer than 4 x direct (and 400 mm more) means the layout has no passage (corridor routes are longer by design)
+# two lift cable openings, 50 x 25 mm (x, y) on the channel centre lines, owner decision 8 Nov 2026
+DECK_OPEN = {"L": ([-0.0025, 0.050, 0.285], [0.0475, 0.075, 0.306]), "R": ([-0.0025, -0.075, 0.285], [0.0475, -0.050, 0.306])}   # centres on grid cell centres
+POWER_DOMS = ("BAT", "SAFE", "R24", "LV")   # left opening; SIG through the right opening
+
+
+def dp_side(dom):
+    return "L" if dom in POWER_DOMS else "R"
+
+
 # declared cable openings in structure (CAD changes): id, part, box
 OPENINGS = [{"id": "slot in the electronics bracket left wall (left hub-motor lead and brake)", "part": "electronics_bracket",
              "lo": [-0.016, 0.068, 0.120], "hi": [0.016, 0.096, 0.165]},
@@ -57,7 +67,19 @@ OPENINGS = [{"id": "slot in the electronics bracket left wall (left hub-motor le
             {"id": "slot in the centre-bracket left side wall for the CH-B1 branch (edge trim)", "part": "centre_bracket", "lo": [-0.058, 0.160, 0.215], "hi": [-0.022, 0.182, 0.240]},
             {"id": "slot in the centre-bracket right side wall for the CH-B2 branch (edge trim)", "part": "centre_bracket", "lo": [-0.058, -0.182, 0.215], "hi": [-0.022, -0.160, 0.240]},
             {"id": "slot in the electronics bracket rear wall (both hub-motor leads from the ZLAC8015D motor ports, edge trim)", "part": "electronics_bracket",
-             "lo": [-0.022, -0.075, 0.115], "hi": [-0.010, 0.075, 0.168]}]   # cables drawn as parts: crossing them is not "over a component"
+             "lo": [-0.022, -0.075, 0.115], "hi": [-0.010, 0.075, 0.168]},
+            # owner decision 8 Nov 2026: two cable openings left and right of the lift, near the middle of the platform length, through the
+            # lift base plate MEC-019, the arch top sheet and the backing plate (between the 4 x M8 arch bolts; edge grommet in each)
+            {"id": "slot in the centre-bracket rear wall at the CH-C1 end (power from the rear module into the channel, edge trim)", "part": "centre_bracket",
+             "lo": [-0.142, 0.040, 0.212], "hi": [-0.118, 0.085, 0.250]},
+            {"id": "slot in the centre-bracket rear wall at the CH-C2 end (signal from the rear module into the channel, edge trim)", "part": "centre_bracket",
+             "lo": [-0.142, -0.085, 0.212], "hi": [-0.118, -0.040, 0.250]},
+            {"id": "slot in the centre-bracket front wall at the CH-C1 end (front bay into the channel, edge trim)", "part": "centre_bracket",
+             "lo": [0.090, 0.040, 0.212], "hi": [0.145, 0.085, 0.250]},
+            {"id": "slot in the centre-bracket front wall at the CH-C2 end (front bay into the channel, edge trim)", "part": "centre_bracket",
+             "lo": [0.090, -0.085, 0.212], "hi": [0.145, -0.040, 0.250]},
+            {"id": "lift cable opening left (power: BAT, SAFE, R24, LV)", "part": "lift_base_plate", "lo": DECK_OPEN["L"][0], "hi": DECK_OPEN["L"][1]},
+            {"id": "lift cable opening right (signal: CAN, USB, sensors)", "part": "lift_base_plate", "lo": DECK_OPEN["R"][0], "hi": DECK_OPEN["R"][1]}]   # cables drawn as parts: crossing them is not "over a component"
 
 STRUCT_GLB = {"base_plate", "side_panel_left", "side_panel_right", "front_panel", "rear_panel", "centre_bracket",
               "electronics_bracket", "driver_mount", "support_front_left", "support_front_right", "support_rear_left",
@@ -65,7 +87,7 @@ STRUCT_GLB = {"base_plate", "side_panel_left", "side_panel_right", "front_panel"
               "ultrasonic_mount_front_right", "ultrasonic_mount_rear_left", "ultrasonic_mount_rear_right", "tof_mount_front",
               "tof_mount_rear", "controller_plate"}
 NO_SUPPORT_GLB = {"cover", "cover_flange_front", "cover_flange_rear"}   # removable: never a tie surface, never crossed
-STRUCT_PLACEMENT = ("bay_plate", "rear_plate", "motor_brackets", "lift_base_plate", "rp_", "side_plates", "ch_")
+STRUCT_PLACEMENT = ("bay_plate", "rear_plate", "motor_brackets", "lift_base_plate", "rp_", "side_plates", "ch_", "tz_receiver_frame")
 IGNORE_PLACEMENT = ("harness", "fasteners", "shims", "can_term", "base_cutout", "service_loop", "lift_energy_chain", "us_locknut",
                     "feedthru")
 TOP_ACCESS = ("rz_fba", "rz_fbb", "rz_f0", "rz_fchg", "rz_pre", "bay_fbc")
@@ -84,7 +106,7 @@ ZONES = [
     {"id": "Z-FBR", "name": "front bay right side zone (signal: USB hub, USB-CAN-FD, LiDAR UART)", "lo": [0.130, -0.250, 0.054], "hi": [0.280, -0.172, 0.205],
      "service": "cover off: parts on the right side plate; feed-throughs in the right side panel"},
     {"id": "Z-COL", "name": "lift column (static)", "lo": [-0.200, -0.100, 0.304], "hi": [0.200, 0.100, 0.834],
-     "service": "DP-LIFT disconnects every lift cable; sleeve P-clips on the -y T-slot; flag rod guide on the +y face at the head"},
+     "service": "DP-LIFT-L and DP-LIFT-R disconnect every lift cable; sleeve P-clips on the -y T-slot; flag rod guide on the +y face at the head"},
     {"id": "Z-UPR", "name": "moving upper body (adapter plate, arm post, arms, head)", "lo": [-0.200, -0.400, 0.834], "hi": [0.400, 0.400, 1.700],
      "service": "upper devices unplug at their own connectors; arms at the arm base connectors"},
 ]
@@ -95,23 +117,26 @@ CORRIDORS = [
     {"id": "C-R", "name": "right side corridor: floor and side-panel lane beside the front side zone, over-wheel guard R (the rear part beside the right tray is the BMS slot)",
      "lo": [-0.110, -0.288, 0.054], "hi": [0.320, -0.255, 0.290]},
     {"id": "CH-C1", "name": "central power channel over the drive section, left (SAFE, BAT, motor driver power)", "lo": [-0.135, 0.040, 0.212], "hi": [0.098, 0.085, 0.240]},
-    {"id": "CH-C2", "name": "central signal channel over the drive section, right (CAN, USB, sensor lines; deck exit to DP-LIFT)", "lo": [-0.135, -0.085, 0.212], "hi": [0.098, -0.040, 0.240]},
+    {"id": "CH-C2", "name": "central signal channel over the drive section, right (CAN, USB, sensor lines; right lift opening to DP-LIFT-R)", "lo": [-0.135, -0.085, 0.212], "hi": [0.098, -0.040, 0.240]},
     {"id": "C-FP", "name": "front panel lane behind the front sensors", "lo": [0.330, -0.190, 0.054], "hi": [0.370, 0.190, 0.200]},
     {"id": "C-RM", "name": "rear module exits over the F0 holder into the arch opening (|y| < 0.090)", "lo": [-0.190, -0.090, 0.218], "hi": [-0.135, 0.090, 0.270]},
 ]
 
 # declared protected passages (cables may run over a component top here; they are supported by the channel or guard):
 # the two central channels over the drive section and the over-wheel guards
-PASSAGES = [{"id": "CH-C1 central power channel over the drive section", "lo": [-0.140, 0.040, 0.215], "hi": [0.100, 0.085, 0.250]},
-            {"id": "CH-C2 central signal channel over the drive section", "lo": [-0.140, -0.085, 0.215], "hi": [0.100, -0.040, 0.250]},
+PASSAGES = [{"id": "CH-C1 central power channel over the drive section", "lo": [-0.140, 0.040, 0.215], "hi": [0.145, 0.085, 0.250]},
+            {"id": "CH-C2 central signal channel over the drive section", "lo": [-0.140, -0.085, 0.215], "hi": [0.145, -0.040, 0.250]},
             {"id": "fan lead strip on the arch front wall (fan bracket)", "lo": [0.097, -0.045, 0.235], "hi": [0.160, 0.045, 0.290]},
             {"id": "CH-B1 power branch to the left side corridor (over the wheel, through the arch side wall)", "lo": [-0.065, 0.040, 0.206], "hi": [-0.015, 0.240, 0.250]},
             {"id": "CH-B2 signal branch to the right side corridor (over the wheel, through the arch side wall)", "lo": [-0.065, -0.240, 0.206], "hi": [-0.015, -0.040, 0.250]},
+            {"id": "C-RM rear module exit channel from FB-B over F0 into the arch (U-channel on the rear power module)", "lo": [-0.300, -0.090, 0.218], "hi": [-0.135, 0.090, 0.270]},
+            {"id": "C-FL front tier to CH-C1 (left lift cable opening)", "lo": [0.098, 0.040, 0.215], "hi": [0.160, 0.085, 0.272]},
+            {"id": "C-FR front tier to CH-C2 (right lift cable opening)", "lo": [0.098, -0.085, 0.215], "hi": [0.160, -0.040, 0.272]},
             {"id": "over-wheel guard L", "lo": [-0.135, 0.195, 0.206], "hi": [0.135, 0.288, 0.290]},   # 8 Nov 2026: from y 0.195, so cables climb
             {"id": "over-wheel guard R", "lo": [-0.135, -0.288, 0.206], "hi": [0.135, -0.195, 0.290]}]  # inboard of the cover slot onto the guard
 BRANCH_X = (-0.060, -0.020)   # cross branches of the central channels: through the arch side wall above the wheel guard
 CHANNELS = [{"id": "ch_central_power", "name": "CH-C1 central power channel (SAFE / BAT) over the drive section, left", "y": [0.040, 0.085]},
-            {"id": "ch_central_signal", "name": "CH-C2 central signal channel (CAN, USB, sensor lines) over the drive section, right (deck exit side)", "y": [-0.085, -0.040]}]
+            {"id": "ch_central_signal", "name": "CH-C2 central signal channel (CAN, USB, sensor lines) over the drive section, right (right lift opening)", "y": [-0.085, -0.040]}]
 CH_X, CH_FLOOR, CH_TOP = (-0.135, 0.098), 0.212, 0.240
 CH_DROP = (-0.100, -0.040)   # drop-out in both channel floors above the motor driver (edge trim): motor driver power, CAN1
 
@@ -311,21 +336,24 @@ def build_model(ctx):
     # LiDAR scan plane 222.05 mm +- 5 mm in the open sector (+-95 deg from lidar_link at x 0.330): no cable or tie in it
     keep.append({"id": "lidar_scan_band", "lo": [0.0, -0.295, 0.2120], "hi": [0.400, 0.295, 0.2325], "sector": {"x": 0.330, "y": 0.0, "deg": 95.0},
                  "members": ["lidar"], "why": "RPLIDAR S3 scan plane +-5 mm (and 5 mm margin) in the open sector"})
-    # owner rule 8 Nov 2026: no cable and no tie in the slot between the base panels and the cover skirt (the LiDAR looks out
-    # through it and it is the visible band around the robot), nor within 50 mm inside it; one box per side, so only the parts that
-    # sit in the band (LiDAR at the front; FB-A and Kpre at the rear panel, see geometry issues) let their own leads in
+    # owner rule 8 Nov 2026 (P-03 rev20.5 item 29): the slot is the gap between the lower edge of the top cover and the upper edges
+    # of the side, front and rear panels (214 to 232 mm). No cable, busbar or tie in it or on a panel upper edge, all around the robot
+    # (the LiDAR looks out through the front and the slot is visible); there is no inward band. Inside the base, parts may rise
+    # above the slot level (rear section) and their leads may leave at the top and run down inside.
     cs = FACTS["cover_slot"]
     z0_, z1_ = cs["panel_top"] - cs["margin"], cs["cover_edge"] + cs["margin"]
-    yi, xf_, xr_ = FACTS["rear_section"]["side_wall_inner_y"] - cs["depth"], 0.370 - cs["depth"], -0.370 + cs["depth"]
-    keep.append({"id": "cover_slot_left", "lo": [-0.390, yi, z0_], "hi": [0.390, 0.295, z1_], "members": [], "why": "slot between the left side panel and the cover skirt (owner rule 8 Nov 2026)"})
-    keep.append({"id": "cover_slot_right", "lo": [-0.390, -0.295, z0_], "hi": [0.390, -yi, z1_], "members": [], "why": "slot between the right side panel and the cover skirt (owner rule 8 Nov 2026)"})
-    keep.append({"id": "cover_slot_front", "lo": [xf_, -0.295, z0_], "hi": [0.395, 0.295, z1_], "members": ["lidar"], "why": "slot between the front panel and the cover skirt; the LiDAR scans through it (owner rule 8 Nov 2026)"})
-    keep.append({"id": "cover_slot_rear", "lo": [-0.395, -0.295, z0_], "hi": [xr_, 0.295, z1_], "members": ["rz_fba", "rz_pre"], "why": "slot between the rear panel and the cover skirt (owner rule 8 Nov 2026); FB-A and Kpre sit in it today (geometry issue)"})
+    yi = 0.193 - cs["depth"]   # side panels: their top flange reaches in to y 0.193 (CAD v0.2); nothing lies on it in the band
+    xf_ = 0.370 - cs["depth"]
+    xr_ = FACTS["rear_section"]["rear_panel_inner_x"] + cs["depth"]
+    for k_, lo_, hi_ in (("left", [-0.395, yi, z0_], [0.395, 0.295, z1_]), ("right", [-0.395, -0.295, z0_], [0.395, -yi, z1_]),
+                         ("front", [xf_, -0.295, z0_], [0.395, 0.295, z1_]), ("rear", [-0.395, -0.295, z0_], [xr_, 0.295, z1_])):
+        keep.append({"id": "cover_slot_" + k_, "lo": lo_, "hi": hi_, "members": ["lidar"] if k_ == "front" else [],
+                     "why": "%s slot between the panel upper edge (side panels: the whole top flange) and the cover, plus 5 mm (owner rule 8 Nov 2026, P-03 rev20.5 item 29)" % k_})
     mf = geo.get("tz_metal_free_zone")
     if mf:
         b = prim_box(mf["prims"][0])
         keep.append({"id": "tz_metal_free_zone", "lo": list(b[0]), "hi": list(b[1]), "members": ["tz_receiver", "tof_rear"],
-                     "why": "receiver 15 mm offset (metal-free margin) (only the receiver's own cables and the rear TF-Luna lead enter it)"})
+                     "why": "receiver metal-free frame (20 mm on the sides, 15 mm above) (only the receiver's own cables and the rear TF-Luna lead enter it)"})
     withdraw = []
     for side in ("left", "right"):
         k = "battery_tray_" + side
@@ -343,7 +371,7 @@ def build_model(ctx):
         withdraw.append({"id": "front_tiers", "lo": [lo[0], lo[1], 0.054], "hi": [hi[0], hi[1], 0.300], "members": mem, "except": notch,
                          "why": "front-bay tiers (lower plate, shelf, DIN carrier) lift out upward (cover off); the shelf notch around the LiDAR spacer is outside it"})
     withdraw.append({"id": "cover", "lo": [-0.390, -0.291, COVER_BAND], "hi": [0.390, 0.291, 0.300], "members": [],
-                     "why": "cover lifts off; only the deck exit behind the lift base plate passes it", "except": [ctx["deck_exit"]]})
+                     "why": "cover lifts off; only the two lift cable openings beside the lift pass it", "except": list(ctx["deck_exits"].values())})
     return V, comps, keep, withdraw, guards
 
 
@@ -787,7 +815,7 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
         forb = kz.copy()
         for k, (g, gf) in over.items():
             if k not in own:
-                forb |= g | ((gf & ~exz if c.get("module") else gf) if "over" not in RELAX else False)
+                forb |= g | ((gf & ~exz if c.get("module") else gf) if "over" not in RELAX else False)   # module cables may pass over module parts
         for z, g in wd:
             if not (own & set(z["members"])):
                 forb |= g
@@ -808,7 +836,7 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
         # supported routes only: within 30 mm of a supporting surface, except near its own connectors, in passages and
         # (module cables) inside the battery and power module
         sup = (d_struct <= SUPPORT_MAX - RES / 2) | pas   # half a cell inside the rule: the check measures to the surfaces (8 Nov 2026)
-        if c.get("module"):
+        if c.get("ez"):   # W01 only (both ends in the module), as the checker applies it; other module cables only at their local exit
             sup |= exz
         for p in (c["a"], c["b"]):
             ce = V.cell(p)
@@ -1082,11 +1110,22 @@ def arc(c, r, a0, a1, y0, y1, n=12):
 def upper_layout(U, ch):
     """Fixed points of the lift and upper-body harness (base_footprint, bp000; moving points at L1000)."""
     ax, top = U["col_axis_x"], U["col_top"]
-    dp = {"inlet": [-0.0975, -0.0575, 0.318], "outlet": [-0.090, -0.047, 0.345], "node": [ax - 0.1325, -0.050, 0.355],
-          "box": [[-0.105, -0.066, 0.306], [-0.060, -0.050, 0.372]]}
-    xs = ax - 0.080                                   # sleeve on the -y face of the static column, 80 mm ahead of its rear face
+    # owner decision 8 Nov 2026: two openings left and right of the lift, near the middle of the platform length; a disconnect
+    # bulkhead DP-LIFT-L / DP-LIFT-R on the lift base plate over each opening (power left, signal right)
+    sides = {}
+    for k_, sg in (("L", 1), ("R", -1)):
+        lo_, hi_ = DECK_OPEN[k_]
+        xc, yc = (lo_[0] + hi_[0]) / 2, (lo_[1] + hi_[1]) / 2
+        xo = ax - 0.060   # bulkhead centred on the lift motor lead axis (x 0 at bp000): the motor lead runs straight in y into the column
+        sides[k_] = {"inlet": [round(xc, 4), round(yc, 4), 0.318], "outlet": [round(xo, 4), sg * 0.047, 0.345],
+                     "box": [[xo - 0.020, min(sg * 0.048, sg * 0.064), 0.306], [xo + 0.020, max(sg * 0.048, sg * 0.064), 0.372]],
+                     "deck": [round(xc, 4), round(yc, 4), 0.296]}
+    xs = ax - 0.060                                   # sleeve straight up the -y face of the static column from DP-LIFT-R (8 Nov 2026)
+    xc_ = ax - 0.175                                  # left bundle crosses behind the lift node to the -y side (clear of the chain)
+    dp = dict(sides["R"], node=[ax - 0.1325, -0.050, 0.355], sides=sides,
+              cross=[sides["L"]["outlet"], [xc_, 0.047, 0.345], [xc_, -0.047, 0.345], [xs, -0.047, 0.345]])
     rr = (xs - ch["x"]) / 2                           # 180 degree turn of the sleeve into the chain fixed end
-    sleeve = [dp["outlet"], [xs, -0.047, 0.345], [xs, -0.047, ch["fixed_z"]]] + \
+    sleeve = [dp["outlet"], [xs, -0.047, ch["fixed_z"]]] + \
         arc([xs - rr, ch["fixed_z"]], rr, 0.0, math.pi, -0.047, ch["y_fixed"])[1:]
     zt = ch["moving_z0"] + 0.051                      # moving trunk under the adapter plate +y edge, on a hung angle
     trunk = [[ch["x"], ch["y_moving"], ch["moving_z0"]], [ch["x"], ch["y_moving"], zt]]
@@ -1107,7 +1146,7 @@ def ortho(a, b, order="zyx"):
     return out
 
 
-def upper_sections(cid, end, U, ch, term):
+def upper_sections(cid, end, U, ch, term, side="R"):
     """Sections of an upper-body cable after DP-LIFT: list of (kind, group, pts). end: the upper terminal key.
     Every run is axis-aligned (3 Nov 2026): along the column T-slots, the hung angle under the adapter plate, the riser on the
     arm post rear face and the post side faces; the chain and the sleeve turn are the only curves."""
@@ -1120,8 +1159,8 @@ def upper_sections(cid, end, U, ch, term):
             a = [T[end][0], dp["node"][1], T[end][2]]
             return [("column", "col", [a, [T[end][0], T[end][1] - 0.020, T[end][2]]])]
         if end == "lift_motor":
-            a = [dp["outlet"][0], dp["outlet"][1], dp["outlet"][2]]
-            return [("column", "col", [a] + ortho(a, T[end], "xzy"))]
+            a = list(dp["sides"][side]["outlet"])
+            return [("column", "col", [a] + ortho(a, T[end], "yxz"))]
         p = list(T[end])
         node = list(T["lift_node"])
         # down the column rear face beside the sensors at y -0.060 (T-slot clips), then into the node's -y face
@@ -1129,7 +1168,8 @@ def upper_sections(cid, end, U, ch, term):
         r = [p[0], -0.060, node[2]]
         return [("column", "col", [p, q, r, [p[0], -0.020, node[2]]])]   # into the node -y face (the node spans the sensor x)
     chain = chain_points(ch, 0.0)
-    secs = [("sleeve", "col", [list(map(float, q)) for q in sleeve]), ("chain", "col", chain)]
+    sl_ = sleeve if side == "R" else dp["cross"] + sleeve[1:]   # the left bundle crosses behind the lift node and joins the sleeve
+    secs = [("sleeve", "col", [list(map(float, q)) for q in sl_]), ("chain", "col", chain)]
     base_mov = trunk + [[xp, ch["y_moving"], zt]]
     p = list(T[end])
     s0 = base_mov[-1]
@@ -1156,8 +1196,8 @@ HARNESSES = [
     {"id": "W04", "name": "Right side trunk", "route": "front bay to the rear bay along the right side: floor lane beside the front tier, over-wheel guard R, lane between the right tray and the side panel"},
     {"id": "W05", "name": "Front sensor harness", "route": "front panel lane behind the front sensors (E-stop, RESET, MB7060 front, TF-Luna front, RPLIDAR, Gemini), into the front tier at the side"},
     {"id": "W07", "name": "Front-tier harness", "route": "inside the front tier (lower plate, shelf, DIN carrier); goes out with the tier"},
-    {"id": "W08", "name": "Lift column harness", "route": "deck exit, DP-LIFT, rear and -y faces of the static column: lift motor, lift node CAN3, lift stop sensors"},
-    {"id": "W09", "name": "Upper-body harness", "route": "deck exit, DP-LIFT, fixed sleeve on the -y face of the static column, energy chain behind the column, moving trunk under the adapter plate, risers at the arm post: arms (power, CAN-FD, wrist cameras), ZED Mini, Getac USB-PD, head light, second E-stop"},
+    {"id": "W08", "name": "Lift column harness", "route": "lift cable openings beside the lift, DP-LIFT-L (lift motor power) and DP-LIFT-R (CAN3, stop sensors), rear and -y faces of the static column: lift motor, lift node CAN3, lift stop sensors"},
+    {"id": "W09", "name": "Upper-body harness", "route": "lift cable openings left (power) and right (signal) of the lift, DP-LIFT-L and DP-LIFT-R, the left bundle behind the lift node to the -y side, fixed sleeve on the -y face of the static column, energy chain behind the column, moving trunk under the adapter plate, risers at the arm post: arms (power, CAN-FD, wrist cameras), ZED Mini, Getac USB-PD, head light, second E-stop"},
 ]
 DEFERRED = {"CBL-P30": "receiver prepared, installed later; KCHG to the receiver output is laid when the receiver is installed (WCH-002)"}
 UP_MOV = {"arm_l", "arm_r", "zed", "getac", "light", "estop2"}
@@ -1199,7 +1239,7 @@ def zones_of(pts, tier_box):
         elif x > 0.137:
             k = "front %s lane" % ("left" if y > 0 else "right")
         elif x > -0.137:
-            k = ("over-wheel guard %s" % ("L" if y > 0 else "R")) if abs(y) > 0.20 and z > 0.19 else ("deck exit" if z > 0.285 else "drive section (arch)")
+            k = ("over-wheel guard %s" % ("L" if y > 0 else "R")) if abs(y) > 0.20 and z > 0.19 else ("lift cable opening" if z > 0.285 else "drive section (arch)")
         elif x > -0.277:
             k = ("rear %s lane (beside the tray)" % ("left" if y > 0 else "right")) if abs(y) > 0.255 else ("battery tray (own)" if abs(y) > 0.097 else "between the trays")
         else:
@@ -1218,8 +1258,9 @@ def run(ctx, F, cache=None):
     ax, top = U["col_axis_x"], U["col_top"]
     eh = F["second_estop"]["housing"]
     TERM["estop2"] = [round(ax - 0.025, 4), round(eh[1] / 2 + 0.002, 4), round(top + 0.010 + 0.014, 4)]   # gland on the +y side
-    deck = [dp["inlet"][0], dp["inlet"][1], 0.296]
-    ctx = dict(ctx, deck_exit=deck)
+    deck = dp["deck"]
+    decks = {k_: v_["deck"] for k_, v_ in dp["sides"].items()}
+    ctx = dict(ctx, deck_exit=deck, deck_exits=decks)
     V, comps, keep, withdraw, guards = build_model(ctx)
     tier = set(withdraw[[w["id"] for w in withdraw].index("front_tiers")]["members"]) if any(w["id"] == "front_tiers" for w in withdraw) else set()
     tier_box = [w for w in withdraw if w["id"] == "front_tiers"][0]
@@ -1269,7 +1310,9 @@ def run(ctx, F, cache=None):
         if up_b:
             m["upper"] = (None, b)
         pa = list(TERM[a])
-        pb = [deck[0], deck[1], 0.2975] if up_b else list(TERM[b])
+        m["dp_side"] = dp_side(dom)
+        dk_ = decks[m["dp_side"]]
+        pb = [dk_[0], dk_[1], 0.2975] if up_b else list(TERM[b])
         m["module"] = any(str(x).startswith(REAR) for x in (a, b))
         fx = (ctx.get("FIXED") or {}).get(cid)
         if fx:
@@ -1278,7 +1321,8 @@ def run(ctx, F, cache=None):
         base_jobs.append({"id": cid, "a": pa, "b": pb, "own": own(a) | own(b), "r": od / 2000, "rmin": m["rmin"] / 1000, "fixed": fx["pts"] if fx else None,
                           "sensitive": is_sensitive(fn, gauge) and dom == "SIG", "power": is_power(dom, gauge), "dom": dom, "up": up_b,
                           "module": any(str(x).startswith(REAR) for x in (a, b)),
-                          "tail": [list(dp["inlet"])] if up_b else []})
+                          "ez": all(str(x).startswith(REAR) or x in ("battery+", "battery-") for x in (a, b)),
+                          "tail": [list(dp["sides"][m["dp_side"]]["inlet"])] if up_b else []})
     order = {"BAT": 0, "SAFE": 1, "R24": 2, "LV": 3, "SIG": 4}
     base_jobs.sort(key=lambda c: (order[c["dom"]], -c["r"], c["id"]))
     key = cache.get("key") if cache else None
@@ -1296,7 +1340,7 @@ def run(ctx, F, cache=None):
     for cid, m in meta.items():
         if "upper" in m and (m["upper"][0] is not None or cid in routes or m["status"].startswith("partly")):
             a, b = m["upper"]
-            for kind, grp, pts in upper_sections(cid, a or b, U, ch, TERM):
+            for kind, grp, pts in upper_sections(cid, a or b, U, ch, TERM, m.get("dp_side") or dp_side(m["dom"])):
                 m["sections"].append({"kind": kind, "group": grp, "pts": [[round(float(v), 4) for v in p] for p in pts]})
             m.setdefault("status", "routed")
         elif m["sections"]:
@@ -1322,7 +1366,7 @@ def run(ctx, F, cache=None):
         a_, b_ = meta[c_]["a"], meta[c_]["b"]
         if meta[c_].get("swap"):
             a_, b_ = b_, a_
-        ends_of[c_] = (IDT.get(a_, a_), IDT.get(b_, b_) if b_ not in UP_MOV and b_ not in UP_COL else "deck exit grommet frame")
+        ends_of[c_] = (IDT.get(a_, a_), IDT.get(b_, b_) if b_ not in UP_MOV and b_ not in UP_COL else "lift cable opening grommet")
     ties = tie_points(V, d_struct, routes, br, ends_of)
     # upper-body clips: sleeve and column on the static column T-slots, moving trunk on the hung angle, risers on the post
     for cid, m in meta.items():
@@ -1337,7 +1381,9 @@ def run(ctx, F, cache=None):
                     if cid not in t["cables"]:
                         t["cables"].append(cid)
     grom = grommets(V, routes, None)
-    grom.append({"id": "G%02d" % (len(grom) + 1), "p": [deck[0], deck[1], 0.294], "on": "deck (arch top sheet) behind the lift base plate: split cable entry", "cables": sorted(c for c in routes if meta[c].get("upper"))})
+    for k_, dk_ in sorted(decks.items()):
+        grom.append({"id": "G%02d" % (len(grom) + 1), "p": [dk_[0], dk_[1], 0.294], "on": "lift cable opening %s (%s) beside the lift: edge grommet" % ("left" if k_ == "L" else "right", "power" if k_ == "L" else "signal"),
+                     "cables": sorted(c for c in routes if meta[c].get("upper") and meta[c].get("dp_side") == k_)})
     xe = TERM["estop2"]
     grom.append({"id": "G%02d" % (len(grom) + 1), "p": [round(xe[0] - 0.010, 4), 0.036, round(top + 0.005, 4)], "on": "adapter plate (second E-stop loop, moving)", "cables": [c for c, m in meta.items() if m["b"] == "estop2"]})
     # labels and disconnect points
@@ -1350,7 +1396,7 @@ def run(ctx, F, cache=None):
         if {m["a"], m["b"]} & {"battery+", "battery-"} or cid == "CBL-P60":
             dps.append("DP-TRAY-%s (tray lead connector)" % ("L" if "battery+" in (m["a"], m["b"]) else "R"))
         if m.get("upper") and m["upper"][0] is None:   # cables between the base and the lift; not the ones that stay on the column
-            dps.append("DP-LIFT (bulkhead behind the lift base plate)")
+            dps.append("DP-LIFT-%s (bulkhead on the lift base plate, %s of the lift)" % (m.get("dp_side", "R"), "left" if m.get("dp_side") == "L" else "right"))
         if "fan" in (m["a"], m["b"]):
             dps.append("DP-FAN (fan lead connector at the front end of CH-C1; the fan comes off with the cover)")
         if "rz_bms" in (m["a"], m["b"]):
@@ -1451,7 +1497,9 @@ def chain_clash(ch, st, U, F, LR, dp):
            ("flag rod", [rod_x[0], rod_y[0], c - F["lift_rear"]["rod"]["len"]], [rod_x[1], rod_y[1], c]),
            ("adapter plate", [ax + LR.get("plate_rear_x", -0.185), -0.050, c], [ax + 0.300, 0.050, c + 0.010]),
            ("lift node", [ax - 0.145, -0.020, 0.325], [ax - 0.120, 0.020, 0.385]),
-           ("DP-LIFT", dp["box"][0], dp["box"][1]),
+           ("DP-LIFT-L", dp["sides"]["L"]["box"][0], dp["sides"]["L"]["box"][1]),
+           ("DP-LIFT-R", dp["sides"]["R"]["box"][0], dp["sides"]["R"]["box"][1]),
+           ("left bundle cross run", [dp["cross"][1][0] - 0.009, -0.056, 0.336], [dp["cross"][1][0] + 0.009, 0.056, 0.354]),
            ("cover", [-0.390, -0.291, 0.0], [0.390, 0.291, F["cover_underside"] + 0.006])]
     for k, (lo, hi) in (LR.get("guide_boxes") or {}).items():   # flag rod guide (static, column frame x)
         obs.append(("flag rod guide " + k, [ax + lo[0] - 0.002, lo[1] - 0.002, lo[2] - 0.002], [ax + hi[0] + 0.002, hi[1] + 0.002, hi[2] + 0.002]))
@@ -1556,7 +1604,7 @@ def fasteners(HR):
            ("Sleeve and lift-sensor cable clips on the static column T-slots", "P-clip + M5 T-slot nut + ISO 7380", "M5 x 10", len(col), "ISO 7380", "steel zinc", "proposed", "y"),
            ("Moving-trunk and riser clips on the hung angle and the arm post", "P-clip + ISO 7380 (angle: M4 rivet nut; post: M6 T-slot nut)", "M4 x 8 / M6 x 10", len(mov), "ISO 7380", "A2", "proposed", "y"),
            ("Over-wheel cable guards to the side-panel inner faces", "ISO 7380 + M4 blind rivet nut", "M4 x 8", 3 * len(HR["guards"]), "ISO 7380", "A2", "proposed", "y"),
-           ("DP-LIFT connector plate to the lift base plate rear edge", "ISO 4762 into tapped holes", "M5 x 10", 2, "ISO 4762", "A2", "proposed", "n"),
+           ("DP-LIFT-L and DP-LIFT-R connector plates to the lift base plate", "ISO 4762 into tapped holes", "M5 x 10", 4, "ISO 4762", "A2", "proposed", "n"),
            ("Energy-chain fixed end bracket to the static column -y T-slot", "ISO 4762 + M5 T-slot nut", "M5 x 10", 2, "ISO 4762", "steel zinc", "proposed", "n"),
            ("Energy-chain end connectors to their brackets (fixed and moving end)", "ISO 7380 + nut (chain end pins)", "M4 x 10", 4, "ISO 7380", "A2", "proposed", "n"),
            ("Energy-chain moving end bracket and hung angle under the adapter plate +y edge", "ISO 4762 into tapped holes in the adapter plate", "M5 x 10", 4, "ISO 4762", "A2", "proposed", "n")]
@@ -1587,8 +1635,8 @@ def cad_changes(HR):
         rows.append({"item": "new part", "part": gd["id"], "change": "over-wheel cable guard, 2 mm aluminium tray with a 22 mm lip, 260 mm long, 3 x M4 rivet nuts in the side panel; edge trim on both ends",
                      "qty": 1, "where": "z %.0f mm (8 mm above the tyre top), x -130 to 130 mm" % (gd["z"] * 1000)})
     ch = HR["chain"]
-    rows += [{"item": "new part", "part": "DP-LIFT bracket", "change": "bulkhead connector plate on the lift base plate rear edge (2 x M5 tapped holes in MEC-019)", "qty": 1, "where": str([[round(v * 1000) for v in p] for p in HR["dp"]["box"]])},
-             {"item": "deck", "part": "centre-frame arch top sheet", "change": "split cable entry opening behind the lift base plate (about 60 x 30 mm) with a split grommet frame", "qty": 1, "where": str([round(v * 1000) for v in HR["dp"]["inlet"]])},
+    rows += [{"item": "new part", "part": "DP-LIFT-L and DP-LIFT-R brackets", "change": "bulkhead connector plate over each lift cable opening on the lift base plate (2 x M5 tapped holes each in MEC-019)", "qty": 2, "where": "; ".join(str([[round(v * 1000) for v in p] for p in HR["dp"]["sides"][k]["box"]]) for k in ("L", "R"))},
+             {"item": "deck", "part": "lift base plate MEC-019, arch top sheet and backing plate", "change": "two lift cable openings 50 x 24 mm left and right of the lift, between the 4 x M8 arch bolts, edge grommet in each (owner decision 8 Nov 2026)", "qty": 2, "where": "; ".join(str([round(v * 1000) for v in HR["dp"]["sides"][k]["deck"]]) for k in ("L", "R"))},
              {"item": "new part", "part": "energy-chain fixed end bracket", "change": "angle bracket on the -y T-slot of the static column, chain fixed end at z %.0f mm" % (ch["fixed_z"] * 1000), "qty": 1, "where": "x %.0f, y %.0f mm" % (ch["x"] * 1000, ch["y_fixed"] * 1000)},
              {"item": "new part", "part": "energy-chain moving end bracket and hung angle", "change": "bracket under the adapter-plate rear extension and a 25 x 25 x 3 angle along the plate +y edge (4 x M5 tapped holes in the adapter plate)", "qty": 1, "where": "x %.0f to %.0f, y %.0f mm" % (ch["x"] * 1000, HR["upper"]["x_riser"] * 1000, ch["y_moving"] * 1000)},
              {"item": "adapter plate", "part": "adapter plate (moving)", "change": "cable hole with grommet for the second E-stop loop beside the lift stage", "qty": 1, "where": str([round(v * 1000) for v in HR["grommets"][-1]["p"]])},
