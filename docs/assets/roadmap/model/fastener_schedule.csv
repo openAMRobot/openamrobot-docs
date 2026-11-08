@@ -10,7 +10,7 @@ Flag rod guide: arm and spacer to the static column +y face,ISO 4762 + M5 T-slot
 Flag rod guide: U ring to the arm,ISO 7380 + nut (or rivets),M3 x 8,2,ISO 7380,A2,proposed,n
 Lift base plate MEC-019 through the arch top sheet into the backing plate (from above),"socket head cap screw, class 8.8",M8 x 25,4,ISO 4762,"steel 8.8, zinc flake",proposed,y
 Lift base plate MEC-019 to the centre-frame arch (from above),washer,M8,4,ISO 7089,steel 200 HV,proposed,y
-"Arch backing plate (5 mm S235, about 150 x 130 mm, under the arch top sheet, fitted before the central channels)",captive M8 press-in nut in the backing plate,M8,4,"PEM-type self-clinching nut, steel",steel zinc,proposed,y
+"Arch backing plate under the arch top sheet, fitted before the central channels (D-21: one laser-cut tapped steel plate if the mechanical owner confirms the space, else 5 mm S235 with press-in nuts; about 150 x 130 mm, drawing pending)","M8 thread in the tapped plate, or captive M8 press-in nut in the 5 mm S235 plate",M8,4,"tapped plate / PEM-type self-clinching nut, steel",steel zinc,proposed,y
 Rear power plate MEC-006 (G10) to the rear panel and the arch angles (inside the receiver metal-free zone),"pan head screw + nut, PA66 (or PEEK)",M5 x 12,6,ISO 7045,PA66 / PEEK,proposed,n
 "F0 holder, K1, K2 and the FB-B shelf posts to the G10 plate (screw heads and nuts inside the receiver metal-free zone)","pan head screw + nut, PA66 (or PEEK)",M5 x 16,14,ISO 7045,PA66 / PEEK,proposed,n
 BUS+ on its two POM standoffs,POM standoff + A2 screw above the standoff (more than 15 mm above the receiver),M6 x 12,4,ISO 4762,POM / A2,proposed,n
@@ -20,8 +20,8 @@ BMS clamp strips to the right side panel (removable panel: BMS service),ISO 7380
 BUS- upright bracket and the left corner plate,ISO 7380 + M4 blind rivet nut,M4 x 8,6,ISO 7380,A2,proposed,n
 "Central channels CH-C1, CH-C2 hung from the arch top sheet; lids clipped",ISO 7380 + M4 blind rivet nut,M4 x 8,8,ISO 7380,A2,proposed,n
 Front bay side mounting plates to the base sheet,ISO 7380 + M4 blind rivet nut,M4 x 8,8,ISO 7380,A2,proposed,n
-"DOLD column to the lift base plate (from below, first, on the bench; bp000 hole set)","countersunk thread-forming screw, flush with the plate underside",M8 x 30 (>= 20 mm engagement),4,DIN 7500,steel,named,y
-"DOLD column to the lift base plate (bp050 hole set, alternative)",same set at the bp050 holes,M8 x 30,4,DIN 7500,steel,named,n
+"DOLD column foot to the lift base plate MEC-019 (from above through the four foot tab holes, 260 x 30 mm, into M8 tapped through MEC-019; no washer, medium threadlocker, 9.5 mm engagement; D-20; bp000 hole set)","low head socket cap screw, class 8.8",M8 x 14,4,DIN 7984,steel 8.8,named,y
+"DOLD column foot to the lift base plate (bp050 tapped hole set, alternative)",same set at the bp050 holes,M8 x 14,4,DIN 7984,steel 8.8,named,n
 "HFS6-60120 post to adapter plate (from below, end-tapped)",socket head cap screw,M8 x 25,2,ISO 4762,steel 8.8,proposed,y
 Rear upright (10 mm) and stiffener to the post,T-slot nut + socket head cap screw,M6 x 16,6,MISUMI HNTT6 / ISO 4762,steel,proposed,y
 OpenArm J1_A base to the post side face (1 mm spacer),T-slot nut + socket head cap screw,M6 x 20,8,MISUMI HNTT6 / ISO 4762,steel,proposed,y

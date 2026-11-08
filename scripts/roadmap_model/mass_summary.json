@@ -1,4 +1,5 @@
 {
+ "status": "estimate, under ledger review (D-26): design values from BOM Issue 7.14, nothing weighed. Held until the unique physical-instance mass ledger (mechanical owner): the battery pack definition (whether the 20 to 23 kg includes tray, BMS, F0 and disconnect), the hub motors and castors against the URDF wheel and castor links, and the static and moving split of the 11.7 kg DOLD lift are open. Do not use as inertial evidence.",
  "totals": {
   "L1000": {
    "mass_kg": 94.97,

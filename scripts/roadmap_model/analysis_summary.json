@@ -464,7 +464,7 @@
   {
    "id": "GI-166",
    "key": "verify with supplier|TZBOT receiver / parts within 20 mm (non-metal)",
-   "reason": "closed: TZBOT manual V2.5 offset of 15 mm from any side (owner 8 Nov 2026); the plate is 15 mm above the receiver, no part inside 15 mm needs a supplier check"
+   "reason": "closed: no metal within 20 mm of the receiver sides, held by a 3D-printed plastic frame (mechanical owner), and 15 mm above the receiver top (D-02, D-03, P-03 rev20.5 item 29); no part needs a supplier check"
   }
  ],
  "lift_rear": {
@@ -932,18 +932,18 @@
     "bp": "bp050",
     "mass_kg": 29.1,
     "com_m": [
-     0.2582,
+     0.2581,
      0.9392
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 42.3,
     "column_screw_rows_N": {
-     "rear": 46.1,
-     "front": -331.6
+     "rear": 19.9,
+     "front": -305.4
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 101.8,
-     "x +0.060": 37.5
+     "x -0.060": 102.7,
+     "x +0.060": 34.6
     },
     "bolt_shear_per_bolt_N": 0.0,
     "bolt_utilisation": 0.003,
@@ -951,32 +951,32 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.008,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 11.8,
-    "plate_stress_MPa": 5.1,
-    "plate_utilisation": 0.02,
-    "arch_sheet_stress_MPa": 44.4,
-    "arch_sheet_utilisation": 0.189,
-    "arch_sheet_uplift_mm": 0.125,
-    "plate_deflection_at_column_front_mm": -0.076,
-    "column_tilt_deg": 0.042
+    "plate_max_moment_Nm": 8.2,
+    "plate_stress_MPa": 3.5,
+    "plate_utilisation": 0.014,
+    "arch_sheet_stress_MPa": 44.7,
+    "arch_sheet_utilisation": 0.19,
+    "arch_sheet_uplift_mm": 0.126,
+    "plate_deflection_at_column_front_mm": -0.082,
+    "column_tilt_deg": 0.038
    },
    {
     "case": "braking from 1.5 m/s at 6.44 m/s2, L1350",
     "bp": "bp050",
     "mass_kg": 29.1,
     "com_m": [
-     0.2582,
+     0.2581,
      0.9392
     ],
     "decel_m_s2": 6.44,
     "moment_at_column_axis_Nm": 161.3,
     "column_screw_rows_N": {
-     "rear": 577.5,
-     "front": -862.9
+     "rear": 477.7,
+     "front": -763.2
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 402.3,
-     "x +0.060": 148.3
+     "x -0.060": 406.0,
+     "x +0.060": 136.9
     },
     "bolt_shear_per_bolt_N": 46.8,
     "bolt_utilisation": 0.017,
@@ -984,32 +984,32 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.033,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 46.7,
-    "plate_stress_MPa": 20.0,
-    "plate_utilisation": 0.078,
-    "arch_sheet_stress_MPa": 175.5,
-    "arch_sheet_utilisation": 0.747,
+    "plate_max_moment_Nm": 32.5,
+    "plate_stress_MPa": 13.9,
+    "plate_utilisation": 0.055,
+    "arch_sheet_stress_MPa": 176.7,
+    "arch_sheet_utilisation": 0.752,
     "arch_sheet_uplift_mm": 0.496,
-    "plate_deflection_at_column_front_mm": -0.301,
-    "column_tilt_deg": 0.164
+    "plate_deflection_at_column_front_mm": -0.326,
+    "column_tilt_deg": 0.152
    },
    {
     "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.44 m/s2, L1350",
     "bp": "bp050",
     "mass_kg": 37.3,
     "com_m": [
-     0.4586,
+     0.4585,
      1.1117
     ],
     "decel_m_s2": 6.44,
     "moment_at_column_axis_Nm": 321.5,
     "column_screw_rows_N": {
-     "rear": 1252.5,
-     "front": -1618.4
+     "rear": 1053.7,
+     "front": -1419.6
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 805.5,
-     "x +0.060": 296.9
+     "x -0.060": 812.7,
+     "x +0.060": 274.2
     },
     "bolt_shear_per_bolt_N": 60.0,
     "bolt_utilisation": 0.032,
@@ -1017,32 +1017,32 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.066,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 93.4,
-    "plate_stress_MPa": 40.0,
-    "plate_utilisation": 0.157,
-    "arch_sheet_stress_MPa": 351.3,
-    "arch_sheet_utilisation": 1.495,
-    "arch_sheet_uplift_mm": 0.993,
-    "plate_deflection_at_column_front_mm": -0.603,
-    "column_tilt_deg": 0.329
+    "plate_max_moment_Nm": 65.0,
+    "plate_stress_MPa": 27.9,
+    "plate_utilisation": 0.109,
+    "arch_sheet_stress_MPa": 353.8,
+    "arch_sheet_utilisation": 1.506,
+    "arch_sheet_uplift_mm": 0.994,
+    "plate_deflection_at_column_front_mm": -0.652,
+    "column_tilt_deg": 0.304
    },
    {
     "case": "static, L1350",
     "bp": "bp000",
     "mass_kg": 29.1,
     "com_m": [
-     0.2082,
+     0.2081,
      0.9392
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 42.3,
     "column_screw_rows_N": {
-     "rear": 46.1,
-     "front": -331.6
+     "rear": 19.9,
+     "front": -305.4
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 66.6,
-     "x +0.060": 21.5
+     "x +0.060": 21.4
     },
     "bolt_shear_per_bolt_N": 0.0,
     "bolt_utilisation": 0.002,
@@ -1050,13 +1050,13 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.005,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 1.1,
-    "plate_stress_MPa": 0.5,
-    "plate_utilisation": 0.002,
+    "plate_max_moment_Nm": 0.0,
+    "plate_stress_MPa": 0.0,
+    "plate_utilisation": 0.0,
     "arch_sheet_stress_MPa": 29.0,
     "arch_sheet_utilisation": 0.123,
     "arch_sheet_uplift_mm": 0.081,
-    "plate_deflection_at_column_front_mm": -0.023,
+    "plate_deflection_at_column_front_mm": -0.03,
     "column_tilt_deg": 0.024
    },
    {
@@ -1064,14 +1064,14 @@
     "bp": "bp000",
     "mass_kg": 29.1,
     "com_m": [
-     0.2082,
+     0.2081,
      0.9392
     ],
     "decel_m_s2": 6.44,
     "moment_at_column_axis_Nm": 161.3,
     "column_screw_rows_N": {
-     "rear": 577.5,
-     "front": -862.9
+     "rear": 477.7,
+     "front": -763.2
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 371.2,
@@ -1083,13 +1083,13 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.03,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 5.9,
-    "plate_stress_MPa": 2.5,
-    "plate_utilisation": 0.01,
+    "plate_max_moment_Nm": 0.0,
+    "plate_stress_MPa": 0.0,
+    "plate_utilisation": 0.0,
     "arch_sheet_stress_MPa": 161.5,
     "arch_sheet_utilisation": 0.687,
     "arch_sheet_uplift_mm": 0.452,
-    "plate_deflection_at_column_front_mm": -0.127,
+    "plate_deflection_at_column_front_mm": -0.169,
     "column_tilt_deg": 0.132
    },
    {
@@ -1097,18 +1097,18 @@
     "bp": "bp000",
     "mass_kg": 37.3,
     "com_m": [
-     0.4086,
+     0.4085,
      1.1117
     ],
     "decel_m_s2": 6.44,
     "moment_at_column_axis_Nm": 321.5,
     "column_screw_rows_N": {
-     "rear": 1252.5,
-     "front": -1618.4
+     "rear": 1053.7,
+     "front": -1419.6
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 769.5,
-     "x +0.060": 247.9
+     "x +0.060": 247.8
     },
     "bolt_shear_per_bolt_N": 60.0,
     "bolt_utilisation": 0.03,
@@ -1116,24 +1116,24 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.063,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 12.3,
-    "plate_stress_MPa": 5.3,
-    "plate_utilisation": 0.021,
+    "plate_max_moment_Nm": 0.0,
+    "plate_stress_MPa": 0.0,
+    "plate_utilisation": 0.0,
     "arch_sheet_stress_MPa": 334.7,
     "arch_sheet_utilisation": 1.424,
     "arch_sheet_uplift_mm": 0.937,
-    "plate_deflection_at_column_front_mm": -0.264,
-    "column_tilt_deg": 0.275
+    "plate_deflection_at_column_front_mm": -0.35,
+    "column_tilt_deg": 0.274
    }
   ],
   "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.44 m/s2, L1350 (bp050)",
   "max_utilisation": {
    "bolt_utilisation": 0.032,
    "rivet_nut_pull_through_utilisation": 0.066,
-   "plate_utilisation": 0.157,
-   "arch_sheet_utilisation": 1.495
+   "plate_utilisation": 0.109,
+   "arch_sheet_utilisation": 1.506
   },
-  "max_column_tilt_deg": 0.329,
+  "max_column_tilt_deg": 0.304,
   "shoulder_height_ref_m": 0.9391929847171102,
   "overhang": {
    "bp000": {
@@ -1151,7 +1151,7 @@
    "L1000": {
     "mass_kg": 29.1,
     "com_m": [
-     0.2082,
+     0.2081,
      0.0008,
      0.6978
     ]
@@ -1159,7 +1159,7 @@
    "L1350": {
     "mass_kg": 29.1,
     "com_m": [
-     0.2082,
+     0.2081,
      0.0008,
      0.9392
     ]
@@ -1168,7 +1168,7 @@
   "arms_forward": {
    "mass_kg": 37.3,
    "com_m": [
-    0.4086,
+    0.4085,
     0.0007,
     1.1117
    ],
@@ -1180,8 +1180,8 @@
   "decel_m_s2": 6.44,
   "decided_fix": {
    "what": "M8 8.8 through-bolts with nuts, 5 mm S235JR backing plate under the arch top sheet",
-   "arch_sheet_utilisation": 0.09,
-   "backing_plate_utilisation": 0.225,
+   "arch_sheet_utilisation": 0.091,
+   "backing_plate_utilisation": 0.226,
    "bolt_utilisation": 0.032,
    "method": "two stacked plates, moment shared by t^3 (screening, no composite action)"
   }
@@ -1829,7 +1829,7 @@
     "LFT-007",
     0.03,
     [
-     0.1057,
+     0.104,
      -0.0067,
      0.5793
     ],
@@ -1929,7 +1929,7 @@
     "MEC-014",
     0.6,
     [
-     0.1057,
+     0.104,
      -0.0067,
      0.5793
     ],
@@ -2821,7 +2821,7 @@
     "LFT-007",
     0.03,
     [
-     0.1057,
+     0.104,
      -0.0067,
      0.696
     ],
@@ -2921,7 +2921,7 @@
     "MEC-014",
     0.6,
     [
-     0.1057,
+     0.104,
      -0.0067,
      0.696
     ],
