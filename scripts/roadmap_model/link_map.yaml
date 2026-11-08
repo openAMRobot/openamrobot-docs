@@ -137,7 +137,7 @@ roadmap_only:
   ch_central_signal: {attach: base_link, offset_m: [-0.0185, -0.0625, 0.128]}
   dp_lift: {attach: lift_column_base_link, offset_m: [-0.06, 0, 0.035]}
   fan: {attach: base_link, offset_m: [0.18, 0, 0.1755]}
-  fasteners_base: {attach: base_link, offset_m: [0.1484, 0, 0.0865]}
+  fasteners_base: {attach: base_link, offset_m: [0.1492, 0, 0.09]}
   fasteners_col: {attach: lift_column_base_link, offset_m: [-0.122, -0.02, 0.287]}
   fasteners_mov: {attach: lift_carriage_link, offset_m: [0.1658, 0, 0.1285]}
   feedthru_1: {attach: base_link, offset_m: [0.2, -0.272, 0.087]}

@@ -636,11 +636,11 @@
  },
  "mass": {
   "L1000": {
-   "mass": 94.9677994494356,
+   "mass": 86.30579944943561,
    "com": [
-    0.0179,
-    -0.0028,
-    0.3181
+    0.0315,
+    -0.003,
+    0.3268
    ],
    "unplaced": [
     "ARM-004",
@@ -649,11 +649,11 @@
    ]
   },
   "L1350": {
-   "mass": 94.9677994494356,
+   "mass": 86.30579944943561,
    "com": [
-    0.0179,
-    -0.0028,
-    0.392
+    0.0315,
+    -0.003,
+    0.4077
    ],
    "unplaced": [
     "ARM-004",
@@ -664,34 +664,34 @@
  },
  "stability": {
   "L1000": {
-   "margin_fore_m": 0.2571,
-   "margin_aft_m": 0.2929,
-   "margin_lat_m": 0.2122,
-   "a_max_fore": 7.93,
-   "a_max_lat": 6.54,
-   "com_z": 0.3181
+   "margin_fore_m": 0.2436,
+   "margin_aft_m": 0.3065,
+   "margin_lat_m": 0.212,
+   "a_max_fore": 7.31,
+   "a_max_lat": 6.36,
+   "com_z": 0.3268
   },
   "L1350": {
-   "margin_fore_m": 0.2571,
-   "margin_aft_m": 0.2929,
-   "margin_lat_m": 0.2122,
-   "a_max_fore": 6.44,
-   "a_max_lat": 5.31,
-   "com_z": 0.392
+   "margin_fore_m": 0.2436,
+   "margin_aft_m": 0.3065,
+   "margin_lat_m": 0.212,
+   "a_max_fore": 5.86,
+   "a_max_lat": 5.1,
+   "com_z": 0.4077
   }
  },
  "loads": {
   "L1000": {
-   "drive_pair_kg": 91.9,
-   "per_drive_wheel_kg": 45.9,
-   "per_castor_front_kg": 1.5,
+   "drive_pair_kg": 81.4,
+   "per_drive_wheel_kg": 40.7,
+   "per_castor_front_kg": 2.5,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
   },
   "L1350": {
-   "drive_pair_kg": 91.9,
-   "per_drive_wheel_kg": 45.9,
-   "per_castor_front_kg": 1.5,
+   "drive_pair_kg": 81.4,
+   "per_drive_wheel_kg": 40.7,
+   "per_castor_front_kg": 2.5,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
   }
@@ -930,20 +930,20 @@
    {
     "case": "static, L1350",
     "bp": "bp050",
-    "mass_kg": 29.1,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2581,
-     0.9392
+     0.2558,
+     0.9002
     ],
     "decel_m_s2": 0.0,
-    "moment_at_column_axis_Nm": 42.3,
+    "moment_at_column_axis_Nm": 42.4,
     "column_screw_rows_N": {
-     "rear": 19.9,
-     "front": -305.4
+     "rear": 17.7,
+     "front": -308.8
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 102.7,
-     "x +0.060": 34.6
+     "x -0.060": 103.0,
+     "x +0.060": 34.7
     },
     "bolt_shear_per_bolt_N": 0.0,
     "bolt_utilisation": 0.003,
@@ -954,95 +954,95 @@
     "plate_max_moment_Nm": 8.2,
     "plate_stress_MPa": 3.5,
     "plate_utilisation": 0.014,
-    "arch_sheet_stress_MPa": 44.7,
-    "arch_sheet_utilisation": 0.19,
+    "arch_sheet_stress_MPa": 44.8,
+    "arch_sheet_utilisation": 0.191,
     "arch_sheet_uplift_mm": 0.126,
-    "plate_deflection_at_column_front_mm": -0.082,
+    "plate_deflection_at_column_front_mm": -0.083,
     "column_tilt_deg": 0.038
    },
    {
-    "case": "braking from 1.5 m/s at 6.44 m/s2, L1350",
+    "case": "braking from 1.5 m/s at 5.86 m/s2, L1350",
     "bp": "bp050",
-    "mass_kg": 29.1,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2581,
-     0.9392
+     0.2558,
+     0.9002
     ],
-    "decel_m_s2": 6.44,
-    "moment_at_column_axis_Nm": 161.3,
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 146.1,
     "column_screw_rows_N": {
-     "rear": 477.7,
-     "front": -763.2
+     "rear": 416.4,
+     "front": -707.5
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 406.0,
-     "x +0.060": 136.9
+     "x -0.060": 367.1,
+     "x +0.060": 123.8
     },
-    "bolt_shear_per_bolt_N": 46.8,
-    "bolt_utilisation": 0.017,
+    "bolt_shear_per_bolt_N": 43.5,
+    "bolt_utilisation": 0.016,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.033,
+    "rivet_nut_pull_through_utilisation": 0.03,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 32.5,
-    "plate_stress_MPa": 13.9,
-    "plate_utilisation": 0.055,
-    "arch_sheet_stress_MPa": 176.7,
-    "arch_sheet_utilisation": 0.752,
-    "arch_sheet_uplift_mm": 0.496,
-    "plate_deflection_at_column_front_mm": -0.326,
-    "column_tilt_deg": 0.152
+    "plate_max_moment_Nm": 29.4,
+    "plate_stress_MPa": 12.6,
+    "plate_utilisation": 0.049,
+    "arch_sheet_stress_MPa": 159.8,
+    "arch_sheet_utilisation": 0.68,
+    "arch_sheet_uplift_mm": 0.449,
+    "plate_deflection_at_column_front_mm": -0.295,
+    "column_tilt_deg": 0.137
    },
    {
-    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.44 m/s2, L1350",
+    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350",
     "bp": "bp050",
-    "mass_kg": 37.3,
+    "mass_kg": 37.87,
     "com_m": [
-     0.4585,
-     1.1117
+     0.4537,
+     1.0785
     ],
-    "decel_m_s2": 6.44,
-    "moment_at_column_axis_Nm": 321.5,
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 299.6,
     "column_screw_rows_N": {
-     "rear": 1053.7,
-     "front": -1419.6
+     "rear": 966.5,
+     "front": -1338.0
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 812.7,
-     "x +0.060": 274.2
+     "x -0.060": 756.7,
+     "x +0.060": 255.3
     },
-    "bolt_shear_per_bolt_N": 60.0,
-    "bolt_utilisation": 0.032,
+    "bolt_shear_per_bolt_N": 55.5,
+    "bolt_utilisation": 0.03,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.066,
+    "rivet_nut_pull_through_utilisation": 0.062,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 65.0,
-    "plate_stress_MPa": 27.9,
-    "plate_utilisation": 0.109,
-    "arch_sheet_stress_MPa": 353.8,
-    "arch_sheet_utilisation": 1.506,
-    "arch_sheet_uplift_mm": 0.994,
-    "plate_deflection_at_column_front_mm": -0.652,
-    "column_tilt_deg": 0.304
+    "plate_max_moment_Nm": 60.5,
+    "plate_stress_MPa": 25.9,
+    "plate_utilisation": 0.102,
+    "arch_sheet_stress_MPa": 329.4,
+    "arch_sheet_utilisation": 1.402,
+    "arch_sheet_uplift_mm": 0.925,
+    "plate_deflection_at_column_front_mm": -0.607,
+    "column_tilt_deg": 0.283
    },
    {
     "case": "static, L1350",
     "bp": "bp000",
-    "mass_kg": 29.1,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2081,
-     0.9392
+     0.2058,
+     0.9002
     ],
     "decel_m_s2": 0.0,
-    "moment_at_column_axis_Nm": 42.3,
+    "moment_at_column_axis_Nm": 42.4,
     "column_screw_rows_N": {
-     "rear": 19.9,
-     "front": -305.4
+     "rear": 17.7,
+     "front": -308.8
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 66.6,
-     "x +0.060": 21.4
+     "x -0.060": 66.2,
+     "x +0.060": 21.3
     },
     "bolt_shear_per_bolt_N": 0.0,
     "bolt_utilisation": 0.002,
@@ -1053,88 +1053,88 @@
     "plate_max_moment_Nm": 0.0,
     "plate_stress_MPa": 0.0,
     "plate_utilisation": 0.0,
-    "arch_sheet_stress_MPa": 29.0,
-    "arch_sheet_utilisation": 0.123,
+    "arch_sheet_stress_MPa": 28.8,
+    "arch_sheet_utilisation": 0.122,
     "arch_sheet_uplift_mm": 0.081,
     "plate_deflection_at_column_front_mm": -0.03,
     "column_tilt_deg": 0.024
    },
    {
-    "case": "braking from 1.5 m/s at 6.44 m/s2, L1350",
+    "case": "braking from 1.5 m/s at 5.86 m/s2, L1350",
     "bp": "bp000",
-    "mass_kg": 29.1,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2081,
-     0.9392
+     0.2058,
+     0.9002
     ],
-    "decel_m_s2": 6.44,
-    "moment_at_column_axis_Nm": 161.3,
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 146.1,
     "column_screw_rows_N": {
-     "rear": 477.7,
-     "front": -763.2
+     "rear": 416.4,
+     "front": -707.5
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 371.2,
-     "x +0.060": 119.6
+     "x -0.060": 331.5,
+     "x +0.060": 106.8
     },
-    "bolt_shear_per_bolt_N": 46.8,
-    "bolt_utilisation": 0.016,
+    "bolt_shear_per_bolt_N": 43.5,
+    "bolt_utilisation": 0.014,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.03,
+    "rivet_nut_pull_through_utilisation": 0.027,
     "Bp_Rd_kN": 12.3,
     "plate_max_moment_Nm": 0.0,
     "plate_stress_MPa": 0.0,
     "plate_utilisation": 0.0,
-    "arch_sheet_stress_MPa": 161.5,
-    "arch_sheet_utilisation": 0.687,
-    "arch_sheet_uplift_mm": 0.452,
-    "plate_deflection_at_column_front_mm": -0.169,
-    "column_tilt_deg": 0.132
+    "arch_sheet_stress_MPa": 144.2,
+    "arch_sheet_utilisation": 0.614,
+    "arch_sheet_uplift_mm": 0.404,
+    "plate_deflection_at_column_front_mm": -0.151,
+    "column_tilt_deg": 0.118
    },
    {
-    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.44 m/s2, L1350",
+    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350",
     "bp": "bp000",
-    "mass_kg": 37.3,
+    "mass_kg": 37.87,
     "com_m": [
-     0.4085,
-     1.1117
+     0.4037,
+     1.0785
     ],
-    "decel_m_s2": 6.44,
-    "moment_at_column_axis_Nm": 321.5,
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 299.6,
     "column_screw_rows_N": {
-     "rear": 1053.7,
-     "front": -1419.6
+     "rear": 966.5,
+     "front": -1338.0
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 769.5,
-     "x +0.060": 247.8
+     "x -0.060": 712.5,
+     "x +0.060": 229.5
     },
-    "bolt_shear_per_bolt_N": 60.0,
-    "bolt_utilisation": 0.03,
+    "bolt_shear_per_bolt_N": 55.5,
+    "bolt_utilisation": 0.028,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.063,
+    "rivet_nut_pull_through_utilisation": 0.058,
     "Bp_Rd_kN": 12.3,
     "plate_max_moment_Nm": 0.0,
     "plate_stress_MPa": 0.0,
     "plate_utilisation": 0.0,
-    "arch_sheet_stress_MPa": 334.7,
-    "arch_sheet_utilisation": 1.424,
-    "arch_sheet_uplift_mm": 0.937,
-    "plate_deflection_at_column_front_mm": -0.35,
-    "column_tilt_deg": 0.274
+    "arch_sheet_stress_MPa": 309.9,
+    "arch_sheet_utilisation": 1.319,
+    "arch_sheet_uplift_mm": 0.868,
+    "plate_deflection_at_column_front_mm": -0.324,
+    "column_tilt_deg": 0.254
    }
   ],
-  "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.44 m/s2, L1350 (bp050)",
+  "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350 (bp050)",
   "max_utilisation": {
-   "bolt_utilisation": 0.032,
-   "rivet_nut_pull_through_utilisation": 0.066,
-   "plate_utilisation": 0.109,
-   "arch_sheet_utilisation": 1.506
+   "bolt_utilisation": 0.03,
+   "rivet_nut_pull_through_utilisation": 0.062,
+   "plate_utilisation": 0.102,
+   "arch_sheet_utilisation": 1.402
   },
-  "max_column_tilt_deg": 0.304,
-  "shoulder_height_ref_m": 0.9391929847171102,
+  "max_column_tilt_deg": 0.283,
+  "shoulder_height_ref_m": 0.9002058896875706,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -1149,40 +1149,40 @@
   },
   "above_plate": {
    "L1000": {
-    "mass_kg": 29.1,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2081,
+     0.2058,
      0.0008,
-     0.6978
+     0.665
     ]
    },
    "L1350": {
-    "mass_kg": 29.1,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2081,
+     0.2058,
      0.0008,
-     0.9392
+     0.9002
     ]
    }
   },
   "arms_forward": {
-   "mass_kg": 37.3,
+   "mass_kg": 37.87,
    "com_m": [
-    0.4085,
-    0.0007,
-    1.1117
+    0.4037,
+    0.0006,
+    1.0785
    ],
    "arm_mass_kg_both": 12.26,
    "payload_kg_each": 4.1,
    "reach_m": 0.606,
    "source": "OpenArm 2.0 figures used by the robot page (payload 4.1 kg nominal, 6 kg peak, reach 0.606 m)"
   },
-  "decel_m_s2": 6.44,
+  "decel_m_s2": 5.86,
   "decided_fix": {
    "what": "M8 8.8 through-bolts with nuts, 5 mm S235JR backing plate under the arch top sheet",
-   "arch_sheet_utilisation": 0.091,
-   "backing_plate_utilisation": 0.226,
-   "bolt_utilisation": 0.032,
+   "arch_sheet_utilisation": 0.084,
+   "backing_plate_utilisation": 0.211,
+   "bolt_utilisation": 0.03,
    "method": "two stacked plates, moment shared by t^3 (screening, no composite action)"
   }
  },
@@ -1437,7 +1437,7 @@
    ],
    [
     "CAM-001",
-    0.29,
+    0.135,
     [
      0.3745,
      0.0,
@@ -1657,7 +1657,7 @@
    ],
    [
     "DRV-001",
-    10.0,
+    6.9,
     [
      0.0,
      0.0,
@@ -1667,7 +1667,7 @@
    ],
    [
     "DRV-002",
-    0.9,
+    0.6,
     [
      -0.0693,
      -0.0018,
@@ -1829,15 +1829,15 @@
     "LFT-007",
     0.03,
     [
-     0.104,
+     0.1043,
      -0.0067,
-     0.5793
+     0.5805
     ],
     "fasteners"
    ],
    [
     "MEC-002",
-    0.8,
+    1.2,
     [
      -0.0012,
      0.0,
@@ -1857,7 +1857,7 @@
    ],
    [
     "MEC-004",
-    0.97,
+    1.546,
     [
      0.0875,
      0.0,
@@ -1867,7 +1867,7 @@
    ],
    [
     "MEC-007",
-    1.6,
+    1.479,
     [
      -0.204,
      0.0,
@@ -1929,9 +1929,9 @@
     "MEC-014",
     0.6,
     [
-     0.104,
+     0.1043,
      -0.0067,
-     0.5793
+     0.5805
     ],
     "fasteners"
    ],
@@ -1957,17 +1957,27 @@
    ],
    [
     "MEC-018",
-    11.7,
+    8.89,
     [
      0.06,
      0.0,
-     0.569
+     0.4322
+    ],
+    "lift_column"
+   ],
+   [
+    "MEC-018:moving",
+    2.81,
+    [
+     0.06,
+     0.0,
+     0.6258
     ],
     "lift_column"
    ],
    [
     "MEC-019",
-    2.1,
+    1.293,
     [
      0.085,
      0.0,
@@ -1987,7 +1997,7 @@
    ],
    [
     "NAV-001",
-    0.18,
+    0.115,
     [
      0.3187,
      -0.0001,
@@ -2004,16 +2014,6 @@
      0.0677
     ],
     "bay_lidar_uart"
-   ],
-   [
-    "PWR-001",
-    21.5,
-    [
-     -0.204,
-     0.0,
-     0.159
-    ],
-    "battery_cells"
    ],
    [
     "PWR-002",
@@ -2037,7 +2037,7 @@
    ],
    [
     "PWR-004",
-    0.35,
+    0.29,
     [
      -0.338,
      -0.056,
@@ -2136,6 +2136,56 @@
     "rz_fchg"
    ],
    [
+    "PWR-023",
+    15.84,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-024",
+    0.22,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-025",
+    0.06,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-026",
+    0.01,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-027",
+    0.29,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
     "PWR-029",
     0.04,
     [
@@ -2147,7 +2197,7 @@
    ],
    [
     "PWR-030",
-    0.75,
+    0.8,
     [
      0.19,
      0.093,
@@ -2429,7 +2479,7 @@
    ],
    [
     "CAM-001",
-    0.29,
+    0.135,
     [
      0.3745,
      0.0,
@@ -2649,7 +2699,7 @@
    ],
    [
     "DRV-001",
-    10.0,
+    6.9,
     [
      0.0,
      0.0,
@@ -2659,7 +2709,7 @@
    ],
    [
     "DRV-002",
-    0.9,
+    0.6,
     [
      -0.0693,
      -0.0018,
@@ -2821,15 +2871,15 @@
     "LFT-007",
     0.03,
     [
-     0.104,
+     0.1043,
      -0.0067,
-     0.696
+     0.6972
     ],
     "fasteners"
    ],
    [
     "MEC-002",
-    0.8,
+    1.2,
     [
      -0.0012,
      0.0,
@@ -2849,7 +2899,7 @@
    ],
    [
     "MEC-004",
-    0.97,
+    1.546,
     [
      0.0875,
      0.0,
@@ -2859,7 +2909,7 @@
    ],
    [
     "MEC-007",
-    1.6,
+    1.479,
     [
      -0.204,
      0.0,
@@ -2921,9 +2971,9 @@
     "MEC-014",
     0.6,
     [
-     0.104,
+     0.1043,
      -0.0067,
-     0.696
+     0.6972
     ],
     "fasteners"
    ],
@@ -2949,17 +2999,27 @@
    ],
    [
     "MEC-018",
-    11.7,
+    8.89,
     [
      0.06,
      0.0,
-     0.674
+     0.4322
+    ],
+    "lift_column"
+   ],
+   [
+    "MEC-018:moving",
+    2.81,
+    [
+     0.06,
+     0.0,
+     0.9758
     ],
     "lift_column"
    ],
    [
     "MEC-019",
-    2.1,
+    1.293,
     [
      0.085,
      0.0,
@@ -2979,7 +3039,7 @@
    ],
    [
     "NAV-001",
-    0.18,
+    0.115,
     [
      0.3187,
      -0.0001,
@@ -2996,16 +3056,6 @@
      0.0677
     ],
     "bay_lidar_uart"
-   ],
-   [
-    "PWR-001",
-    21.5,
-    [
-     -0.204,
-     0.0,
-     0.159
-    ],
-    "battery_cells"
    ],
    [
     "PWR-002",
@@ -3029,7 +3079,7 @@
    ],
    [
     "PWR-004",
-    0.35,
+    0.29,
     [
      -0.338,
      -0.056,
@@ -3128,6 +3178,56 @@
     "rz_fchg"
    ],
    [
+    "PWR-023",
+    15.84,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-024",
+    0.22,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-025",
+    0.06,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-026",
+    0.01,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-027",
+    0.29,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
     "PWR-029",
     0.04,
     [
@@ -3139,7 +3239,7 @@
    ],
    [
     "PWR-030",
-    0.75,
+    0.8,
     [
      0.19,
      0.093,

@@ -42,8 +42,8 @@ Battery tray MEC-007 to the deck,socket head cap screw + washer,M6 x 16,6,ISO 47
 Detachable battery side panels,quarter-turn fastener,M5,8,DIN 7500-compatible quarter-turn,steel,proposed,n
 "PETG sensor mounts (MEC-010, MEC-011) to the panels",heat-set insert + ISO 7380,M3 x 6,12,brass insert / ISO 7380,A2,proposed,n
 Second E-stop housing P2 to the arm-post rear slots (HFS6),ISO 4762 + ISO 7089 + M6 T-slot nut,M6 x 10,4,ISO 4762,steel,proposed,n
-TZBOT receiver bracket WCH-007 to the base sheet (outside the 15 mm zone),"ISO 7380 + rivet nut, stainless (non-magnetic A4)",M5 x 10,4,ISO 7380,A4,proposed,n
-Ferrite sheet on the receiver top,adhesive backing (no metal fasteners in the 15 mm zone),-,1,-,-,proposed,n
+TZBOT receiver plastic frame WCH-007 to the base sheet (outside the 20 mm frame zone),"ISO 7380 + rivet nut, stainless (non-magnetic A4)",M5 x 10,4,ISO 7380,A4,proposed,n
+Ferrite sheet on the receiver top,adhesive backing (no metal fasteners in the 20 mm frame zone),-,1,-,-,proposed,n
 MEC-005 upper shelf on the lower plate (second tier),hex standoff M4 x 50 + ISO 7380,M4,4,hex standoff / ISO 7380,A2,proposed,n
 DIN carrier to the centre-bracket front legs,ISO 4762 + rivet nut,M5 x 12,4,ISO 4762,A2,proposed,n
 Getac pocket and light-bar plate to the post front face,T-slot nut + ISO 4762,M6 x 12,4,ISO 4762,steel,proposed,n
