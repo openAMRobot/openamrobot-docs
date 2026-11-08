@@ -1907,15 +1907,13 @@ def harness_slot_errors(H, step=0.001):
     """Owner rule of 8 Nov 2026 (P-03 rev20.5 item 29, decision D-06; register WIRING-ROUTING): no cable, busbar or tie in the
     slot between the panel upper edges and the cover lower edge (z 214 to 232 mm), all around the robot, with no inward band.
     Every route section of every cable and busbar (fixed or routed) is sampled every 1 mm against the cover_slot_* keep-outs
-    in harness_routes.json; every tie point is checked too. Only a keep-out member's own cable is exempt (the LiDAR at the
-    front). Components are not checked: at the rear, parts may sit in or above the band (D-06)."""
+    in harness_routes.json; every tie point is checked too. No cable is exempt, the LiDAR cable included: the LiDAR may look
+    through the front slot, but its cable may not lie in it. Components are not checked: at the rear, parts may sit in or above
+    the band (D-06)."""
     zones = [k for k in H.get("keep_out", []) if k["id"].startswith("cover_slot_")]
     out = []
     for c in H.get("cables", []):
-        own = set(c.get("own", []))
         for z in zones:
-            if own & set(z.get("members") or []):
-                continue
             hit = None
             for sec in c.get("sections", []):
                 for _, p in _samples(sec["pts"], step):

@@ -306,10 +306,14 @@ class HarnessSlotKeepOut(unittest.TestCase):
         H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.10, 0.220], [0.4, 0.10, 0.220]]
         self.assertEqual(C.harness_slot_errors(H), [])
 
-    def test_member_cable_is_exempt(self):
-        H = _h(keep_out=[dict(self.SLOT, members=["lidar"])])
-        H["cables"][0].update(own=["lidar"], sections=[{"kind": "base", "group": "base", "pts": [[0.0, 0.2, 0.220], [0.4, 0.2, 0.220]]}])
-        self.assertEqual(C.harness_slot_errors(H), [])
+    def test_lidar_cable_in_the_front_slot_fails(self):
+        # review of docs #83 at 498a563: CBL-P47 with its real ownership and a segment through cover_slot_front must fail,
+        # also if a keep-out still lists the LiDAR as a member (D-06: no cable in the slot band, the LiDAR cable included)
+        front = {"id": "cover_slot_front", "lo": [0.36, -0.295, 0.209], "hi": [0.395, 0.295, 0.237], "members": ["lidar"]}
+        H = _h(keep_out=[front])
+        H["cables"][0].update(id="CBL-P47", own=["bay_lidar_uart", "lidar"],
+                              sections=[{"kind": "base", "group": "base", "pts": [[0.35, 0.0, 0.220], [0.39, 0.0, 0.220]]}])
+        self.assertTrue(any("CBL-P47" in e and "cover_slot_front" in e for e in C.harness_slot_errors(H)))
 
 
 class HarnessOverComponent(unittest.TestCase):
