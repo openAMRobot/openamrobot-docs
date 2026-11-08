@@ -843,7 +843,9 @@ def main():
     a_need = 1.5 ** 2 / (2 * .5)  # stop within 0.5 m
     issue("major" if stab["L1350"]["a_max_fore"] < a_need else "minor", "Stopping from 1.5 m/s", "L1350",
           "a_max fore %.2f m/s2 gives a stopping distance of at least %.2f m without tip-over" % (stab["L1350"]["a_max_fore"], 1.5 ** 2 / (2 * stab["L1350"]["a_max_fore"])),
-          "stop from 1.5 m/s within 0.5 m needs %.2f m/s2" % a_need, "software speed ceiling 1.5 m/s (B7)", "cap deceleration and speed with the lift raised; E-stop braking (6 Nm brakes) must not exceed a_max", OWN["nav"], "stability")
+          "stop from 1.5 m/s within 0.5 m needs %.2f m/s2" % a_need,
+          "software speed ceiling 1.5 m/s (B7, analytical); Build 1 base speed ceiling %.1f m/s (D-07, P-03 rev20.5 item 29; %s)" % (FACTS.get("speed_cap_build1", 1.5), FACTS.get("speed_cap_status", "")),
+          "cap deceleration and speed with the lift raised; E-stop braking (6 Nm brakes) must not exceed a_max", OWN["nav"], "stability")
     for nm, l in loads.items():
         issue("major" if l["drive_pair_kg"] > FACTS["motor_pair_rating"] else "minor", "Drive wheel load", nm,
               "drive pair %.1f kg (%.1f kg per wheel), castors front %.1f / rear %.1f kg each" % (l["drive_pair_kg"], l["per_drive_wheel_kg"], l["per_castor_front_kg"], l["per_castor_rear_kg"]),
@@ -890,7 +892,7 @@ def main():
               wc["arch_sheet_stress_MPa"], max(wc["bolt_tension_per_bolt_N"].values()), wc["bolt_shear_per_bolt_N"], plate["max_column_tilt_deg"],
               plate["decided_fix"]["what"], u_sheet_fix, u_back_fix, mu["bolt_utilisation"]),
           "utilisation <= 0.67 (factor 1.5 on unfactored loads) for every element", "lift_plate_check.py; EN 485-2, EN 10025-2, EN 1993-1-8; CAD MMP.04.00.00.000",
-          "decided (owner decision 8 Nov 2026, A7 option of 2 Nov): through-bolts with a backing plate under the arch top sheet; CAD pending",
+          "decided (owner decision 8 Nov 2026, A7 option of 2 Nov; D-21): through-bolts with a backing plate under the arch top sheet (tapped plate or 5 mm S235 with press-in nuts, the mechanical owner confirms); drawing pending",
           OWN["mech"], "decided fix, CAD pending")
 
     # ---- TZBOT WCM-500-24 receiver (B4): position, lowest point, floor gap, cut-out, metal-free zone, EMC distances
@@ -1002,7 +1004,7 @@ def main():
     # the Jetson on the front-bay plate (A2), not on the IMU bracket
     fbfit = (fbs.get(fbd) or {}).get("fit", {})
     jz = ((fbs.get(fbd) or {}).get("placed") or {}).get("compute")
-    issue("minor", "Jetson Orin NX on J401 position (A2)", "front bay, %s" % fbfit.get("layout", ""), "Jetson on the %s, not on bracket MMP.04.00.00.002; nothing heavy or vibrating on the IMU bracket" % (
+    issue("minor", "Jetson Orin NX on Robotics 104 position (A2)", "front bay, %s" % fbfit.get("layout", ""), "Jetson on the %s, not on bracket MMP.04.00.00.002; nothing heavy or vibrating on the IMU bracket" % (
               {"A_lower": "lower plate under the shelf (check the fan inlet and outlet)", "A_upper": "upper shelf", "bay": "single plate"}.get(jz[0] if jz else "", "front bay")),
           "nothing heavy or vibrating on the IMU bracket", "front_bay.py", "check the fan airflow at M-09", OWN["mech"], "layout")
     issue("minor", "Battery assembly removal path", "cover off", "each pocket tray lifts out vertically with its 4 cells; the series link over the centre unbolts first",

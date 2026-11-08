@@ -16,7 +16,7 @@ description: The OpenAMRobot 2.0 development cycle in one place, hardware archit
 
 ## What OpenAMRobot 2.0 is
 
-OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a lift column carrying two [OpenArm 2.0](https://docs.openarm.dev/) arms, an NVIDIA Jetson Orin NX compute module and an STM32-based base controller. The lift column stands on a two-position base plate and moves the shoulder between 1000 and 1350 mm above the floor.
+OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a lift column carrying two [OpenArm 2.0](https://docs.openarm.dev/) arms, an NVIDIA Jetson Orin NX 8 GB compute module on the reComputer Robotics 104 carrier and an STM32-based base controller. The lift column stands on a two-position base plate and moves the shoulder between 1000 and 1350 mm above the floor.
 
 | Area | What this section documents | Owning repository |
 |---|---|---|
@@ -44,7 +44,7 @@ Recorded means written in the decision addendum of the plan set (P-03); the revi
 | Head camera | Stereolabs ZED Mini on the lift carriage, lens 60 mm ahead of and 223 mm above the arm mount point, pitch 15 to 35 degrees down in 5 degree steps, baseline 30 degrees (`hp30`) | 9 October 2026, recorded in P-03 revision 18.9 item 18; lens position and baseline pitch changed 28 October 2026, P-03 revision 20.0 items 15, 17 and 18; lens 60 mm by owner decision of 8 November 2026, P-03 revision 20.4 item 28 |
 | Chest and second E-stop | Chest, from the bottom up: Falcon FLDL-i150x15-W head light, a 10 mm gap, Getac ZX80 tablet in portrait only on a fixed portrait mount (positions are placeholders until M-09; owner decision of 2 November 2026); second E-stop, the same Schneider XB4BS8445 with ZBE-102 as the base button, on top of the moving adapter plate behind the arm post, button up, cable through the lift cable chain (owner decision of 2 November 2026, register SAFETY-PROCUREMENT; mounting and cable route to be confirmed by the electrical and platform safety owners); panel fuse F-PANEL feeds the Getac and the head light | 28 October 2026, P-03 revision 20.0 item 24 and E-01 revision 1.5; gap and E-stop position changed 2 November 2026 |
 | Configuration IDs | Column `dold_v4_350`, `tl3_400`; base plate `bp000`, `bp050`; head pitch `hp15` to `hp35`; base tilt `bt05`, `bt10`, `bt15` | 9 October 2026, recorded in P-03 revision 18.9 item 18 |
-| Speed | Command ceiling 1.5 m/s, treated as an analytical limit; the accepted operating speed follows from the stability model and the stopping tests | 28 September 2026, recorded in P-03 revision 18.2 |
+| Speed | Base speed ceiling 0.5 m/s until the measured stop acceptance (stop tests at 0.2, 0.3 and 0.5 m/s, limit 0.15 m; designed, not measured); 1.5 m/s stays the analytical command ceiling | 8 November 2026, P-03 revision 20.5 item 29 (decision D-07); 1.5 m/s: 28 September 2026, P-03 revision 18.2 |
 
 ## Inputs still open
 

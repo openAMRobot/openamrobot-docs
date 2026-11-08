@@ -60,7 +60,7 @@ These limits come from the earlier model and are confirmed or replaced by the op
 
 - Flat indoor floors. Thresholds and cable covers are crossed at crawl speed until the physical test replaces the assumed dynamic factor; the 35 mm castor wheels stop on small steps.
 - Drawer and door pulls up to 150 N at working height with the hands kept close to the body.
-- Command ceiling 1.5 m/s in software, treated as an analytical limit until the stopping tests set the accepted operating speed; obstacle detection must reach at least 0.9 m ahead at that speed.
+- Base speed ceiling 0.5 m/s until the measured stop acceptance (decision D-07, P-03 revision 20.5 item 29; designed, not measured). The command ceiling 1.5 m/s stays the analytical limit of this model; obstacle detection must reach at least 0.9 m ahead at that speed.
 
 ## Next
 

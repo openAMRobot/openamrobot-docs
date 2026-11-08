@@ -1491,6 +1491,9 @@ SUPERSEDED_REFERENCE = [
     (r"rear face of the arm post", "second E-stop is on top of the moving adapter plate", r"E-stop"),
     (r"\b42 mm ahead of\b", "ZED Mini lens is 57 mm ahead of the arm mount point", None),
     (r"\bin one row\b", "battery is proposed as 4 + 4 cells in two trays", None),
+    (r"Orin NX 16 GB", "compute is the Jetson Orin NX 8 GB on the reComputer Robotics 104 (D-01, P-03 rev20.5 item 29)", None),
+    (r"\b15 mm (offset )?from any side\b", "receiver: no metal within 20 mm of its sides (plastic frame), 15 mm above (D-02, D-03)", None),
+    (r"\bwithin 50 mm inside\b", "no inward band beside the cover slot (D-06)", None),
 ]
 
 
@@ -1903,10 +1906,41 @@ def harness_separation_errors(H):
     return out
 
 
+def harness_slot_errors(H, step=0.001):
+    """Owner rule of 8 Nov 2026 (P-03 rev20.5 item 29, decision D-06; register WIRING-ROUTING): no cable, busbar or tie in the
+    slot between the panel upper edges and the cover lower edge (z 214 to 232 mm), all around the robot, with no inward band.
+    Every route section of every cable and busbar (fixed or routed) is sampled every 1 mm against the cover_slot_* keep-outs
+    in harness_routes.json; every tie point is checked too. Only a keep-out member's own cable is exempt (the LiDAR at the
+    front). Components are not checked: at the rear, parts may sit in or above the band (D-06)."""
+    zones = [k for k in H.get("keep_out", []) if k["id"].startswith("cover_slot_")]
+    out = []
+    for c in H.get("cables", []):
+        own = set(c.get("own", []))
+        for z in zones:
+            if own & set(z.get("members") or []):
+                continue
+            hit = None
+            for sec in c.get("sections", []):
+                for _, p in _samples(sec["pts"], step):
+                    if _in_box(p, z):
+                        hit = (sec["kind"], p)
+                        break
+                if hit:
+                    break
+            if hit:
+                out.append("%s (%s) %s section crosses %s at %s (D-06: no cable, busbar or tie in the slot band)" % (
+                    c["id"], c.get("kind", "cable"), hit[0], z["id"], [round(v, 3) for v in hit[1]]))
+    for t in H.get("ties", []):
+        for z in zones:
+            if _in_box(t["p"], z):
+                out.append("tie %s lies in %s at %s (D-06)" % (t["id"], z["id"], [round(v, 3) for v in t["p"]]))
+    return out
+
+
 def harness_errors(H, rows):
     return (harness_label_errors(H, rows) + harness_span_errors(H) + harness_over_errors(H) + harness_withdrawal_errors(H)
             + harness_bend_errors(H) + harness_lift_errors(H) + harness_axis_errors(H) + harness_support_errors(H)
-            + harness_above_errors(H) + harness_separation_errors(H))
+            + harness_above_errors(H) + harness_separation_errors(H) + harness_slot_errors(H))
 
 
 def check_harness(root, err):

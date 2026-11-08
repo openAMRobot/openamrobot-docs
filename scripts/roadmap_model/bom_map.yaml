@@ -44,12 +44,12 @@ CAP-002: {by: none, cls: not drawn, reason: offboard}
 CAP-003: {by: none, cls: not drawn, reason: offboard}
 CAP-004: {by: none, cls: not drawn, reason: offboard}
 CAP-005: {by: none, cls: not drawn, reason: offboard}
-CMP-001: {by: compute, cls: envelope, geo: "PROVENANCE.yaml compute (Orin NX on J401 outline)", pos: "CAD v0.2 electronics bracket MMP.04.00.00.002 top", mass: 0.25, msrc: "estimate"}
-CMP-002: {by: compute, cls: envelope, geo: "J401 carrier outline", pos: "CAD v0.2", mass: 0.2, msrc: "estimate"}
-CMP-003: {by: inside:compute, cls: envelope, geo: "inside the compute envelope", pos: "J401 M.2 slot", mass: 0.008, msrc: "estimate"}
+CMP-001: {by: compute, cls: envelope, geo: "PROVENANCE.yaml compute (Orin NX 8 GB on Robotics 104, D-01; earlier J401 outline until the Robotics 104 drawing)", pos: "CAD v0.2 electronics bracket MMP.04.00.00.002 top", mass: 0.25, msrc: "estimate"}
+CMP-002: {by: compute, cls: envelope, geo: "Robotics 104 carrier (D-01), earlier J401 outline until its drawing", pos: "CAD v0.2", mass: 0.2, msrc: "estimate"}
+CMP-003: {by: inside:compute, cls: envelope, geo: "inside the compute envelope", pos: "carrier M.2 slot", mass: 0.008, msrc: "estimate"}
 CMP-005: {by: inside:compute, cls: envelope, geo: "inside the compute envelope", pos: "on the module", mass: 0.15, msrc: "estimate"}
 CMP-006: {by: fan}
-CMP-007: {by: inside:compute, cls: not drawn, reason: "J401 M.2 Wi-Fi inside the compute envelope; antenna position not decided", mass: 0.02, msrc: "estimate"}
+CMP-007: {by: inside:compute, cls: not drawn, reason: "carrier M.2 Wi-Fi inside the compute envelope; antenna position not decided", mass: 0.02, msrc: "estimate"}
 CMP-009: {by: bay_usbhub}
 CTL-003: {by: bay_can1}
 CTL-004: {by: bay_iso1212}
@@ -72,7 +72,7 @@ MEC-003: {by: arm_profile, cls: primitive, geo: "HFS6-60120 60 x 120 x 340", pos
 MEC-004: {by: adapter_plate, cls: primitive, geo: "360 x 100 x 10 6082-T6", pos: "B7: rear edge flush with the column rear face", mass: 0.97, msrc: "volume x 2700 kg/m3"}
 MEC-005: {by: bay_plate, cls: proposed, geo: "3 mm 5052 aluminium sheet, proposed outline", pos: "front bay floor (E1)", mass: 0.0, msrc: "computed from outline x 3 mm x 2680 kg/m3"}
 MEC-006: {by: rear_plate, cls: proposed, geo: "3 mm aluminium cable-routing plate, proposed outline", pos: "rear zone floor behind the cells", mass: 0.0, msrc: "computed"}
-MEC-007: {by: battery_tray, cls: provisional, geo: "design intent battery_tray (D k)", pos: "B5 envelope position", mass: 1.6, msrc: "design-intent volume estimate"}
+MEC-007: {by: battery_tray, cls: provisional, geo: "design intent battery_tray (D k): two trays of 4 upright cells (D-27; sized from delivered EVE cell data, 300 +/- 20 kgf, two-tray RFQ)", pos: "rear side pockets, left and right", mass: 1.6, msrc: "design-intent volume estimate; estimate, under ledger review (D-26)"}
 MEC-008: {by: "lidar_support, lidar_spacer", cls: CAD-derived, geo: "MMP.07.00.00.001 and .002 STEP", pos: "CAD v0.2", mass: 0.6, msrc: "estimate"}
 MEC-009: {by: camera_mount, cls: CAD-derived, geo: "MMP.01.00.00.003 STEP", pos: "CAD v0.2", mass: 0.04, msrc: "estimate"}
 MEC-010: {by: tof_mount, cls: CAD-derived, geo: "MMP.00.00.00.005 STEP", pos: "CAD v0.2", mass: 0.02, msrc: "estimate"}
@@ -94,7 +94,7 @@ LFT-004: {by: flag_rod, cls: placeholder, geo: "20 x 20 x 430", pos: "datums.yam
 LFT-005: {by: rod_corner_bracket, cls: placeholder, geo: "20 corner bracket", pos: "datums.yaml", mass: 0.02, msrc: "estimate"}
 LFT-006: {by: lift_flag, cls: placeholder, geo: "45 x 20 x 2 SS400", pos: "datums.yaml lift_flag_*", mass: 0.014, msrc: "volume x 7850"}
 LFT-007: {by: fasteners, mqty: 1, cls: proposed, geo: "fastener_schedule.csv", pos: "LIFT-SNS-01 joints", mass: 0.03, msrc: "estimate"}
-PWR-001: {by: battery, cls: provisional, geo: "B5 cell-group envelope 314 x 140 x 210", pos: "B5 rear deck, 2 mm behind the centre bracket", mass: 21.5, msrc: "B5 assembly 20 to 23 kg provisional (midpoint)"}
+PWR-001: {by: battery, cls: provisional, geo: "8 x EVE LF105 in two 4-cell trays joined by PWR-018 (D-27); the B5 single-row envelope 314 x 140 x 210 is superseded", pos: "rear side pockets", mass: 21.5, msrc: "B5 assembly 20 to 23 kg provisional (midpoint); estimate, under ledger review (D-26): whether 20 to 23 kg includes tray, BMS, F0 and disconnect is open"}
 PWR-002: {by: rz_bms}
 PWR-003: {by: rz_f0}
 PWR-004: {by: rz_disc}

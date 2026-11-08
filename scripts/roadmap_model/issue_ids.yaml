@@ -31,7 +31,7 @@ ids:
   "interference|battery_tray_left / castor_rear_left": GI-107
   "interference|battery_tray_right / castor_rear_right": GI-109
   "interference|bay_usbcan_1 / bay_usbhub": GI-116
-  "layout|Jetson Orin NX on J401 position (A2)": GI-119
+  "layout|Jetson Orin NX on Robotics 104 position (A2)": GI-119
   "services|Disconnect handle and SB50 access": GI-124
   "interference|battery_tray_left / rz_kchg": GI-134
   "interference|battery_tray_right / rz_bms": GI-135
@@ -128,4 +128,4 @@ closed:
   GI-128: {key: "interference|rz_brake / rz_kchg", reason: "closed 3 Nov 2026: brake suppression moved in the rear power module layout (rear_power.py)"}
   GI-129: {key: "harness|No compliant harness route: CBL-P02", reason: "closed 3 Nov 2026: CBL-P02 F0 load stud straight back along x to QS1 S1 (150 mm, no bend)"}
   GI-130: {key: "harness|No compliant harness route: CBL-P05", reason: "closed 3 Nov 2026: CBL-P05 replaced by busbar BB-03 between the facing K1 and K2 studs (41 mm)"}
-  GI-166: {key: "verify with supplier|TZBOT receiver / parts within 20 mm (non-metal)", reason: "closed: TZBOT manual V2.5 offset of 15 mm from any side (owner 8 Nov 2026); the plate is 15 mm above the receiver, no part inside 15 mm needs a supplier check"}
+  GI-166: {key: "verify with supplier|TZBOT receiver / parts within 20 mm (non-metal)", reason: "closed: no metal within 20 mm of the receiver sides, held by a 3D-printed plastic frame (mechanical owner), and 15 mm above the receiver top (D-02, D-03, P-03 rev20.5 item 29); no part needs a supplier check"}

@@ -214,10 +214,12 @@ def decisions_section():
         "Arm reach checks use only physically valid poses: inside the joint limits, no self-collision, motion stopped at the first contact with the robot body; only contacts that a valid pose produces are reported.</p>" + t_estop +
         "<h3>Lift base plate (B3)</h3><p>One 10 mm 6082-T6 plate, %.0f x %.0f mm, on the top of the centre-frame arch (top 304 mm). The arch top (2 mm "
         "S235JR, CAD MMP.04.00.00.000) carries 8 x M8 blind rivet nuts in two patterns: 120 x 100 mm (x +/-0.060, y +/-0.050) and 190 x 300 mm "
-        "(x +/-0.095, y +/-0.150); the plate uses the inner one and is bolted from above with 4 x ISO 4762 M8 x 20 class 8.8. The DOLD column stands forward "
-        "of the arch centre on the plate, screwed from below (4 x DIN 7500 M8, flush) with hole sets for bp000 (x 0.060) and bp050 (x 0.110). Length: "
-        "from the rear arch holes minus 20 mm (x -0.080) to the column front at bp050 plus 20 mm (x 0.250). Assembly: the column onto the plate from below "
-        "first, on the bench; then the plate onto the arch from above. The column front overhangs the arch front wall by %.0f mm at bp050 (%.0f mm at bp000).</p>" % (
+        "(x +/-0.095, y +/-0.150); the plate uses the inner one and is bolted from above with 4 x ISO 4762 M8 x 25 class 8.8 through the arch top sheet into "
+        "the backing plate (GI-082 fix, decision D-21: a tapped steel plate if the mechanical owner confirms the space, else 5 mm S235 with press-in nuts). The DOLD column "
+        "stands forward of the arch centre on the plate. Decision D-20: the foot is fixed from above through its four tab holes (260 x 30 mm) with 4 x DIN 7984 "
+        "M8 x 14 8.8, no washer, medium threadlocker, into M8 tapped through the plate (9.5 mm engagement), with hole sets for bp000 (x 0.060) and bp050 "
+        "(x 0.110); the 224 x 40 mm pattern is DOLD-internal. Length: the foot ends plus 10 mm at each end (x -0.090 to 0.260). Assembly: the column onto the "
+        "plate from above, on the bench; then the plate onto the arch from above. Machining only after the DOLD drawing and a dry fit (designed, not built). The column front overhangs the arch front wall by %.0f mm at bp050 (%.0f mm at bp000).</p>" % (
             lp["size"][0] * 1000, lp["size"][1] * 1000, pl["overhang"]["bp050"]["column_front_ahead_of_arch_front_wall_m"] * 1000,
             pl["overhang"]["bp000"]["column_front_ahead_of_arch_front_wall_m"] * 1000) +
         "<p>Load check (above the plate %.1f kg, COM x %.3f, z %.3f m at L1350; braking at %.2f m/s2, the tip-over limit at L1350; arms at full forward "
@@ -227,7 +229,7 @@ def decisions_section():
             ab["L1350"]["mass_kg"], ab["L1350"]["com_m"][0], ab["L1350"]["com_m"][2], pl["decel_m_s2"], pl["arms_forward"]["mass_kg"], pl["arms_forward"]["com_m"][0],
             pl["arms_forward"]["com_m"][2], pl["cases"][0]["bolt_Ft_Rd_kN"], pl["cases"][0]["bolt_Fv_Rd_kN"], pl["cases"][0]["Bp_Rd_kN"], mu["bolt_utilisation"],
             mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], mu["arch_sheet_utilisation"], pl["max_column_tilt_deg"],
-            "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case. Decided fix (A7): a doubler under the arch top sheet, or through-bolts with a backing plate; CAD pending (%s)." % gi("Lift base plate MEC-019")) + t_plate + lift_rear_html(an) +
+            "The load path goes into the arch with margin." if ok else "The 2 mm arch top sheet is the limit: it is over its yield in the worst case. Decided fix (A7, D-21): through-bolts with a backing plate under the arch top sheet (tapped plate or 5 mm S235 with press-in nuts, the mechanical owner confirms); drawing pending (%s)." % gi("Lift base plate MEC-019")) + t_plate + lift_rear_html(an) +
         "<h3>TZBOT WCM-500-24 receiver, prepared in 2.0, installed later (A1)</h3><p class=\"note\">Wireless charging with the TZBOT WCM-500-24 is prepared in OpenAMRobot 2.0: the receiver position at the rear panel on the centre line, the base-sheet cut-out and the charge wiring are in the design; the receiver unit is installed later. Manual charging through the SB50 connector works at any time. Docking for wireless charging will approach the station, turn 180 degrees and reverse onto the transmitter.</p>"
         "<p>Prepared in 2.0 (class \"prepared, installed later\"): the base-sheet cut-out, the F-CHG 30 A charge branch, the KCHG charge relay and the start and fault lines to the controller (CBL-P31). "
         "Manual charging through SB50 with the Daly 28.4 V / 20 A charger (PWR-005) stays available.</p>"
@@ -351,7 +353,8 @@ def parity_section():
             "<details><summary>Out of tolerance (%d)</summary>%s</details>" % (len(rows), table(["URDF link / roadmap part"], rows)) +
             "<details><summary>Intended pending differences (%d)</summary>%s</details>" % (len(pend), table(["Item and reason"], pend)) +
             "<p><b>Mass:</b> the combined model carries %.1f kg in total (base URDF %.1f kg); the roadmap model from BOM Issue 7.14 carries %.1f kg, COM "
-            "(%.3f, %.3f, %.3f) m at L1000 and z %.3f m at L1350. %s gives the per-link masses for the platform-sw mass PR and for mass_provenance.yaml.</p>" % (
+            "(%.3f, %.3f, %.3f) m at L1000 and z %.3f m at L1350 (estimate, under ledger review (D-26); designed, not weighed). %s gives the per-link masses; it is held "
+            "for the platform-sw mass PR and for mass_provenance.yaml until the unique physical-instance mass ledger.</p>" % (
                 ms["comparison"]["combined_model_total_kg"], ms["comparison"]["base_urdf_kg"], tot["L1000"]["mass_kg"], tot["L1000"]["com_m"][0], tot["L1000"]["com_m"][1],
                 tot["L1000"]["com_m"][2], tot["L1350"]["com_m"][2], A("model/mass_export.yaml", "mass_export.yaml")))
     return section("parity", "Roadmap vs combined model", body, "combined_robot.xacro expanded at %s; scripts/roadmap_model/parity.py" % E(srcs))

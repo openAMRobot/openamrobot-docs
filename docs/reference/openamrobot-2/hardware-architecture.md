@@ -18,7 +18,7 @@ description: The OpenAMRobot 2.0 electronics, compute, base controller, drives, 
 
 | Subsystem | Selection | Notes |
 |---|---|---|
-| Compute | Seeed reComputer Robotics J401 carrier with NVIDIA Jetson Orin NX 16 GB and an NVMe SSD (the Robotics J401, not the classic J401) | ROS 2 Jazzy, Nav2, perception and the arm stack |
+| Compute | Seeed reComputer Robotics 104 carrier with NVIDIA Jetson Orin NX 8 GB (900-13767-0010-000) and an NVMe SSD (D-01, P-03 rev20.5 item 29; exact carrier SKU, fit and power to confirm) | ROS 2 Jazzy, Nav2, perception and the arm stack |
 | Base controller | Gate A: the existing Teensy 4.0 on the legacy robot (PWM drivetrain, MPU6500). Gate B: STM32H723ZG on a NUCLEO-H723ZG bench board (replaces the STM32H743 / NUCLEO-H743ZI2, P-03 rev18.5 item 14) with the ZLAC8015D over CANopen | Portable C core, same firmware contract on both targets; release path decided 6 November, Teensy behind the I8 contract is the documented fallback |
 | Drive bus | CAN1, 500 kbit/s, CANopen to the ZLAC8015D V4.2 driver | Two ZLLG80ASM250-L-B hub motors with integrated holding brakes (spring-applied function and ratings pending the supplier evidence, F2A) |
 | Battery bus | CAN2, 250 kbit/s, isolated, Daly 150 A BMS | 8S1P EVE LF105 LiFePO4, 25.6 V, 105 Ah: eight upright cells, cell-group envelope 314 x 140 x 210 mm (provisional) on the rear deck (25 October 2026; supersedes the 340 x 250 x 230 mm allocation). Proposed (2 November 2026, pending the battery owner's B-02 update): 4 + 4 cells in two removable side trays joined by the keyed connector PWR-018 |

@@ -169,13 +169,15 @@ class ReferencePagesCurrent(unittest.TestCase):
         for text in ("second E-stop on the rear face of the static lift column", "head light, a 30 mm gap, Getac",
                      "lens 42 mm ahead of and 223 mm above", "eight upright cells in one row across the robot",
                      "wired outside the lift cable chain", "light flat on a cooling plate, 30 mm below the Getac",
-                     "second E-stop on the rear face of the arm post"):
+                     "second E-stop on the rear face of the arm post", "Jetson Orin NX 16 GB on J401",
+                     "no metal within 15 mm from any side of the receiver", "no cable in the slot or within 50 mm inside it"):
             self.assertTrue(C.superseded_reference_hits(text), text)
 
     def test_current_values_pass(self):
         for text in ("second E-stop on top of the moving adapter plate", "a 10 mm gap", "lens 57 mm ahead of",
                      "supersedes the static-column position of the E-stop", "lift stop sensors on the rear face of the static DOLD column",
-                     "Battery (25 to 29 Oct): cells in one row; superseded 2 Nov 2026 by two trays"):
+                     "Battery (25 to 29 Oct): cells in one row; superseded 2 Nov 2026 by two trays",
+                     "Jetson Orin NX 8 GB on the reComputer Robotics 104", "no metal within 20 mm of the receiver sides"):
             self.assertEqual(C.superseded_reference_hits(text), [], text)
 
 
@@ -275,6 +277,39 @@ class HarnessSpan(unittest.TestCase):
         self.assertEqual(C.harness_span_errors(_h(branches=[{"cable": "CBL-X1", "p": [0.26, 0.2, 0.065]}])), [])
         H["ties"] = [t for t in H["ties"] if t["id"] != "T2" and t["id"] != "T3"] + [{"id": "T9", "p": [0.39, 0.2, 0.065]}]
         self.assertTrue(any("of the branch" in e for e in C.harness_span_errors(H)))
+
+
+class HarnessSlotKeepOut(unittest.TestCase):
+    """D-06 (P-03 rev20.5 item 29): no cable, busbar or tie in the cover slot band, all around; rear components allowed."""
+    SLOT = {"id": "cover_slot_left", "lo": [-0.395, 0.188, 0.2112], "hi": [0.395, 0.295, 0.2351], "members": []}
+
+    def test_route_below_the_slot_passes(self):
+        self.assertEqual(C.harness_slot_errors(_h(keep_out=[self.SLOT])), [])
+
+    def test_cable_crossing_the_slot_fails(self):
+        H = _h(keep_out=[self.SLOT])
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.2, 0.065], [0.0, 0.2, 0.220], [0.4, 0.2, 0.220]]
+        self.assertTrue(any("crosses cover_slot_left" in e for e in C.harness_slot_errors(H)))
+
+    def test_busbar_touching_the_slot_fails(self):
+        H = _h(keep_out=[self.SLOT])
+        H["cables"][0].update(kind="busbar", sections=[{"kind": "base", "group": "base", "pts": [[0.0, 0.25, 0.200], [0.0, 0.25, 0.212]]}])
+        self.assertTrue(any("(busbar)" in e for e in C.harness_slot_errors(H)))
+
+    def test_tie_in_the_slot_fails(self):
+        H = _h(keep_out=[self.SLOT])
+        H["ties"].append({"id": "T9", "p": [0.1, 0.25, 0.225]})
+        self.assertTrue(any("tie T9" in e for e in C.harness_slot_errors(H)))
+
+    def test_inward_route_at_slot_height_passes(self):
+        H = _h(keep_out=[self.SLOT])
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.10, 0.220], [0.4, 0.10, 0.220]]
+        self.assertEqual(C.harness_slot_errors(H), [])
+
+    def test_member_cable_is_exempt(self):
+        H = _h(keep_out=[dict(self.SLOT, members=["lidar"])])
+        H["cables"][0].update(own=["lidar"], sections=[{"kind": "base", "group": "base", "pts": [[0.0, 0.2, 0.220], [0.4, 0.2, 0.220]]}])
+        self.assertEqual(C.harness_slot_errors(H), [])
 
 
 class HarnessOverComponent(unittest.TestCase):

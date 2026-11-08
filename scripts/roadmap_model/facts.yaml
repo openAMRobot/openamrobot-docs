@@ -4,9 +4,9 @@
 snapshot: "8 Nov 2026"
 window: "24 Oct to 1 Nov 2026"
 documents:
-  P-03: rev20.2 (1 Nov 2026)
-  E-01: rev1.6 (1 Nov 2026)
-  M-01: rev19.7 (1 Nov 2026)
+  P-03: rev20.5 (8 Nov 2026; item 29, decision baseline of 8 Nov 2026, D-01 to D-34)
+  E-01: rev1.7 (8 Nov 2026)
+  M-01: rev19.9 (8 Nov 2026)
   P-02: rev19.2
   BOM: Issue 7.14 (27 Oct 2026, with 1 Nov changes; 146 records, 115 onboard)
   B-02: rev18.10 (25 Oct 2026)
@@ -28,16 +28,28 @@ cover_underside: 0.290      # deck 0.054 + 236 mm (B5)
 # the LiDAR looks out through it; owner rule 8 Nov 2026 (P-03 rev20.5 item 29): no cable and no tie in the slot band, all around the robot, no inward band
 cover_slot: {panel_top: 0.2142, cover_edge: 0.2321, margin: 0.003, depth: 0.005}   # owner rule 8 Nov 2026 (P-03 rev20.5 item 29): the band at the panels, no 50 mm inward band
 # lift base plate MEC-019, owner decision 2 Nov 2026 (B3): one 10 mm 6082-T6 plate on the centre-frame arch top (z 0.294), bolted from above
-# into the inner arch rivet-nut pattern (CAD MMP.04.00.00.000: 4 x M8 blind rivet nuts at x +/-0.060, y +/-0.050); column screwed from below
-lift_plate: {size: [0.330, 0.140, 0.010], x: [-0.080, 0.250], top: 0.304, arch_bolts: {x: [-0.060, 0.060], y: [-0.050, 0.050]},
-             arch_outer: {x: [-0.095, 0.095], y: [-0.150, 0.150]}, col_axis_x: {bp000: 0.060, bp050: 0.110}, col_screws: [0.224, 0.040]}   # column foot screws 224 x 40 mm (DOLD STEP, 8 Nov 2026; was 190 x 30)
+# into the inner arch pattern (CAD MMP.04.00.00.000: 4 x M8 at x +/-0.060, y +/-0.050). Decision D-20 (8 Nov 2026, approved, rule
+# "most COTS, fewest operations, fewest custom parts"): the column foot is fixed from above through its four mounting-tab holes
+# (260 x 30 mm, counterbores on the foot top face, seat 4.5 mm) with 4 x DIN 7984 M8 x 14 8.8, no washer, medium threadlocker, into
+# M8 tapped through MEC-019 (9.5 mm engagement, no inserts). MEC-019 is 350 x 140 mm (10 mm longer at each end than 330 mm, so the
+# tab holes keep 20 mm edge distance). The 224 x 40 mm pattern is DOLD-internal (opens on the foot underside). Machining is released
+# only after the DOLD drawing and a dry fit (mechanical owner).
+lift_plate: {size: [0.350, 0.140, 0.010], x: [-0.090, 0.260], top: 0.304, arch_bolts: {x: [-0.060, 0.060], y: [-0.050, 0.050]},
+             arch_outer: {x: [-0.095, 0.095], y: [-0.150, 0.150]}, col_axis_x: {bp000: 0.060, bp050: 0.110}, col_screws: [0.260, 0.030],
+             col_fixing: {screw: "DIN 7984 M8 x 14 8.8", qty: 4, from: above, into: "M8 tapped through MEC-019", engagement: 0.0095, washer: none,
+                          threadlocker: medium, decision: D-20, status: "approved; machining after the DOLD drawing and a dry fit (mechanical owner)"}}
 arch: {top: 0.294, sheet: 0.002, walls_x: [-0.117, 0.117], ribs_y: [-0.077, 0.077], material: "S235JR (EN 1.0114), 2 mm"}
-# GI-082 fix decided by the owner on 8 Nov 2026: 4 x M8 8.8 through-bolts with nuts and a backing plate under the arch top sheet (thickness proposed)
-arch_fix: {kind: through-bolts with backing plate, bolts: M8 8.8, backing_t: 0.005, backing_material: S235JR, backing_size: [0.150, 0.130], status: "decided, CAD pending"}
+# GI-082 fix decided by the owner on 8 Nov 2026: 4 x M8 8.8 through-bolts and a backing plate under the arch top sheet. Decision D-21 (8 Nov 2026,
+# approved with the D-20 rule): one laser-cut tapped steel plate if the mechanical owner confirms the space, otherwise 5 mm S235 with press-in (PEM) nuts.
+# The screening below uses 5 mm S235; size about 150 x 130 mm until the drawing (with the two 50 x 24 mm lift cable openings).
+arch_fix: {kind: through-bolts with backing plate, bolts: M8 8.8, backing_t: 0.005, backing_material: S235JR, backing_size: [0.150, 0.130],
+           backing_options: "tapped plate or 5 mm S235 with press-in nuts, the mechanical owner confirms", decision: D-21, status: "approved rule, drawing pending (mechanical owner)"}
 column: {section: [0.240, 0.060], retracted: 0.530, stroke: 0.350, mass: 11.7,
          # DOLD supplier CAD Hexalift_EB530_Hub350_mit_Montagelaschen.STEP (owner, 8 Nov 2026; OCC bounding boxes, column frame: z from the column base)
          foot: [0.280, 0.0604, 0.010], static_bottom: 0.010, static_profile_top: 0.503, static_top: 0.505,
-         inner: [0.2095, 0.0533, 0.470], inner_bottom_retracted: 0.060, foot_screws: {x: 0.112, y: 0.020},
+         inner: [0.2095, 0.0533, 0.470], inner_bottom_retracted: 0.060,
+         foot_screws: {x: 0.112, y: 0.020, role: "DOLD-internal (224 x 40 mm, underside counterbores), not the robot fixing"},
+         tab_holes: {x: 0.130, y: 0.015, seat: 0.0045, role: "robot fixing (260 x 30 mm, top-face counterbores), D-20"},
          step: "Hexalift_EB530_Hub350_mit_Montagelaschen.STEP (DOLD, 2019-01-28)"}
 shoulder: {L1000: 1.000, L1175: 1.175, L1350: 1.350}
 head_lens_L1000: 1.223
@@ -46,9 +58,23 @@ us_z: 0.0914
 lidar_scan_plane: 0.22205
 mass_cap: 120.0
 motor_pair_rating: 120.0
-speed_max: 1.5
+speed_max: 1.5               # analytical command ceiling (P-03 item 10)
+speed_cap_build1: 0.5        # D-07 (P-03 rev20.5 item 29): base speed ceiling 0.5 m/s until measured stop acceptance; designed limit, not measured
+speed_cap_status: "designed limit, not measured (stop tests at 0.2, 0.3 and 0.5 m/s, limit 0.15 m)"
+# D-01 (P-03 rev20.5 item 29): compute; exact carrier SKU, fit and power are an evidence hold. The 118.1 x 115 x 45 mm envelope of the
+# earlier J401 outline stays until the Robotics 104 drawing.
+compute: {module: "NVIDIA Jetson Orin NX 8 GB (900-13767-0010-000)", carrier: "Seeed reComputer Robotics 104", decision: D-01,
+          hold: "exact carrier SKU, fit and power to confirm"}
+# D-11 (P-03 rev20.5 item 29): CTL-017 is the single upper-body controller on CAN3 (CANopen 500 kbit/s, node 0x10); board proposed
+# (the electrical owner checks): NUCLEO-G474RE + BLDC-SHIELD_IFX007T + SN65HVD230. Stop sensors SICK IME12-04BNSZC0S are NPN NO, 10 to 30 V.
+upperbody_controller: {id: CTL-017, bus: CAN3, node: "0x10", bitrate_kbit: 500, board: "NUCLEO-G474RE + BLDC-SHIELD_IFX007T + SN65HVD230 (proposed, the electrical owner checks)",
+                       scope: "lift H-bridge and Halls, three stop sensors, light bar, ZX80 power and charge enable, spare inputs (functional only)",
+                       stop_sensor_output: "NPN NO, 10 to 30 V (pull-up to 24 V on CTL-017)", decision: D-11}
 estop_clear_below_top: 0.180
-battery: {envelope: [0.140, 0.314, 0.210], cells: 8, cell_mass: 1.98, assembly_mass: [20.0, 23.0]}
+# D-27 (8 Nov 2026, approved): 8 x EVE LF105 in two trays (two 4-cell packs) joined by PWR-018, trays sized from delivered cell data,
+# 300 +/- 20 kgf compression, two-tray RFQ. The single-row envelope is superseded and kept only for the hidden legacy outline.
+battery: {envelope: [0.140, 0.314, 0.210], envelope_status: "superseded single-row outline (B-02 rev18.10), not drawn", trays: 2, cells_per_tray: 4,
+          tray_link: PWR-018, compression_kgf: [280, 320], cells: 8, cell_mass: 1.98, assembly_mass: [20.0, 23.0], decision: D-27}
 rear_zones:   # B5 / platform-sw #95: free zones next to the cells (x, y, z extents)
   behind: {x: [-0.347, -0.277], y: [-0.157, 0.157], z: [0.054, 0.264]}
   side_l: {x: [-0.277, -0.137], y: [0.157, 0.248], z: [0.054, 0.264]}
@@ -62,7 +88,7 @@ front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0
 tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5, touch_clear: 0.001,
                  status: "prepared, installed later", below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
                  align: [0.020, 0.020], metal_clear: 0.020, metal_clear_above: 0.015,   # owner decision 8 Nov 2026: no metal within 20 mm of the receiver sides (manual V2.5 Figure 4, A >= 2 cm), held by a plastic frame on the steel deck; 15 mm above (owner, TZBOT recommends 20 mm)
-                 frame: {width: 0.020, material: "3D-printed plastic (first iteration)", design: "mechanical owner", fixing: "screws to the base sheet; receiver screwed or clipped into the frame"},
+                 frame: {width: 0.020, material: "3D-printed plastic (first iteration)", design: "mechanical owner, D-02 and D-03", fixing: "screws to the base sheet; receiver screwed or clipped into the frame"},
                  
                  freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
                  signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",

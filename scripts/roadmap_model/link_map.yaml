@@ -23,7 +23,7 @@ mapped:
   - {urdf: ["base_link#1"], mode: aabb, note: "base_covers.stl", roadmap: [cover, cover_flange_front, cover_flange_rear]}
   - {urdf: ["base_link#2"], mode: aabb, note: "base_equipment.stl: component envelopes",
      roadmap: [motor_driver, compute, base_controller, battery, estop, reset_button],
-     pending: "C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX on J401 off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position"}
+     pending: "C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX (now 8 GB on Robotics 104, D-01) off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position"}
   - {urdf: [fl_caster_link], roadmap: [castor_front_left], mode: aabb}
   - {urdf: [fr_caster_link], roadmap: [castor_front_right], mode: aabb}
   - {urdf: [bl_caster_link], roadmap: [castor_rear_left], mode: aabb}
@@ -137,7 +137,7 @@ roadmap_only:
   ch_central_signal: {attach: base_link, offset_m: [-0.0185, -0.0625, 0.128]}
   dp_lift: {attach: lift_column_base_link, offset_m: [-0.06, 0, 0.035]}
   fan: {attach: base_link, offset_m: [0.18, 0, 0.1755]}
-  fasteners_base: {attach: base_link, offset_m: [0.1535, 0, 0.0865]}
+  fasteners_base: {attach: base_link, offset_m: [0.1484, 0, 0.0865]}
   fasteners_col: {attach: lift_column_base_link, offset_m: [-0.122, -0.02, 0.287]}
   fasteners_mov: {attach: lift_carriage_link, offset_m: [0.1658, 0, 0.1285]}
   feedthru_1: {attach: base_link, offset_m: [0.2, -0.272, 0.087]}
