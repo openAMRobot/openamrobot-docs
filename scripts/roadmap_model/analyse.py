@@ -746,7 +746,8 @@ def main():
               OWN["nav"], "sensor view")
 
     # ---- mass and stability
-    MASS_SAME_PART = {"UI-002": "MEC-012"}   # BOM 7.14 lists the Getac portrait mount twice (MEC-012 adapter, UI-002 mount, same 0.461 kg part)
+    # one Getac pocket (owner, 8 Nov 2026): BOM 7.14 buys it as UI-002; MEC-012 is "Allocation only", included in UI-002, "count once"
+    MASS_SAME_PART = {"MEC-012": "UI-002"}
     cov = list(csv.DictReader(open(os.path.join(MODEL, "bom_coverage.csv"))))
     mass_items = []
     for r in cov:
@@ -755,9 +756,9 @@ def main():
         except ValueError:
             continue
         if r["onboard"] == "y" and m > 0:
-            if r["id"] in MASS_SAME_PART and any(x[0] == MASS_SAME_PART[r["id"]] for x in mass_items):
-                continue   # the same physical part as an earlier BOM line: counted once (8 Nov 2026)
             mass_items.append((r["id"], m, r["model_component"]))
+    ids_ = {x[0] for x in mass_items}
+    mass_items = [x for x in mass_items if not (x[0] in MASS_SAME_PART and MASS_SAME_PART[x[0]] in ids_)]   # counted once, on the purchased line
     # MEC-001 from CAD volume
     def vol(v, f):
         tri = v[f]

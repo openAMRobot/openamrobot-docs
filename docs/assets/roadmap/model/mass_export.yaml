@@ -1584,18 +1584,6 @@ groups:
           - 0.1
           - 0.01
           source: volume x 2700 kg/m3
-        - bom: MEC-012
-          component: getac_pocket
-          mass_kg: 0.461
-          com_m:
-          - 0.3153
-          - 0.0
-          - 1.0268
-          size_m:
-          - 0.031
-          - 0.18
-          - 0.269
-          source: design-intent volume x density
         - bom: SAF-001
           component: second_estop
           mass_kg: 0.15
@@ -1608,6 +1596,18 @@ groups:
           - 0.04
           - 0.082
           source: estimate 0.15 kg each
+        - bom: UI-002
+          component: getac_pocket
+          mass_kg: 0.461
+          com_m:
+          - 0.3153
+          - 0.0
+          - 1.0268
+          size_m:
+          - 0.031
+          - 0.18
+          - 0.269
+          source: design-intent volume x density
         mass_kg: 3.335
         com_m:
         - 0.1125
