@@ -30,6 +30,8 @@ import numpy as np
 import yaml
 from scipy import ndimage
 
+from slot_rule import cover_slot_keepouts, slot_violations  # noqa: F401 (the slot rule, shared with the tests)
+
 FACTS = yaml.safe_load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "facts.yaml")))
 
 RES = 0.005
@@ -707,33 +709,6 @@ def inside_mask(V):
     ax_ = np.abs(x)
     lim = np.where(ax_ > 0.320, 0.286 - (ax_ - 0.320) * (0.095 / 0.069), 0.286)
     return (ax_ <= 0.368) & (y <= lim)
-
-
-def cover_slot_keepouts(F):
-    """The four cover-slot keep-outs (left, right, front, rear) from facts.yaml cover_slot."""
-    cs = F["cover_slot"]
-    z0_, z1_ = cs["panel_top"] - cs["margin"], cs["cover_edge"] + cs["margin"]
-    yi = 0.193 - cs["depth"]   # side panels: their top flange reaches in to y 0.193 (CAD v0.2); nothing lies on it in the band
-    xf_ = 0.370 - cs["depth"]
-    xr_ = F["rear_section"]["rear_panel_inner_x"] + cs["depth"]
-    out = []
-    for k_, lo_, hi_ in (("left", [-0.395, yi, z0_], [0.395, 0.295, z1_]), ("right", [-0.395, -0.295, z0_], [0.395, -yi, z1_]),
-                         ("front", [xf_, -0.295, z0_], [0.395, 0.295, z1_]), ("rear", [-0.395, -0.295, z0_], [xr_, 0.295, z1_])):
-        out.append({"id": "cover_slot_" + k_, "lo": lo_, "hi": hi_, "members": ["lidar"] if k_ == "front" else [],
-                    "why": "%s slot between the panel upper edge (side panels: the whole top flange) and the cover, plus 5 mm (owner rule 8 Nov 2026, P-03 rev20.5 item 29)" % k_})
-    return out
-
-
-def slot_violations(pts, keep, step=RES / 2):
-    """Keep-outs of the cover slot (cover_slot_*) that a polyline enters (owner rule 8 Nov 2026, P-03 rev20.5 item 29).
-    Checked on every route, also on fixed (declared) and cached routes, so no route bypasses the slot rule."""
-    hits = []
-    zones = [k for k in keep if str(k["id"]).startswith("cover_slot_")]
-    for _, q in sample([list(map(float, p)) for p in pts], step):
-        for k in zones:
-            if k["id"] not in hits and all(k["lo"][i] < q[i] < k["hi"][i] for i in range(3)):
-                hits.append(k["id"])
-    return hits
 
 
 def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
