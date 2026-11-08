@@ -8,12 +8,12 @@ Compute branch TVS and EMI filter to the MEC-005 plate,M3 hex standoff + ISO 738
 Compute inrush limiter to the MEC-005 plate,M3 hex standoff + ISO 7380 screw,M3 x 6,4,DIN 7380 / hex standoff,A2 / brass,proposed,y
 Flag rod guide: arm and spacer to the static column +y face,ISO 4762 + M5 T-slot nut,M5 x 30,2,ISO 4762,A2,proposed,n
 Flag rod guide: U ring to the arm,ISO 7380 + nut (or rivets),M3 x 8,2,ISO 7380,A2,proposed,n
-Lift base plate MEC-019 to the centre-frame arch (from above),"socket head cap screw, class 8.8",M8 x 20,4,ISO 4762,"steel 8.8, zinc flake",proposed,y
+Lift base plate MEC-019 through the arch top sheet into the backing plate (from above),"socket head cap screw, class 8.8",M8 x 25,4,ISO 4762,"steel 8.8, zinc flake",proposed,y
 Lift base plate MEC-019 to the centre-frame arch (from above),washer,M8,4,ISO 7089,steel 200 HV,proposed,y
-Lift base plate MEC-019 to the centre-frame arch,"existing M8 blind rivet nut, round thin, stainless, in the arch top (CAD MMP.04.00.00.000)",M8,4,BOM_specs_MMP.xlsx,stainless steel,named,y
-Rear power plate MEC-006 (G10) to the rear panel and the arch angles (within 20 mm of the receiver),"pan head screw + nut, PA66 (or PEEK)",M5 x 12,6,ISO 7045,PA66 / PEEK,proposed,n
-"F0 holder, K1, K2 and the FB-B shelf posts to the G10 plate (screw heads and nuts within 20 mm of the receiver)","pan head screw + nut, PA66 (or PEEK)",M5 x 16,14,ISO 7045,PA66 / PEEK,proposed,n
-BUS+ on its two POM standoffs,POM standoff + A2 screw above the standoff (more than 20 mm above the receiver),M6 x 12,4,ISO 4762,POM / A2,proposed,n
+"Arch backing plate (5 mm S235, about 150 x 130 mm, under the arch top sheet, fitted before the central channels)",captive M8 press-in nut in the backing plate,M8,4,"PEM-type self-clinching nut, steel",steel zinc,proposed,y
+Rear power plate MEC-006 (G10) to the rear panel and the arch angles (within 15 mm of the receiver),"pan head screw + nut, PA66 (or PEEK)",M5 x 12,6,ISO 7045,PA66 / PEEK,proposed,n
+"F0 holder, K1, K2 and the FB-B shelf posts to the G10 plate (screw heads and nuts within 15 mm of the receiver)","pan head screw + nut, PA66 (or PEEK)",M5 x 16,14,ISO 7045,PA66 / PEEK,proposed,n
+BUS+ on its two POM standoffs,POM standoff + A2 screw above the standoff (more than 15 mm above the receiver),M6 x 12,4,ISO 4762,POM / A2,proposed,n
 "Busbars BB-01 to BB-04 on the stud terminals (QS1 M10, BUS+, K1, K2, FB-B M8)","flange nut, serrated, with spring washer",M8 / M10,10,ISO 4161,brass / A2,proposed,n
 FB-B shelf (L3) and FB-A shelf to their posts and the rear panel,ISO 7380 + M4 blind rivet nut,M4 x 8,10,ISO 7380,A2,proposed,n
 BMS clamp strips to the right side panel (removable panel: BMS service),ISO 7380 + M4 blind rivet nut,M4 x 10,4,ISO 7380,A2,proposed,n
@@ -42,14 +42,14 @@ Battery tray MEC-007 to the deck,socket head cap screw + washer,M6 x 16,6,ISO 47
 Detachable battery side panels,quarter-turn fastener,M5,8,DIN 7500-compatible quarter-turn,steel,proposed,n
 "PETG sensor mounts (MEC-010, MEC-011) to the panels",heat-set insert + ISO 7380,M3 x 6,12,brass insert / ISO 7380,A2,proposed,n
 Second E-stop housing P2 to the arm-post rear slots (HFS6),ISO 4762 + ISO 7089 + M6 T-slot nut,M6 x 10,4,ISO 4762,steel,proposed,n
-TZBOT receiver bracket WCH-007 to the base sheet (outside the 20 mm zone),"ISO 7380 + rivet nut, stainless (non-magnetic A4)",M5 x 10,4,ISO 7380,A4,proposed,n
-Ferrite sheet on the receiver top,adhesive backing (no metal fasteners in the 20 mm zone),-,1,-,-,proposed,n
+TZBOT receiver bracket WCH-007 to the base sheet (outside the 15 mm zone),"ISO 7380 + rivet nut, stainless (non-magnetic A4)",M5 x 10,4,ISO 7380,A4,proposed,n
+Ferrite sheet on the receiver top,adhesive backing (no metal fasteners in the 15 mm zone),-,1,-,-,proposed,n
 MEC-005 upper shelf on the lower plate (second tier),hex standoff M4 x 50 + ISO 7380,M4,4,hex standoff / ISO 7380,A2,proposed,n
 DIN carrier to the centre-bracket front legs,ISO 4762 + rivet nut,M5 x 12,4,ISO 4762,A2,proposed,n
 Getac pocket and light-bar plate to the post front face,T-slot nut + ISO 4762,M6 x 12,4,ISO 4762,steel,proposed,n
 MEC-015 motor brackets to the base sheet,hex bolt + nut + washer,M8 x 20,8,ISO 4017 / ISO 4032 / ISO 7089,steel 8.8,proposed,n
-"Harness tie bases on the base sheet, side panels, arch and brackets (screw-mount tie base, cable tie)",ISO 7380 button head screw + M4 blind rivet nut,M4 x 8,102,ISO 7380,A2,proposed,y
-Harness tie bases on standoffs (route 15 to 40 mm from the surface),M4 hex standoff F-F + 2 x ISO 7380 + M4 blind rivet nut,"M4 x 20 standoff, M4 x 8",67,DIN 7380 / hex standoff,A2 / brass,proposed,y
+"Harness tie bases on the base sheet, side panels, arch and brackets (screw-mount tie base, cable tie)",ISO 7380 button head screw + M4 blind rivet nut,M4 x 8,94,ISO 7380,A2,proposed,y
+Harness tie bases on standoffs (route 15 to 40 mm from the surface),M4 hex standoff F-F + 2 x ISO 7380 + M4 blind rivet nut,"M4 x 20 standoff, M4 x 8",71,DIN 7380 / hex standoff,A2 / brass,proposed,y
 Sleeve and lift-sensor cable clips on the static column T-slots,P-clip + M5 T-slot nut + ISO 7380,M5 x 10,14,ISO 7380,steel zinc,proposed,y
 Moving-trunk and riser clips on the hung angle and the arm post,P-clip + ISO 7380 (angle: M4 rivet nut; post: M6 T-slot nut),M4 x 8 / M6 x 10,18,ISO 7380,A2,proposed,y
 Over-wheel cable guards to the side-panel inner faces,ISO 7380 + M4 blind rivet nut,M4 x 8,6,ISO 7380,A2,proposed,y

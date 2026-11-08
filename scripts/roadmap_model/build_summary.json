@@ -636,18 +636,18 @@
   ],
   "cutout": [
    -0.37,
-   -0.179,
-   -0.095,
-   0.095
+   -0.184,
+   -0.09,
+   0.09
   ],
   "orientation": "150 mm along x, 170 mm across y (rear charger zone)",
   "cutout_mm": [
-   191,
-   190
+   186,
+   180
   ],
   "cutout_full_mm": [
-   191,
-   190
+   186,
+   180
   ],
   "gap_m": -0.002,
   "status": "prepared, installed later"
@@ -672,11 +672,11 @@
    "side_wall_inner_y": 0.276
   },
   "pocket_free": {
-   "y_mm": 181.0,
+   "y_mm": 186.0,
    "y_formula_mm": 201.0,
    "x_mm": 235.0,
    "x_beside_support_mm": 148.6,
-   "y_inside_flanges_mm": 98.0
+   "y_inside_flanges_mm": 103.0
   },
   "pockets": {
    "arrangement": "4 across (y), 130 along x",
@@ -690,36 +690,36 @@
   "plate": [
    [
     -0.366,
-    -0.095,
+    -0.09,
     0.117
    ],
    [
     -0.137,
-    0.095,
+    0.09,
     0.12
    ]
   ],
   "margin": [
    [
-    -0.389,
-    -0.095,
-    0.03
+    -0.384,
+    -0.09,
+    0.035
    ],
    [
-    -0.179,
-    0.095,
-    0.122
+    -0.184,
+    0.09,
+    0.117
    ]
   ],
   "cutout": [
    [
     -0.37,
-    -0.095,
+    -0.09,
     0.052
    ],
    [
-    -0.179,
-    0.095,
+    -0.184,
+    0.09,
     0.054
    ]
   ],
@@ -751,7 +751,7 @@
     ]
    }
   ],
-  "link_z": 0.252
+  "link_z": 0.247
  },
  "k1k2_options": {
   "A": {
@@ -880,24 +880,7 @@
      "gap_mm": 5.8
     }
    ],
-   "within_20mm_of_receiver": [
-    {
-     "part": "rear_plate",
-     "gap_mm": 15.0
-    },
-    {
-     "part": "rz_k1k2_1",
-     "gap_mm": 18.0
-    },
-    {
-     "part": "rz_k1k2_2",
-     "gap_mm": 18.0
-    },
-    {
-     "part": "rp_bus_standoffs",
-     "gap_mm": 18.0
-    }
-   ]
+   "within_15mm_of_receiver": []
   },
   "main_path": [
    {
@@ -1226,7 +1209,7 @@
   "trays": 2,
   "connector": "PWR-018 keyed, on the 8S link at x -0.150, z 0.262",
   "plate_overlaps_trays_in_plan": false,
-  "plate_tray_gap_mm": 2.0,
+  "plate_tray_gap_mm": 7.0,
   "cells_from_above": true,
   "link_over_plate": true,
   "nothing_on_cells": true

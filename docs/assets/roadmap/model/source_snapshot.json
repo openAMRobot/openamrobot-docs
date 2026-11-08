@@ -172,9 +172,9 @@
    0.1498,
    0.234
   ],
-  "getac_lower_by": 0.04,
+  "getac_lower_by": 0.055,
   "light_gap": 0.01,
-  "zed_ahead_of_j1a": 0.057,
+  "zed_ahead_of_j1a": 0.06,
   "second_estop": "adapter_top",
   "receiver": {
    "lo": [
@@ -5689,13 +5689,13 @@
     "xacro_args": [
      "defaults: column dold_v4_350, base_plate bp000, head_pitch hp30, base_tilt bt10, arm_package openarm, hardware_profile mock"
     ],
-    "sha256": "012ee29acf6590aa1efdb85745e31b910e6a599feaee549ce43245ab6d56e1b2"
+    "sha256": "f9b3318911543b76150f5661ab9c3d5842f5f764a7ef25f665fa4e249d26c41d"
    },
    "combined_robot_bp050.urdf": {
     "xacro_args": [
      "base_plate:=bp050"
     ],
-    "sha256": "986a61600e98bcf9517271e84b90c76732790024f6253afdda4badcb1c6c5971"
+    "sha256": "2bd14375c607316f5659edfc0c7889527d68879c3c63a9e6425bcb230525d3b4"
    }
   },
   "lift_joint": {

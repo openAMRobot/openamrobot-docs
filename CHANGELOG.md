@@ -2,6 +2,17 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-08
+
+### Changed
+
+- Owner decisions of 8 Nov 2026 (P-03 rev20.4 item 28, register update in openAMRobot/.github#90, change request openAMRobot/.github#89): the roadmap model is the reference for components, mass and placement. Getac ZX80 portrait on the fixed mount 55 mm lower than the item 26 placeholder, head light 10 mm below it; ZED Mini lens 60 mm ahead of J1_A (was 57 mm); TZBOT receiver offset 15 mm from any side (TZBOT manual V2.5: 170 x 150 x 52 mm, 1.5 kg; was a 20 mm margin), GI-121 to GI-123 keep their IDs with the new wording, GI-166 closed; battery trays 20 mm from the receiver (`facts.yaml` `cells.tray_from_receiver`), GI-105 to GI-110 closed.
+- DOLD lift drawn from the supplier STEP (`facts.yaml` `column`): foot with mounting tabs 280 x 60.4 x 10 mm on a 224 x 40 mm screw pattern, static profile 240 x 60 mm to 503 mm plus a 2 mm cover (static top 505 mm), inner stage 209.5 x 53.3 x 470 mm from 60 mm retracted; the head plate and lugs are removed. `analyse.py` and `export_layout.py` use the new part names (`lift_column_foot`, `lift_column`, `lift_column_stage`).
+- Arch reinforcement GI-082: 4 x M8 8.8 ISO 4762 through-bolts into captive nuts in a 5 mm S235JR backing plate (`facts.yaml` `arch_fix`, decided fix, CAD pending); the issue text computes the decided load share; assembly step 4 adds the backing plate, step 14 gives 25 Nm.
+- K1/K2 are Gigavac GX11CAC only (electrical owner, docs #68, 3 Nov 2026; P-03 rev20.4): option B is no longer reported, GI-008 and GI-009 closed. Issues: 0 blockers, 0 majors, 42 minors.
+- Harness: no cable in the slot between the panel tops and the cover lower edge (z 214 to 232 mm, the LiDAR scan plane); `harness.py` adds `cover_slot` keep-outs on the left, right, front and rear sides (`facts.yaml` `cover_slot`), widens the over-wheel guard passages and counts support only within the support distance minus half a cell. `scripts/check_roadmap.py` exempts the route ends within the end-free length from the support check and checks the 60 mm head camera on both models.
+- Reference pages: hardware architecture, OpenAMRobot 2.0 overview, general arrangement, mass and stability, dark-store simulation and the platform-hw concepts and configuration pages carry the 8 Nov values; the configuration page drops the shop links and prices for the E-stop and names the selected Schneider XB4BS8445 with ZBE-102.
+
 ## 2026-11-03
 
 ### Changed

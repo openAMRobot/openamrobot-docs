@@ -48,90 +48,90 @@
    "urdf": "lift_carriage_link",
    "roadmap": "lift_column#1",
    "configuration": "bp000 L1000",
-   "dpos_mm": 26.0,
-   "dsize_mm": 152.0
+   "dpos_mm": 60.0,
+   "dsize_mm": 120.0
   },
   {
    "urdf": "lift_carriage_link",
    "roadmap": "lift_column#1",
    "configuration": "bp000 L1175",
-   "dpos_mm": 26.0,
-   "dsize_mm": 152.0
+   "dpos_mm": 60.0,
+   "dsize_mm": 120.0
   },
   {
    "urdf": "lift_carriage_link",
    "roadmap": "lift_column#1",
    "configuration": "bp000 L1350",
-   "dpos_mm": 26.0,
-   "dsize_mm": 152.0
+   "dpos_mm": 60.0,
+   "dsize_mm": 120.0
   },
   {
    "urdf": "lift_carriage_link",
    "roadmap": "lift_column#1",
    "configuration": "bp050 L1000",
-   "dpos_mm": 26.0,
-   "dsize_mm": 152.0
+   "dpos_mm": 60.0,
+   "dsize_mm": 120.0
   },
   {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp000 L1000",
-   "dpos_mm": 12.0,
-   "dsize_mm": 24.0
+   "dpos_mm": 12.5,
+   "dsize_mm": 40.0
   },
   {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp000 L1175",
-   "dpos_mm": 12.0,
-   "dsize_mm": 24.0
+   "dpos_mm": 12.5,
+   "dsize_mm": 40.0
   },
   {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp000 L1350",
-   "dpos_mm": 12.0,
-   "dsize_mm": 24.0
+   "dpos_mm": 12.5,
+   "dsize_mm": 40.0
   },
   {
    "urdf": "lift_column_base_link",
    "roadmap": "lift_column#0",
    "configuration": "bp050 L1000",
-   "dpos_mm": 12.0,
-   "dsize_mm": 24.0
+   "dpos_mm": 12.5,
+   "dsize_mm": 40.0
   },
   {
    "urdf": "head_camera_bracket_link",
    "roadmap": "head_camera_bracket",
    "configuration": "bp000 L1000",
-   "dpos_mm": 15.0,
+   "dpos_mm": 18.0,
    "dsize_mm": 0.0
   },
   {
    "urdf": "head_camera_bracket_link",
    "roadmap": "head_camera_bracket",
    "configuration": "bp000 L1175",
-   "dpos_mm": 15.0,
+   "dpos_mm": 18.0,
    "dsize_mm": 0.0
   },
   {
    "urdf": "head_camera_bracket_link",
    "roadmap": "head_camera_bracket",
    "configuration": "bp000 L1350",
-   "dpos_mm": 15.0,
+   "dpos_mm": 18.0,
    "dsize_mm": 0.0
   },
   {
    "urdf": "head_camera_bracket_link",
    "roadmap": "head_camera_bracket",
    "configuration": "bp050 L1000",
-   "dpos_mm": 15.0,
+   "dpos_mm": 18.0,
    "dsize_mm": 0.0
   }
  ],
  "urdf_sha256": {
-  "combined_robot.urdf": "012ee29acf6590aa1efdb85745e31b910e6a599feaee549ce43245ab6d56e1b2",
-  "combined_robot_bp050.urdf": "986a61600e98bcf9517271e84b90c76732790024f6253afdda4badcb1c6c5971"
+  "combined_robot.urdf": "f9b3318911543b76150f5661ab9c3d5842f5f764a7ef25f665fa4e249d26c41d",
+  "combined_robot_bp050.urdf": "2bd14375c607316f5659edfc0c7889527d68879c3c63a9e6425bcb230525d3b4"
  },
  "sources": {
   "openamrobot_description": {
@@ -141,7 +141,7 @@
   },
   "openamrobot_upperbody_description": {
    "repository": "openAMRobot/openamr-upperbody-sw",
-   "commit": "17cf69374c5d2c3a9c058c89f54c6bf43b3741d7",
+   "commit": "a8c304d8a6335c479e56f20e32675d2d87144a50",
    "role": "main"
   },
   "openarm_description": {

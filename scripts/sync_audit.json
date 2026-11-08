@@ -1,8 +1,8 @@
 {
  "fingerprint": {
-  "model/model.js": "2e347154b5beaef43017ccf1a586118ebf36c19bb9f029511e1a2a9d1bd231c8",
+  "model/model.js": "f3fe53a2e977884e96b0aabb666a9805b412b74c1470de9c15089f0956d0a17f",
   "model/exploded.json": "708c473d4d57c6ae427e653ec4f4d10cfa2b102d920490eb23b500c9a34ea0b6",
-  "robot.html": "e6e0f020935379d72bcd6b6be152b36fe97da3b378fe22c9015a9a325b85306f",
+  "robot.html": "9558e451e8fef04c03fa5f6e00d0d726e6cb1750261ae9e1c1d47b90443fb2aa",
   "exploded.html": "0fb9bcc5cb089dc04ef137031340dc46bdabad5907a7e7ddf6245991e0cd3f30"
  },
  "robot_state": {
@@ -845,8 +845,8 @@
     0,
     0.82
    ],
-   "robot_meshes": 18,
-   "exploded_meshes": 18,
+   "robot_meshes": 16,
+   "exploded_meshes": 16,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2392,8 +2392,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 250,
-   "exploded_meshes": 250,
+   "robot_meshes": 253,
+   "exploded_meshes": 253,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2426,8 +2426,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 270,
-   "exploded_meshes": 270,
+   "robot_meshes": 268,
+   "exploded_meshes": 268,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []
@@ -2460,8 +2460,8 @@
     0,
     0.45
    ],
-   "robot_meshes": 1060,
-   "exploded_meshes": 1060,
+   "robot_meshes": 1143,
+   "exploded_meshes": 1143,
    "same_transform": true,
    "hidden_option": false,
    "mismatch": []

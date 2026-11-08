@@ -57,6 +57,16 @@
    "reason": "closed: second E-stop on the adapter plate behind the post (A5, owner 2 Nov 2026); the static-column position is removed"
   },
   {
+   "id": "GI-008",
+   "key": "fit|K1/K2 option B Schneider TeSys D LC1D80BD fit",
+   "reason": "closed: K1/K2 are GX11CAC only (P-03 rev20.4; electrical owner, docs #68, 3 Nov 2026); option B is not used in this layout"
+  },
+  {
+   "id": "GI-009",
+   "key": "fit|K1/K2 option B Siemens 3RT2 size S3 fit",
+   "reason": "closed: K1/K2 are GX11CAC only (P-03 rev20.4; electrical owner, docs #68, 3 Nov 2026); the Siemens fallback is dropped for this layout"
+  },
+  {
    "id": "GI-010",
    "key": "interference|Flag rod LFT-004 / adapter plate MEC-004 footprint",
    "reason": "closed: the flag rod sits under the rear extension of the one-piece adapter plate (A6)"
@@ -352,6 +362,26 @@
    "reason": "closed: receiver at the rear (owner, 2 Nov 2026)"
   },
   {
+   "id": "GI-105",
+   "key": "interference|battery_cells_left / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
+   "id": "GI-106",
+   "key": "interference|battery_cells_right / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
+   "id": "GI-108",
+   "key": "interference|battery_tray_left / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
+   "id": "GI-110",
+   "key": "interference|battery_tray_right / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
    "id": "GI-111",
    "key": "interference|bay_can1 / bay_usbhub",
    "reason": "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"
@@ -415,6 +445,11 @@
    "id": "GI-130",
    "key": "harness|No compliant harness route: CBL-P05",
    "reason": "closed 3 Nov 2026: CBL-P05 replaced by busbar BB-03 between the facing K1 and K2 studs (41 mm)"
+  },
+  {
+   "id": "GI-166",
+   "key": "verify with supplier|TZBOT receiver / parts within 20 mm (non-metal)",
+   "reason": "closed: TZBOT manual V2.5 offset of 15 mm from any side (owner 8 Nov 2026); the plate is 15 mm above the receiver, no part inside 15 mm needs a supplier check"
   }
  ],
  "lift_rear": {
@@ -590,7 +625,7 @@
    "com": [
     0.0187,
     -0.0028,
-    0.337
+    0.3369
    ],
    "unplaced": [
     "ARM-004",
@@ -603,7 +638,7 @@
    "com": [
     0.0187,
     -0.0028,
-    0.4123
+    0.4121
    ],
    "unplaced": [
     "ARM-004",
@@ -619,7 +654,7 @@
    "margin_lat_m": 0.2122,
    "a_max_fore": 7.46,
    "a_max_lat": 6.18,
-   "com_z": 0.337
+   "com_z": 0.3369
   },
   "L1350": {
    "margin_fore_m": 0.2564,
@@ -627,7 +662,7 @@
    "margin_lat_m": 0.2122,
    "a_max_fore": 6.1,
    "a_max_lat": 5.05,
-   "com_z": 0.4123
+   "com_z": 0.4121
   }
  },
  "loads": {
@@ -666,9 +701,9 @@
    ],
    [
     "harness_safe_base",
-    22,
+    24,
     "-180",
-    "176",
+    "180",
     0.2139325357876485
    ],
    [
@@ -714,25 +749,18 @@
     0.2200339287783673
    ],
    [
-    "harness_r24_base",
-    5,
-    "108",
-    "113",
-    0.27623948210190524
-   ],
-   [
-    "harness_fittings_base",
-    4,
-    "176",
-    "180",
-    0.21463107883062976
-   ],
-   [
     "harness_sig_base",
     3,
     "167",
     "170",
     0.20452529204198472
+   ],
+   [
+    "harness_fittings_base",
+    2,
+    "170",
+    "172",
+    0.21877956943005444
    ],
    [
     "ch_central_power",
@@ -847,11 +875,11 @@
     "side_wall_inner_y": 0.276
    },
    "pocket_free": {
-    "y_mm": 181.0,
+    "y_mm": 186.0,
     "y_formula_mm": 201.0,
     "x_mm": 235.0,
     "x_beside_support_mm": 148.6,
-    "y_inside_flanges_mm": 98.0
+    "y_inside_flanges_mm": 103.0
    },
    "pockets": {
     "arrangement": "4 across (y), 130 along x",
@@ -865,36 +893,36 @@
    "plate": [
     [
      -0.366,
-     -0.095,
+     -0.09,
      0.117
     ],
     [
      -0.137,
-     0.095,
+     0.09,
      0.12
     ]
    ],
    "margin": [
     [
-     -0.389,
-     -0.095,
-     0.03
+     -0.384,
+     -0.09,
+     0.035
     ],
     [
-     -0.179,
-     0.095,
-     0.122
+     -0.184,
+     0.09,
+     0.117
     ]
    ],
    "cutout": [
     [
      -0.37,
-     -0.095,
+     -0.09,
      0.052
     ],
     [
-     -0.179,
-     0.095,
+     -0.184,
+     0.09,
      0.054
     ]
    ]
@@ -908,32 +936,32 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2593,
-     0.9461
+     0.9458
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 43.3,
     "column_screw_rows_N": {
-     "rear": 82.9,
-     "front": -372.9
+     "rear": 48.3,
+     "front": -338.3
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 102.6,
-     "x +0.060": 43.4
+     "x -0.060": 104.2,
+     "x +0.060": 38.4
     },
     "bolt_shear_per_bolt_N": 0.0,
-    "bolt_utilisation": 0.003,
+    "bolt_utilisation": 0.004,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.008,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 15.4,
-    "plate_stress_MPa": 6.6,
-    "plate_utilisation": 0.026,
-    "arch_sheet_stress_MPa": 44.9,
-    "arch_sheet_utilisation": 0.191,
+    "plate_max_moment_Nm": 12.1,
+    "plate_stress_MPa": 5.2,
+    "plate_utilisation": 0.02,
+    "arch_sheet_stress_MPa": 45.5,
+    "arch_sheet_utilisation": 0.193,
     "arch_sheet_uplift_mm": 0.128,
-    "plate_deflection_at_column_front_mm": -0.074,
-    "column_tilt_deg": 0.048
+    "plate_deflection_at_column_front_mm": -0.078,
+    "column_tilt_deg": 0.043
    },
    {
     "case": "braking from 1.5 m/s at 6.10 m/s2, L1350",
@@ -941,32 +969,32 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2593,
-     0.9461
+     0.9458
     ],
     "decel_m_s2": 6.1,
-    "moment_at_column_axis_Nm": 159.1,
+    "moment_at_column_axis_Nm": 159.0,
     "column_screw_rows_N": {
-     "rear": 692.3,
-     "front": -982.3
+     "rear": 564.9,
+     "front": -854.9
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 390.5,
-     "x +0.060": 165.1
+     "x -0.060": 396.4,
+     "x +0.060": 146.1
     },
     "bolt_shear_per_bolt_N": 45.1,
-    "bolt_utilisation": 0.016,
+    "bolt_utilisation": 0.017,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.032,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 58.6,
-    "plate_stress_MPa": 25.1,
-    "plate_utilisation": 0.098,
-    "arch_sheet_stress_MPa": 170.8,
-    "arch_sheet_utilisation": 0.727,
-    "arch_sheet_uplift_mm": 0.488,
-    "plate_deflection_at_column_front_mm": -0.281,
-    "column_tilt_deg": 0.183
+    "plate_max_moment_Nm": 46.0,
+    "plate_stress_MPa": 19.7,
+    "plate_utilisation": 0.077,
+    "arch_sheet_stress_MPa": 172.9,
+    "arch_sheet_utilisation": 0.736,
+    "arch_sheet_uplift_mm": 0.489,
+    "plate_deflection_at_column_front_mm": -0.297,
+    "column_tilt_deg": 0.162
    },
    {
     "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.10 m/s2, L1350",
@@ -974,32 +1002,32 @@
     "mass_kg": 37.76,
     "com_m": [
      0.457,
-     1.115
+     1.1147
     ],
     "decel_m_s2": 6.1,
     "moment_at_column_axis_Nm": 315.3,
     "column_screw_rows_N": {
-     "rear": 1474.5,
-     "front": -1844.9
+     "rear": 1222.3,
+     "front": -1592.7
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 777.6,
-     "x +0.060": 328.7
+     "x -0.060": 789.6,
+     "x +0.060": 291.1
     },
     "bolt_shear_per_bolt_N": 57.6,
-    "bolt_utilisation": 0.03,
+    "bolt_utilisation": 0.031,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.063,
+    "rivet_nut_pull_through_utilisation": 0.064,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 116.6,
-    "plate_stress_MPa": 50.0,
-    "plate_utilisation": 0.196,
-    "arch_sheet_stress_MPa": 340.2,
-    "arch_sheet_utilisation": 1.448,
-    "arch_sheet_uplift_mm": 0.972,
-    "plate_deflection_at_column_front_mm": -0.559,
-    "column_tilt_deg": 0.364
+    "plate_max_moment_Nm": 91.6,
+    "plate_stress_MPa": 39.3,
+    "plate_utilisation": 0.154,
+    "arch_sheet_stress_MPa": 344.4,
+    "arch_sheet_utilisation": 1.465,
+    "arch_sheet_uplift_mm": 0.973,
+    "plate_deflection_at_column_front_mm": -0.591,
+    "column_tilt_deg": 0.322
    },
    {
     "case": "static, L1350",
@@ -1007,17 +1035,17 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.9461
+     0.9458
     ],
     "decel_m_s2": 0.0,
     "moment_at_column_axis_Nm": 43.3,
     "column_screw_rows_N": {
-     "rear": 82.9,
-     "front": -372.9
+     "rear": 48.3,
+     "front": -338.3
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 68.5,
-     "x +0.060": 22.3
+     "x +0.060": 22.1
     },
     "bolt_shear_per_bolt_N": 0.0,
     "bolt_utilisation": 0.002,
@@ -1025,14 +1053,14 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.006,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 3.4,
-    "plate_stress_MPa": 1.5,
-    "plate_utilisation": 0.006,
+    "plate_max_moment_Nm": 1.1,
+    "plate_stress_MPa": 0.5,
+    "plate_utilisation": 0.002,
     "arch_sheet_stress_MPa": 29.8,
     "arch_sheet_utilisation": 0.127,
     "arch_sheet_uplift_mm": 0.083,
-    "plate_deflection_at_column_front_mm": -0.016,
-    "column_tilt_deg": 0.025
+    "plate_deflection_at_column_front_mm": -0.023,
+    "column_tilt_deg": 0.024
    },
    {
     "case": "braking from 1.5 m/s at 6.10 m/s2, L1350",
@@ -1040,17 +1068,17 @@
     "mass_kg": 29.56,
     "com_m": [
      0.2093,
-     0.9461
+     0.9458
     ],
     "decel_m_s2": 6.1,
-    "moment_at_column_axis_Nm": 159.1,
+    "moment_at_column_axis_Nm": 159.0,
     "column_screw_rows_N": {
-     "rear": 692.3,
-     "front": -982.3
+     "rear": 564.9,
+     "front": -854.9
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 364.5,
-     "x +0.060": 118.7
+     "x -0.060": 364.7,
+     "x +0.060": 117.5
     },
     "bolt_shear_per_bolt_N": 45.1,
     "bolt_utilisation": 0.016,
@@ -1058,14 +1086,14 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.03,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 18.2,
-    "plate_stress_MPa": 7.8,
-    "plate_utilisation": 0.031,
+    "plate_max_moment_Nm": 5.8,
+    "plate_stress_MPa": 2.5,
+    "plate_utilisation": 0.01,
     "arch_sheet_stress_MPa": 158.6,
     "arch_sheet_utilisation": 0.675,
     "arch_sheet_uplift_mm": 0.444,
-    "plate_deflection_at_column_front_mm": -0.087,
-    "column_tilt_deg": 0.132
+    "plate_deflection_at_column_front_mm": -0.125,
+    "column_tilt_deg": 0.13
    },
    {
     "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.10 m/s2, L1350",
@@ -1073,17 +1101,17 @@
     "mass_kg": 37.76,
     "com_m": [
      0.407,
-     1.115
+     1.1147
     ],
     "decel_m_s2": 6.1,
     "moment_at_column_axis_Nm": 315.3,
     "column_screw_rows_N": {
-     "rear": 1474.5,
-     "front": -1844.9
+     "rear": 1222.3,
+     "front": -1592.7
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 752.2,
-     "x +0.060": 245.1
+     "x -0.060": 752.9,
+     "x +0.060": 242.5
     },
     "bolt_shear_per_bolt_N": 57.6,
     "bolt_utilisation": 0.03,
@@ -1091,25 +1119,25 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.061,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 37.6,
-    "plate_stress_MPa": 16.1,
-    "plate_utilisation": 0.063,
-    "arch_sheet_stress_MPa": 327.3,
+    "plate_max_moment_Nm": 12.0,
+    "plate_stress_MPa": 5.2,
+    "plate_utilisation": 0.02,
+    "arch_sheet_stress_MPa": 327.5,
     "arch_sheet_utilisation": 1.393,
     "arch_sheet_uplift_mm": 0.917,
-    "plate_deflection_at_column_front_mm": -0.18,
-    "column_tilt_deg": 0.271
+    "plate_deflection_at_column_front_mm": -0.258,
+    "column_tilt_deg": 0.269
    }
   ],
   "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.10 m/s2, L1350 (bp050)",
   "max_utilisation": {
-   "bolt_utilisation": 0.03,
-   "rivet_nut_pull_through_utilisation": 0.063,
-   "plate_utilisation": 0.196,
-   "arch_sheet_utilisation": 1.448
+   "bolt_utilisation": 0.031,
+   "rivet_nut_pull_through_utilisation": 0.064,
+   "plate_utilisation": 0.154,
+   "arch_sheet_utilisation": 1.465
   },
-  "max_column_tilt_deg": 0.364,
-  "shoulder_height_ref_m": 0.9461208586923059,
+  "max_column_tilt_deg": 0.322,
+  "shoulder_height_ref_m": 0.9457559939645929,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -1128,7 +1156,7 @@
     "com_m": [
      0.2093,
      0.0008,
-     0.703
+     0.7027
     ]
    },
    "L1350": {
@@ -1136,7 +1164,7 @@
     "com_m": [
      0.2093,
      0.0008,
-     0.9461
+     0.9458
     ]
    }
   },
@@ -1145,14 +1173,21 @@
    "com_m": [
     0.407,
     0.0006,
-    1.115
+    1.1147
    ],
    "arm_mass_kg_both": 12.26,
    "payload_kg_each": 4.1,
    "reach_m": 0.606,
    "source": "OpenArm 2.0 figures used by the robot page (payload 4.1 kg nominal, 6 kg peak, reach 0.606 m)"
   },
-  "decel_m_s2": 6.1
+  "decel_m_s2": 6.1,
+  "decided_fix": {
+   "what": "M8 8.8 through-bolts with nuts, 5 mm S235JR backing plate under the arch top sheet",
+   "arch_sheet_utilisation": 0.088,
+   "backing_plate_utilisation": 0.22,
+   "bolt_utilisation": 0.031,
+   "method": "two stacked plates, moment shared by t^3 (screening, no composite action)"
+  }
  },
  "estop": {
   "position": "adapter plate top behind the post, centred in y, above the column axis, button up (A5)",
@@ -1327,7 +1362,7 @@
     "ARM-003",
     0.0629,
     [
-     0.2764,
+     0.2794,
      0.0,
      1.2165
     ],
@@ -1377,7 +1412,7 @@
     "ARM-011",
     0.05,
     [
-     0.267,
+     0.27,
      0.0,
      1.2035
     ],
@@ -1389,7 +1424,7 @@
     [
      0.31,
      0.0,
-     0.9045
+     0.8895
     ],
     "head_light"
    ],
@@ -1897,9 +1932,9 @@
     "MEC-013",
     0.15,
     [
-     0.0246,
-     -0.0036,
-     0.5288
+     0.022,
+     -0.0019,
+     0.527
     ],
     "harness_fittings"
    ],
@@ -2239,7 +2274,7 @@
     [
      0.3088,
      0.0,
-     1.04
+     1.025
     ],
     "getac_tablet"
    ],
@@ -2329,7 +2364,7 @@
     "ARM-003",
     0.0629,
     [
-     0.2764,
+     0.2794,
      0.0,
      1.5665
     ],
@@ -2379,7 +2414,7 @@
     "ARM-011",
     0.05,
     [
-     0.267,
+     0.27,
      0.0,
      1.5535
     ],
@@ -2391,7 +2426,7 @@
     [
      0.31,
      0.0,
-     1.2545
+     1.2395
     ],
     "head_light"
    ],
@@ -2899,9 +2934,9 @@
     "MEC-013",
     0.15,
     [
-     0.0246,
-     -0.0036,
-     0.6455
+     0.022,
+     -0.0019,
+     0.6436
     ],
     "harness_fittings"
    ],
@@ -3241,7 +3276,7 @@
     [
      0.3088,
      0.0,
-     1.39
+     1.375
     ],
     "getac_tablet"
    ],
@@ -3322,8 +3357,8 @@
  "sweep_valid_poses": 488,
  "counts": {
   "blocker": 0,
-  "major": 2,
-  "minor": 47
+  "major": 0,
+  "minor": 42
  },
  "steel_chassis_kg": 15.77
 }

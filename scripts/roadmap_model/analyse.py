@@ -146,23 +146,23 @@ def build_scene(G, P, chest, lift, head_pitch=30, option=None):
         env = n["extras"].get("class") == "envelope"  # envelopes are boxes by definition: exact tests on their bounds
         v = relocated(n["v"], k, P, opt)
         parts.append(Part(k, v, n["f"], "base", boxes=[(v.min(0), v.max(0))] if env else None))
-    t, L, Wc, RET, HEAD = .304, .24, .06, .53, .012
+    t, L, Wc, RET = .304, .24, .06, .53
+    COLF = FACTS["column"]   # DOLD STEP (owner, 8 Nov 2026): foot, static profile to 503 + 2 mm cover, inner stage 209.5 x 53.3 x 470
     c = t + RET
-    i = RET - HEAD - .012
     MOUNT_X, PX, PY, PL = .18, .12, .06, .34
     def add(pid, vf, g, exact=True):
         v = np.asarray(vf[0])
         parts.append(Part(pid, v, vf[1], g, boxes=[(v.min(0), v.max(0))] if (exact and len(v) == 8) else None))
-    add("lift_column", box_mesh([L, Wc, i + .012], [0, 0, t + (i + .012) / 2]), "col")
-    add("lift_column_stage", box_mesh([L - .016, Wc - .012, .44], [0, 0, c - HEAD - .22]), "mov")
-    add("lift_column_head", box_mesh([.25, .072, HEAD], [0, 0, c - HEAD / 2]), "mov")
+    add("lift_column_foot", box_mesh(COLF["foot"], [0, 0, t + COLF["foot"][2] / 2]), "col")
+    add("lift_column", box_mesh([L, Wc, COLF["static_top"] - COLF["static_bottom"]], [0, 0, t + (COLF["static_top"] + COLF["static_bottom"]) / 2]), "col")
+    add("lift_column_stage", box_mesh(COLF["inner"], [0, 0, c - COLF["inner"][2] / 2]), "mov")
     d, p = lift["plate_rear_x"], MOUNT_X + PX / 2   # A6: one-piece plate with the rear extension
     add("adapter_plate", box_mesh([p - d, .1, .01], [(d + p) / 2, 0, c + .005]), "mov")
     f = c + .01
     add("arm_profile", box_mesh([PX, PY, PL], [MOUNT_X, 0, f + PL / 2]), "mov")
     m = c + .166 + .223
     y = f + PL
-    ZED_X = .237  # A4: lens 57 mm ahead of J1_A
+    ZED_X = .18 + FACTS["zed_ahead_of_j1a"]  # owner decision 8 Nov 2026: lens 60 mm ahead of J1_A
     add("head_camera_bracket", box_mesh([.03, .03, m - y], [ZED_X - .03, 0, (y + m) / 2]), "mov")
     Rz = rpy_matrix([0, math.radians(head_pitch), 0])
     v, ff = box_mesh([.0265, .1245, .0305], np.array([0, 0, 0]))
@@ -452,7 +452,7 @@ def main():
     declared = [("base_plate", "*"), ("support_", "*"), ("side_panel", "*"), ("front_panel", "*"), ("rear_panel", "*"), ("cover", "*"),
                 ("centre_bracket", "*"), ("bay_plate", "bay_"), ("bay_plate", "fasteners"), ("rear_plate", "rz_"), ("lift_base_plate", "lift_column"),
                 ("lift_base_plate", "fasteners"), ("lift_column", "lift_column"), ("lift_column", "second_estop"), ("lift_column", "lift_sensor"),
-                ("lift_column", "rear_estop"), ("lift_column_head", "adapter_plate"), ("adapter_plate", "arm_profile"), ("adapter_plate", "flag_rod"), ("rod_corner_bracket", "adapter_plate"), ("rod_corner_bracket", "flag_rod"), ("rod_corner_bracket", "fasteners"), ("battery_series_link", "rz_batcon"),
+                ("lift_column", "rear_estop"), ("lift_column_stage", "adapter_plate"), ("adapter_plate", "arm_profile"), ("adapter_plate", "flag_rod"), ("rod_corner_bracket", "adapter_plate"), ("rod_corner_bracket", "flag_rod"), ("rod_corner_bracket", "fasteners"), ("battery_series_link", "rz_batcon"),
                 ("arm_profile", "head_camera_bracket"), ("head_camera_bracket", "head_camera"), ("arm_profile", "getac"), ("arm_profile", "head_light"),
                 ("arm_profile", "fasteners"), ("adapter_plate", "fasteners"), ("lift_sensor", "lift_stop"), ("lift_sensor", "fasteners"),
                 ("lift_stop", "lift_sensor"), ("harness", "*"), ("lift_energy_chain", "*"), ("wheel_guard", "side_panel"), ("dp_lift", "*"), ("keepout", "*"), ("can_term", "*"), ("lidar", "lidar_"),
@@ -463,8 +463,8 @@ def main():
                 ("reset_button", "front_panel"), ("feedthru", "side_panel"), ("rz_disc", "rear_panel"), ("rz_sb50", "rear_panel"), ("fasteners", "*"),
                 ("harness_fittings", "*"), ("shims", "*"), ("us_locknut", "*"), ("lift_bolt_keepout", "*"),
                 ("lift_sensor_bracket", "lift_sensor_bracket"), ("flag_rod", "lift_flag"), ("rear_estop_housing", "second_estop"),
-                ("bay_plate", "lidar_support"), ("lift_base_plate", "lift_node"), ("lift_column_stage", "lift_column"), ("lift_column_head", "lift_column"),
-                ("lift_column_head", "arm_profile"), ("rear_estop", "lift_column"),
+                ("bay_plate", "lidar_support"), ("lift_base_plate", "lift_node"), ("lift_column_stage", "lift_column"), ("lift_column_foot", "lift_column"), ("lift_column_foot", "lift_base_plate"), ("lift_column_head", "lift_column"),
+                ("lift_column_stage", "arm_profile"), ("rear_estop", "lift_column"),
                 # 2 Nov 2026: plate on the arch, E-stop P2 on the post, receiver set, ghosts, raised bay plate (its CAD conflicts are issues below)
                 ("lift_base_plate", "centre_bracket"), ("second_estop", "arm_profile"), ("rear_estop_housing", "arm_profile"), ("rear_estop_housing", "second_estop"),
                 ("estop_p", "*"), ("tz_", "*"), ("base_cutout", "*"), ("rear_estop_housing", "second_estop"), ("rear_estop_housing", "adapter_plate"),
@@ -869,12 +869,24 @@ def main():
     margin_ok = max(mu.values()) <= 0.67
     w = plate["worst"]
     wc = [c for c in plate["cases"] if c["case"] + " (" + c["bp"] + ")" == w][0]
+    # decided fix (owner decision 8 Nov 2026, from the A7 options of 2 Nov): M8 8.8 through-bolts with nuts and a backing plate under the
+    # arch top sheet. Screening: sheet and backing plate as two stacked plates sharing the bending moment by t^3 (no composite action),
+    # so the sheet keeps t_s^3 / (t_s^3 + t_b^3) of it; the rivet-nut pull-through no longer applies (nut and backing plate).
+    fix = FACTS.get("arch_fix", {"backing_t": 0.005, "backing_material": "S235JR"})
+    ts_, tb_ = FACTS["arch"]["sheet"], fix["backing_t"]
+    share_s = ts_ ** 3 / (ts_ ** 3 + tb_ ** 3)
+    u_sheet_fix = mu["arch_sheet_utilisation"] * share_s
+    u_back_fix = mu["arch_sheet_utilisation"] * (1 - share_s) * (ts_ / tb_) ** 2
+    plate["decided_fix"] = {"what": "M8 8.8 through-bolts with nuts, %.0f mm %s backing plate under the arch top sheet" % (tb_ * 1000, fix["backing_material"]),
+                            "arch_sheet_utilisation": round(u_sheet_fix, 3), "backing_plate_utilisation": round(u_back_fix, 3),
+                            "bolt_utilisation": mu["bolt_utilisation"], "method": "two stacked plates, moment shared by t^3 (screening, no composite action)"}
     issue("minor", "Lift base plate MEC-019 on the centre-frame arch: load path", w,
-          "worst case: bolt %.2f, rivet-nut pull-through %.2f, plate %.2f (%.0f MPa), arch top sheet %.2f (%.0f MPa) utilisation without the fix; per rear bolt %.0f N tension, %.0f N shear; column tilt %.2f deg" % (
+          "worst case: bolt %.2f, rivet-nut pull-through %.2f, plate %.2f (%.0f MPa), arch top sheet %.2f (%.0f MPa) utilisation without the fix; per rear bolt %.0f N tension, %.0f N shear; column tilt %.2f deg; with the decided fix (%s): arch top sheet %.2f, backing plate %.2f, bolt %.2f (screening)" % (
               mu["bolt_utilisation"], mu["rivet_nut_pull_through_utilisation"], mu["plate_utilisation"], wc["plate_stress_MPa"], mu["arch_sheet_utilisation"],
-              wc["arch_sheet_stress_MPa"], max(wc["bolt_tension_per_bolt_N"].values()), wc["bolt_shear_per_bolt_N"], plate["max_column_tilt_deg"]),
+              wc["arch_sheet_stress_MPa"], max(wc["bolt_tension_per_bolt_N"].values()), wc["bolt_shear_per_bolt_N"], plate["max_column_tilt_deg"],
+              plate["decided_fix"]["what"], u_sheet_fix, u_back_fix, mu["bolt_utilisation"]),
           "utilisation <= 0.67 (factor 1.5 on unfactored loads) for every element", "lift_plate_check.py; EN 485-2, EN 10025-2, EN 1993-1-8; CAD MMP.04.00.00.000",
-          "decided (A7, owner, 2 Nov 2026; to be entered in P-03 and M-01): a doubler under the arch top sheet, or through-bolts with a backing plate; CAD pending",
+          "decided (owner decision 8 Nov 2026, A7 option of 2 Nov): through-bolts with a backing plate under the arch top sheet; CAD pending",
           OWN["mech"], "decided fix, CAD pending")
 
     # ---- TZBOT WCM-500-24 receiver (B4): position, lowest point, floor gap, cut-out, metal-free zone, EMC distances
@@ -899,8 +911,8 @@ def main():
               TZ["source"] + "; owner correction of 2 Nov 2026 (bottom 2 mm below the base sheet)", "to solve before the receiver is installed (receiver higher, recessed transmitter or a low ramp)",
               OWN["mech"], "to solve before receiver installation")
         for k, v in sorted(RLa["metal_in_margin_mm"].items()):
-            issue("minor", "TZBOT receiver / %s (inside the 20 mm metal-free margin)" % k, "prepared, installed later",
-                  "%.1f mm from the receiver" % v, ">= 20 mm metal-free around the receiver", "TZBOT WCM-500-24 manual V2.5; receiver at the rear panel (owner, 2 Nov 2026)",
+            issue("minor", "TZBOT receiver / %s (inside the 15 mm offset (metal-free margin))" % k, "prepared, installed later",
+                  "%.1f mm from the receiver" % v, ">= 15 mm offset from any side of the receiver (owner decision 8 Nov 2026)", "TZBOT WCM-500-24 manual V2.5; receiver at the rear panel (owner, 2 Nov 2026)",
                   "to solve before the receiver is installed (non-metal panel insert or a receiver further forward); TF-Luna and its PETG mount are mostly non-metal: ask TZBOT",
                   OWN["mech"], "to solve before receiver installation")
 
@@ -936,12 +948,12 @@ def main():
               "rear power owner report rev 2 (evans-kwashie, 2 Nov 2026); owner decision of 3 Nov 2026 (15 mm receiver gap); build_summary.json gi080",
               "verify the Daly, 5007100, 6004, 7748, 5046, GX11CAC and busbar outlines and stud positions on drawings; CAD the shelves and busbars (harness_cad_changes.csv)",
               OWN["elec"], "verify")
-        near_ = fit_.get("within_20mm_of_receiver", [])
+        near_ = fit_.get("within_15mm_of_receiver", [])
         if near_:
-            issue("minor", "TZBOT receiver / parts within 20 mm (non-metal)", "receiver prepared, installed later; 15 mm gap to the power plate (owner decision 3 Nov 2026)",
-                  "within 20 mm of the receiver: %s; specified non-metallic (G10 plate, POM standoffs, PA66 or PEEK fasteners, plastic part feet)" % ", ".join(
+            issue("minor", "TZBOT receiver / parts within 15 mm (non-metal)", "receiver prepared, installed later; 15 mm gap to the power plate (owner decision 3 Nov 2026)",
+                  "within 15 mm of the receiver: %s; specified non-metallic (G10 plate, POM standoffs, PA66 or PEEK fasteners, plastic part feet)" % ", ".join(
                       "%s %.1f mm" % (n_["part"], n_["gap_mm"]) for n_ in near_),
-                  "no metal within 20 mm of the receiver (TZBOT WCM-500-24 manual V2.5)", "TZBOT manual V2.5; rear_power.py",
+                  "no metal within 15 mm of any side of the receiver (owner decision 8 Nov 2026; TZBOT WCM-500-24 manual V2.5 asks 20 mm)", "TZBOT manual V2.5; rear_power.py",
                   "warning: confirm with TZBOT that the non-metal parts and the K1/K2 bases at 18 mm are acceptable", OWN["elec"], "verify with supplier")
     fg_ = summ.get("flag_guide")
     if fg_:
@@ -970,13 +982,10 @@ def main():
                   "cable_list.csv point-to-point routes in the rear bay (one horizontal leg, one vertical drop); build_summary.json cables_25mm2",
                   "move F0 next to the battery + terminal and space the main-path parts (disconnect, PWR-017, K1/K2) for 60 mm bends, together with the GI-080 layout",
                   OWN["elec"], "layout")
+    # K1/K2 are GX11CAC only (P-03 rev20.4, owner 8 Nov 2026); option B is no longer reported (GI-008, GI-009 closed)
     for k, o in summ["k1k2_options"].items():
         if k == "A":
             issue("minor", "K1/K2 option A GX11CAC fit", "rear zone", "fits: %s" % o["fits"], "fits the rear zone", "packer", "decision 2 Nov", OWN["elec"], "fit")
-        else:
-            issue("major" if not o["fits"] else "minor", "K1/K2 option B %s fit" % o["part"], "rear zone (with the rest of the layout)",
-                  "fits: %s (%s)" % (o["fits"], ", ".join(o.get("nofit", [])) or "all placed"), "fits the rear zone", "packer with catalogue outline %s mm" % "x".join(map(str, o["dims"])),
-                  "if option B is chosen, mount K1/K2 on the rear panel or the centre-bracket rear wall", OWN["elec"], "fit")
     # side pockets (A1) vs the side panel return flanges
     RLc = __import__("rear_layout").layout()
     if not RLc["pockets"].get("clears_flanges"):

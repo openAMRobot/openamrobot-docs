@@ -2,9 +2,9 @@
 
 TZBOT WCM-500-24 receiver prepared (installed later) on the centre line, 170 mm along x and 150 mm across y, as close to the
 rear panel inner face as possible without touching the rear TF-Luna, the rear MB7060s, their mounts or the rear panel flange
-(owner correction of 2 Nov 2026; the 240 x 210 mm zone is withdrawn), bottom 2 mm below the base-sheet underside; 20 mm
+(owner correction of 2 Nov 2026; the 240 x 210 mm zone is withdrawn), bottom 2 mm below the base-sheet underside; 15 mm
 metal-free margin around the receiver. Two side pockets beside the zone, each with 4 EVE LF105 cells upright (8S). Power electronics on a
-mounting plate above the receiver, underside at least 15 mm above the receiver top (owner decision 3 Nov 2026; non-metal within 20 mm), up to the cover underside.
+mounting plate above the receiver, underside at least 15 mm above the receiver top (owner decision 3 Nov 2026; non-metal within 15 mm), up to the cover underside.
 
 The space is measured from the CAD (base GLB): rear panel, arch, top-cover supports, side panels and their return flanges
 (GI-025), rear sensor mounts and the rear cover flange slope. layout() returns every box (base_footprint, m) and a report
@@ -97,7 +97,7 @@ def layout():
             dx, dy = nx * cxl + (nx - 1) * g, ny * cyl + (ny - 1) * g
             tray = (dx + 2 * wall, dy + 2 * wall)
             for x0 in np.arange(x_rear, x_arch - tray[0] + 1e-9, 0.002):
-                for y0 in np.arange(margin[1][1] + C["clear_to_margin"], wall_in - tray[1] + 1e-9, 0.002):
+                for y0 in np.arange(max(margin[1][1], sy / 2 + C.get("tray_from_receiver", 0.0)) + C["clear_to_margin"], wall_in - tray[1] + 1e-9, 0.002):
                     tb = _box([x0, y0, FACTS["base_sheet"]["top"]], [x0 + tray[0], y0 + tray[1], z_cell + h + 0.003])
                     if tb[1][2] > min(ceiling(x0), ceiling(x0 + tray[0])) - 0.003:
                         continue

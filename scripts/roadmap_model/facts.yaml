@@ -1,7 +1,7 @@
 # Section B facts of record (Drive documents and team Slack, as of 1 Nov 2026) that the model uses.
 # Units: metres, kilograms, radians unless stated. Frame: base_footprint (floor under the drive-axle midpoint,
 # x forward, y left, z up, REP 103/105). base_link = base_footprint + base_link_z.
-snapshot: "2 Nov 2026"
+snapshot: "8 Nov 2026"
 window: "24 Oct to 1 Nov 2026"
 documents:
   P-03: rev20.2 (1 Nov 2026)
@@ -24,12 +24,21 @@ chassis: [0.780, 0.582]
 base_sheet: {bottom: 0.052, top: 0.054}
 deck: 0.294
 cover_underside: 0.290      # deck 0.054 + 236 mm (B5)
+# slot between the base panels and the cover skirt (CAD v0.2 base GLB: side, front and rear panel tops z 0.2142 to 0.2150, cover lower edge z 0.2321):
+# the LiDAR looks out through it; owner rule 8 Nov 2026: no cable and no tie in the slot or within 50 mm inside it, all around
+cover_slot: {panel_top: 0.2142, cover_edge: 0.2321, margin: 0.005, depth: 0.050}
 # lift base plate MEC-019, owner decision 2 Nov 2026 (B3): one 10 mm 6082-T6 plate on the centre-frame arch top (z 0.294), bolted from above
 # into the inner arch rivet-nut pattern (CAD MMP.04.00.00.000: 4 x M8 blind rivet nuts at x +/-0.060, y +/-0.050); column screwed from below
 lift_plate: {size: [0.330, 0.140, 0.010], x: [-0.080, 0.250], top: 0.304, arch_bolts: {x: [-0.060, 0.060], y: [-0.050, 0.050]},
-             arch_outer: {x: [-0.095, 0.095], y: [-0.150, 0.150]}, col_axis_x: {bp000: 0.060, bp050: 0.110}, col_screws: [0.190, 0.030]}
+             arch_outer: {x: [-0.095, 0.095], y: [-0.150, 0.150]}, col_axis_x: {bp000: 0.060, bp050: 0.110}, col_screws: [0.224, 0.040]}   # column foot screws 224 x 40 mm (DOLD STEP, 8 Nov 2026; was 190 x 30)
 arch: {top: 0.294, sheet: 0.002, walls_x: [-0.117, 0.117], ribs_y: [-0.077, 0.077], material: "S235JR (EN 1.0114), 2 mm"}
-column: {section: [0.240, 0.060], retracted: 0.530, stroke: 0.350, mass: 11.7}
+# GI-082 fix decided by the owner on 8 Nov 2026: 4 x M8 8.8 through-bolts with nuts and a backing plate under the arch top sheet (thickness proposed)
+arch_fix: {kind: through-bolts with backing plate, bolts: M8 8.8, backing_t: 0.005, backing_material: S235JR, backing_size: [0.150, 0.130], status: "decided, CAD pending"}
+column: {section: [0.240, 0.060], retracted: 0.530, stroke: 0.350, mass: 11.7,
+         # DOLD supplier CAD Hexalift_EB530_Hub350_mit_Montagelaschen.STEP (owner, 8 Nov 2026; OCC bounding boxes, column frame: z from the column base)
+         foot: [0.280, 0.0604, 0.010], static_bottom: 0.010, static_profile_top: 0.503, static_top: 0.505,
+         inner: [0.2095, 0.0533, 0.470], inner_bottom_retracted: 0.060, foot_screws: {x: 0.112, y: 0.020},
+         step: "Hexalift_EB530_Hub350_mit_Montagelaschen.STEP (DOLD, 2019-01-28)"}
 shoulder: {L1000: 1.000, L1175: 1.175, L1350: 1.350}
 head_lens_L1000: 1.223
 imu_z: 0.21904
@@ -52,22 +61,24 @@ front_bay: {x: [0.137, 0.366], y: [-0.166, 0.166], z: [0.057, 0.290], plate_t: 0
 # underside (50 mm above the floor). No 240 x 210 mm zone (withdrawn). No transmitter is drawn.
 tzbot_receiver: {model: WCM-500-24, source: "TZBOT WCM-500-24 Wireless Charger Instruction Manual V2.5 (2021-09-23)", size: [0.170, 0.150, 0.052], mass: 1.5, touch_clear: 0.001,
                  status: "prepared, installed later", below_base_sheet: 0.002, air_gap: [0.010, 0.030], air_gap_nominal: 0.020,
-                 align: [0.020, 0.020], metal_clear: 0.020,
+                 align: [0.020, 0.020], metal_clear: 0.015,   # owner decision 8 Nov 2026: 15 mm offset from any side (was 20 mm)
+                 
                  freq_khz: [30, 60], data_link_ghz: [2.400, 2.485], data_link_dbm: 0, output_v: [12, 30], output_a: [8, 15], efficiency_min: 0.85,
                  signals: {brown: "start, active high, 3 to 30 V DC", yellow: "fault, active low, open collector, max 200 mA, 30 V DC", blue: "signal ground",
                            red: "receiver output to battery +", black: "receiver output to battery -"}}
 # rear section (A1, A9): the CAD v0.2 dimensions measured by rear_layout.py are the reference (A9, 2 Nov 2026);
-# side pockets (side-wall inner width - 150) / 2 across, minus the 20 mm metal-free margin next to the receiver
+# side pockets (side-wall inner width - 150) / 2 across, minus the 15 mm offset next to the receiver (owner decision 8 Nov 2026, was 20 mm)
 rear_section: {rear_panel_inner_x: -0.370, arch_edge_x: -0.135, side_wall_inner_y: 0.288,
-               power_plate: {t: 0.003, min_above_receiver: 0.015, material: "G10 glass-epoxy (non-metal)"}}   # owner decision 3 Nov 2026: 15 mm gap to the receiver top; non-metal within 20 mm (TZBOT manual, verify)
+               power_plate: {t: 0.003, min_above_receiver: 0.015, material: "G10 glass-epoxy (non-metal)"}}   # owner decision 3 Nov 2026: 15 mm gap to the receiver top; owner decision 8 Nov 2026: 15 mm offset from any side of the receiver
 # 8 x EVE LF105 (200 h x 130 x 38 mm, 1.98 kg) upright, 4 per side pocket, 8S (replaces the single row across the robot, B-02 rev18.10)
-cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002}
+cells: {h: 0.200, l: 0.130, w: 0.038, mass: 1.98, per_pocket: 4, gap: 0.002, tray_floor: 0.003, restraint_wall: 0.003, clear_to_margin: 0.002,
+        tray_from_receiver: 0.020}   # trays stay 20 mm beside the receiver (rear power module layout of 3 Nov); the 15 mm offset of 8 Nov is the minimum
 tzbot_transmitter: {size: [0.170, 0.150, 0.052], mass: 1.5}   # floor station (installed with the receiver), same outer size (manual V2.5); not drawn
 emc_flag_distance: 0.050      # roadmap screening value until TZBOT gives a minimum distance
 front_bay_layout: single   # owner correction A2 (2 Nov 2026): one layout, one plate on the base sheet; second tier only if one plate does not fit
 second_estop: {position: adapter_top, housing: [0.064, 0.050, 0.050], button_up: true}   # owner correction A5 (2 Nov 2026): on top of the adapter plate behind the post, centred in y, button up
-getac: {orientation: portrait, size: [0.0176, 0.1498, 0.234], lower_by: 0.040, light_gap: 0.010}   # owner correction A3 (2 Nov 2026)
-zed_ahead_of_j1a: 0.057   # owner correction A4 (2 Nov 2026), was 0.042
+getac: {orientation: portrait, size: [0.0176, 0.1498, 0.234], lower_by: 0.055, light_gap: 0.010}   # owner correction A3 (2 Nov 2026: 40 mm lower), owner decision 8 Nov 2026: 15 mm lower again (55 mm), light bar still 10 mm below
+zed_ahead_of_j1a: 0.060   # owner decision 8 Nov 2026 (was 0.057, owner correction A4 of 2 Nov 2026; 0.042 before)
 # lowest points of the robot below the base sheet (full assembly STEP MMP.00.00.00.000_full_assembly, openamr-platform-hw main,
 # exact OCC bounding boxes of every solid, floor at the castor wheel bottom; base sheet at 52.0 / 54.0 mm as corrected in base_mesh_map.yaml)
 cad_lowest: {drive_tyre: -0.0020, castor_wheels: 0.0, castor_bolt_tips_m6x20: 0.0410, m5x20_bolt_tips: 0.0448, m4x16_bolt_tips: 0.0460,

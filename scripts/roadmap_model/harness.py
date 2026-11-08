@@ -23,8 +23,13 @@ adapter plate and up the arm post.
 import heapq
 import math
 
+import os
+
 import numpy as np
+import yaml
 from scipy import ndimage
+
+FACTS = yaml.safe_load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "facts.yaml")))
 
 RES = 0.005
 LO = np.array([-0.400, -0.295, 0.050])
@@ -102,8 +107,8 @@ PASSAGES = [{"id": "CH-C1 central power channel over the drive section", "lo": [
             {"id": "fan lead strip on the arch front wall (fan bracket)", "lo": [0.097, -0.045, 0.235], "hi": [0.160, 0.045, 0.290]},
             {"id": "CH-B1 power branch to the left side corridor (over the wheel, through the arch side wall)", "lo": [-0.065, 0.040, 0.206], "hi": [-0.015, 0.240, 0.250]},
             {"id": "CH-B2 signal branch to the right side corridor (over the wheel, through the arch side wall)", "lo": [-0.065, -0.240, 0.206], "hi": [-0.015, -0.040, 0.250]},
-            {"id": "over-wheel guard L", "lo": [-0.135, 0.236, 0.206], "hi": [0.135, 0.288, 0.290]},
-            {"id": "over-wheel guard R", "lo": [-0.135, -0.288, 0.206], "hi": [0.135, -0.236, 0.290]}]
+            {"id": "over-wheel guard L", "lo": [-0.135, 0.195, 0.206], "hi": [0.135, 0.288, 0.290]},   # 8 Nov 2026: from y 0.195, so cables climb
+            {"id": "over-wheel guard R", "lo": [-0.135, -0.288, 0.206], "hi": [0.135, -0.195, 0.290]}]  # inboard of the cover slot onto the guard
 BRANCH_X = (-0.060, -0.020)   # cross branches of the central channels: through the arch side wall above the wheel guard
 CHANNELS = [{"id": "ch_central_power", "name": "CH-C1 central power channel (SAFE / BAT) over the drive section, left", "y": [0.040, 0.085]},
             {"id": "ch_central_signal", "name": "CH-C2 central signal channel (CAN, USB, sensor lines) over the drive section, right (deck exit side)", "y": [-0.085, -0.040]}]
@@ -306,11 +311,21 @@ def build_model(ctx):
     # LiDAR scan plane 222.05 mm +- 5 mm in the open sector (+-95 deg from lidar_link at x 0.330): no cable or tie in it
     keep.append({"id": "lidar_scan_band", "lo": [0.0, -0.295, 0.2120], "hi": [0.400, 0.295, 0.2325], "sector": {"x": 0.330, "y": 0.0, "deg": 95.0},
                  "members": ["lidar"], "why": "RPLIDAR S3 scan plane +-5 mm (and 5 mm margin) in the open sector"})
+    # owner rule 8 Nov 2026: no cable and no tie in the slot between the base panels and the cover skirt (the LiDAR looks out
+    # through it and it is the visible band around the robot), nor within 50 mm inside it; one box per side, so only the parts that
+    # sit in the band (LiDAR at the front; FB-A and Kpre at the rear panel, see geometry issues) let their own leads in
+    cs = FACTS["cover_slot"]
+    z0_, z1_ = cs["panel_top"] - cs["margin"], cs["cover_edge"] + cs["margin"]
+    yi, xf_, xr_ = FACTS["rear_section"]["side_wall_inner_y"] - cs["depth"], 0.370 - cs["depth"], -0.370 + cs["depth"]
+    keep.append({"id": "cover_slot_left", "lo": [-0.390, yi, z0_], "hi": [0.390, 0.295, z1_], "members": [], "why": "slot between the left side panel and the cover skirt (owner rule 8 Nov 2026)"})
+    keep.append({"id": "cover_slot_right", "lo": [-0.390, -0.295, z0_], "hi": [0.390, -yi, z1_], "members": [], "why": "slot between the right side panel and the cover skirt (owner rule 8 Nov 2026)"})
+    keep.append({"id": "cover_slot_front", "lo": [xf_, -0.295, z0_], "hi": [0.395, 0.295, z1_], "members": ["lidar"], "why": "slot between the front panel and the cover skirt; the LiDAR scans through it (owner rule 8 Nov 2026)"})
+    keep.append({"id": "cover_slot_rear", "lo": [-0.395, -0.295, z0_], "hi": [xr_, 0.295, z1_], "members": ["rz_fba", "rz_pre"], "why": "slot between the rear panel and the cover skirt (owner rule 8 Nov 2026); FB-A and Kpre sit in it today (geometry issue)"})
     mf = geo.get("tz_metal_free_zone")
     if mf:
         b = prim_box(mf["prims"][0])
         keep.append({"id": "tz_metal_free_zone", "lo": list(b[0]), "hi": list(b[1]), "members": ["tz_receiver", "tof_rear"],
-                     "why": "receiver 20 mm metal-free margin (only the receiver's own cables and the rear TF-Luna lead enter it)"})
+                     "why": "receiver 15 mm offset (metal-free margin) (only the receiver's own cables and the rear TF-Luna lead enter it)"})
     withdraw = []
     for side in ("left", "right"):
         k = "battery_tray_" + side
@@ -792,7 +807,7 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
             free[sl] |= sub & ~others & ~kz[sl]
         # supported routes only: within 30 mm of a supporting surface, except near its own connectors, in passages and
         # (module cables) inside the battery and power module
-        sup = (d_struct <= SUPPORT_MAX) | pas
+        sup = (d_struct <= SUPPORT_MAX - RES / 2) | pas   # half a cell inside the rule: the check measures to the surfaces (8 Nov 2026)
         if c.get("module"):
             sup |= exz
         for p in (c["a"], c["b"]):
