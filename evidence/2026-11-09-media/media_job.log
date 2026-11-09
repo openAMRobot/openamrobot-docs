@@ -1,0 +1,74 @@
+2026-11-09T19:20:05Z still 01
+wrote 01_robot_front_three_quarter_L1000
+errors 0 []
+2026-11-09T19:20:16Z still 02
+wrote 02_robot_rear_three_quarter_L1350
+errors 0 []
+2026-11-09T19:20:26Z still 03
+wrote 03_robot_side
+errors 0 []
+2026-11-09T19:20:37Z still 04
+wrote 04_base_cover_off_harness
+errors 0 []
+2026-11-09T19:20:48Z still 05
+wrote 05_rear_power_module
+errors 0 []
+2026-11-09T19:21:00Z still 06
+wrote 06_front_bay_side_zones
+errors 0 []
+2026-11-09T19:21:12Z still 07
+wrote 07_lift_column_rear
+errors 0 []
+2026-11-09T19:21:22Z still 08
+wrote 08_exploded_view
+errors 0 []
+2026-11-09T19:21:32Z posters
+2026-11-09T19:21:56Z tour1080p start
+frame 0 of 2626
+frame 150 of 2626
+frame 300 of 2626
+frame 450 of 2626
+frame 600 of 2626
+frame 750 of 2626
+frame 900 of 2626
+frame 1050 of 2626
+frame 1200 of 2626
+frame 1350 of 2626
+frame 1500 of 2626
+frame 1650 of 2626
+frame 1800 of 2626
+frame 1950 of 2626
+frame 2100 of 2626
+frame 2250 of 2626
+frame 2400 of 2626
+frame 2550 of 2626
+
+real	88m42.884s
+user	2m11.485s
+sys	0m11.895s
+2026-11-09T20:50:39Z tour1080p done
+2026-11-09T20:50:39Z tour1080x1350 start
+frame 0 of 2626
+frame 150 of 2626
+frame 300 of 2626
+frame 450 of 2626
+frame 600 of 2626
+frame 750 of 2626
+frame 900 of 2626
+frame 1050 of 2626
+frame 1200 of 2626
+frame 1350 of 2626
+frame 1500 of 2626
+frame 1650 of 2626
+frame 1800 of 2626
+frame 1950 of 2626
+frame 2100 of 2626
+frame 2250 of 2626
+frame 2400 of 2626
+frame 2550 of 2626
+
+real	104m56.805s
+user	1m53.286s
+sys	0m11.475s
+2026-11-09T22:35:36Z tour1080x1350 done
+2026-11-09T22:35:36Z ALL_DONE
