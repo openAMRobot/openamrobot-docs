@@ -32,13 +32,23 @@ def _samples(pts, step):
         yield pts[-1]
 
 
-def slot_violations(pts, keep, step=0.0025):
-    """Ids of the cover-slot keep-outs (cover_slot_*) that a polyline enters. Checked on every route, also on fixed (declared)
-    and cached routes, so no route bypasses the slot rule."""
+TIE_RADIUS = 0.004   # envelope of a cable tie or tie base around its point (head about 8 mm across)
+
+
+def envelope_radius(cable):
+    """Outer radius of a cable or busbar in m: half its envelope diameter od_mm (a busbar's od_mm is the envelope the model
+    routes it with). Review of #83, 8 Nov 2026: the slot rule applies to the outer surface, not the centre line."""
+    return float(cable.get("od_mm") or 0.0) / 2000.0
+
+
+def slot_violations(pts, keep, step=0.0025, radius=0.0):
+    """Ids of the cover-slot keep-outs (cover_slot_*) that a cable of the given outer radius enters: a sample point within
+    radius of a keep-out box (the box grown by radius). Checked on every route, searched, fixed (declared) and cached, so no
+    route bypasses the slot rule."""
     hits = []
     zones = [k for k in keep if str(k["id"]).startswith("cover_slot_")]
     for q in _samples(pts, step):
         for k in zones:
-            if k["id"] not in hits and all(k["lo"][i] < q[i] < k["hi"][i] for i in range(3)):
+            if k["id"] not in hits and all(k["lo"][i] - radius < q[i] < k["hi"][i] + radius for i in range(3)):
                 hits.append(k["id"])
     return hits

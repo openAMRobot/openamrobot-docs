@@ -5,7 +5,7 @@ snapshot: "8 Nov 2026"
 window: "24 Oct to 1 Nov 2026"
 documents:
   P-03: rev20.6 (8 Nov 2026; item 30, decision baseline of 8 Nov 2026, D-01 to D-34)
-  E-01: rev1.7 (8 Nov 2026)
+  E-01: rev1.8 (8 Nov 2026; design text only since rev1.6, safety items pending D-22 to D-25, D-28, D-33)
   M-01: rev19.9 (8 Nov 2026)
   P-02: rev19.2
   BOM: Issue 7.14 (27 Oct 2026, with 1 Nov changes; 146 records, 115 onboard)

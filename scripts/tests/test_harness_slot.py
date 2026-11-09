@@ -38,6 +38,25 @@ class CoverSlot(unittest.TestCase):
     def test_old_p62_declared_route_is_rejected(self):
         self.assertIn("cover_slot_right", S.slot_violations(OLD_P62, KEEP))
 
+    def test_cable_envelope_near_the_boundary_is_rejected(self):
+        """Review of #83 (8 Nov 2026): a 6 mm cable whose centre line is 2 mm outside cover_slot_left (y 0.188) reaches it with
+        its outer surface; the centre-line test alone called this clear."""
+        seg = [[0.0, 0.186, 0.220], [0.1, 0.186, 0.220]]
+        r = S.envelope_radius({"od_mm": 6.0})
+        self.assertAlmostEqual(r, 0.003)
+        self.assertIn("cover_slot_left", S.slot_violations(seg, KEEP, radius=r))
+        self.assertEqual(S.slot_violations([[0.0, 0.184, 0.220], [0.1, 0.184, 0.220]], KEEP, radius=r), [])   # 1 mm clear
+
+    def test_committed_routes_keep_their_envelope_out(self):
+        bad = {}
+        for c in CABLES:
+            for sec in c.get("sections", []):
+                if sec.get("kind") == "base":
+                    hit = S.slot_violations(sec["pts"], KEEP, radius=S.envelope_radius(c))
+                    if hit:
+                        bad[c["id"]] = hit
+        self.assertEqual(bad, {})
+
     def test_corrected_p62_route_is_clear(self):
         secs = list(base_sections("CBL-P62"))
         self.assertTrue(secs, "CBL-P62 has no base section")

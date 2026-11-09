@@ -306,6 +306,20 @@ class HarnessSlotKeepOut(unittest.TestCase):
         H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.10, 0.220], [0.4, 0.10, 0.220]]
         self.assertEqual(C.harness_slot_errors(H), [])
 
+    def test_cable_envelope_reaching_the_slot_fails(self):
+        # review of docs #83 at 61e682f: a 6 mm cable 2 mm outside cover_slot_left by its centre line touches it by its outer
+        # surface (y 0.189 > 0.188); the centre-line check called it clear. 1 mm clearance passes.
+        H = _h(keep_out=[self.SLOT])
+        H["cables"][0].update(od_mm=6.0, sections=[{"kind": "base", "group": "base", "pts": [[0.0, 0.186, 0.220], [0.1, 0.186, 0.220]]}])
+        self.assertTrue(any("crosses cover_slot_left" in e for e in C.harness_slot_errors(H)))
+        H["cables"][0]["sections"][0]["pts"] = [[0.0, 0.184, 0.220], [0.1, 0.184, 0.220]]
+        self.assertEqual(C.harness_slot_errors(H), [])
+
+    def test_tie_head_reaching_the_slot_fails(self):
+        H = _h(keep_out=[self.SLOT])
+        H["ties"].append({"id": "T9", "p": [0.1, 0.25, 0.209]})   # 2.2 mm below the band, head 4 mm
+        self.assertTrue(any("tie T9" in e for e in C.harness_slot_errors(H)))
+
     def test_lidar_cable_in_the_front_slot_fails(self):
         # review of docs #83 at 498a563: CBL-P47 with its real ownership and a segment through cover_slot_front must fail,
         # also if a keep-out still lists the LiDAR as a member (D-06: no cable in the slot band, the LiDAR cable included)

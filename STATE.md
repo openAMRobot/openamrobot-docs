@@ -4,7 +4,7 @@ Working state of this repository for maintainers and agents. Not published on th
 
 ## OpenAMRobot 2.0 plan set reflected in the docs
 
-As of 8 November 2026 (owner decisions of 2, 3 and 8 Nov 2026; decision baseline D-01 to D-34 in P-03 rev20.6 item 30): P-03 rev20.6, E-01 rev1.7, M-01 rev19.8, BOM Issue 7.14, B-02 rev18.11, decisions.yaml 5ed600e plus the register update of 8 Nov 2026 in openAMRobot/.github#90 (change request openAMRobot/.github#89, not merged yet).
+As of 8 November 2026 (owner decisions of 2, 3 and 8 Nov 2026; decision baseline D-01 to D-34 in P-03 rev20.6 item 30): P-03 rev20.6, E-01 rev1.8 (design text only since rev1.6; precharge, regen clamp, ZLAC boot, brake gating, FB-A/F-CHG and W09 pending, D-22 to D-25, D-28, D-33; not evidence of an implemented or accepted safety chain), M-01 rev19.8, BOM Issue 7.14, B-02 rev18.11, decisions.yaml 5ed600e plus the register update of 8 Nov 2026 in openAMRobot/.github#90 (change request openAMRobot/.github#89, not merged yet).
 
 - Roadmap pages (`docs/assets/roadmap/`): snapshot 2 Nov 2026 (status pages; the model and the hardware page carry the owner decisions of 8 Nov 2026); PARTS is BOM Issue 7.14 (146 records, 121 onboard by the model rule) (`scripts/roadmap_model/bom714.py`).
 - Model placement data is generated: `scripts/roadmap_model/run_all.sh` (sources in `../src`, combined model expanded under `../ament`). Weekly update: edit `facts.yaml`, `parts.yaml`, `bom_map.yaml`, `conflicts.yaml`, then rerun.

@@ -30,7 +30,7 @@ import numpy as np
 import yaml
 from scipy import ndimage
 
-from slot_rule import cover_slot_keepouts, slot_violations  # noqa: F401 (the slot rule, shared with the tests)
+from slot_rule import cover_slot_keepouts, envelope_radius, slot_violations  # noqa: F401 (the slot rule, shared with the tests)
 
 FACTS = yaml.safe_load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "facts.yaml")))
 
@@ -734,6 +734,11 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
             xx, yy = LO[0] + (ii_ + .5) * RES, LO[1] + (jj_ + .5) * RES
             g &= np.abs(np.degrees(np.arctan2(yy - k["sector"]["y"], xx - k["sector"]["x"]))) <= k["sector"]["deg"]
         kzs.append((k, g))
+    slot_cells = np.zeros(V.n, bool)     # cover-slot keep-outs: a cable keeps its outer radius out of them (review of #83)
+    for k in keep:
+        if str(k["id"]).startswith("cover_slot_"):
+            slot_cells[V.slab(k["lo"], k["hi"])] = True
+    d_slot = ndimage.distance_transform_edt(~slot_cells, sampling=RES)
     pas = np.zeros(V.n, bool)            # declared protected passages (channels, over-wheel guards)
     for p_ in PASSAGES:
         pas[V.slab(p_["lo"], p_["hi"])] = True
@@ -772,7 +777,7 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
     for c in cables:
         if c.get("fixed") is not None:   # declared route (battery and power module exception zone): cable or busbar
             pts = [[round(float(v), 4) for v in p] for p in c["fixed"]]
-            hit = slot_violations(pts, keep)
+            hit = slot_violations(pts, keep, radius=envelope_radius(c))
             if hit:   # fail closed: a declared route in the cover slot is an error of the declaration, never routed
                 results[c["id"]] = {"ok": False, "why": "declared route enters %s (cover slot rule, P-03 rev20.5 item 29)" % ", ".join(hit)}
                 continue
@@ -790,7 +795,7 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
         if c["id"] in cached and isinstance(cached[c["id"]], dict):   # blocked in the last build with the same inputs
             results[c["id"]] = {"ok": False, "why": cached[c["id"]]["blocked"]}
             continue
-        if c["id"] in cached and slot_violations(cached[c["id"]], keep):   # a cached route in the cover slot is dropped and routed again
+        if c["id"] in cached and slot_violations(cached[c["id"]], keep, radius=envelope_radius(c)):   # a cached route in the cover slot is dropped and routed again
             cached = {k_: v_ for k_, v_ in cached.items() if k_ != c["id"]}
         if c["id"] in cached:   # same inputs as the last build (harness_routes.json input_hash): reuse the route
             pts = cached[c["id"]]
@@ -812,7 +817,7 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
         for k, g in kzs:
             if not (own & set(k.get("members", []))):
                 kz |= g
-        forb = kz.copy()
+        forb = kz | slot_cells | (d_slot <= envelope_radius(c) + RES / 2)   # no cable exempt from the slot, its envelope included
         for k, (g, gf) in over.items():
             if k not in own:
                 forb |= g | ((gf & ~exz if c.get("module") else gf) if "over" not in RELAX else False)   # module cables may pass over module parts
@@ -880,6 +885,10 @@ def route_base(ctx, V, comps, keep, withdraw, cables, cached=None):
             if Lr > max(DETOUR * direct, direct + 0.40):
                 results[c["id"]] = {"ok": False, "why": "the only compliant route is %.2f m for a %.2f m link: no cable passage in the layout" % (Lr, direct), "pts_rejected": pts}
                 continue
+        hit = slot_violations(pts, keep, radius=envelope_radius(c))
+        if hit:   # the smoothed polyline must keep its outer surface out of the slot too (fail closed)
+            results[c["id"]] = {"ok": False, "why": "route envelope enters %s (cover slot rule, P-03 rev20.5 item 29)" % ", ".join(hit), "pts_rejected": pts}
+            continue
         cells = [V.cell(q) for _, q in sample(pts, RES / 2)]
         for p in cells:
             used[p] += 1
