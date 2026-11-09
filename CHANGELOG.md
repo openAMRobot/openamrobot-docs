@@ -2,6 +2,15 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-09
+
+### Changed
+
+- Roadmap refresh of 9 Nov 2026 (window 6 to 9 Nov 2026): all six roadmap pages carry the 9 Nov snapshot. Home: two delivery lines (release-001 rig with Gate A on 13 Nov and H-day on 16 Nov; Build 1 with bench week 23 to 27 Nov and power-on 30 Nov to 4 Dec), rc.1 on 20 Nov, the critical path and a "This week" section. Progress: new attention boxes, 35 known drift items, a 9 Nov refresh section with repository heads, UC1-02 at 0.5 m/s (D-07). Robot, architecture and hardware pages: plan set P-03 rev20.6, E-01 rev1.8, M-01 rev19.10, BOM Issue 7.15.
+- Hardware page PARTS re-imported from BOM Issue 7.15 (148 records; LFT-008 lift foot screws and MEC-022 arch backing plate added, 21 rows changed) by `scripts/roadmap_model/bom715.py`; `bom_map.yaml` and `mass_ledger.yaml` gain both lines. Mass ledger 87.1 kg (was 86.3 kg), design values, not weighed.
+- Exploded view: tour captions and labels at stops 43.5, 54, 71.5 and 79.5 follow the 8 Nov decisions (lift foot tabs, receiver plastic frame, two 50 x 25 mm cable openings, flag rod guide and second E-stop on the adapter plate). Stills, posters and both tour videos re-rendered; the dark-store video is unchanged.
+- `conflicts.yaml`: 49 conflicts between sources, including the BOM sheet header, the speed ceiling in older documents and the mass figures.
+
 ## 2026-11-08
 
 ### Changed

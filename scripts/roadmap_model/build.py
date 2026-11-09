@@ -716,7 +716,7 @@ def main():
                   "nothing_on_cells": True}
     BM["PWR-001"] = {"by": "battery_cells", "cls": "provisional", "geo": "8 x LF105 200 x 130 x 38 mm (B5)", "pos": "A1 side pockets (owner, 2 Nov 2026)", "mass": 0.0, "msrc": "mass_ledger.yaml: the cells PWR-023 and the pack parts PWR-024 to PWR-027 carry the mass"}
     BM["PWR-023"] = {"by": "battery_cells", "cls": "provisional", "mqty": 8, "geo": "8 cell boxes", "pos": "A1 side pockets", "mass": 0.0, "msrc": "included in PWR-001"}
-    BM["MEC-007"] = {"by": "battery_tray", "cls": "provisional", "mqty": 1}
+    BM["MEC-007"] = {"by": "battery_tray", "cls": "provisional", "mqty": len(trays_)}
     # MEC-006: power-electronics mounting plate above the receiver zone (A1)
     pl_ = RL["plate"]
     comp("rear_plate", "Rear power-electronics plate above the prepared receiver zone", "MEC-006", 1, "proposed",

@@ -11,6 +11,7 @@ import copy
 import json
 import math
 import os
+import re
 import subprocess
 import shutil
 import sys
@@ -138,7 +139,9 @@ class ChestRetired(unittest.TestCase):
 class StateFigures(unittest.TestCase):
     def test_committed_state_is_current(self):
         text = open(os.path.join(ROOT, "..", "..", "..", "STATE.md"), encoding="utf-8").read()
-        self.assertEqual(C.state_errors(text, C.state_figures(ROOT), "2 Nov 2026"), [])
+        snap = re.search(r'<span class="snap">Snapshot (%s)</span>' % C.DATE,
+                         open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()).group(1)  # the pages' snapshot
+        self.assertEqual(C.state_errors(text, C.state_figures(ROOT), snap), [])
 
     def test_stale_figure_fails(self):
         figs = C.state_figures(ROOT)

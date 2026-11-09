@@ -33,5 +33,7 @@ lines:
   # lift: the DOLD column is one purchased part, split in mass_export.py into the static and the moving share (facts.yaml column.mass_split)
   MEC-018: {unit_kg: 11.7, qty: 1, src: "DOLD Hexalift V4 350 catalogue 11.7 kg; static and moving share from the STEP geometry and the materials (facts.yaml column.mass_split)"}
   MEC-019: {unit_kg: 1.293, qty: 1, src: "design-intent solid design_intent/lift_base_plate.py: 350 x 140 x 10 mm 6082-T6 with the tapped hole sets, x 2700 kg/m3 (D-20)"}
+  LFT-008: {unit_kg: 0.008, qty: 4, src: "estimate: DIN 7984 M8 x 14 class 8.8 low-head cap screw, steel (BOM 7.15, D-20)"}
+  MEC-022: {unit_kg: 0.77, qty: 1, src: "estimate: arch backing plate, 5 mm S235 option, about 150 x 130 x 5 mm x 7850 kg/m3 (BOM 7.15, D-21); the tapped laser-cut option is lighter or equal"}
 # castor split between the URDF castor link (bracket, swivel head, plate) and its wheel link: wheel D35 x 27 mm, steel centre with PU tread
 castor_wheel_kg: 0.080

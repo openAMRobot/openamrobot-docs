@@ -636,11 +636,11 @@
  },
  "mass": {
   "L1000": {
-   "mass": 86.30579944943561,
+   "mass": 87.10779944943563,
    "com": [
-    0.0315,
+    0.032,
     -0.003,
-    0.3268
+    0.3266
    ],
    "unplaced": [
     "ARM-004",
@@ -649,11 +649,11 @@
    ]
   },
   "L1350": {
-   "mass": 86.30579944943561,
+   "mass": 87.10779944943563,
    "com": [
-    0.0315,
+    0.032,
     -0.003,
-    0.4077
+    0.4068
    ],
    "unplaced": [
     "ARM-004",
@@ -664,33 +664,33 @@
  },
  "stability": {
   "L1000": {
-   "margin_fore_m": 0.2436,
-   "margin_aft_m": 0.3065,
+   "margin_fore_m": 0.2431,
+   "margin_aft_m": 0.307,
    "margin_lat_m": 0.212,
-   "a_max_fore": 7.31,
-   "a_max_lat": 6.36,
-   "com_z": 0.3268
+   "a_max_fore": 7.3,
+   "a_max_lat": 6.37,
+   "com_z": 0.3266
   },
   "L1350": {
-   "margin_fore_m": 0.2436,
-   "margin_aft_m": 0.3065,
+   "margin_fore_m": 0.2431,
+   "margin_aft_m": 0.307,
    "margin_lat_m": 0.212,
    "a_max_fore": 5.86,
-   "a_max_lat": 5.1,
-   "com_z": 0.4077
+   "a_max_lat": 5.11,
+   "com_z": 0.4068
   }
  },
  "loads": {
   "L1000": {
-   "drive_pair_kg": 81.4,
-   "per_drive_wheel_kg": 40.7,
+   "drive_pair_kg": 82.0,
+   "per_drive_wheel_kg": 41.0,
    "per_castor_front_kg": 2.5,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
   },
   "L1350": {
-   "drive_pair_kg": 81.4,
-   "per_drive_wheel_kg": 40.7,
+   "drive_pair_kg": 82.0,
+   "per_drive_wheel_kg": 41.0,
    "per_castor_front_kg": 2.5,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
@@ -930,16 +930,16 @@
    {
     "case": "static, L1350",
     "bp": "bp050",
-    "mass_kg": 29.67,
+    "mass_kg": 29.71,
     "com_m": [
-     0.2558,
-     0.9002
+     0.2557,
+     0.9
     ],
     "decel_m_s2": 0.0,
-    "moment_at_column_axis_Nm": 42.4,
+    "moment_at_column_axis_Nm": 42.5,
     "column_screw_rows_N": {
-     "rear": 17.7,
-     "front": -308.8
+     "rear": 17.6,
+     "front": -309.0
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 103.0,
@@ -963,20 +963,20 @@
    {
     "case": "braking from 1.5 m/s at 5.86 m/s2, L1350",
     "bp": "bp050",
-    "mass_kg": 29.67,
+    "mass_kg": 29.71,
     "com_m": [
-     0.2558,
-     0.9002
+     0.2557,
+     0.9
     ],
     "decel_m_s2": 5.86,
-    "moment_at_column_axis_Nm": 146.1,
+    "moment_at_column_axis_Nm": 146.2,
     "column_screw_rows_N": {
-     "rear": 416.4,
-     "front": -707.5
+     "rear": 416.6,
+     "front": -708.0
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 367.1,
-     "x +0.060": 123.8
+     "x -0.060": 367.3,
+     "x +0.060": 123.9
     },
     "bolt_shear_per_bolt_N": 43.5,
     "bolt_utilisation": 0.016,
@@ -987,8 +987,8 @@
     "plate_max_moment_Nm": 29.4,
     "plate_stress_MPa": 12.6,
     "plate_utilisation": 0.049,
-    "arch_sheet_stress_MPa": 159.8,
-    "arch_sheet_utilisation": 0.68,
+    "arch_sheet_stress_MPa": 159.9,
+    "arch_sheet_utilisation": 0.681,
     "arch_sheet_uplift_mm": 0.449,
     "plate_deflection_at_column_front_mm": -0.295,
     "column_tilt_deg": 0.137
@@ -996,19 +996,19 @@
    {
     "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350",
     "bp": "bp050",
-    "mass_kg": 37.87,
+    "mass_kg": 37.91,
     "com_m": [
-     0.4537,
-     1.0785
+     0.4534,
+     1.0782
     ],
     "decel_m_s2": 5.86,
-    "moment_at_column_axis_Nm": 299.6,
+    "moment_at_column_axis_Nm": 299.7,
     "column_screw_rows_N": {
-     "rear": 966.5,
-     "front": -1338.0
+     "rear": 966.6,
+     "front": -1338.5
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 756.7,
+     "x -0.060": 756.9,
      "x +0.060": 255.3
     },
     "bolt_shear_per_bolt_N": 55.5,
@@ -1017,28 +1017,28 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.062,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 60.5,
-    "plate_stress_MPa": 25.9,
+    "plate_max_moment_Nm": 60.6,
+    "plate_stress_MPa": 26.0,
     "plate_utilisation": 0.102,
-    "arch_sheet_stress_MPa": 329.4,
+    "arch_sheet_stress_MPa": 329.5,
     "arch_sheet_utilisation": 1.402,
-    "arch_sheet_uplift_mm": 0.925,
+    "arch_sheet_uplift_mm": 0.926,
     "plate_deflection_at_column_front_mm": -0.607,
     "column_tilt_deg": 0.283
    },
    {
     "case": "static, L1350",
     "bp": "bp000",
-    "mass_kg": 29.67,
+    "mass_kg": 29.71,
     "com_m": [
-     0.2058,
-     0.9002
+     0.2057,
+     0.9
     ],
     "decel_m_s2": 0.0,
-    "moment_at_column_axis_Nm": 42.4,
+    "moment_at_column_axis_Nm": 42.5,
     "column_screw_rows_N": {
-     "rear": 17.7,
-     "front": -308.8
+     "rear": 17.6,
+     "front": -309.0
     },
     "bolt_tension_per_bolt_N": {
      "x -0.060": 66.2,
@@ -1062,19 +1062,19 @@
    {
     "case": "braking from 1.5 m/s at 5.86 m/s2, L1350",
     "bp": "bp000",
-    "mass_kg": 29.67,
+    "mass_kg": 29.71,
     "com_m": [
-     0.2058,
-     0.9002
+     0.2057,
+     0.9
     ],
     "decel_m_s2": 5.86,
-    "moment_at_column_axis_Nm": 146.1,
+    "moment_at_column_axis_Nm": 146.2,
     "column_screw_rows_N": {
-     "rear": 416.4,
-     "front": -707.5
+     "rear": 416.6,
+     "front": -708.0
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 331.5,
+     "x -0.060": 331.7,
      "x +0.060": 106.8
     },
     "bolt_shear_per_bolt_N": 43.5,
@@ -1086,7 +1086,7 @@
     "plate_max_moment_Nm": 0.0,
     "plate_stress_MPa": 0.0,
     "plate_utilisation": 0.0,
-    "arch_sheet_stress_MPa": 144.2,
+    "arch_sheet_stress_MPa": 144.3,
     "arch_sheet_utilisation": 0.614,
     "arch_sheet_uplift_mm": 0.404,
     "plate_deflection_at_column_front_mm": -0.151,
@@ -1095,19 +1095,19 @@
    {
     "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350",
     "bp": "bp000",
-    "mass_kg": 37.87,
+    "mass_kg": 37.91,
     "com_m": [
-     0.4037,
-     1.0785
+     0.4034,
+     1.0782
     ],
     "decel_m_s2": 5.86,
-    "moment_at_column_axis_Nm": 299.6,
+    "moment_at_column_axis_Nm": 299.7,
     "column_screw_rows_N": {
-     "rear": 966.5,
-     "front": -1338.0
+     "rear": 966.6,
+     "front": -1338.5
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 712.5,
+     "x -0.060": 712.7,
      "x +0.060": 229.5
     },
     "bolt_shear_per_bolt_N": 55.5,
@@ -1119,7 +1119,7 @@
     "plate_max_moment_Nm": 0.0,
     "plate_stress_MPa": 0.0,
     "plate_utilisation": 0.0,
-    "arch_sheet_stress_MPa": 309.9,
+    "arch_sheet_stress_MPa": 310.0,
     "arch_sheet_utilisation": 1.319,
     "arch_sheet_uplift_mm": 0.868,
     "plate_deflection_at_column_front_mm": -0.324,
@@ -1134,7 +1134,7 @@
    "arch_sheet_utilisation": 1.402
   },
   "max_column_tilt_deg": 0.283,
-  "shoulder_height_ref_m": 0.9002058896875706,
+  "shoulder_height_ref_m": 0.8999872062452241,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -1149,28 +1149,28 @@
   },
   "above_plate": {
    "L1000": {
-    "mass_kg": 29.67,
+    "mass_kg": 29.71,
     "com_m": [
-     0.2058,
+     0.2057,
      0.0008,
-     0.665
+     0.6649
     ]
    },
    "L1350": {
-    "mass_kg": 29.67,
+    "mass_kg": 29.71,
     "com_m": [
-     0.2058,
+     0.2057,
      0.0008,
-     0.9002
+     0.9
     ]
    }
   },
   "arms_forward": {
-   "mass_kg": 37.87,
+   "mass_kg": 37.91,
    "com_m": [
-    0.4037,
+    0.4034,
     0.0006,
-    1.0785
+    1.0782
    ],
    "arm_mass_kg_both": 12.26,
    "payload_kg_each": 4.1,
@@ -1836,6 +1836,16 @@
     "fasteners"
    ],
    [
+    "LFT-008",
+    0.032,
+    [
+     0.1043,
+     -0.0067,
+     0.5805
+    ],
+    "fasteners"
+   ],
+   [
     "MEC-002",
     1.2,
     [
@@ -1994,6 +2004,16 @@
      0.0914
     ],
     "us_locknut"
+   ],
+   [
+    "MEC-022",
+    0.77,
+    [
+     0.085,
+     0.0,
+     0.299
+    ],
+    "lift_base_plate"
    ],
    [
     "NAV-001",
@@ -2878,6 +2898,16 @@
     "fasteners"
    ],
    [
+    "LFT-008",
+    0.032,
+    [
+     0.1043,
+     -0.0067,
+     0.6972
+    ],
+    "fasteners"
+   ],
+   [
     "MEC-002",
     1.2,
     [
@@ -3036,6 +3066,16 @@
      0.0914
     ],
     "us_locknut"
+   ],
+   [
+    "MEC-022",
+    0.77,
+    [
+     0.085,
+     0.0,
+     0.299
+    ],
+    "lift_base_plate"
    ],
    [
     "NAV-001",

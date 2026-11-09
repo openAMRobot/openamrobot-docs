@@ -2,20 +2,20 @@
  "status": "estimate (D-26, owner instruction of 8 Nov 2026): every part counted once on the URDF link where it sits, quantity x datasheet mass from mass_ledger.yaml, custom parts from their design-intent solids or dimensions and material, the DOLD column split into its static and moving share (facts.yaml column.mass_split). Design values, nothing weighed: replace with the weighed masses and CoG after the as-built weighing.",
  "totals": {
   "L1000": {
-   "mass_kg": 86.31,
+   "mass_kg": 87.11,
    "com_m": [
-    0.0314,
+    0.0319,
     -0.0026,
-    0.3271
+    0.3269
    ],
    "frame": "base_footprint, bp000"
   },
   "L1350": {
-   "mass_kg": 86.31,
+   "mass_kg": 87.11,
    "com_m": [
-    0.0314,
+    0.0319,
     -0.0026,
-    0.408
+    0.4071
    ],
    "frame": "base_footprint, bp000"
   }
@@ -33,13 +33,13 @@
   "roadmap_kg": {
    "openarm": 12.26,
    "sensors": 0.13,
-   "base": 57.39,
+   "base": 58.2,
    "equipment": 0.7,
    "lift": 9.1,
    "lift_carriage": 6.72
   },
-  "roadmap_total_kg": 86.31,
+  "roadmap_total_kg": 87.11,
   "base_urdf_kg": 6.7,
-  "note": "Each part is counted once, on the URDF link where it sits (mass_ledger.yaml). The platform-sw and upper-body URDFs read every listed link from this file and test the expanded URDF against it. The combined model at the PLATFORM-PIN still carries 6.7 kg on the base links; this export gives 57.4 kg."
+  "note": "Each part is counted once, on the URDF link where it sits (mass_ledger.yaml). The platform-sw and upper-body URDFs read every listed link from this file and test the expanded URDF against it. The combined model at the PLATFORM-PIN still carries 6.7 kg on the base links; this export gives 58.2 kg."
  }
 }

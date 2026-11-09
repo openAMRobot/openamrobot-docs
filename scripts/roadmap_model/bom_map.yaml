@@ -86,6 +86,7 @@ MEC-017: {by: none, cls: not drawn, reason: "branding decals are robot page fitt
 MEC-018: {by: lift_column, cls: primitive, geo: "DOLD 240 x 60, 530 retracted, inner stage placeholder", pos: "B7 column axis x 0.060 (bp000)", mass: 11.7, msrc: "datums lift_mass_dold_v4_350 (catalogue)"}
 MEC-019: {by: lift_base_plate, cls: primitive, geo: "350 x 140 x 10 6082-T6 (D-20)", pos: "B7 bp000 / bp050", mass: 1.293, msrc: "mass_ledger.yaml"}
 MEC-020: {by: none, cls: not drawn, reason: "fallback lift, not fitted"}
+MEC-022: {by: lift_base_plate, cls: provisional, geo: "arch backing plate under the arch top sheet, below MEC-019 (BOM 7.15, D-21); drawing pending, mass placed at the lift base plate", pos: "B3 arch top, under MEC-019", mass: 0.77, msrc: "mass_ledger.yaml"}
 MEC-021: {by: us_locknut}
 LFT-001: {by: lift_stop_sensors, cls: placeholder, geo: "M12 x 48 mm cylinder", pos: "datums.yaml lift_stop_sensor_z_*", mass: 0.09, msrc: "estimate 30 g each"}
 LFT-002: {by: harness, cls: proposed, geo: "cable tube", pos: "down the static column", mass: 0.15, msrc: "estimate"}
@@ -94,6 +95,7 @@ LFT-004: {by: flag_rod, cls: placeholder, geo: "20 x 20 x 430", pos: "datums.yam
 LFT-005: {by: rod_corner_bracket, cls: placeholder, geo: "20 corner bracket", pos: "datums.yaml", mass: 0.02, msrc: "estimate"}
 LFT-006: {by: lift_flag, cls: placeholder, geo: "45 x 20 x 2 SS400", pos: "datums.yaml lift_flag_*", mass: 0.014, msrc: "volume x 7850"}
 LFT-007: {by: fasteners, mqty: 1, cls: proposed, geo: "fastener_schedule.csv", pos: "LIFT-SNS-01 joints", mass: 0.03, msrc: "estimate"}
+LFT-008: {by: fasteners, mqty: 4, cls: proposed, geo: "fastener_schedule.csv (DOLD column to the lift base plate)", pos: "D-20 foot tabs 260 x 30 mm", mass: 0.032, msrc: "mass_ledger.yaml"}
 PWR-001: {by: battery, cls: provisional, geo: "8 x EVE LF105 in two 4-cell trays joined by PWR-018 (D-27); the B5 single-row envelope 314 x 140 x 210 is superseded", pos: "rear side pockets", mass: 0.0, msrc: "mass_ledger.yaml: no mass line of its own; the cells PWR-023 and the pack parts PWR-024 to PWR-027 carry the mass, trays, BMS, F0 and disconnect are their own lines"}
 PWR-002: {by: rz_bms}
 PWR-003: {by: rz_f0}

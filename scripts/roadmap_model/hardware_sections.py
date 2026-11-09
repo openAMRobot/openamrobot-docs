@@ -16,7 +16,7 @@ from frames import HERE, MODEL, REPO, load_yaml, tzbot_layout
 
 PAGE = os.path.join(REPO, "docs", "assets", "roadmap", "hardware.html")
 E = html.escape
-SNAP = "2 Nov 2026"
+SNAP = load_yaml(os.path.join(HERE, "facts.yaml"))["snapshot"]  # the page snapshot (facts.yaml)
 A = lambda href, text: '<a href="%s" target="_blank" rel="noopener">%s</a>' % (E(href), E(text))
 OWNER = '<a class="who" href="https://github.com/fridayali" target="_blank" rel="noopener">@fridayali</a> <span class="role">(mechanical CAD)</span>'
 
@@ -81,13 +81,13 @@ def model_section():
     nofit = bs["nofit"]
     k = bs["k1k2_options"]
     body = (
-        '<p>The shared model now draws every onboard BOM Issue 7.14 line it has a geometry or position source for. '
+        '<p>The shared model now draws every onboard BOM Issue 7.15 line it has a geometry or position source for. '
         'Positions come from datums.yaml (%s), sensor_frames.yaml and the section B facts through '
         '<code>scripts/roadmap_model/build.py</code>; nothing is placed by hand. A part without a position source is drawn '
         'provisional with a label; parts the model proposes (front bay, rear zone, harness, fasteners) are marked proposed.</p>'
         % E(an.get("datums_revision", "2026-11-01.c")) +
         "<p><b>Coverage:</b> %d BOM records, %d onboard by the model rule (offboard, qty 0 and the fallback lift excluded; "
-        "the BOM states 115 onboard, see the conflicts list); %d onboard lines drawn, %d not drawn. Model quantity differs from the BOM "
+        "BOM Issue 7.14 stated 115 onboard; the 7.15 Overview is not recounted, see the conflicts list); %d onboard lines drawn, %d not drawn. Model quantity differs from the BOM "
         "quantity on: %s.</p>" % (len(cov), len(on), drawn, len(on) - drawn, E(", ".join(qmis)) or "none") +
         table(["Class (onboard lines)", "Lines"], rows) +
         "<p><b>Mass and centre of mass</b> (coverage roll-up, MEC-001 from the CAD volume as steel, %.1f kg): %.1f kg against the 120 kg cap. "
@@ -120,7 +120,7 @@ def model_section():
             A("model/harness_cad_changes.csv", "harness_cad_changes.csv"), A("model/assembly_sequence.csv", "assembly_sequence.csv"),
             A("model/geometry_issues.csv", "geometry_issues.csv"), A("model/export/openamrobot2_layout.step", "openamrobot2_layout.step")))
     return section("model3d", "3D model: BOM coverage, front bay, rear zone and harness", body,
-                   "roadmap model build of %s (scripts/roadmap_model), BOM Issue 7.14, datums.yaml 2026-11-01.d, sensor_frames.yaml at platform-sw 4926f40" % SNAP)
+                   "roadmap model build of %s (scripts/roadmap_model), BOM Issue 7.15 (Hardware BOM sheet), datums.yaml at upperbody-sw #48 (d8c0940), sensor_frames.yaml at platform-sw 4926f40" % SNAP)
 
 
 def mech_section():
@@ -167,7 +167,7 @@ def conflicts_section():
     rows = [[E(c["item"]), E(c["a"]), E(c["b"]), E(c["status"])] for c in C["conflicts"]]
     body = ("<p>Where a repository disagrees with the documents in force, the document wins unless the repository change is later. "
             "Proposed register changes are in the pull request of this update.</p>" + table(["Item", "One source says", "The other says", "State"], rows))
-    return section("conflicts", "Conflicts between sources", body, "P-03 rev20.2, E-01 rev1.6, M-01 rev19.7, BOM Issue 7.14, decisions.yaml 5ed600e, repository main at the snapshot")
+    return section("conflicts", "Conflicts between sources", body, "P-03 rev20.6, E-01 rev1.8, M-01 rev19.10, BOM Issue 7.15, decisions.yaml 5ed600e with openAMRobot/.github#90, repository heads at the %s snapshot" % SNAP)
 
 
 def decisions_section():
@@ -352,7 +352,7 @@ def parity_section():
                 ps["unmapped_urdf"], ps["roadmap_only"], A("model/parity_report.csv", "parity_report.csv")) +
             "<details><summary>Out of tolerance (%d)</summary>%s</details>" % (len(rows), table(["URDF link / roadmap part"], rows)) +
             "<details><summary>Intended pending differences (%d)</summary>%s</details>" % (len(pend), table(["Item and reason"], pend)) +
-            "<p><b>Mass:</b> the combined model carries %.1f kg in total (base URDF %.1f kg); the roadmap model from BOM Issue 7.14 carries %.1f kg, COM "
+            "<p><b>Mass:</b> the combined model carries %.1f kg in total (base URDF %.1f kg); the roadmap model from BOM Issue 7.15 carries %.1f kg, COM "
             "(%.3f, %.3f, %.3f) m at L1000 and z %.3f m at L1350 (estimate, every part once from mass_ledger.yaml; designed, not weighed). %s gives the per-link masses that "
             "openamr-platform-sw and openamr-upperbody-sw read for every link with mass.</p>" % (
                 ms["comparison"]["combined_model_total_kg"], ms["comparison"]["base_urdf_kg"], tot["L1000"]["mass_kg"], tot["L1000"]["com_m"][0], tot["L1000"]["com_m"][1],
