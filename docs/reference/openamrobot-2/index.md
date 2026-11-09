@@ -20,7 +20,7 @@ OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a
 
 | Area | What this section documents | Owning repository |
 |---|---|---|
-| Hardware architecture | Connection model of compute, base controller, drives, power, sensors and arms (follows BOM Issue 7.14) | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) (BOM to be published with the electrical release) |
+| Hardware architecture | Connection model of compute, base controller, drives, power, sensors and arms (BOM Issue 7.14 reference snapshot; current parts list: BOM Issue 7.15 on the Hardware roadmap page) | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) (BOM to be published with the electrical release) |
 | General arrangement | Upper-body layout, height stack and configuration IDs; drawings regenerated from the option B CAD | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) and [openamr-upperbody-hw](https://github.com/openAMRobot/openamr-upperbody-hw) |
 | Mass and stability | The F2S stability and stopping model: mass budget, centre of gravity, tipping margins, stopping distance | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) |
 | Arms and manipulation | OpenArm 2.0 integration, device packages, fake-hardware baseline | [openamrobot-manipulation](https://github.com/openAMRobot/openamrobot-manipulation) |

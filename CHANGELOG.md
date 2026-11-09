@@ -10,6 +10,7 @@ All notable changes to the OpenAMRobot documentation site are recorded here. The
 - Hardware page PARTS re-imported from BOM Issue 7.15 (148 records; LFT-008 lift foot screws and MEC-022 arch backing plate added, 21 rows changed) by `scripts/roadmap_model/bom715.py`; `bom_map.yaml` and `mass_ledger.yaml` gain both lines. Mass ledger 87.1 kg (was 86.3 kg), design values, not weighed.
 - Exploded view: tour captions and labels at stops 43.5, 54, 71.5 and 79.5 follow the 8 Nov decisions (lift foot tabs, receiver plastic frame, two 50 x 25 mm cable openings, flag rod guide and second E-stop on the adapter plate). Stills, posters and both tour videos re-rendered; the dark-store video is unchanged.
 - `conflicts.yaml`: 49 conflicts between sources, including the BOM sheet header, the speed ceiling in older documents and the mass figures.
+- Review of #84: the BOM import validates the sheet (header, IDs, numeric Qty, records removed from the workbook) and escapes the embedded JSON; MEC-019 shows quantity 1 and its two joints (column to MEC-019 on the bench, then the pair onto the arch into MEC-022); the mass export places LFT-008 and MEC-022 at their own provisional positions and names BOM Issue 7.15. H-day 16 Nov confirmed on the v0.0.1 Teensy rig with the current 2.0 base software; the 6 Nov go/no-go dates are labelled historical. The hardware-architecture reference page is labelled a BOM Issue 7.14 reference snapshot.
 
 ## 2026-11-08
 

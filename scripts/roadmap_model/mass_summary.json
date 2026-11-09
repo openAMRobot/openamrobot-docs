@@ -4,18 +4,18 @@
   "L1000": {
    "mass_kg": 87.11,
    "com_m": [
-    0.0319,
+    0.0311,
     -0.0026,
-    0.3269
+    0.3267
    ],
    "frame": "base_footprint, bp000"
   },
   "L1350": {
    "mass_kg": 87.11,
    "com_m": [
-    0.0319,
+    0.0311,
     -0.0026,
-    0.4071
+    0.4069
    ],
    "frame": "base_footprint, bp000"
   }
@@ -33,9 +33,9 @@
   "roadmap_kg": {
    "openarm": 12.26,
    "sensors": 0.13,
-   "base": 58.2,
+   "base": 58.16,
    "equipment": 0.7,
-   "lift": 9.1,
+   "lift": 9.13,
    "lift_carriage": 6.72
   },
   "roadmap_total_kg": 87.11,
