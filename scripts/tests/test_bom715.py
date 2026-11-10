@@ -112,10 +112,12 @@ class CommittedPage(unittest.TestCase):
         a, b = obj_span(s, "var PARTS")
         bad = {(k, f): v[f] for k, v in json.loads(s[a:b]).items() for f in B.STATUS_FIELDS if B.STOCK_RX.search(v.get(f, ""))}
         self.assertEqual(bad, {})
-        sec = s[s.index('<section class="card" id="procurement">'):]
-        sec = sec[:sec.index("</section>")]
-        sec = re.sub(r'<p class="src small mute">.*?</p>', "", sec, flags=re.S)  # the publication note names what is withheld
-        self.assertNotRegex(re.sub(r"<[^>]+>", " ", sec).replace("in stock at two or more suppliers", ""), B.STOCK_RX)
+        for sid in ("blocks", "procurement"):   # block-detail tables and the purchase view (review of #86, 10 Nov)
+            sec = s[s.index('<section class="card" id="%s">' % sid):]
+            sec = sec[:sec.index("</section>")]
+            sec = re.sub(r'<p class="src small mute">.*?</p>', "", sec, flags=re.S)  # the publication note names what is withheld
+            text = re.sub(r"<[^>]+>", " ", sec).replace("in stock at two or more suppliers", "")
+            self.assertNotRegex(text, B.STOCK_RX, sid)
 
 
     def test_mass_export_and_public_bom_use_the_same_revision(self):
