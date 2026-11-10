@@ -58,7 +58,18 @@ def public_status(t):
     u = re.sub(r"(?i)\s*/\s*stock\b", "", t)
     u = re.sub(r"(?i)\s+-\s+stock check\b", "", u)
     u = re.sub(r"(?i)\bblocked on quotes\b", PENDING.lower(), u)
-    out = " ".join(c for c in re.split(r"(?<=[.;])\s+", u) if c.strip() and not STOCK_RX.search(c)).strip()
+    keep = []
+    for c in re.split(r"(?<=[.;])\s+", u):
+        if not c.strip():
+            continue
+        if not STOCK_RX.search(c):
+            keep.append(c)
+            continue
+        # A status word before " - " (HOLD, BENCH ONLY, CONDITIONAL) is an engineering restriction: keep it.
+        m = re.match(r"^([A-Z][A-Z /]*[A-Z])\s+-\s+", c)
+        if m and not STOCK_RX.search(m.group(1)):
+            keep.append(m.group(1) + (c[-1] if c[-1] in ".;" else ""))
+    out = " ".join(keep).strip().rstrip(" ;")
     return out or PENDING
 
 
@@ -200,7 +211,8 @@ def main():
     s = re.sub(r"The row, package and procurement counts on this page are BOM Issue 7\.1[45][^:]*: \d+ records",
                "The row, package and procurement counts on this page are BOM %s: %d records" % (ISSUE, n), s)
     s = public_procurement_section(s)
-    s = s.replace("Brake variant quoted; drawing pending", "Brake variant confirmed by the supplier; drawing pending")
+    s = s.replace("Brake variant quoted; drawing pending", "Brake variant identified; drawing pending")
+    s = s.replace("Brake variant confirmed by the supplier; drawing pending", "Brake variant identified; drawing pending")
     open(page, "w", encoding="utf-8").write(s)
     print("PARTS records from BOM 7.15:", n)
     for key in ("added", "changed", "removed", "overridden", "status_cleaned"):

@@ -79,6 +79,8 @@ class PublicStatus(unittest.TestCase):
             "Not purchased / receipt unverified. Manufacturer page out of stock, checked 27 Sep 2026.": "Not purchased / receipt unverified.",
             "blocked on quotes (BUY-32)": "procurement confirmation pending (BUY-32)",
             "HOLD - release checks first": "HOLD - release checks first",
+            "HOLD - out of stock at the distributor, 27 Sep 2026": "HOLD",
+            "CONDITIONAL - do not order; lead time 16 weeks.": "CONDITIONAL - do not order",
         }
         for t, want in cases.items():
             self.assertEqual(B.public_status(t), want, t)
