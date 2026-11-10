@@ -49,6 +49,8 @@ ID_RE = re.compile(r"^(?:[A-Z]{2,3}-\d{3}|F-[A-Z]+|FB-[A-Z])$")
 PAGE_ONLY = {"BAT", "SAFE"}
 # Page corrections of workbook defects, each recorded in conflicts.yaml ("MEC-019 Qty cell").
 PAGE_OVERRIDE = {
+    "SAF-003": {"Model / order code":"GX11CAC only (P-03 item 27); GX14CAC dropped (D-32)","Selection status":"Selected GX11CAC only","Purchase package":"","Procurement status":"Procurement confirmation pending","Procurement state":"Procurement confirmation pending"},
+    "CTL-017": {"Model / order code":"NUCLEO-G474RE + Infineon BLDC-SHIELD_IFX007T + SN65HVD230; CAN3 node 0x10, 500 kbit/s; the electrical and firmware lead to confirm (D-11)"},
     "MEC-019": {
         "Qty": "1",
         "Model / order code": (
