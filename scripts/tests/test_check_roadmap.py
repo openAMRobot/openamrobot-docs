@@ -577,3 +577,20 @@ class PurchasingStatus(unittest.TestCase):
         for t in ("procurement confirmation pending", "supply is confirmed", "quoted from the datasheet"):
             self.assertFalse(self.rx().search(t), t)
 
+
+class StockStatus(unittest.TestCase):
+    """Reviews of #85 and #86 (10 Nov 2026): stock-status wording stays off every public section, status tables included."""
+
+    def rx(self):
+        return dict(C.FORBIDDEN)["stock status"]
+
+    def test_stock_status_is_found(self):
+        for t in ("STOCK RISK - manufacturer out of stock 27 Sep 2026", "BENCH ONLY - stock check",
+                  "verify exact kit / stock", "about 16 weeks lead time", "blocked on quotes (BUY-32)"):
+            self.assertTrue(self.rx().search(t), t)
+
+    def test_design_rule_and_public_status_pass(self):
+        for t in ("a part is selected only if it is in stock at two or more suppliers",
+                  "Procurement confirmation pending", "BENCH ONLY", "HOLD - release checks first"):
+            self.assertFalse(self.rx().search(t), t)
+
