@@ -1,0 +1,17 @@
+Media of 9 Nov 2026 (SwiftShader, 2 vCPU)
+docs/assets/roadmap/media/openamrobot-2-tour-1080p.mp4 12745461 bytes sha256 7bd53980716ad87bf465e74f8e2e32181ffcc7f111a72b8a06ecc9971c5e2722
+docs/assets/roadmap/media/openamrobot-2-tour-1080x1350.mp4 11456169 bytes sha256 8a80d7daac9d701b60979dca20b82cc007c85b20616796edc72e8f20a6074ec8
+docs/assets/roadmap/media/openamrobot-2-tour-1080p-poster.png 171211 bytes sha256 cc92eb53ba113c3f7eadcd33b7ca9d16ac2a2fb48d4dddd7131143d717090d5b
+docs/assets/roadmap/media/openamrobot-2-tour-1080x1350-poster.png 138438 bytes sha256 0958627e6eb981a6cdecb33d2c1a467bbbf64157bb271706b0ab7e7ade532024
+docs/assets/roadmap/media/stills/01_robot_front_three_quarter_L1000.jpg 103699 bytes sha256 bb33e3c6a287360e3143bb3845101c60c8dd8d1b45017b302dc0c129bf6e2bf0
+docs/assets/roadmap/media/stills/02_robot_rear_three_quarter_L1350.jpg 92898 bytes sha256 7f9cd37333a3f72d36e1a942f62c96b23443fad34e252c95f2f86294a8054860
+docs/assets/roadmap/media/stills/03_robot_side.jpg 105294 bytes sha256 a6cfe86c4bc11d23c3c777e6a74917a826dccfb0290719e330c63d5d8d151f2f
+docs/assets/roadmap/media/stills/04_base_cover_off_harness.jpg 214112 bytes sha256 1eb0080e16248b8fe2f8dc3783d858a62e0e9a08409f93f394ad6e6815dc5a61
+docs/assets/roadmap/media/stills/05_rear_power_module.jpg 217200 bytes sha256 9edb615bc595fd535dcbb92ac920f37016b1b05858dcbec20cb88de5d462621e
+docs/assets/roadmap/media/stills/06_front_bay_side_zones.jpg 241957 bytes sha256 7cbc8d8cf2b1a5fda9afd1dc2de04529d32be51b7ebb0b192fd8239fe55a8454
+docs/assets/roadmap/media/stills/07_lift_column_rear.jpg 117205 bytes sha256 21a1a79823c5a7858bd0a9b61c059f392e0f262c82850847a876d183d93f36d4
+docs/assets/roadmap/media/stills/08_exploded_view.jpg 134774 bytes sha256 463b539537a8b00805fe41bfa12056cee9d61d2b7a8931e370350dd3cff9ceb2
+docs/assets/roadmap/model/exploded-static.png 60555 bytes sha256 c2863561056cfa7f7d6196849cdd9e2b660a25c09c83b4bdf82f48432aa5f695
+tours: 2626 frames, 30 fps, 87.53 s, CRF 27, preset veryfast
+determinism: 1080p frames 0 to 59 rendered twice, identical (tour_1080p_frames_0-59.sha256); both 1080p encodes byte-identical
+render times: 1080p 19:21Z to 20:50Z log clock, 1080x1350 to 22:35Z (shared CPU with the sync audit for part of the run)

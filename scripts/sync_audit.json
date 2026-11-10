@@ -1,9 +1,9 @@
 {
  "fingerprint": {
   "model/model.js": "f3fe53a2e977884e96b0aabb666a9805b412b74c1470de9c15089f0956d0a17f",
-  "model/exploded.json": "6d88b477efd813aed54e35cab0be16d9ecc479e7388d07cc7e83cfeb3ec3d72c",
-  "robot.html": "9558e451e8fef04c03fa5f6e00d0d726e6cb1750261ae9e1c1d47b90443fb2aa",
-  "exploded.html": "0fb9bcc5cb089dc04ef137031340dc46bdabad5907a7e7ddf6245991e0cd3f30"
+  "model/exploded.json": "b67248e5cbcdcf4bf266c7b021ad8448cae735759378df9332c621d5ede7dab6",
+  "robot.html": "9665fee27aed486061dbdf69f48c3c24c1fdba0223cbd8bd0293dd15536bb45a",
+  "exploded.html": "d018d0b040f4b84ec1ed21751702df321ee7346131f8092771ebca55ec8e8110"
  },
  "robot_state": {
   "lift": 1,

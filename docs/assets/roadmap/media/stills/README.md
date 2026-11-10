@@ -1,4 +1,4 @@
-# High-resolution stills (4 Nov 2026)
+# High-resolution stills (stills 01 to 08: 9 Nov 2026; 09 and 10: 4 Nov 2026)
 
 Ten stills of the OpenAMRobot 2.0 roadmap model for the pitch deck and the site, 2560 x 1440 JPEG (quality 90), full look,
 with the caption line "OpenAMRobot 2.0, roadmap model, simulation visualization" burned in at the bottom. They are renders of
@@ -9,7 +9,7 @@ are a visualization of a grocery store, not a deployment. They are not linked fr
 |---|---|
 | `01_robot_front_three_quarter_L1000.jpg` | Robot, front three-quarter, lift at L1000 |
 | `02_robot_rear_three_quarter_L1350.jpg` | Robot, rear three-quarter, lift at L1350: energy chain and flag rod guide |
-| `03_robot_side.jpg` | Robot, side view |
+| `03_robot_side.jpg` | Robot, side view: second E-stop on top of the moving adapter plate |
 | `04_base_cover_off_harness.jpg` | Base with the cover off, top three-quarter: side corridors, central channels, tie points |
 | `05_rear_power_module.jpg` | Rear power module close-up: F0, K1 and K2 with busbars, FB-B shelf, FB-A |
 | `06_front_bay_side_zones.jpg` | Front bay with the side zones (power left, signal right) |

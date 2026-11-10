@@ -1,18 +1,18 @@
 # Section B facts of record (Drive documents and team Slack, as of 1 Nov 2026) that the model uses.
 # Units: metres, kilograms, radians unless stated. Frame: base_footprint (floor under the drive-axle midpoint,
 # x forward, y left, z up, REP 103/105). base_link = base_footprint + base_link_z.
-snapshot: "8 Nov 2026"
-window: "24 Oct to 1 Nov 2026"
+snapshot: "9 Nov 2026"
+window: "6 Nov to 9 Nov 2026"
 documents:
   P-03: rev20.6 (8 Nov 2026; item 30, decision baseline of 8 Nov 2026, D-01 to D-34)
   E-01: rev1.8 (8 Nov 2026; design text only since rev1.6, safety items pending D-22 to D-25, D-28, D-33)
-  M-01: rev19.9 (8 Nov 2026)
+  M-01: rev19.10 (9 Nov 2026)
   P-02: rev19.2
-  BOM: Issue 7.14 (27 Oct 2026, with 1 Nov changes; 146 records, 115 onboard)
-  B-02: rev18.10 (25 Oct 2026)
+  BOM: Issue 7.15 (8 Nov 2026; Hardware BOM sheet, 148 records; the Overview header still says Issue 7.14 and the Mechanical sheet still has the old lift plate)
+  B-02: rev18.11 (8 Nov 2026)
   S-01: rev18.3
-  UC1: Use Case 1 Requirements Baseline rev18.5
-  decisions: .github decisions.yaml 5ed600e (main after openAMRobot/.github#84; in_force P-03-rev20.2)
+  UC1: Use Case 1 Requirements Baseline rev18.6
+  decisions: .github decisions.yaml at 87c8486 on main (openAMRobot/.github#90, merged 10 Nov 2026; same tree as the reviewed head 6328f51; P-03 rev20.4 to rev20.6)
   datums: openamr-upperbody-sw datums.yaml 2026-11-01.d (a8c304d; .c to .d adds the lift velocity and effort limits only, no geometry)
   sensor_frames: openamr-platform-sw sensor_frames.yaml (4926f40)
 base_link_z: 0.098          # B7, datums base_link_height_above_floor

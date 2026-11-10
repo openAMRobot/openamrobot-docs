@@ -2312,7 +2312,7 @@
   "rz_fba": "FB-A",
   "rz_bms": "BMS",
   "rz_pwr017": "BUS+ / BUS-",
-  "tz_receiver": "Receiver (prepared)",
+  "tz_receiver": "Receiver (bought later)",
   "battery_cells": "Cells, 4 + 4 LF105",
   "battery_tray": "Battery trays",
   "rz_batcon": "PWR-018",
@@ -2329,7 +2329,9 @@
   "lift_energy_chain": "Energy chain",
   "dp_lift": "DP-LIFT",
   "lift_column": "Lift column",
-  "flag_rod_guide": "Flag rod guide"
+  "flag_rod_guide": "Flag rod guide",
+  "tz_receiver_frame": "Receiver plastic frame (20 mm)",
+  "lift_base_plate": "Lift base plate MEC-019 (tapped)"
  },
  "views": {
   "about": "open_base: the opened base (cover and flanges lifted and faded, panels out, internal components raised for reading; not assembly positions; the upper body is hidden). cutaway: opacity of the closing parts.",
@@ -2643,7 +2645,7 @@
     "az": -55,
     "el": 10,
     "zoom": 1.2,
-    "caption": "Upper body: lift column, arm profile, two OpenArm 2.0 arms and the Getac ZX80 in portrait",
+    "caption": "Upper body: DOLD lift fixed from above through its four foot tabs to the tapped base plate, arm profile, two OpenArm 2.0 arms and the Getac ZX80 in portrait on a fixed mount",
     "focus": [
      "openarm"
     ]
@@ -2786,7 +2788,7 @@
    {
     "az": -125,
     "el": 16,
-    "caption": "Two levels above the prepared wireless charging receiver, 15 mm gap; the BMS on edge in the right side gap",
+    "caption": "Two levels above the wireless charging receiver in its plastic frame: no metal within 20 mm of its sides, 15 mm above its top (charger bought later); the BMS on edge in the right side gap",
     "frame": [
      "rear_plate",
      "rz_f0",
@@ -2796,7 +2798,8 @@
      "rz_bms",
      "rz_pwr017",
      "rz_disc",
-     "tz_receiver"
+     "tz_receiver",
+     "tz_receiver_frame"
     ],
     "min_r": 0.2,
     "hide": [
@@ -2813,7 +2816,8 @@
      "tz_receiver",
      "rear_plate",
      "rz_fbb",
-     "rz_k1k2"
+     "rz_k1k2",
+     "tz_receiver_frame"
     ],
     "focus": [
      "rz_bms",
@@ -2980,7 +2984,7 @@
    },
    {
     "az": 205,
-    "caption": "Lift energy chain behind the column at L1000: the lift cables run from DP-LIFT up in one vertical U chain",
+    "caption": "Lift cables leave the base through two 50 x 25 mm openings beside the lift and run from DP-LIFT up in one vertical U chain (L1000)",
     "frame": [
      "lift_column",
      "lift_energy_chain",
@@ -3065,9 +3069,10 @@
    {
     "az": 100,
     "lift": 0.35,
-    "caption": "Flag rod guide at the top of the static column: an open ring holds the rod and leaves the sensor side open for the flag (L1350)",
+    "caption": "At L1350: the flag rod guide on the static column, and the second E-stop on top of the moving adapter plate, button up",
     "frame": [
-     "flag_rod_guide"
+     "flag_rod_guide",
+     "second_estop"
     ],
     "min_r": 0.13,
     "el": 24,
@@ -3076,7 +3081,8 @@
      "flag_rod_guide",
      "flag_rod",
      "lift_flag",
-     "lift_stop_sensors"
+     "lift_stop_sensors",
+     "second_estop"
     ],
     "focus": [
      "flag_rod_guide"
@@ -3093,7 +3099,8 @@
     "az": 115,
     "lift": 0.35,
     "frame": [
-     "flag_rod_guide"
+     "flag_rod_guide",
+     "second_estop"
     ],
     "min_r": 0.13,
     "el": 24,
@@ -3102,7 +3109,8 @@
      "flag_rod_guide",
      "flag_rod",
      "lift_flag",
-     "lift_stop_sensors"
+     "lift_stop_sensors",
+     "second_estop"
     ],
     "focus": [
      "flag_rod_guide"
