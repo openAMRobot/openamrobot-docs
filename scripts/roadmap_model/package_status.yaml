@@ -1,19 +1,19 @@
 # Package badges and their evidence (architecture page cards), read by packages.py.
 # Judgement lives here; facts (paths, heads, rc.1 pins, duplicates) are generated.
-# Rule (packages.py and check_roadmap.py): MERGED AND TESTED names a check, its run (https link), the tested commit and
-# the profile. Without a readable run the badge is MERGED UNTESTED and the note says why. A run on the v0.0.1 rig or on
+# Rule (packages.py and check_roadmap.py): MERGED AND TESTED names a check, its run (https link), the tested commit, the
+# profile and the conclusion (success), and the package tree at the tested commit equals the displayed head (generated). Without a readable run the badge is MERGED UNTESTED and the note says why. A run on the v0.0.1 rig or on
 # 2.0 hardware is a separate record and never sets these badges.
 packages:
   openamrobot_bringup:
     area: base_nav
     status: MERGED UNTESTED
-    evidence: {check: drivers-bringup-tests (launch description), run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646529868", commit: f71f9f1, profile: launch test without hardware}
+    evidence: {check: drivers-bringup-tests (launch description), run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646529868", commit: f71f9f1, profile: launch test without hardware, conclusion: success}
     prs: [129]
     note: Launch for simulation and the v0.0.1 rig; the 2.0 launch waits for the STM32 host bridge.
   openamrobot_description:
     area: base_nav
     status: MERGED AND TESTED
-    evidence: {check: description-tests, run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42801418387", commit: 713574f, profile: xacro and URDF checks}
+    evidence: {check: description-tests, run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42801418387", commit: 713574f, profile: xacro and URDF checks, conclusion: success}
     prs: []
     note: Base masses from the reviewed mass export (#126, 10 Nov).
   openamrobot_docking:
@@ -25,7 +25,7 @@ packages:
   openamrobot_drivers:
     area: base_nav
     status: MERGED UNTESTED
-    evidence: {check: drivers-bringup-tests, run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646529868", commit: f71f9f1, profile: launch test without hardware}
+    evidence: {check: drivers-bringup-tests, run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646529868", commit: f71f9f1, profile: launch test without hardware, conclusion: success}
     prs: [132]
     note: Teensy micro-ROS agent and RPLIDAR for the v0.0.1 rig; the 2.0 STM32 host bridge is not started (#132 is a proposal).
   openamrobot_gazebo:
@@ -37,7 +37,7 @@ packages:
   openamrobot_nav2:
     area: base_nav
     status: MERGED AND TESTED
-    evidence: {check: nav-status-tests, run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646530011", commit: f71f9f1, profile: unit and launch tests in simulation}
+    evidence: {check: nav-status-tests, run: "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646530011", commit: f71f9f1, profile: unit and launch tests in simulation, conclusion: success}
     prs: [90, 91, 92, 113]
     note: Map persistence (#114) and map saving (#115) merged 9 Nov; one arbitrated command path with a stop gate in review (#90).
   openamrobot_perception:
@@ -49,31 +49,31 @@ packages:
   openamrobot_upperbody_bringup:
     area: upper
     status: MERGED AND TESTED
-    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem)}
+    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem), conclusion: success}
     prs: [48]
     note: Gazebo A7 was skipped on this head (it runs on demand).
   openamrobot_upperbody_control:
     area: upper
     status: MERGED AND TESTED
-    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem)}
+    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem), conclusion: success}
     prs: [53]
     note: No hardware interface for the lift or the arms; physical lift authority belongs to CTL-017.
   openamrobot_upperbody_description:
     area: upper
     status: MERGED AND TESTED
-    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem)}
+    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem), conclusion: success}
     prs: [48]
-    note: Mass re-pin in review (#48, Gazebo A7 red at L1000).
+    note: "Mass re-pin in review (#48): A7 passed on 9a52c53; head a9d3349 has A6 passed and A7 running (10 Nov)."
   openamrobot_upperbody_gazebo:
     area: upper
     status: MERGED AND TESTED
-    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock; Gazebo A7 not run on this head}
+    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: "static and mock checks passed; Gazebo runtime pending (A7 not run on this head)", conclusion: success}
     prs: [48]
     note: Launch, worlds and models on main; the Gazebo profile (A7) runs on demand.
   openamrobot_upperbody_moveit:
     area: upper
     status: MERGED AND TESTED
-    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem)}
+    evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem), conclusion: success}
     prs: []
     note: MoveIt 2 plans with the lift as a planned joint.
   openamr_nav_msgs:
@@ -81,7 +81,7 @@ packages:
     status: MERGED UNTESTED
     evidence: {}
     prs: [28, 35]
-    note: Was shown as tested; the CI run on interfaces main 14912e1 was not readable in the 10 Nov refresh, so no run is linked. The interfaces lead links the DDS verification run to restore the badge.
+    note: "Was shown as tested. A review of 10 Nov reports quality/build and quality/test passed at 14912e1 (https://github.com/openAMRobot/openamrobot-interfaces/actions/runs/41203262349); the per-package coverage in its log is not confirmed yet, so the badge waits for the interfaces lead."
   openamr_ui_msgs:
     area: interfaces
     provider: openamrobot-ui
@@ -94,7 +94,7 @@ packages:
     status: MERGED UNTESTED
     evidence: {}
     prs: []
-    note: Test consumer, not a product package. Was shown as tested; the CI run on interfaces main was not readable in the 10 Nov refresh.
+    note: "Test consumer, not a product package. A review of 10 Nov reports quality/build and quality/test passed at 14912e1 (run 41203262349); coverage per package not confirmed."
   openarm_v2_fake_baseline:
     area: upper
     status: MERGED UNTESTED
@@ -112,4 +112,4 @@ packages:
     status: MERGED UNTESTED
     evidence: {}
     prs: [56, 60]
-    note: UI CI on main 0ca798b was not readable in the 10 Nov refresh.
+    note: "A review of 10 Nov reports Web build & tests passed at 0ca798b (https://github.com/openAMRobot/openamrobot-ui/actions/runs/39754755652); that covers the web app, not the ROS packages."

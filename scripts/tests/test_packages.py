@@ -32,7 +32,8 @@ def card(**kw):
     c = {"repo": "openamr-platform-sw", "url": "https://github.com/openAMRobot/openamr-platform-sw/blob/%s/x/package.xml" % SHA,
          "main": {"sha": SHA}, "rc1": {"sha": "b" * 40, "present": True, "same_as_main": False}, "duplicates": [],
          "status": "MERGED AND TESTED",
-         "evidence": {"check": "nav-status-tests", "run": RUN, "commit": "f71f9f1", "profile": "simulation"}}
+         "evidence": {"check": "nav-status-tests", "run": RUN, "commit": "f71f9f1", "profile": "simulation",
+                      "conclusion": "success", "applies": True}}
     c.update(kw)
     return {"openamrobot_nav2": c}
 
@@ -46,8 +47,15 @@ class PackageErrors(unittest.TestCase):
         self.assertRegex(" ".join(C.package_errors(card(url=url), record(), 1)), "not pinned to the recorded head")
 
     def test_tested_without_run_fails(self):
-        ev = {"check": "nav-status-tests", "commit": "f71f9f1", "profile": "simulation"}
+        ev = {"check": "nav-status-tests", "commit": "f71f9f1", "profile": "simulation", "conclusion": "success", "applies": True}
         self.assertRegex(" ".join(C.package_errors(card(evidence=ev), record(), 1)), "MERGED AND TESTED without run")
+
+    def test_tested_needs_success_and_unchanged_package(self):
+        base = card()["openamrobot_nav2"]["evidence"]
+        self.assertRegex(" ".join(C.package_errors(card(evidence=dict(base, conclusion="failure")), record(), 1)),
+                         "run conclusion is failure")
+        self.assertRegex(" ".join(C.package_errors(card(evidence=dict(base, applies=False)), record(), 1)),
+                         "package changed since the tested commit")
 
     def test_untested_without_run_passes(self):
         self.assertEqual(C.package_errors(card(status="MERGED UNTESTED", evidence={}), record(), 1), [])
@@ -65,9 +73,11 @@ class PackageErrors(unittest.TestCase):
 
 class Generator(unittest.TestCase):
     def test_evidence_rule_matches_the_checker(self):
-        ok = {"check": "c", "run": RUN, "commit": "x", "profile": "p"}
+        ok = {"check": "c", "run": RUN, "commit": "x", "profile": "p", "conclusion": "success", "applies": True}
         self.assertTrue(P.evidence_ok("MERGED AND TESTED", ok))
         self.assertFalse(P.evidence_ok("MERGED AND TESTED", dict(ok, run="")))
+        self.assertFalse(P.evidence_ok("MERGED AND TESTED", dict(ok, conclusion="failure")))
+        self.assertFalse(P.evidence_ok("MERGED AND TESTED", dict(ok, applies=False)))
         self.assertTrue(P.evidence_ok("MERGED UNTESTED", {}))
 
     def test_package_xml_description_has_no_em_dash(self):
@@ -76,6 +86,15 @@ class Generator(unittest.TestCase):
         p = P.parse_package(xml)
         self.assertEqual(p["description"], "Model, URDF, meshes")
         self.assertEqual(p["deps"], ["ament_lint", "rclcpp"])
+
+
+class Drift(unittest.TestCase):
+    def test_new_upstream_head_and_pin_are_reported(self):
+        old = {"heads": {"r": {"sha": "a" * 40}}, "rc1_pins": {"r": "b" * 40}, "packages": {"p": {}}}
+        new = {"heads": {"r": {"sha": "c" * 40}}, "rc1_pins": {"r": "d" * 40}, "packages": {"p": {}, "q": {}}}
+        d = P.drift(old, new)
+        self.assertEqual(d, ["r main aaaaaaa -> ccccccc", "rc.1 pin r bbbbbbb -> ddddddd", "package q added"])
+        self.assertEqual(P.drift(new, new), [])
 
 
 class CommittedPage(unittest.TestCase):

@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: MIT
 """Package evidence record for the architecture page (audit of 10 Nov 2026).
 
-Facts git knows are generated here, so they can not drift. That covers the package list, repository, path,
+Facts git knows are generated here. The committed record is a snapshot of the repositories at generation time:
+check_roadmap.py compares the page with that record, and `--check` (run daily by .github/workflows/package-drift.yml)
+compares the record with the repositories, so a newer upstream commit shows up as drift until the record is regenerated. That covers the package list, repository, path,
 package.xml description, licence, dependencies, the head of main, the v2.0.0-rc.1 pin and whether the package exists
 in that pin, and duplicate providers. What a person must judge stays in `package_status.yaml`: the badge, the named
 check, its run, the tested commit and profile, and the open PRs. Firmware and placeholder entries come from
@@ -17,6 +19,7 @@ Usage (needs network; CI reads only the committed outputs):
 """
 import argparse
 import datetime
+import hashlib
 import json
 import os
 import re
@@ -69,11 +72,15 @@ def tree(d, sha, path):
 
 
 def rc1_state(d, main_sha, pin, path):
-    """rc.1 pin of one package: present, and equal to main or older."""
+    """rc.1 pin of one package. Compares the package tree, not the repository commit: an equal tree means the package
+    content matches main even when the pinned commit differs; a different tree only means it differs (no ancestry
+    claim)."""
     if not pin:
-        return {"sha": None, "present": False, "same_as_main": False}
+        return {"sha": None, "present": False, "same_as_main": False, "label": "not pinned"}
     t = tree(d, pin, path)
-    return {"sha": pin, "present": t is not None, "same_as_main": t is not None and t == tree(d, main_sha, path)}
+    same = t is not None and t == tree(d, main_sha, path)
+    label = "not in the pin" if t is None else ("package content matches main" if same else "differs from main")
+    return {"sha": pin, "present": t is not None, "same_as_main": same, "label": label}
 
 
 def parse_package(text):
@@ -86,29 +93,39 @@ def parse_package(text):
             "license": [(e.text or "").strip() for e in root.findall("license")], "deps": deps}
 
 
-def rc1_pins(path):
-    data = yaml.safe_load(open(path, encoding="utf-8"))["repositories"]
-    return {v["url"].rstrip("/").split("/")[-1].removesuffix(".git"): v["version"] for v in data.values()}
-
-
 def evidence_ok(status, ev):
-    """A "tested" badge names its check, run link, tested commit and profile (check_roadmap.py applies the same rule)."""
+    """A "tested" badge names its check, run link, tested commit and profile, the run concluded "success", and the package
+    tree at the tested commit equals the displayed head (`applies`). check_roadmap.py applies the same rule."""
     if status != "MERGED AND TESTED":
         return True
     return bool(ev and ev.get("check") and str(ev.get("run", "")).startswith("https://") and ev.get("commit")
-                and ev.get("profile"))
+                and ev.get("profile") and ev.get("conclusion") == "success" and ev.get("applies") is True)
+
+
+def evidence_applies(d, ev, main_sha, path):
+    """True when the package tree at the tested commit equals the tree at the displayed head of main."""
+    if not ev.get("commit"):
+        return None
+    try:
+        full = git(d, "rev-parse", ev["commit"]).strip()
+    except subprocess.CalledProcessError:
+        return False
+    return tree(d, full, path) is not None and tree(d, full, path) == tree(d, main_sha, path)
 
 
 def build(clones, rc1_file, date):
     dirs = {r: clone(clones, r) for r in REPOS}
     heads = {r: head(dirs[r]) for r in REPOS}
     if rc1_file:
-        pins, rc1_source = rc1_pins(rc1_file), rc1_file
+        text = open(rc1_file, encoding="utf-8").read()
+        rc1_source = {"repo": None, "commit": None, "path": rc1_file}
     else:
         text = git(dirs["openamrobot-manifest"], "show", "origin/HEAD:releases/v2.0.0-rc.1.repos")
-        pins = {v["url"].rstrip("/").split("/")[-1].removesuffix(".git"): v["version"]
-                for v in yaml.safe_load(text)["repositories"].values()}
-        rc1_source = "openamrobot-manifest main %s" % heads["openamrobot-manifest"]["sha"][:7]
+        rc1_source = {"repo": "openamrobot-manifest", "commit": heads["openamrobot-manifest"]["sha"],
+                      "path": "releases/v2.0.0-rc.1.repos"}
+    rc1_source["sha256"] = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    pins = {v["url"].rstrip("/").split("/")[-1].removesuffix(".git"): v["version"]
+            for v in yaml.safe_load(text)["repositories"].values()}
     status = yaml.safe_load(open(os.path.join(HERE, "package_status.yaml"), encoding="utf-8"))
     found = {}
     for r in SCAN:
@@ -127,8 +144,12 @@ def build(clones, rc1_file, date):
         prov = next((p for p in provs if p["repo"] == st.get("provider", provs[0]["repo"])), provs[0])
         r, sha = prov["repo"], heads[prov["repo"]]["sha"]
         pin = pins.get(r)
-        if not evidence_ok(st["status"], st.get("evidence")):
-            errors.append("%s: MERGED AND TESTED needs evidence check, run, commit and profile" % name)
+        ev = dict(st.get("evidence") or {})
+        if ev:
+            ev["applies"] = evidence_applies(dirs[r], ev, sha, os.path.dirname(prov["path"]))
+        if not evidence_ok(st["status"], ev):
+            errors.append("%s: MERGED AND TESTED needs check, run, commit, profile, conclusion success and a tested "
+                          "package tree equal to the displayed head" % name)
         packages[name] = {
             "name": name, "repo": r, "path": prov["path"], "description": prov["description"], "license": prov["license"],
             "url": "%s%s/blob/%s/%s" % (ORG, r, sha, prov["path"]),
@@ -137,7 +158,7 @@ def build(clones, rc1_file, date):
             "main": {"sha": sha, "date": heads[r]["date"]},
             "rc1": rc1_state(dirs[r], sha, pin, os.path.dirname(prov["path"])),
             "duplicates": ["%s/%s" % (p["repo"], p["path"]) for p in provs if p is not prov],
-            "status": st["status"], "evidence": st.get("evidence") or {}, "prs": st.get("prs", []),
+            "status": st["status"], "evidence": ev, "prs": st.get("prs", []),
             "note": st.get("note", ""), "area": st["area"],
         }
     for name in status["packages"]:
@@ -158,12 +179,27 @@ def build(clones, rc1_file, date):
             "other": other}
 
 
+def drift(old, new):
+    """What changed upstream since the committed record: heads of main, rc.1 pins, the package list."""
+    out = []
+    for r, h in new["heads"].items():
+        o = old.get("heads", {}).get(r, {}).get("sha")
+        if o != h["sha"]:
+            out.append("%s main %s -> %s" % (r, (o or "none")[:7], h["sha"][:7]))
+    for r, sha in new["rc1_pins"].items():
+        if old.get("rc1_pins", {}).get(r) != sha:
+            out.append("rc.1 pin %s %s -> %s" % (r, (old.get("rc1_pins", {}).get(r) or "none")[:7], sha[:7]))
+    for n in sorted(set(new["packages"]) ^ set(old.get("packages", {}))):
+        out.append("package %s %s" % (n, "added" if n in new["packages"] else "removed"))
+    return out
+
+
 def script_json(obj):
     return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
 
 
 def rc1_word(r):
-    return "same as main" if r["same_as_main"] else ("older than main (%s)" % r["sha"][:7] if r["present"] else "no")
+    return r["label"] + (" (%s)" % r["sha"][:7] if r["sha"] and not r["same_as_main"] else "")
 
 
 FW_START, FW_END = "<!-- packages:other -->", "<!-- /packages:other -->"
@@ -221,14 +257,24 @@ def main():
     ap.add_argument("--clones", default="/tmp/oamr_package_clones")
     ap.add_argument("--rc1", default=None, help="rc.1 .repos file; default: releases/v2.0.0-rc.1.repos on manifest main")
     ap.add_argument("--date", default=datetime.date.today().isoformat())
+    ap.add_argument("--check", action="store_true",
+                    help="compare the committed record with the repositories now; exit 1 on drift, write nothing")
     a = ap.parse_args()
     os.makedirs(a.clones, exist_ok=True)
     rec = build(a.clones, a.rc1, a.date)
+    if a.check:
+        diffs = drift(json.load(open(OUT, encoding="utf-8")), rec)
+        for d in diffs:
+            print("drift:", d)
+        print("packages.json is current" if not diffs else "packages.json is behind the repositories: rerun packages.py")
+        raise SystemExit(1 if diffs else 0)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False)
         f.write("\n")
     write_page(rec)
-    print("packages.json: %d packages, %d other; rc.1 from %s" % (len(rec["packages"]), len(rec["other"]), rec["rc1_source"]))
+    src = rec["rc1_source"]
+    print("packages.json: %d packages, %d other; rc.1 from %s %s %s" % (len(rec["packages"]), len(rec["other"]),
+          src.get("repo"), (src.get("commit") or "")[:7], src["path"]))
 
 
 if __name__ == "__main__":

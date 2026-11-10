@@ -1,6 +1,11 @@
 {
  "generated": "2026-11-10",
- "rc1_source": "openamrobot-manifest main 3bf169e",
+ "rc1_source": {
+  "repo": "openamrobot-manifest",
+  "commit": "3bf169eb7f0e8a4a6a888f742197870b1c84327e",
+  "path": "releases/v2.0.0-rc.1.repos",
+  "sha256": "6f9489e658132be65318523685504e9356ebdcfa9dd2fba738197a7859977215"
+ },
  "heads": {
   "openamr-platform-sw": {
    "sha": "713574fd2a5a9e38cde6b07c5b96ac4f380b3402",
@@ -15,8 +20,8 @@
    "date": "2026-10-31"
   },
   "openamrobot-ui": {
-   "sha": "0ca798b424cadbb77d6791f5298bb4f7e0f37a89",
-   "date": "2026-10-22"
+   "sha": "51b4af38d6b7eeb260610e8ab2ebde0a340beea9",
+   "date": "2026-11-10"
   },
   "openamrobot-manipulation": {
    "sha": "be76d30632f01aab2badddf4e33de829c113b1b7",
@@ -75,13 +80,14 @@
    "rc1": {
     "sha": "87ab8a936c97ab55ee74b8988ca3d7659160ea6a",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
    "evidence": {},
    "prs": [],
-   "note": "Test consumer, not a product package. Was shown as tested; the CI run on interfaces main was not readable in the 10 Nov refresh.",
+   "note": "Test consumer, not a product package. A review of 10 Nov reports quality/build and quality/test passed at 14912e1 (run 41203262349); coverage per package not confirmed.",
    "area": "interfaces"
   },
   "openamr_nav_msgs": {
@@ -110,7 +116,8 @@
    "rc1": {
     "sha": "87ab8a936c97ab55ee74b8988ca3d7659160ea6a",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -119,7 +126,7 @@
     28,
     35
    ],
-   "note": "Was shown as tested; the CI run on interfaces main 14912e1 was not readable in the 10 Nov refresh, so no run is linked. The interfaces lead links the DDS verification run to restore the badge.",
+   "note": "Was shown as tested. A review of 10 Nov reports quality/build and quality/test passed at 14912e1 (https://github.com/openAMRobot/openamrobot-interfaces/actions/runs/41203262349); the per-package coverage in its log is not confirmed yet, so the badge waits for the interfaces lead.",
    "area": "interfaces"
   },
   "openamr_ui_bringup": {
@@ -130,7 +137,7 @@
    "license": [
     "MIT"
    ],
-   "url": "https://github.com/openAMRobot/openamrobot-ui/blob/0ca798b424cadbb77d6791f5298bb4f7e0f37a89/ros2/src/openamr_ui_bringup/package.xml",
+   "url": "https://github.com/openAMRobot/openamrobot-ui/blob/51b4af38d6b7eeb260610e8ab2ebde0a340beea9/ros2/src/openamr_ui_bringup/package.xml",
    "deps_internal": [
     "openamr_ui_package"
    ],
@@ -138,13 +145,14 @@
     "ament_python"
    ],
    "main": {
-    "sha": "0ca798b424cadbb77d6791f5298bb4f7e0f37a89",
-    "date": "2026-10-22"
+    "sha": "51b4af38d6b7eeb260610e8ab2ebde0a340beea9",
+    "date": "2026-11-10"
    },
    "rc1": {
     "sha": "c5558ad5babdab30702c307a08fc94a6408c798c",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -164,7 +172,7 @@
    "license": [
     "MIT"
    ],
-   "url": "https://github.com/openAMRobot/openamrobot-ui/blob/0ca798b424cadbb77d6791f5298bb4f7e0f37a89/ros2/src/openamr_ui_msgs/package.xml",
+   "url": "https://github.com/openAMRobot/openamrobot-ui/blob/51b4af38d6b7eeb260610e8ab2ebde0a340beea9/ros2/src/openamr_ui_msgs/package.xml",
    "deps_internal": [],
    "deps_external": [
     "ament_cmake",
@@ -173,13 +181,14 @@
     "rosidl_default_runtime"
    ],
    "main": {
-    "sha": "0ca798b424cadbb77d6791f5298bb4f7e0f37a89",
-    "date": "2026-10-22"
+    "sha": "51b4af38d6b7eeb260610e8ab2ebde0a340beea9",
+    "date": "2026-11-10"
    },
    "rc1": {
     "sha": "c5558ad5babdab30702c307a08fc94a6408c798c",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [
     "openamrobot-interfaces/ros2/openamr_ui_msgs/package.xml"
@@ -198,7 +207,7 @@
    "license": [
     "MIT"
    ],
-   "url": "https://github.com/openAMRobot/openamrobot-ui/blob/0ca798b424cadbb77d6791f5298bb4f7e0f37a89/ros2/src/openamr_ui_package/package.xml",
+   "url": "https://github.com/openAMRobot/openamrobot-ui/blob/51b4af38d6b7eeb260610e8ab2ebde0a340beea9/ros2/src/openamr_ui_package/package.xml",
    "deps_internal": [
     "openamr_ui_msgs",
     "openamrobot_description"
@@ -228,13 +237,14 @@
     "xacro"
    ],
    "main": {
-    "sha": "0ca798b424cadbb77d6791f5298bb4f7e0f37a89",
-    "date": "2026-10-22"
+    "sha": "51b4af38d6b7eeb260610e8ab2ebde0a340beea9",
+    "date": "2026-11-10"
    },
    "rc1": {
     "sha": "c5558ad5babdab30702c307a08fc94a6408c798c",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -243,7 +253,7 @@
     56,
     60
    ],
-   "note": "UI CI on main 0ca798b was not readable in the 10 Nov refresh.",
+   "note": "A review of 10 Nov reports Web build & tests passed at 0ca798b (https://github.com/openAMRobot/openamrobot-ui/actions/runs/39754755652); that covers the web app, not the ROS packages.",
    "area": "ui"
   },
   "openamrobot_bringup": {
@@ -278,7 +288,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -286,7 +297,9 @@
     "check": "drivers-bringup-tests (launch description)",
     "run": "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646529868",
     "commit": "f71f9f1",
-    "profile": "launch test without hardware"
+    "profile": "launch test without hardware",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [
     129
@@ -323,7 +336,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED AND TESTED",
@@ -331,7 +345,9 @@
     "check": "description-tests",
     "run": "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42801418387",
     "commit": "713574f",
-    "profile": "xacro and URDF checks"
+    "profile": "xacro and URDF checks",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [],
    "note": "Base masses from the reviewed mass export (#126, 10 Nov).",
@@ -376,7 +392,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -412,7 +429,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -420,7 +438,9 @@
     "check": "drivers-bringup-tests",
     "run": "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646529868",
     "commit": "f71f9f1",
-    "profile": "launch test without hardware"
+    "profile": "launch test without hardware",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [
     132
@@ -459,7 +479,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -522,7 +543,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED AND TESTED",
@@ -530,7 +552,9 @@
     "check": "nav-status-tests",
     "run": "https://github.com/openAMRobot/openamr-platform-sw/actions/runs/42646530011",
     "commit": "f71f9f1",
-    "profile": "unit and launch tests in simulation"
+    "profile": "unit and launch tests in simulation",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [
     90,
@@ -567,7 +591,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -619,7 +644,8 @@
    "rc1": {
     "sha": "f57e54cfc9e7f9536e94c52749502cc983fb908e",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED AND TESTED",
@@ -627,7 +653,9 @@
     "check": "Model tests a6 (static+mock)",
     "run": "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486",
     "commit": "2ca7392",
-    "profile": "static and mock (GenericSystem)"
+    "profile": "static and mock (GenericSystem)",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [
     48
@@ -664,7 +692,8 @@
    "rc1": {
     "sha": "f57e54cfc9e7f9536e94c52749502cc983fb908e",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED AND TESTED",
@@ -672,7 +701,9 @@
     "check": "Model tests a6 (static+mock)",
     "run": "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486",
     "commit": "2ca7392",
-    "profile": "static and mock (GenericSystem)"
+    "profile": "static and mock (GenericSystem)",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [
     53
@@ -720,7 +751,8 @@
    "rc1": {
     "sha": "f57e54cfc9e7f9536e94c52749502cc983fb908e",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED AND TESTED",
@@ -728,12 +760,14 @@
     "check": "Model tests a6 (static+mock)",
     "run": "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486",
     "commit": "2ca7392",
-    "profile": "static and mock (GenericSystem)"
+    "profile": "static and mock (GenericSystem)",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [
     48
    ],
-   "note": "Mass re-pin in review (#48, Gazebo A7 red at L1000).",
+   "note": "Mass re-pin in review (#48): A7 passed on 9a52c53; head a9d3349 has A6 passed and A7 running (10 Nov).",
    "area": "upper"
   },
   "openamrobot_upperbody_gazebo": {
@@ -783,7 +817,8 @@
    "rc1": {
     "sha": "f57e54cfc9e7f9536e94c52749502cc983fb908e",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED AND TESTED",
@@ -791,7 +826,9 @@
     "check": "Model tests a6 (static+mock)",
     "run": "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486",
     "commit": "2ca7392",
-    "profile": "static and mock; Gazebo A7 not run on this head"
+    "profile": "static and mock checks passed; Gazebo runtime pending (A7 not run on this head)",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [
     48
@@ -848,7 +885,8 @@
    "rc1": {
     "sha": "f57e54cfc9e7f9536e94c52749502cc983fb908e",
     "present": true,
-    "same_as_main": false
+    "same_as_main": false,
+    "label": "differs from main"
    },
    "duplicates": [],
    "status": "MERGED AND TESTED",
@@ -856,7 +894,9 @@
     "check": "Model tests a6 (static+mock)",
     "run": "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486",
     "commit": "2ca7392",
-    "profile": "static and mock (GenericSystem)"
+    "profile": "static and mock (GenericSystem)",
+    "conclusion": "success",
+    "applies": true
    },
    "prs": [],
    "note": "MoveIt 2 plans with the lift as a planned joint.",
@@ -906,7 +946,8 @@
    "rc1": {
     "sha": "095e6c7bbd270db6d21de9664a654bb37919a2eb",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    },
    "duplicates": [],
    "status": "MERGED UNTESTED",
@@ -931,7 +972,8 @@
    "rc1": {
     "sha": "f96014daae614da4e1bf0c00376f1d9e5d41ae02",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    }
   },
   {
@@ -948,7 +990,8 @@
    "rc1": {
     "sha": "f96014daae614da4e1bf0c00376f1d9e5d41ae02",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    }
   },
   {
@@ -965,7 +1008,8 @@
    "rc1": {
     "sha": "ba1a53f2a031cdbfbe4fa0f5f4d32ed7cdf4dbbb",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    }
   },
   {
@@ -982,7 +1026,8 @@
    "rc1": {
     "sha": "8a7a5b136bfb3f144b57991455b378f6b3f4113c",
     "present": true,
-    "same_as_main": true
+    "same_as_main": true,
+    "label": "package content matches main"
    }
   }
  ]

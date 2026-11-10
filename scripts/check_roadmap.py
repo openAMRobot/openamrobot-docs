@@ -1983,7 +1983,7 @@ def check_self_check(root, err):
         err("model", m)
 
 
-TESTED_FIELDS = ("check", "run", "commit", "profile")
+TESTED_FIELDS = ("check", "run", "commit", "profile", "conclusion")
 
 
 def package_errors(pk, rec, fw_rows):
@@ -2007,6 +2007,10 @@ def package_errors(pk, rec, fw_rows):
             miss = [f for f in TESTED_FIELDS if not ev.get(f)]
             if miss or not str(ev.get("run", "")).startswith("https://"):
                 out.append("PK %s: MERGED AND TESTED without %s" % (name, ", ".join(miss) or "an https run link"))
+            elif ev.get("conclusion") != "success":
+                out.append("PK %s: MERGED AND TESTED but the run conclusion is %s" % (name, ev.get("conclusion")))
+            elif ev.get("applies") is not True:
+                out.append("PK %s: MERGED AND TESTED but the package changed since the tested commit %s" % (name, ev.get("commit")))
         if sorted(p.get("duplicates", [])) != sorted(r.get("duplicates", [])):
             out.append("PK %s: duplicate providers not shown" % name)
     for name in rec.get("packages", {}):
