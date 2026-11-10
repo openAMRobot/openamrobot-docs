@@ -113,6 +113,8 @@ FORBIDDEN = [
     ("supplier or distributor name", re.compile(r"\b(?:%s)\b" % "|".join(SELLERS))),
     ("personal first name", re.compile(r"(?<![@/\w-])(?:%s)\b(?![-\w])" % "|".join(NAMES))),
     ("link into the private audit repository", re.compile(r"github\.com/openAMRobot/audits\b", re.I)),
+    ("purchasing status", re.compile(r"\b(?:invoiced|pro[- ]forma|not yet quoted|firm quot(?:e|ation))\b", re.I)),
+    ("stock status", re.compile(r"\b(?:stock risk|stock check|out of stock|lead time|blocked on quotes?)\b|/\s*stock\b", re.I)),
 ]
 
 

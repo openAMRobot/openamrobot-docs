@@ -211,7 +211,7 @@ body.render .panel,body.render .hud,body.render .stamp,body.render .colayer,body
     card.innerHTML = '<h3><span class="num">' + num[c.id] + '</span> ' + esc(c.name) + '</h3><dl>' +
       '<dt>Quantity</dt><dd class="num">' + c.qty + '</dd>' +
       '<dt>Purpose</dt><dd>' + esc(c.purpose) + '</dd>' +
-      '<dt>BOM 7.14</dt><dd class="num">' + esc(c.bom || 'no row') + '</dd>' +
+      '<dt>BOM row</dt><dd class="num">' + esc(c.bom || 'no row') + '</dd>' +
       '<dt>Part number</dt><dd>' + esc(c.part_number || 'not given') + '</dd>' +
       '<dt>Class</dt><dd>' + esc(c['class'] || '') + (c.provisional_label ? ': ' + esc(c.provisional_label) : '') + '</dd>' +
       '<dt>Geometry</dt><dd>' + esc(geomText(c)) + '</dd>' +

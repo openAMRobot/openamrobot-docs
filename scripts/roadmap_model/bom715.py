@@ -44,6 +44,51 @@ def public(t):
     return re.sub(r"\s{2,}", " ", t).strip(" ;,")
 
 
+# Public status fields: dated stock and quote notes stay in the workbook (owner decision of 10 Nov 2026); the page keeps
+# the selected part, the quantity and the engineering status, or "Procurement confirmation pending".
+STATUS_FIELDS = ("Procurement status", "Release status", "Procurement state")
+STOCK_RX = re.compile(r"(?i)\b(?:out of stock|in stock|stock|quotes?|quotation|quoted|lead time|RFQ|invoic\w*|pro[- ]forma|backorder\w*)\b")
+PENDING = "Procurement confirmation pending"
+
+
+def public_status(t):
+    """A status field without stock and quote notes; a field that held only such notes becomes PENDING."""
+    if not t:
+        return t
+    u = re.sub(r"(?i)\s*/\s*stock\b", "", t)
+    u = re.sub(r"(?i)\s+-\s+stock check\b", "", u)
+    u = re.sub(r"(?i)\bblocked on quotes\b", PENDING.lower(), u)
+    keep = []
+    for c in re.split(r"(?<=[.;])\s+", u):
+        if not c.strip():
+            continue
+        if not STOCK_RX.search(c):
+            keep.append(c)
+            continue
+        # A status word before " - " (HOLD, BENCH ONLY, CONDITIONAL) is an engineering restriction: keep it.
+        m = re.match(r"^([A-Z][A-Z /]*[A-Z])\s+-\s+", c)
+        if m and not STOCK_RX.search(m.group(1)):
+            keep.append(m.group(1) + (c[-1] if c[-1] in ".;" else ""))
+    out = " ".join(keep).strip().rstrip(" ;")
+    return out or PENDING
+
+
+def public_procurement_section(s):
+    """The purchase view section of the page with public status cells and no quote counters."""
+    a = s.find('<section class="card" id="procurement">')
+    if a < 0:
+        return s
+    b = s.index("</section>", a)
+    sec = re.sub(r'<td class="small">([^<]*)</td>',
+                 lambda m: '<td class="small">%s</td>' % (public_status(m.group(1)) if STOCK_RX.search(m.group(1)) else m.group(1)),
+                 s[a:b])
+    sec = sec.replace("; none is recorded as ordered or received, and no quote is recorded as received.",
+                      "; none is recorded as ordered or received.")
+    sec = re.sub(r' · quote received: <b class="num">\d+</b> · quote requested: <b class="num">\d+</b>', "", sec)
+    sec = re.sub(r' · blocked: <b class="num">(\d+)</b>', r' · procurement confirmation pending: <b class="num">\1</b>', sec)
+    return s[:a] + sec + s[b:]
+
+
 ID_RE = re.compile(r"^(?:[A-Z]{2,3}-\d{3}|F-[A-Z]+|FB-[A-Z])$")
 # Records drawn on the page but not BOM lines (power-diagram nodes).
 PAGE_ONLY = {"BAT", "SAFE"}
@@ -124,6 +169,13 @@ def merge(parts, old, bom):
         if any(p.get(f, "") != v for f, v in new.items()) and k not in rep["added"]:
             rep["changed"].append(k)
         p.update(new)
+    rep["status_cleaned"] = []
+    for k, p in parts.items():
+        for f in STATUS_FIELDS:
+            if p.get(f) and public_status(p[f]) != p[f]:
+                p[f] = public_status(p[f])
+                if k not in rep["status_cleaned"]:
+                    rep["status_cleaned"].append(k)
     return rep
 
 
@@ -134,7 +186,7 @@ def main():
     a, b = obj_span(s, "var PARTS")
     parts = json.loads(s[a:b])
     rep = merge(parts, old, bom)
-    changed = rep["added"] + rep["changed"]
+    changed = rep["added"] + rep["changed"] + [k for k in rep["status_cleaned"] if k not in rep["added"] + rep["changed"]]
     s = s[:a] + script_json(parts) + s[b:]
     a, b = obj_span(s, "BLOCK")
     blk = json.loads(s[a:b])
@@ -158,9 +210,12 @@ def main():
     s = s.replace("Procurement state by purchase package (BOM Issue 7.14)", "Procurement state by purchase package (BOM Issue 7.15)")
     s = re.sub(r"The row, package and procurement counts on this page are BOM Issue 7\.1[45][^:]*: \d+ records",
                "The row, package and procurement counts on this page are BOM %s: %d records" % (ISSUE, n), s)
+    s = public_procurement_section(s)
+    s = s.replace("Brake variant quoted; drawing pending", "Brake variant identified; drawing pending")
+    s = s.replace("Brake variant confirmed by the supplier; drawing pending", "Brake variant identified; drawing pending")
     open(page, "w", encoding="utf-8").write(s)
     print("PARTS records from BOM 7.15:", n)
-    for key in ("added", "changed", "removed", "overridden"):
+    for key in ("added", "changed", "removed", "overridden", "status_cleaned"):
         print("  %s (%d): %s" % (key, len(rep[key]), " ".join(rep[key])))
 
 

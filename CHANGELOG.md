@@ -2,6 +2,13 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-10
+
+### Changed
+
+- Roadmap copy fixes after the audit of 10 Nov 2026: merged register (.github #90, 87c8486) and docs #83 and #84 recorded; 16 Nov written as a planned software session on the v0.0.1 Teensy rig; base controller decided per line; IMU row per D-10; motion figure labelled as the rc.1 pin of 19 Oct; a capability panel (main, rc.1 pin, last run) opens the progress page and the per-area tables are marked as the historical audit of 19 Oct; purchasing status removed from the narrative and blocked by `check_roadmap.py`; exploded drawer label without a BOM issue; reference roadmap front matter at the 9 Nov snapshot.
+- Public BOM extract: dated stock and quote notes removed from the status fields and the purchase view of the hardware page at the import layer (`bom715.py` `public_status()`), with tests; the BOM Issue 7.14 reference page names no stock risk.
+
 ## 2026-11-09
 
 ### Changed

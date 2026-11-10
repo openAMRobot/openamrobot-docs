@@ -22,6 +22,10 @@ HEAD = ["ID"] + list(B.FIELDS)
 
 
 def row(k, qty="1", text="M8 screw"):
+    return row_(k, qty, text)
+
+
+def row_(k, qty="1", text="M8 screw"):
     return [k, "Lift mechanics", "Part", "Maker", text, qty, "selected", ""]
 
 
@@ -64,6 +68,39 @@ class Publication(unittest.TestCase):
             self.assertNotIn(bad, text)
 
 
+class PublicStatus(unittest.TestCase):
+    """Owner decision of 10 Nov 2026: dated stock and quote notes stay out of the public BOM extract."""
+
+    def test_stock_and_quote_notes_are_removed(self):
+        cases = {
+            "STOCK RISK - manufacturer out of stock 27 Sep 2026": B.PENDING,
+            "BENCH ONLY - stock check": "BENCH ONLY",
+            "BENCH PROCUREMENT - verify exact kit / stock": "BENCH PROCUREMENT - verify exact kit",
+            "Not purchased / receipt unverified. Manufacturer page out of stock, checked 27 Sep 2026.": "Not purchased / receipt unverified.",
+            "blocked on quotes (BUY-32)": "procurement confirmation pending (BUY-32)",
+            "HOLD - release checks first": "HOLD - release checks first",
+            "HOLD - out of stock at the distributor, 27 Sep 2026": "HOLD",
+            "CONDITIONAL - do not order; lead time 16 weeks.": "CONDITIONAL - do not order",
+        }
+        for t, want in cases.items():
+            self.assertEqual(B.public_status(t), want, t)
+
+    def test_merge_cleans_status_fields_of_unchanged_records(self):
+        parts = {"CTL-014": {"ID": "CTL-014", "Release status": "STOCK RISK - manufacturer out of stock 27 Sep 2026"}}
+        row = dict(zip(HEAD, row_("CTL-014")))
+        rep = B.merge(parts, {"CTL-014": row}, {"CTL-014": row})
+        self.assertEqual(parts["CTL-014"]["Release status"], B.PENDING)
+        self.assertEqual(rep["status_cleaned"], ["CTL-014"])
+
+    def test_procurement_section_drops_quote_counters(self):
+        sec = ('<section class="card" id="procurement"><p class="small">ordered: <b class="num">0</b> · quote received: '
+               '<b class="num">0</b> · quote requested: <b class="num">0</b> · blocked: <b class="num">1</b></p>'
+               '<td class="small">BENCH ONLY - stock check</td></section>')
+        out = B.public_procurement_section(sec)
+        self.assertNotRegex(out, B.STOCK_RX)
+        self.assertIn("procurement confirmation pending: <b", out)
+
+
 class CommittedPage(unittest.TestCase):
     def test_parts_quantities_are_numbers_and_script_is_closed_once(self):
         s = open(PAGE, encoding="utf-8").read()
@@ -71,6 +108,18 @@ class CommittedPage(unittest.TestCase):
         self.assertNotIn("</", s[a:b])
         bad = {k: v["Qty"] for k, v in json.loads(s[a:b]).items() if v.get("Qty") and not re.fullmatch(r"\d+(?:\.\d+)?", v["Qty"])}
         self.assertEqual(bad, {})
+
+    def test_public_status_fields_and_purchase_view_hold_no_stock_or_quote_notes(self):
+        s = open(PAGE, encoding="utf-8").read()
+        a, b = obj_span(s, "var PARTS")
+        bad = {(k, f): v[f] for k, v in json.loads(s[a:b]).items() for f in B.STATUS_FIELDS if B.STOCK_RX.search(v.get(f, ""))}
+        self.assertEqual(bad, {})
+        for sid in ("blocks", "procurement"):   # block-detail tables and the purchase view (review of #86, 10 Nov)
+            sec = s[s.index('<section class="card" id="%s">' % sid):]
+            sec = sec[:sec.index("</section>")]
+            sec = re.sub(r'<p class="src small mute">.*?</p>', "", sec, flags=re.S)  # the publication note names what is withheld
+            text = re.sub(r"<[^>]+>", " ", sec).replace("in stock at two or more suppliers", "")
+            self.assertNotRegex(text, B.STOCK_RX, sid)
 
 
     def test_mass_export_and_public_bom_use_the_same_revision(self):
