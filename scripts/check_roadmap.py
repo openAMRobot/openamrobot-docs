@@ -1983,6 +1983,57 @@ def check_self_check(root, err):
         err("model", m)
 
 
+TESTED_FIELDS = ("check", "run", "commit", "profile")
+
+
+def package_errors(pk, rec, fw_rows):
+    """Package cards against the generated record (packages.py, audit of 10 Nov 2026): pins equal the recorded heads of
+    main, rc.1 pins equal the record, a MERGED AND TESTED badge names its check, run, tested commit and profile, duplicate
+    providers are shown, and the firmware and placeholder list carries every recorded entry."""
+    out = []
+    heads = rec.get("heads", {})
+    for name, p in pk.items():
+        r = rec.get("packages", {}).get(name)
+        if r is None:
+            out.append("PK %s is not in packages.json" % name)
+            continue
+        sha = heads.get(p.get("repo"), {}).get("sha")
+        if not sha or "/blob/%s/" % sha not in p.get("url", "") or p.get("main", {}).get("sha") != sha:
+            out.append("PK %s: link is not pinned to the recorded head of %s main" % (name, p.get("repo")))
+        if p.get("rc1") != r.get("rc1"):
+            out.append("PK %s: rc.1 pin differs from packages.json" % name)
+        if p.get("status") == "MERGED AND TESTED":
+            ev = p.get("evidence") or {}
+            miss = [f for f in TESTED_FIELDS if not ev.get(f)]
+            if miss or not str(ev.get("run", "")).startswith("https://"):
+                out.append("PK %s: MERGED AND TESTED without %s" % (name, ", ".join(miss) or "an https run link"))
+        if sorted(p.get("duplicates", [])) != sorted(r.get("duplicates", [])):
+            out.append("PK %s: duplicate providers not shown" % name)
+    for name in rec.get("packages", {}):
+        if name not in pk:
+            out.append("packages.json %s has no package card" % name)
+    if fw_rows != len(rec.get("other", [])):
+        out.append("firmware and placeholder list has %d rows, packages.json %d" % (fw_rows, len(rec.get("other", []))))
+    return out
+
+
+def check_packages(root, html, err, snapshot=None):
+    path = os.path.join(root, "model", "packages.json")
+    if not os.path.exists(path):
+        err("architecture.html", "model/packages.json missing (run scripts/roadmap_model/packages.py)")
+        return
+    rec = json.load(open(path, encoding="utf-8"))
+    t = html["architecture.html"]
+    block = re.search(r"<!-- packages:other -->(.*?)<!-- /packages:other -->", t, flags=re.S)
+    rows = len(re.findall(r"<tr><td>", block.group(1))) if block else -1
+    for e in package_errors(embedded(t, "PK"), rec, rows):
+        err("architecture.html", e)
+    if snapshot:
+        gen = dt.date.fromisoformat(rec["generated"])
+        if gen < snapshot - dt.timedelta(days=7):
+            err("architecture.html", "packages.json generated %s, more than 7 days before the snapshot %s" % (gen, snapshot))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default=os.path.join(os.path.dirname(__file__), "..", "docs", "assets", "roadmap"))
@@ -2130,7 +2181,9 @@ def main():
                 err(p, "snapshot dates %s differ from the other pages %s" % (sorted(d), sorted(alld)))
         if len(alld) > 1:
             errors.append("snapshot dates disagree: %s" % sorted(alld))
-    elif args.today:
+    if len(alld) == 1:
+        check_packages(args.dir, html, err, dt.datetime.strptime(next(iter(alld)), "%d %b %Y").date())
+    if len(alld) == 1 and args.today:
         today = dt.date.today()
         snap = dt.datetime.strptime(next(iter(alld)), "%d %b %Y").date()
         if snap != today:
