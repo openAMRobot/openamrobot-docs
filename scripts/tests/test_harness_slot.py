@@ -72,3 +72,39 @@ class CoverSlot(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ExactSegmentTest(unittest.TestCase):
+    """Review of #83 (10 Nov 2026): a sampled scan can miss a segment whose endpoints are outside a keep-out but whose middle
+    crosses it (a corner cut). The slot rule now tests every segment exactly against the radius-grown box."""
+    BOX = [{"id": "cover_slot_test", "lo": [0.0, 0.0, 0.0], "hi": [0.010, 0.010, 0.010]}]
+
+    def test_crossing_between_samples_is_caught(self):
+        # a 0.8 mm thin keep-out; the old 2.5 mm scan sampled this 5 mm segment at x -1.5, 1.0 and 3.5 mm, all outside it
+        thin = [{"id": "cover_slot_thin", "lo": [0.0, 0.0, 0.0], "hi": [0.0008, 0.010, 0.010]}]
+        seg = [[-0.0015, 0.005, 0.005], [0.0035, 0.005, 0.005]]
+        self.assertEqual(S.slot_violations(seg, thin), ["cover_slot_thin"])
+
+    def test_corner_cut_is_caught(self):
+        seg = [[-0.0012, 0.0050, 0.005], [0.0050, -0.0012, 0.005]]
+        self.assertEqual(S.slot_violations(seg, self.BOX), ["cover_slot_test"])
+
+    def test_long_segment_through_the_box_is_caught_with_any_step(self):
+        seg = [[-1.0, 0.005, 0.005], [1.0, 0.005, 0.005]]
+        self.assertEqual(S.slot_violations(seg, self.BOX, step=1.0), ["cover_slot_test"])
+
+    def test_near_clearance_passes(self):
+        seg = [[-1.0, 0.0105, 0.005], [1.0, 0.0105, 0.005]]   # 0.5 mm above the box, centre line only
+        self.assertEqual(S.slot_violations(seg, self.BOX), [])
+
+    def test_radius_makes_near_clearance_a_hit(self):
+        seg = [[-1.0, 0.0105, 0.005], [1.0, 0.0105, 0.005]]
+        self.assertEqual(S.slot_violations(seg, self.BOX, radius=0.001), ["cover_slot_test"])
+
+    def test_touching_counts_as_violation(self):
+        seg = [[-1.0, 0.010, 0.005], [1.0, 0.010, 0.005]]
+        self.assertEqual(S.slot_violations(seg, self.BOX), ["cover_slot_test"])
+
+    def test_tie_point(self):
+        self.assertEqual(S.slot_violations([[0.012, 0.005, 0.005]], self.BOX, radius=0.004), ["cover_slot_test"])
+        self.assertEqual(S.slot_violations([[0.015, 0.005, 0.005]], self.BOX, radius=0.004), [])

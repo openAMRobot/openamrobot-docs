@@ -1906,34 +1906,31 @@ def harness_separation_errors(H):
 SLOT_TIE_RADIUS = 0.004   # tie head envelope around the tie point (slot_rule.TIE_RADIUS)
 
 
-def harness_slot_errors(H, step=0.001):
+def harness_slot_errors(H, step=None):
     """Owner rule of 8 Nov 2026 (P-03 rev20.5 item 29, decision D-06; register WIRING-ROUTING): no cable, busbar or tie, by its
-    outer surface (half od_mm; ties 4 mm), in the
-    slot between the panel upper edges and the cover lower edge (z 214 to 232 mm), all around the robot, with no inward band.
-    Every route section of every cable and busbar (fixed or routed) is sampled every 1 mm against the cover_slot_* keep-outs
-    in harness_routes.json; every tie point is checked too. No cable is exempt, the LiDAR cable included: the LiDAR may look
-    through the front slot, but its cable may not lie in it. Components are not checked: at the rear, parts may sit in or above
-    the band (D-06)."""
+    outer surface (half od_mm; ties 4 mm), in the slot between the panel upper edges and the cover lower edge (z 214 to
+    232 mm), all around the robot, with no inward band. Every route segment of every cable and busbar (fixed or routed) is
+    tested exactly against each cover_slot_* keep-out grown by the cable's outer radius (slot_rule.slot_violations: a
+    conservative clearance model, touching counts as a violation), so a segment that crosses the slot between its endpoints
+    is caught; every tie point is checked too. No cable is exempt, the LiDAR cable included: the LiDAR may look through the
+    front slot, but its cable may not lie in it. Components are not checked: at the rear, parts may sit in or above the band
+    (D-06). `step` is accepted for compatibility and ignored."""
+    import sys as _sys
+    _here = os.path.join(os.path.dirname(os.path.abspath(__file__)), "roadmap_model")
+    if _here not in _sys.path:
+        _sys.path.insert(0, _here)
+    from slot_rule import slot_violations
     zones = [k for k in H.get("keep_out", []) if k["id"].startswith("cover_slot_")]
     out = []
     for c in H.get("cables", []):
         r = float(c.get("od_mm") or 0.0) / 2000.0   # outer surface, not the centre line (review of #83): the box grown by the radius
-        for z in zones:
-            hit = None
-            for sec in c.get("sections", []):
-                for _, p in _samples(sec["pts"], step):
-                    if _in_box(p, z, r):
-                        hit = (sec["kind"], p)
-                        break
-                if hit:
-                    break
-            if hit:
-                out.append("%s (%s) %s section crosses %s at %s (D-06: no cable, busbar or tie in the slot band)" % (
-                    c["id"], c.get("kind", "cable"), hit[0], z["id"], [round(v, 3) for v in hit[1]]))
+        for sec in c.get("sections", []):
+            for zid in slot_violations(sec["pts"], zones, radius=r):
+                out.append("%s (%s) %s section crosses %s (D-06: no cable, busbar or tie in the slot band)" % (
+                    c["id"], c.get("kind", "cable"), sec["kind"], zid))
     for t in H.get("ties", []):
-        for z in zones:
-            if _in_box(t["p"], z, SLOT_TIE_RADIUS):
-                out.append("tie %s lies in %s at %s (D-06)" % (t["id"], z["id"], [round(v, 3) for v in t["p"]]))
+        for zid in slot_violations([t["p"]], zones, radius=SLOT_TIE_RADIUS):
+            out.append("tie %s lies in %s at %s (D-06)" % (t["id"], zid, [round(v, 3) for v in t["p"]]))
     return out
 
 

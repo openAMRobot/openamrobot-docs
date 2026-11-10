@@ -41,14 +41,42 @@ def envelope_radius(cable):
     return float(cable.get("od_mm") or 0.0) / 2000.0
 
 
-def slot_violations(pts, keep, step=0.0025, radius=0.0):
-    """Ids of the cover-slot keep-outs (cover_slot_*) that a cable of the given outer radius enters: a sample point within
-    radius of a keep-out box (the box grown by radius). Checked on every route, searched, fixed (declared) and cached, so no
-    route bypasses the slot rule."""
-    hits = []
+def _segment_hits_box(a, b, lo, hi):
+    """Exact test: does the closed segment a-b meet the closed box [lo, hi]? Slab method, no sampling, so a segment whose
+    endpoints lie outside the box but whose middle crosses it is caught. Touching the box counts as a hit (conservative)."""
+    t0, t1 = 0.0, 1.0
+    for i in range(3):
+        d = b[i] - a[i]
+        if abs(d) < 1e-12:
+            if a[i] < lo[i] or a[i] > hi[i]:
+                return False
+            continue
+        ta, tb = (lo[i] - a[i]) / d, (hi[i] - a[i]) / d
+        if ta > tb:
+            ta, tb = tb, ta
+        t0, t1 = max(t0, ta), min(t1, tb)
+        if t0 > t1:
+            return False
+    return True
+
+
+def slot_violations(pts, keep, step=None, radius=0.0):
+    """Ids of the cover-slot keep-outs (cover_slot_*) that a cable of the given outer radius meets. Clearance model: each
+    keep-out box is grown by the cable's outer radius on every side (a conservative envelope: it also counts the box corners,
+    where the true rounded envelope would be slightly smaller), and every route segment is tested exactly against the grown
+    box, so continuous clearance is proven, not sampled. Touching counts as a violation. A single point (a cable tie) is
+    tested as a point inside the box grown by its envelope radius. Checked on every route, searched, fixed (declared) and
+    cached, so no route bypasses the slot rule. `step` is accepted for compatibility and ignored."""
+    pts = [[float(v) for v in p] for p in pts]
     zones = [k for k in keep if str(k["id"]).startswith("cover_slot_")]
-    for q in _samples(pts, step):
-        for k in zones:
-            if k["id"] not in hits and all(k["lo"][i] - radius < q[i] < k["hi"][i] + radius for i in range(3)):
-                hits.append(k["id"])
+    hits = []
+    for k in zones:
+        lo = [k["lo"][i] - radius for i in range(3)]
+        hi = [k["hi"][i] + radius for i in range(3)]
+        if len(pts) == 1:
+            hit = all(lo[i] <= pts[0][i] <= hi[i] for i in range(3))
+        else:
+            hit = any(_segment_hits_box(a, b, lo, hi) for a, b in zip(pts, pts[1:]))
+        if hit:
+            hits.append(k["id"])
     return hits
