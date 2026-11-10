@@ -1,0 +1,37 @@
+# Mass ledger of the roadmap model (owner decision 8 Nov 2026: count every part once, quantity x its datasheet mass;
+# custom parts estimated from their dimensions and material; each part on the URDF link where it sits).
+# This file overrides the mass of the BOM line in bom_coverage.csv. Fields:
+#   unit_kg   mass of one piece
+#   qty       pieces on the robot (default: the BOM quantity)
+#   src       datasheet (document and figure) or the estimate (dimensions x material)
+#   included_in  the line whose mass already contains this one (mass 0 here; the target must carry mass)
+# mass_export.py fails when a line is counted twice: a line with included_in that carries mass, a target without mass,
+# or a link breakdown whose sum differs from the sum of the ledger lines.
+lines:
+  # battery: the pack is not a mass item of its own; cells, busbars, sense harness, probes and insulation are their own lines,
+  # the two pocket trays MEC-007, the BMS PWR-002, F0 PWR-003 and the disconnect PWR-004 likewise
+  PWR-001: {included_in: [PWR-023, PWR-024, PWR-025, PWR-026, PWR-027], src: "8S1P pack = cells PWR-023 + busbars PWR-024 + BMS sense harness PWR-025 + probes PWR-026 + insulation PWR-027; trays MEC-007, BMS PWR-002, F0 PWR-003 and disconnect PWR-004 are their own lines"}
+  PWR-023: {unit_kg: 1.980, qty: 8, src: "EVE LF105 product specification (version F): 1980 +/- 100 g per cell"}
+  PWR-024: {unit_kg: 0.220, qty: 1, src: "estimate: 8 Cu busbars 56 x 20 x 2 mm x 8960 kg/m3 (0.020 kg each) + 16 M6 nuts and washers (4 g each)"}
+  PWR-025: {unit_kg: 0.060, qty: 1, src: "estimate: 9 leads x 0.6 m, 0.5 mm2 Cu with insulation, 11 g/m"}
+  PWR-026: {unit_kg: 0.005, qty: 2, src: "estimate: NTC probe with lead, 5 g"}
+  PWR-027: {unit_kg: 0.290, qty: 1, src: "estimate: 0.5 mm insulating sheet on two faces of each cell (0.42 m2 x 0.5 mm x 1400 kg/m3); the cell straps are in MEC-007"}
+  MEC-007: {unit_kg: 1.479, qty: 1, src: "design-intent solids design_intent/battery_tray.py: two 5754-H22 pocket trays with their cell straps"}
+  MEC-004: {unit_kg: 1.546, qty: 1, src: "design-intent solids design_intent/adapter_post.py: adapter plate with the rear extension, rear upright and stiffener, 6082-T6 (the HFS6 post is MEC-003)"}
+  PWR-028: {included_in: [MEC-007], src: "the two removable pocket trays MEC-007 are the battery enclosure (A9)"}
+  PWR-002: {unit_kg: 0.450, qty: 1, src: "estimate from the catalogue class (Daly M-series 8S 150 A)"}
+  PWR-004: {unit_kg: 0.290, qty: 1, src: "Blue Sea Systems 6004 m-Series specification: 0.65 lb (0.29 kg)"}
+  # drive
+  DRV-001: {unit_kg: 3.450, qty: 2, src: "ZLTECH ZLLG80-ASM250-L V1.0 specification: 3.45 kg dual shaft (3.4 kg single shaft)"}
+  DRV-002: {unit_kg: 0.600, qty: 1, src: "estimate: 150 x 97 x 31 mm aluminium-cased driver (ZLAC8015D manual outline)"}
+  MEC-002: {unit_kg: 0.300, qty: 4, src: "Blickle LPA-VSTH 35K data sheet: unit weight 0.3 kg"}
+  # sensors and converters
+  NAV-001: {unit_kg: 0.115, qty: 1, src: "Slamtec RPLIDAR S3 datasheet: 115 g"}
+  CAM-001: {unit_kg: 0.135, qty: 1, src: "Orbbec Gemini 336L specification: 135 g"}
+  PWR-012: {unit_kg: 0.600, qty: 1, src: "MEAN WELL RSD-100B-24: 0.6 kg (distributor data from the MEAN WELL datasheet)"}
+  PWR-030: {unit_kg: 0.800, qty: 1, src: "MEAN WELL DDR-240B-24: 0.8 kg (distributor data from the MEAN WELL datasheet)"}
+  # lift: the DOLD column is one purchased part, split in mass_export.py into the static and the moving share (facts.yaml column.mass_split)
+  MEC-018: {unit_kg: 11.7, qty: 1, src: "DOLD Hexalift V4 350 catalogue 11.7 kg; static and moving share from the STEP geometry and the materials (facts.yaml column.mass_split)"}
+  MEC-019: {unit_kg: 1.293, qty: 1, src: "design-intent solid design_intent/lift_base_plate.py: 350 x 140 x 10 mm 6082-T6 with the tapped hole sets, x 2700 kg/m3 (D-20)"}
+# castor split between the URDF castor link (bracket, swivel head, plate) and its wheel link: wheel D35 x 27 mm, steel centre with PU tread
+castor_wheel_kg: 0.080

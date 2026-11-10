@@ -52,10 +52,10 @@ def upper_body(D, rev):
     # owner corrections A3 / A4 / A5 (owner, 2 Nov 2026; to be entered in P-03 and M-01): Getac portrait, centre 40 mm lower; light bar
     # top edge 10 mm below the Getac bottom; ZED lens 57 mm ahead of J1_A; second E-stop on the adapter plate behind the post
     gs = FACTS["getac"]["size"]
-    g_z = top + D["getac_tablet_z_above_column_top"] - FACTS["getac"]["lower_by"]
+    g_z = top + FACTS["getac"]["item26_z"] - FACTS["getac"]["lower_by"]   # decided height: the item 26 placeholder (0.246) lowered by 55 mm
     light_top = g_z - gs[2] / 2 - FACTS["getac"]["light_gap"]
     eh = FACTS["second_estop"]["housing"]
-    static_top = top - D["lift_static_profile_top_below_column_top"]
+    static_top = f["lift_plate"]["top"] + f["column"]["static_top"]   # DOLD STEP (owner, 8 Nov 2026): static top 25 mm below the retracted top
     return {
         "datums_revision": rev, "col_axis_x": ax, "col_top": top, "static_top": static_top,
         "shoulder": [ax + 0.18, 0.031, top + 0.166], "prof_front": prof_front,
@@ -395,7 +395,7 @@ def main():
     # lift base plate on the arch (B3): the same 4 arch bolts for bp000 and bp050 (the plate carries both column hole sets)
     arch_bolts = [(x, y) for x in lp["arch_bolts"]["x"] for y in lp["arch_bolts"]["y"]]
     bolts = {bp: arch_bolts for bp in lp["col_axis_x"]}
-    # rear section (owner correction A1): cells and pocket trays, the receiver 20 mm metal-free margin and the series link strip
+    # rear section (owner correction A1): cells and pocket trays, the receiver metal-free frame (20 mm on the sides, 15 mm above) and the series link strip
     import rear_layout
     RL = rear_layout.layout()
     for t_ in RL["trays"]:
@@ -431,7 +431,7 @@ def main():
     obst.append((np.array([0.005, -0.035, 0.054]), np.array([0.075, 0.035, 0.294])))     # IMU column: nothing heavy or vibrating above the IMU
     # rear power module (GI-080, GI-126, GI-129, GI-130): explicit layout of the rear power owner's report rev 2 with the
     # measured adaptations (rear_power.py); the packer is no longer used for the rear zone. Owner decision 3 Nov 2026:
-    # parts above the receiver from 15 mm above its top up to the cover; non-metal within 20 mm of the receiver.
+    # parts above the receiver from 15 mm above its top up to the cover; non-metal inside the receiver metal-free zone.
     import rear_power
     RP = rear_power.layout()
     items = [dict(it, gap=0.005) for it in T["packed"] if it["zone"] != "front_bay" and it["id"] != "rz_batcon"]
@@ -481,8 +481,8 @@ def main():
                 "rear_side": "right side gap between the right battery tray and the side wall (owner report rev 2, rear_power.py)",
                 "rear_corner": "rear corner behind a battery tray, inside the rear supports (rear_power.py)",
                 "rear_plate": "rear power-electronics plate above the prepared receiver zone (A1)", "rear_l2": "second level above the rear power plate (GI-080 option 1)",
-                "rear_panel_face": "rear panel inner face above the receiver, outside its 20 mm metal-free margin (GI-080 option 3)",
-                "tray_wall": "upright against the receiver-side wall of a battery tray, outside the 20 mm metal-free margin (GI-080 option 5)", "rear_corner_l": "left pocket rear corner behind the cells (A1)",
+                "rear_panel_face": "rear panel inner face above the receiver, outside its metal-free frame (20 mm on the sides, 15 mm above) (GI-080 option 3)",
+                "tray_wall": "upright against the receiver-side wall of a battery tray, outside the metal-free frame (20 mm on the sides, 15 mm above) (GI-080 option 5)", "rear_corner_l": "left pocket rear corner behind the cells (A1)",
                 "rear_corner_r": "right pocket rear corner behind the cells (A1)", "rear_behind": "rear zone behind the cells (B5)", "rear_side_l": "rear zone, left side pocket (B5, real section)",
                 "rear_side_r": "rear zone, right side pocket (B5, real section)",
                 "arch": "under the arch top above the hub motors (overflow proposal, not B5: the B5 rear zone is too small with the tray and the real pocket section)", "A_lower": "front bay, lower plate on the base sheet (power conversion and safety)",
@@ -629,13 +629,31 @@ def main():
     TZ = FACTS["tzbot_receiver"]
     mz = RL["margin"]
     geo["tz_metal_free_zone"] = {"group": "base", "prims": [box(np.subtract(mz[1], mz[0]), np.add(mz[0], mz[1]) / 2, "#e74c3c", o=.10, name="metal_free_zone")]}
-    comp("tz_metal_free_zone", "TZBOT receiver 20 mm metal-free margin (ghost, at the rear panel)", "", 1, "proposed",
-         "The receiver outline plus 20 mm on every side: no metal inside it (TZBOT WCM-500-24 manual V2.5). Prepared in 2.0; keep it free for the receiver installed later.", "receiver outline + 20 mm",
+    comp("tz_metal_free_zone", "TZBOT receiver metal-free frame (20 mm on the sides, 15 mm above) (ghost, at the rear panel)", "", 1, "proposed",
+         "The receiver outline plus 20 mm on the sides (3D-printed plastic frame on the steel deck, design by the mechanical owner) and 15 mm above (owner decision 8 Nov 2026): no metal inside it (TZBOT WCM-500-24 manual V2.5). Prepared in 2.0; keep it free for the receiver installed later.", "receiver outline + 20 mm",
          "receiver at the rear panel on the centre line (owner, 2 Nov 2026)", 0, "no mass", 3, ["tz_metal_free_zone"], label="Keep-out ghost, not a part", off=[0, 0, -.25], opn=[0, 0, -.12])
+    # receiver frame (owner decision 8 Nov 2026): 3D-printed plastic frame screwed to the steel base sheet, 20 mm wide on every side of
+    # the receiver (not above or below); first iteration designed by the mechanical owner
+    fw = TZ["frame"]["width"]
+    rlo_, rhi_ = np.asarray(TZL["lo"]), np.asarray(TZL["hi"])
+    fr_ = []
+    nw, nd = 0.020, 0.018   # cable notch at the top of the rear bar for the rear TF-Luna lead (40 mm wide, 18 mm deep)
+    bars = [([rlo_[0] - fw, rlo_[1] - fw, rlo_[2]], [rhi_[0] + fw, rlo_[1], rhi_[2]]), ([rlo_[0] - fw, rhi_[1], rlo_[2]], [rhi_[0] + fw, rhi_[1] + fw, rhi_[2]]),
+            ([rhi_[0], rlo_[1], rlo_[2]], [rhi_[0] + fw, rhi_[1], rhi_[2]]),
+            ([rlo_[0] - fw, rlo_[1], rlo_[2]], [rlo_[0], -nw, rhi_[2]]), ([rlo_[0] - fw, nw, rlo_[2]], [rlo_[0], rhi_[1], rhi_[2]]),
+            ([rlo_[0] - fw, -nw, rlo_[2]], [rlo_[0], nw, rhi_[2] - nd])]
+    for l3, h3 in bars:
+        fr_.append(box(np.subtract(h3, l3), np.add(l3, h3) / 2, "#d9d2c5", name="receiver_frame"))
+    geo["tz_receiver_frame"] = {"group": "base", "prims": fr_}
+    comp("tz_receiver_frame", "Receiver frame, 3D-printed plastic (prepared, at the rear panel)", "", 1, "proposed",
+         "Plastic frame around the TZBOT receiver, 20 mm wide on every side (not above or below), screwed to the base sheet; the receiver is screwed or clipped into it. "
+         "It keeps the steel deck and the rear panel 20 mm from the receiver (TZBOT manual V2.5, A >= 2 cm). First iteration 3D printed, design by the mechanical owner (owner decision 8 Nov 2026).",
+         "frame %.0f x %.0f x %.0f mm, wall %.0f mm" % ((rhi_[0] - rlo_[0] + 2 * fw) * 1000, (rhi_[1] - rlo_[1] + 2 * fw) * 1000, (rhi_[2] - rlo_[2]) * 1000, fw * 1000),
+         "owner decision 8 Nov 2026", 0, "not counted (design pending)", 3, ["tz_receiver_frame"], label="Prepared, design pending (mechanical owner)", off=[0, 0, -.25], opn=[0, 0, -.12])
     cz = RL["cutout"]
     geo["base_cutout"] = {"group": "base", "prims": [box([cz[1][0] - cz[0][0], cz[1][1] - cz[0][1], 0.0022], [(cz[0][0] + cz[1][0]) / 2, 0, 0.053], "#e67e22", o=.35, name="base_sheet_cutout")]}
     comp("base_cutout", "Base-sheet cut-out prepared for the receiver (at the rear panel)", "MEC-001", 1, "proposed",
-         "Base sheet MMP.02.00.00.001 cut-out under the prepared receiver zone: receiver outline plus the 20 mm metal-free margin (%.0f x %.0f mm). Prepared in 2.0 for the receiver installed later." % ((cz[1][0] - cz[0][0]) * 1000, (cz[1][1] - cz[0][1]) * 1000),
+         "Base sheet MMP.02.00.00.001 cut-out under the prepared receiver zone: receiver outline plus the metal-free frame (20 mm on the sides, 15 mm above) (%.0f x %.0f mm). Prepared in 2.0 for the receiver installed later." % ((cz[1][0] - cz[0][0]) * 1000, (cz[1][1] - cz[0][1]) * 1000),
          "proposed cut-out %.0f x %.0f mm" % ((cz[1][0] - cz[0][0]) * 1000, (cz[1][1] - cz[0][1]) * 1000), "receiver at the rear panel (owner, 2 Nov 2026)", 0, "material removed (not counted)", 1, ["base_cutout"],
          label="Cut-out, prepared", off=[0, 0, -.2], opn=[0, 0, -.1])
     # cells (PWR-001 / PWR-023) and the two pocket trays (MEC-007); the GLB battery node (single row across) is hidden by model.js
@@ -696,13 +714,13 @@ def main():
                   "plate_tray_gap_mm": round(min(abs(t_["lo"][1]) - plate_[1][1] for t_ in trays_ if t_["lo"][1] > 0) * 1000, 1),
                   "cells_from_above": all(t_["hi"][2] < FACTS["cover_underside"] for t_ in trays_), "link_over_plate": True,
                   "nothing_on_cells": True}
-    BM["PWR-001"] = {"by": "battery_cells", "cls": "provisional", "geo": "8 x LF105 200 x 130 x 38 mm (B5)", "pos": "A1 side pockets (owner, 2 Nov 2026)", "mass": 21.5, "msrc": "B5 assembly 20 to 23 kg provisional (midpoint)"}
+    BM["PWR-001"] = {"by": "battery_cells", "cls": "provisional", "geo": "8 x LF105 200 x 130 x 38 mm (B5)", "pos": "A1 side pockets (owner, 2 Nov 2026)", "mass": 0.0, "msrc": "mass_ledger.yaml: the cells PWR-023 and the pack parts PWR-024 to PWR-027 carry the mass"}
     BM["PWR-023"] = {"by": "battery_cells", "cls": "provisional", "mqty": 8, "geo": "8 cell boxes", "pos": "A1 side pockets", "mass": 0.0, "msrc": "included in PWR-001"}
     BM["MEC-007"] = {"by": "battery_tray", "cls": "provisional", "mqty": 1}
     # MEC-006: power-electronics mounting plate above the receiver zone (A1)
     pl_ = RL["plate"]
     comp("rear_plate", "Rear power-electronics plate above the prepared receiver zone", "MEC-006", 1, "proposed",
-         "3 mm G10 glass-epoxy plate (non-metal) over the charger zone, underside %.0f mm above the floor (15 mm above the receiver top, owner decision 3 Nov 2026): F0, BUS+, K1, K2 and the FB-B shelf posts; PA66 or PEEK fasteners within 20 mm of the receiver (TZBOT manual, verify)." % (pl_[0][2] * 1000),
+         "3 mm G10 glass-epoxy plate (non-metal) over the charger zone, underside %.0f mm above the floor (15 mm above the receiver top, owner decision 3 Nov 2026): F0, BUS+, K1, K2 and the FB-B shelf posts; PA66 or PEEK fasteners inside the receiver metal-free zone (TZBOT manual, verify)." % (pl_[0][2] * 1000),
          "proposed outline (3 mm G10 sheet, verify stiffness)", "rear power owner report rev 2 (rear_power.py)", (pl_[1][0] - pl_[0][0]) * (pl_[1][1] - pl_[0][1]) * 0.003 * 1850,
          "outline x 3 mm x 1850 kg/m3", 3, ["rear_plate"], off=[-.25, 0, .25], opn=[-.12, 0, .1], part_number="MEC-006 (drawing revision TBD)")
     geo["rear_plate"]["prims"].append(box(np.subtract(pl_[1], pl_[0]), np.add(pl_[0], pl_[1]) / 2, "#c8b88a", name="G10 plate"))
@@ -863,7 +881,7 @@ def main():
         ("CBL-P14", "rz_fbb", "arm_l", "F-ARM-L 30 A to the left arm", "SAFE", "6 mm²", 6.5, "ring lug", "arm power connector", "F-ARM-L", "WIR-001"),
         ("CBL-P15", "rz_fbb", "arm_r", "F-ARM-R 30 A to the right arm", "SAFE", "6 mm²", 6.5, "ring lug", "arm power connector", "F-ARM-R", "WIR-001"),
         ("CBL-P16", "rz_fba", "bay_pwr009", "F-J401 10 A to the compute branch protection", "BAT", "2.5 mm²", 4.5, "ring lug", "screw terminal", "F-J401", "WIR-001"),
-        ("CBL-P17", "bay_pwr029", "jetson", "Protected 19 to 54 V to the J401", "BAT", "2.5 mm²", 4.5, "screw terminal", "J401 DC input", "", "WIR-001"),
+        ("CBL-P17", "bay_pwr029", "jetson", "Protected 19 to 54 V to the Robotics 104 carrier (D-01; input range to confirm on the SKU)", "BAT", "2.5 mm²", 4.5, "screw terminal", "Robotics 104 DC input", "", "WIR-001"),
         ("CBL-P18", "rz_fba", "bay_rsd60", "F-5V 5 A to RSD-60G-5 input", "BAT", "1.5 mm²", 3.8, "ring lug", "screw terminal", "F-5V", "WIR-001"),
         ("CBL-P19", "bay_rsd60", "nucleo", "5 V to NUCLEO, RPLIDAR, TF-Luna, IMU (distribution)", "LV", "0.5 mm²", 2.5, "screw terminal", "JST / Dupont", "NUCLEO 5V_EXT", "SNS-003"),
         ("CBL-P20", "rz_fba", "bay_rsd100", "F-24V 7.5 A to RSD-100B-24 input", "BAT", "1.5 mm²", 3.8, "ring lug", "screw terminal", "F-24V", "WIR-001"),
@@ -885,7 +903,7 @@ def main():
         ("CBL-P36", "bay_din", "bay_iso1212", "PNOZ Y32 to the isolated input", "SIG", "2 x 0.5 mm²", 4.0, "PNOZ Y32", "ISO1212 IN", "Y32", "CTL-004"),
         ("CBL-P37", "nucleo", "zlac_can", "CAN1 FDCAN1 to the ZLAC8015D (500 kbit/s provisional)", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "SN65HVD230 screw", "ZLAC CAN port", "FDCAN1 via CTL-003", "WIR-002"),
         ("CBL-P38", "bay_can2", "rz_bms", "CAN2 FDCAN2 (PB12 RX, PB6 TX) to the Daly BMS through the isolator, 250 kbit/s", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "Click screw", "BMS CAN connector", "FDCAN2 PB12/PB6", "CTL-011"),
-        ("CBL-P39", "bay_can3", "lift_node", "CAN3 FDCAN3 to the lift node CTL-017", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "screw", "CTL-017 CAN", "FDCAN3", "CTL-016"),
+        ("CBL-P39", "bay_can3", "lift_node", "CAN3 FDCAN3 to the upper-body controller CTL-017 (CANopen 500 kbit/s, node 0x10; D-11)", "SIG", "2 x 2 x 0.34 mm² STP", 6.0, "screw", "CTL-017 CAN", "FDCAN3", "CTL-016"),
         ("CBL-P40", "nucleo", "imu", "SPI4 to EV_ICM-42688-P (PE12 SCK, PE13 MISO, PE14 MOSI, PE11 CS; INT1 GPIO TBD; 5 V VIN)", "SIG", "8-way 0.14 mm² ribbon", 3.0, "NUCLEO ST zio CN", "board CN1", "CN1 16 SCLK, 18 SDI, 20 SDO, 4 CS, 3 INT1, 11/13 GND, 19 VIN", "CTL-012"),
         ("CBL-P41", "bay_pwr032", "us_fl", "3.3 V + serial to MB7060 front left", "SIG", "4 x 0.25 mm²", 4.0, "JST", "MB7060 pads", "UART RX", "SNS-003"),
         ("CBL-P42", "bay_pwr032", "us_fr", "3.3 V + serial to MB7060 front right", "SIG", "4 x 0.25 mm²", 4.0, "JST", "MB7060 pads", "UART RX", "SNS-003"),
@@ -900,11 +918,11 @@ def main():
         ("CBL-P51", "bay_usbcan_2", "arm_r", "USB-CAN-FD right arm", "SIG", "CAN-FD 2 x 2 x 0.25 STP", 5.0, "adapter", "arm CAN", "", "ARM-006"),
         ("CBL-P52", "bay_usbhub", "arm_l", "Wrist camera left (to the gripper)", "SIG", "matched gripper-camera harness", 4.0, "USB-A", "gripper camera", "", "ARM-010"),
         ("CBL-P53", "bay_usbhub", "arm_r", "Wrist camera right (to the gripper)", "SIG", "matched gripper-camera harness", 4.0, "USB-A", "gripper camera", "", "ARM-010"),
-        ("CBL-P54", "lsens1", "lift_node", "Lift stop sensor L1000 (always-on 24 V)", "SIG", "SICK DOL-1204-G02M", 5.0, "M12 4-pin", "CTL-017 input", "", "LFT-002"),
-        ("CBL-P55", "lsens2", "lift_node", "Lift stop sensor L1175", "SIG", "SICK DOL-1204-G02M", 5.0, "M12 4-pin", "CTL-017 input", "", "LFT-002"),
-        ("CBL-P56", "lsens3", "lift_node", "Lift stop sensor L1350", "SIG", "SICK DOL-1204-G02M", 5.0, "M12 4-pin", "CTL-017 input", "", "LFT-002"),
+        ("CBL-P54", "lsens1", "lift_node", "Lift stop sensor L1000 (always-on 24 V; NPN NO, pull-up on CTL-017)", "SIG", "SICK DOL-1204-G02M", 5.0, "M12 4-pin", "CTL-017 input", "", "LFT-002"),
+        ("CBL-P55", "lsens2", "lift_node", "Lift stop sensor L1175 (NPN NO)", "SIG", "SICK DOL-1204-G02M", 5.0, "M12 4-pin", "CTL-017 input", "", "LFT-002"),
+        ("CBL-P56", "lsens3", "lift_node", "Lift stop sensor L1350 (NPN NO)", "SIG", "SICK DOL-1204-G02M", 5.0, "M12 4-pin", "CTL-017 input", "", "LFT-002"),
         ("CBL-P57", "jetson", "nucleo", "USB host to MCU", "SIG", "USB data cable", 4.0, "USB-A", "NUCLEO USB", "", "CTL-008"),
-        ("CBL-P58", "jetson", "bay_usbhub", "J401 USB 3 to the hub", "SIG", "USB 3 cable", 5.0, "USB-A", "USB-B", "", "CMP-009"),
+        ("CBL-P58", "jetson", "bay_usbhub", "Robotics 104 USB 3 to the hub", "SIG", "USB 3 cable", 5.0, "USB-A", "USB-B", "", "CMP-009"),
         ("CBL-P59", "rz_bms", "rz_pwr017_2", "Daly P- (switched battery -) to the BAT - bus BUS-: flexible busbar BB-05; all returns here, no chassis return", "BAT", "busbar flexible laminated Cu 25 x 3 mm (verify)", 8.0, "BMS P- lead, crimped", "M8 stud, bolted", "BAT -", "WIR-001"),
         ("CBL-P60", "rz_bms", "battery+", "BMS sense harness and NTCs", "BAT", "BMS sense harness", 6.0, "BMS connector", "cell taps", "", "PWR-025"),
         ("CBL-P61", "bay_din", "rz_pre", "Precharge relay Kpre drive", "SIG", "2 x 0.5 mm²", 4.0, "terminal", "Kpre coil", "TPL7407L channel", "SAF-004"),
@@ -948,7 +966,7 @@ def main():
             HN.zones_of(next(s["pts"] for s in secs if s["kind"] == "base"), (HR["withdraw"][1]["lo"], HR["withdraw"][1]["hi"])) if any(s["kind"] == "base" for s in secs) else []) 
         if routed:
             up = [s["kind"] for s in secs if s["kind"] != "base"]
-            names = {"sleeve": "DP-LIFT > fixed sleeve (column -y face)", "chain": "energy chain", "moving": "moving trunk and post riser", "column": "static column"}
+            names = {"sleeve": "DP-LIFT-L/R > fixed sleeve (column -y face)", "chain": "energy chain", "moving": "moving trunk and post riser", "column": "static column"}
             route_txt = " > ".join([t for t in [route_txt] if t] + [names[k] for k in up])
         nties = sum(1 for t in HR["ties"] if cid in t["cables"])
         bpts_ = [p_ for s_ in secs if s_["kind"] == "base" for p_ in HN.sample(s_["pts"], 0.01)] if routed else []
@@ -1058,17 +1076,22 @@ def main():
     comp("wheel_guards", "Over-wheel cable guards (side trunks across the drive section)", "MEC-013", len(gparts), "proposed",
          "2 mm aluminium tray on each side-panel inner face, 8 mm above the tyre top: the side trunks cross the drive section on it, clear of the wheel.",
          "primitive", "harness.py, above the drive wheels", 0.12, "estimate 2 mm aluminium", 9, gparts, off=[0, 0, .45], opn=[0, 0, .2])
-    dpb = HR["dp"]["box"]
-    geo["dp_lift"] = {"group": "col", "prims": [box(np.subtract(dpb[1], dpb[0]), np.add(dpb[0], dpb[1]) / 2 - axo, "#5d6d7e", name="DP-LIFT"),
-                                                box([.020, .004, .016], np.array([-0.082, -0.0485, 0.345]) - axo, "#2c3e50"),
-                                                box([.016, .004, .014], np.array([-0.0725, -0.0485, 0.355]) - axo + [0, 0, .02], "#2c3e50")]}
-    comp("dp_lift", "Disconnect point DP-LIFT (bulkhead connector plate behind the lift base plate)", "MEC-013", 1, "proposed",
-         "All lift and upper-body cables plug in here: the lift assembly comes off without opening the base harness.", "primitive",
-         "harness.py, above the deck exit behind the lift base plate", 0.15, "estimate", 8, ["dp_lift"], group="col", off=[0, -.2, .1], opn=[0, 0, 0])
+    dpp = []
+    for k_, sd_ in sorted(HR["dp"]["sides"].items()):
+        dpb = sd_["box"]
+        o_ = np.array(sd_["outlet"])
+        dpp += [box(np.subtract(dpb[1], dpb[0]), np.add(dpb[0], dpb[1]) / 2 - axo, "#5d6d7e", name="DP-LIFT-" + k_),
+                box([.020, .004, .016], o_ - axo, "#2c3e50"), box([.016, .004, .014], o_ - axo + [0, 0, .02], "#2c3e50")]
+    geo["dp_lift"] = {"group": "col", "prims": dpp}
+    comp("dp_lift", "Disconnect points DP-LIFT-L and DP-LIFT-R (bulkheads over the two lift cable openings)", "MEC-013", 2, "proposed",
+         "Two bulkhead connector plates on the lift base plate over the cable openings left and right of the lift (owner decision 8 Nov 2026): power on the left, signal on the right. "
+         "Every lift and upper-body cable plugs in here: the lift assembly comes off without opening the base harness.", "primitive",
+         "harness.py, over the lift cable openings", 0.30, "estimate", 8, ["dp_lift"], group="col", off=[0, -.2, .1], opn=[0, 0, 0])
+    geo["harness_sleeve_left"] = {"group": "col", "prims": [tube([np.subtract(p, axo) for p in HR["dp"]["cross"]], HR["upper"]["sleeve_r_bundle"] * 0.75, "#34495e")]}
     geo["harness_sleeve"] = {"group": "col", "prims": [tube([np.subtract(p, axo) for p in HR["sleeve"]], HR["upper"]["sleeve_r_bundle"], "#34495e")]}
     comp("harness_sleeve", "Fixed upper-body sleeve on the static column (-y face)", "MEC-013", 1, "proposed",
-         "Braided sleeve over the upper-body cables from DP-LIFT up the -y face of the static column into the energy-chain fixed end (180 degree turn, R %.0f mm)." % (HR["upper"]["sleeve_r"] * 1000),
-         "tube", "harness.py", 0.08, "estimate", 8, ["harness_sleeve"], group="col", off=[0, -.2, .1], opn=[0, 0, 0])
+         "Braided sleeve over the upper-body cables from DP-LIFT-R up the -y face of the static column into the energy-chain fixed end (180 degree turn, R %.0f mm); the left (power) bundle from DP-LIFT-L runs back along the +y face, crosses behind the lift node and joins it." % (HR["upper"]["sleeve_r"] * 1000),
+         "tube", "harness.py", 0.08, "estimate", 8, ["harness_sleeve", "harness_sleeve_left"], group="col", off=[0, -.2, .1], opn=[0, 0, 0])
     chn = HR["chain"]
     geo["lift_energy_chain"] = {"group": "col", "prims": [box([chn["outer_w"] + .01, .006, .04], [chn["x"] - axo[0], chn["y_fixed"] - .022, chn["fixed_z"] - .01], "#5d6d7e", name="fixed_end_bracket")]}
     geo["lift_energy_chain_moving"] = {"group": "mov", "prims": [
@@ -1101,17 +1124,19 @@ def main():
     fx = {"base": [], "col": [], "mov": []}
     def F(joint, part, size, qty, std, mat, cls, drawn="y"):
         fasteners.append({"joint": joint, "part": part, "size": size, "qty": qty, "standard": std, "material": mat, "class": cls, "drawn": drawn})
-    # lift base plate on the arch (B3): 4 x M8 class 8.8 from above into the arch rivet nuts; column screwed from below (DIN 7500, flush)
+    # lift base plate on the arch (B3): 4 x M8 class 8.8 from above through the arch top sheet into the backing plate (D-21);
+    # column foot screwed from above through its tab holes into M8 tapped through MEC-019 (D-20)
     for (x, y) in arch_bolts:
         fx["base"] += [cyl(.0065, .008, [x, y, lp["top"] + .004], "z", "#2d2d2d", hq=True), cyl(.008, .0016, [x, y, lp["top"] + .0008], "z", "#9a9a9a", hq=True),
                        cyl(.0056, .014, [x, y, FACTS["arch"]["top"] - .002 - .007], "z", "#b0b4b8", hq=True)]
-    F("Lift base plate MEC-019 to the centre-frame arch (from above)", "socket head cap screw, class 8.8", "M8 x 20", 4, "ISO 4762", "steel 8.8, zinc flake", "proposed")
+    # GI-082 fix (owner decision 8 Nov 2026): through-bolts into a backing plate under the arch top sheet; the four arch rivet nuts are drilled out
+    F("Lift base plate MEC-019 through the arch top sheet into the backing plate (from above)", "socket head cap screw, class 8.8", "M8 x 25", 4, "ISO 4762", "steel 8.8, zinc flake", "proposed")
     F("Lift base plate MEC-019 to the centre-frame arch (from above)", "washer", "M8", 4, "ISO 7089", "steel 200 HV", "proposed")
-    F("Lift base plate MEC-019 to the centre-frame arch", "existing M8 blind rivet nut, round thin, stainless, in the arch top (CAD MMP.04.00.00.000)", "M8", 4, "BOM_specs_MMP.xlsx", "stainless steel", "named")
-    # rear power module (rear_power.py): non-metal fixings within 20 mm of the receiver (TZBOT manual; verify torque and creep)
-    F("Rear power plate MEC-006 (G10) to the rear panel and the arch angles (within 20 mm of the receiver)", "pan head screw + nut, PA66 (or PEEK)", "M5 x 12", 6, "ISO 7045", "PA66 / PEEK", "proposed", "n")
-    F("F0 holder, K1, K2 and the FB-B shelf posts to the G10 plate (screw heads and nuts within 20 mm of the receiver)", "pan head screw + nut, PA66 (or PEEK)", "M5 x 16", 14, "ISO 7045", "PA66 / PEEK", "proposed", "n")
-    F("BUS+ on its two POM standoffs", "POM standoff + A2 screw above the standoff (more than 20 mm above the receiver)", "M6 x 12", 4, "ISO 4762", "POM / A2", "proposed", "n")
+    F("Arch backing plate under the arch top sheet, fitted before the central channels (D-21: one laser-cut tapped steel plate if the mechanical owner confirms the space, else 5 mm S235 with press-in nuts; about 150 x 130 mm, drawing pending)", "M8 thread in the tapped plate, or captive M8 press-in nut in the 5 mm S235 plate", "M8", 4, "tapped plate / PEM-type self-clinching nut, steel", "steel zinc", "proposed")
+    # rear power module (rear_power.py): non-metal fixings inside the receiver metal-free zone (TZBOT manual; verify torque and creep)
+    F("Rear power plate MEC-006 (G10) to the rear panel and the arch angles (inside the receiver metal-free zone)", "pan head screw + nut, PA66 (or PEEK)", "M5 x 12", 6, "ISO 7045", "PA66 / PEEK", "proposed", "n")
+    F("F0 holder, K1, K2 and the FB-B shelf posts to the G10 plate (screw heads and nuts inside the receiver metal-free zone)", "pan head screw + nut, PA66 (or PEEK)", "M5 x 16", 14, "ISO 7045", "PA66 / PEEK", "proposed", "n")
+    F("BUS+ on its two POM standoffs", "POM standoff + A2 screw above the standoff (more than 15 mm above the receiver)", "M6 x 12", 4, "ISO 4762", "POM / A2", "proposed", "n")
     F("Busbars BB-01 to BB-04 on the stud terminals (QS1 M10, BUS+, K1, K2, FB-B M8)", "flange nut, serrated, with spring washer", "M8 / M10", 10, "ISO 4161", "brass / A2", "proposed", "n")
     F("FB-B shelf (L3) and FB-A shelf to their posts and the rear panel", "ISO 7380 + M4 blind rivet nut", "M4 x 8", 10, "ISO 7380", "A2", "proposed", "n")
     F("BMS clamp strips to the right side panel (removable panel: BMS service)", "ISO 7380 + M4 blind rivet nut", "M4 x 10", 4, "ISO 7380", "A2", "proposed", "n")
@@ -1122,10 +1147,10 @@ def main():
         for sx in (-1, 1):
             for sy in (-1, 1):
                 x, y = axx + sx * lp["col_screws"][0] / 2, sy * lp["col_screws"][1] / 2
-                if bp == "bp000":
-                    fx["base"].append(cyl(.0082, .0045, [x, y, lp["top"] - .010 + .00225], "z", "#2d2d2d", hq=True))
-    F("DOLD column to the lift base plate (from below, first, on the bench; bp000 hole set)", "countersunk thread-forming screw, flush with the plate underside", "M8 x 30 (>= 20 mm engagement)", 4, "DIN 7500", "steel", "named")
-    F("DOLD column to the lift base plate (bp050 hole set, alternative)", "same set at the bp050 holes", "M8 x 30", 4, "DIN 7500", "steel", "named", "n")
+                if bp == "bp000":   # low-head cap screws on the foot tabs (tab 10 mm, head 5 mm)
+                    fx["base"].append(cyl(.0065, .005, [x, y, lp["top"] + FACTS["column"]["foot"][2] + .0025], "z", "#2d2d2d", hq=True))
+    F("DOLD column foot to the lift base plate MEC-019 (from above through the four foot tab holes, 260 x 30 mm, into M8 tapped through MEC-019; no washer, medium threadlocker, 9.5 mm engagement; D-20; bp000 hole set)", "low head socket cap screw, class 8.8", "M8 x 14", 4, "DIN 7984", "steel 8.8", "named")
+    F("DOLD column foot to the lift base plate (bp050 tapped hole set, alternative)", "same set at the bp050 holes", "M8 x 14", 4, "DIN 7984", "steel 8.8", "named", "n")
     top = U["col_top"]
     ax0 = 0.0
     for dx in (-.03, .03):
@@ -1165,8 +1190,8 @@ def main():
     F("Detachable battery side panels", "quarter-turn fastener", "M5", 8, "DIN 7500-compatible quarter-turn", "steel", "proposed", "n")
     F("PETG sensor mounts (MEC-010, MEC-011) to the panels", "heat-set insert + ISO 7380", "M3 x 6", 12, "brass insert / ISO 7380", "A2", "proposed", "n")
     F("Second E-stop housing P2 to the arm-post rear slots (HFS6)", "ISO 4762 + ISO 7089 + M6 T-slot nut", "M6 x 10", 4, "ISO 4762", "steel", "proposed", "n")
-    F("TZBOT receiver bracket WCH-007 to the base sheet (outside the 20 mm zone)", "ISO 7380 + rivet nut, stainless (non-magnetic A4)", "M5 x 10", 4, "ISO 7380", "A4", "proposed", "n")
-    F("Ferrite sheet on the receiver top", "adhesive backing (no metal fasteners in the 20 mm zone)", "-", 1, "-", "-", "proposed", "n")
+    F("TZBOT receiver plastic frame WCH-007 to the base sheet (outside the 20 mm frame zone)", "ISO 7380 + rivet nut, stainless (non-magnetic A4)", "M5 x 10", 4, "ISO 7380", "A4", "proposed", "n")
+    F("Ferrite sheet on the receiver top", "adhesive backing (no metal fasteners in the 20 mm frame zone)", "-", 1, "-", "-", "proposed", "n")
     F("MEC-005 upper shelf on the lower plate (second tier)", "hex standoff M4 x 50 + ISO 7380", "M4", 4, "hex standoff / ISO 7380", "A2", "proposed", "n")
     F("DIN carrier to the centre-bracket front legs", "ISO 4762 + rivet nut", "M5 x 12", 4, "ISO 4762", "A2", "proposed", "n")
     F("Getac pocket and light-bar plate to the post front face", "T-slot nut + ISO 4762", "M6 x 12", 4, "ISO 4762", "steel", "proposed", "n")
@@ -1256,6 +1281,7 @@ def main():
     json.dump(ex, open(xp, "w"), indent=1, ensure_ascii=False)
 
     # bom_coverage.csv
+    LEDGER = load_yaml(os.path.join(HERE, "mass_ledger.yaml"))["lines"]
     comp_by_id = {c["id"]: c for c in comps}
     rows = []
     for bid in sorted(BOM, key=lambda k: (k.split("-")[0], k)):
@@ -1301,6 +1327,13 @@ def main():
                 mq = 1
         if "mqty" in m and drawn == "y":
             mq = m["mqty"]
+        led = LEDGER.get(bid)
+        if led:   # mass_ledger.yaml: quantity x unit mass, each part once (owner decision 8 Nov 2026)
+            if "included_in" in led:
+                m["mass"], m["msrc"] = 0.0, "included in %s: %s" % (", ".join(led["included_in"]), led["src"])
+            else:
+                m["mass"] = round(led["unit_kg"] * led.get("qty", q or 1), 4)
+                m["msrc"] = "%d x %.3f kg: %s" % (led.get("qty", q or 1), led["unit_kg"], led["src"])
         rows.append({"id": bid, "part": b.get("Component / assembly", ""), "part_number": b.get("Model / order code", "")[:90],
                      "qty": qty, "subsystem": b.get("Subsystem", ""), "onboard": "y" if onboard else "n",
                      "class": m.get("cls", "unmapped"), "geometry_source": m.get("geo", ""), "position_source": m.get("pos", ""),
@@ -1340,7 +1373,7 @@ def main():
         extra = [{"item": "new part", "part": "C-RM rear module exit channel (W02, W03, W04, W09 cables leaving the module into the arch opening)",
                   "change": "U-channel 2 mm walls with a clip lid, mounted on the arch rear opening above the F0 access band; edge trim at both ends; cables CBL-P07, P12, P14, P15, P20, P35, P61",
                   "qty": 1, "where": "x -195 to -135, y -90 to 90, z 190 to 270 mm"},
-                 {"item": "rear power module", "part": "MEC-006 power plate", "change": "plate material and height: G10 / FR4 glass-epoxy 3 mm (non-metal within 20 mm of the receiver), underside 117 mm (15 mm above the receiver top); PA66 or PEEK fasteners within 20 mm of the receiver (verify with TZBOT)",
+                 {"item": "rear power module", "part": "MEC-006 power plate", "change": "plate material and height: G10 / FR4 glass-epoxy 3 mm (non-metal inside the receiver metal-free zone), underside 117 mm (15 mm above the receiver top); PA66 or PEEK fasteners inside the receiver metal-free zone (verify with TZBOT)",
                   "qty": 1, "where": mmw(RP["parts"]["rear_plate"]["lo"], RP["parts"]["rear_plate"]["hi"])}]
         for k_, m_ in RP["mounts"].items():
             extra.append({"item": "new part", "part": m_["name"], "change": "new mounting part, %s" % m_["material"], "qty": 1, "where": mmw(m_["lo"], m_["hi"])})
@@ -1373,7 +1406,7 @@ def main():
                             "us_front_left": "ultrasonic_front_left", "us_front_right": "ultrasonic_front_right",
                             "us_rear_left": "ultrasonic_rear_left", "us_rear_right": "ultrasonic_rear_right"},
             "datums": {k: v for k, v in D.items() if not isinstance(v, dict)},
-            "owner_corrections": {"source": "owner, 2 Nov 2026 (to be entered in P-03 and M-01)", "getac_size": FACTS["getac"]["size"], "getac_lower_by": FACTS["getac"]["lower_by"],
+            "owner_corrections": {"source": "owner, 2 Nov 2026 (to be entered in P-03 and M-01)", "getac_size": FACTS["getac"]["size"], "getac_lower_by": FACTS["getac"]["lower_by"], "getac_item26_z": FACTS["getac"]["item26_z"],
                                   "light_gap": FACTS["getac"]["light_gap"], "zed_ahead_of_j1a": FACTS["zed_ahead_of_j1a"], "second_estop": FACTS["second_estop"]["position"],
                                   "receiver": {"lo": FACTS["tzbot_receiver"]["lo"], "hi": FACTS["tzbot_receiver"]["hi"], "status": FACTS["tzbot_receiver"]["status"]},
                                   "lift_rear": dict(LR, column_rear_x=FACTS["lift_rear"]["column_rear_x"], sensor_z=FACTS["lift_rear"]["sensor_z"])}}
@@ -1436,19 +1469,19 @@ def assembly(fasteners):
     steps = [
         (1, "Base sheet (receiver cut-out at the rear, prepared), panels, supports, centre bracket (MEC-001)", "MEC-001 sheet-metal joints (CAD v0.2)", "hex key 4 / 5 mm", "ISO 898-1 M5 8.8: 6 Nm", "open frame, all faces reachable"),
         (2, "Hub motors with MEC-015 brackets, castors with MEC-016 shims", "M8 x 20 bracket bolts; castor M6", "13 mm socket, torque wrench", "M8 8.8: 25 Nm", "from below with the base on its side; brake side inboard"),
-        (3, "TZBOT receiver zone at the rear panel: prepared, receiver installed later (cut-out, F-CHG, KCHG and the start and fault lines CBL-P31 are in place)", "receiver and WCH-007 bracket when installed", "", "", "keep the 20 mm metal-free margin free; the G10 power plate underside is 117 mm above the floor (15 mm above the receiver top, owner decision 3 Nov 2026), non-metal fixings within 20 mm"),
-        (4, "Motor driver on MMP.02.00.00.002, electronics bracket MMP.04.00.00.002 (shortened to x 0.100, new rear-wall slot with edge trim for the motor leads) with the IMU board; central channels CH-C1 (power) and CH-C2 (signal) hung from the arch top sheet, lids off", "M3/M4; M4 x 8 into rivet nuts for the channels", "hex key 2.5 / 3 mm, rivet-nut tool M4", "M3: 1.2 Nm, M4: 2.8 Nm", "from above, cover off; nothing heavy or vibrating on the IMU bracket; channels before the lift base plate"),
-        (5, "Front bay (one layout): lower plate on the base sheet (top z " + "%.3f" % FB.FLOOR + "), DIN carrier with PNOZ s3 and DDR-240B-24 on the arch front legs, RSD-100B-24 and small power parts, shelf on standoffs with compute (J401) and the control boards; side plates in the side zones: left (power) FB-C, USB-PD, 3.3 V regulator; right (signal) USB 3 hub, two USB-CAN-FD adapters, LiDAR USB-UART; no receiver in the bay (A1)", "M4 standoffs, M5 carrier screws", "hex key 2.5 / 3 mm, nut driver 7 mm", "M4: 2.8 Nm", "side plates first (they stay when the tiers come out), strip boards, then the lower plate, the DIN carrier, the shelf; FB-C fuses (left side zone) and the PNOZ terminals reachable from above with the cover off"),
+        (3, "TZBOT receiver zone at the rear panel: prepared, receiver installed later (cut-out, F-CHG, KCHG and the start and fault lines CBL-P31 are in place)", "receiver and WCH-007 bracket when installed", "", "", "keep the metal-free frame (20 mm on the sides, 15 mm above) free; the G10 power plate underside is 117 mm above the floor (15 mm above the receiver top, owner decision 3 Nov 2026), non-metal fixings within 20 mm"),
+        (4, "Arch backing plate under the arch top sheet (GI-082 fix, D-21: tapped steel plate if the mechanical owner confirms the space, else 5 mm S235 with 4 press-in M8 nuts); motor driver on MMP.02.00.00.002, electronics bracket MMP.04.00.00.002 (shortened to x 0.100, new rear-wall slot with edge trim for the motor leads) with the IMU board; central channels CH-C1 (power) and CH-C2 (signal) hung from the arch top sheet, lids off", "M3/M4; M4 x 8 into rivet nuts for the channels", "hex key 2.5 / 3 mm, rivet-nut tool M4", "M3: 1.2 Nm, M4: 2.8 Nm", "from above, cover off; nothing heavy or vibrating on the IMU bracket; channels before the lift base plate"),
+        (5, "Front bay (one layout): lower plate on the base sheet (top z " + "%.3f" % FB.FLOOR + "), DIN carrier with PNOZ s3 and DDR-240B-24 on the arch front legs, RSD-100B-24 and small power parts, shelf on standoffs with compute (Orin NX 8 GB on Robotics 104, D-01) and the control boards; side plates in the side zones: left (power) FB-C, USB-PD, 3.3 V regulator; right (signal) USB 3 hub, two USB-CAN-FD adapters, LiDAR USB-UART; no receiver in the bay (A1)", "M4 standoffs, M5 carrier screws", "hex key 2.5 / 3 mm, nut driver 7 mm", "M4: 2.8 Nm", "side plates first (they stay when the tiers come out), strip boards, then the lower plate, the DIN carrier, the shelf; FB-C fuses (left side zone) and the PNOZ terminals reachable from above with the cover off"),
         (6, "Battery: two removable pocket trays MEC-007 with 4 + 4 LF105 upright, straps; the 8S series link across the centre joins them through the keyed main connector PWR-018 (A9)", "M6 x 12 tray screws into rivet nuts", "hex key 5 mm, 13 mm socket for the M8 terminals", "M6 8.8: 10 Nm; cell terminals per EVE", "cells go in from above with the cover off (each tray with its 4 cells lowered or lifted on its own after PWR-018 is unplugged); side-panel return flanges notched at x -0.275 to -0.133 (GI-025, decided)"),
-        (7, "Rear power module (rear_power.py): G10 plate MEC-006 (underside 117 mm) with F0 across the front edge, BUS+ on POM standoffs, K1 and K2; busbars BB-01 (QS1 > BUS+), BB-02 (BUS+ > K1), BB-03 (K1 > K2); FB-B shelf (L3) with FB-B and the formed riser BB-04 from K2; FB-A shelf at the rear panel; QS1 BS-6004B and SB50 through the rear panel; BUS-, Kpre in the right rear corner; KCHG, F-CHG, brake suppression on the left corner plate; cables P01 (pack + > F0) and P02 (F0 > QS1)", "PA66 / PEEK M5 within 20 mm of the receiver; M8 / M10 flange nuts on the studs; M4 into rivet nuts for the shelves", "hex key 4 mm, 13 / 17 mm sockets, torque wrench", "M8 studs per maker; PA66 M5: hand tight per maker (verify)", "L1 parts and busbars first, then the FB-B shelf; FB-A and FB-B fuses face up with nothing above; the plate comes out without the cells once PWR-018 is unplugged"),
+        (7, "Rear power module (rear_power.py): G10 plate MEC-006 (underside 117 mm) with F0 across the front edge, BUS+ on POM standoffs, K1 and K2; busbars BB-01 (QS1 > BUS+), BB-02 (BUS+ > K1), BB-03 (K1 > K2); FB-B shelf (L3) with FB-B and the formed riser BB-04 from K2; FB-A shelf at the rear panel; QS1 BS-6004B and SB50 through the rear panel; BUS-, Kpre in the right rear corner; KCHG, F-CHG, brake suppression on the left corner plate; cables P01 (pack + > F0) and P02 (F0 > QS1)", "PA66 / PEEK M5 inside the receiver metal-free zone; M8 / M10 flange nuts on the studs; M4 into rivet nuts for the shelves", "hex key 4 mm, 13 / 17 mm sockets, torque wrench", "M8 studs per maker; PA66 M5: hand tight per maker (verify)", "L1 parts and busbars first, then the FB-B shelf; FB-A and FB-B fuses face up with nothing above; the plate comes out without the cells once PWR-018 is unplugged"),
         (7.5, "BMS Daly M-series on edge in the right side gap (clamp strips with PA66 liner on the removable right side panel); BB-05 (P- under the BMS, behind the right tray to BUS-) and BB-06 (B- to pack -); sense harness and CAN2 plugged", "M4 x 10 into rivet nuts; M8 on BUS- and pack -", "hex key 2.5 mm, 13 mm socket", "M4: 2 Nm", "service through the right side panel: unplug the sense and CAN2 connectors, unbolt B- and P- at the BMS, lift the BMS out sideways"),
         (8, "Sensors: LiDAR on the shortened MMP.07 on the lower plate + 17.5 mm spacer, Gemini on MEC-009, MB7060 with lock nuts, TF-Luna, E-stop, RESET", "M4 inserts, 3/4 in NPS nuts", "hex key 3 mm, 32 mm spanner", "M4: 1.5 Nm into PETG inserts", "front MB7060 nuts reached from inside before the bay plate goes in"),
         (9, "Harness fittings (after every component, before the cover): M4 rivet nuts and screw-mount tie bases at the tie points of harness_routes.json (base sheet, side panels, arch, brackets; standoffs where the route is 15 to 40 mm off the surface), the two over-wheel cable guards, grommets or edge trim at every penetration (harness_cad_changes.csv), the deck split entry and the DP-LIFT bracket", "M4 x 8 ISO 7380 into M4 rivet nuts; M4 x 20 standoffs", "rivet-nut tool M4, hex key 2.5 mm", "M4 into a rivet nut: 2 Nm", "cover off, front tier and trays out: every tie point reached from above"),
         (10, "Base harnesses laid in and tied: W01 rear power (lugs on the studs), W02 drive section, W03 left and W04 right side trunks (floor lanes, over-wheel guards, lanes beside the trays), W05 front sensors, W07 front tier; labels at both ends of every cable (label_a / label_b), harness labels at the main breakouts; CAN terminations", "cable ties on the tie bases", "crimp tools (TST-004), label printer", "lugs per maker; M8 battery studs per EVE", "trays and front tier back in after their cables are laid: each plugs in at its disconnect point (DP-TRAY-L / -R, DP-FT)"),
         (11, "Harness check before the cover: no cable over a component or across a tray, tier or cover withdrawal path, bend radii at or above the class minimum, CAN, USB, SPI and LiDAR at least 30 mm from power where practical and crossing at right angles, continuity and insulation test", "", "multimeter, insulation tester", "", "python3 scripts/check_roadmap.py for the model; on the robot a visual check against the harness drawing"),
         (12, "Cover with the opening extended to x 0.260 around the lift base plate, flanges", "MEC-001 cover screws", "hex key 3 mm", "M4: 2.8 Nm", "from above"),
-        (13, "DOLD column on the lift base plate MEC-019, from below, on the bench (bp000 or bp050 hole set)", "4 x M8 x 30 DIN 7500 countersunk, flush", "5 mm hex key, torque wrench", "M8 thread-forming: per DOLD", "plate upside down on the bench, full access to the underside; heads flush so the plate sits flat on the arch"),
-        (14, "Lift base plate with the column onto the arch, bolted from above into the 4 arch rivet nuts", "4 x M8 x 20 ISO 4762 8.8 + ISO 7089 washers", "6 mm hex key or 6 mm bit on a torque wrench", "M8 8.8 into a stainless blind rivet nut: 15 Nm (rivet-nut limit, below the 25 Nm bolt value)", "bolt heads at y +/-0.050 beside the 60 mm column: 13.5 mm from the head edge to the column face, a 6 mm hex bit (13 mm socket body) fits; rivet nuts captive, no access from below needed"),
+        (13, "DOLD column on the lift base plate MEC-019, from above through the four foot tab holes (260 x 30 mm) into M8 tapped through the plate, on the bench (bp000 or bp050 hole set; D-20)", "4 x M8 x 14 DIN 7984 8.8, no washer, medium threadlocker", "6 mm hex key, torque wrench", "M8 8.8 into 6082-T6: 20 Nm (confirm by VDI 2230)", "heads seat in the 16.5 mm tab counterbores; 9.5 mm engagement, the tips stay 0.5 mm short of the plate underside, so the plate sits flat on the arch; machining only after the DOLD drawing and a dry fit"),
+        (14, "Lift base plate with the column onto the arch, bolted from above through the arch top sheet into the backing plate (GI-082 fix, D-21; backing plate fitted under the arch top sheet before the central channels in step 4)", "4 x M8 x 25 ISO 4762 8.8 + ISO 7089 washers", "6 mm hex key or 6 mm bit on a torque wrench", "M8 8.8 into the steel backing plate: 25 Nm", "bolt heads at y +/-0.050 beside the 60 mm column: 13.5 mm from the head edge to the column face, a 6 mm hex bit (13 mm socket body) fits; rivet nuts captive, no access from below needed"),
         (15, "Adapter plate (one part with the rear extension for the flag rod, A6), HFS6 post, rear upright, stiffener", "M8 x 25, M6 T-nuts", "6 / 5 mm hex key", "M8: 25 Nm, M6: 10 Nm", "post bolts from below the adapter plate before it goes on the carriage"),
         (16, "Arms on the post (1 mm spacers), ZED bracket and camera, Getac pocket and light plate, second E-stop housing on the adapter plate behind the post (A5)", "M6 T-nuts", "5 mm hex key", "M6: 10 Nm", "arms at home pose; Getac pocket last"),
         (17, "Lift stop sensors on the rear face of the static column (A6), flag rod under the adapter-plate rear extension (M5 into the rod end, corner bracket), flag; flag rod guide (open U ring with PTFE liner on its arm) on the +y face of the static column head, the rod slid into the ring from its open -y side", "LFT-007 set; guide 2 x M5 x 30 ISO 4762 + T-slot nuts", "hex key 2.5 / 3 / 4 mm", "M4: 2 Nm, M5 T-slot: 4 Nm", "lift at L1000; set the 2 mm flag gap; run L1000 to L1350: the rod slides in the guide without binding, flag and corner bracket clear the guide by 3.5 mm"),

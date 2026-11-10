@@ -23,7 +23,7 @@ mapped:
   - {urdf: ["base_link#1"], mode: aabb, note: "base_covers.stl", roadmap: [cover, cover_flange_front, cover_flange_rear]}
   - {urdf: ["base_link#2"], mode: aabb, note: "base_equipment.stl: component envelopes",
      roadmap: [motor_driver, compute, base_controller, battery, estop, reset_button],
-     pending: "C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX on J401 off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position"}
+     pending: "C1 (2 Nov 2026, proposed): front bay option A moves the Jetson Orin NX (now 8 GB on Robotics 104, D-01) off the IMU bracket to the upper shelf; base_equipment.stl keeps the CAD v0.2 position"}
   - {urdf: [fl_caster_link], roadmap: [castor_front_left], mode: aabb}
   - {urdf: [fr_caster_link], roadmap: [castor_front_right], mode: aabb}
   - {urdf: [bl_caster_link], roadmap: [castor_rear_left], mode: aabb}
@@ -46,7 +46,7 @@ mapped:
   - {urdf: [arm_profile_link], roadmap: [arm_profile], mode: aabb, note: "MISUMI HFS6-60120 arm post"}
   - {urdf: [head_camera_bracket_link], roadmap: [head_camera_bracket], mode: aabb}
   - {urdf: [head_camera_link], roadmap: [head_camera], mode: aabb, rot: true, note: "ZED Mini at hp30",
-     pending: "A4 (owner, 2 Nov 2026): lens 57 mm ahead of J1_A (combined model 42 mm until the P-03 entry)"}
+     pending: "owner 8 Nov 2026: lens 60 mm ahead of J1_A (P-03 rev20.4; combined model follows in openamr-upperbody-sw #48)"}
   - {urdf: [getac_tablet_link], roadmap: [getac_tablet], mode: aabb,
      pending: "A3 (owner, 2 Nov 2026): Getac portrait, centre 40 mm lower, fixed mount (combined model has the superseded landscape tablet until the P-03 entry)"}
   - {urdf: [head_light_link], roadmap: [head_light], mode: aabb,
@@ -92,14 +92,15 @@ pending_roadmap_only:
   lift_base_plate: "B3 (2 Nov 2026, decided): one 10 mm 6082-T6 plate on the centre-frame arch; the combined model has no plate visual (base_plate_top_z only)"
   tz_receiver: "A1 (owner, 2 Nov 2026): TZBOT WCM-500-24 receiver prepared at the rear panel on the centre line, installed later (wireless charging prepared in 2.0); not in the base URDF"
   rear_estop_housing: "A5 (owner, 2 Nov 2026): housing of the second E-stop on the adapter plate, button up"
-  tz_metal_free_zone: "A1: 20 mm metal-free margin around the prepared receiver (keep-out ghost)"
+  tz_metal_free_zone: "owner 8 Nov 2026: no metal within 20 mm of the receiver sides and 15 mm above it (keep-out ghost)"
+  tz_receiver_frame: "owner 8 Nov 2026: 3D-printed plastic frame around the receiver, 20 mm on every side, screwed to the base sheet (design by the mechanical owner); not in the base URDF"
   battery_cells: "A1: 8 x LF105 in the two side pockets (the base URDF battery is the single row)"
   battery_tray: "A1: two pocket trays"
   battery_series_link: "A1: series link across the centre"
   base_cutout: "A1: base-sheet cut-out prepared for the receiver at the rear (ghost; base_chassis.stl has the CAD v0.2 sheet)"
 
 roadmap_only:
-  base_cutout: {attach: base_link, offset_m: [-0.2745, 0, -0.045]}
+  base_cutout: {attach: base_link, offset_m: [-0.265, 0, -0.045]}
   battery_cells_left: {attach: base_link, offset_m: [-0.204, 0.179, 0.061]}
   battery_cells_right: {attach: base_link, offset_m: [-0.204, -0.179, 0.061]}
   battery_series_link: {attach: base_link, offset_m: [-0.146, 0, 0.1751]}
@@ -134,9 +135,9 @@ roadmap_only:
   ch_branch_signal: {attach: base_link, offset_m: [-0.04, -0.1605, 0.128]}
   ch_central_power: {attach: base_link, offset_m: [-0.0185, 0.0625, 0.128]}
   ch_central_signal: {attach: base_link, offset_m: [-0.0185, -0.0625, 0.128]}
-  dp_lift: {attach: lift_column_base_link, offset_m: [-0.1425, -0.0563, 0.04]}
+  dp_lift: {attach: lift_column_base_link, offset_m: [-0.06, 0, 0.035]}
   fan: {attach: base_link, offset_m: [0.18, 0, 0.1755]}
-  fasteners_base: {attach: base_link, offset_m: [0.1535, 0, 0.0865]}
+  fasteners_base: {attach: base_link, offset_m: [0.1492, 0, 0.09]}
   fasteners_col: {attach: lift_column_base_link, offset_m: [-0.122, -0.02, 0.287]}
   fasteners_mov: {attach: lift_carriage_link, offset_m: [0.1658, 0, 0.1285]}
   feedthru_1: {attach: base_link, offset_m: [0.2, -0.272, 0.087]}
@@ -144,19 +145,20 @@ roadmap_only:
   flag_rod_guide: {attach: lift_column_base_link, offset_m: [-0.1351, 0.0406, 0.4935]}
   getac_pocket: {attach: lift_carriage_link, offset_m: [0.2553, 0, 0.1927]}
   harness_bat_base: {attach: base_link, offset_m: [-0.0777, -0.0689, 0.0768]}
-  harness_fittings_base: {attach: base_link, offset_m: [0.0175, -0.002, 0.0763]}
-  harness_fittings_col: {attach: lift_column_base_link, offset_m: [-0.1316, -0.0523, 0.253]}
+  harness_fittings_base: {attach: base_link, offset_m: [0.0185, -0.0045, 0.0763]}
+  harness_fittings_col: {attach: lift_column_base_link, offset_m: [-0.1327, -0.0117, 0.253]}
   harness_fittings_mov: {attach: lift_carriage_link, offset_m: [-0.0073, 0, 0.1624]}
   harness_lv_base: {attach: base_link, offset_m: [0.1875, -0.0906, -0.0124]}
-  harness_r24_base: {attach: base_link, offset_m: [0.1244, -0.0001, 0.0936]}
-  harness_r24_mov: {attach: lift_carriage_link, offset_m: [0.0119, 0.075, 0.0106]}
-  harness_safe_base: {attach: base_link, offset_m: [-0.0437, 0.0022, 0.1325]}
-  harness_safe_col: {attach: lift_column_base_link, offset_m: [-0.1037, -0.0248, 0.041]}
+  harness_r24_base: {attach: base_link, offset_m: [0.1496, -0.0001, 0.091]}
+  harness_r24_mov: {attach: lift_carriage_link, offset_m: [0.0119, 0.075, 0.0031]}
+  harness_safe_base: {attach: base_link, offset_m: [-0.0439, 0.0024, 0.1325]}
+  harness_safe_col: {attach: lift_column_base_link, offset_m: [-0.06, 0.0235, 0.041]}
   harness_safe_mov: {attach: lift_carriage_link, offset_m: [-0.0344, 0.0002, 0.0446]}
-  harness_sig_base: {attach: base_link, offset_m: [0.0069, 0.002, 0.091]}
+  harness_sig_base: {attach: base_link, offset_m: [0.0069, -0.0331, 0.0885]}
   harness_sig_col: {attach: lift_column_base_link, offset_m: [-0.142, -0.0412, 0.2602]}
-  harness_sig_mov: {attach: lift_carriage_link, offset_m: [-0.0057, 0.0003, 0.1433]}
-  harness_sleeve: {attach: lift_column_base_link, offset_m: [-0.148, -0.061, 0.2018]}
+  harness_sig_mov: {attach: lift_carriage_link, offset_m: [-0.0042, 0.0003, 0.1433]}
+  harness_sleeve: {attach: lift_column_base_link, offset_m: [-0.138, -0.061, 0.212]}
+  harness_sleeve_left: {attach: lift_column_base_link, offset_m: [-0.1209, 0, 0.041]}
   lift_base_plate: {attach: base_link, offset_m: [0.085, 0, 0.201]}
   lift_energy_chain: {attach: lift_column_base_link, offset_m: [-0.216, -0.0045, 0.2258]}
   lift_energy_chain_moving: {attach: lift_carriage_link, offset_m: [-0.0655, 0.0805, -0.052]}
@@ -195,8 +197,9 @@ roadmap_only:
   shims_4: {attach: base_link, offset_m: [-0.275, -0.215, -0.0465]}
   side_plates: {attach: base_link, offset_m: [0.205, 0, -0.0425]}
   slot_cover_strips: {attach: lift_carriage_link, offset_m: [0.21, 0, 0.29]}
-  tz_metal_free_zone: {attach: base_link, offset_m: [-0.284, 0, -0.022]}
-  tz_receiver: {attach: base_link, offset_m: [-0.284, 0, -0.022]}
+  tz_metal_free_zone: {attach: base_link, offset_m: [-0.265, 0, -0.0145]}
+  tz_receiver: {attach: base_link, offset_m: [-0.265, 0, -0.022]}
+  tz_receiver_frame: {attach: base_link, offset_m: [-0.265, 0, -0.022]}
   us_locknut_1: {attach: base_link, offset_m: [0.3615, 0.13, -0.0066]}
   us_locknut_2: {attach: base_link, offset_m: [0.3615, -0.13, -0.0066]}
   us_locknut_3: {attach: base_link, offset_m: [-0.3615, 0.13, -0.0066]}

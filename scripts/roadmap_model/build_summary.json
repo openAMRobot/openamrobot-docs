@@ -620,33 +620,33 @@
  },
  "receiver": {
   "centre": [
-   -0.284,
+   -0.265,
    0.0,
    0.076
   ],
   "lo": [
-   -0.369,
+   -0.35,
    -0.075,
    0.05
   ],
   "hi": [
-   -0.199,
+   -0.18,
    0.075,
    0.102
   ],
   "cutout": [
    -0.37,
-   -0.179,
+   -0.16,
    -0.095,
    0.095
   ],
   "orientation": "150 mm along x, 170 mm across y (rear charger zone)",
   "cutout_mm": [
-   191,
+   210,
    190
   ],
   "cutout_full_mm": [
-   191,
+   210,
    190
   ],
   "gap_m": -0.002,
@@ -690,25 +690,25 @@
   "plate": [
    [
     -0.366,
-    -0.095,
+    -0.09,
     0.117
    ],
    [
     -0.137,
-    0.095,
+    0.09,
     0.12
    ]
   ],
   "margin": [
    [
-    -0.389,
+    -0.37,
     -0.095,
-    0.03
+    0.05
    ],
    [
-    -0.179,
+    -0.16,
     0.095,
-    0.122
+    0.117
    ]
   ],
   "cutout": [
@@ -718,7 +718,7 @@
     0.052
    ],
    [
-    -0.179,
+    -0.16,
     0.095,
     0.054
    ]
@@ -751,7 +751,7 @@
     ]
    }
   ],
-  "link_z": 0.252
+  "link_z": 0.247
  },
  "k1k2_options": {
   "A": {
@@ -880,24 +880,7 @@
      "gap_mm": 5.8
     }
    ],
-   "within_20mm_of_receiver": [
-    {
-     "part": "rear_plate",
-     "gap_mm": 15.0
-    },
-    {
-     "part": "rz_k1k2_1",
-     "gap_mm": 18.0
-    },
-    {
-     "part": "rz_k1k2_2",
-     "gap_mm": 18.0
-    },
-    {
-     "part": "rp_bus_standoffs",
-     "gap_mm": 18.0
-    }
-   ]
+   "inside_receiver_metal_free_zone": []
   },
   "main_path": [
    {
@@ -967,7 +950,7 @@
     "id": "CBL-P62",
     "kind": "busbar BB-06",
     "polyline_mm": 299.0,
-    "bends_90": 3,
+    "bends_90": 5,
     "section": "flexible laminated Cu 25 x 3 mm in silicone sleeve (verify)"
    }
   ],
@@ -1226,7 +1209,7 @@
   "trays": 2,
   "connector": "PWR-018 keyed, on the 8S link at x -0.150, z 0.262",
   "plate_overlaps_trays_in_plan": false,
-  "plate_tray_gap_mm": 2.0,
+  "plate_tray_gap_mm": 7.0,
   "cells_from_above": true,
   "link_over_plate": true,
   "nothing_on_cells": true

@@ -2,9 +2,9 @@
 
 TZBOT WCM-500-24 receiver prepared (installed later) on the centre line, 170 mm along x and 150 mm across y, as close to the
 rear panel inner face as possible without touching the rear TF-Luna, the rear MB7060s, their mounts or the rear panel flange
-(owner correction of 2 Nov 2026; the 240 x 210 mm zone is withdrawn), bottom 2 mm below the base-sheet underside; 20 mm
+(owner correction of 2 Nov 2026; the 240 x 210 mm zone is withdrawn), bottom 2 mm below the base-sheet underside; 15 mm
 metal-free margin around the receiver. Two side pockets beside the zone, each with 4 EVE LF105 cells upright (8S). Power electronics on a
-mounting plate above the receiver, underside at least 15 mm above the receiver top (owner decision 3 Nov 2026; non-metal within 20 mm), up to the cover underside.
+mounting plate above the receiver, underside at least 15 mm above the receiver top (owner decision 3 Nov 2026; non-metal within 15 mm), up to the cover underside.
 
 The space is measured from the CAD (base GLB): rear panel, arch, top-cover supports, side panels and their return flanges
 (GI-025), rear sensor mounts and the rear cover flange slope. layout() returns every box (base_footprint, m) and a report
@@ -54,18 +54,23 @@ def layout():
         lo_, hi_ = bb[k]
         if hi_[1] > -sy / 2 and lo_[1] < sy / 2 and hi_[2] > z0 and lo_[2] < z0 + sz:
             x0 = max(x0, float(hi_[0]))
-    x0 = round(x0 + RX["touch_clear"], 4)
+    x0 = round(x0 + mc, 4)   # owner decision 8 Nov 2026: the 20 mm plastic frame sits between the rear bodies and the receiver
     rx = _box([x0, -sy / 2, z0], [x0 + sx, sy / 2, z0 + sz])
     for k in rear_ids:
         lo_, hi_ = bb[k]
         gap = np.maximum(0, np.maximum(rx[0], lo_) - np.minimum(rx[1], hi_))
         clear_to[k] = round(float(np.linalg.norm(gap)) * 1000, 1)
     zone = _box([x_rear, -sy / 2 - mc, z0], [x_arch, sy / 2 + mc, FACTS["cover_underside"]])
-    margin = _box(rx[0] - mc, rx[1] + mc)
+    mca = RX.get("metal_clear_above", mc)
+    margin = _box([rx[0][0] - mc, rx[0][1] - mc, rx[0][2]], [rx[1][0] + mc, rx[1][1] + mc, rx[1][2] + mca])   # 20 mm on the sides (frame), 15 mm above
     cut = _box([max(margin[0][0], x_rear), margin[0][1], FACTS["base_sheet"]["bottom"]], [margin[1][0], margin[1][1], FACTS["base_sheet"]["top"]])
-    metal_in_margin = {k: clear_to[k] for k in clear_to if clear_to[k] < mc * 1000}
+    def _inside(b_):
+        return bool(np.all(b_[0] < margin[1] - 1e-6) and np.all(b_[1] > margin[0] + 1e-6))
+    metal_in_margin = {k: clear_to[k] for k in clear_to if _inside(bb[k])}
     plate_z = round(float(rx[1][2] + RS["power_plate"]["min_above_receiver"]), 4)
-    plate = _box([x_rear + 0.004, margin[0][1], plate_z], [x_arch - 0.002, margin[1][1], plate_z + RS["power_plate"]["t"]])
+    # G10 plate over the receiver: receiver outline + 15 mm across (y), as before the frame of 8 Nov 2026, so the 7 mm lane between the
+    # plate edge and each tray stays open for the cables rising from the receiver zone
+    plate = _box([x_rear + 0.004, rx[0][1] - mca, plate_z], [x_arch - 0.002, rx[1][1] + mca, plate_z + RS["power_plate"]["t"]])
     # measured space: the CAD v0.2 dimensions are the reference (A9)
     sup_l, sup_r = bb["support_rear_left"], bb["support_rear_right"]
     v = G["side_panel_left"]["v"]
@@ -97,7 +102,7 @@ def layout():
             dx, dy = nx * cxl + (nx - 1) * g, ny * cyl + (ny - 1) * g
             tray = (dx + 2 * wall, dy + 2 * wall)
             for x0 in np.arange(x_rear, x_arch - tray[0] + 1e-9, 0.002):
-                for y0 in np.arange(margin[1][1] + C["clear_to_margin"], wall_in - tray[1] + 1e-9, 0.002):
+                for y0 in np.arange(max(margin[1][1], sy / 2 + C.get("tray_from_receiver", 0.0)) + C["clear_to_margin"], wall_in - tray[1] + 1e-9, 0.002):
                     tb = _box([x0, y0, FACTS["base_sheet"]["top"]], [x0 + tray[0], y0 + tray[1], z_cell + h + 0.003])
                     if tb[1][2] > min(ceiling(x0), ceiling(x0 + tray[0])) - 0.003:
                         continue

@@ -1,6 +1,7 @@
 """Load check of the lift base plate MEC-019 on the centre-frame arch (owner decision of 2 Nov 2026, B3).
 
-Load path: everything above the plate (column, carriage, arms, chest equipment) -> 4 x DIN 7500 M8 column screws ->
+Load path: everything above the plate (column, carriage, arms, chest equipment) -> 4 x DIN 7984 M8 x 14 column foot screws
+(from above through the tab holes, 260 x 30 mm, into M8 tapped through MEC-019, D-20) ->
 10 mm 6082-T6 plate -> 4 x ISO 4762 M8 8.8 bolts into the M8 blind rivet nuts of the 2 mm S235JR arch top, and plate
 bearing on the arch top, whose stiff support line is the arch front / rear wall (x +/-0.117).
 

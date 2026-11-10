@@ -30,7 +30,7 @@ def main():
     for c in reg + P["components"]:
         for p in c.get("nodes", []) + c.get("parts", []):
             bom[p] = (c.get("bom") or "NOBOM").split(",")[0].split(" ")[0].strip() or "NOBOM"
-    alias = {"lift_column_stage": "MEC-018", "lift_column_head": "MEC-018", "second_estop": "SAF-001", "getac_tablet": "UI-001", "head_light": "AUX-001",
+    alias = {"lift_column_stage": "MEC-018", "lift_column_foot": "MEC-018", "second_estop": "SAF-001", "getac_tablet": "UI-001", "head_light": "AUX-001",
              "flag_rod": "LFT-004", "lift_flag": "LFT-006"}
     di = json.load(open(os.path.join(MODEL, "design_intent", "index.json")))
     di = di if isinstance(di, list) else di["items"]

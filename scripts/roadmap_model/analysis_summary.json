@@ -1,6 +1,6 @@
 {
  "self_check": {
-  "compared": 156,
+  "compared": 158,
   "max_dev_mm": 3.0,
   "worst": [
    [
@@ -9,19 +9,19 @@
    ],
    [
     "harness_sleeve",
-    0.0013826797246933031
+    0.001393334501981737
    ],
    [
     "flag_rod",
     0.00120000004749745
    ],
    [
-    "head_light",
-    0.001000000023748726
+    "harness_sleeve_left",
+    0.0010450085878372095
    ],
    [
-    "battery_series_link",
-    0.0007033704519271988
+    "head_light",
+    0.001000000023748726
    ]
   ]
  },
@@ -55,6 +55,16 @@
    "id": "GI-007",
    "key": "arm reach|Second E-stop at 40 mm below the column top / right gripper",
    "reason": "closed: second E-stop on the adapter plate behind the post (A5, owner 2 Nov 2026); the static-column position is removed"
+  },
+  {
+   "id": "GI-008",
+   "key": "fit|K1/K2 option B Schneider TeSys D LC1D80BD fit",
+   "reason": "closed: K1/K2 are GX11CAC only (P-03 rev20.4; electrical owner, docs #68, 3 Nov 2026); option B is not used in this layout"
+  },
+  {
+   "id": "GI-009",
+   "key": "fit|K1/K2 option B Siemens 3RT2 size S3 fit",
+   "reason": "closed: K1/K2 are GX11CAC only (P-03 rev20.4; electrical owner, docs #68, 3 Nov 2026); the Siemens fallback is dropped for this layout"
   },
   {
    "id": "GI-010",
@@ -154,7 +164,7 @@
   {
    "id": "GI-030",
    "key": "sensor view|zed view / getac_pocket",
-   "reason": "closed: Getac portrait 40 mm lower and ZED 57 mm ahead (A3, A4): the pocket is outside the ZED Mini view"
+   "reason": "closed: Getac portrait lower and the ZED lens moved forward (A3, A4, 2 Nov 2026): the pocket is outside the ZED Mini view"
   },
   {
    "id": "GI-031",
@@ -352,6 +362,26 @@
    "reason": "closed: receiver at the rear (owner, 2 Nov 2026)"
   },
   {
+   "id": "GI-105",
+   "key": "interference|battery_cells_left / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
+   "id": "GI-106",
+   "key": "interference|battery_cells_right / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
+   "id": "GI-108",
+   "key": "interference|battery_tray_left / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
+   "id": "GI-110",
+   "key": "interference|battery_tray_right / rear_plate",
+   "reason": "closed: the trays sit 20 mm from the receiver (tray_from_receiver, 8 Nov 2026), clear of the rear plate"
+  },
+  {
    "id": "GI-111",
    "key": "interference|bay_can1 / bay_usbhub",
    "reason": "closed 3 Nov 2026: front bay side zones (front_bay.py) moved the USB hub, USB-CAN-FD, USB-PD and 3.3 V parts"
@@ -387,6 +417,21 @@
    "reason": "no longer reported by the analysis"
   },
   {
+   "id": "GI-121",
+   "key": "to solve before receiver installation|TZBOT receiver / rear_panel (inside the 15 mm offset (metal-free margin))",
+   "reason": "closed: the receiver sits 20 mm in front of the rear panel in its 3D-printed plastic frame, so no metal is within 20 mm of its sides (owner decision 8 Nov 2026, P-03 rev20.5 item 29)"
+  },
+  {
+   "id": "GI-122",
+   "key": "to solve before receiver installation|TZBOT receiver / tof_mount_rear (inside the 15 mm offset (metal-free margin))",
+   "reason": "closed: the receiver sits 20 mm in front of the rear panel in its 3D-printed plastic frame, so no metal is within 20 mm of its sides (owner decision 8 Nov 2026, P-03 rev20.5 item 29)"
+  },
+  {
+   "id": "GI-123",
+   "key": "to solve before receiver installation|TZBOT receiver / tof_rear (inside the 15 mm offset (metal-free margin))",
+   "reason": "closed: the receiver sits 20 mm in front of the rear panel in its 3D-printed plastic frame, so no metal is within 20 mm of its sides (owner decision 8 Nov 2026, P-03 rev20.5 item 29)"
+  },
+  {
    "id": "GI-125",
    "key": "interference|battery_series_link / rz_batcon",
    "reason": "closed: PWR-018 sits on the 8S series link by design (declared contact, A9)"
@@ -415,6 +460,11 @@
    "id": "GI-130",
    "key": "harness|No compliant harness route: CBL-P05",
    "reason": "closed 3 Nov 2026: CBL-P05 replaced by busbar BB-03 between the facing K1 and K2 studs (41 mm)"
+  },
+  {
+   "id": "GI-166",
+   "key": "verify with supplier|TZBOT receiver / parts within 20 mm (non-metal)",
+   "reason": "closed: no metal within 20 mm of the receiver sides, held by a 3D-printed plastic frame (mechanical owner), and 15 mm above the receiver top (D-02, D-03, P-03 rev20.5 item 29); no part needs a supplier check"
   }
  ],
  "lift_rear": {
@@ -586,11 +636,11 @@
  },
  "mass": {
   "L1000": {
-   "mass": 95.42879944943559,
+   "mass": 86.30579944943561,
    "com": [
-    0.0187,
-    -0.0028,
-    0.337
+    0.0315,
+    -0.003,
+    0.3268
    ],
    "unplaced": [
     "ARM-004",
@@ -599,11 +649,11 @@
    ]
   },
   "L1350": {
-   "mass": 95.42879944943559,
+   "mass": 86.30579944943561,
    "com": [
-    0.0187,
-    -0.0028,
-    0.4123
+    0.0315,
+    -0.003,
+    0.4077
    ],
    "unplaced": [
     "ARM-004",
@@ -614,34 +664,34 @@
  },
  "stability": {
   "L1000": {
-   "margin_fore_m": 0.2564,
-   "margin_aft_m": 0.2937,
-   "margin_lat_m": 0.2122,
-   "a_max_fore": 7.46,
-   "a_max_lat": 6.18,
-   "com_z": 0.337
+   "margin_fore_m": 0.2436,
+   "margin_aft_m": 0.3065,
+   "margin_lat_m": 0.212,
+   "a_max_fore": 7.31,
+   "a_max_lat": 6.36,
+   "com_z": 0.3268
   },
   "L1350": {
-   "margin_fore_m": 0.2564,
-   "margin_aft_m": 0.2937,
-   "margin_lat_m": 0.2122,
-   "a_max_fore": 6.1,
-   "a_max_lat": 5.05,
-   "com_z": 0.4123
+   "margin_fore_m": 0.2436,
+   "margin_aft_m": 0.3065,
+   "margin_lat_m": 0.212,
+   "a_max_fore": 5.86,
+   "a_max_lat": 5.1,
+   "com_z": 0.4077
   }
  },
  "loads": {
   "L1000": {
-   "drive_pair_kg": 92.2,
-   "per_drive_wheel_kg": 46.1,
-   "per_castor_front_kg": 1.6,
+   "drive_pair_kg": 81.4,
+   "per_drive_wheel_kg": 40.7,
+   "per_castor_front_kg": 2.5,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
   },
   "L1350": {
-   "drive_pair_kg": 92.2,
-   "per_drive_wheel_kg": 46.1,
-   "per_castor_front_kg": 1.6,
+   "drive_pair_kg": 81.4,
+   "per_drive_wheel_kg": 40.7,
+   "per_castor_front_kg": 2.5,
    "per_castor_rear_kg": 0.0,
    "assumption": "rigid castors and wheels on a flat floor share by the lever rule with the drive axle carrying the centre share (upper bound for the drive pair); real split depends on shims MEC-016"
   }
@@ -665,11 +715,11 @@
     0.15004665940966494
    ],
    [
-    "harness_safe_base",
-    22,
-    "-180",
-    "176",
-    0.2139325357876485
+    "harness_sig_base",
+    28,
+    "-169",
+    "177",
+    0.20653404683005658
    ],
    [
     "bay_din_pnoz",
@@ -693,53 +743,39 @@
     0.16880588139404848
    ],
    [
+    "imu",
+    7,
+    "-180",
+    "181",
+    0.26925047904823207
+   ],
+   [
     "ch_central_signal",
     7,
-    "-166",
-    "-159",
-    0.24640008116881779
-   ],
-   [
-    "centre_bracket",
-    7,
-    "-154",
-    "-147",
-    0.23753590516991005
-   ],
-   [
-    "harness_bat_base",
-    6,
-    "-159",
-    "-146",
-    0.2200339287783673
-   ],
-   [
-    "harness_r24_base",
-    5,
-    "108",
-    "113",
-    0.27623948210190524
-   ],
-   [
-    "harness_fittings_base",
-    4,
-    "176",
-    "180",
-    0.21463107883062976
-   ],
-   [
-    "harness_sig_base",
-    3,
-    "167",
-    "170",
-    0.20452529204198472
+    "-176",
+    "-169",
+    0.23542302351299454
    ],
    [
     "ch_central_power",
+    6,
+    "169",
+    "175",
+    0.23542302351299454
+   ],
+   [
+    "harness_fittings_base",
+    2,
+    "-177",
+    "168",
+    0.2577683068183519
+   ],
+   [
+    "harness_safe_base",
     1,
-    "166",
-    "167",
-    0.34315565143402654
+    "168",
+    "169",
+    0.2869033104607651
    ],
    [
     "bay_plate",
@@ -747,13 +783,6 @@
     "163",
     "164",
     0.21069089325360033
-   ],
-   [
-    "imu",
-    1,
-    "180",
-    "181",
-    0.2743500004708767
    ]
   ],
   "lidar_plane_open_sector": [
@@ -785,36 +814,32 @@
  "tzbot": {
   "position": {
    "lo": [
-    -0.369,
+    -0.35,
     -0.075,
     0.05
    ],
    "hi": [
-    -0.199,
+    -0.18,
     0.075,
     0.102
    ],
    "x_m": [
-    -0.369,
-    -0.199
+    -0.35,
+    -0.18
    ],
    "status": "prepared, installed later",
    "clearance_to_rear_bodies_mm": {
-    "rear_panel": 1.0,
-    "tof_rear": 13.7,
-    "tof_mount_rear": 8.2,
-    "ultrasonic_rear_left": 37.6,
-    "ultrasonic_rear_right": 37.7,
-    "ultrasonic_mount_rear_left": 27.5,
-    "ultrasonic_mount_rear_right": 27.5,
+    "rear_panel": 20.0,
+    "tof_rear": 32.7,
+    "tof_mount_rear": 27.2,
+    "ultrasonic_rear_left": 38.2,
+    "ultrasonic_rear_right": 38.2,
+    "ultrasonic_mount_rear_left": 28.1,
+    "ultrasonic_mount_rear_right": 28.1,
     "support_rear_left": 93.8,
     "support_rear_right": 93.8
    },
-   "inside_metal_free_margin_mm": {
-    "rear_panel": 1.0,
-    "tof_rear": 13.7,
-    "tof_mount_rear": 8.2
-   }
+   "inside_metal_free_margin_mm": {}
   },
   "floor_gap": {
    "receiver_bottom_mm": 50.0,
@@ -865,25 +890,25 @@
    "plate": [
     [
      -0.366,
-     -0.095,
+     -0.09,
      0.117
     ],
     [
      -0.137,
-     0.095,
+     0.09,
      0.12
     ]
    ],
    "margin": [
     [
-     -0.389,
+     -0.37,
      -0.095,
-     0.03
+     0.05
     ],
     [
-     -0.179,
+     -0.16,
      0.095,
-     0.122
+     0.117
     ]
    ],
    "cutout": [
@@ -893,7 +918,7 @@
      0.052
     ],
     [
-     -0.179,
+     -0.16,
      0.095,
      0.054
     ]
@@ -905,20 +930,20 @@
    {
     "case": "static, L1350",
     "bp": "bp050",
-    "mass_kg": 29.56,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2593,
-     0.9461
+     0.2558,
+     0.9002
     ],
     "decel_m_s2": 0.0,
-    "moment_at_column_axis_Nm": 43.3,
+    "moment_at_column_axis_Nm": 42.4,
     "column_screw_rows_N": {
-     "rear": 82.9,
-     "front": -372.9
+     "rear": 17.7,
+     "front": -308.8
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 102.6,
-     "x +0.060": 43.4
+     "x -0.060": 103.0,
+     "x +0.060": 34.7
     },
     "bolt_shear_per_bolt_N": 0.0,
     "bolt_utilisation": 0.003,
@@ -926,190 +951,190 @@
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.008,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 15.4,
-    "plate_stress_MPa": 6.6,
-    "plate_utilisation": 0.026,
-    "arch_sheet_stress_MPa": 44.9,
+    "plate_max_moment_Nm": 8.2,
+    "plate_stress_MPa": 3.5,
+    "plate_utilisation": 0.014,
+    "arch_sheet_stress_MPa": 44.8,
     "arch_sheet_utilisation": 0.191,
-    "arch_sheet_uplift_mm": 0.128,
-    "plate_deflection_at_column_front_mm": -0.074,
-    "column_tilt_deg": 0.048
+    "arch_sheet_uplift_mm": 0.126,
+    "plate_deflection_at_column_front_mm": -0.083,
+    "column_tilt_deg": 0.038
    },
    {
-    "case": "braking from 1.5 m/s at 6.10 m/s2, L1350",
+    "case": "braking from 1.5 m/s at 5.86 m/s2, L1350",
     "bp": "bp050",
-    "mass_kg": 29.56,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2593,
-     0.9461
+     0.2558,
+     0.9002
     ],
-    "decel_m_s2": 6.1,
-    "moment_at_column_axis_Nm": 159.1,
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 146.1,
     "column_screw_rows_N": {
-     "rear": 692.3,
-     "front": -982.3
+     "rear": 416.4,
+     "front": -707.5
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 390.5,
-     "x +0.060": 165.1
+     "x -0.060": 367.1,
+     "x +0.060": 123.8
     },
-    "bolt_shear_per_bolt_N": 45.1,
-    "bolt_utilisation": 0.016,
-    "bolt_Ft_Rd_kN": 21.1,
-    "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.032,
-    "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 58.6,
-    "plate_stress_MPa": 25.1,
-    "plate_utilisation": 0.098,
-    "arch_sheet_stress_MPa": 170.8,
-    "arch_sheet_utilisation": 0.727,
-    "arch_sheet_uplift_mm": 0.488,
-    "plate_deflection_at_column_front_mm": -0.281,
-    "column_tilt_deg": 0.183
-   },
-   {
-    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.10 m/s2, L1350",
-    "bp": "bp050",
-    "mass_kg": 37.76,
-    "com_m": [
-     0.457,
-     1.115
-    ],
-    "decel_m_s2": 6.1,
-    "moment_at_column_axis_Nm": 315.3,
-    "column_screw_rows_N": {
-     "rear": 1474.5,
-     "front": -1844.9
-    },
-    "bolt_tension_per_bolt_N": {
-     "x -0.060": 777.6,
-     "x +0.060": 328.7
-    },
-    "bolt_shear_per_bolt_N": 57.6,
-    "bolt_utilisation": 0.03,
-    "bolt_Ft_Rd_kN": 21.1,
-    "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.063,
-    "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 116.6,
-    "plate_stress_MPa": 50.0,
-    "plate_utilisation": 0.196,
-    "arch_sheet_stress_MPa": 340.2,
-    "arch_sheet_utilisation": 1.448,
-    "arch_sheet_uplift_mm": 0.972,
-    "plate_deflection_at_column_front_mm": -0.559,
-    "column_tilt_deg": 0.364
-   },
-   {
-    "case": "static, L1350",
-    "bp": "bp000",
-    "mass_kg": 29.56,
-    "com_m": [
-     0.2093,
-     0.9461
-    ],
-    "decel_m_s2": 0.0,
-    "moment_at_column_axis_Nm": 43.3,
-    "column_screw_rows_N": {
-     "rear": 82.9,
-     "front": -372.9
-    },
-    "bolt_tension_per_bolt_N": {
-     "x -0.060": 68.5,
-     "x +0.060": 22.3
-    },
-    "bolt_shear_per_bolt_N": 0.0,
-    "bolt_utilisation": 0.002,
-    "bolt_Ft_Rd_kN": 21.1,
-    "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.006,
-    "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 3.4,
-    "plate_stress_MPa": 1.5,
-    "plate_utilisation": 0.006,
-    "arch_sheet_stress_MPa": 29.8,
-    "arch_sheet_utilisation": 0.127,
-    "arch_sheet_uplift_mm": 0.083,
-    "plate_deflection_at_column_front_mm": -0.016,
-    "column_tilt_deg": 0.025
-   },
-   {
-    "case": "braking from 1.5 m/s at 6.10 m/s2, L1350",
-    "bp": "bp000",
-    "mass_kg": 29.56,
-    "com_m": [
-     0.2093,
-     0.9461
-    ],
-    "decel_m_s2": 6.1,
-    "moment_at_column_axis_Nm": 159.1,
-    "column_screw_rows_N": {
-     "rear": 692.3,
-     "front": -982.3
-    },
-    "bolt_tension_per_bolt_N": {
-     "x -0.060": 364.5,
-     "x +0.060": 118.7
-    },
-    "bolt_shear_per_bolt_N": 45.1,
+    "bolt_shear_per_bolt_N": 43.5,
     "bolt_utilisation": 0.016,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
     "rivet_nut_pull_through_utilisation": 0.03,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 18.2,
-    "plate_stress_MPa": 7.8,
-    "plate_utilisation": 0.031,
-    "arch_sheet_stress_MPa": 158.6,
-    "arch_sheet_utilisation": 0.675,
-    "arch_sheet_uplift_mm": 0.444,
-    "plate_deflection_at_column_front_mm": -0.087,
-    "column_tilt_deg": 0.132
+    "plate_max_moment_Nm": 29.4,
+    "plate_stress_MPa": 12.6,
+    "plate_utilisation": 0.049,
+    "arch_sheet_stress_MPa": 159.8,
+    "arch_sheet_utilisation": 0.68,
+    "arch_sheet_uplift_mm": 0.449,
+    "plate_deflection_at_column_front_mm": -0.295,
+    "column_tilt_deg": 0.137
    },
    {
-    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.10 m/s2, L1350",
-    "bp": "bp000",
-    "mass_kg": 37.76,
+    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350",
+    "bp": "bp050",
+    "mass_kg": 37.87,
     "com_m": [
-     0.407,
-     1.115
+     0.4537,
+     1.0785
     ],
-    "decel_m_s2": 6.1,
-    "moment_at_column_axis_Nm": 315.3,
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 299.6,
     "column_screw_rows_N": {
-     "rear": 1474.5,
-     "front": -1844.9
+     "rear": 966.5,
+     "front": -1338.0
     },
     "bolt_tension_per_bolt_N": {
-     "x -0.060": 752.2,
-     "x +0.060": 245.1
+     "x -0.060": 756.7,
+     "x +0.060": 255.3
     },
-    "bolt_shear_per_bolt_N": 57.6,
+    "bolt_shear_per_bolt_N": 55.5,
     "bolt_utilisation": 0.03,
     "bolt_Ft_Rd_kN": 21.1,
     "bolt_Fv_Rd_kN": 14.1,
-    "rivet_nut_pull_through_utilisation": 0.061,
+    "rivet_nut_pull_through_utilisation": 0.062,
     "Bp_Rd_kN": 12.3,
-    "plate_max_moment_Nm": 37.6,
-    "plate_stress_MPa": 16.1,
-    "plate_utilisation": 0.063,
-    "arch_sheet_stress_MPa": 327.3,
-    "arch_sheet_utilisation": 1.393,
-    "arch_sheet_uplift_mm": 0.917,
-    "plate_deflection_at_column_front_mm": -0.18,
-    "column_tilt_deg": 0.271
+    "plate_max_moment_Nm": 60.5,
+    "plate_stress_MPa": 25.9,
+    "plate_utilisation": 0.102,
+    "arch_sheet_stress_MPa": 329.4,
+    "arch_sheet_utilisation": 1.402,
+    "arch_sheet_uplift_mm": 0.925,
+    "plate_deflection_at_column_front_mm": -0.607,
+    "column_tilt_deg": 0.283
+   },
+   {
+    "case": "static, L1350",
+    "bp": "bp000",
+    "mass_kg": 29.67,
+    "com_m": [
+     0.2058,
+     0.9002
+    ],
+    "decel_m_s2": 0.0,
+    "moment_at_column_axis_Nm": 42.4,
+    "column_screw_rows_N": {
+     "rear": 17.7,
+     "front": -308.8
+    },
+    "bolt_tension_per_bolt_N": {
+     "x -0.060": 66.2,
+     "x +0.060": 21.3
+    },
+    "bolt_shear_per_bolt_N": 0.0,
+    "bolt_utilisation": 0.002,
+    "bolt_Ft_Rd_kN": 21.1,
+    "bolt_Fv_Rd_kN": 14.1,
+    "rivet_nut_pull_through_utilisation": 0.005,
+    "Bp_Rd_kN": 12.3,
+    "plate_max_moment_Nm": 0.0,
+    "plate_stress_MPa": 0.0,
+    "plate_utilisation": 0.0,
+    "arch_sheet_stress_MPa": 28.8,
+    "arch_sheet_utilisation": 0.122,
+    "arch_sheet_uplift_mm": 0.081,
+    "plate_deflection_at_column_front_mm": -0.03,
+    "column_tilt_deg": 0.024
+   },
+   {
+    "case": "braking from 1.5 m/s at 5.86 m/s2, L1350",
+    "bp": "bp000",
+    "mass_kg": 29.67,
+    "com_m": [
+     0.2058,
+     0.9002
+    ],
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 146.1,
+    "column_screw_rows_N": {
+     "rear": 416.4,
+     "front": -707.5
+    },
+    "bolt_tension_per_bolt_N": {
+     "x -0.060": 331.5,
+     "x +0.060": 106.8
+    },
+    "bolt_shear_per_bolt_N": 43.5,
+    "bolt_utilisation": 0.014,
+    "bolt_Ft_Rd_kN": 21.1,
+    "bolt_Fv_Rd_kN": 14.1,
+    "rivet_nut_pull_through_utilisation": 0.027,
+    "Bp_Rd_kN": 12.3,
+    "plate_max_moment_Nm": 0.0,
+    "plate_stress_MPa": 0.0,
+    "plate_utilisation": 0.0,
+    "arch_sheet_stress_MPa": 144.2,
+    "arch_sheet_utilisation": 0.614,
+    "arch_sheet_uplift_mm": 0.404,
+    "plate_deflection_at_column_front_mm": -0.151,
+    "column_tilt_deg": 0.118
+   },
+   {
+    "case": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350",
+    "bp": "bp000",
+    "mass_kg": 37.87,
+    "com_m": [
+     0.4037,
+     1.0785
+    ],
+    "decel_m_s2": 5.86,
+    "moment_at_column_axis_Nm": 299.6,
+    "column_screw_rows_N": {
+     "rear": 966.5,
+     "front": -1338.0
+    },
+    "bolt_tension_per_bolt_N": {
+     "x -0.060": 712.5,
+     "x +0.060": 229.5
+    },
+    "bolt_shear_per_bolt_N": 55.5,
+    "bolt_utilisation": 0.028,
+    "bolt_Ft_Rd_kN": 21.1,
+    "bolt_Fv_Rd_kN": 14.1,
+    "rivet_nut_pull_through_utilisation": 0.058,
+    "Bp_Rd_kN": 12.3,
+    "plate_max_moment_Nm": 0.0,
+    "plate_stress_MPa": 0.0,
+    "plate_utilisation": 0.0,
+    "arch_sheet_stress_MPa": 309.9,
+    "arch_sheet_utilisation": 1.319,
+    "arch_sheet_uplift_mm": 0.868,
+    "plate_deflection_at_column_front_mm": -0.324,
+    "column_tilt_deg": 0.254
    }
   ],
-  "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 6.10 m/s2, L1350 (bp050)",
+  "worst": "arms at full forward reach, 2 x 4.1 kg payload, braking at 5.86 m/s2, L1350 (bp050)",
   "max_utilisation": {
    "bolt_utilisation": 0.03,
-   "rivet_nut_pull_through_utilisation": 0.063,
-   "plate_utilisation": 0.196,
-   "arch_sheet_utilisation": 1.448
+   "rivet_nut_pull_through_utilisation": 0.062,
+   "plate_utilisation": 0.102,
+   "arch_sheet_utilisation": 1.402
   },
-  "max_column_tilt_deg": 0.364,
-  "shoulder_height_ref_m": 0.9461208586923059,
+  "max_column_tilt_deg": 0.283,
+  "shoulder_height_ref_m": 0.9002058896875706,
   "overhang": {
    "bp000": {
     "column_axis_ahead_of_front_arch_bolts_m": 0.0,
@@ -1124,35 +1149,42 @@
   },
   "above_plate": {
    "L1000": {
-    "mass_kg": 29.56,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2093,
+     0.2058,
      0.0008,
-     0.703
+     0.665
     ]
    },
    "L1350": {
-    "mass_kg": 29.56,
+    "mass_kg": 29.67,
     "com_m": [
-     0.2093,
+     0.2058,
      0.0008,
-     0.9461
+     0.9002
     ]
    }
   },
   "arms_forward": {
-   "mass_kg": 37.76,
+   "mass_kg": 37.87,
    "com_m": [
-    0.407,
+    0.4037,
     0.0006,
-    1.115
+    1.0785
    ],
    "arm_mass_kg_both": 12.26,
    "payload_kg_each": 4.1,
    "reach_m": 0.606,
    "source": "OpenArm 2.0 figures used by the robot page (payload 4.1 kg nominal, 6 kg peak, reach 0.606 m)"
   },
-  "decel_m_s2": 6.1
+  "decel_m_s2": 5.86,
+  "decided_fix": {
+   "what": "M8 8.8 through-bolts with nuts, 5 mm S235JR backing plate under the arch top sheet",
+   "arch_sheet_utilisation": 0.084,
+   "backing_plate_utilisation": 0.211,
+   "bolt_utilisation": 0.03,
+   "method": "two stacked plates, moment shared by t^3 (screening, no composite action)"
+  }
  },
  "estop": {
   "position": "adapter plate top behind the post, centred in y, above the column axis, button up (A5)",
@@ -1327,7 +1359,7 @@
     "ARM-003",
     0.0629,
     [
-     0.2764,
+     0.2794,
      0.0,
      1.2165
     ],
@@ -1349,7 +1381,7 @@
     [
      0.16,
      -0.2025,
-     0.0761
+     0.0703
     ],
     "bay_usbcan"
    ],
@@ -1377,7 +1409,7 @@
     "ARM-011",
     0.05,
     [
-     0.267,
+     0.27,
      0.0,
      1.2035
     ],
@@ -1389,7 +1421,7 @@
     [
      0.31,
      0.0,
-     0.9045
+     0.8895
     ],
     "head_light"
    ],
@@ -1405,11 +1437,11 @@
    ],
    [
     "CAM-001",
-    0.29,
+    0.135,
     [
-     0.3885,
-     0.0063,
-     0.1438
+     0.3745,
+     0.0,
+     0.1417
     ],
     "base_camera"
    ],
@@ -1427,9 +1459,9 @@
     "CMP-001",
     0.25,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -1437,9 +1469,9 @@
     "CMP-002",
     0.2,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -1447,9 +1479,9 @@
     "CMP-003",
     0.008,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -1457,9 +1489,9 @@
     "CMP-005",
     0.15,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -1477,9 +1509,9 @@
     "CMP-007",
     0.02,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -1489,7 +1521,7 @@
     [
      0.1975,
      -0.2375,
-     0.1174
+     0.0978
     ],
     "bay_usbhub"
    ],
@@ -1497,9 +1529,9 @@
     "CTL-001",
     0.08,
     [
-     0.2081,
+     0.2117,
      -0.128,
-     0.0666
+     0.068
     ],
     "base_controller"
    ],
@@ -1509,7 +1541,7 @@
     [
      0.231,
      -0.1075,
-     0.1185
+     0.1208
     ],
     "bay_can1"
    ],
@@ -1519,7 +1551,7 @@
     [
      0.177,
      -0.112,
-     0.1537
+     0.1413
     ],
     "bay_iso1212"
    ],
@@ -1579,7 +1611,7 @@
     [
      0.3077,
      -0.1344,
-     0.1185
+     0.1208
     ],
     "bay_can2"
    ],
@@ -1589,7 +1621,7 @@
     [
      0.121,
      0.047,
-     0.1194
+     0.1263
     ],
     "bay_can3"
    ],
@@ -1619,27 +1651,27 @@
     [
      0.1705,
      -0.092,
-     0.1439
+     0.1347
     ],
     "bay_tpl7407"
    ],
    [
     "DRV-001",
-    10.0,
+    6.9,
     [
      0.0,
      0.0,
-     0.0986
+     0.098
     ],
     "hub_motor_wheel"
    ],
    [
     "DRV-002",
-    0.9,
+    0.6,
     [
-     -0.0789,
-     -0.0026,
-     0.1079
+     -0.0693,
+     -0.0018,
+     0.1103
     ],
     "motor_driver"
    ],
@@ -1659,7 +1691,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -1669,7 +1701,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -1679,7 +1711,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -1689,7 +1721,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -1699,7 +1731,7 @@
     [
      -0.34,
      0.063,
-     0.2331
+     0.2252
     ],
     "rz_fba"
    ],
@@ -1709,7 +1741,7 @@
     [
      -0.2475,
      0.0,
-     0.2704
+     0.2587
     ],
     "rz_fbb"
    ],
@@ -1719,7 +1751,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -1727,9 +1759,9 @@
     "IMU-001",
     0.005,
     [
-     0.0468,
+     0.0393,
      0.0,
-     0.2184
+     0.2182
     ],
     "imu"
    ],
@@ -1767,8 +1799,8 @@
     "LFT-004",
     0.22,
     [
-     -0.1061,
-     0.0406,
+     -0.094,
+     0.0393,
      0.7083
     ],
     "flag_rod"
@@ -1797,19 +1829,19 @@
     "LFT-007",
     0.03,
     [
-     0.0915,
+     0.1043,
      -0.0067,
-     0.5942
+     0.5805
     ],
     "fasteners"
    ],
    [
     "MEC-002",
-    0.8,
+    1.2,
     [
-     -0.0123,
+     -0.0012,
      0.0,
-     0.0243
+     0.026
     ],
     "castor"
    ],
@@ -1825,7 +1857,7 @@
    ],
    [
     "MEC-004",
-    0.97,
+    1.546,
     [
      0.0875,
      0.0,
@@ -1835,11 +1867,11 @@
    ],
    [
     "MEC-007",
-    1.6,
+    1.479,
     [
      -0.204,
-     -0.0,
-     0.1282
+     0.0,
+     0.157
     ],
     "battery_tray"
    ],
@@ -1847,9 +1879,9 @@
     "MEC-008",
     0.6,
     [
-     0.3142,
-     -0.0006,
-     0.1561
+     0.313,
+     -0.0001,
+     0.1484
     ],
     "lidar_support, lidar_spacer"
    ],
@@ -1857,9 +1889,9 @@
     "MEC-009",
     0.04,
     [
-     0.3639,
-     -0.0006,
-     0.1429
+     0.3729,
+     -0.0001,
+     0.144
     ],
     "camera_mount"
    ],
@@ -1867,9 +1899,9 @@
     "MEC-010",
     0.02,
     [
+     -0.0,
      0.0,
-     0.0001,
-     0.0927
+     0.0913
     ],
     "tof_mount"
    ],
@@ -1877,29 +1909,19 @@
     "MEC-011",
     0.06,
     [
-     -0.0001,
-     0.0002,
-     0.0913
+     0.0,
+     0.0,
+     0.0942
     ],
     "ultrasonic_mount"
-   ],
-   [
-    "MEC-012",
-    0.461,
-    [
-     0.3042,
-     -0.0007,
-     1.0125
-    ],
-    "getac_pocket"
    ],
    [
     "MEC-013",
     0.15,
     [
-     0.0246,
-     -0.0036,
-     0.5288
+     -0.0005,
+     -0.0054,
+     0.5759
     ],
     "harness_fittings"
    ],
@@ -1907,9 +1929,9 @@
     "MEC-014",
     0.6,
     [
-     0.0915,
+     0.1043,
      -0.0067,
-     0.5942
+     0.5805
     ],
     "fasteners"
    ],
@@ -1919,7 +1941,7 @@
     [
      0.0,
      -0.0,
-     0.0706
+     0.0885
     ],
     "motor_brackets"
    ],
@@ -1935,21 +1957,31 @@
    ],
    [
     "MEC-018",
-    11.7,
+    8.89,
     [
      0.06,
      0.0,
-     0.569
+     0.4322
+    ],
+    "lift_column"
+   ],
+   [
+    "MEC-018:moving",
+    2.81,
+    [
+     0.06,
+     0.0,
+     0.6258
     ],
     "lift_column"
    ],
    [
     "MEC-019",
-    2.1,
+    1.293,
     [
-     0.0673,
-     -0.0,
-     0.2984
+     0.085,
+     0.0,
+     0.299
     ],
     "lift_base_plate"
    ],
@@ -1965,11 +1997,11 @@
    ],
    [
     "NAV-001",
-    0.18,
+    0.115,
     [
-     0.3198,
-     -0.0004,
-     0.1758
+     0.3187,
+     -0.0001,
+     0.1696
     ],
     "lidar"
    ],
@@ -1979,19 +2011,9 @@
     [
      0.15,
      -0.175,
-     0.0723
+     0.0677
     ],
     "bay_lidar_uart"
-   ],
-   [
-    "PWR-001",
-    21.5,
-    [
-     -0.204,
-     0.0,
-     0.225
-    ],
-    "battery_cells"
    ],
    [
     "PWR-002",
@@ -1999,7 +2021,7 @@
     [
      -0.201,
      -0.276,
-     0.1499
+     0.1338
     ],
     "rz_bms"
    ],
@@ -2009,13 +2031,13 @@
     [
      -0.1625,
      -0.0105,
-     0.1639
+     0.1497
     ],
     "rz_f0"
    ],
    [
     "PWR-004",
-    0.35,
+    0.29,
     [
      -0.338,
      -0.056,
@@ -2029,7 +2051,7 @@
     [
      0.165,
      -0.053,
-     0.0822
+     0.0743
     ],
     "bay_rsd60"
    ],
@@ -2039,7 +2061,7 @@
     [
      0.155,
      0.1945,
-     0.0799
+     0.0728
     ],
     "bay_usbpd"
    ],
@@ -2049,7 +2071,7 @@
     [
      0.135,
      0.022,
-     0.0617
+     0.0703
     ],
     "bay_pwr009"
    ],
@@ -2059,7 +2081,7 @@
     [
      0.1985,
      -0.144,
-     0.2346
+     0.1952
     ],
     "bay_rsd100"
    ],
@@ -2069,7 +2091,7 @@
     [
      0.1177,
      0.0709,
-     0.0602
+     0.0608
     ],
     "bay_ina228"
    ],
@@ -2079,7 +2101,7 @@
     [
      -0.293,
      -0.0733,
-     0.1809
+     0.1638
     ],
     "rz_pwr017"
    ],
@@ -2089,7 +2111,7 @@
     [
      -0.15,
      0.0,
-     0.2724
+     0.2628
     ],
     "rz_batcon"
    ],
@@ -2109,9 +2131,59 @@
     [
      -0.317,
      0.148,
-     0.0813
+     0.0737
     ],
     "rz_fchg"
+   ],
+   [
+    "PWR-023",
+    15.84,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-024",
+    0.22,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-025",
+    0.06,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-026",
+    0.01,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-027",
+    0.29,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
    ],
    [
     "PWR-029",
@@ -2119,17 +2191,17 @@
     [
      0.195,
      0.027,
-     0.0613
+     0.0677
     ],
     "bay_pwr029"
    ],
    [
     "PWR-030",
-    0.75,
+    0.8,
     [
      0.19,
      0.093,
-     0.2366
+     0.2057
     ],
     "bay_ddr240"
    ],
@@ -2139,7 +2211,7 @@
     [
      0.1425,
      0.177,
-     0.0613
+     0.0677
     ],
     "bay_pwr032"
    ],
@@ -2147,9 +2219,9 @@
     "SAF-001",
     0.3,
     [
-     0.2328,
+     0.2215,
      0.065,
-     0.525
+     0.5138
     ],
     "estop, second_estop"
    ],
@@ -2159,7 +2231,7 @@
     [
      0.2354,
      0.0047,
-     0.1886
+     0.1714
     ],
     "bay_din"
    ],
@@ -2169,7 +2241,7 @@
     [
      -0.2325,
      0.016,
-     0.1774
+     0.1588
     ],
     "rz_k1k2"
    ],
@@ -2179,7 +2251,7 @@
     [
      -0.326,
      -0.138,
-     0.2316
+     0.2232
     ],
     "rz_pre"
    ],
@@ -2187,7 +2259,7 @@
     "SAF-005",
     0.12,
     [
-     0.3899,
+     0.368,
      -0.13,
      0.1425
     ],
@@ -2199,7 +2271,7 @@
     [
      -0.335,
      0.11,
-     0.1066
+     0.1033
     ],
     "rz_brake"
    ],
@@ -2207,9 +2279,9 @@
     "SNS-001",
     0.01,
     [
+     -0.0,
      0.0,
-     0.0001,
-     0.0921
+     0.0926
     ],
     "tof"
    ],
@@ -2218,8 +2290,8 @@
     0.236,
     [
      0.0005,
-     0.0001,
-     0.0913
+     0.0,
+     0.0928
     ],
     "ultrasonic"
    ],
@@ -2239,7 +2311,7 @@
     [
      0.3088,
      0.0,
-     1.04
+     1.025
     ],
     "getac_tablet"
    ],
@@ -2247,9 +2319,9 @@
     "UI-002",
     0.461,
     [
-     0.3042,
-     -0.0007,
-     1.0125
+     0.3153,
+     0.0,
+     1.0268
     ],
     "getac_pocket"
    ],
@@ -2259,7 +2331,7 @@
     [
      -0.2945,
      0.113,
-     0.0798
+     0.0727
     ],
     "rz_kchg"
    ],
@@ -2329,7 +2401,7 @@
     "ARM-003",
     0.0629,
     [
-     0.2764,
+     0.2794,
      0.0,
      1.5665
     ],
@@ -2351,7 +2423,7 @@
     [
      0.16,
      -0.2025,
-     0.0761
+     0.0703
     ],
     "bay_usbcan"
    ],
@@ -2379,7 +2451,7 @@
     "ARM-011",
     0.05,
     [
-     0.267,
+     0.27,
      0.0,
      1.5535
     ],
@@ -2391,7 +2463,7 @@
     [
      0.31,
      0.0,
-     1.2545
+     1.2395
     ],
     "head_light"
    ],
@@ -2407,11 +2479,11 @@
    ],
    [
     "CAM-001",
-    0.29,
+    0.135,
     [
-     0.3885,
-     0.0063,
-     0.1438
+     0.3745,
+     0.0,
+     0.1417
     ],
     "base_camera"
    ],
@@ -2429,9 +2501,9 @@
     "CMP-001",
     0.25,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -2439,9 +2511,9 @@
     "CMP-002",
     0.2,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -2449,9 +2521,9 @@
     "CMP-003",
     0.008,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -2459,9 +2531,9 @@
     "CMP-005",
     0.15,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -2479,9 +2551,9 @@
     "CMP-007",
     0.02,
     [
-     0.1644,
-     -0.0267,
-     0.1479
+     0.1641,
+     -0.0255,
+     0.1375
     ],
     "compute"
    ],
@@ -2491,7 +2563,7 @@
     [
      0.1975,
      -0.2375,
-     0.1174
+     0.0978
     ],
     "bay_usbhub"
    ],
@@ -2499,9 +2571,9 @@
     "CTL-001",
     0.08,
     [
-     0.2081,
+     0.2117,
      -0.128,
-     0.0666
+     0.068
     ],
     "base_controller"
    ],
@@ -2511,7 +2583,7 @@
     [
      0.231,
      -0.1075,
-     0.1185
+     0.1208
     ],
     "bay_can1"
    ],
@@ -2521,7 +2593,7 @@
     [
      0.177,
      -0.112,
-     0.1537
+     0.1413
     ],
     "bay_iso1212"
    ],
@@ -2581,7 +2653,7 @@
     [
      0.3077,
      -0.1344,
-     0.1185
+     0.1208
     ],
     "bay_can2"
    ],
@@ -2591,7 +2663,7 @@
     [
      0.121,
      0.047,
-     0.1194
+     0.1263
     ],
     "bay_can3"
    ],
@@ -2621,27 +2693,27 @@
     [
      0.1705,
      -0.092,
-     0.1439
+     0.1347
     ],
     "bay_tpl7407"
    ],
    [
     "DRV-001",
-    10.0,
+    6.9,
     [
      0.0,
      0.0,
-     0.0986
+     0.098
     ],
     "hub_motor_wheel"
    ],
    [
     "DRV-002",
-    0.9,
+    0.6,
     [
-     -0.0789,
-     -0.0026,
-     0.1079
+     -0.0693,
+     -0.0018,
+     0.1103
     ],
     "motor_driver"
    ],
@@ -2661,7 +2733,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -2671,7 +2743,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -2681,7 +2753,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -2691,7 +2763,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -2701,7 +2773,7 @@
     [
      -0.34,
      0.063,
-     0.2331
+     0.2252
     ],
     "rz_fba"
    ],
@@ -2711,7 +2783,7 @@
     [
      -0.2475,
      0.0,
-     0.2704
+     0.2587
     ],
     "rz_fbb"
    ],
@@ -2721,7 +2793,7 @@
     [
      0.203,
      0.229,
-     0.0822
+     0.0743
     ],
     "bay_fbc"
    ],
@@ -2729,9 +2801,9 @@
     "IMU-001",
     0.005,
     [
-     0.0468,
+     0.0393,
      0.0,
-     0.2184
+     0.2182
     ],
     "imu"
    ],
@@ -2769,8 +2841,8 @@
     "LFT-004",
     0.22,
     [
-     -0.1061,
-     0.0406,
+     -0.094,
+     0.0393,
      0.8833
     ],
     "flag_rod"
@@ -2799,19 +2871,19 @@
     "LFT-007",
     0.03,
     [
-     0.0915,
+     0.1043,
      -0.0067,
-     0.7109
+     0.6972
     ],
     "fasteners"
    ],
    [
     "MEC-002",
-    0.8,
+    1.2,
     [
-     -0.0123,
+     -0.0012,
      0.0,
-     0.0243
+     0.026
     ],
     "castor"
    ],
@@ -2827,7 +2899,7 @@
    ],
    [
     "MEC-004",
-    0.97,
+    1.546,
     [
      0.0875,
      0.0,
@@ -2837,11 +2909,11 @@
    ],
    [
     "MEC-007",
-    1.6,
+    1.479,
     [
      -0.204,
-     -0.0,
-     0.1282
+     0.0,
+     0.157
     ],
     "battery_tray"
    ],
@@ -2849,9 +2921,9 @@
     "MEC-008",
     0.6,
     [
-     0.3142,
-     -0.0006,
-     0.1561
+     0.313,
+     -0.0001,
+     0.1484
     ],
     "lidar_support, lidar_spacer"
    ],
@@ -2859,9 +2931,9 @@
     "MEC-009",
     0.04,
     [
-     0.3639,
-     -0.0006,
-     0.1429
+     0.3729,
+     -0.0001,
+     0.144
     ],
     "camera_mount"
    ],
@@ -2869,9 +2941,9 @@
     "MEC-010",
     0.02,
     [
+     -0.0,
      0.0,
-     0.0001,
-     0.0927
+     0.0913
     ],
     "tof_mount"
    ],
@@ -2879,29 +2951,19 @@
     "MEC-011",
     0.06,
     [
-     -0.0001,
-     0.0002,
-     0.0913
+     0.0,
+     0.0,
+     0.0942
     ],
     "ultrasonic_mount"
-   ],
-   [
-    "MEC-012",
-    0.461,
-    [
-     0.3042,
-     -0.0007,
-     1.3625
-    ],
-    "getac_pocket"
    ],
    [
     "MEC-013",
     0.15,
     [
-     0.0246,
-     -0.0036,
-     0.6455
+     -0.0005,
+     -0.0054,
+     0.6926
     ],
     "harness_fittings"
    ],
@@ -2909,9 +2971,9 @@
     "MEC-014",
     0.6,
     [
-     0.0915,
+     0.1043,
      -0.0067,
-     0.7109
+     0.6972
     ],
     "fasteners"
    ],
@@ -2921,7 +2983,7 @@
     [
      0.0,
      -0.0,
-     0.0706
+     0.0885
     ],
     "motor_brackets"
    ],
@@ -2937,21 +2999,31 @@
    ],
    [
     "MEC-018",
-    11.7,
+    8.89,
     [
      0.06,
      0.0,
-     0.674
+     0.4322
+    ],
+    "lift_column"
+   ],
+   [
+    "MEC-018:moving",
+    2.81,
+    [
+     0.06,
+     0.0,
+     0.9758
     ],
     "lift_column"
    ],
    [
     "MEC-019",
-    2.1,
+    1.293,
     [
-     0.0673,
-     -0.0,
-     0.2984
+     0.085,
+     0.0,
+     0.299
     ],
     "lift_base_plate"
    ],
@@ -2967,11 +3039,11 @@
    ],
    [
     "NAV-001",
-    0.18,
+    0.115,
     [
-     0.3198,
-     -0.0004,
-     0.1758
+     0.3187,
+     -0.0001,
+     0.1696
     ],
     "lidar"
    ],
@@ -2981,19 +3053,9 @@
     [
      0.15,
      -0.175,
-     0.0723
+     0.0677
     ],
     "bay_lidar_uart"
-   ],
-   [
-    "PWR-001",
-    21.5,
-    [
-     -0.204,
-     0.0,
-     0.225
-    ],
-    "battery_cells"
    ],
    [
     "PWR-002",
@@ -3001,7 +3063,7 @@
     [
      -0.201,
      -0.276,
-     0.1499
+     0.1338
     ],
     "rz_bms"
    ],
@@ -3011,13 +3073,13 @@
     [
      -0.1625,
      -0.0105,
-     0.1639
+     0.1497
     ],
     "rz_f0"
    ],
    [
     "PWR-004",
-    0.35,
+    0.29,
     [
      -0.338,
      -0.056,
@@ -3031,7 +3093,7 @@
     [
      0.165,
      -0.053,
-     0.0822
+     0.0743
     ],
     "bay_rsd60"
    ],
@@ -3041,7 +3103,7 @@
     [
      0.155,
      0.1945,
-     0.0799
+     0.0728
     ],
     "bay_usbpd"
    ],
@@ -3051,7 +3113,7 @@
     [
      0.135,
      0.022,
-     0.0617
+     0.0703
     ],
     "bay_pwr009"
    ],
@@ -3061,7 +3123,7 @@
     [
      0.1985,
      -0.144,
-     0.2346
+     0.1952
     ],
     "bay_rsd100"
    ],
@@ -3071,7 +3133,7 @@
     [
      0.1177,
      0.0709,
-     0.0602
+     0.0608
     ],
     "bay_ina228"
    ],
@@ -3081,7 +3143,7 @@
     [
      -0.293,
      -0.0733,
-     0.1809
+     0.1638
     ],
     "rz_pwr017"
    ],
@@ -3091,7 +3153,7 @@
     [
      -0.15,
      0.0,
-     0.2724
+     0.2628
     ],
     "rz_batcon"
    ],
@@ -3111,9 +3173,59 @@
     [
      -0.317,
      0.148,
-     0.0813
+     0.0737
     ],
     "rz_fchg"
+   ],
+   [
+    "PWR-023",
+    15.84,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-024",
+    0.22,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-025",
+    0.06,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-026",
+    0.01,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
+   ],
+   [
+    "PWR-027",
+    0.29,
+    [
+     -0.204,
+     0.0,
+     0.159
+    ],
+    "battery_cells"
    ],
    [
     "PWR-029",
@@ -3121,17 +3233,17 @@
     [
      0.195,
      0.027,
-     0.0613
+     0.0677
     ],
     "bay_pwr029"
    ],
    [
     "PWR-030",
-    0.75,
+    0.8,
     [
      0.19,
      0.093,
-     0.2366
+     0.2057
     ],
     "bay_ddr240"
    ],
@@ -3141,7 +3253,7 @@
     [
      0.1425,
      0.177,
-     0.0613
+     0.0677
     ],
     "bay_pwr032"
    ],
@@ -3149,9 +3261,9 @@
     "SAF-001",
     0.3,
     [
-     0.2328,
+     0.2215,
      0.065,
-     0.7
+     0.6888
     ],
     "estop, second_estop"
    ],
@@ -3161,7 +3273,7 @@
     [
      0.2354,
      0.0047,
-     0.1886
+     0.1714
     ],
     "bay_din"
    ],
@@ -3171,7 +3283,7 @@
     [
      -0.2325,
      0.016,
-     0.1774
+     0.1588
     ],
     "rz_k1k2"
    ],
@@ -3181,7 +3293,7 @@
     [
      -0.326,
      -0.138,
-     0.2316
+     0.2232
     ],
     "rz_pre"
    ],
@@ -3189,7 +3301,7 @@
     "SAF-005",
     0.12,
     [
-     0.3899,
+     0.368,
      -0.13,
      0.1425
     ],
@@ -3201,7 +3313,7 @@
     [
      -0.335,
      0.11,
-     0.1066
+     0.1033
     ],
     "rz_brake"
    ],
@@ -3209,9 +3321,9 @@
     "SNS-001",
     0.01,
     [
+     -0.0,
      0.0,
-     0.0001,
-     0.0921
+     0.0926
     ],
     "tof"
    ],
@@ -3220,8 +3332,8 @@
     0.236,
     [
      0.0005,
-     0.0001,
-     0.0913
+     0.0,
+     0.0928
     ],
     "ultrasonic"
    ],
@@ -3241,7 +3353,7 @@
     [
      0.3088,
      0.0,
-     1.39
+     1.375
     ],
     "getac_tablet"
    ],
@@ -3249,9 +3361,9 @@
     "UI-002",
     0.461,
     [
-     0.3042,
-     -0.0007,
-     1.3625
+     0.3153,
+     0.0,
+     1.3767
     ],
     "getac_pocket"
    ],
@@ -3261,7 +3373,7 @@
     [
      -0.2945,
      0.113,
-     0.0798
+     0.0727
     ],
     "rz_kchg"
    ],
@@ -3322,8 +3434,8 @@
  "sweep_valid_poses": 488,
  "counts": {
   "blocker": 0,
-  "major": 2,
-  "minor": 47
+  "major": 0,
+  "minor": 39
  },
  "steel_chassis_kg": 15.77
 }

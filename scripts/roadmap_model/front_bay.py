@@ -28,8 +28,8 @@ SCAN = (0.22205 - 0.005, 0.22205 + 0.005)
 SECTOR_DEG = 95.0
 # compute and control parts that are drawn by the base GLB today, re-placed by the options (catalogue outlines)
 CATALOGUE = {
-    "compute": {"name": "Jetson Orin NX on reComputer Robotics J401 with heatsink and fan", "bom": "CMP-001, CMP-002, CMP-003, CMP-005, CMP-007",
-                "dims": [118.1, 115.0, 45.0], "domain": "SIG", "mass": 0.62, "geom": "PROVENANCE.yaml components.compute (J401 outline with the fan kit), CAD v0.2 envelope", "standoff": "M3", "upright": True},
+    "compute": {"name": "Jetson Orin NX 8 GB on reComputer Robotics 104 with heatsink and fan (D-01)", "bom": "CMP-001, CMP-002, CMP-003, CMP-005, CMP-007",
+                "dims": [118.1, 115.0, 45.0], "domain": "SIG", "mass": 0.62, "geom": "PROVENANCE.yaml components.compute (earlier J401 outline with the fan kit kept until the Robotics 104 drawing, D-01 hold), CAD v0.2 envelope", "standoff": "M3", "upright": True},
     "base_controller": {"name": "NUCLEO-H723ZG base controller on standoffs", "bom": "CTL-001", "dims": [133.34, 70.0, 22.0], "domain": "SIG", "mass": 0.09,
                         "geom": "NUCLEO-144 133.34 x 70 mm (ST UM2407); 12 mm standoffs plus parts", "standoff": "M3", "upright": True},
 }

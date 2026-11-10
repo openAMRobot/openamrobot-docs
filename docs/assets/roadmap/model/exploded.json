@@ -24,7 +24,7 @@
   {
    "n": 4,
    "title": "Compute and base controller",
-   "text": "Front electronics bay, one layout (owner correction A2, 2 Nov 2026): the MEC-005 plate on the base sheet with a second tier, the Jetson Orin NX on its J401 carrier, the NUCLEO-H723ZG, the CAN and I/O modules, the converters, FB-C and the PNOZ s3 on a DIN carrier; the IMU board stays on the electronics bracket at imu_link.",
+   "text": "Front electronics bay, one layout (owner correction A2, 2 Nov 2026): the MEC-005 plate on the base sheet with a second tier, the Jetson Orin NX 8 GB on its Robotics 104 carrier (D-01), the NUCLEO-H723ZG, the CAN and I/O modules, the converters, FB-C and the PNOZ s3 on a DIN carrier; the IMU board stays on the electronics bracket at imu_link.",
    "frame": "base"
   },
   {
@@ -1639,6 +1639,23 @@
     ]
    }
   },
+  "tz_receiver_frame": {
+   "stage": 3,
+   "offsets": {
+    "tz_receiver_frame": [
+     0,
+     0,
+     -0.25
+    ]
+   },
+   "open": {
+    "tz_receiver_frame": [
+     0,
+     0,
+     -0.12
+    ]
+   }
+  },
   "base_cutout": {
    "stage": 1,
    "offsets": {
@@ -2188,6 +2205,11 @@
      0,
      -0.25,
      0.1
+    ],
+    "harness_sleeve_left": [
+     0,
+     -0.25,
+     0.1
     ]
    },
    "open": {
@@ -2230,6 +2252,11 @@
      0,
      0,
      0
+    ],
+    "harness_sleeve_left": [
+     0,
+     0,
+     0
     ]
    }
   },
@@ -2262,7 +2289,7 @@
   }
  },
  "labels": {
-  "compute": "Jetson Orin NX + J401",
+  "compute": "Jetson Orin NX 8 GB + Robotics 104",
   "base_controller": "NUCLEO-H723ZG",
   "motor_driver": "Motor driver",
   "lidar": "RPLIDAR S3",
@@ -2523,7 +2550,7 @@
      "base_controller",
      "imu"
     ],
-    "caption": "Jetson Orin NX on the J401 carrier, NUCLEO-H723ZG base controller and IMU"
+    "caption": "Jetson Orin NX 8 GB on the Robotics 104 carrier, NUCLEO-H723ZG base controller and IMU"
    },
    {
     "t": 36,
@@ -3167,6 +3194,7 @@
   "side_plates",
   "tz_metal_free_zone",
   "tz_receiver",
+  "tz_receiver_frame",
   "us_locknut",
   "wheel_guards"
  ]

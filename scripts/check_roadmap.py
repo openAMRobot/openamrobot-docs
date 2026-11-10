@@ -48,6 +48,7 @@ import base64
 import csv
 import datetime as dt
 import hashlib
+import math
 import json
 import os
 import re
@@ -575,7 +576,7 @@ HEAD_PITCH_BASELINE = 30
 LIFT_PARTS = {"lift_stop_sensors": "LFT-001", "lift_sensor_brackets": "LFT-003", "flag_rod": "LFT-004",
               "rod_corner_bracket": "LFT-005", "lift_flag": "LFT-006"}
 LIFT_SENSOR_Z = [0.12, 0.295, 0.47]  # above the column base, P-03 rev20.0 item 24
-ZED_X = 0.237   # A4 (2 Nov 2026): lens 57 mm ahead of the shoulder
+ZED_X = 0.240   # owner decision 8 Nov 2026 (P-03 rev20.4 item 28): lens 60 mm ahead of the shoulder (57 mm on 2 Nov)
 
 
 def getac_default_errors(size):
@@ -724,7 +725,7 @@ def check_chest_and_riser(root, html, err, comps):
         err("model.js", "M.build default head pitch is not the hp30 baseline")
     zm = re.search(r"ZED_X:\s*([\d.]+)", js)
     if not zm or abs(float(zm.group(1)) - ZED_X) > 1e-6:
-        err("model.js", "M.DIMS.ZED_X %s, expected %.3f (lens 57 mm ahead of the shoulder, A4)" % (zm and zm.group(1), ZED_X))
+        err("model.js", "M.DIMS.ZED_X %s, expected %.3f (lens 60 mm ahead of the shoulder, P-03 rev20.4 item 28)" % (zm and zm.group(1), ZED_X))
     h = html["robot.html"]
     for need, what in (('this.hp=%d,' % HEAD_PITCH_BASELINE, "initial head pitch state"),
                        ('id="hp" min="15" max="35" step="5" value="%d"' % HEAD_PITCH_BASELINE, "head pitch slider value"),
@@ -1248,12 +1249,7 @@ def upper_body_sensor_poses(js, urdf_path):
     Rz = _rpy(0, hp, 0)
     lens = [bp + num("ZED_X"), 0.0, top + float(re.search(r"RETRACTED: ([\d.]+)", dims).group(1)) + num("MOUNT_ABOVE_COL") + num("ZED_ABOVE_SH")]
     src = frames.get("head_camera_link")
-    if src:   # A4 (2 Nov 2026): lens 57 mm ahead of J1_A; the combined model keeps 42 mm until the P-03 entry (+15 mm along x)
-        src = dict(src) if isinstance(src, dict) else src
-        try:
-            src["t"] = [src["t"][0] + 0.015, src["t"][1], src["t"][2]]
-        except (TypeError, KeyError, IndexError):
-            src = (src[0], [src[1][0] + 0.015, src[1][1], src[1][2]]) if isinstance(src, tuple) else src
+    # P-03 rev20.4 item 28: lens 60 mm ahead of J1_A; the combined model (upperbody-sw #48 head) carries it, no correction
     out["head_camera_link"] = {"drawn_body": [a + b for a, b in zip(lens, _mv(Rz, [-0.013, 0, 0]))], "drawn_R": Rz, "source": src}
     return out
 
@@ -1405,9 +1401,11 @@ def check_model_sources(root, html, err):
             err("model", "upper-body item %s: model %.4f, datums.yaml %.4f (more than 1 mm)" % (k, v, dm[k]))
     gs, hs = chest["drawn"]["getac_tablet"]["size"], chest["drawn"]["head_light"]["size"]
     if oc:
-        want_z = float(dm["getac_tablet_z_above_column_top"]) - oc["getac_lower_by"]
+        want_z = float(oc.get("getac_item26_z", dm["getac_tablet_z_above_column_top"])) - oc["getac_lower_by"]
         if abs(chest["drawn"]["getac_tablet"]["z"] - want_z) > tol:
-            err("model", "Getac centre %.4f above the column top, A3 gives %.4f (datum minus 40 mm)" % (chest["drawn"]["getac_tablet"]["z"], want_z))
+            err("model", "Getac centre %.4f above the column top, the owner decisions give %.4f (item 26 placeholder minus %.0f mm)" % (chest["drawn"]["getac_tablet"]["z"], want_z, oc["getac_lower_by"] * 1000))
+        if "getac_item26_z" in oc and abs(float(dm["getac_tablet_z_above_column_top"]) - want_z) > tol:
+            err("model", "datums.yaml getac_tablet_z_above_column_top %.4f, the owner decisions give %.4f" % (float(dm["getac_tablet_z_above_column_top"]), want_z))
         if any(abs(a - b) > tol for a, b in zip(oc["getac_size"], gs)):
             err("model", "Getac size %s, A3 gives the portrait %s" % (gs, oc["getac_size"]))
         if abs(chest["gap_light_tablet"] - oc["light_gap"]) > tol:
@@ -1490,6 +1488,9 @@ SUPERSEDED_REFERENCE = [
     (r"rear face of the arm post", "second E-stop is on top of the moving adapter plate", r"E-stop"),
     (r"\b42 mm ahead of\b", "ZED Mini lens is 57 mm ahead of the arm mount point", None),
     (r"\bin one row\b", "battery is proposed as 4 + 4 cells in two trays", None),
+    (r"Orin NX 16 GB", "compute is the Jetson Orin NX 8 GB on the reComputer Robotics 104 (D-01, P-03 rev20.5 item 29)", None),
+    (r"\b15 mm (offset )?from any side\b", "receiver: no metal within 20 mm of its sides (plastic frame), 15 mm above (D-02, D-03)", None),
+    (r"\bwithin 50 mm inside\b", "no inward band beside the cover slot (D-06)", None),
 ]
 
 
@@ -1823,9 +1824,12 @@ def harness_support_errors(H):
             L = sm[-1][0]
             worst = None
             for s_, d_mm in sec["support"]:
-                if s_ < efree - 1e-6 or s_ > L - efree + 1e-6 or d_mm <= smax * 1000 + 1e-6:
+                if d_mm <= smax * 1000 + 1e-6:
                     continue
                 p = min(sm, key=lambda q: abs(q[0] - s_))[1]
+                # local exit: within end_free_m of a route end, measured straight (as harness.py routes it, 8 Nov 2026)
+                if min(math.dist(p, sec["pts"][0]), math.dist(p, sec["pts"][-1])) <= efree + 1e-6:
+                    continue
                 if _exempt(c, p, H):
                     continue
                 if worst is None or d_mm > worst[0]:
@@ -1899,10 +1903,41 @@ def harness_separation_errors(H):
     return out
 
 
+SLOT_TIE_RADIUS = 0.004   # tie head envelope around the tie point (slot_rule.TIE_RADIUS)
+
+
+def harness_slot_errors(H, step=None):
+    """Owner rule of 8 Nov 2026 (P-03 rev20.5 item 29, decision D-06; register WIRING-ROUTING): no cable, busbar or tie, by its
+    outer surface (half od_mm; ties 4 mm), in the slot between the panel upper edges and the cover lower edge (z 214 to
+    232 mm), all around the robot, with no inward band. Every route segment of every cable and busbar (fixed or routed) is
+    tested exactly against each cover_slot_* keep-out grown by the cable's outer radius (slot_rule.slot_violations: a
+    conservative clearance model, touching counts as a violation), so a segment that crosses the slot between its endpoints
+    is caught; every tie point is checked too. No cable is exempt, the LiDAR cable included: the LiDAR may look through the
+    front slot, but its cable may not lie in it. Components are not checked: at the rear, parts may sit in or above the band
+    (D-06). `step` is accepted for compatibility and ignored."""
+    import sys as _sys
+    _here = os.path.join(os.path.dirname(os.path.abspath(__file__)), "roadmap_model")
+    if _here not in _sys.path:
+        _sys.path.insert(0, _here)
+    from slot_rule import slot_violations
+    zones = [k for k in H.get("keep_out", []) if k["id"].startswith("cover_slot_")]
+    out = []
+    for c in H.get("cables", []):
+        r = float(c.get("od_mm") or 0.0) / 2000.0   # outer surface, not the centre line (review of #83): the box grown by the radius
+        for sec in c.get("sections", []):
+            for zid in slot_violations(sec["pts"], zones, radius=r):
+                out.append("%s (%s) %s section crosses %s (D-06: no cable, busbar or tie in the slot band)" % (
+                    c["id"], c.get("kind", "cable"), sec["kind"], zid))
+    for t in H.get("ties", []):
+        for zid in slot_violations([t["p"]], zones, radius=SLOT_TIE_RADIUS):
+            out.append("tie %s lies in %s at %s (D-06)" % (t["id"], zid, [round(v, 3) for v in t["p"]]))
+    return out
+
+
 def harness_errors(H, rows):
     return (harness_label_errors(H, rows) + harness_span_errors(H) + harness_over_errors(H) + harness_withdrawal_errors(H)
             + harness_bend_errors(H) + harness_lift_errors(H) + harness_axis_errors(H) + harness_support_errors(H)
-            + harness_above_errors(H) + harness_separation_errors(H))
+            + harness_above_errors(H) + harness_separation_errors(H) + harness_slot_errors(H))
 
 
 def check_harness(root, err):

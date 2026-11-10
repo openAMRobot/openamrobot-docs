@@ -519,7 +519,7 @@
    "existing_cad": null,
    "method": "machined 6082-T6",
    "thickness_mm": 10.0,
-   "mass_kg": 1.207,
+   "mass_kg": 1.291,
    "mass_basis": "per set as exported, volume x density",
    "placement": [
     {
@@ -536,22 +536,22 @@
      ]
     }
    ],
-   "placement_note": "plate x -0.080 to 0.250, y +/-0.070, z 0.294 to 0.304; arch bolts x +/-0.060, y +/-0.050; column screws bp000 x -0.035 / 0.155, bp050 x 0.015 / 0.205, y +/-0.015",
+   "placement_note": "plate x -0.090 to 0.260, y +/-0.070, z 0.294 to 0.304; arch bolts x +/-0.060, y +/-0.050; column tab holes (M8 tapped) bp000 x -0.070 / 0.190, bp050 x -0.020 / 0.240, y +/-0.015",
    "configuration": "one plate for bp000 and bp050 (two column hole sets)",
    "adjustment": "two column hole sets (bp000, bp050); arch slots 18 mm long give +/-3.5 mm fore-aft",
    "fasteners": [
     {
-     "joint": "DOLD column to the lift base plate (from below, first, on the bench)",
-     "part": "DIN 7500 thread-forming countersunk screw, flush with the plate underside",
-     "size": "M8 x 30 (>= 20 mm engagement)",
+     "joint": "DOLD column foot to the lift base plate (from above through the foot tab holes into M8 tapped through MEC-019; no washer, medium threadlocker; D-20)",
+     "part": "DIN 7984 low head socket cap screw, class 8.8",
+     "size": "M8 x 14",
      "qty": 4,
-     "standard": "DIN 7500",
+     "standard": "DIN 7984",
      "class": "named"
     },
     {
-     "joint": "lift base plate to the centre-frame arch (from above, into the M8 rivet nuts)",
+     "joint": "lift base plate to the centre-frame arch (from above, through the arch top sheet into the backing plate; D-21)",
      "part": "ISO 4762 socket head cap screw class 8.8 + ISO 7089 washer",
-     "size": "M8 x 20",
+     "size": "M8 x 25",
      "qty": 4,
      "standard": "ISO 4762 / ISO 7089",
      "class": "proposed"
@@ -565,21 +565,21 @@
      "solids": [
       "MEC-019_lift_base_plate"
      ],
-     "step_bytes": 114130,
-     "stl_bytes": 125484,
+     "step_bytes": 93454,
+     "stl_bytes": 87084,
      "reimport_valid": true,
-     "mass_kg": 1.207
+     "mass_kg": 1.291
     }
    ],
    "source_script": "scripts/roadmap_model/design_intent/lift_base_plate.py",
-   "next_step": "CAD owner: confirm the arch rivet-nut pattern (inner 120 x 100), read the DOLD column-screw pattern, cut the cover opening forward to x 0.260 and model the plate in CAD.",
+   "next_step": "CAD owner (mechanical owner): model the 350 x 140 mm plate with both tapped tab-hole sets (260 x 30 mm) and the two lift cable openings; machining only after the DOLD drawing and a dry fit (D-20).",
    "owner": "fridayali",
    "parameters": {
-    "length_mm": 330.0,
+    "length_mm": 350.0,
     "width_mm": 140.0,
     "thickness_mm": 10.0,
-    "x_rear_m": -0.08,
-    "x_front_m": 0.25,
+    "x_rear_m": -0.09,
+    "x_front_m": 0.26,
     "arch_holes_x_m": [
      -0.06,
      0.06
@@ -593,7 +593,7 @@
      "bp050": 0.11
     },
     "column_screws_mm": [
-     190.0,
+     260.0,
      30.0
     ],
     "edge_mm": 20.0
