@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-10
+
+### Changed
+
+- Public BOM extract: dated stock and quote notes removed from the status fields and the purchase view of the hardware page at the import layer (`bom715.py` `public_status()`), with tests; the BOM Issue 7.14 reference page names no stock risk.
+
 ## 2026-11-09
 
 ### Changed
