@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import unittest
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "roadmap_model"))
@@ -70,6 +71,15 @@ class CommittedPage(unittest.TestCase):
         self.assertNotIn("</", s[a:b])
         bad = {k: v["Qty"] for k, v in json.loads(s[a:b]).items() if v.get("Qty") and not re.fullmatch(r"\d+(?:\.\d+)?", v["Qty"])}
         self.assertEqual(bad, {})
+
+
+    def test_mass_export_and_public_bom_use_the_same_revision(self):
+        page = Path(PAGE)
+        facts = Path(HERE).parent / "roadmap_model" / "facts.yaml"
+        issue = re.search(r"^  BOM: (Issue [0-9.]+)", facts.read_text(encoding="utf-8"), re.M).group(1)
+        export = (page.parent / "model" / "mass_export.yaml").read_text(encoding="utf-8")
+        self.assertIn("BOM " + issue + " masses", export)
+        self.assertIn("<h1>Hardware: BOM " + issue, page.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
