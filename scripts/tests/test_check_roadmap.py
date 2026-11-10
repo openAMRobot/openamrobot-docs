@@ -561,3 +561,19 @@ class HarnessCommitted(unittest.TestCase):
         import csv
         rows = list(csv.DictReader(open(os.path.join(MODEL, "cable_list.csv"), encoding="utf-8")))
         self.assertEqual(C.harness_errors(H, rows), [])
+
+
+class PurchasingStatus(unittest.TestCase):
+    """Audit of 10 Nov 2026: internal purchasing status stays off the public pages."""
+
+    def rx(self):
+        return dict(C.FORBIDDEN)["purchasing status"]
+
+    def test_purchasing_status_is_found(self):
+        for t in ("Drive set invoiced", "DOLD pro forma requested", "most parts not yet quoted", "a firm quote is needed"):
+            self.assertTrue(self.rx().search(t), t)
+
+    def test_design_and_supply_wording_passes(self):
+        for t in ("procurement confirmation pending", "supply is confirmed", "quoted from the datasheet"):
+            self.assertFalse(self.rx().search(t), t)
+

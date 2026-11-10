@@ -2,7 +2,7 @@
 title: OpenAMRobot 2.0 roadmap and status
 tags: [integrator, developer, partner]
 status: active
-description: Interactive roadmap of OpenAMRobot 2.0 at the 24 October 2026 snapshot - what we are building, the planned architecture, where each part stands with evidence, and the work to v2.0.0 on 18 December 2026.
+description: Interactive roadmap of OpenAMRobot 2.0 at the 9 November 2026 snapshot - what we are building, the planned architecture, where each part stands with evidence, and the work to v2.0.0 on 18 December 2026.
 ---
 
 # OpenAMRobot 2.0 roadmap and status
@@ -11,7 +11,7 @@ description: Interactive roadmap of OpenAMRobot 2.0 at the 24 October 2026 snaps
 
 **Canonical sources:** the OpenAMRobot 2.0 plan set (P-03 rev20.6 with the decision baseline D-01 to D-34, E-01 rev1.8, M-01 rev19.10, BOM Issue 7.15, B-02 rev18.11, P-02 rev19.2), the [decisions register](https://github.com/openAMRobot/.github) (decisions.yaml at 5ed600e, with the open register update in .github#90), the main branches and open pull requests of the [openAMRobot repositories](https://github.com/openAMRobot) on 9 November 2026, and the simulation audit of 19 October 2026. Where two sources disagree, the pages show the design value with a drift marker; the Progress page lists every known drift. Each status on the pages links to its evidence.
 
-**Milestones:** two delivery lines. Release-001 rig: H-day 16 November 2026 confirmed, the working v0.0.1 Teensy platform runs the current 2.0 base software at 0.20 m/s (a software test, not Build 1 commissioning or physical acceptance) · Gate A check 13 November 2026 · rehearsal 15 November 2026. Earlier Gate A and STM32 go/no-go dates (30 October, 6 November) are historical. Build 1 (STM32, CAN): v2.0.0-rc.1 20 November 2026 · bench week 23 to 27 November 2026 · power-on 30 November to 4 December 2026 · physical integration to 18 December 2026 · v2.0.0 18 December 2026. Dates are plans, not results.
+**Milestones:** two delivery lines. Release-001 rig: H-day 16 November 2026 confirmed; we plan to run the current 2.0 base software on the working v0.0.1 Teensy platform at 0.20 m/s after the configuration and preflight checks (a software test, not Build 1 commissioning or physical acceptance) · Gate A check 13 November 2026 · rehearsal 15 November 2026. Earlier Gate A and STM32 go/no-go dates (30 October, 6 November) are historical. Build 1 (STM32, CAN): v2.0.0-rc.1 20 November 2026 · bench week 23 to 27 November 2026 · power-on 30 November to 4 December 2026 · physical integration to 18 December 2026 · v2.0.0 18 December 2026. Dates are plans, not results.
 
 !!! warning "Status, not acceptance"
     No physical acceptance is recorded yet for any part of OpenAMRobot 2.0. Simulation results ran at about 0.1 of real time with test fixtures and mock hardware in places; they are not safety evidence. The hardwired E-stop chain is the only safety function.
