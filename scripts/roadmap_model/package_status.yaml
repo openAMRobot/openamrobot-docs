@@ -63,7 +63,7 @@ packages:
     status: MERGED AND TESTED
     evidence: {check: Model tests a6 (static+mock), run: "https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/42408877792/job/128512477486", commit: 2ca7392, profile: static and mock (GenericSystem), conclusion: success}
     prs: [48]
-    note: "Mass re-pin in review (#48): A7 passed on 9a52c53; head a9d3349 has A6 passed and A7 running (10 Nov)."
+    note: "Mass re-pin in review (#48): A7 passed on 9a52c53; head a9d3349 has A6 and A7 passed; review changes requested (10 Nov)."
   openamrobot_upperbody_gazebo:
     area: upper
     status: MERGED AND TESTED

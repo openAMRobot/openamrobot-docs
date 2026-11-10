@@ -767,7 +767,7 @@
    "prs": [
     48
    ],
-   "note": "Mass re-pin in review (#48): A7 passed on 9a52c53; head a9d3349 has A6 passed and A7 running (10 Nov).",
+   "note": "Mass re-pin in review (#48): A7 passed on 9a52c53; head a9d3349 has A6 and A7 passed; review changes requested (10 Nov).",
    "area": "upper"
   },
   "openamrobot_upperbody_gazebo": {
