@@ -2,47 +2,128 @@
 title: Debugging Tools
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Debugging Tools</h1><p>Explain debugging tools in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--learning">Learning module</span><h1>Debugging Tools</h1><p>Collect evidence from a ROS 2 system before changing code or configuration.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## For
 
-## What this page should contain
+Beginners, developers and integrators who need a repeatable first response to a ROS 2 problem.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**Outcome:** identify running nodes, inspect topic connections, check logs and gather a useful diagnostic snapshot.
 
-## Content template
+**Prerequisites:** ROS 2 Jazzy sourced in each terminal. Run commands in a demo or approved simulation first.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## A useful debugging order
 
-### Procedure or explanation
+When something does not work, avoid changing several parameters at once. Start by identifying what is running and what evidence is missing.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+1. Confirm the expected processes are alive.
+2. Inspect the topic, service or action interface.
+3. Check message flow and timestamps.
+4. Read node logs and lifecycle state.
+5. Compare the active configuration with the intended release.
+6. Change one thing, then repeat the same verification.
 
-### If it did not work
+## 1. Inspect nodes and topics
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+```bash
+ros2 node list
+ros2 node info <node_name>
+ros2 topic list -t
+ros2 topic info <topic_name>
+```
 
-## Authoritative external references
+Use `ros2 node info` to see a node's publishers, subscribers, services and actions. Use `ros2 topic info` to see the publisher/subscriber counts and message type for a topic.
 
-- [ROS 2 Jazzy documentation](https://docs.ros.org/en/jazzy/)
+For a short message sample:
 
-## Contribution note
+```bash
+ros2 topic echo <topic_name> --once
+```
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+For a publishing rate:
+
+```bash
+ros2 topic hz <topic_name>
+```
+
+For bandwidth:
+
+```bash
+ros2 topic bw <topic_name>
+```
+
+Some topics publish only when an event occurs. A low rate or no message during a short observation window is not automatically a fault.
+
+## 2. Inspect services, actions and parameters
+
+```bash
+ros2 service list -t
+ros2 action list -t
+ros2 param list <node_name>
+```
+
+Read the interface definition before calling an unfamiliar service or sending an action goal. Use the parameter commands to inspect values before changing them.
+
+## 3. Check logs and process output
+
+Launch nodes with output directed to the screen when diagnosing startup problems. ROS 2 logs are commonly stored under the user's ROS log directory:
+
+```bash
+ls -lt ~/.ros/log
+```
+
+Use the launch terminal output to identify which process first reports an error. Later errors may be consequences of the first failure.
+
+For a process that has exited, inspect its log directory and the exact command, environment and package version used to start it.
+
+## 4. Check environment consistency
+
+In every terminal, verify that the intended ROS distribution and workspace overlay are sourced:
+
+```bash
+printenv | grep -E 'ROS_DISTRO|ROS_DOMAIN_ID|RMW_IMPLEMENTATION'
+ros2 doctor --report
+```
+
+For a Jazzy native environment:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+```
+
+If you are using the OpenAMRobot Docker environment, run ROS 2 diagnostics inside the same project container rather than mixing host and container installations.
+
+## 5. Capture a useful diagnostic report
+
+When asking for help, include:
+
+- the repository and commit or release;
+- operating system, ROS distribution and RMW implementation;
+- exact launch or command line;
+- complete first error message and relevant log excerpt;
+- node/topic/service/action names and types;
+- what you expected and what happened;
+- whether the issue reproduces in a clean simulation.
+
+Avoid sharing passwords, tokens, private network details or personal data in logs.
+
+## Common symptoms
+
+| Symptom | First checks |
+|---|---|
+| Node is missing | Launch output, package installation, sourced workspace and process exit logs. |
+| Topic exists but no data arrives | Publisher count, node status, QoS, timestamps and whether the topic is event-driven. |
+| CLI cannot find a package | ROS distribution, workspace overlay and package build/install status. |
+| Nodes cannot discover each other | ROS domain ID, network/firewall, container networking and RMW configuration. |
+| TF lookup fails | Frame spelling, transform publisher, timestamps and simulated-time consistency. |
+| Node repeatedly restarts | First exception in its log, launch respawn settings and missing dependencies. |
+
+## Safety boundary
+
+Do not use diagnostic commands as a reason to publish arbitrary commands, reset controllers or change safety-related parameters on a physical robot. Preserve logs and use the approved recovery and escalation process. Software diagnostics do not replace physical emergency-stop or site safety procedures.
+
+## Next steps
+
+- [Nodes and topics](nodes-and-topics.md)
+- [TF frames](tf-frames.md)
+- [ROS 2 Jazzy troubleshooting](https://docs.ros.org/en/jazzy/How-To-Guides/Getting-Backtrace-in-ROS-2.html)
