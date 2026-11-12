@@ -2,47 +2,34 @@
 title: Setup
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Setup</h1><p>Provide the learning-layer reference for setup and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Reference guide</span><h1>Interface setup and validation</h1><p>Use the canonical interfaces repository for package setup, verification and schema validation.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## For
 
-## What this page should contain
+Developers setting up or validating ROS 2 interface packages used by OpenAMRobot.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**When you finish:** you will have located the canonical setup instructions and know where to find the authoritative validation requirements.
 
-## Content template
+## Canonical source
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+The [openAMRobot/openamrobot-interfaces repository](https://github.com/openAMRobot/openamrobot-interfaces) owns interface definitions, package versions, reviewed snapshots, schemas, fixtures and implementation history.
 
-### Procedure or explanation
+Follow the setup instructions in that repository for the ROS 2 distribution and package version you are using. Do not rely on copied commands or definitions in this page when the canonical instructions have changed.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+## Verification
 
-### If it did not work
+Use the canonical [interface verification guide](https://github.com/openAMRobot/openamrobot-interfaces/blob/main/docs/verification.md) for the required checks and evidence.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## Schema validation
 
-## Owning OpenAMRobot source
+Use the canonical [schema validation guide](https://github.com/openAMRobot/openamrobot-interfaces/blob/main/docs/schema-validation.md).
 
-- [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces) – canonical source, versions, implementation and issue history.
+Future domain contracts must register their schemas and positive and negative fixtures in `schemas/validation.json`. If a domain does not have a schema, record its schema coverage as `NOT_APPLICABLE`; absence of a schema is not a passing validation result.
+
+## CI status and limitations
+
+Repository-local checks are not equivalent to full H-CI adoption. The downstream-consumer matrix, reusable workflow rollout and pinned validation environment remain separate rollout work. Do not describe this repository as fully H-CI compliant until those steps have been independently completed and evidenced.
 
 ## Contribution note
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+Submit changes to interface definitions, schemas, fixtures and their validation rules in [openAMRobot/openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces). This page should remain a short learning-layer entry point linking to that canonical source.
