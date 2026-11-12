@@ -3,18 +3,59 @@
 {% block extrahead %}
   {{ super() }}
   {% if page %}
+  {% set src = page.file.src_uri %}
+  {% set org_id = "https://botshare.ai/#organization" %}
+  {% set code_id = config.site_url ~ "#software" %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": {% if page.file.src_uri == "index.md" %}"WebSite"{% elif page.file.src_uri.startswith("academy/program-") %}"Course"{% else %}"TechArticle"{% endif %},
-    {% if page.file.src_uri.startswith("academy/program-") %}"name"{% else %}"headline"{% endif %}: {{ page.title | tojson }},
+    "@type": "Organization",
+    "@id": {{ org_id | tojson }},
+    "name": "Botshare LTD",
+    "alternateName": ["Botshare", "OpenAMRobot by Botshare"],
+    "url": "https://botshare.ai",
+    "logo": {{ (config.site_url ~ "assets/openamrobot-logo.jpg") | tojson }},
+    "description": "Botshare LTD (Cyprus company ID HE479056) initiates, operates and controls the open-source OpenAMRobot project. Not affiliated with other companies named Botshare.",
+    "address": {"@type": "PostalAddress", "addressLocality": "Limassol", "addressCountry": "CY"},
+    "sameAs": ["https://github.com/openAMRobot", "https://docs.openamrobot.ai/", "https://botshare.ai/openamrobot"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": {% if src == "index.md" %}"WebSite"{% elif src.startswith("academy/program-") %}"Course"{% else %}"TechArticle"{% endif %},
+    {% if src.startswith("academy/program-") %}"name"{% else %}"headline"{% endif %}: {{ page.title | tojson }},
     "description": {{ page_description | default(config.site_description) | tojson }},
     "url": {{ (config.site_url ~ page.url) | tojson }},
+    "inLanguage": "en",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "about": {"@id": {{ code_id | tojson }}},
     "author": {"@type": "Organization", "name": "OpenAMRobot", "url": "https://github.com/openAMRobot"},
-    "publisher": {"@type": "Organization", "name": "Botshare LTD", "url": "https://botshare.ai"}{% if page.meta.capability_status %},
+    "publisher": {"@id": {{ org_id | tojson }}}{% if page.meta.capability_status %},
     "additionalProperty": {"@type": "PropertyValue", "name": "Capability status", "value": {{ page.meta.capability_status | tojson }}}{% endif %}
   }
   </script>
+  {% if src in ["index.md", "at-a-glance.md", "about/citation.md"] %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "@id": {{ code_id | tojson }},
+    "name": "OpenAMRobot",
+    "alternateName": ["OpenAMRobot by Botshare", "OpenAMRobot 2.0", "OpenAMR"],
+    "description": "Open-source mobile manipulator: a ROS 2 mobile base with a lift and two OpenArm 2.0 arms, with open hardware (CERN-OHL-P-2.0), software and firmware (MIT) and documentation (CC BY 4.0).",
+    "url": {{ (config.site_url ~ "at-a-glance/") | tojson }},
+    "codeRepository": "https://github.com/openAMRobot",
+    "programmingLanguage": ["Python", "C++", "C", "JavaScript"],
+    "runtimePlatform": ["ROS 2 Jazzy", "Ubuntu 24.04"],
+    "keywords": ["open-source mobile manipulator", "open-source dual-arm mobile robot", "OpenArm 2.0", "mobile base with lift", "ROS 2 mobile robot platform", "LeRobot", "mobile manipulation", "Nav2", "MoveIt 2", "open hardware", "embodied AI"],
+    "license": ["https://spdx.org/licenses/MIT.html", "https://spdx.org/licenses/CERN-OHL-P-2.0.html", "https://spdx.org/licenses/CC-BY-4.0.html"],
+    "creator": {"@id": {{ org_id | tojson }}},
+    "maintainer": {"@id": {{ org_id | tojson }}},
+    "sameAs": ["https://github.com/openAMRobot", "https://github.com/openAMRobot/openamr-upperbody-sw", "https://github.com/openAMRobot/openamr-platform-sw"]
+  }
+  </script>
+  {% endif %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

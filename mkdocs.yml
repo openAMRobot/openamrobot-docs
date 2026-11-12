@@ -1,5 +1,5 @@
 site_name: "OpenAMRobot Documentation"
-site_description: "The OpenAMRobot knowledge hub: learn, build, operate, customize, and create a business around an open-source Embodied AI platform"
+site_description: "Documentation for OpenAMRobot by Botshare, an open-source mobile manipulator: a ROS 2 mobile base with a lift and two OpenArm 2.0 arms. Learn, build, operate, customize and contribute."
 site_url: "https://docs.openamrobot.ai/"
 site_author: "Botshare LTD"
 
@@ -52,6 +52,7 @@ nav:
   - Home: index.md
   - Start here:
       - start-here/index.md
+      - OpenAMRobot at a glance: at-a-glance.md
   - Foundations:
       - foundations/index.md
       - Robot anatomy:
@@ -502,6 +503,7 @@ nav:
       - about/the-app.md
       - about/visual-identity.md
       - about/legal.md
+      - How to cite: about/citation.md
 
 extra_css:
   - stylesheets/brand.css
@@ -548,6 +550,7 @@ plugins:
         "tracks/builder.md": "paths/builder.md"
         "tracks/developer.md": "paths/developer.md"
 hooks:
+  - hooks/seo.py
   - hooks/page_context.py
 
 extra:
