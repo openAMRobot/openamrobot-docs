@@ -58,3 +58,68 @@ Open a thread in [GitHub Discussions](https://github.com/openAMRobot/.github/dis
 - [Dark-store pick simulation](openamrobot-2/dark-store-simulation.md)
 - [OpenAMRobot 2.0 design](openamrobot-2/index.md)
 - [Solutions](../solutions/index.md)
+
+## Use Case 1: public traceability status
+
+Use Case 1's detailed requirement wording, partner language and identifying details remain internal and are intentionally not reproduced here. The public traceability view records only the approved requirement identifiers, their contract mapping and the evidence status.
+
+| Public requirement ID | Contract mapping | Evidence status |
+|---|---|---|
+| `UC1-3.1` | Pending source verification | Pending source verification |
+| `UC1-3.2` | Pending source verification | Pending source verification |
+| `UC1-3.3` | Pending source verification | Pending source verification |
+| `UC1-3.4` | Pending source verification | Pending source verification |
+| `UC1-3.5` | Pending source verification | Pending source verification |
+| `UC1-3.6` | Pending source verification | Pending source verification |
+| `UC1-3.7` | Pending source verification | Pending source verification |
+
+The contract mappings and evidence links will be filled only after the authoritative source has been checked and the public disclosure review is complete. These placeholders do not claim that a requirement is satisfied, tested or accepted. The private audits repository and confidential requirement text are not part of this public documentation.
+
+## Use Case 1: mission-state reference
+
+**Source:** P-02 Execution Plan, revision 19.2 (20 October 2026), with alignment updated 1 November 2026. This section reproduces the public-safe mission-state excerpt shared in [documentation Issue #24](https://github.com/openAMRobot/openamrobot-docs/issues/24).
+
+P-02 names the following mission states and classifications. It does not define each state individually or specify entry and exit conditions.
+
+| Mission state | Classification |
+|---|---|
+| `IDLE` | Nominal |
+| `READY` | Nominal |
+| `EXECUTING` | Nominal |
+| `APPROACHING_STATION` | Nominal |
+| `ARRIVED` | Nominal |
+| `TASK/HANDOFF` | Nominal |
+| `COMPLETED` | Nominal |
+| `PAUSED` | Non-nominal |
+| `BLOCKED_WAITING` | Non-nominal |
+| `RECOVERING` | Non-nominal |
+| `NEEDS_ASSISTANCE` | Non-nominal |
+| `SAFETY_STOPPED` | Non-nominal |
+| `FAULTED` | Non-nominal |
+
+The nominal sequence is:
+
+`IDLE` → `READY` → `EXECUTING` → `APPROACHING_STATION` → `ARRIVED` → `TASK/HANDOFF` → `COMPLETED`.
+
+Transition guards and non-nominal transitions are not specified in this excerpt.
+
+### Recovery guidance recorded in P-02
+
+- A transient obstruction results in a controlled stop and wait.
+- Replanning and recovery follow site policy with bounded retries.
+- Degraded localization means slowing down or stopping, then relocalizing before travel continues.
+- A pose jump or an invalid map or configuration version blocks automatic resume.
+- After a reboot or process restart, mission context is restored and readiness is checked before motion. Work continues from the last safe checkpoint without replaying the last command.
+
+These statements summarize mission-level guidance; they are not a substitute for a deployed implementation, site-specific procedure or safety validation.
+
+### Mission states are not the robot UI status vocabulary
+
+P-02 distinguishes the mission-state list above from the robot status shown in the UI and readiness roll-up. The latter uses the register vocabulary:
+
+`READY`, `EXECUTING`, `WAITING`, `BLOCKED`, `RECOVERING`, `NEEDS_ASSISTANCE`, `SAFETY_STOPPED`, `FAULTED`.
+
+The mapping between mission states and robot UI/readiness statuses has not been specified in the public-safe excerpt. Do not infer or publish a mapping until an authoritative, approved mapping is available.
+
+The Build 1 Resume ruling is governed by **P-03, item 30 (A1)**. This page does not restate that ruling or infer its conditions from the mission-state list.
+
