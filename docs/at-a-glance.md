@@ -74,7 +74,7 @@ Dates in the future are plans, not results. The [project status](status.md) page
 ## How to get one
 
 - **Build it yourself from the open files:** every design file, the software and the firmware are public on [GitHub](https://github.com/openAMRobot). Start with the [Builder path](paths/builder.md).
-- **Pre-order from Botshare:** OpenAMRobot 2.0 is offered as a DIY mobile platform kit, an assembled mobile platform, a DIY dual-arm manipulator kit, an assembled dual-arm manipulator and a Premium Embodied AI Training Kit. Packages, prices, delivery and the pre-order terms are on [botshare.ai/openamrobot](https://botshare.ai/openamrobot).
+- **Pre-order from Botshare:** OpenAMRobot 2.0 is offered as a DIY mobile platform kit, an assembled mobile platform, the OpenArm-Ready Platform (base, lift and arm adapter for teams that already own OpenArm 2.0 arms, see [botshare.ai/openarm](https://botshare.ai/openarm)), a DIY dual-arm manipulator kit, an assembled dual-arm manipulator and a Premium Embodied AI Training Kit. Packages, prices, delivery and the pre-order terms are on [botshare.ai/openamrobot](https://botshare.ai/openamrobot).
 - **Engineering services:** custom robots, integration and training are described on [botshare.ai/services](https://botshare.ai/services).
 
 ## How to contribute
