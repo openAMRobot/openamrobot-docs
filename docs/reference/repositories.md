@@ -27,6 +27,7 @@ This is the canonical map of the OpenAMRobot GitHub organization. Repository sta
 | [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces) | Shared ROS 2 messages, services and actions | Active |
 | [openamrobot-comm](https://github.com/openAMRobot/openamrobot-comm) | Communication contracts and integration boundary | Active |
 | [openamrobot-manipulation](https://github.com/openAMRobot/openamrobot-manipulation) | Manipulation integration | Active repository; planned capability |
+| [openamrobot-embodied-ai](https://github.com/openAMRobot/openamrobot-embodied-ai) | Episode capture, dataset QA, imitation-learning baselines, evaluation and policy runtime | Active repository; experimental capability |
 
 ## Upper body
 
