@@ -27,6 +27,10 @@ As of 9 November 2026 (owner decisions of 2, 3 and 8 Nov 2026; decision baseline
 
 The figures above are checked by `scripts/check_roadmap.py` against the generated files (`scripts/sync_audit.json`, `bom_coverage.csv`, `geometry_issues.csv`, `scripts/roadmap_model/parity_summary.json`); it fails when they disagree.
 
+## Digital twin section
+
+- `docs/reference/openamrobot-2/digital-twin/` (added 17 Nov 2026): status as of 16 to 17 Nov 2026, only verified items with their evidence level. The F0 to F3 fidelity definitions are marked proposed until the project lead confirms them. The bundle download link points at the openamr-upperbody-sw Releases page and says "when published"; the Build 1 scene commands are copied from openamr-upperbody-sw #70 (open) and need a recheck when it merges. Media page stays empty until a capture passes review.
+
 ## Owner handles
 
 Owners on the roadmap pages and in `geometry_issues.csv` are GitHub handles from this list, or "owner: to be assigned" (`scripts/roadmap_model/analyse.py` OWN for the issues):
