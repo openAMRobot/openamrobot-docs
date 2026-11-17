@@ -29,7 +29,7 @@ The figures above are checked by `scripts/check_roadmap.py` against the generate
 
 ## Digital twin section
 
-- `docs/reference/openamrobot-2/digital-twin/` (added 17 Nov 2026): status as of 16 to 17 Nov 2026, only verified items with their evidence level. The F0 to F3 fidelity definitions are marked proposed until the project lead confirms them. The bundle download link points at the openamr-upperbody-sw Releases page and says "when published"; the Build 1 scene commands are copied from openamr-upperbody-sw #70 (open) and need a recheck when it merges. Media page stays empty until a capture passes review.
+- `docs/reference/openamrobot-2/digital-twin/` (added 17 Nov 2026): status as of 16 to 17 Nov 2026, only verified items with their evidence level. L1 to L6 and F0 to F3 are the definitions of the plan of record (decision D5 of the 15 Nov 2026 final plan) and must stay word for word with it. The bundle download link points at the openamr-upperbody-sw Releases page and says "when published"; the Build 1 scene commands are copied from openamr-upperbody-sw #70 (open) and need a recheck when it merges. Media page stays empty until a capture passes review.
 
 ## Owner handles
 

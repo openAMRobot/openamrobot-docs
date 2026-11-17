@@ -38,32 +38,33 @@ so the same robot software can run against the twin first and against the real r
 
 ### Evidence levels L1 to L6
 
-Every result names the level of evidence behind it. The levels follow the order the project's engineering rules use,
-from weakest to strongest:
+Every result names the level of evidence behind it:
 
 | Level | Meaning |
 |---|---|
-| L1 | Static: a document, a catalogue or a file check |
-| L2 | Unit: an isolated module tested on its own |
-| L3 | Integration: several modules tested together, without physics |
-| L4 | Simulation: the stack running against the twin |
-| L5 | Bench or hardware in the loop: real parts on a bench |
-| L6 | Supervised physical test on the robot |
+| L1 | Model: structural and model checks |
+| L2 | Host tests |
+| L3 | Firmware software in the loop |
+| L4 | Whole-robot software in the loop |
+| L5 | Bench |
+| L6 | Assembled robot |
 
-L1 to L4 come from the twin. L5 and L6 need hardware. A twin result never becomes L5 or L6.
+L1 to L4 come from the twin. L5 and L6 need hardware. No L4 result counts as L5 or L6.
 
 ### Fidelity F0 to F3
 
-Fidelity says how close a model of one part is to the real part. Proposed working definitions:
+Fidelity says how close a model is to the real component. Fidelity labels are additional to L1 to L6, never substitutes.
 
 | Class | Meaning |
 |---|---|
-| F0 | Placeholder or not modelled: the part is absent, fixed, or a stand-in value |
-| F1 | Geometry and kinematics: shape, frames and limits, no reliable dynamics |
-| F2 | Dynamics or behaviour from documents and estimates, not measured |
-| F3 | Calibrated: parameters fitted to measurements of the real part |
+| F0 | Interface correctness: real topics, buses, frames, command ownership, nominal response |
+| F1 | Datasheet-informed behaviour: approximate dynamics, timing, faults, noise, bounded uncertainty |
+| F2 | Calibrated behaviour: measured parameter identification, repeatable comparison with real components |
+| F3 | Predictive system behaviour: quantified whole-robot error under representative tasks and loads |
 
-No part of OpenAMRobot 2.0 is at F3 yet, because nothing has been measured on the built robot.
+Nothing in OpenAMRobot 2.0 is at F2 or F3 yet, because no part has been measured.
+
+Parity between the model and its generated simulator versions has three levels: structural, dynamic and physical. A pass at one level says nothing about the next.
 
 ## In this section
 

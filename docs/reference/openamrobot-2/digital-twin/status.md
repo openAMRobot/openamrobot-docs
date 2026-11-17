@@ -23,12 +23,12 @@ Evidence levels are defined on the [digital twin overview](index.md#evidence-lev
 
 | Item | State | Evidence level |
 |---|---|---|
-| Combined model: mobile base, 350 mm lift, two OpenArm 2.0 arms, sensors | Expands for every configuration and passes the model checks in CI | L2 (static and unit checks) |
-| Gazebo scene with DART physics | Runs the whole robot with the real OpenArm ROS 2 driver talking to emulated arm motors over virtual CAN FD | L4 (simulation) |
-| Base drive in DART | 1.601 m travelled for a commanded 1.600 m | L4 (simulation) |
-| Lift and grippers in DART | Do not move yet. Known defects, being fixed | L4 (simulation), failing |
-| Hardware behaviour models: drive, lift, battery and power, CAN faults, arm motors, sensors | Exist as unit-tested modules, not yet connected to the simulation | L2 (unit) |
-| Fault catalogue | 36 injectable faults catalogued | L1 (static) |
+| Combined model: mobile base, 350 mm lift, two OpenArm 2.0 arms, sensors | Expands for every configuration and passes the model checks in CI | L1 (model checks) |
+| Gazebo scene with DART physics | Runs the whole robot with the real OpenArm ROS 2 driver talking to emulated arm motors over virtual CAN FD | L4 (whole-robot software in the loop) |
+| Base drive in DART | 1.601 m travelled for a commanded 1.600 m | L4 (whole-robot software in the loop) |
+| Lift and grippers in DART | Do not move yet. Known defects, being fixed | L4 (whole-robot software in the loop), failing |
+| Hardware behaviour models: drive, lift, battery and power, CAN faults, arm motors, sensors | Exist as unit-tested modules, not yet connected to the simulation | L2 (host tests) |
+| Fault catalogue | 36 injectable faults catalogued | none (a catalogue, not a test result) |
 | Bench and robot validation | None yet | none |
 
 ## Open reality gaps
