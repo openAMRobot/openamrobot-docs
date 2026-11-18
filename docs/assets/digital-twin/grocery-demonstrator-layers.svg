@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" width="960" height="700" role="img" aria-labelledby="gd-title gd-desc" font-family="Roboto, Helvetica, Arial, sans-serif">
+  <!-- SPDX-License-Identifier: CC-BY-4.0 -->
+  <title id="gd-title">Layers of the OpenAMRobot 2.0 grocery dark store demonstrator</title>
+  <desc id="gd-desc">Four layers. Software: the mission, Nav2 with the station approach, collision_monitor as the only writer of cmd_vel, MoveIt 2 and ros2_control with the OpenArm driver. Firmware: the base controller slot (host stand-in, or firmware in Renode read-only), and device emulators for the ZLAC8015D drive, the CTL-017 lift, the Daly BMS and the Damiao arm motors, on five virtual CAN buses. Physics: Gazebo Harmonic with DART, the combined robot model and the simulation clock, which reaches every layer. Perception: rendered LiDAR and cameras, AMCL localization feeding Nav2, and the MoveIt planning scene placed from simulator ground truth in the sim-oracle profile. Commands go down from software through firmware to physics; joint states and sensor data come back up.</desc>
+  <defs>
+    <marker id="gd-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+    <style>
+      .band { stroke: #37474f; stroke-width: 1.5; }
+      .sw  { fill: #e3f2fd; }
+      .fw  { fill: #fff3e0; }
+      .ph  { fill: #e8f5e9; }
+      .pe  { fill: #f3e5f5; }
+      .box { fill: #ffffff; stroke: #37474f; stroke-width: 1.5; }
+      .lh  { font-size: 18px; font-weight: 700; fill: #111111; }
+      .h   { font-size: 14px; font-weight: 700; fill: #111111; }
+      .t   { font-size: 12.5px; fill: #222222; }
+      .down { stroke: #37474f; stroke-width: 2; fill: none; marker-end: url(#gd-arrow); }
+      .up   { stroke: #1b5e20; stroke-width: 2; fill: none; stroke-dasharray: 6 4; marker-end: url(#gd-arrow); }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="960" height="700" fill="#fafafa"/>
+
+  <!-- Software layer -->
+  <rect class="band sw" x="20" y="16" width="700" height="150" rx="8"/>
+  <text class="lh" x="36" y="42">Software: ROS 2 Jazzy</text>
+  <rect class="box" x="36" y="56" width="150" height="96" rx="6"/>
+  <text class="h" x="111" y="78" text-anchor="middle">Mission</text>
+  <text class="t" x="111" y="98" text-anchor="middle">8 phases, checks</text>
+  <text class="t" x="111" y="116" text-anchor="middle">lift command</text>
+  <text class="t" x="111" y="134" text-anchor="middle">and permit</text>
+  <rect class="box" x="200" y="56" width="160" height="96" rx="6"/>
+  <text class="h" x="280" y="78" text-anchor="middle">Nav2</text>
+  <text class="t" x="280" y="98" text-anchor="middle">station approach</text>
+  <text class="t" x="280" y="116" text-anchor="middle">one instance</text>
+  <rect class="box" x="374" y="56" width="140" height="96" rx="6"/>
+  <text class="h" x="444" y="78" text-anchor="middle">collision_monitor</text>
+  <text class="t" x="444" y="98" text-anchor="middle">only writer</text>
+  <text class="t" x="444" y="116" text-anchor="middle">of /cmd_vel</text>
+  <rect class="box" x="528" y="56" width="180" height="96" rx="6"/>
+  <text class="h" x="618" y="78" text-anchor="middle">MoveIt 2, ros2_control</text>
+  <text class="t" x="618" y="98" text-anchor="middle">arm and gripper</text>
+  <text class="t" x="618" y="116" text-anchor="middle">controllers, OpenArm</text>
+  <text class="t" x="618" y="134" text-anchor="middle">driver (upstream)</text>
+
+  <!-- Perception layer -->
+  <rect class="band pe" x="740" y="16" width="200" height="476" rx="8"/>
+  <text class="lh" x="756" y="42">Perception</text>
+  <rect class="box" x="756" y="56" width="168" height="96" rx="6"/>
+  <text class="h" x="840" y="78" text-anchor="middle">AMCL</text>
+  <text class="t" x="840" y="98" text-anchor="middle">map pose from</text>
+  <text class="t" x="840" y="116" text-anchor="middle">the LiDAR, to Nav2</text>
+  <rect class="box" x="756" y="166" width="168" height="110" rx="6"/>
+  <text class="h" x="840" y="188" text-anchor="middle">Planning scene</text>
+  <text class="t" x="840" y="208" text-anchor="middle">sim-oracle: placed</text>
+  <text class="t" x="840" y="226" text-anchor="middle">from ground truth</text>
+  <text class="t" x="840" y="244" text-anchor="middle">pose_source:</text>
+  <text class="t" x="840" y="262" text-anchor="middle">ground_truth</text>
+  <rect class="box" x="756" y="290" width="168" height="90" rx="6"/>
+  <text class="h" x="840" y="312" text-anchor="middle">Rendered sensors</text>
+  <text class="t" x="840" y="332" text-anchor="middle">LiDAR, cameras</text>
+  <text class="t" x="840" y="350" text-anchor="middle">from Gazebo</text>
+  <rect class="box" x="756" y="394" width="168" height="84" rx="6"/>
+  <text class="h" x="840" y="416" text-anchor="middle">Not in Baseline 1</text>
+  <text class="t" x="840" y="436" text-anchor="middle">marker alignment,</text>
+  <text class="t" x="840" y="454" text-anchor="middle">perception profile</text>
+
+  <!-- Firmware layer -->
+  <rect class="band fw" x="20" y="186" width="700" height="190" rx="8"/>
+  <text class="lh" x="250" y="212">Firmware-SIL: device protocols</text>
+  <rect class="box" x="36" y="226" width="200" height="96" rx="6"/>
+  <text class="h" x="136" y="248" text-anchor="middle">Base controller slot</text>
+  <text class="t" x="136" y="268" text-anchor="middle">host stand-in (these runs)</text>
+  <text class="t" x="136" y="286" text-anchor="middle">or firmware in Renode,</text>
+  <text class="t" x="136" y="304" text-anchor="middle">read-only</text>
+  <rect class="box" x="250" y="226" width="456" height="96" rx="6"/>
+  <text class="h" x="478" y="248" text-anchor="middle">Device emulators</text>
+  <text class="t" x="478" y="268" text-anchor="middle">ZLAC8015D drive, CTL-017 lift, Daly BMS (CAN)</text>
+  <text class="t" x="478" y="286" text-anchor="middle">Damiao arm motors, one emulator per arm (CAN FD)</text>
+  <text class="t" x="478" y="304" text-anchor="middle">protocol behaviour from documents and proposals</text>
+  <text class="t" x="36" y="350">Five virtual CAN buses: vcan_drive, vcan_bms, vcan_aux (lift), vcan_arm_l, vcan_arm_r.</text>
+  <text class="t" x="36" y="366">No bit rate, arbitration, error frames or bus-off.</text>
+
+  <!-- Physics layer -->
+  <rect class="band ph" x="20" y="396" width="700" height="96" rx="8"/>
+  <text class="lh" x="36" y="422">Physics: Gazebo Harmonic, DART</text>
+  <text class="t" x="36" y="444">Combined robot model: base, 350 mm lift, two OpenArm 2.0 arms, sensors. Gazebo owns the rigid-body</text>
+  <text class="t" x="36" y="462">dynamics of every joint. Wheels and lift take velocity inputs from the emulators, arms take joint effort.</text>
+  <text class="t" x="36" y="480">Simulation clock: /clock, 1 ms step, drives every ROS node and the device timers.</text>
+
+  <!-- Commands down -->
+  <path class="down" d="M280 152 L280 160 L444 160 L444 152"/>
+  <path class="down" d="M444 152 L444 170 L215 170 L215 226"/>
+  <path class="down" d="M170 152 L170 226"/>
+  <path class="down" d="M618 152 L618 226"/>
+  <path class="down" d="M136 322 L136 334 L300 334 L300 322"/>
+  <path class="down" d="M478 322 L478 396"/>
+  <!-- Feedback up -->
+  <path class="up" d="M720 440 L740 440 L740 335 L756 335"/>
+  <path class="up" d="M924 335 L932 335 L932 104 L924 104"/>
+  <path class="up" d="M756 70 L726 70 L726 50 L300 50 L300 56"/>
+  <path class="up" d="M756 220 L730 220 L730 120 L708 120"/>
+  <path class="up" d="M676 396 L676 324"/>
+  <path class="up" d="M676 226 L676 154"/>
+
+  <!-- Legend -->
+  <rect class="box" x="20" y="512" width="920" height="168" rx="8"/>
+  <text class="h" x="36" y="536">How to read it</text>
+  <line x1="36" y1="560" x2="86" y2="560" class="down"/>
+  <text class="t" x="96" y="564">command path, top down: Nav2 goal, then /cmd_vel, then the base controller slot and the drive over CAN, then the wheels</text>
+  <line x1="36" y1="584" x2="86" y2="584" class="up"/>
+  <text class="t" x="96" y="588">feedback, bottom up: joint states over CAN and from Gazebo, rendered sensor data, ground truth for the sim-oracle planning scene</text>
+  <text class="t" x="36" y="614">One writer per joint and per topic in every run profile. Lift: mission, then the base controller slot, vcan_aux, the CTL-017 emulator, the lift joint.</text>
+  <text class="t" x="36" y="634">Arms: MoveIt 2, controllers, the upstream OpenArm driver, CAN FD, the motor emulators, joint effort in Gazebo.</text>
+  <text class="t" x="36" y="654">Out of the simulation: the hardwired safety chain (E-stops, contactors, brakes, charge inhibit). Nothing here is a safety function.</text>
+</svg>
