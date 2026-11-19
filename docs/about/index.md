@@ -44,6 +44,8 @@ OpenAMRobot, OpenAMR, associated logos, visual identity and claims of official a
 - Contributor Agreements: [CLA process](https://github.com/openAMRobot/.github/blob/main/CLA.md)
 - Intellectual property: [IP Policy](https://github.com/openAMRobot/.github/blob/main/IP_POLICY.md)
 - Security reports: [Security Policy](https://github.com/openAMRobot/.github/blob/main/SECURITY.md)
+
+Do not post secrets, personal data or confidential material in public issues or pull requests. For security-sensitive disclosures, follow the private reporting route in the [Security Policy](https://github.com/openAMRobot/.github/blob/main/SECURITY.md).
 - General, licensing and provenance questions: [info@botshare.ai](mailto:info@botshare.ai)
 
 OpenAMRobot is experimental. Public documentation does not represent safety certification, regulatory approval, performance warranty or fitness for a particular deployment.
