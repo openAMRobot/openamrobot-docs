@@ -371,7 +371,17 @@ nav:
           - Dark-store pick simulation: reference/openamrobot-2/dark-store-simulation.md
           - Digital twin:
               - reference/openamrobot-2/digital-twin/index.md
-              - Architecture: reference/openamrobot-2/digital-twin/architecture.md
+              - Install and run: reference/openamrobot-2/digital-twin/install-and-run.md
+              - Architecture and data flow: reference/openamrobot-2/digital-twin/architecture.md
+              - Mechanical and physics model: reference/openamrobot-2/digital-twin/physics-model.md
+              - Electronics and CAN buses: reference/openamrobot-2/digital-twin/electronics-and-can.md
+              - Firmware and message flow: reference/openamrobot-2/digital-twin/firmware.md
+              - ROS 2 software graph: reference/openamrobot-2/digital-twin/ros2-software.md
+              - Simulators: reference/openamrobot-2/digital-twin/simulators.md
+              - Operator UI and Control Room: reference/openamrobot-2/digital-twin/operator-ui.md
+              - Scenarios: reference/openamrobot-2/digital-twin/scenarios.md
+              - Faults and fault injection: reference/openamrobot-2/digital-twin/faults.md
+              - Evidence and limits: reference/openamrobot-2/digital-twin/evidence-and-limits.md
               - Current status: reference/openamrobot-2/digital-twin/status.md
               - Get the model: reference/openamrobot-2/digital-twin/get-the-model.md
               - Media: reference/openamrobot-2/digital-twin/media.md
@@ -529,7 +539,11 @@ markdown_extensions:
   - tables
   - footnotes
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.snippets:

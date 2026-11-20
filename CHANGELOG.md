@@ -2,6 +2,16 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-20
+
+### Added
+
+- Digital Twin handbook in `reference/openamrobot-2/digital-twin/`: install and run (headless quick start checked in CI by the new `digital-twin-quickstart` workflow, desktop steps, container, requirements, troubleshooting, desktop acceptance checklist), architecture and data flow (Mermaid), mechanical and physics model, electronics and CAN buses, firmware and message flow, ROS 2 software graph, simulators, operator UI and Control Room, scenarios, faults and fault injection, evidence and limits with release and versioning.
+
+### Changed
+
+- Digital twin landing page, architecture and status brought to the 20 Nov 2026 state; get-the-model and the grocery demonstrator pages point to the published sources; the simulation framework pages and the dark-store illustration point to the digital twin.
+
 ## 2026-11-17
 
 ### Added

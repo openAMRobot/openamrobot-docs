@@ -4,6 +4,10 @@ title: Gazebo Setup
 
 <section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Gazebo Setup</h1><p>Show how to extend gazebo setup without breaking platform contracts.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
+!!! note "OpenAMRobot 2.0 digital twin"
+    The running Gazebo digital twin of OpenAMRobot 2.0 (whole robot, device emulators on virtual CAN, Nav2, MoveIt 2)
+    is documented in the [Digital twin handbook](../../reference/openamrobot-2/digital-twin/install-and-run.md), with install and run steps that are checked in CI.
+
 !!! info "Documentation framework"
     This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
 
