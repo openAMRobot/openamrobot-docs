@@ -87,17 +87,17 @@ rosdep update --rosdistro jazzy
 export TWIN_WS="$HOME/openamr_twin_ws"
 export UB_SHA=196dd3fe64900ba4a12124c9ee20e0cfaafa1651
 fetch_at() {
-  git init -q "$2"
-  git -C "$2" fetch -q --depth 1 "$1" "$3"
-  git -C "$2" -c advice.detachedHead=false checkout -q FETCH_HEAD
+  git init -q "${2}"
+  git -C "${2}" fetch -q --depth 1 "${1}" "${3}"
+  git -C "${2}" -c advice.detachedHead=false checkout -q FETCH_HEAD
 }
 mkdir -p "$TWIN_WS/src/upstream"
 cd "$TWIN_WS/src"
 fetch_at https://github.com/openAMRobot/openamr-upperbody-sw.git openamr-upperbody-sw "$UB_SHA"
 export ACCEPTANCE="$TWIN_WS/src/openamr-upperbody-sw/.github/workflows/baseline1-acceptance.yml"
 export SCENE_PINS="$TWIN_WS/src/openamr-upperbody-sw/ros2/src/openamrobot_build1_scene/config/pins.yaml"
-workflow_pin() { sed -n "s/^  $1: *//p" "$ACCEPTANCE" | tr -d "'\""; }
-scene_pin() { python3 -c 'import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))["pins"][sys.argv[2]]["sha"])' "$SCENE_PINS" "$1"; }
+workflow_pin() { sed -n "s/^  ${1}: *//p" "$ACCEPTANCE" | tr -d "'\""; }
+scene_pin() { python3 -c 'import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))["pins"][sys.argv[2]]["sha"])' "$SCENE_PINS" "${1}"; }
 fetch_at https://github.com/openAMRobot/openamr-platform-sw.git openamr-platform-sw "$(workflow_pin PLATFORM_SW_SHA)"
 fetch_at https://github.com/openAMRobot/openamrobot-interfaces.git openamrobot-interfaces "$(workflow_pin INTERFACES_SHA)"
 fetch_at https://github.com/enactic/openarm_description.git upstream/openarm_description "$(scene_pin openarm_description)"
@@ -118,7 +118,6 @@ dependencies and builds the scene with everything it needs.
 <!-- quickstart:headless -->
 ```bash
 cd "$TWIN_WS"
-source /opt/ros/jazzy/setup.bash
 sudo apt-get install -y --allow-downgrades \
   "ros-jazzy-gz-sim-vendor=$(workflow_pin GZ_SIM_VENDOR)" \
   "ros-jazzy-gz-tools-vendor=$(workflow_pin GZ_TOOLS_VENDOR)" \
@@ -129,11 +128,12 @@ rosdep install --rosdistro jazzy -y -r --ignore-src \
 sudo apt-get install -y ros-jazzy-ros-gz ros-jazzy-gz-ros2-control ros-jazzy-navigation2 ros-jazzy-nav2-bringup \
   ros-jazzy-moveit ros-jazzy-joint-state-publisher ros-jazzy-launch-testing-ament-cmake ros-jazzy-ament-cmake-pytest \
   ros-jazzy-rmw-cyclonedds-cpp
+source /opt/ros/jazzy/setup.bash
 gz sim --versions
 colcon build --packages-up-to openamrobot_build1_scene openamrobot_station_alignment --event-handlers console_cohesion+
 ```
 
-`gz sim --versions` prints the Gazebo version; the acceptance runs check for `8.15.0`. If `apt-get` reports that a
+ROS 2 is sourced after the installs, so that the `gz` command of the vendor packages is on the path. `gz sim --versions` prints the Gazebo version; the acceptance runs check for `8.15.0`. If `apt-get` reports that a
 pinned vendor version is not found, packages.ros.org has replaced it; see [Troubleshooting](#troubleshooting).
 
 ### 4. Model and scene tests that need no simulator

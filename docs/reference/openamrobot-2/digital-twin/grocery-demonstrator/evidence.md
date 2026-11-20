@@ -73,5 +73,5 @@ Extension runs with the station marker alignment (not Baseline 1), on `aadde12`,
 |---|---|
 | [openamrobot-docs #91](https://github.com/openAMRobot/openamrobot-docs/pull/91) | Digital twin reference section that these pages extend |
 
-The demo documents in openamr-upperbody-sw (`docs/demo/grocery_dark_store.md`, `docs/demo/control_room.md`,
-`docs/demo/simulators.md`) are pending and will be linked here once published.
+The demo documents in openamr-upperbody-sw are linked from [Launch it](index.md#launch-it); they are in open pull
+requests #86, #84 and #87.

@@ -11,6 +11,11 @@ description: Interactive 3D simulation of OpenAMRobot 2.0 picking a grocery orde
 
 **Applies to:** OpenAMRobot 2.0 with the DOLD Hexalift V4 350 mm lift on a two-position base plate, two OpenArm 2.0 arms with the pinch gripper mounted 180 mm ahead of the column axis, and two totes on the front deck.
 
+!!! note "Not the digital twin"
+    This page is a browser illustration of the geometry. The physics simulation of the whole robot, with device
+    emulators and the ROS 2 stack, is the [digital twin](digital-twin/index.md); its grocery scene is the
+    [grocery demonstrator](digital-twin/grocery-demonstrator/index.md).
+
 !!! note "Visualization only"
     Visualization only; grocery requirements belong to OpenAMRobot 3.0. The dark store is an illustration of the OpenAMRobot 2.0 geometry, not a requirement or a release scope for 2.0. The scenario is dark-store picking, a [reference use case for OpenAMRobot 3.0](../use-cases.md#dark-store-picking).
 

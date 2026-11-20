@@ -38,8 +38,8 @@ carries it to a packing station, places it and returns.
 | Authorize | The base stops; the lift refuses a command without a permit; the permit becomes fresh | yes (phase `stop_authorize`) |
 | Lift | The lift moves from L1000 to L1175 and back to L1000, the grasp height of the lowest shelf level | yes (phase `lift_to_target`) |
 | Pick one product | The arm leaves park, the gripper opens, MoveIt 2 plans the approach, the gripper closes on the product and the hand rises 0.08 m with it | yes (phases `arm_approach`, `grasp`, `lift_object`) |
-| Carry to packing station | The robot drives with the product to the packing station | no, part of the demonstrator scene (pending) |
-| Place | The arm places the product at the packing station | no, part of the demonstrator scene (pending) |
+| Carry to packing station | The robot drives with the product to the packing station | no; demonstrator scene, run [44299879412](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/44299879412) on older pins (10 of 12 checks) |
+| Place | The arm places the product at the packing station | no; demonstrator scene, run [44299879412](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/44299879412) on older pins (10 of 12 checks) |
 | Return | Both arms return to park and the base backs away; in the full demo it drives back to its parking spot | partly: arms to park and a 0.30 m Nav2 backup (phase `retreat`) |
 
 Baseline 1 is the eight-phase acceptance mission of the integration branch. In Baseline 1 the product is released
@@ -67,16 +67,16 @@ How these parts connect is on the [architecture](architecture.md) page.
 
 ## Launch it
 
-The launch instructions are written in openamr-upperbody-sw. They are not merged yet:
+The launch instructions are written in openamr-upperbody-sw, in open pull requests:
 
-| Document | Branch | State |
+| Document | Pull request | State |
 |---|---|---|
-| `docs/demo/grocery_dark_store.md`: the demonstrator scene, its launch and its mission | `demo/grocery-dark-store` | pending, not yet published |
-| `docs/demo/control_room.md`: the operator view of a running demo | `demo/control-room` | pending, not yet published |
-| `docs/demo/simulators.md`: what each simulator (Gazebo, MuJoCo, Isaac Sim) does in the demo | `demo/grocery-mujoco-isaac` | pending, not yet published |
+| [`docs/demo/grocery_dark_store.md`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/2e6f031/docs/demo/grocery_dark_store.md): the demonstrator scene, its launch and its mission | [#86](https://github.com/openAMRobot/openamr-upperbody-sw/pull/86) | open, draft |
+| [`docs/demo/control_room.md`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/d39a648/docs/demo/control_room.md): the read-only engineering view of a running demo | [#84](https://github.com/openAMRobot/openamr-upperbody-sw/pull/84) | open, draft |
+| [`docs/demo/simulators.md`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/afd32f8/docs/demo/simulators.md): what each simulator (Gazebo, MuJoCo, Isaac Sim) does in the demo | [#87](https://github.com/openAMRobot/openamr-upperbody-sw/pull/87) | open, draft |
 
-Until they are merged, the Build 1 scene that the demonstrator extends can be run from source as described on
-[Get the model](../get-the-model.md#build-1-scene-from-source). The scene needs five virtual CAN interfaces; without
+The Build 1 scene that the demonstrator extends is built and run as described on
+[Install and run](../install-and-run.md). The scene needs five virtual CAN interfaces; without
 them the launch prints `BLOCKED` and stops.
 
 ## Evidence

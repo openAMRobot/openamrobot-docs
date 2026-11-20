@@ -2,7 +2,7 @@
 title: Get the model
 tags: [developer, integrator]
 status: experimental
-description: How to download the OpenAMRobot 2.0 model bundle and how to run the Build 1 simulation scene from source.
+description: How to download the OpenAMRobot 2.0 model bundle, and where to find the Build 1 simulation scene.
 ---
 
 # Get the model
@@ -41,37 +41,9 @@ keep their Apache-2.0 licence from Enactic, Inc. The bundle's `NOTICE.md` lists 
 ## Build 1 scene from source
 
 The Build 1 scene puts the whole robot in one Gazebo world with every device on a virtual CAN bus, with Nav2 and MoveIt
-on top. It is in review: [openamr-upperbody-sw pull request #70](https://github.com/openAMRobot/openamr-upperbody-sw/pull/70),
-package `ros2/src/openamrobot_build1_scene`. Its README (`ros2/src/openamrobot_build1_scene/README.md`) lists the
-workspace, the pinned inputs and every launch argument. Set up the workspace as that README says, then:
-
-Create the five virtual CAN interfaces (needs root or passwordless sudo, `iproute2` and the `vcan` kernel module):
-
-```bash
-ros2 run openamrobot_build1_scene setup_vcan_all.sh
-```
-
-Start the scene with RViz:
-
-```bash
-ros2 launch openamrobot_build1_scene build1.launch.py rviz:=true
-```
-
-Without virtual CAN the launch prints `BLOCKED` and stops. The physics-only profile still runs:
-
-```bash
-ros2 launch openamrobot_build1_scene build1.launch.py profile:=fast rviz:=true
-```
-
-List the scenarios and run one against the running launch:
-
-```bash
-ros2 run openamrobot_build1_scene run_scenario.py --list
-```
-
-```bash
-ros2 run openamrobot_build1_scene run_scenario.py scn01_drive
-```
+on top. It is on the `integration/baseline1` branch of openamr-upperbody-sw (package
+`ros2/src/openamrobot_build1_scene`), not on `main`. [Install and run](install-and-run.md) builds it at pinned commits
+and runs it; its headless commands are checked in CI.
 
 ## Combined model from source
 

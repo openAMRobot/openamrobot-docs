@@ -48,8 +48,8 @@ Pinned commits: openamr-upperbody-sw integration branch `6921a29`, openamr-platf
 
 | Item | State |
 |---|---|
-| Baseline 1 complete | **Not complete.** It needs two consecutive passes on one pinned commit. The two passes ran in parallel with the failed run, so they are not consecutive |
-| Carry to the packing station, place, return to parking | Part of the demonstrator scene; launch documents pending, no run yet |
+| Baseline 1 complete | **Not complete** as of 20 Nov 2026: the strict two-leg acceptance on the reviewed integration heads is not recorded yet; see [Evidence and limits](../evidence-and-limits.md) |
+| Carry to the packing station, place, return to parking | Demonstrator scene ([#86](https://github.com/openAMRobot/openamr-upperbody-sw/pull/86), open). Run [44299879412](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/44299879412) on older pins passed 10 of 12 checks; the odometry guard failed after turns (station 0.0497 m, odometry 0.907 m) |
 | Autonomous perception | Not shown. The Baseline 1 runs place the MoveIt planning scene from simulator ground truth |
 | Station marker alignment | An extension under review ([openamr-platform-sw #167](https://github.com/openAMRobot/openamr-platform-sw/pull/167), Proposed), not part of Baseline 1 |
 | Isaac Sim | Needs a GPU machine; not run yet |
@@ -75,7 +75,7 @@ These are inputs of the simulation, not results. A pass does not confirm them.
 ## Simulators
 
 The status of each simulator in the demo comes from `docs/demo/simulators.md` in openamr-upperbody-sw once it is
-published (branch `demo/grocery-mujoco-isaac`, pending). Until then:
+merged (pull request #87, open). Until then:
 
 | Simulator | Role in the demonstrator | Status |
 |---|---|---|
