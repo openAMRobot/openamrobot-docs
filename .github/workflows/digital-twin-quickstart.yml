@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: MIT
+# Runs the headless quick start of the digital twin page exactly as written: every bash block of
+# docs/reference/openamrobot-2/digital-twin/install-and-run.md marked <!-- quickstart:headless --> is
+# extracted in page order (scripts/digital_twin_quickstart.py) and executed as one script with
+# set -eo pipefail. The job fails if any command fails or if the page has no marked block.
+# Simulation evidence only: never hardware, physical acceptance or safety evidence. No secrets, no hardware.
+name: digital-twin-quickstart
+
+on:
+  pull_request:
+    paths:
+      - 'docs/reference/openamrobot-2/digital-twin/install-and-run.md'
+      - 'scripts/digital_twin_quickstart.py'
+      - 'scripts/tests/test_digital_twin_quickstart.py'
+      - '.github/workflows/digital-twin-quickstart.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: digital-twin-quickstart-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quickstart:
+    name: headless quick start from the page text
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Extractor tests
+        run: python3 -m unittest scripts/tests/test_digital_twin_quickstart.py -v
+
+      - name: Extract the quick start
+        run: |
+          python3 scripts/digital_twin_quickstart.py --list | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 scripts/digital_twin_quickstart.py --write "$RUNNER_TEMP/quickstart.sh"
+
+      - name: Run the quick start
+        run: bash "$RUNNER_TEMP/quickstart.sh"
+
+      - name: Pins, launch log and scenario logs
+        if: always()
+        run: |
+          ws="$HOME/openamr_twin_ws"
+          { echo '### Pins'; echo '```'; cat "$ws/pins.txt" 2>/dev/null || echo "no pins.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          tail -n 60 "$ws/twin_launch.log" 2>/dev/null || echo "no launch log"
+          for f in "$ws"/build1_logs/*.json; do [ -f "$f" ] && { echo "== $f"; head -c 4000 "$f"; echo; }; done
