@@ -49,4 +49,4 @@ jobs:
           ws="$HOME/openamr_twin_ws"
           { echo '### Pins'; echo '```'; cat "$ws/pins.txt" 2>/dev/null || echo "no pins.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           tail -n 60 "$ws/twin_launch.log" 2>/dev/null || echo "no launch log"
-          for f in "$ws"/build1_logs/*.json; do [ -f "$f" ] && { echo "== $f"; head -c 4000 "$f"; echo; }; done
+          for f in "$ws"/build1_logs/*.json; do [ -f "$f" ] && { echo "== $f"; head -c 4000 "$f"; echo; }; done || true

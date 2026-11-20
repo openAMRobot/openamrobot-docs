@@ -183,12 +183,15 @@ timeout 900 bash -c 'until ros2 topic list | grep -qx /sil/drive/status; do slee
 timeout 300 ros2 topic echo --once /sil/drive/status
 timeout 300 ros2 topic echo --once /clock
 ros2 topic list | grep -E "^/(sil|build1)/" | sort
-kill -INT "$TWIN_PID"
-wait "$TWIN_PID" || true
+kill -TERM "$TWIN_PID"
+timeout 120 bash -c "while kill -0 $TWIN_PID 2>/dev/null; do sleep 2; done" || kill -KILL "$TWIN_PID" || true
 pkill -f "gz sim" || true
+pkill -f openamrobot_ || true
+ros2 daemon stop || true
 ```
 
-`/sil/drive/status` is JSON from the host stand-in: drive configured, CiA 402 statusword, fault code, target and wheel
+The launch runs in the background and is stopped with SIGTERM, because a background job of a script ignores Ctrl+C;
+in an interactive terminal you can run it in the foreground and press Ctrl+C. `/sil/drive/status` is JSON from the host stand-in: drive configured, CiA 402 statusword, fault code, target and wheel
 speeds. `twin_launch.log` holds the launch output, including the engine limit the launch prints.
 
 ### 7. First scenario: drive with Nav2

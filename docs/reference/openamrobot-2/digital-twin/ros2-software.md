@@ -62,9 +62,10 @@ goal, and removes the reversing behaviours. Until #90 is merged and adopted into
 - Planner and controller from `openamrobot_nav2/config/nav2_params.yaml` of the pinned platform commit.
 - Station approach: a behaviour tree that approaches the shelf and, with alignment on, a marker-based final alignment
   from a simulation-only base camera.
-- Reverse: the Baseline 1 configuration on the integration branch still allows a 0.30 m backup as the station
-  departure; the no-reverse configuration (spin and wait behaviours only, minimum velocity 0) with a turn-and-forward
-  departure is the approved direction and is being integrated. [Scenarios](scenarios.md) records which one a run used.
+- Reverse: the platform integration branch still allows a 0.30 m backup. The no-reverse configuration (spin and wait
+  behaviours only, minimum velocity 0, platform-sw [#178](https://github.com/openAMRobot/openamr-platform-sw/pull/178),
+  open) with the turn-and-forward departure is the approved direction. [Scenarios](scenarios.md) records which one a
+  run used.
 - AMCL against the scene map; the `map` to `odom` transform is AMCL's.
 
 ## MoveIt 2 and ros2_control

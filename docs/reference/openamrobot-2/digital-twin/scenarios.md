@@ -45,11 +45,12 @@ Every leg declares them in `declaration.json`:
 
 - **sim-oracle profile:** planning scene and object poses from Gazebo ground truth. Never reported as perception.
 - CycloneDDS with `MaxAutoParticipantIndex` 120; station alignment on; contact sensors on; seed 20261117.
-- **Retreat:** `backup` (0.30 m Nav2 backup) on the integration branch today; `forward` (turn in place by pi, then
-  0.30 m forward) is the approved direction for the no-reverse configuration. The option is named in every run.
+- **Retreat:** `forward` (turn in place by pi, then 0.30 m forward through the normal chain) is the default of the
+  integration branch from commit 30e7f62 on, for the no-reverse configuration; `backup` (0.30 m Nav2 backup) was the
+  default up to 196dd3f, the commit the quick start pins. The option is named in every run.
 - **Cancellation check:** a short Nav2 goal is cancelled mid-way; terminal status CANCELED, stop within 4 s and
-  0.10 m, then a 3 s still hold with every `/cmd_vel` zero. It is moving from the start to the end of the mission,
-  because the turn after it broke the odometry guard.
+  0.10 m, then a 3 s still hold with every `/cmd_vel` zero. From 30e7f62 on it runs at the end of the mission, after
+  the retreat, because at the start the turn that followed it broke the odometry guard.
 
 ### Strict acceptance
 

@@ -59,9 +59,30 @@ The authorised path needs two changes together:
 | openamr-platform-sw [#90](https://github.com/openAMRobot/openamr-platform-sw/pull/90) | relays `/ui/cmd_vel` into the manual input of `twist_mux`, then stop gate, smoother and collision monitor | open, two-person review |
 
 They ship together or not at all. Until both are adopted into the twin, the UI may be used only for monitoring views,
-with manual driving unused, and the release candidate reports the UI command path as BLOCKED. Acceptance check for the
-command path, once both are in: `ros2 topic info /cmd_vel --verbose` shows only `collision_monitor` as publisher, and
-the UI's Stop locks the base within 0.5 s.
+with manual driving unused, and the release candidate reports the UI command path as BLOCKED.
+
+### Twin operator profile (simulation evidence, not yet merged)
+
+openamrobot-ui [#62](https://github.com/openAMRobot/openamrobot-ui/pull/62) (open, draft, stacked on #50) adds a twin
+launch profile (`twin.launch.py`) and a read-only status panel. The browser reaches the twin through a restricted
+rosbridge bound to 127.0.0.1: it may read an explicit list of topics, write only `/goal_pose`, call the stop lock
+services and the cancel services, and send no action goal. `/ui/cmd_vel` is writable only with `manual_drive:=true`
+(default false). Full interface inventory and the desktop acceptance script: `docs/digital_twin.md` on #62.
+
+Headless run on the twin with the #90 stack ([44806541459](https://github.com/openAMRobot/openamrobot-ui/actions/runs/44806541459), success):
+
+- graph: `/cmd_vel` has `collision_monitor` as its only publisher; `/ui/cmd_vel` has none;
+- bridge probe 11 of 11 as expected: publishing on `/cmd_vel`, `/ui/cmd_vel` and `/initialpose`, parameter and
+  lifecycle changes, action goals and non-loopback connections are refused;
+- browser 8 of 8: bundle check, live status, map and pose, Resume through the gate, a UI goal then Cancel ending
+  CANCELED, Stop (software) during a goal locks and cancels it, mission status labelled Proposed, STALE and
+  DISCONNECTED states.
+
+This shows the authorised chain working on the twin with unmerged code (#90, #50, #62). It is not rc.1 content and
+not safety evidence.
+
+Acceptance check for the command path on a desktop: `ros2 topic info /cmd_vel --verbose` shows only
+`collision_monitor` as publisher, and the UI's Stop locks the base within 0.5 s.
 
 ## Next step
 

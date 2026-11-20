@@ -67,7 +67,8 @@ apart after turns. Proposed fix: a sphere r 0.098 m or a 4 mm cylinder as the wh
 
 At spawn the Gazebo base rests 0.534 degrees nose down and 2 mm high, while the MoveIt planning scene assumes a level
 base. The difference comes from the contact heights of the wheel and castor collisions. It is recorded as a known
-deviation (criterion A6 of the release candidate) and needs a tracked issue against the model.
+deviation (criterion A6 of the release candidate) and tracked in openamr-upperbody-sw
+[issue #105](https://github.com/openAMRobot/openamr-upperbody-sw/issues/105).
 
 ## Masses
 
@@ -81,7 +82,7 @@ ledger itself.
 
 | Record | What it holds | State |
 |---|---|---|
-| Parameter register (#97) | every physical parameter the simulators carry, its authority, verification level (placeholder, datasheet, design decision, measured) and the check per simulator | Proposed, its parity job is red on a removed `xacro` package build |
+| Parameter register (#97) | every physical parameter the simulators carry, its authority, verification level (placeholder, datasheet, design decision, measured) and the check per simulator | Proposed; 2922 parity checks and 281 tests pass on the Proposed lock update (#104), 21 deviations declared in issue #96 |
 | SIL fidelity record (#168) | the level of modelling per subsystem, the class (implemented model, approximation, placeholder, not modelled), the real value and its source, and a ranked fidelity roadmap | draft, review requested |
 | Reality gap register (audits repository) | 188 known differences between twin and robot, each with the measurement that would close it | none measured yet |
 

@@ -26,12 +26,12 @@ Evidence levels are defined on the [digital twin overview](index.md#evidence-lev
 | Combined model: mobile base, 350 mm lift, two OpenArm 2.0 arms, sensors | expands for every configuration, model checks pass in CI; expansion lock check red on the removed `xacro` build | L1 (model checks) |
 | Gazebo scene, device profile | the whole robot with every device emulator on virtual CAN and the real OpenArm driver | L4 (whole-robot software in the loop) |
 | Base drive, lift and grippers in DART | drive, lift and grasp complete the Baseline 1 phases; turn slip after in-place turns | L4 (whole-robot software in the loop) |
-| Baseline 1 mission | 8 of 8 phases in single legs on integration pins; strict two-leg acceptance on the reviewed heads not yet recorded | L4 (whole-robot software in the loop) |
+| Baseline 1 mission | 8 of 8 phases in single diagnostic legs (latest 44808492353); strict two-leg acceptance not yet run | L4 (whole-robot software in the loop) |
 | Device emulators: drive, lift, BMS, arm motors | protocol and behaviour stand-ins, unit tested and in the scene | L2 (host tests) alone, L4 (whole-robot software in the loop) in the scene |
 | Base-controller firmware | host stand-in in every acceptance run; telemetry image in Renode only as an option; CubeMX project builds in CI, never flashed | L2 (host tests) |
-| MuJoCo | generator and parity tests exist; parity job blocked | L1 (model checks), blocked |
-| Isaac Sim | import job generated and tested without a GPU; no USD run | none |
-| Command arbitration, stop gate, operator UI driving | open pull requests (platform-sw #90, ui #50), not in the twin | none |
+| MuJoCo | 2922 parity checks pass on the Proposed lock update; 21 declared deviations; benchmark against Gazebo 12 of 21 metrics within tolerance | L1 (model checks) |
+| Isaac Sim | import job and GPU run kit tested without a GPU; no USD run | none |
+| Command arbitration, stop gate, operator UI | open pull requests (platform-sw #90, ui #50, #62); shown on the twin in run 44806541459, not in the Baseline 1 configuration | L4 (whole-robot software in the loop), unmerged |
 | Bench and robot validation | none yet | none |
 
 ## Open reality gaps
