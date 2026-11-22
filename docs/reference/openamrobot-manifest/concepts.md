@@ -1,48 +1,41 @@
 ---
-title: Concepts
+title: Manifest concepts
+description: How the OpenAMRobot manifest repository separates a development workspace from a pinned release snapshot.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Concepts</h1><p>Provide the learning-layer reference for concepts and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Active</span><h1>Development manifest and pinned snapshot</h1><p>Two ways to check out the same ecosystem: following branches, or pinned to exact commits.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## For
 
-## What this page should contain
+Developers and reviewers who need to know which manifest to use, and why a pinned checkout is different from a development one.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**When you finish:** you will know the difference between `openamrobot.repos` and a release snapshot, and what a successful import does and does not show.
 
-## Content template
+**Applies to:** [`openamrobot-manifest`](https://github.com/openAMRobot/openamrobot-manifest), checked against its `main` at `5b782ac` on 22 November 2026. The repository README is the record.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## Two kinds of manifest
 
-### Procedure or explanation
+| Manifest | Tracks | Use it for |
+| --- | --- | --- |
+| `openamrobot.repos` | Branches, so it can move. | Everyday development. |
+| `releases/v2.0.0-rc.1.repos` | Full 40-character commit SHAs. | Reproducing a specific state of the platform. |
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+The development manifest "may track branches", so two checkouts made on different days can differ. The release snapshot retains the development manifest's repository URLs and checkout paths but pins every entry to an exact commit. Its checker rejects branches, tags and abbreviated hashes.
 
-### If it did not work
+Future release versions get their own `.repos` file. A release snapshot is only updated through a reviewed pull request with explicit replacement SHAs and fresh evidence of the exact checkout.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## The rc.1 snapshot is a candidate
 
-## Owning OpenAMRobot source
+The `v2.0.0-rc.1` snapshot is dated 2026-10-19 and has 13 entries. The README states that it demonstrates a pinned checkout and is **not final rc.1 acceptance**. The repository's open pull requests refresh those pins, so check the repository for the current state before you rely on a date or a commit.
 
-- [openamrobot-manifest](https://github.com/openAMRobot/openamrobot-manifest) – canonical source, versions, implementation and issue history.
+It agrees with the component pins in the release repository candidate, which also includes a separately pinned governance export. See [release concepts](../openamrobot-release/concepts.md).
 
-## Contribution note
+## What an import does not prove
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+- `vcs import` and `colcon list` do not show that a full workspace build passes.
+- Package discovery currently finds the same `openamr_ui_msgs` package under both `src/` and `ui/` (tracked as OA-08). The manifest does not hide or fix this.
+- Source pins for the driver packages do not claim a reproducible binary build. The micro-ROS superbuild downloads further dependencies while it compiles.
+
+## Next step
+
+[Check out and validate a workspace](setup.md), or look up the [files, checks and drivers](reference.md).

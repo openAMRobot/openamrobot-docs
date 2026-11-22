@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-22
+
+### Changed
+
+- `reference/openamrobot-manifest/` concepts, setup and reference pages: replaced three empty templates with the development manifest versus the pinned rc.1 snapshot, how to import and validate a workspace, and the files, check stages and source drivers, checked against openamrobot-manifest `main` at 5b782ac. Pinned commits are linked, not copied.
+
 ## 2026-11-10
 
 ### Changed
