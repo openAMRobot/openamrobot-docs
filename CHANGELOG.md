@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-22
+
+### Changed
+
+- `reference/openamrobot-comm/overview.md`: replaced the empty template with an honest status page. The repository is Planned with no code and only empty scaffolding, checked against openamrobot-comm `main` at 73fa694. The page says what it is for, what it holds today and where to look instead, and invents no protocol, schema or version.
+
 ## 2026-11-10
 
 ### Changed
