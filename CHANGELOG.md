@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-22
+
+### Changed
+
+- `reference/openamrobot-release/` concepts, setup and reference pages: replaced three empty templates with how product releases are built, how to verify and rebuild an archive, and the repository's files, outputs and limits, checked against openamrobot-release `main` at a8f60f6. v2.0.0-rc.1 and v2.0.0 are shown as not published, and only v0.0.1 is released.
+
 ## 2026-11-10
 
 ### Changed
