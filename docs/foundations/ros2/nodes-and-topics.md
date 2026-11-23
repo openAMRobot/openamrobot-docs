@@ -2,47 +2,118 @@
 title: Nodes And Topics
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Nodes And Topics</h1><p>Explain nodes and topics in plain language and show how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--learning">Learning module</span><h1>Nodes And Topics</h1><p>Understand how independent ROS 2 processes exchange streaming data.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## For
 
-## What this page should contain
+Beginners learning ROS 2 before working with a complete robot stack.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**Outcome:** start a publisher and subscriber, inspect their topic, and explain the difference between a node and a topic.
 
-## Content template
+**Prerequisites:** ROS 2 Jazzy sourced in your terminal and the C++ demo package installed.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## 1. Understand the building blocks
 
-### Procedure or explanation
+- A **node** is a process that performs a focused part of a robot application.
+- A **topic** is a named channel for streaming messages.
+- A **publisher** sends messages to a topic.
+- A **subscriber** receives messages from a topic.
+- A **message type** defines the fields carried by each message.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+A topic can have multiple publishers and subscribers. Publishers and subscribers must use compatible message types and QoS settings to communicate.
 
-### If it did not work
+## 2. Start a publisher and subscriber
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+Install the demo package if needed:
 
-## Authoritative external references
+```bash
+sudo apt update
+sudo apt install ros-jazzy-demo-nodes-cpp
+source /opt/ros/jazzy/setup.bash
+```
 
-- [ROS 2 Jazzy documentation](https://docs.ros.org/en/jazzy/)
+In Terminal 1, start the talker:
 
-## Contribution note
+```bash
+ros2 run demo_nodes_cpp talker
+```
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+It publishes numbered text messages on `/chatter`.
+
+In Terminal 2, start the listener:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_cpp listener
+```
+
+The listener should print the messages it receives. Keep both terminals open while you inspect the graph.
+
+## 3. Inspect the running graph
+
+In Terminal 3:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+ros2 node list
+ros2 topic list -t
+ros2 topic info /chatter
+ros2 topic echo /chatter
+```
+
+You should see the talker and listener nodes, and the `/chatter` topic with type `std_msgs/msg/String`. The topic info command reports publisher and subscriber counts. The echo command displays messages as they arrive; press `Ctrl+C` to stop echoing.
+
+Inspect the message definition:
+
+```bash
+ros2 interface show std_msgs/msg/String
+```
+
+## 4. Publish a message from the command line
+
+Stop the demo talker with `Ctrl+C`. Then publish one message manually:
+
+```bash
+ros2 topic pub --once /chatter std_msgs/msg/String "{data: 'Hello from the ROS 2 CLI'}"
+```
+
+If the listener is still running, it should receive the message. The `--once` option publishes one message and exits.
+
+## 5. Understand the connection
+
+The talker and listener do not call each other directly. The talker publishes a message on `/chatter`; the ROS 2 middleware delivers compatible messages to subscribers.
+
+This separation makes it possible to add another subscriber without changing the publisher. It also means a matching topic name alone is not enough: the message type and QoS compatibility matter too.
+
+## 6. Relate this to a mobile robot
+
+A mobile robot commonly publishes sensor and state data on topics and subscribes to command or configuration streams. Examples might include laser scans, odometry, camera images and velocity commands. Exact names and types depend on the platform release and launch configuration.
+
+Inspect the live system instead of assuming an interface:
+
+```bash
+ros2 node list
+ros2 topic list -t
+ros2 topic info <topic_name>
+```
+
+For OpenAMRobot, use the owning software and interface repositories as the source of truth for exact topic contracts.
+
+!!! warning "Do not publish experimental commands to hardware"
+    The demo topic is harmless text. A robot velocity or actuator topic can move hardware. Do not use `ros2 topic pub` on unknown motion topics or a physical robot. Follow the approved simulation and supervised test procedure.
+
+## Troubleshooting
+
+| Symptom | Check |
+|---|---|
+| Listener receives nothing | Confirm both processes are running, use the same ROS domain and inspect `ros2 topic info /chatter`. |
+| Topic is missing | Confirm the talker is running and both terminals sourced the intended ROS distribution. |
+| Nodes cannot discover each other | Check ROS domain ID, network/firewall and RMW configuration. |
+| Topic type differs | Inspect `ros2 topic list -t` and `ros2 interface show`. |
+| Messages appear intermittently | Inspect publisher/subscriber QoS compatibility and network conditions. |
+
+## Next steps
+
+- [Services and actions](services-and-actions.md)
+- [Parameters](parameters.md)
+- [ROS 2 Jazzy tutorials](https://docs.ros.org/en/jazzy/Tutorials.html)
