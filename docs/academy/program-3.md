@@ -1,4 +1,4 @@
-# Program 3 · Customize & Engineer
+# Program 3 · Customize and Engineer
 
 Program 3 is the technical extension path for software, firmware, hardware, interfaces, simulation and manipulation. Work is organized by the repository that owns each contract.
 
