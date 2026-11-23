@@ -57,6 +57,7 @@ The roadmap becomes a renderer of the expanded combined_robot.xacro (openamr-upp
 
 ## Open follow-ups
 
+- Hub motor, 23 Nov 2026 (Proposed, no number changed): the ordered motor is ZLLG80ASM250-L-B2 V1.01; a bounded estimate of its rotating share from the supplier STEP with assumed densities (about 2.74 kg, 0.0097 kg m2 about the wheel axis, range 0.0092 to 0.0103) is recorded as a comment at DRV-001 in `scripts/roadmap_model/mass_ledger.yaml`. The 3.45 kg ledger value and the export are unchanged; the rotor and stator split in `mass_export.py` and the re-pin in openamr-platform-sw (issue 199) follow after RC.1. Not supplier data, not weighed.
 - Rear layout (A1, A9): manual two-level layout of FB-B and the BMS with datasheet outlines in the next PR (GI-080, the automatic packer placed neither after five attempts); F0 distance (GI-126) and a cable passage for CBL-P02 and CBL-P05 beside or under FB-A (GI-129, GI-130); hardware owner. The harness rerun routes the FB-B and BMS cables once those parts are placed. CAD owner: the side-panel return flange notch (GI-025), the adapter-plate rear extension and the arch doubler (GI-082).
 - Arch top sheet at the rear rivet nuts is over its yield with the arms at full reach, payload and braking (GI-082): decided fix, a doubler or through-bolts with a backing plate, CAD pending.
 - TZBOT (to solve before the receiver is installed): charging gap (GI-036) and the rear panel and TF-Luna inside the 20 mm margin (GI-121 to GI-123).
