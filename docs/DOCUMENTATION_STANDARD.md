@@ -4,7 +4,7 @@
 
 This standard is implemented through the [Documentation Information Architecture](DOCUMENTATION_INFORMATION_ARCHITECTURE.md), which defines the LEARN and REFERENCE axes, audience tracks, page template, numbered build path and repository-to-site split.
 
-All documentation contributions are also governed by the organization [Engineering Quality Standard](https://github.com/openAMRobot/.github/blob/main/ENGINEERING_QUALITY_STANDARD.md). Until automated enforcement is introduced, authors and reviewers must apply both standards manually through the pull-request checklist.
+All documentation contributions are also governed by the organization [Engineering Quality Standard](https://github.com/openAMRobot/.github/blob/main/ENGINEERING_QUALITY_STANDARD.md). CI now enforces a defined subset of these requirements through strict MkDocs builds, generated-link checks, repository-quality checks, roadmap consistency checks and regression tests. These checks do not automatically enforce every audience, source-traceability, safety, maturity or readiness requirement; authors and reviewers must continue to apply those standards manually.
 
 
 This standard defines the minimum documentation rules for every OpenAMRobot repository. It applies prospectively as repositories are revised.
