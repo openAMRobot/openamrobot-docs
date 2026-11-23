@@ -1,4 +1,4 @@
-# Program 2 · Build & Own
+# Program 2 · Build Your Robot
 
 Program 2 takes a learner from parts and documentation to a checked platform they can maintain. It connects the open hardware, firmware and ROS 2 repositories through one reproducible build path.
 
