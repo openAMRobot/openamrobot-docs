@@ -17,6 +17,11 @@ Sim, open).
 !!! warning "Parity is not fidelity"
     Parity tests show that two simulators read the same model. They do not show that either behaves like the robot.
 
+!!! info "Release candidate 2.0.0-rc.1: which simulator counts"
+    **Gazebo is the release twin for RC.1.** Whole-robot missions and release acceptance run in Gazebo only. MuJoCo and
+    Isaac Sim are **experimental** in this release and outside the critical path: their results do not gate the release,
+    and neither is ROS 2 integrated. No simulator result is hardware, electrical or safety evidence.
+
 ## Overview
 
 | Simulator | Role | ROS 2 integrated | Status |
