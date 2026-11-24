@@ -27,6 +27,13 @@ As of 9 November 2026 (owner decisions of 2, 3 and 8 Nov 2026; decision baseline
 
 The figures above are checked by `scripts/check_roadmap.py` against the generated files (`scripts/sync_audit.json`, `bom_coverage.csv`, `geometry_issues.csv`, `scripts/roadmap_model/parity_summary.json`); it fails when they disagree.
 
+## Search and AI discoverability (12 Nov 2026)
+
+- `hooks/seo.py` runs before `hooks/page_context.py`: it derives a meta description for every page without `description:` (hero paragraph, else first prose paragraph; duplicates get the page title, then the folder name), writes `/llms.txt` and `/llms-full.txt` into `site/` after the build, and appends the static roadmap pages to the sitemap. Edit `LLMS_HEADER`, `LLMS_SECTIONS` and `STATIC_PAGES` there; do not add a hand-written `docs/llms.txt` (it would be overwritten).
+- `docs/at-a-glance.md` is the fact sheet for readers and AI assistants. Keep it in line with the decisions register and the organization profile when dates or design values change (release milestones, lift, compute, drivetrain, charging, speed ceiling).
+- `CITATION.cff` (repository root) and `docs/about/citation.md` carry the same authors and titles; validate with `cffconvert --validate -i CITATION.cff`.
+- The 3D model and exploded view pages carry a `<noscript>` block and an "About this page" section (`id="about-this-page"`); any edit to `robot.html` or `exploded.html` needs `node scripts/audit_sync.js` again (fingerprint check in `check_roadmap.py`).
+
 ## Owner handles
 
 Owners on the roadmap pages and in `geometry_issues.csv` are GitHub handles from this list, or "owner: to be assigned" (`scripts/roadmap_model/analyse.py` OWN for the issues):

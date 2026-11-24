@@ -2,8 +2,8 @@
  "fingerprint": {
   "model/model.js": "f3fe53a2e977884e96b0aabb666a9805b412b74c1470de9c15089f0956d0a17f",
   "model/exploded.json": "b67248e5cbcdcf4bf266c7b021ad8448cae735759378df9332c621d5ede7dab6",
-  "robot.html": "edc311552d7a33d0dcf898af2b31ed1cbd6fa2fd23d7afac7fcb0462565b6882",
-  "exploded.html": "12f3973c3914b3d0a763662fd8897a32d40955885f5501d7f60a14e85562d563"
+  "robot.html": "1ccfd1ee9cf5d8d34a42268223f9ccf30517af17ef66450c5540da1d84c5b370",
+  "exploded.html": "6680b6ade77cae427f4cdf5ebf352a8c29c46b8408132a9526929f2c0dd0fa5b"
  },
  "robot_state": {
   "lift": 1,

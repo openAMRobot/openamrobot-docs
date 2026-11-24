@@ -2,6 +2,21 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-12
+
+### Added
+
+- `OpenAMRobot at a glance` (`/at-a-glance/`): the facts an AI assistant or reader needs in plain text (what it is, OpenAMRobot 2.0 design values, licences, status and dates, how to get one, how to contribute), from the decisions register, the organization profile and the existing pages.
+- `How to cite OpenAMRobot` (`/about/citation/`) and `CITATION.cff` at the repository root (validated against CFF 1.2.0).
+- `hooks/seo.py`: per-page meta descriptions from each page's own hero or first paragraph (unique across the site, no generic fallback left on content pages); `/llms.txt` and `/llms-full.txt` generated at build time from the navigation and page sources (the hand-written `docs/llms.txt` is removed); the static roadmap pages (3D model, exploded view, hardware, architecture, progress, overview) added to `sitemap.xml` and `sitemap.xml.gz`.
+- JSON-LD: an Organization node (Botshare LTD, `sameAs`) on every page, SoftwareSourceCode on the home, at-a-glance and citation pages, `license` and `about` on TechArticle; `3DModel` on the 3D model and exploded view pages.
+- 3D model and exploded view pages: canonical link, a `<noscript>` fallback and a plain-text "About this page" section with the key facts and links; Open Graph and Twitter tags on the exploded view. No change to geometry, model files or media; `scripts/sync_audit.json` regenerated (166 parts, 0 mismatches; only the two page fingerprints changed).
+
+### Changed
+
+- `robots.txt` names search and AI crawlers explicitly and points to the sitemap and `/llms.txt`.
+- `site_description` describes OpenAMRobot by Botshare as an open-source mobile manipulator.
+
 ## 2026-11-10
 
 ### Changed

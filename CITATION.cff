@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use OpenAMRobot or this documentation, please cite it using the metadata from this file."
+type: software
+title: "OpenAMRobot documentation: open-source mobile manipulator with a ROS 2 mobile base, lift and two OpenArm 2.0 arms"
+abstract: >-
+  Documentation of OpenAMRobot by Botshare, an open-source mobile manipulator: a
+  ROS 2 mobile base with a lift column and two OpenArm 2.0 arms, with open hardware
+  (CERN-OHL-P-2.0), software and firmware (MIT) and documentation (CC BY 4.0).
+authors:
+  - name: "Botshare LTD"
+    country: CY
+    website: "https://botshare.ai"
+  - name: "OpenAMRobot contributors"
+    website: "https://github.com/openAMRobot"
+repository-code: "https://github.com/openAMRobot/openamrobot-docs"
+url: "https://docs.openamrobot.ai/"
+license: CC-BY-4.0
+keywords:
+  - open-source mobile manipulator
+  - dual-arm mobile robot
+  - OpenArm 2.0
+  - mobile base with lift
+  - ROS 2
+  - Nav2
+  - MoveIt 2
+  - LeRobot
+  - mobile manipulation
+  - open hardware
+  - embodied AI
+preferred-citation:
+  type: software
+  title: "OpenAMRobot: open-source mobile manipulator with a ROS 2 mobile base, lift and two OpenArm 2.0 arms"
+  authors:
+    - name: "Botshare LTD"
+    - name: "OpenAMRobot contributors"
+  repository-code: "https://github.com/openAMRobot"
+  url: "https://docs.openamrobot.ai/"
+  license:
+    - MIT
+    - CERN-OHL-P-2.0
+    - CC-BY-4.0
