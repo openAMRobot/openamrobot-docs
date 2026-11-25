@@ -2,6 +2,12 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-22
+
+### Changed
+
+- `reference/openamrobot-interfaces/reference.md`: replaced the empty template with an index of the shared interface packages and navigation messages, checked against openamrobot-interfaces `main` at 50ed777. It links to the canonical definitions and copies no fields, constants or reason codes.
+
 ## 2026-11-10
 
 ### Changed
