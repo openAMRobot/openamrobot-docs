@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" role="img" aria-labelledby="dt-title dt-desc" font-family="Roboto, Helvetica, Arial, sans-serif">
+  <!-- SPDX-License-Identifier: CC-BY-4.0 -->
+  <title id="dt-title">OpenAMRobot 2.0 target digital twin architecture</title>
+  <desc id="dt-desc">One canonical robot source feeds generation and validation, which produces the models for RViz, Gazebo with DART, MuJoCo and Isaac Sim. Gazebo connects to the hardware behaviour and signal emulation layer, which connects to ROS 2 Jazzy (Nav2, MoveIt, ros2_control and one command gate) and to firmware software in the loop (Renode, STM32H723 proxy, STM32G474 protocol emulator, micro-ROS). Every layer reports to the evidence, calibration and reality-gap register, which grades results from L1 to L6.</desc>
+  <defs>
+    <marker id="dt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #37474f; stroke-width: 2; }
+      .src { fill: #e3f2fd; }
+      .sim { fill: #e8f5e9; }
+      .emu { fill: #fff3e0; }
+      .ev  { fill: #f3e5f5; }
+      .h   { font-size: 17px; font-weight: 700; fill: #111111; }
+      .t   { font-size: 14px; fill: #222222; }
+      .line { stroke: #37474f; stroke-width: 2; fill: none; marker-end: url(#dt-arrow); }
+      .dash { stroke: #6a1b9a; stroke-width: 2; fill: none; stroke-dasharray: 6 5; marker-end: url(#dt-arrow); }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#fafafa"/>
+
+  <!-- Row 1: source and generation -->
+  <rect class="box src" x="60" y="24" width="360" height="76" rx="8"/>
+  <text class="h" x="240" y="56" text-anchor="middle">Canonical robot source</text>
+  <text class="t" x="240" y="80" text-anchor="middle">one URDF/xacro model, pinned upstream parts</text>
+
+  <rect class="box src" x="540" y="24" width="360" height="76" rx="8"/>
+  <text class="h" x="720" y="56" text-anchor="middle">Generation and validation</text>
+  <text class="t" x="720" y="80" text-anchor="middle">expansion, checks, lock with hashes</text>
+
+  <line class="line" x1="420" y1="62" x2="536" y2="62"/>
+
+  <!-- Row 2: four consumers -->
+  <rect class="box sim" x="30" y="160" width="200" height="76" rx="8"/>
+  <text class="h" x="130" y="192" text-anchor="middle">RViz</text>
+  <text class="t" x="130" y="216" text-anchor="middle">robot state</text>
+
+  <rect class="box sim" x="260" y="160" width="200" height="76" rx="8"/>
+  <text class="h" x="360" y="192" text-anchor="middle">Gazebo + DART</text>
+  <text class="t" x="360" y="216" text-anchor="middle">reference physics</text>
+
+  <rect class="box sim" x="490" y="160" width="200" height="76" rx="8"/>
+  <text class="h" x="590" y="192" text-anchor="middle">MuJoCo</text>
+  <text class="t" x="590" y="216" text-anchor="middle">dynamics checks</text>
+
+  <rect class="box sim" x="720" y="160" width="210" height="76" rx="8"/>
+  <text class="h" x="825" y="192" text-anchor="middle">Isaac Sim</text>
+  <text class="t" x="825" y="216" text-anchor="middle">perception, needs a GPU</text>
+
+  <path class="line" d="M720,100 L720,130 L130,130 L130,156"/>
+  <path class="line" d="M360,130 L360,156"/>
+  <path class="line" d="M590,130 L590,156"/>
+  <path class="line" d="M720,130 L825,130 L825,156"/>
+
+  <!-- Row 3: emulation -->
+  <rect class="box emu" x="200" y="290" width="320" height="76" rx="8"/>
+  <text class="h" x="360" y="322" text-anchor="middle">Hardware behaviour and</text>
+  <text class="h" x="360" y="344" text-anchor="middle">signal emulation</text>
+
+  <line class="line" x1="360" y1="240" x2="360" y2="286" marker-start="url(#dt-arrow)"/>
+
+  <!-- Row 4: software and firmware -->
+  <rect class="box emu" x="30" y="420" width="420" height="96" rx="8"/>
+  <text class="h" x="240" y="452" text-anchor="middle">ROS 2 Jazzy</text>
+  <text class="t" x="240" y="476" text-anchor="middle">Nav2, MoveIt, ros2_control</text>
+  <text class="t" x="240" y="498" text-anchor="middle">one command gate</text>
+
+  <rect class="box emu" x="490" y="420" width="440" height="96" rx="8"/>
+  <text class="h" x="710" y="452" text-anchor="middle">Firmware software in the loop</text>
+  <text class="t" x="710" y="476" text-anchor="middle">Renode, STM32H723 proxy,</text>
+  <text class="t" x="710" y="498" text-anchor="middle">STM32G474 protocol emulator, micro-ROS</text>
+
+  <path class="line" d="M300,366 L300,393 L240,393 L240,416"/>
+  <path class="line" d="M420,366 L420,393 L710,393 L710,416"/>
+
+  <!-- Row 5: evidence -->
+  <rect class="box ev" x="30" y="560" width="900" height="64" rx="8"/>
+  <text class="h" x="480" y="588" text-anchor="middle">Evidence, calibration and reality-gap register</text>
+  <text class="t" x="480" y="610" text-anchor="middle">every result graded L1 to L6; measurements replace estimates</text>
+
+  <line class="dash" x1="240" y1="516" x2="240" y2="556"/>
+  <line class="dash" x1="710" y1="516" x2="710" y2="556"/>
+</svg>

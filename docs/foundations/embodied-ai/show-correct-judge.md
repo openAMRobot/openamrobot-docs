@@ -39,6 +39,8 @@ The cited tests check integration prerequisites, not the Show, Correct, Judge le
 
 Fake-hardware results do not prove physical behavior, grasping, safety or release readiness. The integration README also distinguishes this baseline from integrated simulation. The inspected sources do not establish available demonstration capture, correction, task evaluation, dataset creation, policy training or physical replay. Those capabilities must not be inferred from controller tests or from this conceptual explanation.
 
+The separate [openamrobot-embodied-ai repository](https://github.com/openAMRobot/openamrobot-embodied-ai) is also experimental: it contains a dataset-registry QA validator, while episode capture and policy runtime remain skeletons and ACT training/evaluation are planned. It does not yet provide an end-to-end Show, Correct, Judge workflow. Dataset metadata validation is not evidence that demonstrations are being captured or that a learned policy has been trained.
+
 ## Check your understanding
 
 For the block example, name one correction and one evaluation criterion. Then explain why a mock arm reaching a commanded position would not prove that a real block was placed successfully.
