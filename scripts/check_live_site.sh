@@ -13,7 +13,7 @@ grep -Eiq '^location: https://' <<<"$http_headers" || { echo "HTTP root does not
 # Never waive the HTTP, nonempty-page, or required-content assertions.
 check_dir=$(mktemp -d)
 trap 'rm -rf "$check_dir"' EXIT
-for path in / /start-here/ /paths/ /reference/ /robots.txt /sitemap.xml /llms.txt; do
+for path in / /start-here/ /paths/ /reference/ /reference/repositories/ /status/ /foundations/embodied-ai/ /customize/ai/ /robots.txt /sitemap.xml /llms.txt; do
   output_file="$check_dir/$(printf '%s' "$path" | tr '/' '_')"
   curl --fail --silent --show-error --retry 5 --retry-all-errors --max-time 30 \
     "$site_url$path" -o "$output_file"
@@ -23,5 +23,9 @@ done
 grep -Fq 'Build robots. Train them for real work.' "$check_dir/_"
 grep -Fq 'Start with the task in front of you' "$check_dir/_start-here_"
 grep -Fq 'Domain Expert' "$check_dir/_paths_"
+grep -Fq 'Repository index' "$check_dir/_reference_repositories_"
+grep -Fq 'Project status' "$check_dir/_status_"
+grep -Fq 'Embodied AI' "$check_dir/_foundations_embodied-ai_"
+grep -Fq 'Extend AI capabilities' "$check_dir/_customize_ai_"
 
 echo "Live documentation smoke test passed: $site_url"

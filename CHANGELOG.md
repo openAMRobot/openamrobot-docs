@@ -7,6 +7,7 @@ All notable changes to the OpenAMRobot documentation site are recorded here. The
 ### Changed
 
 - `reference/openamrobot-manifest/` concepts, setup and reference pages: replaced three empty templates with the development manifest versus the pinned rc.1 snapshot, how to import and validate a workspace, and the files, check stages and source drivers, checked against openamrobot-manifest `main` at 5b782ac. Pinned commits are linked, not copied.
+- `reference/openamrobot-interfaces/reference.md`: replaced the empty template with an index of the shared interface packages and navigation messages, checked against openamrobot-interfaces `main` at 50ed777. It links to the canonical definitions and copies no fields, constants or reason codes.
 
 ## 2026-11-10
 
