@@ -14,7 +14,8 @@ This page separates documentation structure from the maturity of the capability 
 | Firmware | Repository-grounded overview available | Active development | [openamr-platform-fw](https://github.com/openAMRobot/openamr-platform-fw) |
 | Hardware | Repository-grounded overview available | Revision validation in progress | [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) |
 | Operator interface | Task map and screenshots available | Active; verify the current release | [openamrobot-ui](https://github.com/openAMRobot/openamrobot-ui) |
-| Manipulation and demonstration | Learning architecture available | Experimental and developing | [Repository ecosystem](reference/repositories.md) |
+| Manipulation | Learning architecture available | Planned / simulation-first; check the owning repositories for implementation status | [Repository ecosystem](reference/repositories.md) |
+| Embodied AI and data | Scope and capability boundaries documented | Experimental: dataset QA available; recorder and policy runner are skeletons; ACT and evaluation planned | [openamrobot-embodied-ai](https://github.com/openAMRobot/openamrobot-embodied-ai) |
 | Academy | Program structure available | Commercial delivery outside this site | [Academy](academy/index.md) |
 
 For OpenAMRobot 2.0, the [roadmap and status](reference/openamrobot-2/roadmap.md) pages use the 9 November 2026 snapshot (plan baseline P-03 rev20.6 and E-01 rev1.8). They show each part's delivery status, runtime evidence and physical-acceptance state with links to evidence, plus known drift between sources. The roadmap is a dated snapshot, not a live status feed; check its snapshot date before relying on a status.

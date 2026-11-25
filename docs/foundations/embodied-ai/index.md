@@ -1,48 +1,49 @@
 ---
 title: Embodied AI
+description: Understand how demonstrations, datasets and learned policies fit into the OpenAMRobot ecosystem and what is experimental today.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Embodied AI</h1><p>Understand embodied ai and how it affects OpenAMRobot.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>Embodied AI</h1><p>How a robot can learn task behaviour from demonstrations, validated datasets and evaluated policies — and what OpenAMRobot has implemented so far.</p><div class="oamr-actions"><a class="oamr-button oamr-button--primary" href="https://github.com/openAMRobot/openamrobot-embodied-ai">Explore the Embodied AI repository</a><a class="oamr-button" href="../../reference/repositories/">Repository map</a></div></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## The learning loop
 
-## Planned coverage
+A typical embodied-AI workflow connects several distinct stages:
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+1. **Demonstrate:** capture a task episode with the robot and its sensors.
+2. **Validate:** check dataset metadata, completeness and release identity before training.
+3. **Train:** use an explicitly selected learning baseline to produce a policy.
+4. **Evaluate:** test the policy offline and in simulation against defined scenarios and acceptance criteria.
+5. **Deploy cautiously:** integrate a policy through approved robot command interfaces, with independent safety controls and human supervision.
 
-## Completion criteria
+These stages are not interchangeable. A recorded episode is not automatically a valid dataset; a trained policy is not automatically safe or ready for a physical robot.
 
-| Field | Required content |
+## Current OpenAMRobot implementation
+
+The public [openamrobot-embodied-ai](https://github.com/openAMRobot/openamrobot-embodied-ai) repository describes its current maturity as **Experimental**.
+
+| Capability | Current state described by the owning repository |
 | --- | --- |
-| For | Name the primary path: Domain Expert, Beginner, Integrator, Builder, Developer or Entrepreneur |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| Episode capture (C9) | ROS 2 recorder skeleton; it writes no data until the capture-topic contract is approved in openamrobot-interfaces. |
+| Dataset QA (C10) | Validator for dataset release entries in datasets/registry.yaml. |
+| ACT imitation-learning baseline (C11) | Planned. |
+| Offline and simulation evaluation (C14) | Planned. |
+| Policy runtime | ROS 2 lifecycle-node skeleton; not a general-purpose, production-ready deployment path. |
 
-### Procedure or explanation
+## Important boundaries
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+- Message and schema definitions belong to [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces), not the Embodied AI repository.
+- URDF, frames, navigation, command arbitration and software-stop ownership remain in their respective platform repositories.
+- The current recorder does not capture data before the C9 contract is approved.
+- The policy runner does not implement arm output and must not bypass the approved command-arbitration or software-stop path.
+- Datasets and model weights are kept outside Git; the repository stores registry metadata and validation code.
 
-### If it did not work
+!!! warning "Experimental capability"
+    The current repository contains a mixture of a dataset-QA tool, planned learning/evaluation work and ROS 2 skeletons. Do not interpret this page or a passing software test as evidence of a trained policy, validated robot behaviour, physical acceptance or safety certification.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## Where to continue
 
-## Owning OpenAMRobot source
-
-- [openamrobot-manipulation](https://github.com/openAMRobot/openamrobot-manipulation) – canonical source, versions, implementation and issue history.
-
-## Contribution note
-
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+- [Show, Correct, Judge](show-correct-judge.md) explains the demonstration workflow.
+- [Datasets and episodes](datasets-and-episodes.md) introduces data capture and dataset quality.
+- [Policies and VLA models](policies-and-vla.md) explains learned policy concepts.
+- [What simulation is for](simulation-role.md) describes the role and limits of simulation.
+- For implementation, versions and exact commands, use the [owning repository README](https://github.com/openAMRobot/openamrobot-embodied-ai#readme) and its linked interface contracts.
