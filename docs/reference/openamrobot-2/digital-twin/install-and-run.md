@@ -287,7 +287,7 @@ machine, a third covers steps 7 and 8 on an NVIDIA GPU machine.
 |---|---|---|
 | 1 | Quick start steps 1 to 7 | every command exits 0; scenario 14 PASS |
 | 2 | `ros2 launch openamrobot_build1_scene build1.launch.py rviz:=true` | Gazebo and RViz open; the robot stands at the origin |
-| 3 | RViz checklist of the scene README | one TF tree `map` > `odom` > `base_footprint` > `base_link` > lift > arms; no flickering frame; scan, costmaps, planning scene shown |
+| 3 | RViz checklist of the scene README | one TF tree `map` > `odom` > `base_footprint`, with `base_footprint` > `base_link` and `base_footprint` > lift > arms (the lift hangs from `base_footprint`, not from `base_link`); no flickering frame; scan, costmaps, planning scene shown |
 | 4 | `run_scenario.py scn01_drive` | the base drives 2 m and turns; PASS with odometry error in the log |
 | 5 | Control Room next to the running scene ([Operator UI and Control Room](operator-ui.md)) | live status, CAN bus rates and decoded signals; nothing published outside `/control_room/` |
 | 6 | Operator UI monitoring views, only if the [UI conditions](operator-ui.md#operator-ui) are met | robot state, map and mission status shown; manual driving not used |
