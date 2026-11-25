@@ -11,6 +11,7 @@ All notable changes to the OpenAMRobot documentation site are recorded here. The
 
 ### Changed
 
+- `reference/openamrobot-release/` concepts, setup and reference pages: replaced three empty templates with how product releases are built, how to verify and rebuild an archive, and the repository's files, outputs and limits, checked against openamrobot-release `main` at a8f60f6. v2.0.0-rc.1 and v2.0.0 are shown as not published, and only v0.0.1 is released.
 - `reference/openamrobot-interfaces/reference.md`: replaced the empty template with an index of the shared interface packages and navigation messages, checked against openamrobot-interfaces `main` at 50ed777. It links to the canonical definitions and copies no fields, constants or reason codes.
 
 ## 2026-11-10
