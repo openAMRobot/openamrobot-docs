@@ -7,6 +7,7 @@ All notable changes to the OpenAMRobot documentation site are recorded here. The
 ### Changed
 
 - `reference/openamrobot-comm/overview.md`: replaced the empty template with an honest status page. The repository is Planned with no code and only empty scaffolding, checked against openamrobot-comm `main` at 73fa694. The page says what it is for, what it holds today and where to look instead, and invents no protocol, schema or version.
+- `reference/openamrobot-interfaces/reference.md`: replaced the empty template with an index of the shared interface packages and navigation messages, checked against openamrobot-interfaces `main` at 50ed777. It links to the canonical definitions and copies no fields, constants or reason codes.
 
 ## 2026-11-10
 
