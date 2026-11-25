@@ -1,53 +1,56 @@
----
-title: Navigation Faults
----
+# Navigation Health and Faults
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Navigation Faults</h1><p>Define inspection, diagnosis, service evidence and acceptance for navigation faults.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+## For
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+Developers integrating navigation status into monitoring, mission orchestration or operator-facing software.
 
-## What this page should contain
+**When you finish:** you will know where the navigation-health contract is defined, how to interpret its scope, and which implementation details still require runtime confirmation.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**Applies to:** the navigation-health interface described by the current reviewed snapshot in [openAMRobot/openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces). Confirm the selected snapshot before implementation.
 
-## Content template
+## Scope and safety boundary
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+Navigation status describes the navigation subsystem only. It is not a whole-robot readiness signal and is not a safety function. It does not implement manipulation, physical E-stop recovery, bimanual capture or the operator panel.
 
-### Procedure or explanation
+The canonical message definitions, reason-code vocabulary, versions and compatibility rules are maintained in the interfaces repository under `ros2/openamr_nav_msgs/`. This page is a consumer-facing explanation, not a second contract registry.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+## Proposed runtime integration
 
-### If it did not work
+The interface contract describes a navigation status message intended for publication on `/navigation/status`. The producer is tracked in [openamr-platform-sw issue #34](https://github.com/openAMRobot/openamr-platform-sw/issues/34).
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+Treat the topic and publication behavior as contract/proposal information until the producer implementation and deployed launch configuration confirm them. Do not infer deployed behavior from the existence of a message definition.
 
-## Owning OpenAMRobot source
+For exact message fields, QoS, heartbeat, validity semantics, reason-code constants and compatibility/version rules, consult the reviewed `NavigationStatus.msg` and `CONTRACT.md` in the canonical interfaces repository. Avoid copying numeric constants or version values into this page; those can change and must have one authoritative home.
 
-- [openamr-platform-hw](https://github.com/openAMRobot/openamr-platform-hw) – canonical source, versions, implementation and issue history.
+## Reading status safely
 
-## Authoritative external references
+- Interpret navigation health and navigation readiness as navigation-subsystem information only.
+- Distinguish an explicit active E-stop report from missing or stale base telemetry. A loss of telemetry is not proof that the E-stop is active or inactive.
+- Treat zero-valued fields according to their validity/known-state indicators and the canonical message contract; zero is not automatically a valid measurement.
+- Use reason-code meanings and operator actions from the canonical registry. Do not renumber, reuse or independently redefine reason codes.
 
-- [Nav2 documentation](https://docs.nav2.org/)
-- [ROS REP-105 coordinate conventions](https://www.ros.org/reps/rep-0105.html)
+## Verification
 
-## Contribution note
+1. Select and record the reviewed interface snapshot used by your consumer.
+2. Inspect the exact message and contract definitions in that snapshot.
+3. Build the affected consumer against the selected interface package.
+4. Run the canonical positive and negative fixtures and the applicable consumer tests.
+5. Confirm runtime topic, message type, QoS and producer behavior against the actual launch configuration before documenting them as deployed.
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+See the interfaces repository's [verification guide](https://github.com/openAMRobot/openamrobot-interfaces/blob/main/docs/verification.md) and [schema-validation guide](https://github.com/openAMRobot/openamrobot-interfaces/blob/main/docs/schema-validation.md).
+
+## Traceability still required
+
+The exact source wording for `Use_Case_1` requirements 3.1–3.7 and the authoritative P-02 mission-state definitions have not been established in this documentation work. Do not invent requirement mappings or mission-state transitions. Keep those acceptance items open until the owning specifications are available and reviewed.
+
+## Safety warning
+
+Navigation status does not actuate, reset or validate the physical E-stop, disable motor power, re-enable actuators or guarantee that the robot is safe. The hardware safety chain and base-controller safety behavior remain independently owned. Follow the approved hardware operating procedure and supervised test process.
+
+## Ownership
+
+- Interface definitions, schemas, versions and reason-code vocabulary: [openAMRobot/openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces).
+- Navigation producer implementation: [openAMRobot/openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw).
+- Product/developer explanation: this documentation repository.
+
+Keep implementation facts synchronized with their owning repositories. Report unverified behavior as unverified.

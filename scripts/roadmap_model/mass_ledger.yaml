@@ -24,6 +24,19 @@ lines:
   PWR-002: {unit_kg: 0.450, qty: 1, src: "estimate from the catalogue class (Daly M-series 8S 150 A)"}
   PWR-004: {unit_kg: 0.290, qty: 1, src: "Blue Sea Systems 6004 m-Series specification: 0.65 lb (0.29 kg)"}
   # drive
+  # DRV-001, recorded 23 Nov 2026, PROPOSED, no number of this ledger changes yet (openamr-platform-sw issue 199).
+  # Ordered motor: ZLTECH ZLLG80ASM250-L-B2 V1.01 (double shaft, with brake); supplier drawing and STEP dated 9 Oct 2026,
+  # received 23 Nov 2026, drawing not signed yet. The drawing gives no weight, no inertia and no brake data, so the
+  # 3.45 kg below stays the V1.0 specification value and is not confirmed for the -L-B2 motor with brake.
+  # Engineering estimate of the rotating share, from the STEP solids with assumed densities (not supplier data):
+  #   tyre 723.9 cm3 x 1.2 g/cm3 = 0.869 kg, J 0.00591 kg m2; two shell covers 250.7 and 249.8 cm3 x 2.7 = 0.677 and
+  #   0.675 kg, J 0.00098 each; magnet and back-iron ring 67.7 cm3 x 7.7 = 0.522 kg, J 0.00182.
+  #   Rotating mass about 2.74 kg, inertia about the wheel axis about 0.0097 kg m2, range 0.0092 to 0.0103 kg m2.
+  #   The STEP has no stator, so the fixed share (3.45 - 2.74 = about 0.71 kg) is a difference, not a measurement.
+  # Next step after RC.1: split DRV-001 in mass_export.py into the rotating share on the wheel links and the fixed share on
+  # base_link, with a test, then re-pin roadmap_mass_export.source.yaml in openamr-platform-sw (hub_motor_on_wheel_link).
+  # Open with the supplier: weight, rotor inertia, brake data, the 100 kg per 2 sets load on the drawing against the
+  # 120 kg per pair confirmed on 18 Oct 2026, and the back EMF value.
   DRV-001: {unit_kg: 3.450, qty: 2, src: "ZLTECH ZLLG80-ASM250-L V1.0 specification: 3.45 kg dual shaft (3.4 kg single shaft)"}
   DRV-002: {unit_kg: 0.600, qty: 1, src: "estimate: 150 x 97 x 31 mm aluminium-cased driver (ZLAC8015D manual outline)"}
   MEC-002: {unit_kg: 0.300, qty: 4, src: "Blickle LPA-VSTH 35K data sheet: unit weight 0.3 kg"}
