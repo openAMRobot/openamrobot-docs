@@ -61,3 +61,11 @@ measured factor in the log, and `scn05_bus_loss` reports BLOCKED.
   and `fine` profiles need neither.
 
 Next: [Installation](installation.md).
+
+## Reported, not supported: Windows with WSL2
+
+One contributor ran rc.1 on Windows 11 with WSL2 and WSLg (Ubuntu 24.04, 6 cores, 7.4 GiB assigned to WSL, GPU
+acceleration not verified). Installation, build, Gazebo, RViz and the drive scenario worked. Measured: real-time
+factor 0.16 to 0.21 with the full stack, RViz at 1 frame per second at start. This is one report on one machine.
+WSL2 is not a tested platform and the cause of the low frame rate is not established.
+

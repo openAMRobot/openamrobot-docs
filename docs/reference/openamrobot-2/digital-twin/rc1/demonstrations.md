@@ -130,6 +130,10 @@ emulator are test values, not decisions about the real controller, and the permi
 
 ## 3. Arms
 
+!!! warning "Not in the quick start launch"
+    This scenario needs its own launch, shown below. Do not run it against a `profile:=fast` launch that is still
+    open from the quick start.
+
 | | |
 |---|---|
 | Scenario | `scn03_arms_reach` |

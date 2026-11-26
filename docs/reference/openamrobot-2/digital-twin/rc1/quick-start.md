@@ -61,6 +61,12 @@ ros2 launch openamrobot_build1_scene build1.launch.py profile:=fast rviz:=true
 
 Leave Terminal 1 running.
 
+!!! warning "This launch is for driving only"
+    With `profile:=fast` and the default engine, run `scn01_drive` and nothing with the arms. `scn03_arms_reach`
+    fails in this launch with `park_joints_not_moved`, and the grippers do not move. That is a known limit of the
+    physics engine in this profile, not a fault of your installation. For arms and grippers, stop this launch and
+    start the one in [Grasp](demonstrations.md#4-grasp), which selects the engine the arms are qualified with.
+
 ### What you should see
 
 - A Gazebo window with the robot at the origin of a floor with shelf units, a tote, an item and a dock model.
