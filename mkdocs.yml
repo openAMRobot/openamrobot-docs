@@ -371,6 +371,18 @@ nav:
           - Dark-store pick simulation: reference/openamrobot-2/dark-store-simulation.md
           - Digital twin:
               - reference/openamrobot-2/digital-twin/index.md
+              - 2.0 rc.1 release candidate:
+                  - reference/openamrobot-2/digital-twin/rc1/index.md
+                  - System requirements: reference/openamrobot-2/digital-twin/rc1/requirements.md
+                  - Installation: reference/openamrobot-2/digital-twin/rc1/installation.md
+                  - Quick start: reference/openamrobot-2/digital-twin/rc1/quick-start.md
+                  - Launch profiles and arguments: reference/openamrobot-2/digital-twin/rc1/launch.md
+                  - RViz guide: reference/openamrobot-2/digital-twin/rc1/rviz.md
+                  - Demonstrations: reference/openamrobot-2/digital-twin/rc1/demonstrations.md
+                  - Architecture: reference/openamrobot-2/digital-twin/rc1/architecture.md
+                  - Capability and maturity: reference/openamrobot-2/digital-twin/rc1/capabilities.md
+                  - Troubleshooting: reference/openamrobot-2/digital-twin/rc1/troubleshooting.md
+                  - Release information: reference/openamrobot-2/digital-twin/rc1/release.md
               - Architecture: reference/openamrobot-2/digital-twin/architecture.md
               - Current status: reference/openamrobot-2/digital-twin/status.md
               - Get the model: reference/openamrobot-2/digital-twin/get-the-model.md
@@ -524,7 +536,11 @@ markdown_extensions:
   - tables
   - footnotes
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.snippets:

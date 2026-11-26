@@ -2,7 +2,7 @@
 title: Get the model
 tags: [developer, integrator]
 status: experimental
-description: How to download the OpenAMRobot 2.0 model bundle and how to run the Build 1 simulation scene from source.
+description: How to download the OpenAMRobot 2.0 model bundle, and where to find the instructions for running the Build 1 simulation scene from source.
 ---
 
 # Get the model
@@ -40,41 +40,19 @@ keep their Apache-2.0 licence from Enactic, Inc. The bundle's `NOTICE.md` lists 
 
 ## Build 1 scene from source
 
-The Build 1 scene puts the whole robot in one Gazebo world with every device on a virtual CAN bus, with Nav2 and MoveIt
-on top. It is in review: [openamr-upperbody-sw pull request #70](https://github.com/openAMRobot/openamr-upperbody-sw/pull/70),
-package `ros2/src/openamrobot_build1_scene`. Its README (`ros2/src/openamrobot_build1_scene/README.md`) lists the
-workspace, the pinned inputs and every launch argument. Set up the workspace as that README says, then:
+The Build 1 scene puts the whole robot in one Gazebo world with every device on a virtual CAN bus, with Nav2 and
+MoveIt 2 on top. It is part of the OpenAMRobot 2.0 rc.1 Digital Twin candidate, package
+`ros2/src/openamrobot_build1_scene` of openamr-upperbody-sw.
 
-Create the five virtual CAN interfaces (needs root or passwordless sudo, `iproute2` and the `vcan` kernel module):
+Install and run it as the rc.1 section describes:
 
-```bash
-ros2 run openamrobot_build1_scene setup_vcan_all.sh
-```
-
-Start the scene with RViz:
-
-```bash
-ros2 launch openamrobot_build1_scene build1.launch.py rviz:=true
-```
-
-Without virtual CAN the launch prints `BLOCKED` and stops. The physics-only profile still runs:
-
-```bash
-ros2 launch openamrobot_build1_scene build1.launch.py profile:=fast rviz:=true
-```
-
-List the scenarios and run one against the running launch:
-
-```bash
-ros2 run openamrobot_build1_scene run_scenario.py --list
-```
-
-```bash
-ros2 run openamrobot_build1_scene run_scenario.py scn01_drive
-```
+- [Installation](rc1/installation.md): the pinned workspace and the bootstrap script.
+- [Quick start](rc1/quick-start.md): launch, readiness check and the first demonstration.
+- [Launch profiles and arguments](rc1/launch.md): run profiles, virtual CAN and every launch argument.
+- [Demonstrations](rc1/demonstrations.md): the scenarios and the Baseline 1 mission.
 
 ## Combined model from source
 
-The combined model alone (without the scene) is on `main` of openamr-upperbody-sw. Its
+The combined model alone (without the scene) is in openamr-upperbody-sw. Its
 [README](https://github.com/openAMRobot/openamr-upperbody-sw#readme) gives the workspace, the build and the RViz,
 MoveIt and Gazebo launches.

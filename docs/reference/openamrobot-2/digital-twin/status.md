@@ -17,6 +17,13 @@ and [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw). T
     Every item below is software or simulation evidence (L1 to L4). No result has been checked on a bench (L5) or on
     the robot (L6). Simulation, not hardware validation.
 
+!!! note "Snapshot of 16 to 17 November 2026, superseded for the rc.1 candidate"
+    The table below is kept as the record of that date. Several rows changed afterwards: in the rc.1 candidate the
+    lift moves in the `fast` profile and through the emulated lift controller, and the grasp passes in the device
+    profile. The current per-capability state is the
+    [rc.1 capability and maturity matrix](rc1/capabilities.md), and the results are under
+    [rc.1 release information](rc1/release.md#qualification-summary). Still simulation evidence only.
+
 ## Current status
 
 Evidence levels are defined on the [digital twin overview](index.md#evidence-levels-l1-to-l6).

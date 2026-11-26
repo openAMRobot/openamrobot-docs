@@ -31,6 +31,16 @@ The figures above are checked by `scripts/check_roadmap.py` against the generate
 
 - `docs/reference/openamrobot-2/digital-twin/` (added 17 Nov 2026): status as of 16 to 17 Nov 2026, only verified items with their evidence level. L1 to L6 and F0 to F3 are the definitions of the plan of record (decision D5 of the 15 Nov 2026 final plan) and must stay word for word with it. The bundle download link points at the openamr-upperbody-sw Releases page and says "when published"; the Build 1 scene commands are copied from openamr-upperbody-sw #70 (open) and need a recheck when it merges. Media page stays empty until a capture passes review.
 
+## OpenAMRobot 2.0 rc.1 Digital Twin section
+
+- `docs/reference/openamrobot-2/digital-twin/rc1/` (added 26 Nov 2026, eleven pages): the entry point for the rc.1 Digital Twin release candidate. Sources read: openamr-upperbody-sw `1ab45a62957d238fc293eee08a8fd9158acebb01` (branch release/2.0.0-rc.1), openamr-platform-sw `ddd20ab3a85d98bb78c4c5f014952c4a0717ef92` (branch release/2.0.0-rc.1, not main), openamrobot-manifest branch release/v2.0.0-rc.1-pins at `d713ffb25938e6f46268dbce5a23dae37648965a` (draft pull request 23, not merged).
+- Every command on those pages is copied from the bootstrap script, the scene README, the launch file, `run_scenario.py`, `setup_vcan_all.sh` or a CI workflow at those commits. Recheck them when a pin changes.
+- Not yet true at the time of writing, each marked "valid after publication" or "at the time of writing" on the pages: the manifest files are not on `main` of openamrobot-manifest (the installation page names the commit to check out); the tag `v2.0.0-rc.1` in openamrobot-release does not exist; the repeat of the gates on upperbody `1ab45a6` was running (the quoted results are from `729be2a`, identical tree); the clean-install run 45738318716 used the profile with upperbody `729be2a`, and its repeat on the final profile was queued. Update the installation, quick start and release pages when these land.
+- Capability matrix cells that read "not verified for this page" (SLAM, MuJoCo, LeRobot, embodied AI, STM32 firmware evidence, several next milestones) need an owner's input.
+- Mermaid is enabled in `mkdocs.yml` through the `pymdownx.superfences` custom fence. The diagrams on `rc1/architecture.md` are drawn from `build1.launch.py` and the scene's single-writer map and must follow them.
+- The Digital twin status page keeps its 16 to 17 Nov table as a dated snapshot with a pointer to the rc.1 matrix; "Get the model" no longer copies Build 1 commands (they pointed at the closed openamr-upperbody-sw pull request 70).
+- `hooks/page_context.py` maps `reference/openamrobot-2/digital-twin/rc1/` to openamr-upperbody-sw.
+
 ## Owner handles
 
 Owners on the roadmap pages and in `geometry_issues.csv` are GitHub handles from this list, or "owner: to be assigned" (`scripts/roadmap_model/analyse.py` OWN for the issues):

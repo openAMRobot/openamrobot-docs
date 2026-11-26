@@ -2,6 +2,18 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-26
+
+### Added
+
+- OpenAMRobot 2.0 rc.1 Digital Twin section (`reference/openamrobot-2/digital-twin/rc1/`, eleven pages): start here, system requirements (tested and not tested), installation with the manifest bootstrap script and its manual equivalent, quick start, launch profiles and arguments, RViz guide, demonstrations up to the Baseline 1 mission, architecture diagrams of the implemented system (Mermaid), capability and maturity matrix, troubleshooting and release information. Content is taken from openamr-upperbody-sw 1ab45a6, openamr-platform-sw ddd20ab and the openamrobot-manifest branch release/v2.0.0-rc.1-pins at d713ffb. The release is shown as not tagged and not published; results are labelled as simulation evidence.
+- Mermaid diagrams enabled through the `pymdownx.superfences` custom fence in `mkdocs.yml` (no new dependency).
+
+### Changed
+
+- Digital twin overview, status and "Get the model" pages point to the rc.1 section; the Build 1 scene commands that were copied from the closed openamr-upperbody-sw pull request 70 are replaced by links to the rc.1 pages; the status table of 16 to 17 November is marked as a dated snapshot.
+- Start here: one card for running OpenAMRobot 2.0 in simulation.
+
 ## 2026-11-17
 
 ### Added
