@@ -41,8 +41,8 @@ git -C openamrobot-manifest checkout 9383aa5f59d2697ec71faea88f718002a47936c8
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
-The release is not published yet: the `git checkout` line selects the pre-publication manifest commit that pins the
-release pair. The [Installation](installation.md#install-with-the-bootstrap-script) page explains it and every step.
+The release is not published yet. The `git checkout` line selects the version of the installer that installs exactly
+the software this page describes; at publication it is replaced by the release tag. The [Installation](installation.md#install-with-the-bootstrap-script) page explains it and every step.
 
 ## 4. Launch
 
@@ -72,7 +72,7 @@ Leave Terminal 1 running.
 - A Gazebo window with the robot at the origin of a floor with shelf units, a tote, an item and a dock model.
 - An RViz window with the robot model, the map, the laser scan and the planning scene. Details:
   [RViz guide](rviz.md).
-- In Terminal 1, a line that starts with `Build 1 scene:` followed by the run identity as JSON (profile, physics
+- In Terminal 1, a line that starts with `Build 1 scene:` (the project's internal name of this simulated scene) followed by the run identity as JSON (profile, physics
   step, physics engine), and one line that starts with `KNOWN LIMIT:`. With the default DART engine it says that the
   grippers do not move in the `fast` and `fine` profiles. That is expected and does not affect the drive.
 
@@ -82,10 +82,19 @@ Without a display, add `headless:=true` and leave out `rviz:=true`. That is the 
 
 The clean-install check in CI treats the twin as ready when three things hold within 300 s of the launch: `/clock`
 advances (more than 20 messages spanning more than 5 s of simulation time), `/robot_description` is published, and
-the TF tree contains `base_link`. On the hosted runner, with the previous candidate, it saw a robot description of 104612
-characters and 69 TF frames. The same check passed on the release pair.
+the TF tree contains `base_link`. In an automated test on a fresh machine it saw a robot description of about 100000 characters
+and 69 TF frames.
 
-**Terminal 2.** Set the same four environment lines as in Terminal 1, then check by hand:
+**Terminal 2.** Set the same environment as in Terminal 1:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source $HOME/oamr_dt_ws/install/setup.bash
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+export CYCLONEDDS_URI='<CycloneDDS><Domain Id="any"><Discovery><MaxAutoParticipantIndex>120</MaxAutoParticipantIndex></Discovery></Domain></CycloneDDS>'
+```
+
+Then check by hand:
 
 ```bash
 ros2 topic info /clock -v
@@ -125,14 +134,14 @@ spot.
 |---|---|
 | 0 | PASS: the drive ended between 1.85 m and 2.15 m of ground truth distance and the turn between 78 and 102 degrees, with odometry inside its guard values |
 | 1 | FAIL: a check failed. The log names it |
-| 3 | BLOCKED: not used by this scenario. Only `scn05_bus_loss` can end BLOCKED. BLOCKED is not PASS |
 | 2 | the scenario name is unknown |
+| 3 | BLOCKED: not used by this scenario. Only `scn05_bus_loss` can end BLOCKED. BLOCKED is not PASS |
 
 The log is `build1_logs/scn01_drive.json` in the directory where you ran the command. Print the exit code with
 `echo $?` straight after the command.
 
-In CI this scenario ended with exit code 0 on both clean-install machines (release pair, provisional run on the
-pre-publication manifest). No duration is quoted here: the CI step
+In the automated installation test this scenario ended with exit code 0 on both fresh machines, with the software
+this page installs. No duration is quoted here: the CI step
 that contains it also contains the start-up wait, and took between 3 and 4 minutes in total on a hosted runner.
 
 ## 6. Second demonstration: lift
