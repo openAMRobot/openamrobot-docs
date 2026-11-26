@@ -30,6 +30,7 @@ The figures above are checked by `scripts/check_roadmap.py` against the generate
 ## Digital twin section
 
 - `docs/reference/openamrobot-2/digital-twin/` (added 17 Nov 2026): status as of 16 to 17 Nov 2026, only verified items with their evidence level. L1 to L6 and F0 to F3 are the definitions of the plan of record (decision D5 of the 15 Nov 2026 final plan) and must stay word for word with it. The bundle download link points at the openamr-upperbody-sw Releases page and says "when published"; the Build 1 scene commands are copied from openamr-upperbody-sw #70 (open) and need a recheck when it merges. Media page stays empty until a capture passes review.
+- `docs/reference/openamrobot-2/digital-twin/grocery-demonstrator/` (added 18 Nov 2026, stacked on docs #91): the grocery dark store demonstrator, its architecture, a technical status panel (L1 to L6, L5 and L6 without evidence) and evidence links. Facts are those of the Baseline 1 runs on openamr-upperbody-sw `6921a29` and openamr-platform-sw `fe28d19` (44194529196, 44194552457 passed 8/8; 44194540813 failed station position 0.0447 m of 0.04 m); Baseline 1 not complete; sim-oracle profile. The three `docs/demo/*.md` documents of openamr-upperbody-sw are marked pending; link them and take the simulator statuses from `docs/demo/simulators.md` once merged.
 
 ## OpenAMRobot 2.0 rc.1 Digital Twin section
 
