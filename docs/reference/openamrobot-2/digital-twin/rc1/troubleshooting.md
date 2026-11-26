@@ -143,7 +143,8 @@ Unless an entry says otherwise, run the commands in a terminal with the four env
 - **Likely cause:** either Gazebo did not come up, or it started and then stopped stepping. The second case is a
   known intermittent start-up defect ([openamr-upperbody-sw issue 135](https://github.com/openAMRobot/openamr-upperbody-sw/issues/135)):
   the simulator publishes a few milliseconds of `/clock` and freezes, so a check that starts later sees no message.
-  Its cause is not known. It happened in 2 of 14 mission start-ups during qualification. A leftover process of an
+  Its cause is not known. It happened in 2 of 14 mission start-ups on the previous candidate and in 1 start-up try of the six mission legs on
+  the release pair. A leftover process of an
   earlier launch can also cause a missing clock.
 - **Check:**
 

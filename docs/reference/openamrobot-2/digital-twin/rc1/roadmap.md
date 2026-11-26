@@ -80,7 +80,7 @@ A difference between a recorded hardware run and the twin is a finding to record
 
 | Item | Mark |
 |---|---|
-| Simulated camera streams for head and wrist cameras ([upperbody 24](https://github.com/openAMRobot/openamr-upperbody-sw/issues/24), contract Proposed) | **Tracked** |
+| Camera stream contract for head and wrist cameras ([upperbody 24](https://github.com/openAMRobot/openamr-upperbody-sw/issues/24), contract Proposed) | **Tracked** |
 | An object detector in place of ground truth item poses | **Proposed** |
 | Record an episode in simulation and convert it to a dataset ([upperbody 37](https://github.com/openAMRobot/openamr-upperbody-sw/issues/37)) | **Tracked** |
 | Policy benchmark on the 2.0 compute module ([upperbody 38](https://github.com/openAMRobot/openamr-upperbody-sw/issues/38)) | **Tracked** |

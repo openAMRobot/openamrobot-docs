@@ -36,6 +36,10 @@ Run numbers refer to GitHub Actions runs listed with links under
 
 ## Matrix
 
+Terms: the *Baseline 1 mission* is the whole-robot sequence (drive to a station, lift, grasp, retreat). A *dispatch* is one
+start of its workflow and runs two *legs*, each a complete mission of eight phases. The *model tests* a6 and a7 check
+the combined robot model, a6 without a simulator and a7 in Gazebo.
+
 | Capability | Status | rc.1 support | Evidence | Limitations | Next milestone (a proposal unless an issue is linked) |
 |---|---|---|---|---|---|
 | Combined model (base, lift, two arms, sensors in one URDF) | Supported and qualified | yes | model tests a6 and a7 | design values, not measured; castors are fixed joints; drive track 0.400 m is a placeholder | masses and geometry from the built robot |

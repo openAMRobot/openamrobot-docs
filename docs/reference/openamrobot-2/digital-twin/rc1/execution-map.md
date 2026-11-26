@@ -27,8 +27,8 @@ There is no hardware-in-the-loop in rc.1, and no package or interface called "HA
 | Subsystem | What runs | Kind | Not represented |
 |---|---|---|---|
 | Navigation and command arbitration | Nav2 `controller_server`, `behavior_server`, `twist_mux`, `safety_stop_gate_node`, `velocity_smoother`, `collision_monitor` | Native | Docking nodes are not started |
-| Base controller | `sil_stm32_host_client` | Stand-in, Python. It copies no firmware logic, has no command timeout and takes no stop decision | The base controller firmware and its host link |
-| Motor driver | `sil_zlac8015d`, a ZLAC8015D emulator, CANopen on `vcan_drive` | Device emulation | Vendor PDO mapping, torque, current, brake output, axis order and sign of the delivered drive |
+| Base controller | `stm32_host_client` (node `sil_stm32_host_client`) | Stand-in, Python. It copies no firmware logic, has no command timeout and takes no stop decision | The base controller firmware and its host link |
+| Motor driver | `zlac8015d_emulator` (node `sil_zlac8015d`), a ZLAC8015D emulator, CANopen on `vcan_drive` | Device emulation | Vendor PDO mapping, torque, current, brake output, axis order and sign of the delivered drive |
 | Wheels and body | Gazebo joint controllers on the two wheel joints, DART | Physics simulation | Wheel slip and castor rolling as on a real floor |
 | Odometry | `base_state_adapter.py` integrates wheel speeds read over the bus | Native | Sensor fusion. This is raw wheel odometry |
 | Lift controller | `ctl017_emulator` (node `sil_ctl017`) on `vcan_aux`; lift joint in Gazebo | Device emulation of a proposed object dictionary | The lift controller firmware. Permit timing values are simulation test values |
@@ -93,4 +93,4 @@ The platform repository also contains the bring-up of the earlier robot generati
 - The driver emulator is not verified against the delivered motor driver.
 - The simulated IMU does not represent the characteristics of the real sensor.
 - The lift has no real hardware interface yet.
-- No single physics engine runs every scenario: DART is used for driving, Bullet Featherstone for arms and grippers in the `fast` profile.
+- No single physics engine runs every scenario: DART is used for driving, Bullet Featherstone for the left-arm grasp (`scn04_grasp`) in the `fast` profile; no other arm motion is qualified there.

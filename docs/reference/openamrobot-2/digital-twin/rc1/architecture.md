@@ -86,7 +86,9 @@ runs.
 ## Simulation runtime, profile `firmware_sil`
 
 The default profile and the one the Baseline 1 mission runs in. Commands leave the robot software as they would on
-the robot, cross a virtual CAN bus to an emulated device, and the emulator acts on the joint in Gazebo.
+the robot, cross a virtual CAN bus to an emulated device, and the emulator acts on the joint in Gazebo. No firmware executes
+by default; a host stand-in fills the base controller slot, and the host link of the real controller is absent. See
+[Where the logic runs](execution-map.md).
 
 ```mermaid
 flowchart LR

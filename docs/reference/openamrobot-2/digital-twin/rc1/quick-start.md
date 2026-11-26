@@ -65,7 +65,7 @@ Leave Terminal 1 running.
     With `profile:=fast` and the default engine, run `scn01_drive` and nothing with the arms. `scn03_arms_reach`
     fails in this launch with `left_park_joints_not_moved`, and the grippers do not move. That is a known limit of the
     physics engine in this profile, not a fault of your installation. For arms and grippers, stop this launch and
-    start the one in [Grasp](demonstrations.md#4-grasp), which selects the engine the arms are qualified with.
+    start the one in [Grasp](demonstrations.md#4-grasp), which selects the engine the left-arm grasp is qualified with. No other arm motion is qualified in `fast`.
 
 ### What you should see
 
@@ -82,8 +82,8 @@ Without a display, add `headless:=true` and leave out `rviz:=true`. That is the 
 
 The clean-install check in CI treats the twin as ready when three things hold within 300 s of the launch: `/clock`
 advances (more than 20 messages spanning more than 5 s of simulation time), `/robot_description` is published, and
-the TF tree contains `base_link`. On the hosted runner it saw a robot description of 104612 characters and 69 TF
-frames.
+the TF tree contains `base_link`. On the hosted runner, with the previous candidate, it saw a robot description of 104612
+characters and 69 TF frames; the run on the release pair is pending.
 
 **Terminal 2.** Set the same four environment lines as in Terminal 1, then check by hand:
 
@@ -131,7 +131,8 @@ spot.
 The log is `build1_logs/scn01_drive.json` in the directory where you ran the command. Print the exit code with
 `echo $?` straight after the command.
 
-In CI this scenario ended with exit code 0 on both clean-install machines. No duration is quoted here: the CI step
+In CI this scenario ended with exit code 0 on both clean-install machines (previous candidate; the run on the release
+pair is pending). No duration is quoted here: the CI step
 that contains it also contains the start-up wait, and took between 3 and 4 minutes in total on a hosted runner.
 
 ## 6. Second demonstration: lift

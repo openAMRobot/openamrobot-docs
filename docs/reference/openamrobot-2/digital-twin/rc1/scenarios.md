@@ -7,21 +7,21 @@ description: All seventeen scene tests and the whole-robot mission of the OpenAM
 
 # Scenario catalog
 
-Seventeen scene tests and one whole-robot mission exist in the rc.1 Digital Twin. On the release pair the 17 tests give 19 results (two tests hold two cases each): 17 pass, 1 fails, 1 is an expected failure. This page lists all of them, including the one that fails and the one that is an expected failure. Every value below is read from the source at upperbody commit `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac`. Results are simulation evidence only.
+Seventeen scene tests and one whole-robot mission exist in the rc.1 Digital Twin. On the release pair, 17 tests produce 19 results: 17 PASS, 1 FAIL (`scn07_cancel_resume`), 1 XFAIL (`scn17_base_yaw_fast`). Two tests, `scn12_profile_fast` and `scn13_profile_fine`, hold two cases each, which makes 19 from 17. This page lists all of them, including the one that fails and the one that is an expected failure. Every value below is read from the source at upperbody commit `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac`. Results are simulation evidence only.
 
 Source package: `ros2/src/openamrobot_build1_scene` in `openamr-upperbody-sw`. Scenario code: `openamrobot_build1_scene/scenarios.py`. Tests: `test/test_scn01_drive.py` to `test/test_scn17_base_yaw_fast.py`.
 
 ## How to choose a scenario
 
-| If you are interested in | Start with |
+| If you are interested in | Start with (names accepted by `run_scenario.py`) |
 |---|---|
-| Navigation, odometry | `scn01_drive`, `scn14_drive_fast`, `scn17_base_yaw_fast` |
-| Lift control and the lift permit | `scn02_lift_permit`, `scn16_lift_fast` |
+| Navigation, odometry | `scn01_drive`; `scn17_base_yaw` (ends FAIL by hand under DART, issue 126) |
+| Lift control and the lift permit | `scn02_lift_permit`, `scn16_lift_stops` |
 | Arm planning with MoveIt 2 | `scn03_arms_reach` |
-| Grasping | `scn04_grasp`, `scn15_grasp_fast` |
+| Grasping | `scn04_grasp` |
 | Fault behaviour on the buses | `scn05_bus_loss`, `scn06_stale_sensors`, `scn08_arm_power_cut` |
 | Interface ownership | `scn09_single_writer` |
-| Simulation performance | `scn10_profiles` to `scn13_profile_fine` |
+| Simulation performance | `scn10_profile_report` |
 | The whole sequence | Baseline 1 mission |
 
 ## Summary
@@ -34,10 +34,10 @@ The class column is a documentation label. The source has no such field.
 | `scn02_lift_permit` | Lift to three stops, with and without permit | `firmware_sil` | DART | Qualification | Pass |
 | `scn03_arms_reach` | Both arms reach a shelf pose at two lift heights | `firmware_sil` | DART | Qualification | Pass |
 | `scn04_grasp` | Grasp an item, lift, hold, release | `firmware_sil` | DART | Qualification | Pass |
-| `scn05_bus_loss` | Silence each of five buses and record the reaction | `faults` | DART | Observation | Runs; observations are recorded, not judged |
-| `scn06_stale_sensors` | Stop the sensor topics during a drive | `faults` | DART | Observation | Runs; observations are recorded, not judged |
+| `scn05_bus_loss` | Silence each of five buses and record the reaction | `faults` | DART | Observation | Pass (observations recorded, not judged) |
+| `scn06_stale_sensors` | Stop the sensor topics during a drive | `faults` | DART | Observation | Pass (observations recorded, not judged) |
 | `scn07_cancel_resume` | Cancel and resume a drive goal and an arm goal | `firmware_sil` | DART | Not supported in rc.1 | **Fail** (platform issue 207) |
-| `scn08_arm_power_cut` | Cut arm motor power while holding | `faults` | DART | Observation | Runs; observations are recorded, not judged |
+| `scn08_arm_power_cut` | Cut arm motor power while holding | `faults` | DART | Observation | Pass (observations recorded, not judged) |
 | `scn09_single_writer` | One writer per topic, right frame kind per bus | `firmware_sil` | DART | Qualification | Pass |
 | `scn10_profiles` | Real-time factor and rates at a 1 ms step | `firmware_sil` | DART | Smoke test | Pass |
 | `scn11_profile_sil_fine` | The same at a 1/1500 s step | `firmware_sil`, `step:=fine` | DART | Smoke test | Pass |
@@ -158,7 +158,7 @@ Two checks close every scenario: all components are still alive, and in `firmwar
 
 ### scn15_grasp_fast
 
-`scn04_grasp` with `profile:=fast station:=work_shelf sensors:=false nav2:=false moveit:=true physics_engine:=gz-physics-bullet-featherstone-plugin`. Same limits. Reason given in the source: with DART the grippers do not move in `fast` and `fine`; with Bullet Featherstone the base does not turn. Use this engine for arm and gripper work in `fast`, and DART for driving.
+`scn04_grasp` with `profile:=fast station:=work_shelf sensors:=false nav2:=false moveit:=true physics_engine:=gz-physics-bullet-featherstone-plugin`. Same limits. Reason given in the source: with DART the grippers do not move in `fast` and `fine`; with Bullet Featherstone the base does not turn. In `fast`, this engine is qualified for the left-arm grasp only; no other arm motion is qualified there. Use DART for driving.
 
 ### scn16_lift_fast
 

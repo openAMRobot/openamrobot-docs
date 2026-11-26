@@ -37,7 +37,7 @@ record what you ran.
 From the repository's own contribution guide:
 
 ```bash
-cd openamr-platform-sw/ros2
+cd "$HOME/oamr_dt_ws/src/openamr-platform-sw/ros2"
 source /opt/ros/jazzy/setup.bash
 colcon build --symlink-install --packages-up-to <changed package>
 source install/setup.bash
@@ -70,6 +70,7 @@ The scene workflow `build1-scene-tests.yml` builds and tests like this, from the
 source /opt/ros/jazzy/setup.bash
 colcon build --packages-up-to openamrobot_build1_scene openamr_nav_msgs
 source install/setup.bash
+sudo -v
 ros2 run openamrobot_build1_scene setup_vcan_all.sh
 colcon test --packages-select openamrobot_build1_scene --event-handlers console_direct+ \
   --return-code-on-test-failure --ctest-args -R "<test name filter>"
@@ -206,7 +207,7 @@ No firmware runs by default. These issues concern the device emulators and the o
 
 | Issue | Expected outcome | Prerequisite | Suggested validation | Difficulty |
 |---|---|---|---|---|
-| [upperbody 24](https://github.com/openAMRobot/openamr-upperbody-sw/issues/24) | Simulation-only image streams for the head camera and both wrist cameras, with camera info | A Proposed contract. Owner adoption is required before acceptance | Topics publish with the existing optical frames and simulation time stamps | intermediate |
+| [upperbody 24](https://github.com/openAMRobot/openamr-upperbody-sw/issues/24) | The camera stream contract for the head camera and both wrist cameras, as the issue defines it (simulated camera topics already exist in the scene) | A Proposed contract. Owner adoption is required before acceptance | Topics publish with the existing optical frames and simulation time stamps | intermediate |
 | [platform 41](https://github.com/openAMRobot/openamr-platform-sw/issues/41) | Base camera frames aligned with the 2.0 design and an RGB-D camera in simulation | The issue has an assigned owner. Coordinate there first | Gazebo spawn, TF check, and the docking code that uses the camera offset | intermediate |
 | [upperbody 37](https://github.com/openAMRobot/openamr-upperbody-sw/issues/37) | One command records an episode in simulation as a ROS 2 bag, one command converts it to a LeRobot dataset | The dataset schema is a Proposed contract (upperbody issue 35) | The converted dataset loads in LeRobot without errors | intermediate |
 | [upperbody 38](https://github.com/openAMRobot/openamr-upperbody-sw/issues/38) | A benchmark of a learned policy on the 2.0 compute module, alone, with ROS 2, and with ROS 2 and MoveIt 2 | The compute module itself. This cannot be done in the twin | Benchmark script and results file with tail latency, missed deadlines and memory use | advanced |
@@ -222,4 +223,4 @@ For a domain or a topic that is not listed: No tracked issue yet; propose one be
 ## Related pages
 
 [Scenario catalog](scenarios.md), [Where the logic runs](execution-map.md), [Launch profiles](launch.md),
-[Release and evidence](release.md), [From the Digital Twin to hardware (proposed)](hardware-integration.md).
+[Release information](release.md), [From the Digital Twin to hardware (proposed)](hardware-integration.md).

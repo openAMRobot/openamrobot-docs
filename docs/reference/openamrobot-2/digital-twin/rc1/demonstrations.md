@@ -42,7 +42,8 @@ ros2 run openamrobot_build1_scene run_scenario.py --list
 
 The log is `build1_logs/<name>.json` in the current directory, or in the directory given with `--log-dir`. To stop a
 demonstration early press Ctrl+C in Terminal 2; to stop the twin press Ctrl+C in Terminal 1. Start a fresh launch for
-each scenario, as the tests do: a scenario assumes the robot at its spawn station.
+each scenario, as the tests do: a scenario assumes the robot at its spawn station. The one exception is the lift stops
+after the drive, as in the quick start.
 
 The launch arguments below are those of the scenario's own test in CI. CI adds `headless:=true`; without it the
 Gazebo window opens. RViz is only useful where Nav2 runs, because its fixed frame is `map`.
@@ -148,6 +149,7 @@ virtual CAN, use the grasp demonstration below.
 **Terminal 1:**
 
 ```bash
+sudo -v
 ros2 launch openamrobot_build1_scene build1.launch.py station:=work_shelf sensors:=false nav2:=false moveit:=true driver_rate:=100
 ```
 
@@ -170,6 +172,7 @@ Expected: exit code 0.
 **Terminal 1**, with devices:
 
 ```bash
+sudo -v
 ros2 launch openamrobot_build1_scene build1.launch.py station:=work_shelf sensors:=false nav2:=false moveit:=true
 ```
 
@@ -198,11 +201,11 @@ check runs on a second launch after the drive and lift demonstrations.
 |---|---|---|
 | `scn05_bus_loss` | `faults` | loss on each of the five buses and what the stack does today |
 | `scn06_stale_sensors` | `faults` | every sensor topic stops while Nav2 drives |
-| `scn07_cancel_resume` | `firmware_sil` | cancel a drive and an arm goal, stop, resume. Cancel and resume of a navigation goal is a known limitation of rc.1, see [Release information](release.md#known-limitations) |
+| `scn07_cancel_resume` | `firmware_sil` | cancel a drive and an arm goal, stop, resume. Cancel and resume of a navigation goal is a known limitation of rc.1, see [Known issues and limitations](limitations.md) |
 | `scn08_arm_power_cut` | `faults` | arm motor power cut while holding a pose |
 | `scn09_single_writer` | `firmware_sil` | every joint and topic has exactly one writer; frame kinds on the five buses |
 | `scn10_profile_report` | any | real-time factor, controller rates and missed updates of the running profile |
-| `scn17_base_yaw` | `fast`, `fine` | base yaw against wheel kinematics with the castors present |
+| `scn17_base_yaw` | `fast` | base yaw against wheel kinematics with the castors present. By hand it ends FAIL under DART (issue 126) |
 | `diag_grasp`, `diag_reach_return` | `firmware_sil` | the grasp and reach scenarios with contact sensors and a recorder. They need `BUILD1_CONTACT_SENSORS=1` in the environment of the launch |
 
 The fault scenarios record what the functional software and the emulators do. That is not certified safety

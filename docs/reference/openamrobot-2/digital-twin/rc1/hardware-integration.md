@@ -160,4 +160,4 @@ results. The twin exercises neither of them, and no 2.0 real-robot bring-up exis
 | Manipulation maintainer | Which arm scenarios are safe to repeat on hardware, and in which order? |
 
 Propose changes through an issue in the owning repository. See [Contribute to the Digital Twin](contributing.md),
-[Capabilities](capabilities.md) and [Release and evidence](release.md).
+[Capabilities](capabilities.md) and [Release information](release.md).

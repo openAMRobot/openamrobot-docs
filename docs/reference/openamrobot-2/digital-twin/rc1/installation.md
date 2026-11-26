@@ -42,8 +42,8 @@ The script takes two optional arguments: the workspace (default `~/oamr_dt_ws`) 
 `releases/v2.0.0-rc.1-digital-twin.repos` beside the script). It asks for the `sudo` password for `apt`. Every step
 is idempotent, so the script is safe to run again after an interruption.
 
-In CI the first run of the script took between 6 and 9 minutes on a clean hosted runner, and a second run under one
-minute (run linked under [What was tested](#what-was-tested)). The colcon build inside it covers 17 packages and took
+In CI, with the previous candidate, the first run of the script took between 5.5 and 9 minutes on a clean hosted
+runner, and a second run under one minute (run linked under [What was tested](#what-was-tested)). The colcon build inside it covers 17 packages and took
 about 1.5 minutes there. Your times depend on your machine and network.
 
 ## What the script does

@@ -27,7 +27,7 @@ runs linked below for the results.
 In the supported profile (Ubuntu 24.04 on x86_64, ROS 2 Jazzy, Gazebo Harmonic with pinned vendor packages,
 CycloneDDS):
 
-- Installation of six pinned repositories with one script, checked on two clean machines.
+- Installation of six pinned repositories with one script. The clean install on the release pins is pending; the previous candidate passed it on two clean machines.
 - The Build 1 scene: the combined model of mobile base, 350 mm lift and two OpenArm 2.0 arms in one Gazebo world.
 - Run profiles `fast` and `fine` (no devices) and `firmware_sil` and `faults` (device emulators on five virtual CAN
   buses, with the unmodified upstream arm driver).
@@ -61,8 +61,8 @@ Snapshots that are in the release inventory but outside the supported profile:
 | openamr-platform-hw | `33941236db5fc2e651bf44dce97203f750a8f15e` | hardware design snapshot. Not built, not validated by the twin |
 | openamrobot-ui | `2cf917950adef411bbdc54381865ea137c7b2e26` | operator UI snapshot. Not installed by the Digital Twin profile |
 
-The manifest that carries these pins is in
-[openamrobot-manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), not merged yet. Until it carries the pair above, the installer delivers the previous pair.
+The manifest commit that carries these pins is `9383aa5` ([verification pull request 25](https://github.com/openAMRobot/openamrobot-manifest/pull/25), a draft).
+[Pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), the one that will be merged, still pins the previous pair.
 
 ## Qualification summary
 
@@ -73,7 +73,7 @@ independent re-read of the original logs confirmed the table. Simulation evidenc
 |---|---|---|
 | Baseline 1 mission, strict sequence (3 dispatches of 2 legs, 8 phases each) | 3 of 3 dispatches, 6 of 6 legs, 48 of 48 phases. One start-up try was blocked and repeated inside its job | [45826325912](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826325912), [45826340366](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826340366), [45826354243](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826354243) |
 | Odometry against ground truth in the mission (limit 0.100 m) | 0.023 to 0.041 m in the six legs | same runs |
-| Scene tests, 17 tests giving 19 results | 17 pass, 1 fail (`scn07_cancel_resume`, not supported), 1 expected failure (`scn17_base_yaw_fast`) | [45826367333](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826367333) |
+| Scene tests | 17 tests produce 19 results: 17 PASS, 1 FAIL (`scn07_cancel_resume`), 1 XFAIL (`scn17_base_yaw_fast`). The failure is the unsupported cancel and resume; the XFAIL is an expected failure (upperbody issue 126) | [45826367333](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826367333) |
 | Arm diagnostics | 10 of 10 jobs | [45826372314](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826372314), [45826335990](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826335990) |
 | Arm emulator tests | 66 tests, 0 failed, 0 skipped | [45826383251](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826383251), [45826335981](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826335981) |
 | Model tests a6 (static and mock) | 927 executed, 0 failed, 21 skipped | [45826336167](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826336167) |
@@ -81,7 +81,7 @@ independent re-read of the original logs confirmed the table. Simulation evidenc
 | Platform SIL protocol tests | 209 passed, 3 expected failures (platform issue 159) | [45826145729](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826145729) |
 | Platform description, navigation status, drivers | passed | [45826150907](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826150907), [45826156811](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826156811), [45826162821](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826162821) |
 | Platform station alignment | required jobs passed; the Fast DDS job failed (not supported, platform issue 197) | [45826167431](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826167431) |
-| Clean install of the supported profile on these pins | pending until the manifest carries these pins | |
+| Clean install of the supported profile on these pins | pending: running on manifest commit `9383aa5` (pull request 25), no result yet | |
 
 Terms: a *dispatch* is one start of the mission workflow; it runs two *legs* (two complete missions) and a verdict.
 The *model tests* a6 and a7 check the combined robot model, a6 without a simulator and a7 in Gazebo.

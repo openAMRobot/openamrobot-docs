@@ -56,7 +56,7 @@ It is not for operators, and it is not a deployment or commissioning guide.
 | The Build 1 scene: mobile base, lift, two arms and grippers in one Gazebo world | Isaac Sim, MuJoCo |
 | Nav2 navigation on a map generated from the scene, MoveIt 2 planning for both arms | Cancel and resume of a navigation goal, docking |
 | Device emulators on virtual CAN with the unmodified upstream arm driver (profile `firmware_sil`) | Firmware on 2.0 hardware, Jetson, arm64 |
-| Scenarios with PASS, FAIL or BLOCKED results, and the Baseline 1 mission | Operator UI, camera-driven manipulation (object poses come from simulator ground truth), LeRobot and AI policies |
+| Scenarios with PASS, FAIL or BLOCKED results, and the Baseline 1 mission (the whole-robot sequence: drive to a station, lift, grasp, retreat) | Operator UI, camera-driven manipulation (object poses come from simulator ground truth), LeRobot and AI policies |
 | RViz configuration for the scene | Any physical commissioning or safety qualification |
 
 The full list with evidence and limits is the [capability and maturity matrix](capabilities.md).
@@ -64,7 +64,7 @@ The full list with evidence and limits is the [capability and maturity matrix](c
 ## Where to begin
 
 1. Check the [system requirements](requirements.md).
-2. Follow the [quick start](quick-start.md): install, launch, verify, run the drive demonstration, stop.
+2. Follow the [quick start](quick-start.md): install, launch, verify, run the drive and lift demonstrations, stop.
 3. Read the [user guide](launch.md) for run profiles and launch arguments, the [RViz guide](rviz.md) and the
    [demonstrations](demonstrations.md).
 
@@ -77,7 +77,7 @@ The full list with evidence and limits is the [capability and maturity matrix](c
 | [Quick start](quick-start.md) | From an empty machine to the first demonstration |
 | [Launch profiles and arguments](launch.md) | Run profiles and every launch argument |
 | [RViz guide](rviz.md) | Each display, what it needs and known defects |
-| [Demonstrations](demonstrations.md) | Drive, lift, arms, grasp and the Baseline 1 mission |
+| [Demonstrations](demonstrations.md) | Drive, lift, arms, grasp and the Baseline 1 mission (the whole-robot sequence: drive to a station, lift, grasp, retreat) |
 | [Architecture](architecture.md) | Diagrams of the system and of the simulation runtime |
 | [Capability and maturity](capabilities.md) | One table for every capability, with evidence and limits |
 | [Troubleshooting](troubleshooting.md) | Symptoms, causes, checks and fixes |

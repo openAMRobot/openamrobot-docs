@@ -9,7 +9,7 @@ description: Engineering diagrams of the OpenAMRobot 2.0 rc.1 Digital Twin, draw
 
 **For:** engineers who want the structure before the text.
 
-Every name in these diagrams is a node, executable, topic or controller name in the source at platform commit `2ac4070` and upperbody commit `6687f65`. The diagrams describe the default device profile `firmware_sil` unless stated. They are written in Mermaid, so the source is this page.
+Boxes carry node names where a node exists (`sil_stm32_host_client`, `sil_zlac8015d`) and executable names for the lift and battery emulators (`ctl017_emulator` is node `sil_ctl017`, `daly_bms_emulator` is node `sil_daly_bms`). Every name is in the source at platform commit `2ac4070` and upperbody commit `6687f65`. The diagrams describe the default device profile `firmware_sil` unless stated. They are written in Mermaid, so the source is this page.
 
 **Legend, used in all diagrams**
 
