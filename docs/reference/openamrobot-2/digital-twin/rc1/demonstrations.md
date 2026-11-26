@@ -233,9 +233,10 @@ nothing else may be running.
 | Prerequisites | virtual CAN interfaces created beforehand (the test does not create them), no other launch running, the workspace built with its tests |
 | Stop | Ctrl+C in the terminal that runs the test |
 
-**Terminal 1**, from the workspace root:
+**Terminal 1:**
 
 ```bash
+cd "$HOME/oamr_dt_ws"
 sudo -v
 ros2 run openamrobot_build1_scene setup_vcan_all.sh
 export BUILD1_LOG_DIR="$PWD/build1_logs"; mkdir -p "$BUILD1_LOG_DIR"

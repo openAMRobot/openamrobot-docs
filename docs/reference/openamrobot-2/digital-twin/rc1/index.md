@@ -87,6 +87,7 @@ The full list with evidence and limits is the [capability and maturity matrix](c
 | [Known issues and limitations](limitations.md) | Scope limits, active issues, workarounds |
 | [Contribute](contributing.md) | How to test a change and where help is useful |
 | [From the twin to hardware (proposed)](hardware-integration.md) | Proposal for the next work stream |
+| [Roadmap after rc.1](roadmap.md) | Stages after this release; what is decided, tracked or proposed |
 | [Release information](release.md) | Candidate commits, qualification runs, known limitations, licences |
 
 Background on what a digital twin result can and cannot show: [Digital twin](../index.md).

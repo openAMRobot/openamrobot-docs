@@ -37,12 +37,12 @@ the profile the clean-install check in CI starts.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
+git -C openamrobot-manifest checkout 9383aa5f59d2697ec71faea88f718002a47936c8
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
-Valid after publication: until the manifest pull request merges, select the commit named on the
-[Installation](installation.md#install-with-the-bootstrap-script) page before running the script. That page also
-explains every step.
+The release is not published yet: the `git checkout` line selects the pre-publication manifest commit that pins the
+release pair. The [Installation](installation.md#install-with-the-bootstrap-script) page explains it and every step.
 
 ## 4. Launch
 
@@ -134,7 +134,21 @@ The log is `build1_logs/scn01_drive.json` in the directory where you ran the com
 In CI this scenario ended with exit code 0 on both clean-install machines. No duration is quoted here: the CI step
 that contains it also contains the start-up wait, and took between 3 and 4 minutes in total on a hosted runner.
 
-## 6. Stop
+## 6. Second demonstration: lift
+
+The same launch stays open. **Terminal 2:**
+
+```bash
+ros2 run openamrobot_build1_scene run_scenario.py scn16_lift_stops
+```
+
+The lift carriage travels to its stops (0.350 m, 0.0 m, 0.175 m, 0.350 m, 0.0 m). Exit code 0 means that every stop
+was reached within 0.003 m and the controller never reported success before arrival. The clean-install check in CI
+runs this scenario in the same launch, after the drive.
+
+For arms and grippers, stop this launch first and follow [Grasp](demonstrations.md#4-grasp).
+
+## 7. Stop
 
 **Terminal 1:** press Ctrl+C once and wait until the prompt returns. The launch stops the Gazebo server through its
 own helper.
@@ -150,7 +164,7 @@ Two things can look like errors and are known:
 If a process is left over, see [Troubleshooting, shutdown](troubleshooting.md#shutdown). Do not end processes by a
 broad name pattern on a machine that runs anything else.
 
-## 7. Where next
+## 8. Where next
 
 - [Demonstrations](demonstrations.md): lift, arms, grasp and the full Baseline 1 mission.
 - [Launch profiles and arguments](launch.md): the device profile `firmware_sil` with virtual CAN.

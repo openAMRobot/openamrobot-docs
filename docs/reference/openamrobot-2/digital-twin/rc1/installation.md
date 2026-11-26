@@ -26,18 +26,17 @@ that records the exact commits.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
+git -C openamrobot-manifest checkout 9383aa5f59d2697ec71faea88f718002a47936c8
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
-!!! note "Valid after publication"
-    The script and the profile are not on `main` of openamrobot-manifest yet. Until
-    [openamrobot-manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23) merges, they are
-    on the branch `release/v2.0.0-rc.1-pins`, at commit `6b50185c3e126cc3830ce05b1da14e74d08cf2b6`. Select that commit
-    after cloning:
-
-    ```bash
-    git -C openamrobot-manifest checkout 6b50185c3e126cc3830ce05b1da14e74d08cf2b6
-    ```
+!!! warning "Pre-publication procedure"
+    The release is not published yet. The line `git checkout 9383aa5...` selects the pre-publication commit of
+    openamrobot-manifest that pins the release pair: openamr-platform-sw `2ac4070` and openamr-upperbody-sw `6687f65`
+    ([verification pull request 25](https://github.com/openAMRobot/openamrobot-manifest/pull/25)). Without that line
+    you get `main`, which has neither the script nor the profile. After publication this line is replaced by the
+    release tag, and this note is removed. Do not use an older commit of the pins branch: it installs the previous
+    candidate, without the odometry calibration.
 
 The script takes two optional arguments: the workspace (default `~/oamr_dt_ws`) and the profile file (default
 `releases/v2.0.0-rc.1-digital-twin.repos` beside the script). It asks for the `sudo` password for `apt`. Every step
@@ -108,8 +107,8 @@ The profile holds these repositories and paths:
 
 | Path in the workspace | Repository | Commit |
 |---|---|---|
-| `src/openamr-upperbody-sw` | [openAMRobot/openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw) | `1ab45a62957d238fc293eee08a8fd9158acebb01` |
-| `src/openamr-platform-sw` | [openAMRobot/openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) | `ddd20ab3a85d98bb78c4c5f014952c4a0717ef92` |
+| `src/openamr-upperbody-sw` | [openAMRobot/openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw) | `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac` |
+| `src/openamr-platform-sw` | [openAMRobot/openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) | `2ac40702deaf3533f9612a1e05d1ea9bb41b996c` |
 | `src/openamrobot-interfaces` | [openAMRobot/openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces) | `50ed777be7990edbd3465f33fd97a158e7e3b88b` |
 | `src/upstream/openarm_description` | [enactic/openarm_description](https://github.com/enactic/openarm_description) | `14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831` |
 | `src/upstream/openarm_ros2` | [enactic/openarm_ros2](https://github.com/enactic/openarm_ros2) | `4e837e1d0dae692ff67b560b69d8d281d7a8d4ed` |
@@ -164,22 +163,20 @@ A build that finishes is not yet a working installation. Start the twin and chec
 
 ## What was tested
 
-The [Digital Twin clean install workflow](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45738318716)
-ran the script twice on each of two fresh hosted runners, then started the `fast` profile headless and checked the
-clock, the robot description, TF and the drive demonstration. Both environments passed. That run used the profile
-with openamr-upperbody-sw at `729be2a`, whose source tree is identical to the candidate commit `1ab45a6`; the repeat on
-the final profile, [run 45747748555](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45747748555),
-passed in both environments. Simulation evidence only.
+**On the release pair:** the clean install on the pins above is running on
+[verification pull request 25](https://github.com/openAMRobot/openamrobot-manifest/pull/25). Until its result is
+written here, the installation of the release pair is not verified by a clean install.
 
-The check was extended on 26 November ([run 45824534544](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45824534544),
-both environments passed): after the drive demonstration it runs the lift demonstration, ends the launch with one
-interrupt (4 and 9 s, no process left), starts a second launch and runs the grasp demonstration with both arms and
-grippers.
+**On the previous candidate** (same script, same demonstration sequence, pins `1ab45a6` and `ddd20ab`):
+[run 45824534544](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45824534544) ran the script twice
+on each of two fresh hosted runners, started the `fast` profile headless, checked the clock, the robot description
+and TF, ran the drive and the lift demonstration, ended the launch with one interrupt (4 and 9 s, no process left),
+started a second launch and ran the grasp demonstration (left arm and gripper). Both environments passed. This shows
+that the installer and the sequence work; it is not evidence for the release pair.
 
 Measured on hosted runners in [run 45756061297](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45756061297),
-headless: the script took 5.5 and 7 minutes; from the launch command to a ready twin (advancing clock, robot
-description, TF) 24 s and 43 s; the drive demonstration 1.3 and 3.9 minutes. A desktop session with RViz was not
-measured.
+headless: the script took 5.5 and 7 minutes; from the launch command to a ready twin 24 s and 43 s; the drive
+demonstration 1.3 and 3.9 minutes. A desktop session with RViz was not measured. Simulation evidence only.
 
 ## If it did not work
 
