@@ -182,3 +182,153 @@ flowchart LR
 Base, lift and arm act one after the other in this mission. Nothing in rc.1 qualifies coordinated motion of base and arms.
 
 Acceptance values per phase: [Scenario catalog](scenarios.md#baseline-1-whole-robot-mission).
+
+## 6. Manipulation and lift control
+
+```mermaid
+flowchart TB
+  subgraph plan["Planning (native)"]
+    mg["MoveIt 2 move_group<br/>groups: left_arm, right_arm, both_arms,<br/>left_gripper, right_gripper, lift"]
+    ps["Planning scene with collision objects"]
+    mg --- ps
+  end
+  subgraph ctrl["Controllers in controller_manager"]
+    la["left_arm_controller"]
+    ra["right_arm_controller"]
+    lg["left_gripper_controller"]
+    rg["right_gripper_controller"]
+  end
+  subgraph a["firmware_sil: device path"]
+    hw["OpenArmHW driver (upstream)"]
+    em["OpenArmCanEmulator on vcan_arm_l, vcan_arm_r"]
+    hc["sil_stm32_host_client"]
+    ce["ctl017_emulator on vcan_aux<br/>moves only with a fresh permit"]
+    lc["/sil/lift/command and /sil/lift/permit<br/>published by the scenario or mission"]
+    lc --> hc
+    hw <--> em
+    hc <--> ce
+  end
+  subgraph b["fast and fine: direct path"]
+    gzc["gz_ros2_control<br/>incl. lift_controller"]
+  end
+  gz["Gazebo joints: arms, grippers, lift_joint"]
+  js["/joint_states (one writer)"]
+  mg --> la & ra & lg & rg
+  la & ra & lg & rg --> hw
+  la & ra & lg & rg -.-> gzc
+  em --> gz
+  ce --> gz
+  gzc -.-> gz
+  gz --> js --> mg
+```
+
+Solid arrows are the device profile, dashed arrows the profiles without devices. In the device profile the lift is not driven by a ros2_control controller: it is commanded over the bus through the base controller stand-in. In `fast` the arms and grippers are qualified with the Bullet Featherstone engine only.
+
+## 7. Physics, sensors and state feedback
+
+```mermaid
+flowchart LR
+  act["Actuation<br/>wheel joint speeds, lift, arm torques"] --> phys["Gazebo Harmonic physics<br/>DART by default, 1 ms step"]
+  phys --> motion["Motion and contact"]
+  motion --> sens["Simulated sensors<br/>LiDAR, IMU, cameras, ToF, ultrasonic"]
+  motion --> jstate["Joint states"]
+  motion --> gt["Ground truth pose<br/>and contact sensors"]
+  phys --> clock["/clock"]
+  sens --> est["amcl, costmaps, collision_monitor"]
+  jstate --> odom["Wheel odometry via the bus"]
+  odom --> est
+  est --> cmd["Nav2 and MoveIt 2 commands"]
+  cmd --> act
+  clock -.-> est
+  clock -.-> cmd
+  gt -.->|checks, and mission planning pose| test["Tests and mission"]
+```
+
+Ground truth exists only in simulation. Where a test or the mission uses it, the page for that test says so.
+
+## 8. Repositories in the release
+
+```mermaid
+flowchart TB
+  man["openamrobot-manifest<br/>pins every repository to a commit"]
+  rel["openamrobot-release<br/>source lock, archive, checksums, notes"]
+  docs["openamrobot-docs<br/>this site"]
+  subgraph ws["Supported Digital Twin workspace (6 repositories)"]
+    up["openamr-upperbody-sw<br/>model, MoveIt 2, emulators, scenes, mission"]
+    pl["openamr-platform-sw<br/>base description, Nav2, SIL devices"]
+    itf["openamrobot-interfaces<br/>messages and contracts"]
+    oa1["enactic/openarm_description"]
+    oa2["enactic/openarm_ros2"]
+    oa3["enactic/openarm_can"]
+  end
+  inv["Further repositories in the full source inventory<br/>(hardware, firmware, UI and others):<br/>pinned and archived, not built in this workspace"]
+  man --> ws
+  man --> inv
+  rel --> man
+  docs --> rel
+  up --> pl
+  up --> itf
+  up --> oa1 & oa2 & oa3
+  pl --> itf
+  classDef absent stroke-dasharray: 2 3,fill:#eeeeee,color:#555555;
+  class inv absent;
+```
+
+The source archive holds the full inventory. The installation builds the six repositories of the supported workspace.
+
+## 9. From simulation to hardware (proposed)
+
+Only the first column exists in rc.1. The rest is a proposal for the next work stream and has not been approved as a commissioning procedure.
+
+```mermaid
+flowchart LR
+  s1["Now: device emulators<br/>on virtual CAN, Gazebo"]
+  s2["Optional now: read-only<br/>firmware image in Renode"]
+  s3["Proposed: firmware<br/>commanding in emulation"]
+  s4["Proposed: hardware in the loop<br/>real controller, simulated plant"]
+  s5["Proposed: component bench tests"]
+  s6["Proposed: physical mobile base"]
+  s7["Proposed: complete physical robot"]
+  c["Shared: ROS 2 interfaces, scenarios,<br/>acceptance values, recorded runs"]
+  cal["Calibration back into the twin<br/>(track, friction, sensor noise)"]
+  s1 --> s2 --> s3 --> s4 --> s5 --> s6 --> s7
+  c -.- s1 & s4 & s6 & s7
+  s6 -.-> cal -.-> s1
+  classDef optional stroke-dasharray: 6 4;
+  classDef absent stroke-dasharray: 2 3,fill:#eeeeee,color:#555555;
+  class s2 optional;
+  class s3,s4,s5,s6,s7,cal absent;
+```
+
+## 10. Digital Twin today and later
+
+```mermaid
+flowchart TB
+  subgraph now["In rc.1"]
+    gz["Gazebo Harmonic twin"]
+    rv["RViz visualization"]
+    rn["Renode, read-only image (optional)"]
+  end
+  subgraph later["Not in rc.1"]
+    is["Isaac Sim"]
+    mj["MuJoCo"]
+    pr["Physical robot"]
+    pe["Perception"]
+    te["Teleoperation and data capture"]
+    le["LeRobot and policy training"]
+    ev["Policy evaluation"]
+  end
+  model["Combined robot model and interfaces"]
+  model --> gz
+  model --> rv
+  model -.-> is & mj
+  gz -.-> pe
+  pr -.-> te -.-> le -.-> ev
+  gz -.-> ev
+  classDef optional stroke-dasharray: 6 4;
+  classDef absent stroke-dasharray: 2 3,fill:#eeeeee,color:#555555;
+  class rn optional;
+  class is,mj,pr,pe,te,le,ev absent;
+```
+
+Dashed arrows are intended relations, not working integrations.
