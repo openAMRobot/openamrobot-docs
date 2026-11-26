@@ -93,9 +93,10 @@ checks it. `check_release_manifest.py` compares the checkout with the profile. `
 differs from the release manifest or from the pins of the imported upper-body commit, or when two packages in the
 workspace provide the same ROS package name.
 
-Run these from the root of the openamrobot-manifest checkout:
+From the directory where you cloned the manifest, enter its checkout before importing the profile:
 
 ```bash
+cd openamrobot-manifest
 mkdir -p "$HOME/oamr_dt_ws"
 vcs import "$HOME/oamr_dt_ws" < releases/v2.0.0-rc.1-digital-twin.repos
 vcs export --exact "$HOME/oamr_dt_ws" > "$HOME/oamr_dt_ws/exact.repos"
@@ -131,7 +132,8 @@ paths=$(colcon list --base-paths src --packages-up-to openamrobot_build1_scene o
 rosdep install --rosdistro jazzy --from-paths $paths --ignore-src -y -r
 sudo apt-get install -y python3-can ros-jazzy-ros-gz ros-jazzy-gz-ros2-control ros-jazzy-navigation2 ros-jazzy-nav2-bringup \
   ros-jazzy-moveit ros-jazzy-joint-state-publisher ros-jazzy-rmw-cyclonedds-cpp ros-jazzy-rviz2 iproute2 can-utils
-sudo apt-get install -y "linux-modules-extra-$(uname -r)"
+sudo apt-get install -y "linux-modules-extra-$(uname -r)" ||
+  printf '%s\n' 'Kernel modules package unavailable. The fast profile works without it; firmware_sil requires the vcan module.'
 ```
 
 ### 5. Build

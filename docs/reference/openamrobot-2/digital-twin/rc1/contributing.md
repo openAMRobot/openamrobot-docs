@@ -34,16 +34,18 @@ record what you ran.
 
 ### Platform repository
 
-From the repository's own contribution guide:
+From the bootstrapped workspace, build the platform packages that the smoke tests need. Replace the package names by the
+package you changed when you work on something else. Resolve further Jazzy dependencies with rosdep before building.
 
 ```bash
-cd "$HOME/oamr_dt_ws/src/openamr-platform-sw/ros2"
+cd "$HOME/oamr_dt_ws"
 source /opt/ros/jazzy/setup.bash
-colcon build --symlink-install --packages-up-to <changed package>
+colcon build --symlink-install --base-paths src --packages-up-to openamrobot_gazebo openamrobot_nav2 openamrobot_docking
 source install/setup.bash
 ```
 
-Launch smoke tests, each in its own terminal:
+Launch each smoke test in its own terminal, after sourcing Jazzy and the workspace overlay. Docking is a contributor smoke
+test outside the rc.1 qualification:
 
 ```bash
 ros2 launch openamrobot_gazebo gz_simulator.launch.py
