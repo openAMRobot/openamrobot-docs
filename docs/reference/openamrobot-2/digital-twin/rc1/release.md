@@ -27,7 +27,7 @@ runs linked below for the results.
 In the supported profile (Ubuntu 24.04 on x86_64, ROS 2 Jazzy, Gazebo Harmonic with pinned vendor packages,
 CycloneDDS):
 
-- Installation of six pinned repositories with one script. The clean install on the release pins is pending; the previous candidate passed it on two clean machines.
+- Installation of six pinned repositories with one script. A clean install on the release pins passed on two clean machines (provisional, on the pre-publication manifest commit).
 - The Build 1 scene: the combined model of mobile base, 350 mm lift and two OpenArm 2.0 arms in one Gazebo world.
 - Run profiles `fast` and `fine` (no devices) and `firmware_sil` and `faults` (device emulators on five virtual CAN
   buses, with the unmodified upstream arm driver).
@@ -47,8 +47,8 @@ Supported profile, six repositories:
 
 | Repository | Commit | Branch or source |
 |---|---|---|
-| [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/tree/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac) | `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac` | `release/2.0.0-rc.1` |
-| [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw/tree/2ac40702deaf3533f9612a1e05d1ea9bb41b996c) | `2ac40702deaf3533f9612a1e05d1ea9bb41b996c` | `release/2.0.0-rc.1`. `main` is not the candidate |
+| [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/tree/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac) | `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac` | head of pull request 146; moves to `release/2.0.0-rc.1` after the code-owner review |
+| [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw/tree/2ac40702deaf3533f9612a1e05d1ea9bb41b996c) | `2ac40702deaf3533f9612a1e05d1ea9bb41b996c` | `release/2.0.0-rc.1` (head since 26 November). `main` is not the candidate |
 | [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces/tree/50ed777be7990edbd3465f33fd97a158e7e3b88b) | `50ed777be7990edbd3465f33fd97a158e7e3b88b` | |
 | [enactic/openarm_description](https://github.com/enactic/openarm_description/tree/14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831) | `14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831` | upstream, Apache-2.0 |
 | [enactic/openarm_ros2](https://github.com/enactic/openarm_ros2/tree/4e837e1d0dae692ff67b560b69d8d281d7a8d4ed) | `4e837e1d0dae692ff67b560b69d8d281d7a8d4ed` | upstream, Apache-2.0 |
@@ -81,7 +81,7 @@ independent re-read of the original logs confirmed the table. Simulation evidenc
 | Platform SIL protocol tests | 209 passed, 3 expected failures (platform issue 159) | [45826145729](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826145729) |
 | Platform description, navigation status, drivers | passed | [45826150907](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826150907), [45826156811](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826156811), [45826162821](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826162821) |
 | Platform station alignment | required jobs passed; the Fast DDS job failed (not supported, platform issue 197) | [45826167431](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826167431) |
-| Clean install of the supported profile on these pins | pending: running on manifest commit `9383aa5` (pull request 25), no result yet | |
+| Clean install of the supported profile on these pins | 2 of 2 environments: drive, lift, shutdown, relaunch, left-arm grasp. Provisional: made on the pre-publication manifest commit `9383aa5` | [run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217) |
 
 Terms: a *dispatch* is one start of the mission workflow; it runs two *legs* (two complete missions) and a verdict.
 The *model tests* a6 and a7 check the combined robot model, a6 without a simulator and a7 in Gazebo.

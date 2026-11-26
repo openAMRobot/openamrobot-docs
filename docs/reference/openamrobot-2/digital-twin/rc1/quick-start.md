@@ -83,7 +83,7 @@ Without a display, add `headless:=true` and leave out `rviz:=true`. That is the 
 The clean-install check in CI treats the twin as ready when three things hold within 300 s of the launch: `/clock`
 advances (more than 20 messages spanning more than 5 s of simulation time), `/robot_description` is published, and
 the TF tree contains `base_link`. On the hosted runner, with the previous candidate, it saw a robot description of 104612
-characters and 69 TF frames; the run on the release pair is pending.
+characters and 69 TF frames. The same check passed on the release pair.
 
 **Terminal 2.** Set the same four environment lines as in Terminal 1, then check by hand:
 
@@ -131,8 +131,8 @@ spot.
 The log is `build1_logs/scn01_drive.json` in the directory where you ran the command. Print the exit code with
 `echo $?` straight after the command.
 
-In CI this scenario ended with exit code 0 on both clean-install machines (previous candidate; the run on the release
-pair is pending). No duration is quoted here: the CI step
+In CI this scenario ended with exit code 0 on both clean-install machines (release pair, provisional run on the
+pre-publication manifest). No duration is quoted here: the CI step
 that contains it also contains the start-up wait, and took between 3 and 4 minutes in total on a hosted runner.
 
 ## 6. Second demonstration: lift

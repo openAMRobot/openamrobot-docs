@@ -42,7 +42,7 @@ The script takes two optional arguments: the workspace (default `~/oamr_dt_ws`) 
 `releases/v2.0.0-rc.1-digital-twin.repos` beside the script). It asks for the `sudo` password for `apt`. Every step
 is idempotent, so the script is safe to run again after an interruption.
 
-In CI, with the previous candidate, the first run of the script took between 5.5 and 9 minutes on a clean hosted
+In CI, measured with the previous candidate, the first run of the script took between 5.5 and 9 minutes on a clean hosted
 runner, and a second run under one minute (run linked under [What was tested](#what-was-tested)). The colcon build inside it covers 17 packages and took
 about 1.5 minutes there. Your times depend on your machine and network.
 
@@ -163,9 +163,12 @@ A build that finishes is not yet a working installation. Start the twin and chec
 
 ## What was tested
 
-**On the release pair:** the clean install on the pins above is running on
-[verification pull request 25](https://github.com/openAMRobot/openamrobot-manifest/pull/25). Until its result is
-written here, the installation of the release pair is not verified by a clean install.
+**On the release pair:** [run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217) on manifest commit `9383aa5` passed in both environments, first attempt. Each
+environment ran the script twice on a fresh hosted runner (17 packages built in 1 min 44 s and 1 min 15 s), started
+the `fast` profile headless, checked the clock, the robot description and TF, ran the drive and the lift
+demonstration, ended the launch with one interrupt, started a second launch and ran the grasp demonstration (left arm
+and gripper). This result is provisional: it was made on the pre-publication manifest commit, and it is repeated on
+the manifest that is finally merged.
 
 **On the previous candidate** (same script, same demonstration sequence, pins `1ab45a6` and `ddd20ab`):
 [run 45824534544](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45824534544) ran the script twice
