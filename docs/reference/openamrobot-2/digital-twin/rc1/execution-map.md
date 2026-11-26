@@ -1,3 +1,10 @@
+---
+title: Where the logic runs
+tags: [developer, integrator]
+status: experimental
+description: Which code executes in the OpenAMRobot 2.0 rc.1 Digital Twin for each subsystem: native software, stand-in, device emulation, physics simulation or processor emulation.
+---
+
 # Where the logic runs
 
 This page states, for each subsystem, which code executes in the rc.1 Digital Twin and what kind of execution it is. It exists so that nobody mistakes an emulator for firmware or a simulation for hardware. Everything is read from the source at platform commit `2ac4070` and upperbody commit `6687f65`.

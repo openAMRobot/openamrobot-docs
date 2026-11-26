@@ -1,3 +1,10 @@
+---
+title: Scenario catalog
+tags: [developer, integrator]
+status: experimental
+description: All seventeen scene tests and the whole-robot mission of the OpenAMRobot 2.0 rc.1 Digital Twin, with launch arguments, acceptance values and status.
+---
+
 # Scenario catalog
 
 Seventeen scene tests and one whole-robot mission exist in the rc.1 Digital Twin. This page lists all of them, including the one that fails and the one that is an expected failure. Every value below is read from the source at upperbody commit `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac`. Results are simulation evidence only.

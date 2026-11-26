@@ -383,6 +383,7 @@ nav:
                   - Architecture: reference/openamrobot-2/digital-twin/rc1/architecture.md
                   - Where the logic runs: reference/openamrobot-2/digital-twin/rc1/execution-map.md
                   - Capability and maturity: reference/openamrobot-2/digital-twin/rc1/capabilities.md
+                  - Known issues and limitations: reference/openamrobot-2/digital-twin/rc1/limitations.md
                   - Troubleshooting: reference/openamrobot-2/digital-twin/rc1/troubleshooting.md
                   - Release information: reference/openamrobot-2/digital-twin/rc1/release.md
               - Architecture: reference/openamrobot-2/digital-twin/architecture.md
