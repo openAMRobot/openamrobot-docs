@@ -13,13 +13,36 @@ description: Install the OpenAMRobot 2.0 digital twin on Ubuntu 24.04 at pinned 
 every device on virtual CAN, and one driving scenario has passed. With a desktop you also see it in RViz.
 
 **Canonical source:** the Build 1 scene README in
-[openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/blob/196dd3fe64900ba4a12124c9ee20e0cfaafa1651/ros2/src/openamrobot_build1_scene/README.md)
+[openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/blob/729be2a1287b9199e54dfd162aa44b33810b3461/ros2/src/openamrobot_build1_scene/README.md)
 and the acceptance workflow
-[`baseline1-acceptance.yml`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/196dd3fe64900ba4a12124c9ee20e0cfaafa1651/.github/workflows/baseline1-acceptance.yml).
+[`baseline1-acceptance.yml`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/729be2a1287b9199e54dfd162aa44b33810b3461/.github/workflows/baseline1-acceptance.yml).
 The commands below take every pin from those files, so they build what the acceptance runs build.
 
 !!! warning "Simulation, not hardware validation"
     A twin that runs on your computer is development evidence. It is never real-robot, electrical or safety evidence.
+
+## What RC.1 supports
+
+Release candidate 2.0.0-rc.1 is a simulation-first candidate. Gazebo is the release twin.
+
+| Supported in RC.1 | Experimental, not part of the RC.1 scope |
+|---|---|
+| ROS 2 Jazzy on Ubuntu 24.04 | MuJoCo and Isaac Sim |
+| Gazebo Harmonic (DART) | The operator UI |
+| CycloneDDS | Camera-based perception (object poses come from simulator ground truth) |
+| Nav2 and MoveIt 2 | Embodied AI |
+| The combined robot model, software in the loop on virtual CAN | Docking |
+| RViz with the full profile (`rviz:=true`; Nav2 and MoveIt on) | |
+
+Known limits, all simulation evidence only:
+
+- Cancel and resume is **not supported**: the resumed drive aborts in about 3 of 12 launches (platform-sw #207).
+- Station approach aborts about 1 time in 12 to 15 and the mission fails closed (platform-sw #207, rc.2 fix #201).
+- RViz: the ground truth display is not shown, and rviz2 can report a crash when the launch is closed (upperbody-sw #143).
+- The full workspace does not build while both copies of `openamr_ui_msgs` (interfaces and UI) are present. This page builds only the packages the scene needs.
+- Start-up standstill in 2 of 65 launches (upperbody-sw #142) and link-loss events from mixed clocks (upperbody-sw #137).
+
+The full list is in the release notes of the release repository.
 
 ## How these commands are checked
 
@@ -44,12 +67,12 @@ second takes about four seconds. The hosted CI runners reach 0.13 to 0.5.
 
 ## Pins
 
-The twin runs from the integration branches, not from `main`. One commit names the whole set:
+The twin is built from one upperbody commit that names the whole set. For RC.1 it is the release candidate commit below (provisional until upperbody-sw #144 is merged and the manifest is final):
 
 | Input | Where the pin comes from |
 |---|---|
-| openamr-upperbody-sw `integration/baseline1` | `UB_SHA` below |
-| openamr-platform-sw `integration/baseline1` | `PLATFORM_SW_SHA` in `baseline1-acceptance.yml` at `UB_SHA` |
+| openamr-upperbody-sw (RC.1 candidate) | `UB_SHA` below |
+| openamr-platform-sw (RC.1 candidate, `release/2.0.0-rc.1`) | `PLATFORM_SW_SHA` in `baseline1-acceptance.yml` at `UB_SHA` |
 | openamrobot-interfaces | `INTERFACES_SHA` in the same workflow |
 | enactic/openarm_description, openarm_ros2, openarm_can | `config/pins.yaml` of the Build 1 scene at `UB_SHA` |
 | Gazebo vendor packages | `GZ_SIM_VENDOR`, `GZ_TOOLS_VENDOR`, `SDFORMAT_VENDOR` in the same workflow |
@@ -85,7 +108,7 @@ rosdep update --rosdistro jazzy
 <!-- quickstart:headless -->
 ```bash
 export TWIN_WS="$HOME/openamr_twin_ws"
-export UB_SHA=196dd3fe64900ba4a12124c9ee20e0cfaafa1651
+export UB_SHA=729be2a1287b9199e54dfd162aa44b33810b3461
 fetch_at() {
   git init -q "${2}"
   git -C "${2}" fetch -q --depth 1 "${1}" "${3}"
