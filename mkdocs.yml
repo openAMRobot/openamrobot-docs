@@ -375,6 +375,11 @@ nav:
               - Current status: reference/openamrobot-2/digital-twin/status.md
               - Get the model: reference/openamrobot-2/digital-twin/get-the-model.md
               - Media: reference/openamrobot-2/digital-twin/media.md
+              - Grocery demonstrator:
+                  - reference/openamrobot-2/digital-twin/grocery-demonstrator/index.md
+                  - Architecture: reference/openamrobot-2/digital-twin/grocery-demonstrator/architecture.md
+                  - Technical status: reference/openamrobot-2/digital-twin/grocery-demonstrator/status.md
+                  - Evidence links: reference/openamrobot-2/digital-twin/grocery-demonstrator/evidence.md
           - Roadmap and status: reference/openamrobot-2/roadmap.md
       - Interfaces: reference/interfaces.md
       - Communication: reference/communication.md

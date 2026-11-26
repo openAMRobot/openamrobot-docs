@@ -1,48 +1,60 @@
 ---
-title: Reference
+title: Manifest reference
+description: The files, validation stages and source drivers of the OpenAMRobot manifest repository.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Reference</h1><p>Provide the learning-layer reference for reference and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--stable">Active</span><h1>Manifest reference</h1><p>Where each manifest fact is recorded, what the checks report and which drivers are included.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## For
 
-## What this page should contain
+Readers who need to find a manifest file, a check or a driver pin.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**Applies to:** [`openamrobot-manifest`](https://github.com/openAMRobot/openamrobot-manifest), checked against `main` at `5b782ac` on 22 November 2026. The repository is authoritative. Pinned commits are not copied here because they change.
 
-## Content template
+## Repository files
 
-| Field | To complete |
+| File or directory | Purpose |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| `openamrobot.repos` | The development manifest. It may track branches. |
+| `releases/v2.0.0-rc.1.repos` | The pinned rc.1 candidate snapshot, with full commit SHAs. |
+| `tools/check_manifest.py` | Validates a manifest in separate stages. |
+| `tools/check_release_manifest.py` | Checks a release snapshot against the development manifest or an exact export. |
+| `tools/verify_jazzy_drivers.sh` | Imports a manifest and builds the two source drivers in a new workspace. |
+| `ci/ros2-image.txt` | The candidate ROS 2 Jazzy CI image, pinned by its immutable OCI digest. |
+| `tests/` | Unit tests for the checkers. |
+| `STATE.md` | The working state of the repository, for maintainers. |
 
-### Procedure or explanation
+## What `check_manifest.py` reports
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+It reports three stages separately:
 
-### If it did not work
+| Stage | What it checks |
+| --- | --- |
+| `yamllint` | Syntax and duplicate keys. |
+| `strict` | A duplicate-key-rejecting loader and the manifest structure. |
+| `remote` | Branches and tags with `vcs validate`, and full SHAs with an exact Git fetch and commit verification. Needs network. `--offline` reports this stage as SKIPPED. |
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+None of these stages imports a workspace, discovers packages or builds. Run `vcs import`, `colcon list` and `colcon build` for that. SKIPPED is not a pass.
 
-## Owning OpenAMRobot source
+The strict release checker rejects branches, tags and abbreviated hashes. The README notes that the full-SHA check avoids a `vcstool` 0.3.0 bug with advertised commit hashes, tracked in the repository as issue #12.
 
-- [openamrobot-manifest](https://github.com/openAMRobot/openamrobot-manifest) – canonical source, versions, implementation and issue history.
+## Source drivers
 
-## Contribution note
+Both manifests include two source-only drivers. Importing them from source replaces trying to install the driver itself with apt or a rosdep rule. `rosdep` still installs their declared dependencies.
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+| Package | Checkout path | Upstream | What the README says it does |
+| --- | --- | --- | --- |
+| `sllidar_ros2` | `src/sllidar_ros2` | [SLAMTEC](https://github.com/Slamtec/sllidar_ros2) | Drives the 2.0 navigation LiDAR, a SLAMTEC RPLIDAR S3 (S3M1-R2), over USB through a USB to UART adapter at 1,000,000 baud, and publishes `/scan` in `lidar_link`. |
+| `micro_ros_agent` | `src/micro_ros_agent` | [micro-ROS Jazzy](https://github.com/micro-ROS/micro-ROS-Agent/tree/jazzy) | Connects the base controller. micro-ROS runs over UDP on Ethernet between the microcontroller and the Jetson. USB is for the bench only. |
+
+The pinned commits are in the manifests. The SLAMTEC package declares a BSD licence and the micro-ROS agent is Apache-2.0. Keep their original licence files and notices.
+
+## Limits
+
+- A manifest checkout does not show that a build passes, that robot hardware works or that a release is accepted.
+- The duplicate `openamr_ui_msgs` package (OA-08) and the UI dependency declarations are separate open issues.
+- A source pin is not a hermetic build. The micro-ROS superbuild downloads further dependencies while it compiles.
+
+## See also
+
+[Concepts](concepts.md), [Check out and validate](setup.md), and [release concepts](../openamrobot-release/concepts.md).
