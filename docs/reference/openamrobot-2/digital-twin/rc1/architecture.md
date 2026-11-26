@@ -194,5 +194,5 @@ In these profiles the grippers do not move with the default DART engine; see
   directly.
 
 The complete list is in
-[`docs/build1_scene.md`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/1ab45a62957d238fc293eee08a8fd9158acebb01/docs/build1_scene.md)
+[`docs/build1_scene.md`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac/docs/build1_scene.md)
 of openamr-upperbody-sw.

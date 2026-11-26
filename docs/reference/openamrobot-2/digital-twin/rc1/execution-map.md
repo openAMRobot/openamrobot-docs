@@ -31,8 +31,8 @@ There is no hardware-in-the-loop in rc.1, and no package or interface called "HA
 | Motor driver | `sil_zlac8015d`, a ZLAC8015D emulator, CANopen on `vcan_drive` | Device emulation | Vendor PDO mapping, torque, current, brake output, axis order and sign of the delivered drive |
 | Wheels and body | Gazebo joint controllers on the two wheel joints, DART | Physics simulation | Wheel slip and castor rolling as on a real floor |
 | Odometry | `base_state_adapter.py` integrates wheel speeds read over the bus | Native | Sensor fusion. This is raw wheel odometry |
-| Lift controller | `ctl017_emulator` on `vcan_aux`; lift joint in Gazebo | Device emulation of a proposed object dictionary | The lift controller firmware. Permit timing values are simulation test values |
-| Battery management | `daly_bms_emulator` on `vcan_bms`, static values | Device emulation | Cell data; the protocol is unconfirmed for the delivered unit |
+| Lift controller | `ctl017_emulator` (node `sil_ctl017`) on `vcan_aux`; lift joint in Gazebo | Device emulation of a proposed object dictionary | The lift controller firmware. Permit timing values are simulation test values |
+| Battery management | `daly_bms_emulator` (node `sil_daly_bms`) on `vcan_bms`, static values | Device emulation | Cell data; the protocol is unconfirmed for the delivered unit |
 | Arms and grippers, driver | Upstream `openarm_hardware/OpenArmHW`, unmodified | Native, the real driver | Real CAN FD adapters and bit timing |
 | Arm and gripper motors | `OpenArmCanEmulator` inside the Gazebo process, CAN FD on `vcan_arm_l` and `vcan_arm_r` | Device emulation; Gazebo owns the dynamics | Rotor inertia, error frames, bus-off |
 | Sensors | Gazebo LiDAR, IMU, cameras, ToF, ultrasonic through a bridge | Physics simulation | Real drivers and real noise. The IMU has no noise model |
@@ -60,7 +60,7 @@ In this profile `/cmd_vel` is not bridged to Gazebo directly. Every command pass
 
 ### The 0.411 m effective track
 
-The conversion between body motion and wheel speeds in the device path uses a wheel radius of 0.098 m and a track of 0.411 m (`sil.yaml`). The robot model keeps 0.400 m.
+The conversion between body motion and wheel speeds in the device path uses a wheel radius of 0.098 m and a track of 0.411 m (`sil.yaml`). The robot model keeps 0.400 m. The same value converts commands to wheel speeds and back, so the command path is unchanged; what it corrects is the feedback, from measured wheel speeds to body motion.
 
 0.411 m is a calibration of this simulation. It is not a dimension of the chassis. With 0.400 m the simulated body turned about 2.7 percent less than its wheel joints predicted, and after a quarter turn and a 2 m drive the odometry differed from ground truth by 0.05 to 0.10 m. With 0.411 m, 16 of 16 mission legs stayed between 0.010 and 0.060 m, against an unchanged limit of 0.100 m.
 

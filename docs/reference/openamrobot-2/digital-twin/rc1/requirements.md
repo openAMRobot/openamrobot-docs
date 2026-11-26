@@ -35,9 +35,9 @@ The pinned Gazebo vendor packages are `ros-jazzy-gz-sim-vendor` 0.0.13-1noble.20
 These are observations from CI, not requirements. The scene documentation of openamr-upperbody-sw records, on a
 4-core hosted runner without a graphics card, a Gazebo real-time factor of about 0.36 in the `fast` profile and about
 0.27 in `firmware_sil` at the 1 ms step. Scenario limits are in simulation time, so a
-slow machine does not fail a check by being slow. One device rule cannot hold on a slow machine: the emulated lift
-controller needs a real-time factor of about 0.55 while the lift moves. Below it the lift scenarios fail with the
-measured factor in the log, and `scn05_bus_loss` reports BLOCKED.
+slow machine does not fail a check by being slow. With Nav2 and MoveIt 2 in the whole-robot mission the mean factor
+was 0.13 to 0.18, and the mission passed. One scenario reacts to speed: `scn05_bus_loss` reports BLOCKED when the
+lift controller emulator faults below a factor of 0.55.
 
 ## Not tested or not measured
 
@@ -50,7 +50,7 @@ measured factor in the log, and `scn05_bus_loss` reports BLOCKED.
 | Other Ubuntu releases, other Linux distributions, WSL, containers, virtual machines | not tested |
 | Other ROS 2 distributions | not tested, not supported |
 | Other Gazebo versions | not tested. The acceptance workflow fails on a different gz-sim or sdformat version |
-| Fast DDS and other middleware | not the acceptance middleware. A simulation test failure under Fast DDS is open as [openamr-platform-sw issue 197](https://github.com/openAMRobot/openamr-platform-sw/issues/197), cause not established |
+| Fast DDS and other middleware | not supported. A simulation test failure under Fast DDS is open as [openamr-platform-sw issue 197](https://github.com/openAMRobot/openamr-platform-sw/issues/197), cause not established |
 
 ## What you need on the machine
 
@@ -60,8 +60,6 @@ measured factor in the log, and `scn05_bus_loss` reports BLOCKED.
   `linux-modules-extra-$(uname -r)`) and root or passwordless sudo to create five virtual CAN interfaces. The `fast`
   and `fine` profiles need neither.
 
-Next: [Installation](installation.md).
-
 ## Reported, not supported: Windows with WSL2
 
 One contributor ran rc.1 on Windows 11 with WSL2 and WSLg (Ubuntu 24.04, 6 cores, 7.4 GiB assigned to WSL, GPU
@@ -69,3 +67,4 @@ acceleration not verified). Installation, build, Gazebo, RViz and the drive scen
 factor 0.16 to 0.21 with the full stack, RViz at 1 frame per second at start. This is one report on one machine.
 WSL2 is not a tested platform and the cause of the low frame rate is not established.
 
+Next: [Installation](installation.md).

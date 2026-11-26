@@ -9,7 +9,7 @@ description: Engineering diagrams of the OpenAMRobot 2.0 rc.1 Digital Twin, draw
 
 **For:** engineers who want the structure before the text.
 
-Every name in these diagrams is a name in the source at platform commit `2ac4070` and upperbody commit `6687f65`. The diagrams describe the default device profile `firmware_sil` unless stated. They are written in Mermaid, so the source is this page.
+Every name in these diagrams is a node, executable, topic or controller name in the source at platform commit `2ac4070` and upperbody commit `6687f65`. The diagrams describe the default device profile `firmware_sil` unless stated. They are written in Mermaid, so the source is this page.
 
 **Legend, used in all diagrams**
 
@@ -222,7 +222,7 @@ flowchart TB
   gz --> js --> mg
 ```
 
-Solid arrows are the device profile, dashed arrows the profiles without devices. In the device profile the lift is not driven by a ros2_control controller: it is commanded over the bus through the base controller stand-in. In `fast` the arms and grippers are qualified with the Bullet Featherstone engine only.
+Solid arrows are the device profile, dashed arrows the profiles without devices. In the device profile the lift is not driven by a ros2_control controller: it is commanded over the bus through the base controller stand-in. In `fast` only the left-arm grasp is qualified, and only with the Bullet Featherstone engine.
 
 ## 7. Physics, sensors and state feedback
 

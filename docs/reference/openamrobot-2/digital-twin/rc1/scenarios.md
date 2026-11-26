@@ -7,7 +7,7 @@ description: All seventeen scene tests and the whole-robot mission of the OpenAM
 
 # Scenario catalog
 
-Seventeen scene tests and one whole-robot mission exist in the rc.1 Digital Twin. This page lists all of them, including the one that fails and the one that is an expected failure. Every value below is read from the source at upperbody commit `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac`. Results are simulation evidence only.
+Seventeen scene tests and one whole-robot mission exist in the rc.1 Digital Twin. On the release pair the 17 tests give 19 results (two tests hold two cases each): 17 pass, 1 fails, 1 is an expected failure. This page lists all of them, including the one that fails and the one that is an expected failure. Every value below is read from the source at upperbody commit `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac`. Results are simulation evidence only.
 
 Source package: `ros2/src/openamrobot_build1_scene` in `openamr-upperbody-sw`. Scenario code: `openamrobot_build1_scene/scenarios.py`. Tests: `test/test_scn01_drive.py` to `test/test_scn17_base_yaw_fast.py`.
 
@@ -58,9 +58,18 @@ Start the Digital Twin with the launch arguments of the scenario (see [Launch pr
 ros2 run openamrobot_build1_scene run_scenario.py <scenario name>
 ```
 
-Exit code 0 is PASS, 1 is FAIL, 3 is BLOCKED. The result line has the form `BUILD1 <scenario> RESULT <result> <reason> log <path>`. Each measured quantity prints as `BUILD1 <scenario> <name> = <value> <unit> [low, high] ok` or `OUTSIDE`.
+Exit code 0 is PASS, 1 is FAIL, 2 is an unknown name, 3 is BLOCKED. The result line has the form `BUILD1 <scenario> RESULT <result> <reason> log <path>`. Each measured quantity prints as `BUILD1 <scenario> <name> = <value> <unit> [low, high] ok` or `OUTSIDE`.
 
-Twelve scenario names can be run this way. The tests `scn11` to `scn15` reuse a scenario with other launch arguments, and three tests use a different scenario name: `scn10_profiles` runs `scn10_profile_report`, `scn16_lift_fast` runs `scn16_lift_stops`, `scn17_base_yaw_fast` runs `scn17_base_yaw`.
+`run_scenario.py --list` prints the names it accepts: twelve scene scenarios and two diagnostics. A test name is not always a scenario name:
+
+| Test | Run by hand as | With launch arguments of |
+|---|---|---|
+| `scn10_profiles`, `scn11_profile_sil_fine` | `scn10_profile_report` | the test |
+| `scn12_profile_fast`, `scn13_profile_fine` | `scn09_single_writer`, then `scn10_profile_report` | the test |
+| `scn14_drive_fast` | `scn01_drive` | `scn14_drive_fast` |
+| `scn15_grasp_fast` | `scn04_grasp` | `scn15_grasp_fast` |
+| `scn16_lift_fast` | `scn16_lift_stops` | the test |
+| `scn17_base_yaw_fast` | `scn17_base_yaw` | the test. By hand it ends FAIL with exit code 1 under DART (issue 126); only the test treats that as an expected failure |
 
 To stop, interrupt the launch terminal once with Ctrl+C. To reset, start the launch again.
 
@@ -187,8 +196,8 @@ The mission is the formal whole-robot gate. One strict dispatch runs two legs on
 
 **Contact evidence:** contact sensors on the arm links, the item, the tote and the fixtures record time, the two bodies and the normal force. The gate needs at least 18 sensor links, at least one message, and every contact matched by an allowed entry for its phase and force limit, for example fingers on the item during `grasp` and `lift_object`.
 
-**What the mission does not test.** It runs in the `sim-oracle` setting: the pose used for planning and the pose of the item come from simulation ground truth, and the station camera is a simulation-only test sensor. The mission therefore shows the sequence, the control paths and the agreement of odometry with ground truth. It does not show navigation that depends on localization, and it does not show perception. `scn01_drive` plans from the map.
+**What the mission does not test.** It runs in the simulation-oracle setting (`sim-oracle`): the pose used for planning and the pose of the item come from simulation ground truth, and the station camera is a simulation-only test sensor. The mission therefore shows the sequence, the control paths and the agreement of odometry with ground truth. It does not show navigation that depends on localization, and it does not show perception. `scn01_drive` plans from the map.
 
-**Result for rc.1:** 3 of 3 dispatches, 6 of 6 legs, 48 of 48 phases on the exact pair. See [Release and evidence](release.md).
+**Result for rc.1:** 3 of 3 dispatches, 6 of 6 legs, 48 of 48 phases on the exact pair. See [Release information](release.md).
 
 Several limits are marked in the source as estimated guard values or proposed values. They are acceptance values for this simulation, not physical specifications.

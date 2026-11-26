@@ -63,7 +63,7 @@ Leave Terminal 1 running.
 
 !!! warning "This launch is for driving only"
     With `profile:=fast` and the default engine, run `scn01_drive` and nothing with the arms. `scn03_arms_reach`
-    fails in this launch with `park_joints_not_moved`, and the grippers do not move. That is a known limit of the
+    fails in this launch with `left_park_joints_not_moved`, and the grippers do not move. That is a known limit of the
     physics engine in this profile, not a fault of your installation. For arms and grippers, stop this launch and
     start the one in [Grasp](demonstrations.md#4-grasp), which selects the engine the arms are qualified with.
 
@@ -144,7 +144,7 @@ Two things can look like errors and are known:
 - `rviz2` can report a non-zero exit when the launch is closed
   ([openamr-upperbody-sw issue 143](https://github.com/openAMRobot/openamr-upperbody-sw/issues/143)).
 - The Gazebo server and the ROS bridge can crash or hang during teardown. The two notes in
-  [`docs/issues/`](https://github.com/openAMRobot/openamr-upperbody-sw/tree/1ab45a62957d238fc293eee08a8fd9158acebb01/docs/issues)
+  [`docs/issues/`](https://github.com/openAMRobot/openamr-upperbody-sw/tree/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac/docs/issues)
   of openamr-upperbody-sw describe them.
 
 If a process is left over, see [Troubleshooting, shutdown](troubleshooting.md#shutdown). Do not end processes by a

@@ -79,5 +79,5 @@ All three are tracked in [openamr-upperbody-sw issue 143](https://github.com/ope
 ## Checklist
 
 To confirm that the picture is complete, go through the "RViz checklist" table in the
-[package README](https://github.com/openAMRobot/openamr-upperbody-sw/blob/1ab45a62957d238fc293eee08a8fd9158acebb01/ros2/src/openamrobot_build1_scene/README.md#rviz-checklist).
+[package README](https://github.com/openAMRobot/openamr-upperbody-sw/blob/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac/ros2/src/openamrobot_build1_scene/README.md#rviz-checklist).
 If a display is empty, see [Troubleshooting](troubleshooting.md#empty-rviz-displays).

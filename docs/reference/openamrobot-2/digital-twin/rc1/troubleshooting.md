@@ -227,7 +227,7 @@ Unless an entry says otherwise, run the commands in a terminal with the four env
 - **Likely cause:** the terminal does not use CycloneDDS, or `CYCLONEDDS_URI` is not set. The Build 1 launch has
   many participants; at the default CycloneDDS limit late participants did not match in the project's benchmark, so
   CI raises `MaxAutoParticipantIndex` to 120. Terminal 1 and Terminal 2 must use the same settings. Fast DDS is not
-  the acceptance middleware ([openamr-platform-sw issue 197](https://github.com/openAMRobot/openamr-platform-sw/issues/197)).
+  supported ([openamr-platform-sw issue 197](https://github.com/openAMRobot/openamr-platform-sw/issues/197)).
 - **Check:** print the middleware that ROS loads in this terminal, as the acceptance workflow does:
 
     ```bash
@@ -287,7 +287,7 @@ Unless an entry says otherwise, run the commands in a terminal with the four env
   a crash, or a process stays alive and the next launch behaves oddly.
 - **Likely cause:** known teardown defects: the `rviz2` exit is defect 2 of
   [issue 143](https://github.com/openAMRobot/openamr-upperbody-sw/issues/143); the simulator and bridge teardown
-  notes are in [`docs/issues/`](https://github.com/openAMRobot/openamr-upperbody-sw/tree/1ab45a62957d238fc293eee08a8fd9158acebb01/docs/issues)
+  notes are in [`docs/issues/`](https://github.com/openAMRobot/openamr-upperbody-sw/tree/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac/docs/issues)
   of openamr-upperbody-sw. Processes seen to outlive a launch in CI include the simulator, the Nav2 controller server
   and a bridge.
 - **Check:**

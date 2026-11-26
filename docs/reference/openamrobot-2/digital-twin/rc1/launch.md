@@ -42,7 +42,9 @@ A run profile decides whether emulated devices sit between the robot software an
 | `geometry` | none | no physics | refused by this launch. The package `openamrobot_upperbody_bringup` runs it | no |
 
 Use `fast` for a first look and for work on navigation or planning that does not depend on device behaviour. Use
-`firmware_sil` to see commands cross the CAN protocols; it is the profile of the Baseline 1 mission.
+`firmware_sil` to see commands cross the CAN protocols; it is the profile of the Baseline 1 mission. Despite its name, no firmware
+executes in `firmware_sil` by default: a host stand-in fills the base controller slot. See
+[Where the logic runs](execution-map.md).
 
 In every profile Gazebo owns the rigid-body dynamics of every joint. The emulators emulate the CAN devices only.
 

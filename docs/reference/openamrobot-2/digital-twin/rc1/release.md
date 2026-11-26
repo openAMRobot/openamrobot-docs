@@ -47,8 +47,8 @@ Supported profile, six repositories:
 
 | Repository | Commit | Branch or source |
 |---|---|---|
-| [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/tree/1ab45a62957d238fc293eee08a8fd9158acebb01) | `1ab45a62957d238fc293eee08a8fd9158acebb01` | `release/2.0.0-rc.1` |
-| [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw/tree/ddd20ab3a85d98bb78c4c5f014952c4a0717ef92) | `ddd20ab3a85d98bb78c4c5f014952c4a0717ef92` | `release/2.0.0-rc.1`. `main` is not the candidate |
+| [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/tree/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac) | `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac` | `release/2.0.0-rc.1` |
+| [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw/tree/2ac40702deaf3533f9612a1e05d1ea9bb41b996c) | `2ac40702deaf3533f9612a1e05d1ea9bb41b996c` | `release/2.0.0-rc.1`. `main` is not the candidate |
 | [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces/tree/50ed777be7990edbd3465f33fd97a158e7e3b88b) | `50ed777be7990edbd3465f33fd97a158e7e3b88b` | |
 | [enactic/openarm_description](https://github.com/enactic/openarm_description/tree/14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831) | `14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831` | upstream, Apache-2.0 |
 | [enactic/openarm_ros2](https://github.com/enactic/openarm_ros2/tree/4e837e1d0dae692ff67b560b69d8d281d7a8d4ed) | `4e837e1d0dae692ff67b560b69d8d281d7a8d4ed` | upstream, Apache-2.0 |
@@ -62,68 +62,56 @@ Snapshots that are in the release inventory but outside the supported profile:
 | openamrobot-ui | `2cf917950adef411bbdc54381865ea137c7b2e26` | operator UI snapshot. Not installed by the Digital Twin profile |
 
 The manifest that carries these pins is in
-[openamrobot-manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), a draft that is
-not merged yet.
+[openamrobot-manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), not merged yet. Until it carries the pair above, the installer delivers the previous pair.
 
 ## Qualification summary
 
-The gates ran twice on the same source tree: first on openamr-upperbody-sw commit `729be2a` (the pull request head),
-then on the candidate commit `1ab45a6` it was merged as. Both with the platform commit above. The target for the
-strict mission was 3 of 3 dispatches on the candidate. **It was not met: 2 of 3.**
+All gates below ran on upper body commit `6687f65` with platform commit `2ac4070`, each as a first attempt. An
+independent re-read of the original logs confirmed the table. Simulation evidence only.
 
-| Gate | On the candidate `1ab45a6` | On the identical tree `729be2a` |
+| Gate | Result | Runs |
 |---|---|---|
-| Baseline 1 mission, strict sequence (3 dispatches of 2 legs, 8 phases each) | 2 of 3 dispatches passed, 5 of 6 legs, 47 of 48 phases: [45746655009](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746655009) PASS, [45746645594](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746645594) PASS, [45746635231](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746635231) FAIL | 3 of 3 dispatches, 6 of 6 legs, 48 of 48 phases: [45735465924](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45735465924), [45735474913](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45735474913), [45735483682](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45735483682) |
-| Build 1 scene tests | [45746664091](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746664091): 374 passed, 0 failed, 1 expected failure. [45745728376](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45745728376): `scn07_cancel_resume` failed (not supported) | 6 of 6 jobs: [45735467645](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45735467645) |
-| Build 1 arm diagnostics | 5 of 5: [45746668006](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746668006) | 5 of 5: [45735492749](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45735492749) |
-| OpenArm emulator tests | passed: [45746675219](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746675219) | passed: [45735467578](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45735467578) |
-| Model tests, a6 | passed: [45745728393](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45745728393) | passed on attempt 2: [45735467586](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45735467586) |
-| Model tests, a7 | passed: [45746672017](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746672017) | passed: [45742401706](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45742401706) |
-| Clean install of the supported profile | 2 of 2 environments: [45747748555](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45747748555) | 2 of 2: [45738318716](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45738318716) |
+| Baseline 1 mission, strict sequence (3 dispatches of 2 legs, 8 phases each) | 3 of 3 dispatches, 6 of 6 legs, 48 of 48 phases. One start-up try was blocked and repeated inside its job | [45826325912](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826325912), [45826340366](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826340366), [45826354243](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826354243) |
+| Odometry against ground truth in the mission (limit 0.100 m) | 0.023 to 0.041 m in the six legs | same runs |
+| Scene tests, 17 tests giving 19 results | 17 pass, 1 fail (`scn07_cancel_resume`, not supported), 1 expected failure (`scn17_base_yaw_fast`) | [45826367333](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826367333) |
+| Arm diagnostics | 10 of 10 jobs | [45826372314](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826372314), [45826335990](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826335990) |
+| Arm emulator tests | 66 tests, 0 failed, 0 skipped | [45826383251](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826383251), [45826335981](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826335981) |
+| Model tests a6 (static and mock) | 927 executed, 0 failed, 21 skipped | [45826336167](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826336167) |
+| Model tests a7 (simulation) | 297 executed, 0 failed, 3 skipped | [45826377770](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45826377770) |
+| Platform SIL protocol tests | 209 passed, 3 expected failures (platform issue 159) | [45826145729](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826145729) |
+| Platform description, navigation status, drivers | passed | [45826150907](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826150907), [45826156811](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826156811), [45826162821](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826162821) |
+| Platform station alignment | required jobs passed; the Fast DDS job failed (not supported, platform issue 197) | [45826167431](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826167431) |
+| Clean install of the supported profile on these pins | pending until the manifest carries these pins | |
 
-Qualifications to read with the table:
+Terms: a *dispatch* is one start of the mission workflow; it runs two *legs* (two complete missions) and a verdict.
+The *model tests* a6 and a7 check the combined robot model, a6 without a simulator and a7 in Gazebo.
 
-- The failed mission leg ([45746635231](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45746635231), leg 2) passed 7 of 8 phases. `nav_to_station` failed the odometry check:
-  0.10016 m against a limit of 0.100 m. Other legs measured 0.048 to 0.070 m. The leg was not rerun to replace the
-  result.
-- In one mission leg on `729be2a` the simulation froze right after start in two tries; the third try passed. Those
-  tries are BLOCKED, not PASS, and are counted apart: 2 of 14 start-up tries.
-- The model and emulator tests build platform commit `8e7a454` (the model pin), not the candidate platform commit. With the
-  pin moved to the candidate commit in a diagnostic run, two simulation model tests of the standalone upper-body
-  launch failed ([upperbody-sw 145](https://github.com/openAMRobot/openamr-upperbody-sw/issues/145)). The Build 1
-  scene, which is the supported launch, is tested with the candidate commit.
-- The clean install runs the `fast` profile headless with the drive scenario. It does not cover RViz on a screen,
-  the `firmware_sil` profile or manipulation.
-- The mission ran in the declared simulation-oracle profile: the planning scene and the object poses come from
-  simulator ground truth. A pass is integration evidence, not a perception result.
-- The Baseline 1 mission is an engineering acceptance mission of the twin. It is not a customer acceptance test and
-  not a safety test.
-- The scene tests include fault scenarios that record what the stack does. A recorded reaction is not certified
-  safety behaviour.
-- No person has yet checked RViz on a real screen or followed the quick start for this candidate.
+Read with the table:
+
+- **The mission plans from simulation ground truth.** The pose used for planning and the pose of the item come from
+  the simulator. A pass shows the sequence, the control paths and odometry agreement. It is not a localization or
+  perception result.
+- **Odometry depends on a simulation calibration.** The SIL effective track is 0.411 m; it is not a chassis
+  dimension. Over 16 legs at this value (6 above, 6 on the previous head with an identical platform source tree, 4 in
+  the experiment) the difference was 0.010 to 0.060 m. Two predictions written before the test were missed: the
+  heading after the first turn in one of four legs by 0.001 rad, and 2 of 16 legs above the predicted 0.050 m. One
+  leg showed 0.144 rad between odometry yaw and ground truth yaw at the station, recorded without a limit.
+- **History.** The previous candidate (`1ab45a6` with `ddd20ab`, track 0.400 m) reached 2 of 3 dispatches: one leg
+  measured 0.10016 m against the 0.100 m limit. The limit was not changed; the cause was found and calibrated
+  ([upperbody issue 136](https://github.com/openAMRobot/openamr-upperbody-sw/issues/136)).
+- **Speed.** Mean real-time factor of the mission runs was 0.13 to 0.18.
+- **Shutdown.** `move_group` and `parameter_bridge` can exit with code -11 at shutdown; results are complete before.
+- **Repeatability.** No effective seed is set and the model hash printed per launch differs at identical pins. Two
+  runs are not guaranteed identical.
+- **Screen check.** One contributor ran the previous candidate on a real screen under WSL2: installation, Gazebo,
+  RViz and the drive scenario worked ([upperbody issue 143](https://github.com/openAMRobot/openamr-upperbody-sw/issues/143)).
+  A screen check of this pair and a quick start walk-through by a second person are open.
+- The mission is an engineering acceptance mission of the twin. It is not a customer acceptance test and not a
+  safety test. Fault scenarios record what the stack does; a recorded reaction is not certified safety behaviour.
 
 ## Known limitations
 
-| Area | Limitation | Issue |
-|---|---|---|
-| Navigation | a cancelled and resumed drive can end ABORTED | [platform-sw 207](https://github.com/openAMRobot/openamr-platform-sw/issues/207) |
-| Navigation | an older report that an operator cancel returns ABORTED instead of CANCELED is open; it did not occur in the runs above | [platform-sw 189](https://github.com/openAMRobot/openamr-platform-sw/issues/189) |
-| Navigation | the station approach can stop short of the goal | [platform-sw 201](https://github.com/openAMRobot/openamr-platform-sw/issues/201) |
-| Start-up | the simulation can freeze within the first milliseconds after start (2 of 14 mission start-ups); cause unknown | [upperbody-sw 135](https://github.com/openAMRobot/openamr-upperbody-sw/issues/135) |
-| Odometry | wheel odometry against ground truth over its 0.100 m limit in 1 of 12 mission legs on the candidate tree (0.10016 m); the gate has little margin | [upperbody-sw 136](https://github.com/openAMRobot/openamr-upperbody-sw/issues/136) |
-| Software in the loop | after a stop and release the map pose stayed at the origin in 1 of 4 runs | [upperbody-sw 137](https://github.com/openAMRobot/openamr-upperbody-sw/issues/137) |
-| Software in the loop | a clock stall at start-up can leave the emulated drive disabled | [upperbody-sw 142](https://github.com/openAMRobot/openamr-upperbody-sw/issues/142) |
-| Arms, `fast` profile | joint 4 on its lower limit does not move toward park with the DART engine; `scn17_base_yaw_fast` is an expected failure | [upperbody-sw 126](https://github.com/openAMRobot/openamr-upperbody-sw/issues/126) |
-| RViz | ground truth display off by default, `rviz2` error at shutdown, configuration needs Nav2 and MoveIt 2 | [upperbody-sw 143](https://github.com/openAMRobot/openamr-upperbody-sw/issues/143) |
-| Middleware | a simulation test fails under Fast DDS at a low real-time factor; cause not established. CycloneDDS is the acceptance middleware | [platform-sw 197](https://github.com/openAMRobot/openamr-platform-sw/issues/197) |
-| CI timing | one test of the platform SIL tests fails on a slow runner | [platform-sw 198](https://github.com/openAMRobot/openamr-platform-sw/issues/198) |
-
-Fidelity placeholders, without an issue number: the castors are fixed joints, the drive track of 0.400 m is a
-placeholder, floor and wheel friction are estimates, camera parameters are working values, hub motor holding brakes
-and the hardwired safety chain are not modelled, and the device emulators follow documents and proposals that are
-not confirmed for the delivered units. The complete list is in
-[`docs/build1_scene.md`](https://github.com/openAMRobot/openamr-upperbody-sw/blob/1ab45a62957d238fc293eee08a8fd9158acebb01/docs/build1_scene.md)
-of openamr-upperbody-sw.
+The register is on its own page: [Known issues and limitations](limitations.md).
 
 ## Licences and upstream attribution
 
