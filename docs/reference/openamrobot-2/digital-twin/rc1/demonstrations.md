@@ -136,6 +136,11 @@ emulator are test values, not decisions about the real controller, and the permi
 | Shows | MoveIt 2 moves both arms to a shelf pose at lift stop L1000 and at L1350, through the unmodified upstream arm driver and the emulated motors |
 | Prerequisites | profile `firmware_sil`, virtual CAN, robot spawned at the work shelf |
 
+Run this scenario in the device profile only. In `fast` with the default engine it fails with
+`left_park_joints_not_moved`: an arm joint resting on its lower limit does not move although the controller reports
+success ([openamr-upperbody-sw issue 126](https://github.com/openAMRobot/openamr-upperbody-sw/issues/126)). Without
+virtual CAN, use the grasp demonstration below.
+
 **Terminal 1:**
 
 ```bash
@@ -178,7 +183,8 @@ ros2 run openamrobot_build1_scene run_scenario.py scn04_grasp
 ```
 
 Expected: exit code 0. The item position comes from Gazebo ground truth (`object_pose_source:=ground_truth`), so a
-pass says nothing about perception.
+pass says nothing about perception. The form without devices is the arm and gripper demonstration that the clean install
+check runs on a second launch after the drive and lift demonstrations.
 
 ## 5. Other scenarios
 

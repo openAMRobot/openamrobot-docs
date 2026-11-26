@@ -171,6 +171,11 @@ with openamr-upperbody-sw at `729be2a`, whose source tree is identical to the ca
 the final profile, [run 45747748555](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45747748555),
 passed in both environments. Simulation evidence only.
 
+The check was extended on 26 November ([run 45824534544](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45824534544),
+both environments passed): after the drive demonstration it runs the lift demonstration, ends the launch with one
+interrupt (4 and 9 s, no process left), starts a second launch and runs the grasp demonstration with both arms and
+grippers.
+
 Measured on hosted runners in [run 45756061297](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45756061297),
 headless: the script took 5.5 and 7 minutes; from the launch command to a ready twin (advancing clock, robot
 description, TF) 24 s and 43 s; the drive demonstration 1.3 and 3.9 minutes. A desktop session with RViz was not
