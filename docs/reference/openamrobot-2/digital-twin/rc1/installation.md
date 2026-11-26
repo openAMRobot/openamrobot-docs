@@ -26,14 +26,14 @@ that records the exact commits.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
-git -C openamrobot-manifest checkout 9383aa5f59d2697ec71faea88f718002a47936c8
+git -C openamrobot-manifest checkout 442241a2428247c5927a944f451355bb7373b4a0
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
 !!! warning "Pre-publication procedure"
-    The release is not published yet. The line `git checkout 9383aa5...` selects the pre-publication commit of
+    The release is not published yet. The line `git checkout 442241a...` selects the pre-publication commit of
     openamrobot-manifest that pins the release pair: openamr-platform-sw `2ac4070` and openamr-upperbody-sw `6687f65`
-    ([verification pull request 25](https://github.com/openAMRobot/openamrobot-manifest/pull/25)). Without that line
+    ([manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23)). Without that line
     you get `main`, which has neither the script nor the profile. After publication this line is replaced by the
     release tag, and this note is removed. Do not use an older commit of the pins branch: it installs the previous
     candidate, without the odometry calibration.
@@ -163,12 +163,14 @@ A build that finishes is not yet a working installation. Start the twin and chec
 
 ## What was tested
 
-**On the release pair:** [run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217) on manifest commit `9383aa5` passed in both environments, first attempt. Each
-environment ran the script twice on a fresh hosted runner (17 packages built in 1 min 44 s and 1 min 15 s), started
-the `fast` profile headless, checked the clock, the robot description and TF, ran the drive and the lift
-demonstration, ended the launch with one interrupt, started a second launch and ran the grasp demonstration (left arm
-and gripper). This result is provisional: it was made on the pre-publication manifest commit, and it is repeated on
-the manifest that is finally merged.
+**On the release pair:** the clean install passed in both environments, first attempt, on the head of
+[manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), commit `442241a`
+([run 45871626093](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45871626093)), and before that on a
+commit with the identical content ([run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217)).
+Each environment ran the script twice on a fresh hosted runner, started the `fast` profile headless, checked the clock,
+the robot description and TF, ran the drive and the lift demonstration, ended the launch with one interrupt, started a
+second launch and ran the grasp demonstration (left arm and gripper). The pull request is not merged yet; at
+publication the checkout line becomes the release tag.
 
 **On the previous candidate** (same script, same demonstration sequence, pins `1ab45a6` and `ddd20ab`):
 [run 45824534544](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45824534544) ran the script twice

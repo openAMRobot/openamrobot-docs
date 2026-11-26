@@ -37,7 +37,7 @@ the profile the clean-install check in CI starts.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
-git -C openamrobot-manifest checkout 9383aa5f59d2697ec71faea88f718002a47936c8
+git -C openamrobot-manifest checkout 442241a2428247c5927a944f451355bb7373b4a0
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
