@@ -1,48 +1,53 @@
 ---
-title: Concepts
+title: Release concepts
+description: How OpenAMRobot product releases are built from several repositories, what is frozen, and how to read the version table.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Concepts</h1><p>Provide the learning-layer reference for concepts and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--experimental">Experimental</span><h1>How releases work</h1><p>One frozen, checksummed archive for a platform that lives in many repositories.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## For
 
-## What this page should contain
+Anyone who needs to reproduce, study or cite a specific state of the OpenAMRobot platform, rather than the moving `main` branches.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**When you finish:** you will know what a product release contains, why component tags are only a convenience, and which versions exist and which are still planned.
 
-## Content template
+**Applies to:** the process described in the [`openamrobot-release`](https://github.com/openAMRobot/openamrobot-release) repository README.
 
-| Field | To complete |
-| --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+## The idea
 
-### Procedure or explanation
+OpenAMRobot is developed across several repositories. A GitHub source archive covers only one repository, and the archive of the release repository contains only the release builder. So the official product-level release is a custom archive, built by `openamrobot-release`, that combines the participating repositories.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+According to the repository README:
 
-### If it did not work
+- Each release is a GitHub release in `openamrobot-release`. It carries an immutable source archive of every component repository.
+- A `MANIFEST.json` records the exact commit and archive checksum of each component. `checksums.sha256` covers every file.
+- A published release is never edited. A correction is a new release.
+- `main` in a component repository is never a release.
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+## Component tags are for navigation
 
-## Owning OpenAMRobot source
+Component repositories carry a tag with the release version, on the commit that `MANIFEST.json` records. The tags let you open a component at its release state. If a component tag and the release archive ever disagree, the archive is authoritative.
 
-- [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) – canonical source, versions, implementation and issue history.
+The README notes that the `v0.0.1` component tags were added on 6 October 2026, after the release, and that they point to the commits recorded in the `v0.0.1` manifest.
 
-## Contribution note
+## Versions
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+| Version | Status | What it is |
+| --- | --- | --- |
+| `v0.0.1` | **Released** (11 July 2026) | The first public platform release: the existing robot. |
+| `v2.0.0-rc.1` | **Not published** | A pre-release candidate for OpenAMRobot 2.0. The README lists it as planned for 20 November 2026. Pre-releases are published as GitHub pre-releases. |
+| `v2.0.0` | **Not published** | The planned 2.0 final release, after physical integration, testing and acceptance. The README lists 18 December 2026. |
+
+Checked on 22 November 2026: the GitHub releases list of `openamrobot-release` shows only `v0.0.1`. Planned dates can move, so the repository README and its releases page are the record, not this table.
+
+The `v2.0.0-rc.1` candidate builder exists in the repository and builds from exact commit SHAs. Its own documentation says the candidate is dated 2026-10-19 and that final component acceptance is pending. A candidate build is evidence that sources can be reproduced. It is not evidence that the robot works or is safe.
+
+## What a release does not prove
+
+- A checksum detects corruption. It is not a signature and it is not approval of the release.
+- Bundling source does not validate package builds, firmware, robot operation or physical safety.
+- Build-time downloads of upstream dependencies are not locked by the source bundle.
+
+## Next step
+
+[Set up and verify a release build](setup.md), or look up the [files and outputs](reference.md).

@@ -2,11 +2,17 @@
 
 All notable changes to the OpenAMRobot documentation site are recorded here. The format follows Keep a Changelog; the site has no version numbers, so entries are dated.
 
+## 2026-11-17
+
+### Added
+
+- Digital twin section under OpenAMRobot 2.0 design (`reference/openamrobot-2/digital-twin/`): what the twin is and what each part can and cannot show, evidence levels L1 to L6 and fidelity classes F0 to F3 (plan of record, decision D5), the three parity levels, the target architecture diagram (`assets/digital-twin/architecture.svg`), the current status with evidence levels (16 to 17 Nov 2026; nothing bench- or robot-validated), how to get the model bundle (when published) and run the Build 1 scene, and a media placeholder with no media.
 ## 2026-11-22
 
 ### Changed
 
 - `reference/openamrobot-comm/overview.md`: replaced the empty template with an honest status page. The repository is Planned with no code and only empty scaffolding, checked against openamrobot-comm `main` at 73fa694. The page says what it is for, what it holds today and where to look instead, and invents no protocol, schema or version.
+- `reference/openamrobot-release/` concepts, setup and reference pages: replaced three empty templates with how product releases are built, how to verify and rebuild an archive, and the repository's files, outputs and limits, checked against openamrobot-release `main` at a8f60f6. v2.0.0-rc.1 and v2.0.0 are shown as not published, and only v0.0.1 is released.
 - `reference/openamrobot-interfaces/reference.md`: replaced the empty template with an index of the shared interface packages and navigation messages, checked against openamrobot-interfaces `main` at 50ed777. It links to the canonical definitions and copies no fields, constants or reason codes.
 
 ## 2026-11-10
