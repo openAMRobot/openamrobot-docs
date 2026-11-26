@@ -332,3 +332,38 @@ flowchart TB
 ```
 
 Dashed arrows are intended relations, not working integrations.
+
+## 11. Robot model, generated from the robot description
+
+![Side and front view of the robot model at zero joint positions. Grey points are the visual geometry of every link, red lines connect parent and child links. Mobile base with drive wheels and four castors at the bottom, lift column in the middle, the two arms hanging from the lift carriage, head camera at the top.](../../../../assets/digital-twin/rc1/model-two-views.png)
+
+This picture is not drawn by hand. A hosted run on the release pair launched the default profile, read the robot description that the running system publishes, placed every link at zero joint positions and plotted the visual geometry of all 64 visuals (none failed to load) in two views. Script: [`model_plot.py`](../../../../assets/digital-twin/rc1/model_plot.py). Run: [45856876804](https://github.com/openAMRobot/openamr-upperbody-sw/actions/runs/45856876804), upper body `6687f65` plus diagnostic files only.
+
+| Read from the running system | Value |
+|---|---|
+| Links, joints | 67 links, 66 joints, root `base_footprint` |
+| Movable joints | 21: two drive wheels, the lift, seven per arm, two fingers per gripper |
+| Lift travel (`lift_joint`, prismatic, vertical) | 0.0 to 0.35 m |
+| Extent of the visual geometry at zero pose | 0.82 m long, 0.58 m wide, 1.25 m high |
+| Castors | four, fixed joints in this model |
+| Sensor frames on the base | LiDAR, IMU, two cameras, two time-of-flight, four ultrasonic |
+| Sensor frames on the upper body | head camera, one wrist camera per arm |
+
+The arm and gripper geometry comes from the upstream OpenArm description (Apache-2.0); the base, lift and upper-body parts come from the project's own descriptions. It is a picture of the simulation model. Dimensions are design values of the model, not measurements of a built robot. The picture shows no compute or controller locations, because the robot description does not carry them.
+
+## 12. ROS 2 node graph, generated from a runtime inventory
+
+[![Graph of the ROS 2 nodes of the running default profile, grouped into command arbitration, navigation, base and lift devices on virtual CAN, simulation side, manipulation and state, with the topics that connect them.](../../../../assets/digital-twin/rc1/ros-node-graph.svg)](../../../../assets/digital-twin/rc1/ros-node-graph.svg)
+
+Open the image for full size. The graph is generated: the same hosted run listed every node with `ros2 node info`, and each arrow is a topic that one node publishes and another subscribes to at run time. Source: [`ros-node-graph.dot`](../../../../assets/digital-twin/rc1/ros-node-graph.dot).
+
+What the inventory found in `firmware_sil` with Nav2 and MoveIt 2: 62 nodes and 16 actions. The base command path of diagram 2 appears exactly: `controller_server` and `behavior_server` publish `/cmd_vel_nav`, then `twist_mux`, `safety_stop_gate_node`, `velocity_smoother`, `collision_monitor`, and `/cmd_vel` has one subscriber, `sil_stm32_host_client`.
+
+What the graph does not show, by construction:
+
+- Actions and services. MoveIt 2 reaches the arm and gripper controllers through actions (`/left_arm_controller/follow_joint_trajectory`, `/left_gripper_controller/gripper_cmd` and the right-side pair), and Nav2 is driven through `/navigate_to_pose`.
+- The virtual CAN buses, which are not ROS topics. See diagram 3.
+- TF, `/clock`, parameter and log topics, left out for readability.
+- `/sil/lift/command` and `/sil/lift/permit` have a subscriber and no publisher in the idle system: a scenario or the mission publishes them.
+
+The controller list could not be read in this run, because the command line tool for it is not installed in the workspace; controller names in diagram 6 come from the configuration files.

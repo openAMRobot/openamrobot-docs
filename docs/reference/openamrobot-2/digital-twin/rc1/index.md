@@ -82,7 +82,7 @@ The full list with evidence and limits is the [capability and maturity matrix](c
 | [Capability and maturity](capabilities.md) | One table for every capability, with evidence and limits |
 | [Troubleshooting](troubleshooting.md) | Symptoms, causes, checks and fixes |
 | [Scenario catalog](scenarios.md) | All 17 scene tests and the mission, with acceptance values and status |
-| [Architecture diagrams](diagrams.md) | Ten diagrams drawn from the source |
+| [Architecture diagrams](diagrams.md) | Twelve diagrams: ten drawn from the source, two generated from the running system |
 | [Where the logic runs](execution-map.md) | What is native software, stand-in, emulation or simulation; what firmware runs |
 | [Known issues and limitations](limitations.md) | Scope limits, active issues, workarounds |
 | [Contribute](contributing.md) | How to test a change and where help is useful |
