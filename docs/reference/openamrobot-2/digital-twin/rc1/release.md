@@ -88,7 +88,10 @@ Qualifications to read with the table:
   result.
 - In one mission leg on `729be2a` the simulation froze right after start in two tries; the third try passed. Those
   tries are BLOCKED, not PASS, and are counted apart: 2 of 14 start-up tries.
-- The model and emulator tests build platform commit `8e7a454` (the model pin), not the candidate platform commit.
+- The model and emulator tests build platform commit `8e7a454` (the model pin), not the candidate platform commit. With the
+  pin moved to the candidate commit in a diagnostic run, two simulation model tests of the standalone upper-body
+  launch failed ([upperbody-sw 145](https://github.com/openAMRobot/openamr-upperbody-sw/issues/145)). The Build 1
+  scene, which is the supported launch, is tested with the candidate commit.
 - The clean install runs the `fast` profile headless with the drive scenario. It does not cover RViz on a screen,
   the `firmware_sil` profile or manipulation.
 - The mission ran in the declared simulation-oracle profile: the planning scene and the object poses come from
