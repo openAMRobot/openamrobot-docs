@@ -34,10 +34,10 @@ The pinned Gazebo vendor packages are `ros-jazzy-gz-sim-vendor` 0.0.13-1noble.20
 
 These are observations from CI, not requirements. The scene documentation of openamr-upperbody-sw records, on a
 4-core hosted runner without a graphics card, a Gazebo real-time factor of about 0.36 in the `fast` profile and about
-0.27 in `firmware_sil` at the 1 ms step (first runs, 15 November 2026). Scenario limits are in simulation time, so a
+0.27 in `firmware_sil` at the 1 ms step. Scenario limits are in simulation time, so a
 slow machine does not fail a check by being slow. One device rule cannot hold on a slow machine: the emulated lift
-controller needs a real-time factor of about 0.5 while the lift moves, and a lift check that meets this reports
-BLOCKED, not PASS.
+controller needs a real-time factor of about 0.55 while the lift moves. Below it the lift scenarios fail with the
+measured factor in the log, and `scn05_bus_loss` reports BLOCKED.
 
 ## Not tested or not measured
 

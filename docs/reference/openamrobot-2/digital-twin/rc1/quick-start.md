@@ -35,6 +35,7 @@ the profile the clean-install check in CI starts.
 ## 3. Install
 
 ```bash
+sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
@@ -118,7 +119,7 @@ spot.
 |---|---|
 | 0 | PASS: the drive ended between 1.85 m and 2.15 m of ground truth distance and the turn between 78 and 102 degrees, with odometry inside its guard values |
 | 1 | FAIL: a check failed. The log names it |
-| 3 | BLOCKED: a prerequisite was missing. BLOCKED is not PASS |
+| 3 | BLOCKED: not used by this scenario. Only `scn05_bus_loss` can end BLOCKED. BLOCKED is not PASS |
 | 2 | the scenario name is unknown |
 
 The log is `build1_logs/scn01_drive.json` in the directory where you ran the command. Print the exit code with

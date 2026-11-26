@@ -130,7 +130,8 @@ Unless an entry says otherwise, run the commands in a terminal with the four env
 
     The arm buses `vcan_arm_l` and `vcan_arm_r` must show MTU 72 (CAN FD), the three base buses MTU 16.
 - **Fix:** install the kernel module package named by the script (on Ubuntu `linux-modules-extra-$(uname -r)`) and
-  run the script with sudo rights. On a machine where virtual CAN cannot be had, use `profile:=fast` or
+  run `sudo -v` in the same terminal before the script (it calls `sudo` without asking for a password; do not use
+  `sudo ros2 run`). On a machine where virtual CAN cannot be had, use `profile:=fast` or
   `profile:=fine`.
 - **Report when:** the script ends with exit code 0 and the launch still prints `BLOCKED`. Repository:
   openamr-upperbody-sw.
@@ -209,7 +210,7 @@ Unless an entry says otherwise, run the commands in a terminal with the four env
 - **Check:**
 
     ```bash
-    ros2 control list_controllers
+    ros2 service call /controller_manager/list_controllers controller_manager_msgs/srv/ListControllers
     ```
 
     In `fast` and `fine` the joint state broadcaster, both arm controllers, both gripper controllers and the lift
@@ -271,9 +272,9 @@ Unless an entry says otherwise, run the commands in a terminal with the four env
 ### A scenario ends BLOCKED
 
 - **Symptom:** `run_scenario.py` ends with exit code 3.
-- **Likely cause:** a prerequisite is missing (a device scenario on a launch without devices, no virtual CAN), or the
-  machine is too slow for a device timing rule: the emulated lift controller needs a real-time factor of about 0.5
-  while the lift moves.
+- **Likely cause:** only `scn05_bus_loss` ends with exit code 3: the emulated lift controller faulted because the
+  machine ran below a real-time factor of 0.55 while the lift moved. A missing prerequisite (a device scenario on a
+  launch without devices, a stack that is not ready) ends with exit code 1, FAIL.
 - **Check:** the `reason` entry of the scenario's JSON log names the cause and the measured real-time factor.
 - **Fix:** start the launch with the profile the scenario needs ([Demonstrations](demonstrations.md)). For the lift
   on a slow machine use `scn16_lift_stops` in the `fast` profile.

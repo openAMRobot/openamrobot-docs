@@ -37,7 +37,7 @@ ros2 run openamrobot_build1_scene run_scenario.py --list
 |---|---|
 | 0 | PASS |
 | 1 | FAIL. The log names the failed check |
-| 3 | BLOCKED: a prerequisite is missing, or a device timing rule cannot hold at the measured real-time factor |
+| 3 | BLOCKED: only `scn05_bus_loss`, when the lift controller emulator faults below a real-time factor of 0.55. A missing prerequisite (no devices, stack not ready) is FAIL |
 | 2 | unknown scenario name |
 
 The log is `build1_logs/<name>.json` in the current directory, or in the directory given with `--log-dir`. To stop a
@@ -113,6 +113,7 @@ Expected: exit code 0, and the lift carriage visibly travels the column in the G
 **Terminal 1:**
 
 ```bash
+sudo -v
 ros2 run openamrobot_build1_scene setup_vcan_all.sh
 ros2 launch openamrobot_build1_scene build1.launch.py sensors:=false nav2:=false moveit:=false driver_rate:=100
 ```
@@ -123,8 +124,8 @@ ros2 launch openamrobot_build1_scene build1.launch.py sensors:=false nav2:=false
 ros2 run openamrobot_build1_scene run_scenario.py scn02_lift_permit
 ```
 
-Expected: exit code 0. Exit code 3 (BLOCKED) when the machine runs the simulation below a real-time factor of about
-0.5 while the lift moves: the emulated lift controller then faults on its own timing rule. The permit values of the
+Expected: exit code 0. On a slow machine a lift controller fault is reported as FAIL (exit code 1) with the measured
+real-time factor. The permit values of the
 emulator are test values, not decisions about the real controller, and the permit is not a safety function.
 
 ## 3. Arms
@@ -183,7 +184,7 @@ pass says nothing about perception.
 
 `run_scenario.py --list` also prints these. They are engineering checks more than demonstrations.
 
-| Scenario | Profile | What it measures |
+| Scenario | Profile of its CI test | What it measures |
 |---|---|---|
 | `scn05_bus_loss` | `faults` | loss on each of the five buses and what the stack does today |
 | `scn06_stale_sensors` | `faults` | every sensor topic stops while Nav2 drives |
@@ -225,7 +226,12 @@ nothing else may be running.
 **Terminal 1**, from the workspace root:
 
 ```bash
+sudo -v
 ros2 run openamrobot_build1_scene setup_vcan_all.sh
+export BUILD1_LOG_DIR="$PWD/build1_logs"; mkdir -p "$BUILD1_LOG_DIR"
+export BUILD1_PLANNING_POSE_SOURCE=ground_truth BASELINE1_STATION_APPROACH=1 BASELINE1_STATION_ALIGNMENT=1
+export BASELINE1_CANCEL_CHECK=1 BASELINE1_RETREAT=forward BUILD1_CONTACT_SENSORS=1
+export BASELINE1_SEED=20261117 PYTHONHASHSEED=20261117
 colcon test --packages-select openamrobot_build1_scene --event-handlers console_direct+ --return-code-on-test-failure \
   --ctest-args -R '^test_baseline1_mission$'
 colcon test-result --test-result-base build/openamrobot_build1_scene --verbose
@@ -233,11 +239,11 @@ colcon test-result --test-result-base build/openamrobot_build1_scene --verbose
 
 Expected: the test passes with eight of eight phases, and `colcon test` returns 0. Any failed phase gets a class
 (ENV/INFRA, BUILD, STARTUP, CONTROL, PLANNING, CONTACT/PHYSICS, TIMEOUT or UNCLASSIFIED) in the log
-`baseline1_mission.json` under the directory named by `BUILD1_LOG_DIR`. A try that ends with `no /clock` before
-phase 1 is BLOCKED, not FAIL; run it again.
+`baseline1_mission.json` under the directory named by `BUILD1_LOG_DIR`. A try in which the simulation freezes at
+start (reported as `no /clock`) before phase 1 is BLOCKED, not FAIL; run it again.
 
-The acceptance workflow sets these variables before the test. Without them the run is a different configuration and
-not the qualified one:
+The exports above are the variables the acceptance workflow sets before the test. Without them the run is a
+different configuration and not the qualified one:
 
 | Variable | Value in the acceptance workflow | Meaning |
 |---|---|---|
@@ -249,8 +255,8 @@ not the qualified one:
 | `BUILD1_CONTACT_SENSORS` | `1` | contact sensors on the arm links, item, tote and fixtures. They observe only |
 | `BASELINE1_SEED`, `PYTHONHASHSEED` | `20261117` | deterministic start of the test. Gazebo itself gets no seed |
 
-Measured in CI: the mission step of the six qualifying legs took between 13 and 20 minutes of wall time on a hosted
-runner, including the start-up and any repeated start. The test timeout is 5400 s.
+The mission step of one leg takes roughly a quarter of an hour of wall time on a hosted runner, longer when a start
+is repeated; this figure is from two legs, not a measurement over all runs. The test timeout is 5400 s.
 
 !!! note "Tested path"
     The mission is qualified through the acceptance workflow, which builds its own workspace and also installs

@@ -52,8 +52,12 @@ The device profiles need five virtual CAN interfaces: `vcan_drive`, `vcan_bms` a
 and `vcan_arm_l` and `vcan_arm_r` (CAN FD, MTU 72). Create them once per boot:
 
 ```bash
+sudo -v
 ros2 run openamrobot_build1_scene setup_vcan_all.sh
 ```
+
+The script calls `sudo` without asking for a password, so `sudo -v` in the same terminal comes first. Do not start
+it as `sudo ros2 run ...`: that loses the ROS environment.
 
 The script needs root or passwordless sudo, `iproute2` and the `vcan` kernel module. On Ubuntu the module is in
 `linux-modules-extra-$(uname -r)`. It prints one line per interface and ends with exit code 0, or prints a line
@@ -127,8 +131,9 @@ The diagram form of this table is on the [Architecture](architecture.md) page.
 
 ## Time
 
-Every ROS node of the launch runs on Gazebo time from `/clock`. The device emulators use host time for their internal
-timers. The clocks are not synchronised. Scenario limits are in Gazebo time, with wall limits twenty times longer, so
+Every ROS node of the launch runs on Gazebo time from `/clock`. The device emulators do not all share one time base: the
+lift controller emulator runs its timers on simulation time, others use host time (see the scene documentation of
+openamr-upperbody-sw and issue 137). Scenario limits are in Gazebo time, with wall limits twenty times longer, so
 a slow machine does not fail a check by being slow; see [System requirements](requirements.md#speed-seen-on-the-tested-machine)
 for the one device rule that a slow machine cannot meet.
 

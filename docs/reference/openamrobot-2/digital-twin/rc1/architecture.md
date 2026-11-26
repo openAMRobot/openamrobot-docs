@@ -118,7 +118,7 @@ flowchart LR
     vaux(["vcan_aux, classic CAN"])
     varm(["vcan_arm_l and vcan_arm_r, CAN FD"])
   end
-  subgraph plant["Plant, namespace sim"]
+  subgraph plant["Plant and its bridges"]
     simcm["controller manager in Gazebo<br/>arm motor emulators, joint state broadcaster<br/>(supported)"]
     wca["wheel_command_adapter<br/>(supported)"]
     gz["Gazebo Harmonic, DART<br/>world from scene.yaml<br/>(supported)"]

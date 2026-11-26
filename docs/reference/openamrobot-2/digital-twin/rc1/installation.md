@@ -24,6 +24,7 @@ that records the exact commits.
 ## Install with the bootstrap script
 
 ```bash
+sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
@@ -166,8 +167,14 @@ A build that finishes is not yet a working installation. Start the twin and chec
 The [Digital Twin clean install workflow](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45738318716)
 ran the script twice on each of two fresh hosted runners, then started the `fast` profile headless and checked the
 clock, the robot description, TF and the drive demonstration. Both environments passed. That run used the profile
-with openamr-upperbody-sw at `729be2a`, whose source tree is identical to the candidate commit `1ab45a6`; a repeat on
-the final profile was queued at the time of writing. Simulation evidence only.
+with openamr-upperbody-sw at `729be2a`, whose source tree is identical to the candidate commit `1ab45a6`; the repeat on
+the final profile, [run 45747748555](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45747748555),
+passed in both environments. Simulation evidence only.
+
+Measured on hosted runners in [run 45756061297](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45756061297),
+headless: the script took 5.5 and 7 minutes; from the launch command to a ready twin (advancing clock, robot
+description, TF) 24 s and 43 s; the drive demonstration 1.3 and 3.9 minutes. A desktop session with RViz was not
+measured.
 
 ## If it did not work
 
