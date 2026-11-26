@@ -139,17 +139,19 @@ Unless an entry says otherwise, run the commands in a terminal with the four env
 
 - **Symptom:** the launch prints `BLOCKED (sim infrastructure): no /clock within 60 s of the launch start; the real
   arm driver was not started` and stops; or a scenario fails with "Gazebo did not start: no /clock or no ground truth".
-- **Likely cause:** the Gazebo server or its bridge did not come up. In the device profiles this is a known
-  intermittent start-up defect ([openamr-upperbody-sw issue 135](https://github.com/openAMRobot/openamr-upperbody-sw/issues/135)):
-  two tries of one qualification leg ended this way and the third passed. A leftover process of an earlier launch can
-  also cause it.
+- **Likely cause:** either Gazebo did not come up, or it started and then stopped stepping. The second case is a
+  known intermittent start-up defect ([openamr-upperbody-sw issue 135](https://github.com/openAMRobot/openamr-upperbody-sw/issues/135)):
+  the simulator publishes a few milliseconds of `/clock` and freezes, so a check that starts later sees no message.
+  Its cause is not known. It happened in 2 of 14 mission start-ups during qualification. A leftover process of an
+  earlier launch can also cause a missing clock.
 - **Check:**
 
     ```bash
     ros2 topic info /clock -v
     ```
 
-    A publisher count of 0 confirms it. Then look for a simulator left from an earlier launch:
+    A publisher count of 0 means Gazebo or the bridge is not up. A publisher with no new messages
+    (`ros2 topic echo /clock --once` does not return) means the simulation froze. Then look for a simulator left from an earlier launch:
 
     ```bash
     pgrep -af "gz sim"
