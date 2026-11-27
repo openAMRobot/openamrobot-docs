@@ -163,6 +163,12 @@ limit late participants did not match in the project's DDS benchmark. All Build 
 A build that finishes is not yet a working installation. Start the twin and check it as in the
 [quick start](quick-start.md#4-check-that-it-is-ready).
 
+!!! note "Arms and grippers in the `fast` profile"
+    For any arm or gripper motion in `profile:=fast`, add `physics_engine:=gz-physics-bullet-featherstone-plugin` to the
+    launch. With the default engine an arm joint resting on its lower limit can stay there while its controller reports
+    success (upperbody issue 126). Drive with the default engine; with Bullet Featherstone the base does not turn. The
+    demonstrations page gives both launches.
+
 ## What was tested
 
 **On the release pair:** the clean install passed in both environments, first attempt, on the head of

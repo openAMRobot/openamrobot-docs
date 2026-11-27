@@ -47,7 +47,7 @@ Supported profile, six repositories:
 
 | Repository | Commit | Branch or source |
 |---|---|---|
-| [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/tree/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac) | `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac` | head of pull request 146; moves to `release/2.0.0-rc.1` after the code-owner review |
+| [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw/tree/6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac) | `6687f65b8bd03f83ef6c38a7ddaf47eb3bfd18ac` | `release/2.0.0-rc.1` (head since 27 November). `main` is not the candidate |
 | [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw/tree/2ac40702deaf3533f9612a1e05d1ea9bb41b996c) | `2ac40702deaf3533f9612a1e05d1ea9bb41b996c` | `release/2.0.0-rc.1` (head since 26 November). `main` is not the candidate |
 | [openamrobot-interfaces](https://github.com/openAMRobot/openamrobot-interfaces/tree/50ed777be7990edbd3465f33fd97a158e7e3b88b) | `50ed777be7990edbd3465f33fd97a158e7e3b88b` | |
 | [enactic/openarm_description](https://github.com/enactic/openarm_description/tree/14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831) | `14ff67b638ff1c738a1b9a6be8aaa5ce5ed2c831` | upstream, Apache-2.0 |
