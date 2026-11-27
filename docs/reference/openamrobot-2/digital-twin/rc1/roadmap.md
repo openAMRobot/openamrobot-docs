@@ -51,7 +51,7 @@ Solid: defined by issues today. Dotted: proposed. Work on the later stages can s
 | Fast DDS alignment failure ([platform 197](https://github.com/openAMRobot/openamr-platform-sw/issues/197)) | **Tracked** |
 | RViz defects ([upperbody 143](https://github.com/openAMRobot/openamr-upperbody-sw/issues/143)) | **Tracked** |
 | A mission run that plans from the map estimate, not from simulation ground truth | **Proposed** |
-| An effective seed and a stable model hash, so that two runs can be compared | **Proposed** |
+| A seed for Gazebo and a stable model hash, so that two runs can be compared | **Proposed** |
 | Clean exit of `move_group` and the bridge at shutdown | **Proposed** |
 | A judged limit for the yaw difference between odometry and ground truth | **Proposed** |
 

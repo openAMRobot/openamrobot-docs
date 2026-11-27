@@ -100,7 +100,7 @@ Read with the table:
   ([upperbody issue 136](https://github.com/openAMRobot/openamr-upperbody-sw/issues/136)).
 - **Speed.** Mean real-time factor of the mission runs was 0.13 to 0.18.
 - **Shutdown.** `move_group` and `parameter_bridge` can exit with code -11 at shutdown; results are complete before.
-- **Repeatability.** No effective seed is set and the model hash printed per launch differs at identical pins. Two
+- **Repeatability.** The mission seeds Python random and the ROS domain of the test, and the gate checks that seed; Gazebo gets no seed, and the model hash printed per launch differs at identical pins. Two
   runs are not guaranteed identical.
 - **Screen check.** One contributor ran the previous candidate on a real screen under WSL2: installation, Gazebo,
   RViz and the drive scenario worked ([upperbody issue 143](https://github.com/openAMRobot/openamr-upperbody-sw/issues/143)).

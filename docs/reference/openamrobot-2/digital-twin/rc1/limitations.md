@@ -46,7 +46,7 @@ These are not defects. They are what rc.1 does not contain.
 | [platform 198](https://github.com/openAMRobot/openamr-platform-sw/issues/198) | One protocol test can fail on a slow runner | Hosted CI | A first attempt fails, the repeat passes; both are reported | None | Low | Make the test independent of wall time |
 | [upperbody 143](https://github.com/openAMRobot/openamr-upperbody-sw/issues/143) | RViz: ground truth display off by default, an error at shutdown, the configuration expects Nav2 and MoveIt 2. Check on a real screen is in progress | `rviz:=true` | See [RViz guide](rviz.md) | None; the ground truth display reports a frame error when enabled | Low | Result of the screen check |
 | Real-time factor | The whole robot runs well below real time on hosted runners (mission mean 0.13 to 0.18) | `firmware_sil` with Nav2 and MoveIt 2 | Long runs; timeouts tuned for simulation time | Use `fast` for interactive work | Low | Performance work, good contribution, see [Contribute](contributing.md) |
-| Run identity | The mission workflow sets a seed that the legs report as not set, and the model hash printed per launch differs at identical pins | Mission evidence | Two runs are not guaranteed identical | Compare by pins and results | Low | After rc.1 |
+| Run identity | The mission seeds Python random and the ROS domain of the test (`BASELINE1_SEED`, checked by the mission gate), but Gazebo is started without a seed, and the model hash printed per launch differs at identical pins | Mission evidence | Two runs are not guaranteed identical | Compare by pins and results | Low | After rc.1 |
 
 ## Model fidelity
 
