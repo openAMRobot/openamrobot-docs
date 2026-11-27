@@ -1,48 +1,63 @@
 ---
-title: Overview
+title: openamrobot-comm overview
+description: What the openamrobot-comm repository is for, what it contains today, and where to look for communication contracts in the meantime.
 ---
 
-<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Under development</span><h1>Overview</h1><p>Provide the learning-layer reference for overview and point to its owning repository.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
+<section class="oamr-hero oamr-hero--compact"><div><span class="oamr-status oamr-status--planned">Planned</span><h1>Communication contracts (planned)</h1><p>The repository is reserved for protocols, bridges and schemas. It contains no code or definitions yet.</p></div><img src="https://avatars.githubusercontent.com/u/175850144?v=4" alt="OpenAMRobot logo"></section>
 
-!!! info "Documentation framework"
-    This page is part of the approved OpenAMRobot knowledge architecture. It is intentionally published before full content is complete so contributors can fill it consistently. Do not treat unfinished guidance as a validated build or deployment instruction.
+## For
 
-## What this page should contain
+Developers and integrators who are looking for an OpenAMRobot communication protocol, API or schema, and want to know whether [`openamrobot-comm`](https://github.com/openAMRobot/openamrobot-comm) has it.
 
-- **Audience and outcome:** who uses this page and what verified state they should reach.
-- **Prerequisites:** required skills, tools, hardware, software, configuration and safety conditions.
-- **Concept or procedure:** concise explanation followed by ordered, reproducible steps where applicable.
-- **Verification:** observable output, measurement, test or acceptance criterion.
-- **Troubleshooting:** likely failures, evidence to collect and safe recovery actions.
-- **Next step:** one clear continuation in the ownership or development path.
+**When you finish:** you will know that it does not have one yet, what it is meant to hold, and where to look instead.
 
-## Content template
+**Applies to:** the repository `main` at `73fa694`, checked on 22 November 2026. The README states the status as **Planned, no code yet**. The repository is authoritative. If it changes, this page is out of date.
 
-| Field | To complete |
+## What it is for
+
+The README says the repository will define communication patterns and integration contracts between OpenAMRobot subsystems. The areas it names are:
+
+- UI to robot communication and ROS 2 bridge definitions;
+- REST API conventions and WebSocket event streams;
+- MQTT topics and serial communication conventions;
+- cloud or fleet-management bridges;
+- telemetry and command schemas, and interoperability documentation.
+
+These are plans, not features. The README says that nothing there "is stable enough to depend on".
+
+## What it contains today
+
+The repository has a directory layout and no content in it:
+
+| Area | State |
 | --- | --- |
-| For | Name one primary reader: operator, builder, integrator or developer |
-| Before you start | List exact prerequisites or state “nothing” |
-| When you finish | Describe a measurable outcome |
-| Capability status | Stable, beta, experimental, planned, community or partner-supported |
-| Applies to | Release, hardware revision and configuration |
-| Safety | Hazards, limits, stop conditions and required supervision |
-| Verification | What the reader should see, hear, measure or test |
+| `protocols/` (`rest`, `websocket`, `mqtt`, `serial`, `ros2_bridge`) | Empty directories. |
+| `middleware/` (`ros2`, `ui_bridge`, `cloud_bridge`, `fleet_management`) | Empty directories. |
+| `schemas/` (`json`, `yaml`), `examples/`, `tools/`, `tests/`, `docs/` | Empty directories or placeholders. |
 
-### Procedure or explanation
+The README calls the layout "scaffolding". No protocol, schema or bridge is defined, so there is no version, topic name, port or schema to document here. Please do not infer one from the directory names.
 
-1. Establish the starting state.
-2. Complete one action or concept per subsection.
-3. Record commands, parameters, screenshots or measurements where useful.
-4. Verify the result before continuing.
+## Where to look instead
 
-### If it did not work
+The README sets these boundaries:
 
-Document symptoms separately from causes. Include diagnostic evidence and a safe rollback or escalation path.
+| You need | Look in |
+| --- | --- |
+| Shared ROS 2 messages, services and actions | [`openamrobot-interfaces`](https://github.com/openAMRobot/openamrobot-interfaces). See the [interface reference](../openamrobot-interfaces/reference.md). |
+| ROS 2 package implementations | [`openamr-platform-sw`](https://github.com/openAMRobot/openamr-platform-sw) |
+| Embedded firmware implementations | [`openamr-platform-fw`](https://github.com/openAMRobot/openamr-platform-fw) |
+| The user interface implementation | [`openamrobot-ui`](https://github.com/openAMRobot/openamrobot-ui) |
 
-## Owning OpenAMRobot source
+For the ecosystem-level view of how these pieces connect, read [Communication](../communication.md). It explains the ownership boundary and what to record when a new communication mechanism is added.
 
-- [openamrobot-comm](https://github.com/openAMRobot/openamrobot-comm) – canonical source, versions, implementation and issue history.
+## Design principles the README states
 
-## Contribution note
+Communication interfaces should be documented, versioned, secure by design, transport-aware, reusable, testable, compatible with simulation and real hardware, and suitable for future fleet and cloud integration. These are goals for future work.
 
-Replace this framework with tested project-specific content through the normal [contribution workflow](https://github.com/openAMRobot/openamrobot-docs/blob/main/CONTRIBUTING.md). Keep exact parameters and contracts synchronized with the owning repository.
+## Safety and limits
+
+Nothing in this repository is a communication contract or a safety function today. Do not build an integration against a protocol that is not published. When a contract is added, check its version, security model and failure behaviour in the repository before use.
+
+## Next step
+
+Follow the work in the [repository](https://github.com/openAMRobot/openamrobot-comm) and its issues. To contribute a contract, use the project's contribution workflow and the interface change process.
