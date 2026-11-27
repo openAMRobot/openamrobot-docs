@@ -26,14 +26,14 @@ that records the exact commits.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
-git -C openamrobot-manifest checkout c567f178a56c9e7c739617e2350e17ba125a5283
+git -C openamrobot-manifest checkout d36d0f41226e999d5dcf266b0a777fbc8f9ca776
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
 !!! warning "Pre-publication procedure"
-    The release is not published yet. The line `git checkout c567f17...` selects the pre-publication commit of
+    The release is not published yet. The line `git checkout d36d0f4...` selects the pre-publication commit of
     openamrobot-manifest that pins the release pair: openamr-platform-sw `2ac4070` and openamr-upperbody-sw `6687f65`
-    ([manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23)). Without that line
+    ([manifest pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26)). Without that line
     you get `main`, which has neither the script nor the profile. After publication this line is replaced by the
     release tag, and this note is removed. Do not use an older commit of the pins branch: it installs the previous
     candidate, without the odometry calibration.
@@ -177,7 +177,7 @@ A build that finishes is not yet a working installation. Start the twin and chec
 commit with the identical content ([run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217)).
 Each environment ran the script twice on a fresh hosted runner, started the `fast` profile headless, checked the clock,
 the robot description and TF, ran the drive and the lift demonstration, ended the launch with one interrupt, started a
-second launch and ran the grasp demonstration (left arm and gripper). Its current head `c567f17` adds only a hardware documentation pin outside the installed profile; the clean install is repeated on it. The pull request is not merged yet; at
+second launch and ran the grasp demonstration (left arm and gripper). Pull request 23 is merged; [manifest pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26), head `d36d0f4`, adds only a hardware documentation pin outside the installed profile, and the clean install is repeated on it. It is not merged yet; at
 publication the checkout line becomes the release tag.
 
 **On the previous candidate** (same script, same demonstration sequence, pins `1ab45a6` and `ddd20ab`):
