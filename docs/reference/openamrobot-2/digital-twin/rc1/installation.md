@@ -26,12 +26,12 @@ that records the exact commits.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
-git -C openamrobot-manifest checkout 442241a2428247c5927a944f451355bb7373b4a0
+git -C openamrobot-manifest checkout c567f178a56c9e7c739617e2350e17ba125a5283
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
 !!! warning "Pre-publication procedure"
-    The release is not published yet. The line `git checkout 442241a...` selects the pre-publication commit of
+    The release is not published yet. The line `git checkout c567f17...` selects the pre-publication commit of
     openamrobot-manifest that pins the release pair: openamr-platform-sw `2ac4070` and openamr-upperbody-sw `6687f65`
     ([manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23)). Without that line
     you get `main`, which has neither the script nor the profile. After publication this line is replaced by the
@@ -171,13 +171,13 @@ A build that finishes is not yet a working installation. Start the twin and chec
 
 ## What was tested
 
-**On the release pair:** the clean install passed in both environments, first attempt, on the head of
-[manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), commit `442241a`
+**On the release pair:** the clean install passed in both environments, first attempt, on commit `442241a` of
+[manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23)
 ([run 45871626093](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45871626093)), and before that on a
 commit with the identical content ([run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217)).
 Each environment ran the script twice on a fresh hosted runner, started the `fast` profile headless, checked the clock,
 the robot description and TF, ran the drive and the lift demonstration, ended the launch with one interrupt, started a
-second launch and ran the grasp demonstration (left arm and gripper). The pull request is not merged yet; at
+second launch and ran the grasp demonstration (left arm and gripper). Its current head `c567f17` adds only a hardware documentation pin outside the installed profile; the clean install is repeated on it. The pull request is not merged yet; at
 publication the checkout line becomes the release tag.
 
 **On the previous candidate** (same script, same demonstration sequence, pins `1ab45a6` and `ddd20ab`):

@@ -61,7 +61,7 @@ Snapshots that are in the release inventory but outside the supported profile:
 | openamr-platform-hw | `33941236db5fc2e651bf44dce97203f750a8f15e` | hardware design snapshot. Not built, not validated by the twin |
 | openamrobot-ui | `2cf917950adef411bbdc54381865ea137c7b2e26` | operator UI snapshot. Not installed by the Digital Twin profile |
 
-The manifest commit that carries these pins is `442241a`, the head of [manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), not merged yet.
+The manifest commit that carries these pins is `c567f17`, the head of [manifest pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), not merged yet.
 
 ## Qualification summary
 
@@ -80,7 +80,7 @@ independent re-read of the original logs confirmed the table. Simulation evidenc
 | Platform SIL protocol tests | 209 passed, 3 expected failures (platform issue 159) | [45826145729](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826145729) |
 | Platform description, navigation status, drivers | passed | [45826150907](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826150907), [45826156811](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826156811), [45826162821](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826162821) |
 | Platform station alignment | required jobs passed; the Fast DDS job failed (not supported, platform issue 197) | [45826167431](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826167431) |
-| Clean install of the supported profile on these pins | 2 of 2 environments: drive, lift, shutdown, relaunch, left-arm grasp. On manifest commit `442241a`, in review | [run 45871626093](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45871626093) |
+| Clean install of the supported profile on these pins | 2 of 2 environments: drive, lift, shutdown, relaunch, left-arm grasp. On manifest commit `442241a`; repeated on the current head `c567f17`, which adds only a hardware documentation pin | [run 45871626093](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45871626093) |
 
 Terms: a *dispatch* is one start of the mission workflow; it runs two *legs* (two complete missions) and a verdict.
 The *model tests* a6 and a7 check the combined robot model, a6 without a simulator and a7 in Gazebo.
