@@ -177,7 +177,7 @@ A build that finishes is not yet a working installation. Start the twin and chec
 commit with the identical content ([run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217)).
 Each environment ran the script twice on a fresh hosted runner, started the `fast` profile headless, checked the clock,
 the robot description and TF, ran the drive and the lift demonstration, ended the launch with one interrupt, started a
-second launch and ran the grasp demonstration (left arm and gripper). Pull request 23 is merged; [manifest pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26), head `d36d0f4`, adds only a hardware documentation pin outside the installed profile, and the clean install is repeated on it. It is not merged yet; at
+second launch and ran the grasp demonstration (left arm and gripper). Pull request 23 is merged; [manifest pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26), head `d36d0f4`, adds only a hardware documentation pin. The installed profile is byte-identical, so that clean install applies to it; the workflow does not run for a change outside the profile. It is not merged yet; at
 publication the checkout line becomes the release tag.
 
 **On the previous candidate** (same script, same demonstration sequence, pins `1ab45a6` and `ddd20ab`):
