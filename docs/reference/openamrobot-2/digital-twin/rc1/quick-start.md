@@ -37,7 +37,7 @@ the profile the clean-install check in CI starts.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
-git -C openamrobot-manifest checkout d36d0f41226e999d5dcf266b0a777fbc8f9ca776
+git -C openamrobot-manifest checkout 24e903d951ea404d3fd8d7ce04353673382de2e4
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
@@ -65,7 +65,7 @@ Leave Terminal 1 running.
     With `profile:=fast` and the default engine, run `scn01_drive` and nothing with the arms. `scn03_arms_reach`
     fails in this launch with `left_park_joints_not_moved`, and the grippers do not move. That is a known limit of the
     physics engine in this profile, not a fault of your installation. For arms and grippers, stop this launch and
-    start the one in [Grasp](demonstrations.md#4-grasp), which selects the engine the left-arm grasp is qualified with. No other arm motion is qualified in `fast`.
+    start the one in [Grasp](demonstrations.md#4-grasp). It adds `physics_engine:=gz-physics-bullet-featherstone-plugin`, the engine the left-arm grasp is qualified with. No other arm motion is qualified in `fast`.
 
 ### What you should see
 

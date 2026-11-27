@@ -26,17 +26,16 @@ that records the exact commits.
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/openAMRobot/openamrobot-manifest.git
-git -C openamrobot-manifest checkout d36d0f41226e999d5dcf266b0a777fbc8f9ca776
+git -C openamrobot-manifest checkout 24e903d951ea404d3fd8d7ce04353673382de2e4
 bash openamrobot-manifest/tools/bootstrap_digital_twin.sh "$HOME/oamr_dt_ws"
 ```
 
 !!! warning "Pre-publication procedure"
-    The release is not published yet. The line `git checkout d36d0f4...` selects the pre-publication commit of
-    openamrobot-manifest that pins the release pair: openamr-platform-sw `2ac4070` and openamr-upperbody-sw `6687f65`
-    ([manifest pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26)). Without that line
-    you get `main`, which has neither the script nor the profile. After publication this line is replaced by the
-    release tag, and this note is removed. Do not use an older commit of the pins branch: it installs the previous
-    candidate, without the odometry calibration.
+    The release is not published yet. The line `git checkout 24e903d...` selects the commit of openamrobot-manifest
+    that pins the release pair, openamr-platform-sw `2ac4070` and openamr-upperbody-sw `6687f65`. It is the head of
+    the manifest's `main` branch since 27 November ([pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26)).
+    Keep the exact commit rather than `main`, so that a later change to `main` cannot change what you install. After
+    publication this line is replaced by the release tag, and this note is removed.
 
 The script takes two optional arguments: the workspace (default `~/oamr_dt_ws`) and the profile file (default
 `releases/v2.0.0-rc.1-digital-twin.repos` beside the script). It asks for the `sudo` password for `apt`. Every step
@@ -177,7 +176,7 @@ A build that finishes is not yet a working installation. Start the twin and chec
 commit with the identical content ([run 45855870217](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45855870217)).
 Each environment ran the script twice on a fresh hosted runner, started the `fast` profile headless, checked the clock,
 the robot description and TF, ran the drive and the lift demonstration, ended the launch with one interrupt, started a
-second launch and ran the grasp demonstration (left arm and gripper). Pull request 23 is merged; [manifest pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26), head `d36d0f4`, adds only a hardware documentation pin. The installed profile is byte-identical, so that clean install applies to it; the workflow does not run for a change outside the profile. It is not merged yet; at
+second launch and ran the grasp demonstration (left arm and gripper). Pull request 23 is merged, and [pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26), merged as `24e903d`, added only a hardware documentation pin. The installed profile is byte-identical, so that clean install applies to it; the workflow does not run for a change outside the profile. Manifest `main` is at
 publication the checkout line becomes the release tag.
 
 **On the previous candidate** (same script, same demonstration sequence, pins `1ab45a6` and `ddd20ab`):
