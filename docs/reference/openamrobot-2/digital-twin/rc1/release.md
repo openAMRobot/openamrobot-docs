@@ -15,10 +15,18 @@ runs linked below for the results.
 
 !!! note "Not yet published"
     As of 28 November 2026 the candidate commits are frozen. The release metadata is in
-    [openamrobot-release pull request 21](https://github.com/openAMRobot/openamrobot-release/pull/21). The tag
-    `v2.0.0-rc.1` and the release page are not published, so this page links no archive download yet. Valid after
-    publication: the tag, its release page and the archive `OpenAMRobot-v2.0.0-rc.1-source.zip` (SHA-256
-    `27ac1ff3ccee2711a8f6ea3233cd8d2f807229fcd343c717229c77c257ec7a7a`, 312303741 bytes, 3058 files).
+    [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) (final packaging in
+    [pull request 22](https://github.com/openAMRobot/openamrobot-release/pull/22)). The tag `v2.0.0-rc.1` and the
+    release page are not published, so this page links no archive download yet. Valid after publication: the tag, its
+    release page and the archive `OpenAMRobot-v2.0.0-rc.1-source.zip` (SHA-256
+    `a434ca37b0b0e17c9717cb29ddb06a853a0c5d491788f5bb8608d63c30a3750d`, 302515293 bytes, 3057 files).
+
+!!! note "Mechanical CAD"
+    The source archive leaves out the legacy SolidWorks archive of the mobile platform
+    (`mechanical/cad/SW17_3D_model/MMP.00.00.00.000_Multipurpose_mobile_platform.zip` in openamr-platform-hw): 74 of
+    its 88 members cannot be decompressed. It stays in the hardware repository. Updated mechanical CAD for 2.0 is
+    distributed separately and is not part of rc.1. The BOM, the battery guide and the STEP full assembly are in the
+    archive. None of this affects the Digital Twin installation.
 
 !!! warning "Simulation evidence only"
     Every result on this page comes from simulation on hosted CI runners. It is development evidence. It is not

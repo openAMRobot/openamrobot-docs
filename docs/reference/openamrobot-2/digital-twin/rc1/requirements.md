@@ -43,7 +43,7 @@ lift controller emulator faults below a factor of 0.55.
 
 | Item | State |
 |---|---|
-| Minimum CPU, memory and disk | not measured. What is known: the automated tests ran on hosted machines with 4 processors (their memory was not recorded); one report on a machine with 6 cores and 7.4 GiB of memory worked but ran slowly (see below); the complete source archive is 312 MB. Disk use of the installed workspace and the download size of the dependencies have not been measured yet |
+| Minimum CPU, memory and disk | not measured. What is known: the automated tests ran on hosted machines with 4 processors (their memory was not recorded); one report on a machine with 6 cores and 7.4 GiB of memory worked but ran slowly (see below); the complete source archive is about 303 MB. Disk use of the installed workspace and the download size of the dependencies have not been measured yet |
 | Graphics card for a desktop session with the Gazebo window and RViz | not measured. CI ran headless without one |
 | arm64 | builds were tried on a scratch branch only. Not supported in rc.1 |
 | NVIDIA Jetson | not supported in rc.1 |
