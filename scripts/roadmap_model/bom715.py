@@ -15,6 +15,7 @@ added, changed, removed and overridden records. JSON written into the page is es
 Usage: python3 scripts/roadmap_model/bom715.py <BOM Issue 7.14.xlsx> <BOM Issue 7.15.xlsx> [docs/assets/roadmap/hardware.html]
 """
 import json
+import hashlib
 import re
 import sys
 
@@ -30,6 +31,15 @@ for _n in ("Anushka", "Pragati", "Majd", "Karthikeyan", "Satya", "Anand"):
     NAMES[_n] = "the owner"
 
 
+# Partner names that must never be published, as SHA-256 of the lower-case word, so this file does not publish them.
+PRIVATE_TERM_HASHES = frozenset({"825f8c148027f1a6e404fc8912d13a17186212f3f648b95b27b27bca385a584b"})
+
+
+def _private(text):
+    return any(hashlib.sha256(w.lower().encode()).hexdigest() in PRIVATE_TERM_HASHES
+               for w in re.findall(r"[A-Za-z][A-Za-z0-9_-]*", text))
+
+
 def public(t):
     """Workbook text made fit for the public page: prices, seller names, first names and partner names removed."""
     t = re.sub(r",?\s*(?:about|approx\.?|ca\.?)?\s*\d[\d,.]*\s?(?:EUR|USD|GBP)\b", "", t)
@@ -39,7 +49,8 @@ def public(t):
     t = re.sub(r"\b(?:%s)\b" % SELLERS, "a distributor", t)
     for k, v in NAMES.items():
         t = re.sub(r"\b%s\b" % k, v, t)
-    t = re.sub(r"[^.;]*\b(?:Enactic|Reazon|PAIA)\b[^.;]*[.;]?\s*", "", t, flags=re.I)
+    t = re.sub(r"[^.;]*\b(?:Enactic|Reazon)\b[^.;]*[.;]?\s*", "", t, flags=re.I)
+    t = "".join(c for c in re.findall(r"[^.;]*[.;]?\s*", t) if not _private(c))
     t = re.sub(r"\(\s*\)", "", t)
     return re.sub(r"\s{2,}", " ", t).strip(" ;,")
 
