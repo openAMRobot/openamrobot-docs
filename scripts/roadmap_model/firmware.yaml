@@ -1,0 +1,23 @@
+# Firmware and placeholder entries listed under the architecture diagram, read by packages.py.
+# The path must exist on the repository main; packages.py records the head and the rc.1 pin.
+entries:
+  - name: Base firmware, Teensy 4.0 (v0.0.1 rig)
+    repo: openamr-platform-fw
+    path: boards/teensy_4_0
+    state: Merged; runs on the v0.0.1 rig (16 Nov software session)
+    evidence: "v0.0.1 rig; deployed build pin in platform-fw #33 (open)"
+  - name: Base firmware, STM32H723 (Build 1)
+    repo: openamr-platform-fw
+    path: boards/stm32
+    state: "In review: #37 core, #38, #39, #42 CAN emulators, #36 HIL, #43 bench; main holds a placeholder"
+    evidence: CAN emulators in the PRs; not flashed; bench week 23 to 27 Nov
+  - name: CTL-017 lift firmware (Build 1)
+    repo: openamr-upperbody-fw
+    path: README.md
+    state: "In review: #15, #16; main is README only"
+    evidence: Virtual-CAN simulator in the PRs; not flashed
+  - name: openamrobot_control
+    repo: openamr-platform-sw
+    path: ros2/src/openamrobot_control
+    state: Placeholder (README only); base ros2_control not implemented
+    evidence: None

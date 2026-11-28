@@ -1,0 +1,20 @@
+# Reports when the package-card snapshot (docs/assets/roadmap/model/packages.json) no longer matches
+# the heads of main, the rc.1 pins or the package set upstream. Informational: not a required check.
+# A red run means "regenerate with scripts/roadmap_model/packages.py and open a PR", nothing more.
+name: package-drift
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python3 scripts/roadmap_model/packages.py --check
