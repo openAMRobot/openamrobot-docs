@@ -1,51 +1,53 @@
 ---
-title: OpenAMRobot 2.0 rc.1 Digital Twin
+title: Start here
 tags: [developer, integrator]
 status: experimental
-description: Entry point for the OpenAMRobot 2.0 rc.1 Digital Twin release candidate, what it is, who it is for, what is supported and where to begin.
+description: Start here for the OpenAMRobot 2.0 Digital Twin rc.1, what it is, who it is for, what it needs, how to run it and where to go next.
 ---
 
-# OpenAMRobot 2.0 rc.1 Digital Twin
+# Start here: OpenAMRobot 2.0 Digital Twin rc.1
 
-**For:** robotics engineers who want to install and run the OpenAMRobot 2.0 simulation on their own machine and judge
-what it can do today.
-
-**Canonical source:** [openamrobot-manifest](https://github.com/openAMRobot/openamrobot-manifest) for the installation,
-[openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw) for the scene, the launch file and the
-scenarios, [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) for the mobile base, navigation
-and the base software in the loop. Commands on these pages are copied from those repositories at the candidate
-commits; if they differ, the repository wins.
+OpenAMRobot is an open-source Embodied AI robot platform: a mobile base, a lift column and two arms, with ROS 2
+software, firmware and open hardware designs. Grocery automation is the first commercial use case. **rc.1 is the
+Digital Twin release candidate of OpenAMRobot 2.0:** the whole robot runs in simulation on your machine. No hardware
+is needed, and none is covered.
 
 !!! warning "Simulation only"
-    rc.1 is a Digital Twin release candidate. Every result quoted in this section is development evidence from
-    simulation. None of it is physical, electrical or safety acceptance, and no part of the twin is a safety function.
+    Every result in this section is development evidence from simulation. None of it is physical, electrical or
+    safety acceptance, and no part of the twin is a safety function.
 
-!!! note "Release candidate, not yet published"
-    Status as of 26 November 2026: the candidate commits are frozen, the release is not tagged and not published. The
-    planned tag is `v2.0.0-rc.1` in [openamrobot-release](https://github.com/openAMRobot/openamrobot-release). Where a
-    link or ref on these pages does not exist yet, a line marked "valid after publication" says so.
+!!! note "Release status"
+    As of 28 November 2026 the candidate commits are frozen and the release metadata is merged in
+    [openamrobot-release](https://github.com/openAMRobot/openamrobot-release). The tag `v2.0.0-rc.1` and the release
+    page are not published yet. Lines marked "valid after publication" refer to them.
 
-## What OpenAMRobot is
+## In one minute
 
-OpenAMRobot is a general-purpose open-source mobile manipulation platform: a differential-drive mobile base, a lift
-column and two arms, with ROS 2 software, firmware and open hardware designs. Grocery order picking is the first
-business case. It is not the limit of the platform: the same base, lift and arms are meant for other tasks, labs and
-integrations.
+| Question | Answer |
+|---|---|
+| What runs | Mobile base, 350 mm lift and two [OpenArm 2.0](https://github.com/enactic/openarm) arms in one Gazebo Harmonic world, with Nav2, MoveIt 2 and ros2_control, optionally with every device emulated on virtual CAN |
+| What you can do | Drive the base, move the lift, run a qualified left-arm grasp, run 17 scene tests and the Baseline 1 mission, a sequential whole-robot mission (drive to a station, raise the lift, reach, grasp, retreat) |
+| Who it is for | Developers, integrators, labs and contributors who want to work on navigation, manipulation or integration before hardware exists |
+| What it needs | Ubuntu 24.04 on x86_64, `sudo`, network access. ROS 2 Jazzy and the pinned Gazebo packages are installed by the script. Minimum CPU, memory and disk are not measured: see [System requirements](requirements.md) |
+| What is not in rc.1 | Operator UI, camera-driven perception (object poses come from simulator ground truth), cancel and resume, docking, Isaac Sim, MuJoCo, LeRobot and AI policies, Jetson, firmware on 2.0 hardware, physical commissioning |
 
-## What 2.0 rc.1 is
+## Run it
 
-OpenAMRobot 2.0 adds the 350 mm lift and two [OpenArm 2.0](https://github.com/enactic/openarm) arms to the mobile
-base. rc.1 is the first release candidate of that generation, and it is a Digital Twin release: the whole robot runs
-in one Gazebo Harmonic world with Nav2 and MoveIt 2 on top, and optionally with every device emulated on a virtual
-CAN bus. No physical robot is needed and none is covered.
+1. **Install and launch** with the [Quick start](quick-start.md): one clone, one checkout, one script, one launch
+   command.
+2. **See the first result:** the drive scenario `scn01_drive` ends with PASS and a JSON log, then the lift scenario.
+3. **Go further** with the [Demonstrations](demonstrations.md): the grasp (it needs the Bullet Featherstone physics
+   engine) and the Baseline 1 mission.
 
-## Who it is for
+If something goes wrong, see [Troubleshooting](troubleshooting.md). [Installation](installation.md) explains each
+install step and the manual equivalent of the script.
 
-- Developers who want to work on navigation, manipulation or integration software before hardware exists.
-- Integrators and labs who want to see how the base, lift and arms work together and what the interfaces look like.
-- Contributors who want a reproducible workspace with pinned commits.
+## Help, contributing and what comes next
 
-It is not for operators, and it is not a deployment or commissioning guide.
+- Questions and reports: open an issue in the repository that owns the part (see [Contribute](contributing.md)), or
+  ask in [GitHub Discussions](https://github.com/orgs/openAMRobot/discussions).
+- Known problems and their workarounds: [Known issues and limitations](limitations.md).
+- What rc.2 and the following stages are meant to fix: [Roadmap and rc.2 plan (proposed)](roadmap.md).
 
 ## What is supported
 
@@ -56,17 +58,18 @@ It is not for operators, and it is not a deployment or commissioning guide.
 | The Build 1 scene: mobile base, lift, two arms and grippers in one Gazebo world | Isaac Sim, MuJoCo |
 | Nav2 navigation on a map generated from the scene, MoveIt 2 planning for both arms | Cancel and resume of a navigation goal, docking |
 | Device emulators on virtual CAN with the unmodified upstream arm driver (profile `firmware_sil`) | Firmware on 2.0 hardware, Jetson, arm64 |
-| Scenarios with PASS, FAIL or BLOCKED results, and the Baseline 1 mission (the whole-robot sequence: drive to a station, lift, grasp, retreat) | Operator UI, camera-driven manipulation (object poses come from simulator ground truth), LeRobot and AI policies |
+| Scenarios with PASS, FAIL or BLOCKED results, and the Baseline 1 mission (the whole-robot sequence: drive to a station, lift, grasp, retreat) | Operator UI (see the warning below), camera-driven manipulation (object poses come from simulator ground truth), LeRobot and AI policies |
 | RViz configuration for the scene | Any physical commissioning or safety qualification |
 
 The full list with evidence and limits is the [capability and maturity matrix](capabilities.md).
 
-## Where to begin
-
-1. Check the [system requirements](requirements.md).
-2. Follow the [quick start](quick-start.md): install, launch, verify, run the drive and lift demonstrations, stop.
-3. Read the [user guide](launch.md) for run profiles and launch arguments, the [RViz guide](rviz.md) and the
-   [demonstrations](demonstrations.md).
+!!! danger "Operator UI: isolated simulation only"
+    The operator UI is not supported in rc.1. Its pinned snapshot (`openamrobot-ui` `2cf9179`) starts rosbridge on
+    port 9090 without authentication or authorization. Any client that reaches that port can publish `/cmd_vel` past
+    the command gate, release the stop lock and write Nav2 parameters. A topic allowlist alone is not authentication.
+    If you start the UI, do it only in an isolated simulation environment, never with powered hardware.
+    Tracked in [openamrobot-ui 64](https://github.com/openAMRobot/openamrobot-ui/pull/64) and
+    [openamrobot-ui 71](https://github.com/openAMRobot/openamrobot-ui/issues/71).
 
 ## In this section
 
@@ -81,13 +84,13 @@ The full list with evidence and limits is the [capability and maturity matrix](c
 | [Architecture](architecture.md) | Diagrams of the system and of the simulation runtime |
 | [Capability and maturity](capabilities.md) | One table for every capability, with evidence and limits |
 | [Troubleshooting](troubleshooting.md) | Symptoms, causes, checks and fixes |
-| [Scenario catalog](scenarios.md) | All 17 scene tests and the mission, with acceptance values and status |
+| [Scenario catalog](scenarios.md) | All 17 scene tests (19 results) and the mission, with acceptance values and status |
 | [Architecture diagrams](diagrams.md) | Twelve diagrams: ten drawn from the source, two generated from the running system |
 | [Where the logic runs](execution-map.md) | What is native software, stand-in, emulation or simulation; what firmware runs |
 | [Known issues and limitations](limitations.md) | Scope limits, active issues, workarounds |
 | [Contribute](contributing.md) | How to test a change and where help is useful |
 | [From the twin to hardware (proposed)](hardware-integration.md) | Proposal for the next work stream |
-| [Roadmap after rc.1](roadmap.md) | Stages after this release; what is decided, tracked or proposed |
+| [Roadmap and rc.2 plan (proposed)](roadmap.md) | The rc.2 plan with acceptance criteria, and the stages after it |
 | [Release information](release.md) | Candidate commits, qualification runs, known limitations, licences |
 
 Background on what a digital twin result can and cannot show: [Digital twin](../index.md).

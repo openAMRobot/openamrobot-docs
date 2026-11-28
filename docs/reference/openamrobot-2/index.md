@@ -14,6 +14,9 @@ description: The OpenAMRobot 2.0 development cycle in one place, hardware archit
 !!! warning "Design proposal, not a released robot"
     Every drawing and number in this section is a design proposal awaiting measured inputs. Nothing here is a build instruction, and no safety claim follows from a diagram being published.
 
+!!! tip "Run it: the Digital Twin rc.1"
+    The whole 2.0 robot runs in simulation today: [Start here with the Digital Twin rc.1](digital-twin/rc1/index.md).
+
 ## What OpenAMRobot 2.0 is
 
 OpenAMRobot 2.0 keeps the existing differential-drive mobile platform and adds a lift column carrying two [OpenArm 2.0](https://docs.openarm.dev/) arms, an NVIDIA Jetson Orin NX 8 GB compute module on the reComputer Robotics 104 carrier and an STM32-based base controller. The lift column stands on a two-position base plate and moves the shoulder between 1000 and 1350 mm above the floor.

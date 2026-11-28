@@ -9,6 +9,9 @@ hide:
 
 > **One promise, three doors.** Make Embodied AI unprecedentedly simple for domain experts – from reading and assembly to configuration, training, operation and maintenance.
 
+!!! tip "New: OpenAMRobot 2.0 Digital Twin rc.1"
+    Run the whole OpenAMRobot 2.0 robot in simulation on Ubuntu 24.04: [Start here](reference/openamrobot-2/digital-twin/rc1/index.md).
+
 ## One platform, three doors
 
 <div class="oamr-grid">

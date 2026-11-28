@@ -14,9 +14,11 @@ description: Supported capabilities, known limitations, candidate commits, quali
 runs linked below for the results.
 
 !!! note "Not yet published"
-    As of 26 November 2026 the candidate commits are frozen and the release is neither tagged nor published. The
-    planned tag is `v2.0.0-rc.1` in [openamrobot-release](https://github.com/openAMRobot/openamrobot-release). There is
-    no release archive to download yet; this page links none. Valid after publication: the tag and its release page.
+    As of 28 November 2026 the candidate commits are frozen and the release metadata is merged in
+    [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) (`066aaf4`). The tag `v2.0.0-rc.1` and
+    the release page are not published, so this page links no archive download yet. Valid after publication: the tag,
+    its release page and the archive `OpenAMRobot-v2.0.0-rc.1-source.zip` (SHA-256
+    `e1b6226c29ecddcf3ecc89833cd8f2fa2ad2fd1708e29c1ac5e24e98a13d85c6`, 312147032 bytes).
 
 !!! warning "Simulation evidence only"
     Every result on this page comes from simulation on hosted CI runners. It is development evidence. It is not
@@ -27,7 +29,7 @@ runs linked below for the results.
 In the supported profile (Ubuntu 24.04 on x86_64, ROS 2 Jazzy, Gazebo Harmonic with pinned vendor packages,
 CycloneDDS):
 
-- Installation of six pinned repositories with one script. A clean install on the release pins passed on two clean machines (on the manifest commit that is in review, not merged yet).
+- Installation of six pinned repositories with one script. A clean install on manifest `main` `24e903d` passed on two clean machines ([run 46030163636](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/46030163636)).
 - The Build 1 scene: the combined model of mobile base, 350 mm lift and two OpenArm 2.0 arms in one Gazebo world.
 - Run profiles `fast` and `fine` (no devices) and `firmware_sil` and `faults` (device emulators on five virtual CAN
   buses, with the unmodified upstream arm driver).
@@ -35,7 +37,7 @@ CycloneDDS):
 - Scenarios with PASS, FAIL or BLOCKED results, and the Baseline 1 mission in eight phases.
 - An RViz configuration for the scene.
 
-Not supported in rc.1: the operator UI, camera-driven manipulation (object poses come from simulator ground truth),
+Not supported in rc.1: the operator UI (its rosbridge has no authentication; isolated simulation only, see [limitations](limitations.md)), camera-driven manipulation (object poses come from simulator ground truth),
 cancel and resume of a navigation goal, docking, Isaac Sim, MuJoCo, LeRobot and AI policies, Jetson, firmware on 2.0
 hardware, and any physical commissioning or safety qualification.
 

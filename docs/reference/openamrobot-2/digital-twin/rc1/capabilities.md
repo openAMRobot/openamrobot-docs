@@ -12,7 +12,7 @@ description: One table for every capability of OpenAMRobot 2.0 at rc.1, with its
 **Canonical source:** the CI runs and documents of
 [openamr-upperbody-sw](https://github.com/openAMRobot/openamr-upperbody-sw) and
 [openamr-platform-sw](https://github.com/openAMRobot/openamr-platform-sw) at the candidate commits. This page is a
-summary as of 26 November 2026; the repositories are the record.
+summary as of 28 November 2026; the repositories are the record.
 
 !!! warning "Qualified means qualified in simulation"
     "Supported and qualified" on this page means: part of the supported profile and passed by the qualification runs
@@ -63,7 +63,7 @@ the combined robot model, a6 without a simulator and a7 in Gazebo.
 | Hardware abstraction | Implemented but not fully qualified | ros2_control hardware profiles `mock`, `gazebo` and `real` for arms and grippers; the base and, in the device profile, the lift go over virtual CAN without a ros2_control interface | scene tests in the profiles above | no layer called HAL exists; the lift has no real hardware interface | a lift hardware interface and device packages (planned in the upper body repository) |
 | Controller firmware | Under development | no. A host stand-in fills the base controller slot | none in rc.1 | firmware on 2.0 hardware is not supported in rc.1 | firmware on the 2.0 controller |
 | Renode | Experimental | optional: `stm32:=renode_readonly` runs a read-only telemetry image | launch argument and the `openamrobot_sil` package; no rc.1 qualification run uses it | needs a separately built firmware image; a timing test of the platform SIL tests fails on a slow runner (platform-sw issue 198) | timing test independent of wall time ([platform issue 198](https://github.com/openAMRobot/openamr-platform-sw/issues/198)); a Renode run inside the scene tests (proposed) |
-| Operator UI | Under development | no | the UI snapshot is outside the supported profile | not installed by the Digital Twin profile | a run of the UI against the twin's topics, recorded as evidence (proposed; owned by the UI repository) |
+| Operator UI | Under development | no | the UI snapshot is outside the supported profile; its rosbridge has no authentication (ui 64, ui 71): isolated simulation only | not installed by the Digital Twin profile | a run of the UI against the twin's topics, recorded as evidence (proposed; owned by the UI repository) |
 | Computer vision | Experimental | station marker alignment only (Proposed, simulation-only camera); no object detection | used by the strict mission legs | object poses come from ground truth; the marker detection chain for docking is not started | an object detector in place of ground truth |
 | MuJoCo | Under development | no | the scene README cites one MuJoCo comparison of arm servo error; no MuJoCo model or run is part of the candidate profile | not in the supported profile | model generated from the combined Xacro with a parity test ([upperbody issue 58](https://github.com/openAMRobot/openamr-upperbody-sw/issues/58)) |
 | Isaac Sim | Planned | no | none | not running | reproducible import of the combined model ([upperbody issue 15](https://github.com/openAMRobot/openamr-upperbody-sw/issues/15)) |

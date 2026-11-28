@@ -372,7 +372,7 @@ nav:
           - Digital twin:
               - reference/openamrobot-2/digital-twin/index.md
               - 2.0 rc.1 release candidate:
-                  - reference/openamrobot-2/digital-twin/rc1/index.md
+                  - Start here: reference/openamrobot-2/digital-twin/rc1/index.md
                   - System requirements: reference/openamrobot-2/digital-twin/rc1/requirements.md
                   - Installation: reference/openamrobot-2/digital-twin/rc1/installation.md
                   - Quick start: reference/openamrobot-2/digital-twin/rc1/quick-start.md
@@ -387,7 +387,7 @@ nav:
                   - Known issues and limitations: reference/openamrobot-2/digital-twin/rc1/limitations.md
                   - Contribute: reference/openamrobot-2/digital-twin/rc1/contributing.md
                   - From the twin to hardware (proposed): reference/openamrobot-2/digital-twin/rc1/hardware-integration.md
-                  - Roadmap after rc.1: reference/openamrobot-2/digital-twin/rc1/roadmap.md
+                  - Roadmap and rc.2 plan (proposed): reference/openamrobot-2/digital-twin/rc1/roadmap.md
                   - Troubleshooting: reference/openamrobot-2/digital-twin/rc1/troubleshooting.md
                   - Release information: reference/openamrobot-2/digital-twin/rc1/release.md
               - Architecture: reference/openamrobot-2/digital-twin/architecture.md

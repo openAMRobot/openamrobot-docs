@@ -24,8 +24,17 @@ These are not defects. They are what rc.1 does not contain.
 | No camera-driven manipulation | Grasps are predefined, on a known item at a known place |
 | No firmware in the default path | The base controller is a host stand-in; see [Where the logic runs](execution-map.md) |
 | Safety chain not modelled | E-stop, contactors, brakes, motor power removal and charge inhibit are absent |
-| Not included | Operator UI, Isaac Sim, MuJoCo, LeRobot and AI policies, Jetson deployment, physical commissioning |
+| Not included | Operator UI (isolated simulation only, see below), Isaac Sim, MuJoCo, LeRobot and AI policies, Jetson deployment, physical commissioning |
 | One tested platform | Ubuntu 24.04 on x86_64, ROS 2 Jazzy, Gazebo Harmonic, CycloneDDS. Everything else is untested |
+
+
+!!! danger "Operator UI: isolated simulation only"
+    The operator UI is not supported in rc.1. Its pinned snapshot (`openamrobot-ui` `2cf9179`) starts rosbridge on
+    port 9090 without authentication or authorization. Any client that reaches that port can publish `/cmd_vel` past
+    the command gate, release the stop lock and write Nav2 parameters. A topic allowlist alone is not authentication.
+    If you start the UI, do it only in an isolated simulation environment, never with powered hardware.
+    Tracked in [openamrobot-ui 64](https://github.com/openAMRobot/openamrobot-ui/pull/64) and
+    [openamrobot-ui 71](https://github.com/openAMRobot/openamrobot-ui/issues/71).
 
 ## Active issues
 
