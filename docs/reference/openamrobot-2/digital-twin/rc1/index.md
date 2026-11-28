@@ -21,6 +21,35 @@ is needed, and none is covered.
     [openamrobot-release](https://github.com/openAMRobot/openamrobot-release). The tag `v2.0.0-rc.1` and the release
     page are not published yet. Lines marked "valid after publication" refer to them.
 
+
+![Front and side views of the OpenAMRobot 2.0 robot model generated from its robot description](../../../../assets/digital-twin/rc1/model-two-views.png)
+
+*Model geometry at zero joint positions, generated from the robot description. This is not a Gazebo screenshot or a photograph of assembled hardware.*
+
+## Choose your starting point
+
+<div class="grid cards" markdown>
+
+-   **[Run the Digital Twin](quick-start.md)**
+
+    Install the pinned workspace, launch Gazebo and RViz, and run the first drive demonstration.
+
+-   **[Explore demonstrations](demonstrations.md)**
+
+    Try navigation, lift movement and the qualified left-arm grasp. Follow the profile and engine instructions for each demo.
+
+-   **[Explore the robot and architecture](diagrams.md)**
+
+    View the model, runtime ROS 2 graph and engineering diagrams.
+
+-   **[Release information](release.md)**
+
+    Check the supported versions, source archive status, evidence and limitations. The source archive is not needed to install the twin.
+
+</div>
+
+[System requirements](requirements.md) · [RViz guide](rviz.md) · [Troubleshooting](troubleshooting.md) · [Media](../media.md)
+
 ## In one minute
 
 | Question | Answer |
