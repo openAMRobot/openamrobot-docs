@@ -133,3 +133,27 @@ class CommittedPage(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PrivateTermTest(unittest.TestCase):
+    """Partner names are matched by hash, so neither the source nor this test contains them."""
+
+    def test_sentence_with_hashed_term_is_removed(self):
+        import hashlib
+        probe = "Zqxprobe"
+        saved = B.PRIVATE_TERM_HASHES
+        B.PRIVATE_TERM_HASHES = frozenset({hashlib.sha256(probe.lower().encode()).hexdigest()})
+        try:
+            out = B.public("Lift column selected. Quote via %s team; M8 screws." % probe)
+        finally:
+            B.PRIVATE_TERM_HASHES = saved
+        self.assertNotIn(probe, out)
+        self.assertIn("Lift column selected", out)
+
+    def test_source_files_do_not_spell_private_terms(self):
+        root = Path(HERE).parent
+        for p in [root / "check_roadmap.py", root / "roadmap_model" / "bom715.py"]:
+            words = {w.lower() for w in re.findall(r"[A-Za-z][A-Za-z0-9_-]*", p.read_text())}
+            for h in B.PRIVATE_TERM_HASHES:
+                import hashlib
+                self.assertFalse(any(hashlib.sha256(w.encode()).hexdigest() == h for w in words), p)
