@@ -25,6 +25,12 @@ repositories.
     twin: requirements, installation, quick start, demonstrations, capability matrix and release information. The
     pages below explain the plan behind it.
 
+![Front and side views generated from the OpenAMRobot 2.0 robot description](../../../assets/digital-twin/rc1/model-two-views.png)
+
+*Generated model geometry, not a simulator screenshot.*
+
+**[Run your first demo](rc1/quick-start.md)** · [Explore demonstrations](rc1/demonstrations.md) · [See the robot and architecture](rc1/diagrams.md)
+
 ## What we are building
 
 A digital twin here means one description of the robot that every tool reads, plus models of how its hardware behaves,
