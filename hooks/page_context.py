@@ -50,6 +50,7 @@ REPOSITORIES = {
     "reference/openamrobot-manifest/": "openamrobot-manifest",
     "reference/openamrobot-release/": "openamrobot-release",
     "reference/openamrobot-2/": "openamr-platform-hw",
+    "reference/openamrobot-2/digital-twin/rc1/": "openamr-upperbody-sw",
 }
 
 RELATED = {

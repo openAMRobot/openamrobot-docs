@@ -30,6 +30,7 @@ These routes cut across the documentation tree. Use them when you know the outco
 
 <div class="oamr-grid">
 <article class="oamr-card"><h3>I need to assemble a robot</h3><p>Prepare the workspace, identify revision-matched parts, assemble one subsystem at a time and verify the result.</p><p><a href="../build/prepare/">Start the build route →</a></p></article>
+<article class="oamr-card"><h3>I want to run OpenAMRobot 2.0 in simulation</h3><p>Install the 2.0 rc.1 Digital Twin release candidate, launch the whole robot in Gazebo and run the first demonstration. Simulation only.</p><p><a href="../reference/openamrobot-2/digital-twin/rc1/">Start with the rc.1 Digital Twin →</a></p></article>
 <article class="oamr-card"><h3>I need to start the software</h3><p>Choose simulation or hardware, install the supported stack and verify the first launch before changing configuration.</p><p><a href="../build/software/">Start the software route →</a></p></article>
 <article class="oamr-card"><h3>I need to create a map</h3><p>Understand the mapping model, capture the environment and verify that the saved map supports localization.</p><p><a href="../use/mapping/creating-a-map/">Start the mapping route →</a></p></article>
 <article class="oamr-card"><h3>The robot is not moving</h3><p>Collect power, control, lifecycle and diagnostic evidence, then isolate the failing layer.</p><p><a href="../maintain/diagnosis/isolating-a-fault/">Start fault isolation →</a></p></article>

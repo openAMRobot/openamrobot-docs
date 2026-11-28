@@ -20,6 +20,11 @@ repositories.
     model agree with each other. It does not tell you that the robot will behave the same way, and it is never safety
     evidence.
 
+!!! tip "Want to run it? Start with the rc.1 release candidate"
+    The [OpenAMRobot 2.0 rc.1 Digital Twin](rc1/index.md) section is the entry point for installing and running the
+    twin: requirements, installation, quick start, demonstrations, capability matrix and release information. The
+    pages below explain the plan behind it.
+
 ## What we are building
 
 A digital twin here means one description of the robot that every tool reads, plus models of how its hardware behaves,
@@ -68,9 +73,10 @@ Parity between the model and its generated simulator versions has three levels: 
 
 ## In this section
 
-- [Architecture](architecture.md): how the parts connect.
-- [Current status](status.md): what runs today and at which evidence level.
-- [Get the model](get-the-model.md): the model bundle and the Build 1 scene.
+- [2.0 rc.1 release candidate](rc1/index.md): install and run the twin, with what is supported and qualified.
+- [Architecture](architecture.md): the target architecture, how the parts are meant to connect.
+- [Current status](status.md): the status snapshot of 16 to 17 November 2026 and the open reality gaps.
+- [Get the model](get-the-model.md): the model bundle and the combined model from source.
 - [Media](media.md): videos, once a capture passes review.
 
 Related: [Simulation versus reality](../../../customize/simulation/sim-vs-real.md),
