@@ -1323,7 +1323,18 @@ def sensor_pose_errors(snap, verts, upper=None):
 
 
 # ---------------------------------------------------------------- 2 Nov 2026 model checks (section G1)
-PARTNER_TERMS = re.compile(r"\b(?:PAIA|Enactic|Reazon)\b", re.I)
+PARTNER_TERMS = re.compile(r"\b(?:Enactic|Reazon)\b", re.I)
+# Names that must never appear in public files are matched by SHA-256 of the lower-case word, so that the
+# checker itself does not publish them.
+PRIVATE_TERM_HASHES = frozenset({"825f8c148027f1a6e404fc8912d13a17186212f3f648b95b27b27bca385a584b"})
+
+
+def private_term(text):
+    """First word of text whose lower-case SHA-256 is a private term, or None."""
+    for w in re.findall(r"[A-Za-z][A-Za-z0-9_-]*", text):
+        if hashlib.sha256(w.lower().encode()).hexdigest() in PRIVATE_TERM_HASHES:
+            return w
+    return None
 SOURCE_SNAPSHOT = "model/source_snapshot.json"  # written by scripts/roadmap_model/build.py
 
 
@@ -1343,6 +1354,8 @@ def check_model_sources(root, html, err):
         m = PARTNER_TERMS.search(t)
         if m:
             err(p, "names %s (Use Case 1 partner and upstream cooperation are not published)" % m.group(0))
+        if private_term(t):
+            err(p, "names the Use Case 1 partner (not published)")
         if "\u2014" in t:
             err(p, "contains an em dash")
     try:
