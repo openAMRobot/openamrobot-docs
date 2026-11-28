@@ -14,11 +14,11 @@ description: Supported capabilities, known limitations, candidate commits, quali
 runs linked below for the results.
 
 !!! note "Not yet published"
-    As of 28 November 2026 the candidate commits are frozen and the release metadata is merged in
-    [openamrobot-release](https://github.com/openAMRobot/openamrobot-release) (`066aaf4`). The tag `v2.0.0-rc.1` and
-    the release page are not published, so this page links no archive download yet. Valid after publication: the tag,
-    its release page and the archive `OpenAMRobot-v2.0.0-rc.1-source.zip` (SHA-256
-    `e1b6226c29ecddcf3ecc89833cd8f2fa2ad2fd1708e29c1ac5e24e98a13d85c6`, 312147032 bytes).
+    As of 28 November 2026 the candidate commits are frozen. The release metadata is in
+    [openamrobot-release pull request 21](https://github.com/openAMRobot/openamrobot-release/pull/21). The tag
+    `v2.0.0-rc.1` and the release page are not published, so this page links no archive download yet. Valid after
+    publication: the tag, its release page and the archive `OpenAMRobot-v2.0.0-rc.1-source.zip` (SHA-256
+    `27ac1ff3ccee2711a8f6ea3233cd8d2f807229fcd343c717229c77c257ec7a7a`, 312303741 bytes, 3058 files).
 
 !!! warning "Simulation evidence only"
     Every result on this page comes from simulation on hosted CI runners. It is development evidence. It is not
@@ -29,7 +29,7 @@ runs linked below for the results.
 In the supported profile (Ubuntu 24.04 on x86_64, ROS 2 Jazzy, Gazebo Harmonic with pinned vendor packages,
 CycloneDDS):
 
-- Installation of six pinned repositories with one script. A clean install on manifest `main` `24e903d` passed on two clean machines ([run 46030163636](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/46030163636)).
+- Installation of six pinned repositories with one script. A clean install on manifest `24e903d` passed on two clean machines; manifest `9c8dec5`, the planned tag target, has the identical profile ([run 46030163636](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/46030163636)).
 - The Build 1 scene: the combined model of mobile base, 350 mm lift and two OpenArm 2.0 arms in one Gazebo world.
 - Run profiles `fast` and `fine` (no devices) and `firmware_sil` and `faults` (device emulators on five virtual CAN
   buses, with the unmodified upstream arm driver).
@@ -60,10 +60,10 @@ Snapshots that are in the release inventory but outside the supported profile:
 
 | Repository | Commit | Note |
 |---|---|---|
-| openamr-platform-hw | `33941236db5fc2e651bf44dce97203f750a8f15e` | hardware design snapshot. Not built, not validated by the twin |
+| openamr-platform-hw | `bf9fefa0250e4e59d4de4e634461d30689944357` | hardware design snapshot with the public BOM and battery guide extracts. Not built, not validated by the twin |
 | openamrobot-ui | `2cf917950adef411bbdc54381865ea137c7b2e26` | operator UI snapshot. Not installed by the Digital Twin profile |
 
-The manifest commit that carries these pins is `24e903d`, the `main` branch of the manifest since 27 November ([pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26)). It follows [pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23), merged with the earlier hardware pin.
+The manifest commit that carries these pins is `9c8dec5`, the `main` branch of the manifest since 28 November ([pull request 27](https://github.com/openAMRobot/openamrobot-manifest/pull/27), documentation pin). It follows [pull request 26](https://github.com/openAMRobot/openamrobot-manifest/pull/26) (`24e903d`, hardware pin) and [pull request 23](https://github.com/openAMRobot/openamrobot-manifest/pull/23).
 
 ## Qualification summary
 
@@ -82,7 +82,7 @@ independent re-read of the original logs confirmed the table. Simulation evidenc
 | Platform SIL protocol tests | 209 passed, 3 expected failures (platform issue 159) | [45826145729](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826145729) |
 | Platform description, navigation status, drivers | passed | [45826150907](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826150907), [45826156811](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826156811), [45826162821](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826162821) |
 | Platform station alignment | required jobs passed; the Fast DDS job failed (not supported, platform issue 197) | [45826167431](https://github.com/openAMRobot/openamr-platform-sw/actions/runs/45826167431) |
-| Clean install of the supported profile on these pins | 2 of 2 environments: drive, lift, shutdown, relaunch, left-arm grasp. On manifest commit `442241a`; the merged `24e903d` adds only a hardware documentation pin and leaves the installed profile unchanged | [run 45871626093](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45871626093) |
+| Clean install of the supported profile on these pins | 2 of 2 environments: drive, lift, shutdown, relaunch, left-arm grasp. On manifest commit `24e903d`; `9c8dec5` leaves the installed profile unchanged. Earlier on `442241a` | [run 46030163636](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/46030163636), earlier [run 45871626093](https://github.com/openAMRobot/openamrobot-manifest/actions/runs/45871626093) |
 
 Terms: a *dispatch* is one start of the mission workflow; it runs two *legs* (two complete missions) and a verdict.
 The *model tests* a6 and a7 check the combined robot model, a6 without a simulator and a7 in Gazebo.
